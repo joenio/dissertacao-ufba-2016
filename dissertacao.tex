@@ -7,8 +7,8 @@
 \usepackage[top=2cm,left=0.5in,right=0.5in,bottom=2cm]{geometry}
 
 \title{
-  Ferramentas desenvolvidas durante pesquisas em engenharia de software:
-  Uma análise histórica
+  Caracterização de Ferramentas de Pesquisa no Contexto de Engenharia de
+  Software Experimental
 }
 \author{Joenio Marques da Costa\\
   {\small Universidade Federal da Bahia (UFBA)} \\
@@ -20,123 +20,211 @@
 
 \maketitle
 
+\section{Resumo do projeto}
+
+
+Em diversas linhas de pesquisa da Computação e, em especial, em Engenharia de
+Software, é bastante comum que ferramentas de software sejam desenvolvidas
+para apoiar a pesquisa ou sejam o resultado da própria pesquisa. Neste
+trabalho, tais ferramentas de software são nosso objeto de pesquisa e serão
+chamadas de {\it “ferramentas de pesquisa”}.
+
+Naturalmente, ferramentas de pesquisa são produtos de software e, como tal,
+precisam ser avaliadas com uso de métodos científicos adequados. Nas últimas
+décadas, o foco em estudos empíricos na área de Engenharia de Software tem
+crescido, resultando no uso crescente de métodos científicos como surveys,
+estudos de caso, experimentos e revisões sistemáticas de literatura. A
+replicação de estudos empíricos pode ser realizada, de modo a averiguar a sua
+validade e aumentar o nível de confiança em seus resultados. Neste contexto, é
+de fundamental importância que as ferramentas de pesquisa utilizadas ou
+desenvolvidas durante estudos estejam disponíveis e em funcionamento.
+
+Neste trabalho de mestrado, será realizada uma revisão sistemática de
+literatura, a partir de artigos da área de Engenharia de Software que tratam
+de publicação de ferramentas de pesquisa, visando coletar e caracterizar
+alguns atributos de ferramentas de pesquisa e prover recomendações para seu
+desenvolvimento e adoção em ampla escala em estudos empíricos em Engenharia de
+Software.
+
 \section{Objetivos}
 
-Entender como as ferramentas desenvolvidas durante pesquisas em engenharia de
-software são criadas, disponibilizadas e como são mantidas ao longo do tempo.
+O objetivo principal deste trabalho é melhorar a compreensão sobre as
+ferramentas de software desenvolvidas durante pesquisas em Engenharia de
+Software -- aqui denominadas “ferramentas de pesquisa” -- por meio de sua
+caracterização no contexto de estudos empíricos em Engenharia de Software. 
+
+São objetivos específicos deste trabalho:
+
+\begin{itemize}
+  \item Realizar uma revisão sistemática, com base em artigos publicados nas
+    principais conferências e periódicos da área de Engenharia de Software,
+    sobre “ferramentas de pesquisa”;
+  \item Caracterizar as “ferramentas de pesquisa” coletadas em termos de
+    atributos relacionados ao seu desenvolvimento;
+  \item Caracterizar  “ferramentas de pesquisa” coletadas em termos de
+    atributos relacionados à sua distribuição;
+  \item Caracterizar “ferramentas de pesquisa” coletadas  em termos de
+    atributos relacionados ao seu uso em estudos empíricos, sejam primários ou
+    replicações;
+  \item Sintetizar informações sobre “ferramentas de pesquisa” coletadas;
+  \item Prover um conjunto inicial de recomendações para facilitar a adoção de
+    “ferramentas de pesquisa”  em estudos empíricos em Engenharia de Software. 
+\end{itemize}
 
 \section{Fundamentação teórica}
 
-Softwares são utilizados em praticamente todas as áreas do conhecimento humano
-e têm exercido um papel essencial em nossa sociedade, nós dependemos cada vez
-mais das características e serviços oferecidos por sistemas computadorizados
-\cite{Mafra2006} e isto evidencia a necessidade de produzir softwares de
-qualidade.
+Sistemas de software são utilizados em praticamente todas as áreas do
+conhecimento humano e têm exercido um papel essencial em nossa sociedade
+\cite{Mafra2006}. A dependência crescente de serviços oferecidos por tais
+sistemas evidencia a necessidade de produzir software de qualidade e contornar
+os  desafios relacionados a sua funcionalidade (incompleta ou incorreta),
+custos acima do esperado ou prazos não cumpridos.
 
-Não é raro perceber projetos de software com problemas em termos de
-funcionalidades faltando, custos acima do esperado, prazos não cumpridos ou
-qualidade abaixo do desejado.  Diante destes e de outros problemas surge a
-engenharia de software, uma disciplina centrada no desenvolvimento intensivo
-de sistemas de software \cite{Wohlin2012} através de uma abordagem
-sistemática, disciplinada, e quantificável para o desenvolvimento, operação e
-manutenção \cite{SWEBOK2014} de software. Ao fazer uso de métodos científicos,
-especialmente estudos empíricos, pesquisadores e estudiosos transformam a
-engenharia de software em uma disciplina mais científica e controlável,
-criando meios para avaliar e validar métodos, técnicas, linguagens e
-ferramentas.
+Diante destes desafios, surge a Engenharia de Software, uma disciplina
+centrada no desenvolvimento de sistemas de software \cite{Wohlin2012} através
+da aplicação de uma abordagem sistemática, disciplinada, e quantificável para
+o desenvolvimento, operação e manutenção \cite{SWEBOK2014}.
 
-Assim, através de estudos empíricos, pesquisadores da área tem realizado cada
-vez mais estudos fazendo o número de publicações crescer significantemente nas
-últimas décadas \cite{Stol2015}. Este aumento constante no número de
-publicações desperta a atenção para a necessidade de verificar a validade de tais estudos,
-saber se os resultados de um certo estudo é verdadeiro ou não é um ponto
-central em pesquisa científica e entre as várias formas de verificação a
-replicação é constantemente citada como um importante meio para atingir tal
-objetivo \cite{Almqvist2006}.
+Nas últimas décadas, o foco em estudos empíricos na área de Engenharia de
+Software tem crescido significantemente \cite{Stol2015}, resultando no uso
+crescente de métodos como surveys, estudos de caso, experimentos e revisões
+sistemáticas de literatura. Ao fazer uso de estudos empíricos, pesquisadores
+transformam a Engenharia de Software em uma disciplina mais científica e
+controlável -- a  Engenharia de Software Experimental -- provendo meios para
+avaliar e validar novos métodos, técnicas, linguagens e ferramentas.
 
-Apesar do conceito replicação
-estar usualmente associado à experimentação argumenta-se que ele deva ser
-expandido para incluir também, ao menos, estudos de caso e surveys
-\cite{Mantyla2010}. Um dos primeiros artigos discutindo replicação
-em engenharia de software foi publicado por Basili et al.
-\cite{Basili1986} e sugere replicação não apenas como uma escolha mas como um
-possível "próximo passo" a ser tomado após o experimento original ser
-concluído.
+O crescimento no número de pesquisas e publicações em Engenharia de Software
+Experimental desperta a atenção para a necessidade de verificar a validade dos
+estudos empíricos realizados -- um ponto central em qualquer pesquisa
+científica. A validade de um estudo empírico  deve ser averiguada, para
+aumentar o nível de confiança em seus resultados. A replicação é um importante
+meio para atingir tal objetivo \cite{Almqvist2006}.
 
-Diante a importancia da replicação ao validar estudos nota-se que é de
-fundamental importancia que as ferramentas de software utilizadas e
-desenvolvidas no estudo original estejam ainda disponíveis e em funcionamento
-\cite{Kon11}. É bastante comum pesquisas de diversas áreas,
-especialmente engenharia de software, propor novas ferramentas de
-software ou apenas criar ferramentas como forma de apoio ao estudo, estas
-ferramentas serão chamadas aqui de {\it ferramentas de
-pesquisa} e serão objeto de pesquisa deste trabalho. Este termo {\it
-ferramentas de pesquisa} foi também utilizado por Portillo\cite{Portillo12}
-designinando o mesmo significado.
+Um dos primeiros artigos discutindo replicação de experimentos em Engenharia
+de Software foi publicado por Basili et al. \cite{Mantyla2010} e sugere
+replicação não apenas como uma escolha, mas como um possível "próximo passo" a
+ser tomado após o experimento original ser concluído. Apesar do conceito
+replicação de estudos empíricos em Engenharia de Software estar usualmente
+associado à experimentação, argumenta-se que ele deve ser estendido para
+incluir ao menos estudos de caso e surveys \cite{Basili1986}.
 
-Estas {\it ferramentas de pesquisa} são produtos de software e precisam ser
-avaliados a partir de métodos científicos adequados.
-revisão sistemática de literatura se mostra um
-excelente método para isto por ser um meio de avaliar e interpretar pesquisas
-relevantes sobre uma data questão em particular, tópico área, ou fenômeno de
-interesse \cite{Kitchenham2006}.
+Em diversas linhas de pesquisa da Computação e, em especial, em Engenharia de
+Software, é bastante comum que ferramentas de software sejam desenvolvidas
+para apoiar a pesquisa ou sejam o resultado da própria pesquisa. Neste
+trabalho, tais ferramentas de software são nosso objeto de pesquisa e serão
+chamadas de “ferramentas de pesquisa” -- termo utilizado também por Portillo
+\cite{Portillo12}.
 
-Muitos pesquisadores argumentam que para fazer progressos no campo da
-engenharia de software empírica, resultados de vários experimentos e da fato
-de outros estudos empíricos como surveys e estudos de caso devem ser
-combinados, um método para combiná-los é a meta-análise estatistica
-\cite{Almqvist2006}.
+Ferramentas de pesquisa são produtos de software e, em geral, precisam ser
+avaliados com uso de métodos científicos adequados. Diante da importância da
+replicação para a validação de estudos empíricos, é de fundamental importância
+que as ferramentas de pesquisa utilizadas ou desenvolvidas no estudo original
+estejam disponíveis e em funcionamento \cite{Kon2011}.
 
-Com o aumento de estudos empíricos surge a necessidade de agregar evidências
-de multiplos estudos, isto pode dar respostas a questões impossíveis de serem
-respondidas com estudos inidivuais. Isto pode ser feito através da coleção e
-síntese de evidências empíricas através de revisão sistemática de literatura e
-devem ser feito com rigor científico.
+\subsection{Revisão Sistemática e Meta-análise}
 
-Quando um conjunto de estudos empíricos são colecionados sobre um tópico, a
-síntese ou agregação entra em cena. Síntese baseada em métodos estatísticos
-são referenciados como meta-análise. Exemplos de meta-análise em engenharia de
-software inclue métodos de detecção de defeitos, métodos ágeis, e programação
-em par. Se os procedimentos da meta-análise não são apliváveis, síntese
-descritiva deve ser utilizada. Ela inclue visualização e tabulação dos dados e
-estatística descritiva dos dados. Quanto mais ampla a questão guiando a
+Muitos pesquisadores argumentam que, para se obter progressos em uma
+determinada área do conhecimento, os resultados de vários experimentos e
+outros estudos empíricos (surveys e estudos de caso, por exemplo) devem ser
+combinados. Quando um conjunto de estudos empíricos é coletado sobre um
+tópico, a síntese ou agregação entra em cena. Síntese baseada em métodos
+estatísticos é referenciada como meta-análise \cite{Almqvist2006}.
+
+Se os procedimentos da meta-análise não são aplicáveis, a síntese descritiva
+deve ser utilizada. Esta inclui visualização e tabulação dos dados e
+estatística descritiva dos dados. Quanto mais ampla é a questão guiando a
 revisão de literatura, mais métodos qualitativos são necessários para sua
-síntese, Cruzes e Dyba \cite{Cruzes2011} apresentam uma visão geral de métodos
+síntese. Cruzes e Dyba \cite{Cruzes2011} apresentam uma visão geral de métodos
 qualitativos de síntese, entre eles síntese temática.
 
+Adicionalmente, com o aumento na adoção de estudos empíricos em Engenharia de
+Software, surge a necessidade de agregar evidências de múltiplos estudos
+relacionados, de modo a obter respostas a questões impossíveis de serem
+respondidas com os estudos individuais. A coleta e síntese de evidências
+empíricas podem ser realizadas com rigor científico, por meio de Revisão
+Sistemática da Literatura \cite{Kitchenham2007}. A Revisão Sistemática da
+Literatura  é um meio de avaliar e interpretar pesquisas relevantes (estudos
+primários) sobre uma data questão em particular, tópico, área, ou fenômeno de
+interesse.
 
 \section{Metodologia}
 
-Primeiramente será feito uma revisão sobre estudos secundários, especialmente
-revisões sistemáticas, estes estudos visando identificar, avaliar e interpretar os
-resultados relevantes a um determinado tópico de pesquisa, fenômeno de
-interesse ou questão de pesquisa;
-
-A partir daí será realizada uma revisão sistemática de literatura de artigos
-da área de engenharia de software sobre publicação de ferramentas visando
-caracterizar, agregar e sintetizar informações a partir das seguintes
-perguntas:
+Primeiramente será feita uma revisão sobre estudos secundários (em especial,
+revisões sistemáticas) relacionados ao uso e desenvolvimento de ferramentas de
+pesquisa.
+  
+Em seguida, será realizada uma revisão sistemática de literatura, com base nas
+recomendações encontradas em \cite{Kitchenham2007}, a partir
+de artigos da área de Engenharia de Software que tratam de publicação de
+ferramentas de pesquisa, visando caracterizar seus atributos a partir de
+perguntas, por exemplo:
 
 \begin{itemize}
-  \item Quais ferramentas de pesquisa foram publicadas durante pesquisas em
-    engenharia de software e como são licenciadas e disponibilizadas?
-  \item Como as ferramentas de pesquisa publicadas são desenvolvidas em termos
-    de métodos e processos recomendados pela engenharia de software?
-  \item Há colaboracão entre os pesquisadores e universidades no
+  \item Quais ferramentas de pesquisa associadas a pesquisas em engenharia de
+    software?
+  \item Como as ferramentas de pesquisa publicadas são licenciadas e
+    distribuídas?
+  \item Como as ferramentas de pesquisa publicadas são desenvolvidas (em
+    termos de métodos e processos recomendados pela engenharia de software)?
+  \item Há colaboração entre pesquisadores de mais de uma universidade no
     desenvolvimento das ferramentas de pesquisa publicadas?
   \item As ferramentas publicadas são avaliadas internamente e externamente?
     Se sim, como são avaliadas?
 \end{itemize}
 
-Com os dados em mãos, uma síntese será feita, com base em agregação
-quantitativa usando meta-análise ou qualitativa através de síntese temática ou
-descritiva será utilizada.
+A partir das informações coletadas na revisão sistemática serão feitas a
+agregação e a síntese dos dados, utilizando métodos quantitativos e
+qualitativos, com objetivo de identificar temas recorrentes e problemas
+comuns, além de elaborar conclusão a respeito dos diversos estudos analisados
+na revisão sistemática.
+
+Após a caracterização realizada, espera-se propor um conjunto preliminar de
+recomendações para desenvolvimento e adoção de ferramentas de pesquisa para a
+comunidade acadêmica de Engenharia de Software.
 
 \section{Resultados esperados}
 
-Caracterização e avaliação de ferramentas de pesquisa, ferramentas de software
-desenvolvidas durante pesquisas em engenharia de software. Combinação de
-resultados através de coleção e síntese quantitativa e qualitativa.
+\begin{itemize}
+  \item Caracterização de atributos de ferramentas de software desenvolvidas
+    durante pesquisas em engenharia de software, chamadas aqui de {\it “ferramentas
+    de pesquisa”};
+  \item Síntese de resultados e lições a respeito de temas recorrentes e
+    problemas comuns no desenvolvimento e publicação de {\it “ferramentas de
+    pesquisa”};
+  \item Conjunto preliminar de recomendações para desenvolvimento e adoção de
+    ferramentas de pesquisa para a comunidade acadêmica de Engenharia de
+    Software;
+  \item Artigos científicos publicados;
+  \item Dissertação de mestrado.
+\end{itemize}
+
+
+\section{Atividades e metas}
+
+\subsection{Meta 1: Realizar revisão sistemática}
+
+Atividades:
+
+\begin{itemize}
+  \item Pesquisar estudos secundários sobre o tema;
+  \item Identificar fontes de dados: bibliotecas digitais; anais em
+    conferências sobre ferramentas;
+  \item Levantar e selecionar dados/papers sobre ferramentas de software
+  \item Iniciar e documentar análise dos papers selecionados
+  \item Agregar e sintetizar informações encontradas
+\end{itemize}
+
+\subsection{Meta 2: Divulgar resultados}
+
+Atividades:
+
+\begin{itemize}
+  \item Apresentar qualificação de mestrado
+  \item Elaborar artigo científico sobre ...
+  \item Elaborar artigo científico sobre ...
+  \item Elaborar dissertação de mestrado
+  \item Apresentar dissertação de mestrado
+\end{itemize}
 
 \bibliography{bibliografia}
 
