@@ -2,11 +2,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 \usepackage{fancyvrb}
-\usepackage[alf]{abntcite}
+\usepackage[alf]{abntex2cite}
 \usepackage[top=2cm,left=0.5in,right=0.5in,bottom=2cm]{geometry}
 
 \title{
-  Caracterização de Ferramentas de Pesquisa no Contexto de Engenharia de
+  Caracterização de Softwares Científicos no Contexto de Engenharia de
   Software Experimental
 }
 \author{Joenio Marques da Costa\\
@@ -38,26 +38,33 @@
 % trabalho futuro
 % * pegar pesquisas em desenvolvimento com criacao de ferramentas e convidar
 %   para seguir boas praticas para evitar os problemas que estou mostrando
+
 \begin{document}
 
 \maketitle
 
 \section{Resumo do projeto}
 
+Ciência Aberta é um movimento que tem por objetivo tornar a pesquisa
+científica, seus dados e sua disseminação acessíveis à todos os interessados,
+dentre as várias iniciativas deste movimento, destaca-se a preocupação com a
+reprodutibilidade dos resultados de pesquisas de forma independente e aberta,
+visto que a maioria dos componentes necessários para a reprodução dos
+resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- não são
+publicados.
+
 Em diversas linhas de pesquisa da Computação e, em especial, em Engenharia de
 Software, é bastante comum que novos sistemas de software sejam desenvolvidos,
 tais sistemas costumam ser utilizados como meio para atingir os resultados da
 pesquisa ou, em alguns casos, são o próprio fim do estudo realizado. Neste
 trabalho, tais sistemas ou ferramentas de software são nosso objeto de
-pesquisa e serão chamados de {\it ferramentas de pesquisa}.
+pesquisa e serão chamados de {\it software científico}.
 
-Seja como meio ou como fim, tais {\it ferramentas de pesquisa} são produtos de
+Seja como meio ou como fim, tais {\it softwares científicos} são produtos de
 software e, tal como propõe a Engenharia de Software Experimental, precisam
-ser avaliadas com uso de métodos científicos adequados.
-
-Neste contexto, é de fundamental importância
-que as ferramentas de pesquisa utilizadas ou desenvolvidas durante estudos
-estejam disponíveis e em funcionamento.
+ser avaliadas com uso de métodos científicos adequados. Neste contexto, é de
+fundamental importância que os softwares utilizados ou desenvolvidos durante
+estudos estejam disponíveis e em funcionamento.
 
 %Nas últimas décadas, o foco em estudos empíricos na área de
 %Engenharia de Software tem crescido, resultando no uso crescente de métodos
@@ -68,64 +75,109 @@ estejam disponíveis e em funcionamento.
 
 Neste trabalho de mestrado, será realizada uma revisão sistemática de
 literatura, a partir de artigos da área de Engenharia de Software que tratam
-de publicação de ferramentas de pesquisa, visando coletar e caracterizar
-alguns atributos de ferramentas de pesquisa e prover recomendações para seu
-desenvolvimento e adoção em ampla escala em estudos empíricos em Engenharia de
-Software.
+de publicação de "softwares científicos", visando coletar e caracterizar
+alguns atributos de tais softwares para prover recomendações iniciais para o
+seu desenvolvimento e adoção em ampla escala em estudos empíricos em
+Engenharia de Software.
 
 \section{Objetivos}
 
 O objetivo principal deste trabalho é melhorar a compreensão sobre as
-ferramentas de software desenvolvidas durante pesquisas em Engenharia de
-Software -- aqui denominadas “ferramentas de pesquisa” -- por meio de sua
-caracterização no contexto de estudos empíricos em Engenharia de Software. 
+ferramentas de software para análise de código fonte desenvolvidos durante
+pesquisas em Engenharia de Software -- aqui denominados "software científico"
+\ -- por meio de sua caracterização no contexto de estudos empíricos em
+Engenharia de Software.
 
 São objetivos específicos deste trabalho:
 
 \begin{itemize}
   \item Realizar uma revisão sistemática, com base em artigos publicados nas
     principais conferências e periódicos da área de Engenharia de Software,
-    sobre “ferramentas de pesquisa”;
-  \item Caracterizar as “ferramentas de pesquisa” coletadas em termos de
+    sobre "software científico";
+  \item Caracterizar os "softwares científicos" coletados em termos de
     atributos relacionados ao seu desenvolvimento;
-  \item Caracterizar  “ferramentas de pesquisa” coletadas em termos de
+  \item Caracterizar os "software científicos" coletados em termos de
     atributos relacionados à sua distribuição;
-  \item Caracterizar “ferramentas de pesquisa” coletadas  em termos de
+  \item Caracterizar os "software científicos" coletados  em termos de
     atributos relacionados ao seu uso em estudos empíricos, sejam primários ou
     replicações;
-  \item Sintetizar informações sobre “ferramentas de pesquisa” coletadas;
+  \item Sintetizar informações sobre "softwares científicos" coletados;
   \item Prover um conjunto inicial de recomendações para facilitar a adoção de
-    “ferramentas de pesquisa”  em estudos empíricos em Engenharia de Software. 
+    "softwares científicos" em estudos empíricos em Engenharia de Software. 
 \end{itemize}
 
 \section{Fundamentação teórica}
 
+\subsection{Ciência Aberta}
+
+Ciência Aberta é um movimento que tem por objetivo tornar a pesquisa
+científica, seus dados e sua disseminação acessíveis à todos os interessados,
+sejam amadores ou profissionais \cite{WikipediaOpenScience}. Sua principal
+motivação está em possibilitar a reprodução dos resultados de pesquisas e em
+garantir transparência das metodologias utilizadas, isto aumenta o impacto
+social das pesquisas e gera economia de tempo e dinheiro para os pesquisadores
+e para as instituições \cite{Nesta2010}.
+
+Este movimento é guiado por princípios básicos de transparência,
+acessibilidade e reusabilidade universais, disseminadas via ferramentas
+online, ele é dividido em quatro grandes áreas: (1) Open Access, (2) Open
+Data, (3) Open Source e (4) Open Reproducible Research. Dentre elas destaca-se
+a Open Reproducible Research por preocupar-se com a reprodutibilidade dos
+resultados de pesquisas de forma independente \cite{Stodden2009} e aberta, no
+entanto, esta área tem recebido ainda pouca atenção da comunidade de pesquisa
+\cite{Nancy2015} \cite{Grand2010Open} apesar do aumento geral do interesse
+pelas práticas da Ciência Aberta \cite{Grand2010}.
+
+Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
+resultados, é raro que façam o mesmo com toda a produção gerada durante a
+pesquisa. A maioria dos componentes necessários para a reprodução dos
+resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
+permanecem não publicados. Este é um problema sério já que um dos fundamentos
+da ciência é que novas descobertas sejam reproduzidas antes de serem
+consideradas parte da base de conhecimento \cite{Stodden2009}.
+
+Neste sentido, \citeonline{Prlic2012} dão dicas para o desenvolvimento aberto de software
+científico e citam que disponibilizar o código criado durante pesquisas não
+apenas aumenta o impacto como também se torna essencial para outros
+reproduzirem os resultados encontrados. Eles citam ainda que manutenabilidade
+e disponibilidade do software após a publicação é o maior problema enfrentado
+pelos pesquisadores que desenvolvem tais softwares, e é aí que a
+participação no desenvolvimento aberto desde o início pode trazer maior
+benefício.
+
+Dentro deste contexto, e considerando que pesquisas em engenharia de software
+produzem bastante softwares científicos, surge a preocupação de avaliar tais
+softwares em termos de sua manutenabilidade e disponibilidade a partir de
+métodos científicos adequados.
+
+\subsection{Engenharia de Software}
+
 Sistemas de software são utilizados em praticamente todas as áreas do
 conhecimento humano e têm exercido um papel essencial em nossa sociedade
 \cite{Mafra2006}. A dependência crescente de serviços oferecidos por tais
-sistemas evidencia a necessidade de produzir software de qualidade e contornar
-os  desafios relacionados a sua funcionalidade (incompleta ou incorreta),
-custos acima do esperado ou prazos não cumpridos.
+sistemas evidencia a necessidade de produzir software de qualidade,
+contornando os  desafios relacionados a funcionalidades incompletas ou
+incorretas, custos acima do esperado ou prazos não cumpridos.
 
 Diante destes desafios, surge a Engenharia de Software, uma disciplina
 centrada no desenvolvimento de sistemas de software \cite{Wohlin2012} através
-da aplicação de uma abordagem sistemática, disciplinada, e quantificável para
-o desenvolvimento, operação e manutenção \cite{SWEBOK2014}.
+de uma abordagem sistemática, disciplinada, e quantificável para o
+desenvolvimento, operação e manutenção \cite{SWEBOK2014}.
 
 Nas últimas décadas, o foco em estudos empíricos na área de Engenharia de
 Software tem crescido significantemente \cite{Stol2015}, resultando no uso
 crescente de métodos como surveys, estudos de caso, experimentos e revisões
-sistemáticas de literatura. Ao fazer uso de estudos empíricos, pesquisadores
+sistemáticas de literatura. Através destes estudos empíricos, pesquisadores
 transformam a Engenharia de Software em uma disciplina mais científica e
 controlável -- a  Engenharia de Software Experimental -- provendo meios para
-avaliar e validar novos métodos, técnicas, linguagens e ferramentas.
+avaliar e validar métodos, técnicas, linguagens e ferramentas.
 
 O crescimento no número de pesquisas e publicações em Engenharia de Software
 Experimental desperta a atenção para a necessidade de verificar a validade dos
 estudos empíricos realizados -- um ponto central em qualquer pesquisa
-científica. A validade de um estudo empírico  deve ser averiguada, para
-aumentar o nível de confiança em seus resultados. A replicação é um importante
-meio para atingir tal objetivo \cite{Almqvist2006}.
+científica. A validade de um estudo empírico deve ser averiguada com o intuito
+de aumentar o nível de confiança em seus resultados, replicação costuma ser
+citado como um importante meio para atingir tal objetivo \cite{Almqvist2006}.
 
 Um dos primeiros artigos discutindo replicação de experimentos em Engenharia
 de Software foi publicado por Basili et al. \cite{Mantyla2010} e sugere
@@ -136,83 +188,72 @@ associado à experimentação, argumenta-se que ele deve ser estendido para
 incluir ao menos estudos de caso e surveys \cite{Basili1986}.
 
 Em diversas linhas de pesquisa da Computação e, em especial, em Engenharia de
-Software, é bastante comum que ferramentas de software sejam desenvolvidas
-para apoiar a pesquisa ou sejam o resultado da própria pesquisa. Neste
+Software, é bastante comum que novos sistemas de software sejam desenvolvidos,
+tais sistemas costumam ser utilizados como meio para atingir os resultados da
+pesquisa ou, em alguns casos, são o próprio fim do estudo realizado. Neste
 trabalho, tais ferramentas de software são nosso objeto de pesquisa e serão
-chamadas de “ferramentas de pesquisa” -- termo utilizado também por Portillo
-\cite{Portillo12}.
+chamados de "software científico" \ -- \citeonline{Portillo12} utiliza o
+termo "research tool" para designar este mesmo tipo de software.
 
-Ferramentas de pesquisa são produtos de software e, em geral, precisam ser
-avaliados com uso de métodos científicos adequados. Diante da importância da
-replicação para a validação de estudos empíricos, é de fundamental importância
-que as ferramentas de pesquisa utilizadas ou desenvolvidas no estudo original
-estejam disponíveis e em funcionamento \cite{Kon2011}.
+Softwares científicos são produtos de software e, em geral, precisam ser
+avaliados com uso de métodos científicos adequados, e, é de fundamental
+importância que estejam disponíveis e em funcionamento \cite{Kon2011}.
 
-\subsection{Ciência Aberta}
+%Reviewing, criticizing, and improving code is easier for readers who can run
+%the code themselves. Use of languages, libraries, systems, and tools which are
+%widely available is strongly recommended \cite{McCormick2014}
+%\cite{Barnes2013}.
+%
+%Os tópicos "irreproducibility studies", "reproducibility guidelines",
+%"reproducibility testing" e "webometrics" são possíveis "gaps" dentro da
+%agenda da Ciência Aberta\cite{Nancy2015}.
 
-Ciência aberta é um movimento para fazer a pesquisa científica, dados e
-disseminação acessíveis para todos os níveis de interessados, amadores ou
-profissionais.
+\subsubsection{Análise de Código Fonte}
 
-Ciência Aberta permite a reprodução dos resultados da pesquisa, permite
-transparência na metologia de pesquisa, aumenta o impacto social do
-pesquisador e economiza tempo e dinheiro tanto dos pesquisadores quando das
-instituições\cite{Nesta2010}.
+O rápido crescimento no número de softwares nas últimas décadas leva a uma
+crescente demanda por mecanismos e ferramentas de apoio à compreensão de,
+desenvolvedores necessitam entender em profundade a implementação de um
+determinado software antes de realizar atividades de correção ou refatoração
+de forma eficiente \cite{Kirkov2010}.
 
-Recentemente muitos pesquisadores tem se interessado em incluir práticas da
-Ciência Aberta em seus projetos de pesquisa\cite{Grand2010}
-\cite{Grand2010Open}.
+Isto é evidenciado ao perceber que a complexidade dos softwares vem crescendo
+à cada dia \cite{Kirkov2010}, tornando assim, extremamente útil a existência
+de ferramentas de análise automática de código-fonte, tais ferramentas
+auxiliam os desenvolvedores e engenheiros à compreender a implementação de um
+determinado software de forma profunda e abrangente.
 
-Ciência Aberta é composta de: Open Access, Open Data, Open Source, Open
-Reproducible Research. Ester termos compartilham mesmos princípios básicos:
-transparência, acessibilidade e reusabilidade universais disseminadas via
-ferramentas online. O quarto componente, open reproducible research carece da
-atenção necessária pela comunidade de pesquisa\cite{Nancy2015}.
+Essas ferramentas geram modelos de alto nível representando entidades,
+relacionamentos, métricas, características ou outra informação qualquer
+extraída diretamente do código-fonte, e permitem que sejam geradas
+visualizações em diversos níveis de abstração representando o código-fonte.
 
-Os tópicos "irreproducibility studies", "reproducibility guidelines",
-"reproducibility testing" e "webometrics" são possíveis "gaps" dentro da
-agenda da Ciência Aberta\cite{Nancy2015}.
+% Dentre as inúmeras sub-áreas da engenharia de software, este trabalho irá
+% focar do domínio de ferramentas de análise de código-fonte, esta escolha tem
+% por base o domínio do pesquisador nesta área e a escolha de um domínio é
+% necessário para reduzir o escopo e viabilizar a revisão de estudos e
+% ferramentas de um domínio específico, do contrário o trabalho seria muito
+% extenso e a revisão sistemática seria inviável dentro do prazo de um trabalho
+% de pesquisa num mestrado.
 
-\cite{Prlic2012} dá 10 dicas para desenvolvimento aberto de software
-científico e cita que disponibilizar o código criado durante pesquisas não só
-aumenta o impacto mas também é essencial para outros reproduzirem os
-resultados encontrados. Reproducibilidade é um princípio central na ciência
-computacional. \cite{Prlic2012} cita ainda manutenabilidade e disponibilidade
-do software após a publicação é o maior problema enfrentado pelos
-pesquisadores que desenvolvem tais softwares, e neste ponto é que a
-participação no desenvolvimento aberto desde o início pode fazer o maior
-impacto.
-
-\subsection{Science Code Manifesto}
-
-All source code written specifically to process data for a published paper must be available to the reviewers and readers of the paper.
-
-The code is the only definitive expression of the data-processing methods used: without the code, readers cannot fully consider, criticize, or improve upon the methods. This is essential to the progress of computational science.
-
-The publishers must provide a link, alongside the paper, to a repository containing the code.
-
-The source code made available should be the exact version used in processing data for the published paper. Accompanying the source code there should be a full description of the platform, language implementation, tools, libraries, and parameters used to run the software.
-
-Reviewing, criticizing, and improving code is easier for readers who can run
-the code themselves. Use of languages, libraries, systems, and tools which are
-widely available is strongly recommended \cite{McCormick2014}
-\cite{Barnes2013}.
+% baixar artigo da rede ufba:
+% Source Code Analysis: A Road Map
+% http://dl.acm.org/citation.cfm?id=1254713
 
 \subsection{Revisão Sistemática e Meta-análise}
 
 Muitos pesquisadores argumentam que, para se obter progressos em uma
 determinada área do conhecimento, os resultados de vários experimentos e
-outros estudos empíricos (surveys e estudos de caso, por exemplo) devem ser
-combinados. Quando um conjunto de estudos empíricos é coletado sobre um
-tópico, a síntese ou agregação entra em cena. Síntese baseada em métodos
-estatísticos é referenciada como meta-análise \cite{Almqvist2006}.
+outros estudos empíricos -- surveys e estudos de caso, por exemplo -- devem
+ser combinados. Quando um conjunto de estudos empíricos é coletado sobre um
+tópico, a síntese ou agregação entra em cena.
 
-Se os procedimentos da meta-análise não são aplicáveis, a síntese descritiva
-deve ser utilizada. Esta inclui visualização e tabulação dos dados e
-estatística descritiva dos dados. Quanto mais ampla é a questão guiando a
-revisão de literatura, mais métodos qualitativos são necessários para sua
-síntese. Cruzes e Dyba \cite{Cruzes2011} apresentam uma visão geral de métodos
-qualitativos de síntese, entre eles síntese temática.
+Quando os procedimentos da meta-análise, ou seja, síntese baseada em métodos
+estatísticos \cite{Almqvist2006}, não são aplicáveis, a síntese descritiva
+deve ser utilizada. Esta inclui visualização, tabulação e estatística
+descritiva dos dados. Quanto mais ampla é a questão guiando a revisão de
+literatura, mais métodos qualitativos são necessários para sua síntese.
+\citeonline{Cruzes2011} apresentam uma visão geral de métodos qualitativos de
+síntese, entre eles a síntese temática.
 
 Adicionalmente, com o aumento na adoção de estudos empíricos em Engenharia de
 Software, surge a necessidade de agregar evidências de múltiplos estudos
@@ -220,61 +261,58 @@ relacionados, de modo a obter respostas a questões impossíveis de serem
 respondidas com os estudos individuais. A coleta e síntese de evidências
 empíricas podem ser realizadas com rigor científico, por meio de Revisão
 Sistemática da Literatura \cite{Kitchenham2007}. A Revisão Sistemática da
-Literatura  é um meio de avaliar e interpretar pesquisas relevantes (estudos
-primários) sobre uma dada questão em particular, tópico, área, ou fenômeno de
-interesse.
+Literatura  é um meio de avaliar e interpretar pesquisas relevantes -- estudos
+primários -- sobre uma dada questão em particular, tópico, área, ou fenômeno
+de interesse.
 
 \section{Metodologia}
 
-Primeiramente será feita uma revisão sobre estudos secundários (em especial,
-revisões sistemáticas) relacionados ao uso e desenvolvimento de ferramentas de
-pesquisa.
-  
+Primeiramente será feita uma revisão sobre estudos secundários -- em especial,
+revisões sistemáticas -- relacionados ao uso e desenvolvimento de "softwares
+científicos".
+
 Em seguida, será realizada uma revisão sistemática de literatura, com base nas
-recomendações encontradas em \cite{Kitchenham2007}, a partir
-de artigos da área de Engenharia de Software que tratam de publicação de
-ferramentas de pesquisa, visando caracterizar seus atributos a partir de
-perguntas, por exemplo:
+recomendações encontradas em \cite{Kitchenham2007}, a partir de artigos da
+área de Engenharia de Software que tratam de publicação de "softwares
+científicos" para análise de código fonte, visando caracterizar seus atributos
+a partir das seguites perguntas:
 
 \begin{itemize}
-  \item Quais são as ferramentas de pesquisa associadas a pesquisas em
+  \item Quais são os "softwares científicos" associados a pesquisas em
     engenharia de software?
-  \item Como as ferramentas de pesquisa publicadas nestes estudos são
-    licenciadas e distribuídas?
-  \item Como as ferramentas de pesquisa são desenvolvidas, em termos de
+  \item Como os "softwares científicos" publicados nestes estudos são
+    licenciados e distribuídos?
+  \item Como os "softwares científicos" são desenvolvidos, em termos de
     métodos e processos recomendados pela engenharia de software?
   \item Há colaboração entre pesquisadores de universidades distintas no
-    desenvolvimento das ferramentas de pesquisa publicadas?
-  \item As ferramentas publicadas são avaliadas internamente e externamente?
-    Se sim, como são avaliadas?
+    desenvolvimento dos "softwares científicos" publicados?
+  \item Os "softwares científicos" são avaliados internamente e externamente?
+    Se sim, como são avaliados?
 \end{itemize}
 
-A partir das informações coletadas na revisão sistemática serão feitas a
-agregação e a síntese dos dados, utilizando métodos quantitativos e
-qualitativos, com objetivo de identificar temas recorrentes e problemas
-comuns, além de elaborar conclusão a respeito dos diversos estudos analisados
-na revisão sistemática.
+A partir das informações coletadas na revisão sistemática será feita agregação
+e síntese dos dados, utilizando métodos quantitativos e qualitativos, com
+objetivo de identificar temas recorrentes e problemas comuns, além de elaborar
+conclusão a respeito dos diversos estudos analisados na revisão sistemática.
 
 Após a caracterização realizada, espera-se propor um conjunto preliminar de
-recomendações para desenvolvimento e adoção de ferramentas de pesquisa para a
+recomendações para desenvolvimento e adoção de "softwares científicos" para a
 comunidade acadêmica de Engenharia de Software.
 
 \section{Resultados esperados}
 
 \begin{itemize}
   \item Caracterização dos atributos das ferramentas de software desenvolvidas
-    durante pesquisas em engenharia de software, chamadas aqui de {\it “ferramentas
-    de pesquisa”};
+    durante pesquisas em engenharia de software, chamadas aqui de \textit{"softwares científicos"};
   \item Síntese dos resultados e lições a respeito de temas recorrentes e
-    problemas comuns no desenvolvimento e publicação de {\it “ferramentas de
-    pesquisa”};
+    problemas comuns no desenvolvimento e publicação de \textit{"softwares
+      científicos"};
   \item Conjunto preliminar de recomendações para desenvolvimento e adoção de
-    ferramentas de pesquisa para a comunidade acadêmica de Engenharia de
+    \textit{"softwares científicos"} para a comunidade acadêmica de Engenharia de
     Software;
   \item Artigos científicos publicados;
   \item Dissertação de mestrado.
 \end{itemize}
-
 
 \section{Atividades e metas}
 
