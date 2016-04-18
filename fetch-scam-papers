@@ -1,0 +1,36 @@
+#!/usr/bin/python
+## # -*- coding: utf-8 -*-
+#from __future__ import unicode_literals
+from ghost import Ghost
+from pyquery import PyQuery
+from pymemcache.client.base import Client
+import re
+
+baseurl = 'http://ieeexplore.ieee.org.ez54.periodicos.capes.gov.br/xpl/'
+baseurl = 'http://ieeexplore.ieee.org/xpl/'
+
+def request(url):
+    ghost = Ghost()
+    client = Client(('localhost', 11211))
+    print "GET " + url
+    content = client.get(url)
+    if not content:
+        with ghost.start(wait_timeout = 200) as session:
+            page, resources = session.open(url)
+            content = page.content
+            print content
+            #print "################################ (antes de setar o cache)"
+            client.set(url, unicode(content))
+            #print "################################ (depois de setar o cache)"
+    return content
+
+content = request(baseurl + 'conhome.jsp?punumber=1000715')
+query = PyQuery(content)
+for edition in query.items('div.MainContent li > a'):
+    print edition.text()
+    content = request(baseurl + edition.attr('href') + '&rowsPerPage=50&pageNumber=1')
+    #print "requisicao ok"
+    articles = PyQuery(content)
+    #print "parser content ok"
+    for article in articles.items('ul.results li div.txt h3 a'):
+        print "   " + re.search(r'arnumber=(\d+)', article.attr('href')).group(1) + ": " + article.text()

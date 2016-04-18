@@ -1,6 +1,6 @@
 # DOCUMENT VARIABLES
 
-NAME= dissertacao
+NAME= dissertacao qualificacao
 CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm
 
 # PROJECT VARIABLES
