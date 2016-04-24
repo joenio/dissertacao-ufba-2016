@@ -165,7 +165,9 @@ como guia para refatorar a ferramenta Analizo.
 
 \subsection{Resultados preliminares}\label{resultados}
 
-(à fazer)
+A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
+cada edição do SCAM e quantos artigos traz publicação de ferramenta de análise
+estática com código fonte disponível.
 
 \begin{table}
 \caption{Total de artigos analisados por edições do SCAM}
@@ -196,7 +198,141 @@ Total     & 315              & 10                     \\
 \label{artigos-do-scam}
 \end{table}
 
-(adicionar tabela com ferramentas do NIST aqui)
+As Tabelas \ref{ferramentas-do-nist-com-codigo} e
+\ref{ferramentas-do-nist-sem-codigo} apresentam as ferramentas do NIST após
+avaliação inicial sobre disponibilidade do código-fonte. Dos 54 apenas 19
+tinham código fonte disponível e encontrável facilmente. Todos foram baixados
+em "dataset/NIST".
+
+\begin{table}
+\caption{Lista de ferramentas do SAMATE - NIST com código fonte não disponível}
+\centering
+\begin{tabular}{| l | l |}
+\hline
+Ferramenta & Avaliacao  \\
+\hline
+ABASH                     & código não disponível \\
+ApexSec Security Console  & código não disponível \\
+Astrée                    & código não disponível \\
+bugScout                  & código não disponível \\
+C/C++test®                & código não disponível \\
+dotTEST™                  & código não disponível \\
+Jtest®                    & código não disponível \\
+HP Code Advisor (cadvise) & código não disponível \\
+Checkmarx CxSAST          & código não disponível \\
+CodeCenter                & código não disponível \\
+CodePeer                  & código não disponível \\
+CodeSecure                & site offline \\
+CodeSonar                 & código não disponível \\
+Coverity SAVE™            & código não disponível \\
+Csur                      & código não disponível \\
+DoubleCheck               & código não disponível \\
+Fluid                     & código não disponível \\
+Goanna Studio and Goanna Central & código não disponível \\
+HP QAInspect              & código não disponível \\
+Insight                   & código não disponível \\
+ObjectCenter              & código não disponível \\
+Parfait                   & código não disponível \\
+PLSQLScanner 2008         & código não disponível \\
+PHP-Sat                   & link para código offline \\
+PolySpace                 & código não disponível \\
+PREfix and PREfast        & código não disponivel \\
+QA-C, QA-C++, QA-J        & código não disponível \\
+Qualitychecker            & código não disponível \\
+Rational AppScan Source Edition & código não disponível \\
+Resource Standard Metrics (RSM) & código não disponível \\
+SCA                       & código não disponível \\
+SPARK tool set            & código não disponível \\
+TBmisra®, TBsecure®       & código não disponível \\
+PVS-Studio                & código não disponível \\
+xg++                      & código não disponível \\
+\hline
+\end{tabular}
+\label{ferramentas-do-nist-sem-codigo}
+\end{table}
+
+\begin{table}
+\caption{Lista de ferramentas do SAMATE - NIST com código fonte disponível}
+\centering
+\begin{tabular}{| l | l |}
+\hline
+Ferramenta & Avaliacao  \\
+\hline
+BOON                      & código disponível \\
+Clang Static Analyzer     & código disponível \\
+Closure Compiler          & código disponível \\
+Cppcheck                  & código disponível \\
+CQual                     & código disponível \\
+FindBugs                  & código disponível \\
+FindSecurityBugs          & código disponível \\
+Flawfinder                & código disponível \\
+Jlint                     & código disponível \\
+LAPSE                     & código disponível \\
+Pixy                      & código disponível \\
+PMD                       & código disponível \\
+pylint                    & codigo disponivel \\
+RATS (Rough Auditing Tool for Security) & código disponível \\
+Smatch                    & código disponível \\
+Splint                    & código disponível \\
+UNO                       & código disponível \\
+Yasca                     & código disponível \\
+WAP                       & código disponível \\
+\hline
+\end{tabular}
+\label{ferramentas-do-nist-com-codigo}
+\end{table}
+
+Assim, temos um total de 19 ferramentas da indústria com código-fonte
+disponível e ??? da academia com código fonte disponível, é preciso avaliar em
+qual linguagem de programação foi escrita cada ferramentas pois só iremos
+analisar aquelas em C, C++ o Java que são suportadas pelo Analizo.
+
+Ferramenta utilizada para isto foi a sloccount, uma ferramenta livre para
+contagem de linhas de código fonte, dá estatística de em qual linguagem
+é escrita em porcentagem. Abaixo destaco a linguagem de programação que
+tem maior porção em porcentagem.
+
+Após analise ficamos com um total de 25 ferramentas, 15 da indústria e 10 da
+academia.
+
+Segue a lista de todos os projetos e qual a fonte (industria ou academia):
+
+\begin{table}
+\caption{Lista com total de ferramentas a ser analisadas}
+\centering
+\begin{tabular}{| l | c | c |}
+\hline
+Ferramenta & Linguagem & Fonte \\
+\hline
+BOON                  & ansic                & industria \\
+CQual                 & ansic                & industria \\
+RATS                  & ansic                & industria \\
+Smatch                & ansic                & industria \\
+Splint                & ansic                & industria \\
+UNO                   & ansic                & industria \\
+Clang Static Analyzer & cpp                  & industria \\
+Cppcheck              & cpp                  & industria \\
+Jlint                 & cpp                  & industria \\
+WAP                   & java                 & industria \\
+Closure Compiler      & java                 & industria \\
+FindBugs              & java                 & industria \\
+FindSecurityBugs      & java                 & industria \\
+Pixy                  & java                 & industria \\
+PMD                   & java                 & industria \\
+Indus                 & java                 & academia  \\
+TACLE                 & java                 & academia  \\
+JastAdd               & java                 & academia  \\
+WALA                  & java                 & academia  \\
+error-prone           & java                 & academia  \\
+AccessAnalysis        & java                 & academia  \\
+Bakar Alir            & java/ada/python      & academia  \\
+InputTracer           & ansic                & academia  \\
+srcML                 & cpp/cs (cs = C\# ?)   & academia  \\
+Source Meter          & java                 & academia  \\
+\hline
+\end{tabular}
+\label{total-de-ferramentas}
+\end{table}
 
 \subsection{Cronograma}
 
