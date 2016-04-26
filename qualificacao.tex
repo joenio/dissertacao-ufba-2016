@@ -31,22 +31,100 @@
 
 \section{Fundamentação teórica}
 
-(à fazer)
+Qualidade de software é assunto presente em diversos estudos em engenharia de
+software, ela diz respeito à quão bem um software é projetado e quão bem o
+software está em conformidade com este design, embora existam várias
+definições \cite{Kitchenham1996} \cite{McConnell2004} \cite{Iso25022}
+\cite{WikiBooksSoftwareEngineering} \cite{Staines2015} podemos concluir que
+existem duas dimensões básicas para medir qualidade de software,
+estas dimensões estão relacionadas a características de qualidade interna e
+externa de um software.
+
+\subsection{Qualidade interna}
+
+Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
+características que preocupam o desenvolvedor, como por exemplo:
+manutenabilidade, flexibilidade, portabilidade, reusabilidade, readability,
+testabilidade, compreensão. São questões relacionadas ao código-fonte e em
+como o software foi construído, como design, boas práticas, etc.
+
+\subsection{Qualidade externa}
+
+Qualidade externa são aquelas características que afetam o usuário, como por
+exemplo: correctiness, usability, eficiência, reliability, integridade,
+adaptabilidade, acurácia, robustez. Estas características impactam
+extritamente no uso do software e não em como o software foi construído.
+
+Estes características, sejam internas ou externas, segundo a ISO 25010 (???)
+podem ser divididas em subcaracterísticas, usabilidade por exemplo é dividida
+em: understandability, learnability, operability, attractiveness, compliance.
+
+Esta característica está relacionada a facilidade com que usuários aprendem e
+utilizam um sistema, ela passa por questões como facilidade de instalação,
+aprendizado, e uso. \citeonline{WikiBooksSoftwareEngineering} enumera algumas
+questões à respeito da usabilidade úteis para mensurar tal característica:
+
+\begin{enumerate}
+  \item A interface de usuário é intuitica (auto-explicativa/auto-documentada)?
+  \item É fácil de executar uma operação simples?
+  \item É possível executar operações complexas?
+  \item O software dá mensagens de erro compreensíveis?
+  \item Os elementos se comportam como esperado?
+  \item O software é bem documentado?
+  \item A interface do usuário é responsiva ou muito lenta?
+\end{enumerate}
+
+\subsection{Qualidade interna x Qualidade externa}
+
+Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
+características de qualidade externa \cite{McConnell2004}, softwares que não
+possuem boa manutenabilidade por exemplo afetam a habilidade de correção de
+defeitos, que por sua vez afetam as características de exatidão (correctness)
+e confiabilidade (reliability).
+
+% Podemos afirmar então que podemos traçar algum
+% nível de relação entre características de qualidade interna e externa.
+
+% P. Clements, L. Bass, R. Kazman and G. Abowd, “Predicting Software
+% Quality by Architecture-Level Evaluation”,5 th Int. conf. on Software
+% Quality, vol 5, no 0, Austin, TX, pp. 485-497, 1995. ( QICID: 11205,
+% ASQC)
 
 \section{Metodologia}
+
+%Com base nestas referências irei tomar alguns pontos básicos para contrastar
+%com as ferramentas sendo anaalisadas a fim de caracterizar as mesmas em
+%relação à um subcaracteristica básica externa, aquela à qual impacta em
+%possibilitar qualquer outra, que é a capacidade de instalar e executar o
+%software, partirei das seguintes questões:
+%
+%\begin{enumerate}
+%  \item O software é fácil de instalar? (operability)
+%  \item O software possui alguma instrução de instalação? (understandability ou learnability)
+%  \item O software é facilmente encontrado para obtenção? (download, requisito para operability)
+%  \item O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
+%\end{enumerate}
+%
+%As métricas de qualidade interna darão indícios de sua qualidade externa,
+%especificamente em relação a caracteristicas de usabilidade, eu
+%posso "ser cobaia" e tentar instalar cada ferramenta a ponto de medir a
+%facilidade de instalação e uso. E isto será possível de correlacionar com as
+%métricas de qualidade. Será?
 
 Neste capítulo será apresentada a metodologia utilizada no estudo como meio
 de validar as seguintes hipóteses:
 
 \begin{enumerate}
-  \item[{\bf H1:}] {\em Existem publicações sobre ferramentas de análise estática com
-    disponibilidade de código-fonte}
-  \item[{\bf H2:}] {\em Existem ferramentas de análise estática disponíveis livremente na
-    indústria com disponibilidade de código-fonte}
-  \item[{\bf H3:}] {\em Existem valores de referência para métricas de código-fonte para
-    ferramentas de análise estática}
-  \item[{\bf H3:}] {\em Ferramentas da indústria possuem melhores valores de
+  \item[{\bf H1:}] {\em Existem publicações sobre ferramentas de análise
+    estática com disponibilidade de código-fonte}
+  \item[{\bf H2:}] {\em Existem ferramentas de análise estática disponíveis
+    livremente na indústria com disponibilidade de código-fonte}
+  \item[{\bf H3:}] {\em Existem valores de referência para métricas de
+    código-fonte para ferramentas de análise estática}
+  \item[{\bf H4:}] {\em Ferramentas da indústria possuem melhores valores de
     métricas de código-fonte}
+  \item[{\bf H5:}] {\em É possível relacionar a característica de qualidade
+    externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
 As seções à seguir descrevem as atividades de cada etapa da metodologia.
@@ -55,7 +133,7 @@ As seções à seguir descrevem as atividades de cada etapa da metodologia.
 
 \subsubsection{Seleção das métricas}
 
-(à fazer)
+(à fazer - ler tese de Paulo \cite{Meirelles2013})
 
 \subsubsection{Seleção das fontes de ferramentas de análise estática}
 
@@ -120,26 +198,34 @@ da Seção \ref{resultados}.
 
 \subsubsection{Ferramentas da indústria}
 
-Na indústria tomaremos como ponto de partida a lista de
-ferramentas de análise estática mantida pelo projeto SAMATE\footnote{
-http://samate.nist.gov} - {\em Software Assurance Metrics and Tool Evaluation}
-disponível em \citeonline{SamateAnalysers}, mais sobre o projeto SAMATE pode
-ser encontrado em \citeonline{Ribeiro2015}. \\
+A seleção de ferramentas da indústria será feita a partir de uma busca manual
+em fontes encontradas na Internet sobre ferramentas de análise estática.
 
-O site do software Spin mantém uma lista de ferramentas comerciais e de
+O projeto SAMATE\footnote{
+http://samate.nist.gov} - {\em Software Assurance Metrics and Tool Evaluation}
+disponível em \citeonline{SamateAnalysers} mantém uma lista de
+ferramentas de análise estática mantida, mais sobre o projeto SAMATE pode
+ser encontrado em \citeonline{Ribeiro2015}.
+
+O software Spin mantém em seu site uma lista de ferramentas comerciais e de
 pesquisa para análise estática de código-fonte para C em
 \citeonline{spinSourceAnalysisTools}.
 
 O Instituto de Engenharia de Software do CERT mantém uma lista de ferramentas
 de análise estática em \citeonline{certSecureCodingTools}.
 
-O site da ferramenta Flawfinder leva a um link com referências para inúmeras
-ferramentas livres, proprietárias, gratuitas mas não-livres de ferramentas de
-análise estática e outros tipos de análise em
+O software Flawfinder oferece em seu site um link com referências para
+inúmeras ferramentas livres, proprietárias, gratuitas mas não-livres de
+ferramentas de análise estática e outros tipos de análise em
 \citeonline{wheelerStaticAnalysisTools}.
 
-Uma outra fonte contendo uma relação extensa de ferramentas é mantida na
+Uma outra fonte contendo uma relação expressiva de ferramentas é mantida na
 Wikipedia em \citeonline{wikipediaListStaticCodeAnalysis}.
+
+Estas fontes serão pesquisadas manualmente em busca de ferramentas de análise
+estática que tenham sido desenvolvidas no contexto da indústria, algums
+resultados preliminares podem ser encontrados nas Tabelas
+\ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
 
 \subsection{Caracterização dos artigos}
 
@@ -166,7 +252,7 @@ como guia para refatorar a ferramenta Analizo.
 \subsection{Resultados preliminares}\label{resultados}
 
 A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
-cada edição do SCAM e quantos artigos traz publicação de ferramenta de análise
+cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
 estática com código fonte disponível.
 
 \begin{table}
@@ -199,10 +285,11 @@ Total     & 315              & 10                     \\
 \end{table}
 
 As Tabelas \ref{ferramentas-do-nist-com-codigo} e
-\ref{ferramentas-do-nist-sem-codigo} apresentam as ferramentas do NIST após
-avaliação inicial sobre disponibilidade do código-fonte. Dos 54 apenas 19
-tinham código fonte disponível e encontrável facilmente. Todos foram baixados
-em "dataset/NIST".
+\ref{ferramentas-do-nist-sem-codigo} apresentam ferramentas do NIST após
+avaliação inicial sobre disponibilidade do código-fonte. Das 54 ferramentas
+apenas 19 tinham código fonte disponível.
+
+% Todos foram baixados em "dataset/NIST".
 
 \begin{table}
 \caption{Lista de ferramentas do SAMATE - NIST com código fonte não disponível}
