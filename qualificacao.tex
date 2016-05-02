@@ -25,22 +25,147 @@
 
 (à fazer)
 
+% falar aqui de ferramentas de análise estática e o porque escolhi elas? artigo
+% com um reumo geral de ferramentas de analise: Source Code Analysis: A Road Map.pdf
+% 
+% Reprodutibilidade é a habilidade de duplicar todo um experimento ou estudo,
+% seja pelo pesquisador original ou por outros interessados. Reproduzir um
+% experimento é chamado de replicá-lo. A reprodutibilidade é um dos principais
+% princípios do método científico.
+
 \subsection{Contribuições esperadas}
 
 (à fazer)
 
 \section{Fundamentação teórica}
 
-Qualidade de software é assunto presente em diversos estudos em engenharia de
-software, ela diz respeito à quão bem um software é projetado e quão bem o
-software está em conformidade com este design, embora existam várias
-definições \cite{Kitchenham1996} \cite{McConnell2004} \cite{Iso25022}
-\cite{WikiBooksSoftwareEngineering} \cite{Staines2015} podemos concluir que
-existem duas dimensões básicas para medir qualidade de software,
-estas dimensões estão relacionadas a características de qualidade interna e
-externa de um software.
+% 1 possibilitar replicar estudos é importante, referencia ciencia aberta, etc
+% 
+% 2 dentre as inúmeros requisitos para replicar temos o software/ferramenta que
+% precisa estar disponível e ter qualidade mínima para ser re-utilizado
+% 
+% 3 para medir o quanto as ferramentas podem ser reutilizadas iremos medir a
+% qualidade de software, interna e externa
+% 
+% 4 a qualidade interna será medida através de métricas de código-fonte
+% 
+% 5 os valores encontrados serão associados de alguma forma a caracteristicas de
+% qualidade externa
 
-\subsection{Qualidade interna}
+\subsection{Engenharia de Software}
+
+Sistemas de software são utilizados em praticamente todas as áreas do
+conhecimento humano e têm exercido um papel essencial em nossa sociedade
+\cite{Mafra2006}. A dependência crescente de serviços oferecidos por tais
+sistemas evidencia a necessidade de produzir software de qualidade,
+contornando os  desafios relacionados a funcionalidades incompletas ou
+incorretas, custos acima do esperado ou prazos não cumpridos.
+
+Diante destes desafios, surge a Engenharia de Software, uma disciplina
+centrada no desenvolvimento de sistemas de software \cite{Wohlin2012} através
+de uma abordagem sistemática, disciplinada, e quantificável para o
+desenvolvimento, operação e manutenção \cite{SWEBOK2014}.
+
+Nas últimas décadas, o foco em estudos empíricos na área de Engenharia de
+Software tem crescido significantemente \cite{Stol2015}, resultando no uso
+crescente de métodos como surveys, estudos de caso, experimentos e revisões
+sistemáticas de literatura. Através destes estudos empíricos, pesquisadores
+transformam a Engenharia de Software em uma disciplina mais científica e
+controlável -- a  Engenharia de Software Experimental -- provendo meios para
+avaliar e validar métodos, técnicas, linguagens e ferramentas.
+
+O crescimento no número de pesquisas e publicações em Engenharia de Software
+Experimental desperta a atenção para a necessidade de verificar a validade dos
+estudos empíricos realizados -- um ponto central em qualquer pesquisa
+científica. A validade de um estudo empírico deve ser averiguada com o intuito
+de aumentar o nível de confiança em seus resultados, replicação costuma ser
+citado como um importante meio para atingir tal objetivo \cite{Almqvist2006}.
+
+Um dos primeiros artigos discutindo replicação de experimentos em Engenharia
+de Software foi publicado por Basili et al. \cite{Mantyla2010} e sugere
+replicação não apenas como uma escolha, mas como um possível "próximo passo" a
+ser tomado após o experimento original ser concluído. Apesar do conceito
+replicação de estudos empíricos em Engenharia de Software estar usualmente
+associado à experimentação, argumenta-se que ele deve ser estendido para
+incluir ao menos estudos de caso e surveys \cite{Basili1986}.
+
+Em diversas linhas de pesquisa da Computação e, em especial, em Engenharia de
+Software, é bastante comum que novos sistemas de software sejam desenvolvidos,
+tais sistemas costumam ser utilizados como meio para atingir os resultados da
+pesquisa ou, em alguns casos, são o próprio fim do estudo realizado. Neste
+trabalho, tais ferramentas de software são nosso objeto de pesquisa e serão
+chamados de "software científico" \ -- \citeonline{Portillo12} utiliza o
+termo "research tool" para designar este mesmo tipo de software.
+
+Softwares científicos são produtos de software e, em geral, precisam ser
+avaliados com uso de métodos científicos adequados, e, é de fundamental
+importância que estejam disponíveis e em funcionamento \cite{Kon2011}. A
+disponibilidade destes softwares é peça fundamental para possibilitar a
+reprodutibilidade dos estudos relacionados, proporcionando assim, meios para
+validar pesquisas. Dentre as inúmeras iniciativas voltadas à reprodutibilidade
+de pesquisas científicas, destaco aqui o movimento chamado "Ciência Aberta" e
+a sua grande área "Open Reproducible Research" voltada a disseminar práticas
+que garantam a capacidade de replicação de estudos.
+
+% Reprodutibilidade é a habilidade de duplicar todo um experimento ou estudo,
+% seja pelo pesquisador original ou por outros interessados. Reproduzir um
+% experimento é chamado de replicá-lo. A reprodutibilidade é um dos principais
+% princípios do método científico.
+
+\subsection{Ciência Aberta}
+
+Ciência Aberta é um movimento que tem por objetivo tornar a pesquisa
+científica, seus dados e sua disseminação acessíveis à todos os interessados,
+sejam amadores ou profissionais \cite{WikipediaOpenScience}. Sua principal
+motivação está em possibilitar a reprodução dos resultados de pesquisas e em
+garantir transparência das metodologias utilizadas, isto aumenta o impacto
+social das pesquisas e gera economia de tempo e dinheiro para os pesquisadores
+e para as instituições \cite{Nesta2010}.
+
+Este movimento é guiado por princípios básicos de transparência,
+acessibilidade e reusabilidade universais, disseminadas via ferramentas
+online, ele é dividido em quatro grandes áreas: (1) Open Access, (2) Open
+Data, (3) Open Source e (4) Open Reproducible Research. Dentre elas destaca-se
+a Open Reproducible Research por preocupar-se com a reprodutibilidade dos
+resultados de pesquisas de forma independente \cite{Stodden2009} e aberta, no
+entanto, esta área tem recebido ainda pouca atenção da comunidade de pesquisa
+\cite{Nancy2015} \cite{Grand2010Open} apesar do aumento geral do interesse
+pelas práticas da Ciência Aberta \cite{Grand2010}.
+
+Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
+resultados, é raro que façam o mesmo com toda a produção gerada durante a
+pesquisa. A maioria dos componentes necessários para a reprodução dos
+resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
+permanecem não publicados. Este é um problema sério já que um dos fundamentos
+da ciência é que novas descobertas sejam reproduzidas antes de serem
+consideradas parte da base de conhecimento \cite{Stodden2009}.
+
+Neste sentido, \citeonline{Prlic2012} dão dicas para o desenvolvimento aberto de software
+científico e citam que disponibilizar o código criado durante pesquisas não
+apenas aumenta o impacto como também se torna essencial para outros
+reproduzirem os resultados encontrados. Eles citam ainda que manutenabilidade
+e disponibilidade do software após a publicação é o maior problema enfrentado
+pelos pesquisadores que desenvolvem tais softwares, e é aí que a
+participação no desenvolvimento aberto desde o início pode trazer maior
+benefício.
+
+Dentro deste contexto, e considerando que pesquisas em engenharia de software
+produzem bastante softwares científicos, surge a preocupação de avaliar a
+qualidade de tais softwares a partir de métodos científicos adequados,
+especialmente em relação a sua manutenabilidade e disponibilidade.
+
+\subsection{Qualidade de software}
+
+Qualidade de software é assunto presente em diversos estudos em engenharia de
+software, ela diz respeito à quão bem um software é projetado e o quanto este
+software está em conformidade com o projeto, embora existam inúmeras definições
+\cite{Kitchenham1996} \cite{McConnell2004} \cite{Iso25022}
+\cite{WikiBooksSoftwareEngineering} \cite{Staines2015} pode-se afirmar que
+existem duas dimensões básicas para medir a qualidade de um software, estas
+dimensões estão relacionadas à características de qualidade interna e de
+qualidade externa de um software.
+
+\subsubsection{Qualidade interna}
 
 Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
 características que preocupam o desenvolvedor, como por exemplo:
@@ -48,7 +173,7 @@ manutenabilidade, flexibilidade, portabilidade, reusabilidade, readability,
 testabilidade, compreensão. São questões relacionadas ao código-fonte e em
 como o software foi construído, como design, boas práticas, etc.
 
-\subsection{Qualidade externa}
+\subsubsection{Qualidade externa}
 
 Qualidade externa são aquelas características que afetam o usuário, como por
 exemplo: correctiness, usability, eficiência, reliability, integridade,
@@ -58,7 +183,6 @@ extritamente no uso do software e não em como o software foi construído.
 Estes características, sejam internas ou externas, segundo a ISO 25010 (???)
 podem ser divididas em subcaracterísticas, usabilidade por exemplo é dividida
 em: understandability, learnability, operability, attractiveness, compliance.
-
 Esta característica está relacionada a facilidade com que usuários aprendem e
 utilizam um sistema, ela passa por questões como facilidade de instalação,
 aprendizado, e uso. \citeonline{WikiBooksSoftwareEngineering} enumera algumas
@@ -74,7 +198,7 @@ questões à respeito da usabilidade úteis para mensurar tal característica:
   \item A interface do usuário é responsiva ou muito lenta?
 \end{enumerate}
 
-\subsection{Qualidade interna x Qualidade externa}
+\subsubsection{Qualidade interna x Qualidade externa}
 
 Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
 características de qualidade externa \cite{McConnell2004}, softwares que não
@@ -100,6 +224,33 @@ a avaliação de produtos de software (Gousios et al., 2007).
 
 % Podemos afirmar então que podemos traçar algum
 % nível de relação entre características de qualidade interna e externa.
+
+\subsubsection{Análise de Código Fonte}
+
+O rápido crescimento no número de softwares nas últimas décadas leva a uma
+crescente demanda por mecanismos e ferramentas de apoio à compreensão de,
+desenvolvedores necessitam entender em profundade a implementação de um
+determinado software antes de realizar atividades de correção ou refatoração
+de forma eficiente \cite{Kirkov2010}.
+
+Isto é evidenciado ao perceber que a complexidade dos softwares vem crescendo
+à cada dia \cite{Kirkov2010}, tornando assim, extremamente útil a existência
+de ferramentas de análise automática de código-fonte, tais ferramentas
+auxiliam os desenvolvedores e engenheiros à compreender a implementação de um
+determinado software de forma profunda e abrangente.
+
+Essas ferramentas geram modelos de alto nível representando entidades,
+relacionamentos, métricas, características ou outra informação qualquer
+extraída diretamente do código-fonte, e permitem que sejam geradas
+visualizações em diversos níveis de abstração representando o código-fonte.
+
+Dentre as inúmeras sub-áreas da engenharia de software, este trabalho irá
+focar do domínio de ferramentas de análise de código-fonte, esta escolha tem
+por base o domínio do pesquisador nesta área e a escolha de um domínio é
+necessário para reduzir o escopo e viabilizar a revisão de estudos e
+ferramentas de um domínio específico, do contrário o trabalho seria muito
+extenso e a revisão sistemática seria inviável dentro do prazo de um trabalho
+de pesquisa num mestrado.
 
 \section{Metodologia}
 
@@ -138,37 +289,66 @@ de validar as seguintes hipóteses:
     externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
+
+% +\begin{itemize}
+% +  \item Existe publicação sobre ferramentas de análise estática
+% +  \item As publicações sobre ferramentas de análise estática disponibilizam o código fonte
+% +  \item Existem ferramentas de análise estática disponíveis livremente na indústria
+% +  \item O código fonte disponibilizado está (de fato) disponível livremente
+% +  \item Existe similaridade em termos de métricas entre as ferramentas
+% +  \item Existem valores de referência para métricas de código fonte
+% +  \item As boas (?) ferramentas tem uma arquitetura semelhante
+% +  \item É possível extrair uma arquitetura de referência a partir das ferramentas analisadas
+% +  \item A arquitetura de referência gera um conjunto de métricas de referência
+% +\end{itemize}
+% +\subsection{Trabalhos relacionados}
+%  
+% +Pesquisas sobre o recente tópico, Ciência Aberta, \citeonline{Prlic2012} dão
+% +dicas para o desenvolvimento aberto de software científico e citam que
+% +disponibilizar o código criado durante pesquisas não apenas aumenta o impacto
+% +como também se torna essencial para outros reproduzirem os resultados
+% +encontrados. Eles citam ainda que manutenabilidade e disponibilidade do
+% +software após a publicação é o maior problema enfrentado pelos pesquisadores
+% +que desenvolvem tais softwares, e é aí que a participação no desenvolvimento
+% +aberto desde o início pode trazer maior benefício.
+%  
+% +\citeonline{Portillo12} faz uma revisão sistemática caracterizando ferramentas
+% +usadas em engenharia de software global, designa tais feramentas como
+% +"research tool".
+%  
+% +\citeonline{Kon2011} cita que oftwares científicos são produtos de software e,
+% +em geral, precisam ser avaliados com uso de métodos científicos adequados, e,
+% +é de fundamental importância que estejam disponíveis e em funcionamento.
+
+
 As seções à seguir descrevem as atividades de cada etapa da metodologia.
 
 \subsection{Planejamento do estudo}
 
 \subsubsection{Seleção das métricas}
 
-Com base no trabalho realizado por \citeonline{Meirelles2013} onde associou-se
-qualidade de software à qualidade de código através de métricas de
+\citeonline{Meirelles2013} realizou um estudo onde associou-se
+qualidade do produto de software à qualidade de código através de métricas de
 código-fonte como indicador para o sucesso de projetos de software livre,
-foram utilizadas as métricas abaixo neste estudo, e utilizaremos aqui as
-mesmas:
+este estudo selecionou algumas métricas de código-fonte como base, a partir de
+critérios como existência de valores de referência para as métricas, além de X
+Y e B. Aqui deste trabalho utilizaremos como base às mesmas métricas:
 
-Métricas de tamanho:
-
+\paragraph{Métricas de tamanho:}
 LOC (Lines of Code), AMLOC (Average Method LOC), Total Number of Modules or Classes
 
-Indicadores estruturais:
-
+\paragraph{Indicadores estruturais:}
 NOA (Number of Attributes), NOM (Number of Methods), NPA (Number of Public
 Attributes), NPM (Number of Public Methods), ANPM (Average Number of
 Parameters per Method), DIT (Depth of Inheritance Tree), NOC (Number of
 Children), RFC (Response For a Class), ACCM (Average Cyclomatic Complexity per
 Method)
 
-Métricas de acoplamento:
-
+\paragraph{Métricas de acoplamento:}
 ACC (Afferent Connections per Class), CBO (Coupling Between Objects), COF
 (Coupling Factor)
 
-Métricas de coesão:
-
+\paragraph{Métricas de coesão:}
 LCOM (Lack of Cohesion in Methods), SC (Structural Complexity)
 
 \subsubsection{Seleção das fontes de ferramentas de análise estática}
@@ -224,6 +404,8 @@ artigos selecionados a partir das seguintes conferências:
     Reengineering\footnote{http://ansymore.uantwerpen.be/csmr-wcre}
   \item SCAM - Source Code Analysis and Manipulation Working
     Conference\footnote{http://www.ieee-scam.org}
+  \item ICSME - International Conference on Software Maintenance and
+    Evolution\footnote{http://www.icsme.org}
 \end{itemize}
 
 Chamamos de revisão estruturada um processo disciplinado para seleção de
@@ -280,6 +462,9 @@ das mesmas.
 
 Por fim, os valores de métricas de referência encontradas serão utilizadas
 como guia para refatorar a ferramenta Analizo.
+
+Ler o TCC "Código Limpo e seu Mapeamento para Métricas de Código Fonte" onde
+foi feito trabalho similar.
 
 (à fazer)
 
@@ -418,10 +603,11 @@ tem maior porção em porcentagem.
 Após analise ficamos com um total de 25 ferramentas, 15 da indústria e 10 da
 academia.
 
-Segue a lista de todos os projetos e qual a fonte (industria ou academia):
+Segue na Tabela \ref{total-de-ferramentas} a lista de todos os projetos e qual
+a fonte (industria ou academia):
 
 \begin{table}
-\caption{Lista com total de ferramentas a ser analisadas}
+\caption{Lista com total de ferramentas a serem analisadas}
 \centering
 \begin{tabular}{| l | c | c |}
 \hline
