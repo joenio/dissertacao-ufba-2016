@@ -1,38 +1,62 @@
-\documentclass[12pt]{article}
+\documentclass[qual, classic, a4paper]{ufbathesis}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 \usepackage{fancyvrb}
 \usepackage[alf]{abntex2cite}
-\usepackage[top=2cm,left=0.5in,right=0.5in,bottom=2cm]{geometry}
 \usepackage{graphicx}
 \DeclareGraphicsExtensions{.pdf}
+
+%\date{?? de Junho de 2016}
+\adviser[f]{Profa. Dra. Christina von Flach G. Chavez}
+\coadviser{Prof. Dr. Paulo Roberto Miranda Meirelles}
 
 \title{
   Caracterização da qualidade interna de ferrramentas de análise estática de
   código fonte
 }
 \author{Joenio Marques da Costa\\
-  {\small Universidade Federal da Bahia (UFBA)} \\
-  {\small joenio@colivre.coop.br}
+  {\small joenio@joenio.me}
 }
-\date{\today}
 
 \begin{document}
+\frontpage
+\frontmatter
+\presentationpage
 
-\maketitle
+\acknowledgements
+DIGITE OS AGRADECIMENTOS AQUI
 
-\section{Introdução}
+\resumo
+DIGITE O RESUMO AQUI
+
+\begin{keywords}
+DIGITE AS PALAVRAS-CHAVE AQUI
+\end{keywords}
+
+%\abstract
+%RESUMO EM INGLÊS
+%
+%\begin{keywords}
+%DIGITE AS PALAVRAS-CHAVE AQUI
+%\end{keywords}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\mainmatter
+
+\chapter{Introdução}
 
 (à fazer)
 
-% falar aqui de ferramentas de análise estática e o porque escolhi elas? artigo
-% com um reumo geral de ferramentas de analise: Source Code Analysis: A Road Map.pdf
+falar aqui de ferramentas de análise estática e o porque escolhi elas? artigo
+com um reumo geral de ferramentas de analise: Source Code Analysis: A Road Map.pdf
 
-\subsection{Contribuições esperadas}
+\section{Contribuições esperadas}
 
 (à fazer)
 
-\section{Fundamentação teórica}
+\chapter{Fundamentação teórica}
 
 % 1 possibilitar replicar estudos é importante, referencia ciencia aberta, etc
 % 
@@ -47,7 +71,7 @@
 % 5 os valores encontrados serão associados de alguma forma a caracteristicas de
 % qualidade externa
 
-\subsection{Engenharia de Software}
+\section{Engenharia de Software}
 
 Sistemas de software são utilizados em praticamente todas as áreas do
 conhecimento humano e têm exercido um papel essencial em nossa sociedade
@@ -99,7 +123,7 @@ disponibilidade destes softwares é peça fundamental para possibilitar a
 reprodutibilidade dos estudos relacionados, proporcionando assim, meios para
 validar tais pesquisas.
 
-\subsection{Reprodutibilidade}
+\section{Reprodutibilidade}
 
 Reprodutibilidade (reproducibility) é a habilidade de replicar um experimento
 ou estudo em sua totalidade a fim de confirmar suas hipóteses, seja pelo
@@ -132,23 +156,13 @@ Apesar do termo reprodutibilidade ser relativamente concensual entre as várias
 de significado, diante disto e preocupado em criar uma linguagem comum entre
 os pesquisadores \citeonline{Feitelson2015} propõe as seguintes definições:
 
-\paragraph{Repetição (repetition)}
-Refazer exatamente o que outra pessoa fez usando os artefatos originais.
-
-\paragraph{Replicação (replication)}
-Replicar com precisão exatamente o que outra pessoa fez, recriando os
-artefatos.
-
-\paragraph{Variação (variation)}
-Repetir ou replicar exatamente o que aoutra pessoa fez, mas com alguma
-modificação controlada nos parâmetros.
-
-\paragraph{Reprodução (reproduction)}
-Recriar o espírito do que outra pessoa fez, usando seus próprios artefatos.
-
-\paragraph{Corroboração (corroboration)}
-Obter os mesmos resultados de outra pessoa, usando outros meios e
-procedimentos experimentais. \\
+\begin{description}
+  \item[Repetição (repetition)] Refazer exatamente o que outra pessoa fez usando os artefatos originais.
+  \item[Replicação (replication)] Replicar com precisão exatamente o que outra pessoa fez, recriando os artefatos.
+  \item[Variação (variation)] Repetir ou replicar exatamente o que aoutra pessoa fez, mas com alguma modificação controlada nos parâmetros.
+  \item[Reprodução (reproduction)] Recriar o espírito do que outra pessoa fez, usando seus próprios artefatos.
+  \item[Corroboração (corroboration)] Obter os mesmos resultados de outra pessoa, usando outros meios e procedimentos experimentais.
+\end{description}
 
 É conhecido que a ciência precisa de reprodutibilidade e corroboração para
 realmente fazer progressos mas a prática de forma abrangente ainda é um
@@ -177,7 +191,7 @@ de pesquisas científicas, destaco aqui o movimento chamado "Ciência Aberta" e
 a sua grande área "Open Reproducible Research" voltada a disseminar práticas
 que garantam a capacidade de replicação de estudos.
 
-\subsubsection{Ciência Aberta}
+\subsection{Ciência Aberta}
 
 Ciência Aberta é um movimento que tem por objetivo tornar a pesquisa
 científica, seus dados e sua disseminação acessíveis à todos os interessados,
@@ -219,7 +233,7 @@ produzem bastante softwares científicos, surge a preocupação de avaliar a
 qualidade de tais softwares a partir de métodos científicos adequados,
 especialmente em relação a sua manutenabilidade e disponibilidade.
 
-\subsection{Qualidade de software}
+\section{Qualidade de software}
 
 Qualidade de software é assunto presente em diversos estudos em engenharia de
 software, ela diz respeito à quão bem um software é projetado e o quanto este
@@ -230,28 +244,25 @@ existem duas dimensões básicas para medir a qualidade de um software, estas
 dimensões estão relacionadas à características de qualidade interna e de
 qualidade externa de um software.
 
-\subsubsection{Qualidade interna}
-
 Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
 características que preocupam o desenvolvedor, como por exemplo:
 manutenabilidade, flexibilidade, portabilidade, reusabilidade, readability,
 testabilidade, compreensão. São questões relacionadas ao código-fonte e em
 como o software foi construído, como design, boas práticas, etc.
 
-\subsubsection{Qualidade externa}
-
 Qualidade externa são aquelas características que afetam o usuário, como por
 exemplo: correctiness, usability, eficiência, reliability, integridade,
 adaptabilidade, acurácia, robustez. Estas características impactam
 extritamente no uso do software e não em como o software foi construído.
 
-Estes características, sejam internas ou externas, segundo a ISO 25010 (???)
-podem ser divididas em subcaracterísticas, usabilidade por exemplo é dividida
-em: understandability, learnability, operability, attractiveness, compliance.
-Esta característica está relacionada a facilidade com que usuários aprendem e
-utilizam um sistema, ela passa por questões como facilidade de instalação,
-aprendizado, e uso. \citeonline{WikiBooksSoftwareEngineering} enumera algumas
-questões à respeito da usabilidade úteis para mensurar tal característica:
+Estas características, sejam internas ou externas, segundo a  ISO/IEC 25010
+\cite{iso2011iec25010} podem ser divididas em subcaracterísticas, usabilidade
+por exemplo é dividida em: understandability, learnability, operability,
+attractiveness, compliance.  Esta característica está relacionada a facilidade
+com que usuários aprendem e utilizam um sistema, ela passa por questões como
+facilidade de instalação, aprendizado, e uso.
+\citeonline{WikiBooksSoftwareEngineering} enumera algumas questões à respeito
+da usabilidade úteis para mensurar tal característica:
 
 \begin{enumerate}
   \item A interface de usuário é intuitica (auto-explicativa/auto-documentada)?
@@ -263,15 +274,13 @@ questões à respeito da usabilidade úteis para mensurar tal característica:
   \item A interface do usuário é responsiva ou muito lenta?
 \end{enumerate}
 
-\subsubsection{Qualidade interna x Qualidade externa}
-
 Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
 características de qualidade externa \cite{McConnell2004}, softwares que não
 possuem boa manutenabilidade por exemplo afetam a habilidade de correção de
 defeitos, que por sua vez afetam as características de exatidão (correctness)
 e confiabilidade (reliability).
 
-\subsection{Métricas de código-fonte}
+\section{Métricas de código-fonte}
 
 Uma métrica, segundo definição da ISO/IEC 25010 (2001), é a composição de
 procedimentos para a definição de escalas e métodos para medidas
@@ -290,7 +299,7 @@ a avaliação de produtos de software (Gousios et al., 2007).
 % Podemos afirmar então que podemos traçar algum
 % nível de relação entre características de qualidade interna e externa.
 
-\subsubsection{Análise de Código Fonte}
+\subsection{Análise de Código Fonte}
 
 O rápido crescimento no número de softwares nas últimas décadas leva a uma
 crescente demanda por mecanismos e ferramentas de apoio à compreensão de,
@@ -317,7 +326,7 @@ ferramentas de um domínio específico, do contrário o trabalho seria muito
 extenso e a revisão sistemática seria inviável dentro do prazo de um trabalho
 de pesquisa num mestrado.
 
-\section{Metodologia}
+\chapter{Metodologia}
 
 %Com base nestas referências irei tomar alguns pontos básicos para contrastar
 %com as ferramentas sendo anaalisadas a fim de caracterizar as mesmas em
@@ -354,7 +363,6 @@ de validar as seguintes hipóteses:
     externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
-
 % +\begin{itemize}
 % +  \item Existe publicação sobre ferramentas de análise estática
 % +  \item As publicações sobre ferramentas de análise estática disponibilizam o código fonte
@@ -366,7 +374,7 @@ de validar as seguintes hipóteses:
 % +  \item É possível extrair uma arquitetura de referência a partir das ferramentas analisadas
 % +  \item A arquitetura de referência gera um conjunto de métricas de referência
 % +\end{itemize}
-% +\subsection{Trabalhos relacionados}
+% +\section{Trabalhos relacionados}
 %  
 % +Pesquisas sobre o recente tópico, Ciência Aberta, \citeonline{Prlic2012} dão
 % +dicas para o desenvolvimento aberto de software científico e citam que
@@ -385,12 +393,11 @@ de validar as seguintes hipóteses:
 % +em geral, precisam ser avaliados com uso de métodos científicos adequados, e,
 % +é de fundamental importância que estejam disponíveis e em funcionamento.
 
-
 As seções à seguir descrevem as atividades de cada etapa da metodologia.
 
-\subsection{Planejamento do estudo}
+\section{Planejamento do estudo}
 
-\subsubsection{Seleção das métricas}
+\subsection{Seleção das métricas}
 
 \citeonline{Meirelles2013} realizou um estudo onde associou-se
 qualidade do produto de software à qualidade de código através de métricas de
@@ -416,20 +423,20 @@ ACC (Afferent Connections per Class), CBO (Coupling Between Objects), COF
 \paragraph{Métricas de coesão:}
 LCOM (Lack of Cohesion in Methods), SC (Structural Complexity)
 
-\subsubsection{Seleção das fontes de ferramentas de análise estática}
+\subsection{Seleção das fontes de ferramentas de análise estática}
 
 Para ser possível validar as hipóteses aqui levantadas é necessário realizar
 uma busca por ferramentas de análise estática desenvolvidas no contexto da
 academia e da indústria, para isso, será feito um planejamento detalhado para
 realizar a seleção de ferramentas em cada um destes contextos.
 
-\paragraph{Academia} No contexto acadêmica a busca por ferramentas será feita
+No contexto acadêmica a busca por ferramentas será feita
 através de artigos publicados em conferências que tenham histórico de
 publicação sobre ferramentas de análise estática de código fonte. Estes
 artigos serão analisados e aqueles com publicação de ferramenta de análise
 estática serão selecionados.
 
-\paragraph{Indústria} Na indústria a busca por ferramentas será feita a partir
+Na indústria a busca por ferramentas será feita a partir
 de referências encontradas na internet, algumas organizações mantém listas de
 ferramentas para análise de código-fonte, a Wikipedia também mantém uma lista
 de ferramentas, estas referências serão utilizadas como ponto de partida e
@@ -439,7 +446,7 @@ surgiram em contexto acadêmico.
 Uma vez que as ferramentas tenham sido selecionadas inicia-se a extração de
 seus atributos de qualidade interna.
 
-\subsubsection{Seleção da ferramenta de análise estática de código-fonte}
+\subsection{Seleção da ferramenta de análise estática de código-fonte}
 
 Para realizar a caracterização das ferramentas através dos seus atributos de
 qualidade interna é necessário uma ferramenta capaz de analisar estaticamente
@@ -447,7 +454,7 @@ o código-fonte destas ferramentas e extrair atributos relacionados à sua
 qualidade interna. Para isto utilizaremos o Analizo\cite{Terceiro2010}. Falta
 Justificar! Quais vantagens? Referencias?
 
-\subsection{Coleta de dados}
+\section{Coleta de dados}
 
 A partir das fontes selecionadas na etapa anterior serão realizadas duas
 atividades para identificar e mapear as ferramentas de análise estática com
@@ -455,7 +462,7 @@ código-fonte disponível, uma atividade relacionada ao levantamento de
 ferramentas da academia, outra atividade relacionada ao levantamento de
 ferramentas da indústria.
 
-\subsubsection{Ferramentas da academia}
+\subsection{Ferramentas da academia}
 
 A seleção de ferramentas será relizada através de uma revisão estruturada dos
 artigos selecionados a partir das seguintes conferências:
@@ -479,7 +486,7 @@ reprodução do estudo por parte de pesquisadores interessados. Alguns
 resultados preliminares podem ser consultados na Tabela \ref{artigos-do-scam}
 da Seção \ref{resultados}.
 
-\subsubsection{Ferramentas da indústria}
+\subsection{Ferramentas da indústria}
 
 A seleção de ferramentas da indústria será feita a partir de uma busca manual
 em fontes encontradas na Internet sobre ferramentas de análise estática.
@@ -510,12 +517,12 @@ estática que tenham sido desenvolvidas no contexto da indústria, algums
 resultados preliminares podem ser encontrados nas Tabelas
 \ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
 
-\subsection{Caracterização dos artigos}
+\section{Caracterização dos artigos}
 
 Caracterização dos papers analisados na revisão estruturada e caracterização
 teórica do ecosistema das ferramentas da academia.
 
-\subsection{Caracterização das ferramentas}
+\section{Caracterização das ferramentas}
 
 Será realizada uma caracterização prática das ferramentas, tanto acadêmica
 quando da indústria, através da análise e extração de métricas de código-fonte
@@ -523,7 +530,7 @@ das mesmas.
 
 % Resultado = Documentação com métricas de referência para ferramentas de análise estática.
 
-\subsection{Exemplo de uso}
+\section{Exemplo de uso}
 
 Por fim, os valores de métricas de referência encontradas serão utilizadas
 como guia para refatorar a ferramenta Analizo.
@@ -533,9 +540,9 @@ foi feito trabalho similar.
 
 (à fazer)
 
-\section{Conclusão}
+\chapter{Conclusão}
 
-\subsection{Resultados preliminares}\label{resultados}
+\section{Resultados preliminares}\label{resultados}
 
 A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
 cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
@@ -708,10 +715,11 @@ Source Meter          & java                 & academia  \\
 \label{total-de-ferramentas}
 \end{table}
 
-\subsection{Cronograma}
+\section{Cronograma}
 
 (à fazer)
 
+\backmatter
+\appendix
 \bibliography{bibliografia}
-
 \end{document}
