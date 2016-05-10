@@ -11,15 +11,13 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
-COMPILANDO
-==========
+## Compilando
 
 Projeto escrito em latex para compilar é necessários ter um ambiente latex
 básico e o projeto latex-mk texlive-publishers texlive-lang-portuguese.
 
  $ make
 
-CONTATO
-=======
+## Contato
 
 joenio EM joenio.me
