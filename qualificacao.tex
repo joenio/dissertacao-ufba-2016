@@ -58,19 +58,6 @@
 
 \chapter{Fundamentação teórica}
 
-% 1 possibilitar replicar estudos é importante, referencia ciencia aberta, etc
-% 
-% 2 dentre as inúmeros requisitos para replicar temos o software/ferramenta que
-% precisa estar disponível e ter qualidade mínima para ser re-utilizado
-% 
-% 3 para medir o quanto as ferramentas podem ser reutilizadas iremos medir a
-% qualidade de software, interna e externa
-% 
-% 4 a qualidade interna será medida através de métricas de código-fonte
-% 
-% 5 os valores encontrados serão associados de alguma forma a caracteristicas de
-% qualidade externa
-
 \section{Engenharia de Software}
 
 Sistemas de software são utilizados em praticamente todas as áreas do
@@ -107,7 +94,7 @@ pesquisas científicas como parte de um estudo, podem ser pequenos scripts,
 protótipos, ou mesmo produtos de software completos que demonstram ou refletem
 os resultados de uma pesquisa. Em Engenharia de Software este tipo de software
 desempenha um papel essencial e sua importância pode ser notada através do
-grande número de conferências com sessões específicas para publicação de
+grande número de conferências com sessões específicas sobre publicação de
 ferramentas.
 
 \citeonline{Kon2011} em um estudo sobre como pesquisas em Engenharia de
@@ -116,7 +103,7 @@ de 10 edições do SBES\footnote{Simpósio Brasileiro de Engenharia de Software}
 e conclui que apesar do aumento do interesse por parte dos pesquisadores em
 disponibilizar o código-fonte de suas ferramentas isto ainda é uma minoria. O
 que confirma a preocupação de \citeonline{Krishnamurthi2015} em um estudo
-sobre repetibilidade de pesquisas científicas onde chamam atenção para o papel
+sobre repetibilidade de pesquisas científicas, onde chamam atenção para o papel
 central que os artefatos de software possuem em pesquisas de ciência da
 computação e questionam: "Onde está o software nas pesquisas sobre linguagem
 de programação?".
@@ -138,10 +125,10 @@ resultados de uma pesquisa -- por exemplo, código-fonte e dados -- usualmente
 permanecem não publicados.
 
 Isto se configura como uma barreira para a reprodutibilidade, e
-consequentemente para a repetição, replicação e variação \cite{Feitelson2015}
-de estudos já que a disponibilidade de código-fonte é o primeiro passo para
-que isto ocorra, como pode ser visto no espectro de reprodutibilidade de
-\citeonline{Peng2011} reproduzido aqui na Figura
+consequentemente para a repetição, replicação e variaçãode estudos
+\cite{Feitelson2015} já que a disponibilidade de código-fonte é o mínimo
+necessário para isto, como pode ser visto no espectro de
+reprodutibilidade de \citeonline{Peng2011} reproduzido aqui na Figura
 \ref{reproducibility-spectrum}.
 
 \begin{figure}[h]
@@ -161,7 +148,7 @@ problemas comuns enfrentados pelos pesquisadores \cite{Prlic2012}.
 
 Qualidade de software diz respeito à quão bem um software é projetado e o
 quanto este software está em conformidade com o projeto, embora existam
-inúmeras definições há concenso de que existem duas dimensões para se medir a
+inúmeras definições há um concenso de que existem duas dimensões para medir a
 qualidade de um software, estas dimensões estão relacionadas à características
 de qualidade interna e de qualidade externa.
 
@@ -198,42 +185,38 @@ realizado a partir da análise de suas métricas de código-fonte.
 
 Uma métrica, segundo a definição da ISO/IEC 25010 \cite{iso2011iec25010}, é a
 composição de procedimentos para a definição de escalas e métodos para
-medidas.
+medidas. Métricas de software podem ser classificadas em três categorias: métricas de
+produto, métricas de processo e métricas de projeto.
 
-Métricas de software podem ser classificadas em três categorias: métricas de
-produto, processo e projeto. Métricas de processo medem atributos relacionados
+Métricas de processo medem atributos relacionados
 ao ciclo de desenvolvimento do software. Métricas de produto são aquelas que
 descrevem as características de artefatos do desenvolvimento, como documentos,
 diagramas, código-fonte e arquivos binários. Métricas de projeto são aquelas
 que descrevem as características dos recursos disponíveis ao desenvolvimento.
 
-As métricas de produto podem ser classificadas entre internas ou externas, ou
+Métricas de produto podem ser classificadas entre internas ou externas, ou
 seja, aquelas que medem propriedades visíveis apenas aos desenvolvedores ou
-aquelas que medem propriedades visíveis aos usuários, respectivamente.
+que medem propriedades visíveis aos usuários, respectivamente.
 Métricas internas podem ainda ser divididas de acordo com o artefato
 analisado, seja documentos, diagramas ou código-fonte.
 
-Métricas de design ou métricas de código-fonte são aquelas voltadas à medir
-artefatos de código-fonte e podem ser classificados entre métricas procedurais
-ou orientadas à objetos \cite{Mohamed1994}.
-
 Neste trabalho iremos adotar métricas de design e métricas de código-fonte
-para extrair propriedades internas dos softwares científicos a fim de medir
-sua qualidade interna. O conjunto de métricas a serem utilizados será
-inspirado no trabalho realizado por \citeonline{Meirelles2013} onde realizou
-um estudo associando qualidade de software à qualidade de código-fonte através
-da observação de métricas de código-fonte.
+para extrair propriedades internas dos softwares científicos a fim de medir a
+sua qualidade. A seleção das métricas tomará como base o trabalho realizado
+por \citeonline{Meirelles2013} onde um estudo associando qualidade de software
+à qualidade de código-fonte foi conduzido através da observação de métricas de
+código-fonte.
 
 \subsection{Ferramentas de análise estática de código-fonte}
 
-A extração de métricas de código-fonte ocorre através de ferramentas de
+A extração de métricas de código-fonte, usualmente, ocorre através de ferramentas de
 análise automática de software, segundo \citeonline{Kirkov2010} estas
 ferramentas possuem uma anatomia comum, composta de quatro componentes básicos
 - construção de modelos; algoritmos de análise e reconhecimento de padrões;
 base de conhecimento de padrões; e representação final.
 
 A construção de modelos de um programa é o primeiro passo e é feito por um
-parser de código-fonte. A base de conhecimento de padrões é usada para
+parser de código-fonte \cite{Binkley2007}. A base de conhecimento de padrões é usada para
 representar e armazenar informações sobre potenciais problemas encontrados no
 código-fonte. O objetivo do algoritmo de análise e reconhecumento de padroes é
 classificar as informações encontradas no modelo a partir da base de
@@ -254,12 +237,12 @@ de qualidade interna de um determinado software.
 %possibilitar qualquer outra, que é a capacidade de instalar e executar o
 %software, partirei das seguintes questões:
 %
-%\begin{enumerate}
-%  \item O software é fácil de instalar? (operability)
-%  \item O software possui alguma instrução de instalação? (understandability ou learnability)
-%  \item O software é facilmente encontrado para obtenção? (download, requisito para operability)
-%  \item O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
-%\end{enumerate}
+%O software pode ser instalado facilmente? (Portability -> Installability)
+% * O software possui alguma instrução de instalação? (understandability ou learnability)
+% * O software é facilmente encontrado para obtenção? (download, requisito para operability)
+%O usuário consegue utilizar o sistema sem muito esforço? (Usability -> Operability)
+% * O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
+%\cite{Padayachee2010}
 %
 %As métricas de qualidade interna darão indícios de sua qualidade externa,
 %especificamente em relação a caracteristicas de usabilidade, eu
@@ -283,17 +266,6 @@ de validar as seguintes hipóteses:
     externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
-% +\begin{itemize}
-% +  \item Existe publicação sobre ferramentas de análise estática
-% +  \item As publicações sobre ferramentas de análise estática disponibilizam o código fonte
-% +  \item Existem ferramentas de análise estática disponíveis livremente na indústria
-% +  \item O código fonte disponibilizado está (de fato) disponível livremente
-% +  \item Existe similaridade em termos de métricas entre as ferramentas
-% +  \item Existem valores de referência para métricas de código fonte
-% +  \item As boas (?) ferramentas tem uma arquitetura semelhante
-% +  \item É possível extrair uma arquitetura de referência a partir das ferramentas analisadas
-% +  \item A arquitetura de referência gera um conjunto de métricas de referência
-% +\end{itemize}
 % +\section{Trabalhos relacionados}
 %  
 % +Pesquisas sobre o recente tópico, Ciência Aberta, \citeonline{Prlic2012} dão
@@ -304,14 +276,6 @@ de validar as seguintes hipóteses:
 % +software após a publicação é o maior problema enfrentado pelos pesquisadores
 % +que desenvolvem tais softwares, e é aí que a participação no desenvolvimento
 % +aberto desde o início pode trazer maior benefício.
-%  
-% +\citeonline{Portillo12} faz uma revisão sistemática caracterizando ferramentas
-% +usadas em engenharia de software global, designa tais feramentas como
-% +"research tool".
-%  
-% +\citeonline{Kon2011} cita que oftwares científicos são produtos de software e,
-% +em geral, precisam ser avaliados com uso de métodos científicos adequados, e,
-% +é de fundamental importância que estejam disponíveis e em funcionamento.
 
 As seções à seguir descrevem as atividades de cada etapa da metodologia.
 
@@ -325,26 +289,19 @@ código-fonte como indicador para o sucesso de projetos de software livre.
 
 (definir quais métricas serão utilizadas e justificar a escolha)
 
-%este estudo selecionou algumas métricas de código-fonte como base, a partir de
-%critérios como existência de valores de referência para as métricas, além de X
-%Y e B. Aqui deste trabalho utilizaremos como base às mesmas métricas:
-%
-%\paragraph{Métricas de tamanho:}
-%LOC (Lines of Code), AMLOC (Average Method LOC), Total Number of Modules or Classes
-%
-%\paragraph{Indicadores estruturais:}
-%NOA (Number of Attributes), NOM (Number of Methods), NPA (Number of Public
-%Attributes), NPM (Number of Public Methods), ANPM (Average Number of
-%Parameters per Method), DIT (Depth of Inheritance Tree), NOC (Number of
-%Children), RFC (Response For a Class), ACCM (Average Cyclomatic Complexity per
-%Method)
-%
-%\paragraph{Métricas de acoplamento:}
-%ACC (Afferent Connections per Class), CBO (Coupling Between Objects), COF
-%(Coupling Factor)
-%
-%\paragraph{Métricas de coesão:}
-%LCOM (Lack of Cohesion in Methods), SC (Structural Complexity)
+Além dessa seleção baseada na sinergia e necessidades do projeto QualiPSo, selecionamos algu-
+mas, entre as inúmeras métricas propostas pela literatura, tendo em vista medir os aspectos mais
+relevantes à manutenibilidade do software, como sua complexidade interna, modularidade e grau de
+dependência entre os módulos. Outro critério utilizado na escolha das métricas que detalharemos
+nesta seção foi a existência de trabalhos que, para elas, sugerem valores teóricos de referência para
+compararmos nossos estudos posteriores.
+
+De acordo com nossas hipóteses, selecionamos as seguintes métricas calculadas pela Analizo:
+número total de linhas de código (LOC), número total de módulos (NM), média do acoplamento
+entre objetos (CBO) e média da falta de coesão entre métodos (LCOM4).
+
+Também calculamos CBO e LCOM4 para obtermos o valor da complexidade estrutural
+(SC) do projeto métrica apresentada na Seção 3.1.2.
 
 \subsection{Seleção das fontes de ferramentas de análise estática}
 
