@@ -242,27 +242,42 @@ reflitam os atributos de qualidade dos software científicos estudados.
 
 \chapter{Metodologia}
 
-%Com base nestas referências irei tomar alguns pontos básicos para contrastar
-%com as ferramentas sendo anaalisadas a fim de caracterizar as mesmas em
-%relação à um subcaracteristica básica externa, aquela à qual impacta em
-%possibilitar qualquer outra, que é a capacidade de instalar e executar o
-%software, partirei das seguintes questões:
-%
-%O software pode ser instalado facilmente? (Portability -> Installability)
-% * O software possui alguma instrução de instalação? (understandability ou learnability)
-% * O software é facilmente encontrado para obtenção? (download, requisito para operability)
-%O usuário consegue utilizar o sistema sem muito esforço? (Usability -> Operability)
-% * O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
-%\cite{Padayachee2010}
-%
-%As métricas de qualidade interna darão indícios de sua qualidade externa,
-%especificamente em relação a caracteristicas de usabilidade, eu
-%posso "ser cobaia" e tentar instalar cada ferramenta a ponto de medir a
-%facilidade de instalação e uso. E isto será possível de correlacionar com as
-%métricas de qualidade. Será?
+Neste estudo iremos fazer um levantamento de softwares científicos e softwares
+da indústria do domínio {\it análise estática de código-fonte}. Este domínio
+foi selecionado com base na experiência do pesquisador nesta área, o que
+facilita encontrar fontes sobre ferramentas bem como analisar e estudar
+tais softwares. O foco em um domínio se justifica pela necessidade de reduzir
+o escopo do estudo a fim de viabilizar o trabalho dentro do tempo previsto em
+um programa de mestrado.
 
-Neste capítulo será apresentada a metodologia utilizada no estudo como meio
-de validar as seguintes hipóteses:
+A forma como o levantamento será feito está descrito na seção
+\ref{levantamento}, a partir daí será feito uma caracterização inicial da
+ferramenta e posteriormente análise estática do seu código-fonte.  Esta
+análise irá nos dizer se temos valores de referência de métricas para
+ferramentas de análise estática de código-fonte, com isto iremos criar
+recomendações de refatoração para ferramentas de análise estática.
+
+Por final traçaremos um paralelo entre as caracteristicas de qualidade externa
+aos valores de métricas encontrados (qualidade interna). Especialmente em
+relação à portabilidade e usabilidade respondendo as seguintes questões:
+
+\begin{itemize}
+  \item O software pode ser instalado facilmente? (Portability: Installability)
+    \begin{itemize}
+      \item O software possui alguma instrução de instalação? (understandability ou learnability)
+      \item O software é facilmente encontrado para obtenção? (download, requisito para operability)
+    \end{itemize}
+  \item O usuário consegue utilizar o sistema sem muito esforço? (Usability: Operability)
+    \begin{itemize}
+      \item O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
+    \end{itemize}
+\end{itemize}
+
+%\cite{Padayachee2010}
+
+\section{Hipóteses}
+
+São hipóteses deste estudo:
 
 \begin{enumerate}
   \item[{\bf H1:}] {\em Existem publicações sobre ferramentas de análise
@@ -277,44 +292,36 @@ de validar as seguintes hipóteses:
     externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
-% +\section{Trabalhos relacionados}
-%  
-% +Pesquisas sobre o recente tópico, Ciência Aberta, \citeonline{Prlic2012} dão
-% +dicas para o desenvolvimento aberto de software científico e citam que
-% +disponibilizar o código criado durante pesquisas não apenas aumenta o impacto
-% +como também se torna essencial para outros reproduzirem os resultados
-% +encontrados. Eles citam ainda que manutenabilidade e disponibilidade do
-% +software após a publicação é o maior problema enfrentado pelos pesquisadores
-% +que desenvolvem tais softwares, e é aí que a participação no desenvolvimento
-% +aberto desde o início pode trazer maior benefício.
-
 As seções à seguir descrevem as atividades de cada etapa da metodologia.
 
 \section{Planejamento do estudo}
 
 \subsection{Seleção das métricas}
 
-\citeonline{Meirelles2013} realizou um estudo onde associou-se
-qualidade do produto de software à qualidade de código através de métricas de
-código-fonte como indicador para o sucesso de projetos de software livre.
+\citeonline{Meirelles2013} realizou uma série de estudos onde associou
+características da qualidades de produto de software à características de
+qualidade de código-fonte através de métricas como indicador para o sucesso de
+projetos de software livre. Em um destes estudos um dos critérios utilizados
+para a seleção de métricas foram aquelas que medem aspectos relevantes à
+manutenibilidade do software.
 
-(definir quais métricas serão utilizadas e justificar a escolha)
+Nós iremos neste estudo utilizar a mesma seleção de métricas utilizadas por
+\citeonline{Meirelles2013}, abaixo, a fim de caracterizar a qualidade interna dos
+softwares científicos estudados neste trabalho de pesquisa.
 
-Além dessa seleção baseada na sinergia e necessidades do projeto QualiPSo, selecionamos algu-
-mas, entre as inúmeras métricas propostas pela literatura, tendo em vista medir os aspectos mais
-relevantes à manutenibilidade do software, como sua complexidade interna, modularidade e grau de
-dependência entre os módulos. Outro critério utilizado na escolha das métricas que detalharemos
-nesta seção foi a existência de trabalhos que, para elas, sugerem valores teóricos de referência para
-compararmos nossos estudos posteriores.
+\begin{enumerate}
+  \item[{\bf LOC}] {\it Número total de linhas de código}
+  \item[{\bf NM}] {\it Número total de módulos}
+  \item[{\bf CBO}] {\it Média do acoplamento entre objetos}
+  \item[{\bf LCOM4}] {\it Média da falta de coesão entre métodos}
+  \item[{\bf SC}] {\it Complexidade estrutural}
+\end{enumerate}
 
-De acordo com nossas hipóteses, selecionamos as seguintes métricas calculadas pela Analizo:
-número total de linhas de código (LOC), número total de módulos (NM), média do acoplamento
-entre objetos (CBO) e média da falta de coesão entre métodos (LCOM4).
+%Outro critério utilizado na escolha das métricas que detalharemos
+%nesta seção foi a existência de trabalhos que, para elas, sugerem valores teóricos de referência para
+%compararmos nossos estudos posteriores.
 
-Também calculamos CBO e LCOM4 para obtermos o valor da complexidade estrutural
-(SC) do projeto métrica apresentada na Seção 3.1.2.
-
-\subsection{Seleção das fontes de ferramentas de análise estática}
+\subsection{Seleção das fontes de ferramentas de análise estática}\label{levantamento}
 
 Para ser possível validar as hipóteses aqui levantadas é necessário realizar
 uma busca por ferramentas de análise estática desenvolvidas no contexto da
