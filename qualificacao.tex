@@ -101,7 +101,7 @@ ferramentas.
 Software podem se beneficiar do ecosistema de Software Livre faz uma análise
 de 10 edições do SBES\footnote{Simpósio Brasileiro de Engenharia de Software}
 e conclui que apesar do aumento do interesse por parte dos pesquisadores em
-disponibilizar o código-fonte de suas ferramentas isto ainda é uma minoria. O
+disponibilizar o código-fonte de suas ferramentas isto ainda é minoria. O
 que confirma a preocupação de \citeonline{Krishnamurthi2015} em um estudo
 sobre repetibilidade de pesquisas científicas, onde chamam atenção para o papel
 central que os artefatos de software possuem em pesquisas de ciência da
@@ -125,9 +125,9 @@ resultados de uma pesquisa -- por exemplo, código-fonte e dados -- usualmente
 permanecem não publicados.
 
 Isto se configura como uma barreira para a reprodutibilidade, e
-consequentemente para a repetição, replicação e variaçãode estudos
+consequentemente para a repetição, replicação e variação de estudos
 \cite{Feitelson2015} já que a disponibilidade de código-fonte é o mínimo
-necessário para isto, como pode ser visto no espectro de
+necessário para que isto ocorra, como pode ser visto no espectro de
 reprodutibilidade de \citeonline{Peng2011} reproduzido aqui na Figura
 \ref{reproducibility-spectrum}.
 
@@ -148,7 +148,7 @@ problemas comuns enfrentados pelos pesquisadores \cite{Prlic2012}.
 
 Qualidade de software diz respeito à quão bem um software é projetado e o
 quanto este software está em conformidade com o projeto, embora existam
-inúmeras definições há um concenso de que existem duas dimensões para medir a
+inúmeras definições há um concenso de que existem duas dimensões básicas para medir a
 qualidade de um software, estas dimensões estão relacionadas à características
 de qualidade interna e de qualidade externa.
 
@@ -167,7 +167,7 @@ Segundo a ISO/IEC 25010 \cite{iso2011iec25010} estas características podem ser
 divididas em subcaracterísticas. A característica usabilidade por exemplo é
 dividida nas seguintes subcaracterísticas: capacidade de compreensão,
 capacidade de aprendizado, operabilidade, atratividade e conformidade. Esta
-caracteristica está relacionada, por exemplo, a facilidade com que usuários aprendem e
+característica está relacionada, por exemplo, a facilidade com que usuários aprendem e
 utilizam um sistema, e passa por questões como facilidade de instalação,
 aprendizado, e uso.
 
@@ -185,49 +185,60 @@ realizado a partir da análise de suas métricas de código-fonte.
 
 Uma métrica, segundo a definição da ISO/IEC 25010 \cite{iso2011iec25010}, é a
 composição de procedimentos para a definição de escalas e métodos para
-medidas. Métricas de software podem ser classificadas em três categorias: métricas de
+medidas, em engenharia de software estas métricas podem ser classificadas em três categorias: métricas de
 produto, métricas de processo e métricas de projeto.
 
-Métricas de processo medem atributos relacionados
-ao ciclo de desenvolvimento do software. Métricas de produto são aquelas que
+Métricas de produto são aquelas que
 descrevem as características de artefatos do desenvolvimento, como documentos,
-diagramas, código-fonte e arquivos binários. Métricas de projeto são aquelas
+diagramas, código-fonte e arquivos binários. Métricas de processo medem atributos relacionados
+ao ciclo de desenvolvimento do software. Métricas de projeto são aquelas
 que descrevem as características dos recursos disponíveis ao desenvolvimento.
 
-Métricas de produto podem ser classificadas entre internas ou externas, ou
-seja, aquelas que medem propriedades visíveis apenas aos desenvolvedores ou
-que medem propriedades visíveis aos usuários, respectivamente.
-Métricas internas podem ainda ser divididas de acordo com o artefato
-analisado, seja documentos, diagramas ou código-fonte.
-
-Neste trabalho iremos adotar métricas de design e métricas de código-fonte
-para extrair propriedades internas dos softwares científicos a fim de medir a
-sua qualidade. A seleção das métricas tomará como base o trabalho realizado
-por \citeonline{Meirelles2013} onde um estudo associando qualidade de software
-à qualidade de código-fonte foi conduzido através da observação de métricas de
-código-fonte.
+Neste trabalho nosso interesse estão nas métricas de produto, que podem ser
+classificadas entre internas ou externas, ou seja, aquelas que medem
+propriedades visíveis apenas aos desenvolvedores ou que medem propriedades
+visíveis aos usuários, respectivamente. Iremos extrair propriedades dos
+softwares científicos a fim de medir a sua qualidade interna através de um
+conjunto de métricas previamente definido, este conjunto tomará como base o
+trabalho realizado por \citeonline{Meirelles2013} onde foi realizado um estudo
+associando qualidade de software à qualidade de código-fonte através da
+observação de métricas de código-fonte. E será realizado através de
+ferramentas de análise estática de código-fonte.
 
 \subsection{Ferramentas de análise estática de código-fonte}
 
-A extração de métricas de código-fonte, usualmente, ocorre através de ferramentas de
-análise automática de software, segundo \citeonline{Kirkov2010} estas
-ferramentas possuem uma anatomia comum, composta de quatro componentes básicos
-- construção de modelos; algoritmos de análise e reconhecimento de padrões;
-base de conhecimento de padrões; e representação final.
+Ferramentas de análise estática de código-fonte são ferramentas capazes de
+realizar a leitura de código-fonte de um projeto de software de forma
+automatizada ou semi-automatizada e extrair daí informações sobre as entidades
+do software, como módulos, classes, funções, métodos, variáveis, seus
+relacionamentos, suas características e diversas outras informações possíveis
+de serem exraídas diretamente do código-fonte que seja útil ao engenheiro de
+software.
+
+Estas informaçoes costumam ser aplicadas à tarefas comuns da engenharia de
+software, como por exemplo, recuperação arquitetural, localização de falhas,
+manutenção, refatoração, compreensão, análise de performance, visualização,
+entre outras.
+
+Segundo \citeonline{Kirkov2010} estas ferramentas possuem uma
+anatomia comum, composta de quatro componentes básicos - construção de
+modelos; algoritmos de análise e reconhecimento de padrões; base de
+conhecimento de padrões; e representação final.
 
 A construção de modelos de um programa é o primeiro passo e é feito por um
-parser de código-fonte \cite{Binkley2007}. A base de conhecimento de padrões é usada para
-representar e armazenar informações sobre potenciais problemas encontrados no
-código-fonte. O objetivo do algoritmo de análise e reconhecumento de padroes é
-classificar as informações encontradas no modelo a partir da base de
-conhecumento de padroes. A representação final é um relatório ou outro tipo de
-visualização gerado para para o usuário (desenvolvedor) através de uma
-interface de usuário apropriada.
+parser de código-fonte \cite{Binkley2007}. A base de conhecimento de padrões é
+usada para representar e armazenar informações sobre potenciais problemas
+encontrados no código-fonte. O objetivo do algoritmo de análise e
+reconhecumento de padroes é classificar as informações encontradas no modelo a
+partir da base de conhecumento de padroes. A representação final é um
+relatório ou outro tipo de visualização apresentada através de uma interface
+de usuário apropriada.
 
-Com o uso de ferramentas de análise estática de código-fonte, seguindo o seu
-funcionamento básico, é possível gerar como resultado final uma saída contendo
-métricas de design e código-fonte represresentando características e atributos
-de qualidade interna de um determinado software.
+Esta representação final pode ser por exemplo um relatório contendo os valores
+de métricas calculadas para o software sendo analisado, e é esta
+caractarística das ferramentas de análise estática de código-fonte que será
+utilizada neste trabalho para recuperar métricas de produto de software que
+reflitam os atributos de qualidade dos software científicos estudados.
 
 \chapter{Metodologia}
 
