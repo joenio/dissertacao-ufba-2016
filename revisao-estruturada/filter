@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use strict;
+
+my @INCLUIDOS = ();
+my @EXCLUIDOS = ();
+
+my @PAPERS = `find "SCAM Papers/" -iname *.pdf | sort`;
+
+foreach my $paper (@PAPERS) {
+  chomp $paper;
+  my $PAPER_CONTENT = `pdftotext "$paper" -`;
+  print ".";
+  if (
+      grep(/tool/i, $PAPER_CONTENT) &&
+      grep(/download|available/i, $PAPER_CONTENT) &&
+      grep(/http|ftp/i, $PAPER_CONTENT) &&
+      grep(/static analysis|parser/i, $PAPER_CONTENT)
+                                        ) {
+    push @INCLUIDOS, $paper;
+  }
+  else {
+    push @EXCLUIDOS, $paper;
+  }
+}
+
+print "\n";
+
+print "INCLUIDOS = $#INCLUIDOS\n";
+print "EXCLUIDOS = $#EXCLUIDOS\n";
+
+print "### INCLUIDOS ###\n";
+$" = "\n";
+print "@INCLUIDOS\n";
