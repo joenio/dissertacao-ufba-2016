@@ -16,7 +16,14 @@ Mais detalhes em:
 Projeto escrito em latex para compilar é necessários ter um ambiente latex
 básico e o projeto latex-mk texlive-publishers texlive-lang-portuguese.
 
- $ make
+    $ make
+
+## Script para revisão estruturada semi-automatizada
+
+O script depende do comando `pdftotext`, em sistemas Debian ele pode ser
+instalado com o seguinte comando:
+
+    # apt-get install poppler-utils
 
 ## Contato
 

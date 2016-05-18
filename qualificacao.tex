@@ -49,9 +49,6 @@
 
 (à fazer)
 
-% falar aqui de ferramentas de análise estática e o porque escolhi elas? artigo
-% com um reumo geral de ferramentas de analise: Source Code Analysis: A Road Map.pdf
-
 \section{Contribuições esperadas}
 
 (à fazer)
@@ -205,7 +202,7 @@ associando qualidade de software à qualidade de código-fonte através da
 observação de métricas de código-fonte. E será realizado através de
 ferramentas de análise estática de código-fonte.
 
-\subsection{Ferramentas de análise estática de código-fonte}
+\section{Ferramentas de análise estática de código-fonte}
 
 Ferramentas de análise estática de código-fonte são ferramentas capazes de
 realizar a leitura de código-fonte de um projeto de software de forma
@@ -242,23 +239,23 @@ reflitam os atributos de qualidade dos software científicos estudados.
 
 \chapter{Metodologia}
 
-Neste estudo iremos fazer um levantamento de softwares científicos e softwares
+Será feito um levantamento de softwares científicos e softwares
 da indústria do domínio {\it análise estática de código-fonte}. Este domínio
 foi selecionado com base na experiência do pesquisador nesta área, o que
-facilita encontrar fontes sobre ferramentas bem como analisar e estudar
+facilita encontrar fontes sobre ferramentas, bem como analisar e estudar
 tais softwares. O foco em um domínio se justifica pela necessidade de reduzir
 o escopo do estudo a fim de viabilizar o trabalho dentro do tempo previsto em
 um programa de mestrado.
 
-A forma como o levantamento será feito está descrito na seção
-\ref{levantamento}, a partir daí será feito uma caracterização inicial da
-ferramenta e posteriormente análise estática do seu código-fonte.  Esta
-análise irá nos dizer se temos valores de referência de métricas para
-ferramentas de análise estática de código-fonte, com isto iremos criar
-recomendações de refatoração para ferramentas de análise estática.
+Após o levantamento e seleção das ferramentas será feita a caracterização
+inicial e posteriormente análise estática do seu código-fonte, onde teremos
+métricas para cada ferramenta e possivelmente valores referência para
+ferramentas de análise estática, estes
+valores de referência darão origem a recomendações de refatoração para
+ferramentas deste domínio.
 
-Por final traçaremos um paralelo entre as caracteristicas de qualidade externa
-aos valores de métricas encontrados (qualidade interna). Especialmente em
+Por final traçaremos um paralelo entre caracteristicas de qualidade externa
+e valores de métricas de qualidade interna, especialmente em
 relação à portabilidade e usabilidade respondendo as seguintes questões:
 
 \begin{itemize}
@@ -274,6 +271,7 @@ relação à portabilidade e usabilidade respondendo as seguintes questões:
 \end{itemize}
 
 %\cite{Padayachee2010}
+As seções à seguir descrevem em detalhes as atividades de cada etapa da metodologia.
 
 \section{Hipóteses}
 
@@ -292,8 +290,6 @@ São hipóteses deste estudo:
     externa usabilidade à valores de métricas de qualidade interna}
 \end{enumerate}
 
-As seções à seguir descrevem as atividades de cada etapa da metodologia.
-
 \section{Planejamento do estudo}
 
 \subsection{Seleção das métricas}
@@ -302,12 +298,12 @@ As seções à seguir descrevem as atividades de cada etapa da metodologia.
 características da qualidades de produto de software à características de
 qualidade de código-fonte através de métricas como indicador para o sucesso de
 projetos de software livre. Em um destes estudos um dos critérios utilizados
-para a seleção de métricas foram aquelas que medem aspectos relevantes à
+para a seleção de métricas foi escolher aquelas que medem aspectos relevantes à
 manutenibilidade do software.
 
-Nós iremos neste estudo utilizar a mesma seleção de métricas utilizadas por
-\citeonline{Meirelles2013}, abaixo, a fim de caracterizar a qualidade interna dos
-softwares científicos estudados neste trabalho de pesquisa.
+Nós iremos aqui utilizar a mesma seleção de métricas utilizadas por
+\citeonline{Meirelles2013} a fim de caracterizar a qualidade interna das
+ferramentas de análise estática previamente selecionadas.
 
 \begin{enumerate}
   \item[{\bf LOC}] {\it Número total de linhas de código}
@@ -317,9 +313,18 @@ softwares científicos estudados neste trabalho de pesquisa.
   \item[{\bf SC}] {\it Complexidade estrutural}
 \end{enumerate}
 
-%Outro critério utilizado na escolha das métricas que detalharemos
-%nesta seção foi a existência de trabalhos que, para elas, sugerem valores teóricos de referência para
-%compararmos nossos estudos posteriores.
+\subsection{Seleção da ferramenta de análise estática de código-fonte}
+
+Para realizar a caracterização das ferramentas e extrair suas métricas de
+código-fonte será necessário uma ferramenta que permita automatizar este
+processo, neste trabalho utilizaremos a ferramenta de análise estática Analizo
+\cite{Terceiro2010}.
+
+Analizo é um {\it toolkit} livre, multi-linguagem e extensível para análise de
+código-fonte, é uma ferramenta mantida constantemente, com desenvolvedores
+ativos, eu sou um dos desenvolvedores dessa ferramenta o que me dá a
+capacidade de realizar atualizações ou correção de problemas ao longo deste
+estudo caso isto venha a ser necessário.
 
 \subsection{Seleção das fontes de ferramentas de análise estática}\label{levantamento}
 
@@ -343,15 +348,6 @@ surgiram em contexto acadêmico.
 
 Uma vez que as ferramentas tenham sido selecionadas inicia-se a extração de
 seus atributos de qualidade interna.
-
-\subsection{Seleção da ferramenta de análise estática de código-fonte}
-
-Para realizar a caracterização das ferramentas através dos seus atributos de
-qualidade interna é necessário uma ferramenta capaz de analisar estaticamente
-o código-fonte destas ferramentas e extrair atributos relacionados à sua
-qualidade interna. Para isto utilizaremos o Analizo\cite{Terceiro2010}.
-
-(falta justificar! quais vantagens? referencias?)
 
 \section{Coleta de dados}
 
@@ -416,12 +412,27 @@ estática que tenham sido desenvolvidas no contexto da indústria, algums
 resultados preliminares podem ser encontrados nas Tabelas
 \ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
 
-\section{Caracterização dos artigos}
+\subsection{Caracterização dos artigos}
+
+Os artigos selecionados a partir da revisão estruturada serão avaliados a fim
+de caracterizar se se tratam de publicação de ferramenta de análise estática
+de código-fonte, esta revisão será realizada de forma semi-automatizada com
+base num
+script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
+que fará o primeiro filtro dos artigos a partir de uma busca no conteúdo a
+partir dos seguintes termos:
+
+\begin{verbatim}
+  "tool"; E
+  "download" OU "available"; E
+  "http" OU "ftp"; E
+  "static analysis" OU "parser".
+\end{verbatim}
 
 Caracterização dos papers analisados na revisão estruturada e caracterização
 teórica do ecosistema das ferramentas da academia.
 
-\section{Caracterização das ferramentas}
+\subsection{Caracterização das ferramentas}
 
 Será realizada uma caracterização prática das ferramentas, tanto acadêmica
 quando da indústria, através da análise e extração de métricas de código-fonte
