@@ -11,6 +11,20 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
+## Questão
+
+Quais características das ferramentas de análise estática de código fonte podem
+ser obtidas a partir da avaliação da sua qualidade interna?
+
+## GQM
+
+Nivel conceitual:
+
+* Vamos caracterizar ferramentas de analise estatica de codigo fonte
+* Com respeito a sua qualidade interna
+* Do ponto de vista do engenheiro de software
+* No contexto de softwares academicos e industriais
+
 ## Compilando
 
 Projeto escrito em latex para compilar é necessários ter um ambiente latex

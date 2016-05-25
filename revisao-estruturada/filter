@@ -1,6 +1,14 @@
 #!/usr/bin/perl
 use strict;
 
+if ($ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  print "Usage: $0 -o <file>\n";
+  exit 1;
+}
+
+my $filename = $ARGV[1];
+
 my @INCLUIDOS = ();
 my @EXCLUIDOS = ();
 
@@ -11,23 +19,27 @@ foreach my $paper (@PAPERS) {
   my $PAPER_CONTENT = `pdftotext "$paper" -`;
   print ".";
   if (
-      grep(/tool/i, $PAPER_CONTENT) &&
-      grep(/download|available/i, $PAPER_CONTENT) &&
-      grep(/http|ftp/i, $PAPER_CONTENT) &&
-      grep(/static analysis|parser/i, $PAPER_CONTENT)
-                                        ) {
+       grep(/tool|framework/i, $PAPER_CONTENT) &&
+       grep(/download|available/i, $PAPER_CONTENT) &&
+       grep(/http|ftp/i, $PAPER_CONTENT) &&
+       grep(/static analysis|parser/i, $PAPER_CONTENT)
+     ) {
     push @INCLUIDOS, $paper;
   }
   else {
     push @EXCLUIDOS, $paper;
   }
 }
-
 print "\n";
 
-print "INCLUIDOS = $#INCLUIDOS\n";
-print "EXCLUIDOS = $#EXCLUIDOS\n";
+open my $FILE, '>', $filename;
 
-print "### INCLUIDOS ###\n";
+print $FILE "TOTAL = ", scalar(@PAPERS), "\n";
+print $FILE "INCLUIDOS = ", scalar(@INCLUIDOS), "\n";
+print $FILE "EXCLUIDOS = ", scalar(@EXCLUIDOS), "\n";
+
+print $FILE "### INCLUIDOS ###\n";
 $" = "\n";
-print "@INCLUIDOS\n";
+print $FILE "@INCLUIDOS\n";
+
+close $FILE;

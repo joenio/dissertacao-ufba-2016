@@ -112,6 +112,13 @@ qualidade científica de tais pesquisas \cite{Vitek2011}.
 
 \section{Reprodutibilidade}
 
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.5]{imagens/reproducible-r-toolkit-cartoon.png}
+  \caption{The reproducible research problem\cite{RevolutionanalyticsComRRT}}
+  \label{reproducible-r-toolkit-cartoon}
+\end{figure}
+
 Reprodutibilidade é a habilidade de replicar um experimento ou estudo em sua
 totalidade a fim de confirmar suas hipóteses e resultados, apesar de ser uma
 prática central do método científico ainda é um grande obstáculo em muitos
@@ -297,21 +304,27 @@ São hipóteses deste estudo:
 \citeonline{Meirelles2013} realizou uma série de estudos onde associou
 características da qualidades de produto de software à características de
 qualidade de código-fonte através de métricas como indicador para o sucesso de
-projetos de software livre. Em um destes estudos um dos critérios utilizados
-para a seleção de métricas foi escolher aquelas que medem aspectos relevantes à
-manutenibilidade do software.
+projetos de software livre. Em um destes estudos foram selecionadas métricas
+que medem aspectos relevantes à manutenibilidade do software. Nós iremos aqui
+utilizar a mesma seleção de métricas utilizadas por \citeonline{Meirelles2013}
+a fim de caracterizar a qualidade interna das ferramentas de análise estática
+previamente selecionadas.
 
-Nós iremos aqui utilizar a mesma seleção de métricas utilizadas por
-\citeonline{Meirelles2013} a fim de caracterizar a qualidade interna das
-ferramentas de análise estática previamente selecionadas.
+\begin{itemize}
+  \item {\bf CBO} {\it Média do acoplamento entre objetos}
+  \item {\bf LCOM4} {\it Média da falta de coesão entre métodos}
+  \item {\bf SC} {\it Complexidade estrutural}
+  \item {\bf AMLOC} {\it Média de linhas de código por método}
+  \item {\bf ACCM} {\it Média de complexidade ciclomática por método}
+  \item {\bf RFC} {\it Resposta para uma classe }
+  \item {\bf DIT} {\it Profundidade na árvore de herança}
+  \item {\bf NOC} {\it Número de subclasses}
+  \item {\bf COF} {\it Fator de acoplamento}
+\end{itemize}
 
-\begin{enumerate}
-  \item[{\bf LOC}] {\it Número total de linhas de código}
-  \item[{\bf NM}] {\it Número total de módulos}
-  \item[{\bf CBO}] {\it Média do acoplamento entre objetos}
-  \item[{\bf LCOM4}] {\it Média da falta de coesão entre métodos}
-  \item[{\bf SC}] {\it Complexidade estrutural}
-\end{enumerate}
+Estas métricas serão utilizadas para avaliar a qualidade das ferramentas de
+análise estática e serão coletadas para cada classe/módulo presente nestes
+softwares.
 
 \subsection{Seleção da ferramenta de análise estática de código-fonte}
 
@@ -386,67 +399,91 @@ da Seção \ref{resultados}.
 A seleção de ferramentas da indústria será feita a partir de uma busca manual
 em fontes encontradas na Internet sobre ferramentas de análise estática.
 
-O projeto SAMATE\footnote{
-http://samate.nist.gov} - {\em Software Assurance Metrics and Tool Evaluation}
-disponível em \citeonline{SamateAnalysers} mantém uma lista de
-ferramentas de análise estática mantida, mais sobre o projeto SAMATE pode
-ser encontrado em \citeonline{Ribeiro2015}.
-
-O software Spin mantém em seu site uma lista de ferramentas comerciais e de
-pesquisa para análise estática de código-fonte para C em
-\citeonline{spinSourceAnalysisTools}.
-
-O Instituto de Engenharia de Software do CERT mantém uma lista de ferramentas
-de análise estática em \citeonline{certSecureCodingTools}.
-
-O software Flawfinder oferece em seu site um link com referências para
-inúmeras ferramentas livres, proprietárias, gratuitas mas não-livres de
-ferramentas de análise estática e outros tipos de análise em
+O projeto SAMATE\footnote{ http://samate.nist.gov} - {\em Software Assurance
+Metrics and Tool Evaluation} disponível em \citeonline{SamateAnalysers} mantém
+uma lista de ferramentas de análise estática mantida, mais sobre o projeto
+SAMATE pode ser encontrado em \citeonline{Ribeiro2015}. O software Spin
+mantém em seu site uma lista de ferramentas comerciais e de pesquisa para
+análise estática de código-fonte para C em
+\citeonline{spinSourceAnalysisTools}. O Instituto de Engenharia de Software
+do CERT mantém uma lista de ferramentas de análise estática em
+\citeonline{certSecureCodingTools}. O software Flawfinder oferece em seu site
+um link com referências para inúmeras ferramentas livres, proprietárias e
+gratuitas de ferramentas de análise estática e outros tipos de análise em
 \citeonline{wheelerStaticAnalysisTools}.
 
 Uma outra fonte contendo uma relação expressiva de ferramentas é mantida na
-Wikipedia em \citeonline{wikipediaListStaticCodeAnalysis}.
-
-Estas fontes serão pesquisadas manualmente em busca de ferramentas de análise
-estática que tenham sido desenvolvidas no contexto da indústria, algums
-resultados preliminares podem ser encontrados nas Tabelas
-\ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
+Wikipedia em \citeonline{wikipediaListStaticCodeAnalysis}. Estas fontes serão
+pesquisadas manualmente em busca de ferramentas de análise estática que tenham
+sido desenvolvidas no contexto da indústria, algums resultados preliminares
+podem ser encontrados nas Tabelas \ref{ferramentas-do-nist-com-codigo} e
+\ref{ferramentas-do-nist-sem-codigo}.
 
 \subsection{Caracterização dos artigos}
 
 Os artigos selecionados a partir da revisão estruturada serão avaliados a fim
 de caracterizar se se tratam de publicação de ferramenta de análise estática
-de código-fonte, esta revisão será realizada de forma semi-automatizada com
-base num
+de código-fonte, esta revisão será realizada de forma semi-automatizada, o
+primeiro passo automatizado será feito a partir de um
 script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
-que fará o primeiro filtro dos artigos a partir de uma busca no conteúdo a
-partir dos seguintes termos:
+que faz o primeiro filtro dos artigos a partir dos seguintes termos:
 
 \begin{verbatim}
-  "tool"; E
+  "tool" OU "framework"; E
   "download" OU "available"; E
   "http" OU "ftp"; E
   "static analysis" OU "parser".
 \end{verbatim}
 
-Caracterização dos papers analisados na revisão estruturada e caracterização
-teórica do ecosistema das ferramentas da academia.
+O segundo passo é realizar uma leitura do artigo a fim de identificar se
+realmente trata-se de um paper com publicação de {\it software científico},
+uma vez que se confirme que o paper publica um software, identificamos se
+realmente trata-se de uma ferramenta de análise estica, ou uma ferramenta mais
+abrangente mas que contenha análise estática como uma de suas features.
+
+Uma vez identificado os artigos que publicam {\it softwares científicos} de
+análise estática, procuramos no próprio artigo referências de onde encontrar o
+software, aqueles artigos que afirmam que a ferramenta está disponível mas não
+cita referências são enviaados emails para os autores solicitando informações
+de onde obter o código-fonte.
+
+Para os artigos que indicam onde obter o cófigo-fonte é feito o download da
+última versão da ferramenta para análise estática e extração de métricas que
+serão utilizadas apra caracterizar sua qualidade.
 
 \subsection{Caracterização das ferramentas}
 
-Será realizada uma caracterização prática das ferramentas, tanto acadêmica
-quando da indústria, através da análise e extração de métricas de código-fonte
-das mesmas.
+A partir das ferramentas da indústria e acadêmicas, previamente selecionadas,
+com código-fonte disponível, iremos extrair métricas de código-fonte, a partir
+das métricas selecionadas anteriormente a fim de relacionar tais métricas com
+a qualidade das ferramentas.
 
-% Resultado = Documentação com métricas de referência para ferramentas de análise estática.
+Os dados coletados irão também dar base para identificar se temos valores de
+referências para métricas de ferramentas de análise estática. Estes valores de
+referência caso existam serão utilizados para calcular quão distante as
+ferramentas analisadas se encontram destes valores, isto será feito com base
+no trabalho realizado \cite{Ronaldo2015} onde fez uma análise de métricas de
+código-fonte do sistema Android e seus aplicativos e calculou através de
+percentis ....
 
 \section{Exemplo de uso}
 
-Por fim, os valores de métricas de referência encontradas serão utilizadas
-como guia para refatorar a ferramenta Analizo.
+Por fim, os valores de métricas de referência encontradas serão documentados e
+servirão de base para criar um guia de sugestões para refatoração da
+ferramenta Analizo, este guia será feito a partir do cálculo de métricas do
+próprio Analizo e então comparado com as mátricas de referência, assim como
+foi feito para as demais ferramentas analisada.
 
-(ler o TCC "Código Limpo e seu Mapeamento para Métricas de Código Fonte" onde
-foi feito trabalho similar)
+Estas recomendações serão feitas utilizando o mesmo método de
+\citeonline{Almeida2010} onde foi feito um estudo mapeando boas práticas em
+métricas de código-fonte, estas boas práticas são baseadas nos trabalhos de
+Clean Code (Martin, 2008) e Implementation Patterns (Beck, 2007) sobre Código
+Limpo (Clean Code), onde sugerem práticas de desenvolvimento úteis para que um
+código tenham expressividade, simplicidade e flexibilidade. Neste trabalho os
+autores identificam melhorias de implementação através do uso de valores de
+métricas e prover aos desenvolvedores uma maneira de pensarem em melhorias
+para os seus códigos pois o método é capaz de detectar trechos de código que
+poderiam receber melhorias.
 
 \chapter{Conclusão}
 
@@ -459,27 +496,27 @@ estática com código fonte disponível.
 \begin{table}
 \caption{Total de artigos analisados por edições do SCAM}
 \centering
-\begin{tabular}{| l | c | c |}
+\begin{tabular}{| l | c | c | c |}
 \hline
-Edição    & Total de artigos & Artigos com ferramenta \\
+Edição    & Total de artigos & Script filter & Artigos com ferramenta \\
 \hline
-SCAM 2001 & 23               & -                      \\
-SCAM 2002 & 18               & -                      \\
-SCAM 2003 & 21               & -                      \\
-SCAM 2004 & 17               & -                      \\
-SCAM 2005 & 19               & -                      \\
-SCAM 2006 & 22               & 2                      \\
-SCAM 2007 & 23               & 1                      \\
-SCAM 2008 & 29               & -                      \\
-SCAM 2009 & 20               & -                      \\
-SCAM 2010 & 21               & 1                      \\
-SCAM 2011 & 21               & 1                      \\
-SCAM 2012 & 22               & 4                      \\
-SCAM 2013 & 24               & -                      \\
-SCAM 2014 & 35               & 1                      \\
-SCAM 2015 & ?? (pendente)    & ?                      \\
+SCAM 2001 & 23               & 6             & -                      \\
+SCAM 2002 & 18               & 6             & -                      \\
+SCAM 2003 & 21               & 7             & -                      \\
+SCAM 2004 & 17               & 3             & -                      \\
+SCAM 2005 & 19               & 7             & -                      \\
+SCAM 2006 & 22               & 9             & 2                      \\
+SCAM 2007 & 23               & 7             & 1                      \\
+SCAM 2008 & 29               & 14            & -                      \\
+SCAM 2009 & 20               & 10            & -                      \\
+SCAM 2010 & 21               & 15            & 1                      \\
+SCAM 2011 & 21               & 9             & 1                      \\
+SCAM 2012 & 22               & 12            & 4                      \\
+SCAM 2013 & 24               & 12            & -                      \\
+SCAM 2014 & 35               & 16            & 1                      \\
+SCAM 2015 & ?? (pendente)    & ?             & ?                      \\
 \hline
-Total     & 315              & 10                     \\
+Total     & 315              & 133           & 10                     \\
 \hline
 \end{tabular}
 \label{artigos-do-scam}
