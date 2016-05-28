@@ -302,13 +302,12 @@ São hipóteses deste estudo:
 \subsection{Seleção das métricas}
 
 \citeonline{Meirelles2013} realizou uma série de estudos onde associou
-características da qualidades de produto de software à características de
-qualidade de código-fonte através de métricas como indicador para o sucesso de
-projetos de software livre. Em um destes estudos foram selecionadas métricas
-que medem aspectos relevantes à manutenibilidade do software. Nós iremos aqui
-utilizar a mesma seleção de métricas utilizadas por \citeonline{Meirelles2013}
-a fim de caracterizar a qualidade interna das ferramentas de análise estática
-previamente selecionadas.
+características de qualidade de produto de software à características de
+qualidade de código-fonte, através de métricas de código-fonte, em um destes estudos
+utilizou-se métricas que medem aspectos relevantes à manutenibilidade do
+software, como a preocupação aqui também está na manutenibilidade
+das ferramentas iremos utilizar a mesma seleção de métricas utilizada por
+\citeonline{Meirelles2013}.
 
 \begin{itemize}
   \item {\bf CBO} {\it Média do acoplamento entre objetos}
@@ -322,22 +321,29 @@ previamente selecionadas.
   \item {\bf COF} {\it Fator de acoplamento}
 \end{itemize}
 
-Estas métricas serão utilizadas para avaliar a qualidade das ferramentas de
-análise estática e serão coletadas para cada classe/módulo presente nestes
-softwares.
+Estas métricas serão coletadas para cada classe/módulo presente nas
+ferramentas de análise estática selecionadas e servirão de base para
+avaliar a qualidade das mesmas.
 
 \subsection{Seleção da ferramenta de análise estática de código-fonte}
 
-Para realizar a caracterização das ferramentas e extrair suas métricas de
-código-fonte será necessário uma ferramenta que permita automatizar este
+Para realizar a caracterização das ferramentas e extrair suas métricas
+será necessário uma ferramenta que permita automatizar este
 processo, neste trabalho utilizaremos a ferramenta de análise estática Analizo
 \cite{Terceiro2010}.
 
 Analizo é um {\it toolkit} livre, multi-linguagem e extensível para análise de
-código-fonte, é uma ferramenta mantida constantemente, com desenvolvedores
-ativos, eu sou um dos desenvolvedores dessa ferramenta o que me dá a
-capacidade de realizar atualizações ou correção de problemas ao longo deste
-estudo caso isto venha a ser necessário.
+código-fonte, calcula uma grande quantidade de métricas, como CBO, LCOM4, RFC,
+LOC, entre outras, e suporta análise das linguagens de programação C, C++ e
+Java.
+
+É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
+atualizações frequentes, sua última versão 1.19.0 lançada em 18 de Fevereiro
+de 2016 será a versão utilizada neste estudo.
+
+%eu sou um dos desenvolvedores dessa ferramenta o que me dá a
+%capacidade de realizar atualizações ou correção de problemas ao longo deste
+%estudo caso isto venha a ser necessário.
 
 \subsection{Seleção das fontes de ferramentas de análise estática}\label{levantamento}
 
@@ -354,13 +360,14 @@ estática serão selecionados.
 
 Na indústria a busca por ferramentas será feita a partir
 de referências encontradas na internet, algumas organizações mantém listas de
-ferramentas para análise de código-fonte, a Wikipedia também mantém uma lista
+ferramentas para análise de código-fonte, a Wikipedia por exemplo, mantém uma lista
 de ferramentas, estas referências serão utilizadas como ponto de partida e
 cada ferramenta será analisada a fim de validar se são da indústria ou
 surgiram em contexto acadêmico.
 
-Uma vez que as ferramentas tenham sido selecionadas inicia-se a extração de
-seus atributos de qualidade interna.
+Uma vez que as ferramentas tenham sido selecionadas iniciaremos a extração de
+seus atributos de qualidade interna a partir do cálculo de suas métricas com o
+Analizo.
 
 \section{Coleta de dados}
 
@@ -396,37 +403,49 @@ da Seção \ref{resultados}.
 
 \subsection{Ferramentas da indústria}
 
-A seleção de ferramentas da indústria será feita a partir de uma busca manual
-em fontes encontradas na Internet sobre ferramentas de análise estática.
+A seleção de ferramentas da indústria será feita de forma não estruturada a
+partir de uma busca livre e manual em fontes encontradas na Internet sobre
+ferramentas de análise estática. Nos estudos já realizados as seguintes fontes
+foram selecionadas:
 
-O projeto SAMATE\footnote{ http://samate.nist.gov} - {\em Software Assurance
-Metrics and Tool Evaluation} disponível em \citeonline{SamateAnalysers} mantém
-uma lista de ferramentas de análise estática mantida, mais sobre o projeto
-SAMATE pode ser encontrado em \citeonline{Ribeiro2015}. O software Spin
-mantém em seu site uma lista de ferramentas comerciais e de pesquisa para
-análise estática de código-fonte para C em
-\citeonline{spinSourceAnalysisTools}. O Instituto de Engenharia de Software
-do CERT mantém uma lista de ferramentas de análise estática em
-\citeonline{certSecureCodingTools}. O software Flawfinder oferece em seu site
-um link com referências para inúmeras ferramentas livres, proprietárias e
-gratuitas de ferramentas de análise estática e outros tipos de análise em
-\citeonline{wheelerStaticAnalysisTools}.
+\begin{itemize}
 
-Uma outra fonte contendo uma relação expressiva de ferramentas é mantida na
-Wikipedia em \citeonline{wikipediaListStaticCodeAnalysis}. Estas fontes serão
-pesquisadas manualmente em busca de ferramentas de análise estática que tenham
-sido desenvolvidas no contexto da indústria, algums resultados preliminares
-podem ser encontrados nas Tabelas \ref{ferramentas-do-nist-com-codigo} e
-\ref{ferramentas-do-nist-sem-codigo}.
+  \item Projeto SAMATE\footnote{http://samate.nist.gov} - {\em Software
+    Assurance Metrics and Tool Evaluation} disponível em
+    \citeonline{SamateAnalysers} mantém uma lista de ferramentas de análise
+    estática, detalhes sobre o projeto pode ser encontrado em
+    \citeonline{Ribeiro2015}.
+
+  \item O software Spin mantém em seu site uma lista de ferramentas comerciais
+    e de pesquisa para análise estática de código-fonte para C em
+    \citeonline{spinSourceAnalysisTools}.
+    
+  \item O Instituto de Engenharia de Software do CERT mantém uma lista de
+    ferramentas de análise estática em \citeonline{certSecureCodingTools}.
+    
+  \item O software Flawfinder oferece em seu site um link com referências para
+    inúmeras ferramentas livres, proprietárias e gratuitas de ferramentas de
+    análise estática e outros tipos de análise em
+    \citeonline{wheelerStaticAnalysisTools}.
+
+  \item Uma outra fonte contendo uma relação expressiva de ferramentas é
+    mantida na Wikipedia em \citeonline{wikipediaListStaticCodeAnalysis}.
+
+\end{itemize}
+
+Estas fontes serão pesquisadas manualmente em busca de ferramentas de análise
+estática que tenham sido desenvolvidas no contexto da indústria, alguns
+resultados preliminares podem ser encontrados nas Tabelas
+\ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
 
 \subsection{Caracterização dos artigos}
 
 Os artigos selecionados a partir da revisão estruturada serão avaliados a fim
 de caracterizar se se tratam de publicação de ferramenta de análise estática
 de código-fonte, esta revisão será realizada de forma semi-automatizada, o
-primeiro passo automatizado será feito a partir de um
+primeiro passo será automatizado a partir de um
 script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
-que faz o primeiro filtro dos artigos a partir dos seguintes termos:
+que busca os seguintes termos no conteúdo dos artigos:
 
 \begin{verbatim}
   "tool" OU "framework"; E
@@ -435,55 +454,70 @@ que faz o primeiro filtro dos artigos a partir dos seguintes termos:
   "static analysis" OU "parser".
 \end{verbatim}
 
-O segundo passo é realizar uma leitura do artigo a fim de identificar se
-realmente trata-se de um paper com publicação de {\it software científico},
-uma vez que se confirme que o paper publica um software, identificamos se
-realmente trata-se de uma ferramenta de análise estica, ou uma ferramenta mais
-abrangente mas que contenha análise estática como uma de suas features.
+O segundo passo, manual, é realizar uma leitura do artigo a fim de identificar
+se realmente trata-se de um artigo com publicação de {\it software
+científico}, uma vez que se confirme que o artigo publica um software,
+identifica-se se o software é uma ferramenta de análise estática, softwares
+que sejam mais abrangentes do que apenas análise estática mas que contenham
+esta função em seu conjunto também será considerados.
 
 Uma vez identificado os artigos que publicam {\it softwares científicos} de
 análise estática, procuramos no próprio artigo referências de onde encontrar o
-software, aqueles artigos que afirmam que a ferramenta está disponível mas não
-cita referências são enviaados emails para os autores solicitando informações
-de onde obter o código-fonte.
+software, neste momento algumas ações serão tomadas a partir da situação
+encontrada.
 
-Para os artigos que indicam onde obter o cófigo-fonte é feito o download da
-última versão da ferramenta para análise estática e extração de métricas que
-serão utilizadas apra caracterizar sua qualidade.
+\begin{itemize}
+
+  \item Aqueles autores que afirmam que a ferramenta está disponível mas o
+    artigo não cita referências de onde encontrar serão contactados por email
+    solicitando informações de onde obter o código-fonte.
+
+  \item Os artigos que indicam onde obter o cófigo-fonte mas o acesso ao local
+    indicado não está disponível, ou está disponível mas o software não se
+    encontra lá, os autores também serão contactados solicitando informações
+    atualizadas de onde obter uma cópia do código-fonte da ferramenta
+
+  \item Os demais artigos que indicam onde obter o cófigo-fonte e a referência
+    está correta, iremos fazer downlod da última versão disponível do software
+
+\end{itemize}
+
+Uma vez que os autores contactados por email respondam com informações de onde
+obter o software iremos adicinar estes softwares na lista de softwares a serem
+analisados.
 
 \subsection{Caracterização das ferramentas}
 
-A partir das ferramentas da indústria e acadêmicas, previamente selecionadas,
-com código-fonte disponível, iremos extrair métricas de código-fonte, a partir
-das métricas selecionadas anteriormente a fim de relacionar tais métricas com
-a qualidade das ferramentas.
+As ferramentas da indústria e acadêmicas serão analisadas com o Analizo para
+extração das métricas de código-fonte préviamente
+selecionadas, estas métricas serão relacionadas à caractarística e atributos
+de qualidade das ferramentas.
 
-Os dados coletados irão também dar base para identificar se temos valores de
-referências para métricas de ferramentas de análise estática. Estes valores de
-referência caso existam serão utilizados para calcular quão distante as
-ferramentas analisadas se encontram destes valores, isto será feito com base
-no trabalho realizado \cite{Ronaldo2015} onde fez uma análise de métricas de
-código-fonte do sistema Android e seus aplicativos e calculou através de
-percentis ....
+As métricas coletadas serão também utilizadas para identificar se existem
+valores de referência para métricas de ferramentas de análise estática, caso
+existam, estes valores de métricas serão utilizadas para calcular quão
+distante cada ferramenta analisada se encontra dos valores de referência, isto
+será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
+mesmo estudo foi feito para o sistema Android e seus aplicativos.
 
 \section{Exemplo de uso}
 
-Por fim, os valores de métricas de referência encontradas serão documentados e
-servirão de base para criar um guia de sugestões para refatoração da
-ferramenta Analizo, este guia será feito a partir do cálculo de métricas do
-próprio Analizo e então comparado com as mátricas de referência, assim como
-foi feito para as demais ferramentas analisada.
+Por fim, os valores de referência encontradas serão documentados e servirão de
+base para criar um guia de sugestões para refatoração de ferramentas de
+análise estática. Tomaremos como exemplo de uso a própria ferramenta Analizo,
+onde iremos calcular suas métricas e a partir de uma comparação com os
+valores de referência indicaremos refatorações que façam a ferramenta de
+aproximar dos valores de referência.
 
-Estas recomendações serão feitas utilizando o mesmo método de
-\citeonline{Almeida2010} onde foi feito um estudo mapeando boas práticas em
-métricas de código-fonte, estas boas práticas são baseadas nos trabalhos de
-Clean Code (Martin, 2008) e Implementation Patterns (Beck, 2007) sobre Código
-Limpo (Clean Code), onde sugerem práticas de desenvolvimento úteis para que um
-código tenham expressividade, simplicidade e flexibilidade. Neste trabalho os
-autores identificam melhorias de implementação através do uso de valores de
-métricas e prover aos desenvolvedores uma maneira de pensarem em melhorias
-para os seus códigos pois o método é capaz de detectar trechos de código que
-poderiam receber melhorias.
+Estas indicações serão feitas utilizando o mesmo método de
+\citeonline{Almeida2010} onde foi feito um estudo mapeando boas práticas de
+programação em valores de métricas de código-fonte, estas boas práticas são
+baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
+Code}, onde sugerem práticas de desenvolvimento úteis para que um código
+tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
+identificam melhorias de implementação através do uso de valores de métricas e
+oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
+códigos.
 
 \chapter{Conclusão}
 
