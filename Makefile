@@ -11,8 +11,12 @@ VIEWPDF= evince
 
 include /usr/share/latex-mk/latex.gmk
 
+rebuild:
+	make clean
+	make
+
 watch:
-	inotify-hookable --watch-files qualificacao.tex --watch-files dissertacao.tex --on-modify-command make
+	inotify-hookable --watch-files qualificacao.tex --watch-files dissertacao.tex --on-modify-command make rebuild
 
 viewpdf_dissertacao:
 	@echo "nao faz nada"
