@@ -4,6 +4,8 @@
 \usepackage{fancyvrb}
 \usepackage[alf]{abntex2cite}
 \usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[maxfloats=100]{morefloats}
 \DeclareGraphicsExtensions{.pdf}
 
 %\date{?? de Junho de 2016}
@@ -80,8 +82,11 @@ problemas comuns enfrentados pelos pesquisadores \cite{Prlic2012}.
 
 \begin{enumerate}
   \item Valores de referência de métricas de código-fonte para ferramentas
-    de análise estática.
-  \item Guia de sugestões de refatoração para ferramentas de análise estática.
+    de análise estática de código-fonte
+  \item Um guia de sugestões para refatoração de ferramentas de análise
+    estática de código-fonte
+  \item Um método para avaliação e caracterização de ferramentas de análise
+    estática de código-fonte
   \item ...
 \end{enumerate}
 
@@ -243,6 +248,8 @@ reflitam os atributos de qualidade dos software científicos estudados.
 \section{Capítulo sobre estatística}\label{estatistica}
 
 (ver TCC de Ronaldo e Kanashiro)
+
+( falar que média não serve, distribuição é a solução... etc )
 
 \chapter{Metodologia}
 
@@ -737,6 +744,256 @@ Source Meter          & java                 & academia  \\
 \label{total-de-ferramentas}
 \end{table}
 
+\subsection{Métricas das ferramentas}
+
+Métricas das ferramentas da indústria e da academia.
+
+\resizebox{\columnwidth}{!}{
+%% begin.rcode metrics-all-projects, echo=FALSE, fig.align='center', col.names=FALSE
+% metrics = read.table("dataset/metrics.dat")
+% knitr::kable(metrics)
+%% end.rcode
+}
+
+\subsection{Percentis de todas as métricas por projeto}
+
+%% begin.rcode percentis-accessanalysis, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta accessanalysis" )
+%% end.rcode
+
+%% begin.rcode percentis-bakar-ali, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta bakar-ali" )
+%% end.rcode
+
+%% begin.rcode percentis-error-prone, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta error-prone" )
+%% end.rcode
+
+%% begin.rcode percentis-indus, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/indus/indus.staticanalyses.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta indus" )
+%% end.rcode
+
+%% begin.rcode percentis-inputtracer, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta inputtracer" )
+%% end.rcode
+
+%% begin.rcode percentis-jastadd, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta jastadd" )
+%% end.rcode
+
+%% begin.rcode percentis-source-meter, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/source-meter/SonarQube-plug-in-master.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta source-meter" )
+%% end.rcode
+
+%% begin.rcode percentis-srcml, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta srcml" )
+%% end.rcode
+
+%% begin.rcode percentis-tacle, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta tacle" )
+%% end.rcode
+
+%% begin.rcode percentis-wala, echo=FALSE, fig.align='center', col.names=FALSE
+% table = metrics_percentis("dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
+% knitr::kable(t(format(table, digits=2)), longtable = TRUE, caption = "pecentis da ferramenta wala" )
+%% end.rcode
+
+\subsection{Percentis de cada projeto por métrica}
+
+%% begin.rcode metrica-acc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("acc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica acc")
+%% end.rcode
+
+%% begin.rcode metrica-accm, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("accm")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica accm")
+%% end.rcode
+
+%% begin.rcode metrica-amloc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("amloc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica amloc")
+%% end.rcode
+
+%% begin.rcode metrica-an, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("an")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica an")
+%% end.rcode
+
+%% begin.rcode metrica-anpm, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("anpm")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica anpm")
+%% end.rcode
+
+%% begin.rcode metrica-asom, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("asom")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica asom")
+%% end.rcode
+
+%% begin.rcode metrica-auv, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("auv")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica auv")
+%% end.rcode
+
+%% begin.rcode metrica-bd, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("bd")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica bd")
+%% end.rcode
+
+%% begin.rcode metrica-bf, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("bf")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica bf")
+%% end.rcode
+
+%% begin.rcode metrica-cbo, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("cbo")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica cbo")
+%% end.rcode
+
+%% begin.rcode metrica-da, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("da")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica da")
+%% end.rcode
+
+%% begin.rcode metrica-dbz, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("dbz")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica dbz")
+%% end.rcode
+
+%% begin.rcode metrica-df, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("df")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica df")
+%% end.rcode
+
+%% begin.rcode metrica-dit, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("dit")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica dit")
+%% end.rcode
+
+%% begin.rcode metrica-dnp, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("dnp")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica dnp")
+%% end.rcode
+
+%% begin.rcode metrica-dupv, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("dupv")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica dupv")
+%% end.rcode
+
+%% begin.rcode metrica-fgbo, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("fgbo")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica fgbo")
+%% end.rcode
+
+%% begin.rcode metrica-lcom4, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("lcom4")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica lcom4")
+%% end.rcode
+
+%% begin.rcode metrica-loc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("loc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica loc")
+%% end.rcode
+
+%% begin.rcode metrica-mlk, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("mlk")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica mlk")
+%% end.rcode
+
+%% begin.rcode metrica-mmloc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("mmloc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica mmloc")
+%% end.rcode
+
+%% begin.rcode metrica-noa, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("noa")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica noa")
+%% end.rcode
+
+%% begin.rcode metrica-noc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("noc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica noc")
+%% end.rcode
+
+%% begin.rcode metrica-nom, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("nom")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica nom")
+%% end.rcode
+
+%% begin.rcode metrica-npa, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("npa")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica npa")
+%% end.rcode
+
+%% begin.rcode metrica-npm, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("npm")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica npm")
+%% end.rcode
+
+%% begin.rcode metrica-obaa, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("obaa")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica obaa")
+%% end.rcode
+
+%% begin.rcode metrica-osf, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("osf")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica osf")
+%% end.rcode
+
+%% begin.rcode metrica-pitfc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("pitfc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica pitfc")
+%% end.rcode
+
+%% begin.rcode metrica-rfc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("rfc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica rfc")
+%% end.rcode
+
+%% begin.rcode metrica-rogu, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("rogu")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica rogu")
+%% end.rcode
+
+%% begin.rcode metrica-rsva, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("rsva")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica rsva")
+%% end.rcode
+
+%% begin.rcode metrica-saigv, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("saigv")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica saigv")
+%% end.rcode
+
+%% begin.rcode metrica-sc, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("sc")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica sc")
+%% end.rcode
+
+%% begin.rcode metrica-ua, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("ua")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica ua")
+%% end.rcode
+
+%% begin.rcode metrica-uaf, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("uaf")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica uaf")
+%% end.rcode
+
+%% begin.rcode metrica-uav, echo=FALSE, fig.align='center', col.names=FALSE
+% table = all_percentis_by_project("uav")
+% knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = "pecentis da métrica uav")
+%% end.rcode
+
 \chapter{Conclusão}
 
 (à fazer)
@@ -745,3 +1002,5 @@ Source Meter          & java                 & academia  \\
 \appendix
 \bibliography{bibliografia}
 \end{document}
+
+% vim: filetype=tex

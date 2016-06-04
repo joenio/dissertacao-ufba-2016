@@ -18,8 +18,15 @@ rebuild:
 watch:
 	inotify-hookable --watch-files qualificacao.tex --watch-files dissertacao.tex --on-modify-command make rebuild
 
+knitr:
+	cd dataset; ./analyze-all-projects; cd ..
+	Rscript qualificacao.R
+
+qualificacao.tex: knitr
+	@echo "running knitr"
+
 viewpdf_dissertacao:
-	@echo "nao faz nada"
+	@echo "done"
 
 viewpdf_qualificacao:
-	@echo "nao faz nada"
+	@echo "done"
