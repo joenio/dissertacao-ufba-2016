@@ -1,0 +1,3233 @@
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src-test/edu/ksu/cis/indus/tools/slicer/SlicerRegressionTestSuite.java
+module edu::ksu::cis::indus::tools::slicer::SlicerRegressionTestSuite
+   inherits from junit::framework::TestCase
+   function main(final String[]) in line 60
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses function main(final String[]) defined in edu::ksu::cis::indus::tools::slicer::SlicerRegressionTestSuite
+   function setupTests(final String,final TestSuite) in line 96
+      48 lines of code
+      2 parameters
+      6 conditional paths
+      uses function suite() defined in edu::ksu::cis::indus::tools::slicer::SlicerRegressionTestSuite
+   function suite() in line 74
+      protection public
+      11 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable SLICER_TEST_PROPERTIES_FILE defined in edu::ksu::cis::indus::tools::slicer::SlicerRegressionTestSuite
+      uses function setupTests(final String,final TestSuite) defined in edu::ksu::cis::indus::tools::slicer::SlicerRegressionTestSuite
+   variable SLICER_TEST_PROPERTIES_FILE in line 51
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src-test/edu/ksu/cis/indus/tools/slicer/SlicerTestSetup.java
+module edu::ksu::cis::indus::tools::slicer::SlicerTestSetup
+   inherits from edu::ksu::cis::indus::AbstractXMLBasedTestSetup
+   function setUp() in line 98
+      29 lines of code
+      0 parameters
+      2 conditional paths
+      uses function setIDGenerator(final IJimpleIDGenerator) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function destringizeConfiguration(final String) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function stringizeConfig() defined in edu::ksu::cis::indus::tools::slicer::SlicerTestSetup
+      uses function getCallGraph() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function getSystem() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function getDAs() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function getStmtGraphFactory() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function stringizeConfig() in line 161
+      31 lines of code
+      0 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerTestSetup
+   function tearDown() in line 133
+      20 lines of code
+      0 parameters
+      3 conditional paths
+      uses function reset() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function getDAs() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function SlicerTestSetup(final TestSuite,final String[],final String,final String,final String) in line 78
+      protection public
+      14 lines of code
+      5 parameters
+      2 conditional paths
+      uses function setOutputDirectory(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   variable LOGGER in line 59
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src-test/edu/ksu/cis/indus/tools/slicer/XMLBasedSlicerTest.java
+module edu::ksu::cis::indus::tools::slicer::XMLBasedSlicerTest
+   inherits from edu::ksu::cis::indus::AbstractXMLBasedTest
+   function getXMLizer() in line 56
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable setup defined in edu::ksu::cis::indus::tools::slicer::XMLBasedSlicerTest
+      uses function getXMLizer() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function localSetup() in line 63
+      5 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable setup defined in edu::ksu::cis::indus::tools::slicer::XMLBasedSlicerTest
+      uses function getSystem() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function XMLBasedSlicerTest(final SlicerTestSetup) in line 48
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable setup defined in edu::ksu::cis::indus::tools::slicer::XMLBasedSlicerTest
+   variable setup in line 39
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src-xml/edu/ksu/cis/indus/tools/slicer/SliceXMLizerCLI.java
+module edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   inherits from edu::ksu::cis::indus::common::soot::SootBasedDriver
+   inherits from edu::ksu::cis::indus::tools::IToolProgressListener
+   function dumpJimple(final String,final boolean,final boolean,final String) in line 855
+      52 lines of code
+      4 parameters
+      11 conditional paths
+      uses variable outputDirectory defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function executeForMultipleSlices() in line 375
+      44 lines of code
+      0 parameters
+      10 conditional paths
+      uses variable preserveThrowStmtsInAppClassesOnly defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function addCriteriaGenerator(final ISliceCriteriaGenerator<?,?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function processCriteriaSpecFile() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function addCriteria(final Collection< ISliceCriterion >) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function setSystem(final IEnvironment) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function setRootMethods(final Collection< SootMethod >) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function setSliceScopeDefinition(final SpecificationBasedScopeDefinition) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses variable sliceScope defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setTagName(final String) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses variable nameOfSliceTag defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable SLICE_MAJOR_PHASE defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function outputStats(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function dumpJimple(final String,final boolean,final boolean,final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function getCriteria() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses variable preserveThrowStatements defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function evaluate(final Stmt) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI::CustomCriteriaPredicate
+      uses variable lineBasedCriteriaGenerator defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable info defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function extractExclusionListForCompaction(final String) in line 735
+      18 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable retentionList defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function getXMLizer() in line 347
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable nameOfSliceTag defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function main(final String[]) in line 290
+      protection public
+      29 lines of code
+      1 parameters
+      3 conditional paths
+      uses function parseCommandLine(final String[],final SliceXMLizerCLI) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable generateSeparateSlicesForEachThrowStmt defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setIDGenerator(final IJimpleIDGenerator) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function writeSliceXML() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function outputStats(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable nameOfSliceTag defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable residualize defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function reset() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function executeForMultipleSlices() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function outputStats(final String) in line 913
+      26 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable FLOW_ANALYSIS_TAG_NAME defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses variable detailedStats defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function parseCommandLine(final String[],final SliceXMLizerCLI) in line 533
+      175 lines of code
+      2 parameters
+      16 conditional paths
+      uses function printUsage(final Options) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setConfiguration(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function processCommandLineForConfiguration(final CommandLine) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setupOutputOptions(final CommandLine,final SliceXMLizerCLI) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setConfigName(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function showGUI() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setSliceCriteriaSpecFile(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setResidulization(final boolean) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function extractExclusionListForCompaction(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable sliceScope defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setLineBasedCriteriaSpecFile(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable preserveThrowStatements defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function parseThrowStmtTreatmentOptions(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable generateSeparateSlicesForEachThrowStmt defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable residualize defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable detailedStats defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable shouldWriteSliceXML defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function parseThrowStmtTreatmentOptions(final String) in line 714
+      14 lines of code
+      1 parameters
+      5 conditional paths
+      uses variable preserveThrowStmtsInAppClassesOnly defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable generateSeparateSlicesForEachThrowStmt defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function printUsage(final Options) in line 760
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function processCommandLineForConfiguration(final CommandLine) in line 774
+      5 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable configFileName defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function processCriteriaSpecFile() in line 947
+      38 lines of code
+      0 parameters
+      6 conditional paths
+      uses variable criteriaSpecFileName defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function residualize() in line 989
+      33 lines of code
+      0 parameters
+      9 conditional paths
+      uses variable preResXMLJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable preResJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function dumpJimple(final String,final boolean,final boolean,final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable nameOfSliceTag defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable retentionList defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable postResJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable postResXMLJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setConfigName(final String) in line 822
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses function setActiveConfiguration(final String) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function setConfiguration(final String) in line 337
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses function destringizeConfiguration(final String) defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function setIDGenerator(final IJimpleIDGenerator) in line 357
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setLineBasedCriteriaSpecFile(final String) in line 468
+      13 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable lineBasedCriteriaGenerator defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setTagToResidualize(final String) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable nameOfSliceTag defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setBasicBlockGraphMgr(final BasicBlockGraphMgr) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function residualizeSystem(final IEnvironment) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function getXMLizer() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setOutputDirectory(final String) in line 367
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable outputDirectory defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setResidulization(final boolean) in line 831
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses function residualize() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setSliceCriteriaSpecFile(final String) in line 841
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable criteriaSpecFileName defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function setupOutputOptions(final CommandLine,final SliceXMLizerCLI) in line 787
+      28 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable preResXMLJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable postResXMLJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable preResJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable postResJimpleDump defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function setOutputDirectory(final String) defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   function showGUI() in line 1026
+      53 lines of code
+      0 parameters
+      7 conditional paths
+      uses function initialize() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses variable configFileName defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function stringizeConfiguration() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function toolProgess(final ToolProgressEvent) in line 325
+      protection public
+      5 lines of code
+      1 parameters
+      2 conditional paths
+   function writeSliceXML() in line 1083
+      12 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable shouldWriteSliceXML defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses function getXMLizer() defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+      uses variable outputDirectory defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI
+   variable configFileName in line 176
+   variable criteriaSpecFileName in line 211
+   variable detailedStats in line 267
+   variable generateSeparateSlicesForEachThrowStmt in line 262
+   variable idGenerator in line 206
+   variable lineBasedCriteriaGenerator in line 216
+   variable nameOfSliceTag in line 221
+   variable outputDirectory in line 186
+   variable postResJimpleDump in line 226
+   variable postResXMLJimpleDump in line 231
+   variable preResJimpleDump in line 236
+   variable preResXMLJimpleDump in line 242
+   variable preserveThrowStatements in line 272
+   variable preserveThrowStmtsInAppClassesOnly in line 257
+   variable residualize in line 247
+   variable retentionList in line 201
+   variable shouldWriteSliceXML in line 252
+   variable sliceScope in line 181
+module edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI::CustomCriteriaPredicate
+   inherits from edu::ksu::cis::indus::tools::slicer::criteria::predicates::AbstractSliceCriteriaPredicate
+   function evaluate(final Stmt) in line 138
+      protection public
+      12 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable countingStatus defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI::CustomCriteriaPredicate
+      uses variable stmts defined in edu::ksu::cis::indus::tools::slicer::SliceXMLizerCLI::CustomCriteriaPredicate
+   variable countingStatus in line 120
+   variable stmts in line 125
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src-xml/edu/ksu/cis/indus/tools/slicer/TagBasedSliceXMLizer.java
+module edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer
+   inherits from edu::ksu::cis::indus::xmlizer::AbstractXMLizer
+   function getFileName(final String) in line 314
+      protection public
+      10 lines of code
+      1 parameters
+      2 conditional paths
+   function writeXML(final Map) in line 333
+      protection public
+      24 lines of code
+      1 parameters
+      2 conditional paths
+      uses function getFileName(final String) defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer
+      uses variable processor defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses function hookup(final ProcessingController) defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses function unhook(final ProcessingController) defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function TagBasedSliceXMLizer(final String,final IJimpleIDGenerator) in line 92
+      protection public
+      5 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable processor defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer
+   variable processor in line 82
+module edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   inherits from edu::ksu::cis::indus::processing::AbstractProcessor
+   function callback(final ValueBox,final Context) in line 146
+      protection public
+      17 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function callback(final Stmt,final Context) in line 167
+      protection public
+      21 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable processingStmt defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function callback(final SootMethod) in line 192
+      protection public
+      23 lines of code
+      1 parameters
+      5 conditional paths
+      uses variable processingStmt defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable processingMethod defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function callback(final SootClass) in line 219
+      protection public
+      28 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable processingStmt defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable processingMethod defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable processingClass defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function callback(final SootField) in line 251
+      protection public
+      13 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function consolidate() in line 268
+      protection public
+      7 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function hookup(final ProcessingController) in line 281
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+   function processingBegins() in line 290
+      protection public
+      8 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable writer defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   function unhook(final ProcessingController) in line 304
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+   function TagBasedSliceProcessor(final IJimpleIDGenerator) in line 139
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable idGenerator defined in edu::ksu::cis::indus::tools::slicer::TagBasedSliceXMLizer::TagBasedSliceProcessor
+   variable idGenerator in line 115
+   variable processingClass in line 120
+   variable processingMethod in line 125
+   variable processingStmt in line 130
+   variable writer in line 110
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/AbstractSliceCriterion.java
+module edu::ksu::cis::indus::slicer::AbstractSliceCriterion
+   inherits from edu::ksu::cis::indus::slicer::ISliceCriterion
+   abstract class
+   function equals(final Object) in line 83
+      protection public
+      13 lines of code
+      1 parameters
+      1 conditional paths
+   function getCallStack() in line 69
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getOccurringMethod() in line 76
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function hashCode() in line 100
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+   function initialize(final SootMethod) in line 119
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setCallStack(final Stack< CallTriple >) in line 62
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function toString() in line 108
+      protection public
+      5 lines of code
+      0 parameters
+      1 conditional paths
+   variable callStack in line 51
+   variable considerExecution in line 57
+   variable method in line 44
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/BackwardSlicingPart.java
+module edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   inherits from edu::ksu::cis::indus::slicer::IDirectionSensitivePartOfSlicingEngine
+   function considerMethodExitForCriteriaGeneration(final SootMethod,final boolean) in line 513
+      27 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable exitTransformedMethods2exitpoints defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function getCollector() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function continueProcessing() in line 179
+      protection public
+      37 lines of code
+      0 parameters
+      8 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable callee2callsites defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable method2params defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable CONSIDER_EXECUTION defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function generateCriteriaForReceiverOfAt(final Stmt,final SootMethod) in line 551
+      15 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function generateCriteriaForTheCallToMethod(final SootMethod,final SootMethod,final Stmt) in line 223
+      protection public
+      22 lines of code
+      3 parameters
+      3 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function generateCriteriaForReceiverOfAt(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function recordCallInfoForProcessingArgsTo(final Stmt,final SootMethod,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function generateCriteriaToIncludeCallees(final Stmt,final SootMethod,final Collection< SootMethod >) in line 252
+      protection public
+      13 lines of code
+      3 parameters
+      3 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function processTailsOf(final Collection< SootMethod >,final Stmt,final SootMethod,final IClosure< Pair< Stmt, SootMethod >>) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable tailStmtInclusionClosure defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function getDependences(final IDependencyAnalysis,final Object,final SootMethod) in line 271
+      protection public
+      19 lines of code
+      3 parameters
+      5 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function getEntityForIdentifierBasedDataDA(final Local,final Stmt) in line 296
+      protection public
+      3 lines of code
+      2 parameters
+      1 conditional paths
+   function processLocalAt(final Local,final Stmt,final SootMethod) in line 306
+      protection public
+      33 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function processTailsOf(final Collection< SootMethod >,final Stmt,final SootMethod,final IClosure< Pair< Stmt, SootMethod >>) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable returnValueInclClosure defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function processNewExpr(final Stmt,final SootMethod) in line 347
+      protection public
+      31 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function processParameterRef(final IdentityStmt,final SootMethod) in line 389
+      protection public
+      48 lines of code
+      2 parameters
+      8 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable method2params defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function ifInsideContext() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function returnFromMethod() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaForReceiverOfAt(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function enterMethod(final CallTriple) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function processSuperInitInInit(final SootMethod,final BasicBlockGraph) in line 574
+      40 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function processTailsOf(final Collection< SootMethod >,final Stmt,final SootMethod,final IClosure< Pair< Stmt, SootMethod >>) in line 628
+      48 lines of code
+      4 parameters
+      8 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function considerMethodExitForCriteriaGeneration(final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable returnValueInclClosure defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function enterMethod(final CallTriple) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function processSuperInitInInit(final SootMethod,final BasicBlockGraph) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable exitTransformedMethods2exitpoints defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function returnFromMethod() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function recordCallInfoForProcessingArgsTo(final Stmt,final SootMethod,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses function generateCriteriaForReceiverOfAt(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function recordCallInfoForProcessingArgsTo(final Stmt,final SootMethod,final SootMethod) in line 685
+      16 lines of code
+      3 parameters
+      3 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable callee2callsites defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function reset() in line 443
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable callee2callsites defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+   function retrieveValueBoxesToTransformExpr(final ValueBox,final Stmt) in line 452
+      protection public
+      27 lines of code
+      2 parameters
+      4 conditional paths
+      uses function getCollector() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function retrieveValueBoxesToTransformStmt(final Stmt) in line 485
+      protection public
+      17 lines of code
+      1 parameters
+      3 conditional paths
+   variable callee2callsites in line 139
+   variable CONSIDER_EXECUTION in line 124
+   variable exitTransformedMethods2exitpoints in line 144
+   variable LOGGER in line 129
+   variable method2params in line 152
+   variable returnValueInclClosure in line 157
+   variable tailStmtInclusionClosure in line 162
+module edu::ksu::cis::indus::slicer::BackwardSlicingPart::ReturnValueInclusionClosure
+   inherits from edu::ksu::cis::indus::common::collections::IClosure
+   function execute(final Pair< Stmt, SootMethod >) in line 86
+      protection public
+      10 lines of code
+      1 parameters
+      2 conditional paths
+module edu::ksu::cis::indus::slicer::BackwardSlicingPart::TailStmtInclusionClosure
+   inherits from edu::ksu::cis::indus::common::collections::IClosure
+   function execute(final Pair< Stmt, SootMethod >) in line 113
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/CompleteSlicingPart.java
+module edu::ksu::cis::indus::slicer::CompleteSlicingPart
+   inherits from edu::ksu::cis::indus::slicer::IDirectionSensitivePartOfSlicingEngine
+   function continueProcessing() in line 73
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function continueProcessing() defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function continueProcessing() defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function generateCriteriaForTheCallToMethod(final SootMethod,final SootMethod,final Stmt) in line 83
+      protection public
+      4 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function generateCriteriaForTheCallToMethod(final SootMethod,final SootMethod,final Stmt) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function generateCriteriaForTheCallToMethod(final SootMethod,final SootMethod,final Stmt) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function generateCriteriaToIncludeCallees(final Stmt,final SootMethod,final Collection) in line 94
+      protection public
+      4 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function generateCriteriaToIncludeCallees(final Stmt,final SootMethod,final Collection< SootMethod >) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function generateCriteriaToIncludeCallees(final Stmt,final SootMethod,final Collection< SootMethod >) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function getDependences(final IDependencyAnalysis,final Object,final SootMethod) in line 104
+      protection public
+      11 lines of code
+      3 parameters
+      2 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function getDependences(final IDependencyAnalysis,final Object,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function getDependences(final IDependencyAnalysis,final Object,final SootMethod) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function getEntityForIdentifierBasedDataDA(final Local,final Stmt) in line 121
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function getEntityForIdentifierBasedDataDA(final Local,final Stmt) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function getEntityForIdentifierBasedDataDA(@SuppressWarnings("unused") final Local,final Stmt) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function processLocalAt(final Local,final Stmt,final SootMethod) in line 131
+      protection public
+      4 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processLocalAt(final Local,final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processLocalAt(final Local,final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function processNewExpr(final Stmt,final SootMethod) in line 141
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processNewExpr(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processNewExpr(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function processParameterRef(final IdentityStmt,final SootMethod) in line 151
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processParameterRef(final IdentityStmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function processParameterRef(final IdentityStmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function reset() in line 161
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function reset() defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function reset() defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function retrieveValueBoxesToTransformExpr(final ValueBox,final Stmt) in line 171
+      protection public
+      6 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function retrieveValueBoxesToTransformExpr(final ValueBox,final Stmt) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function retrieveValueBoxesToTransformExpr(final ValueBox,final Stmt) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function retrieveValueBoxesToTransformStmt(final Stmt) in line 183
+      protection public
+      6 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function retrieveValueBoxesToTransformStmt(final Stmt) defined in edu::ksu::cis::indus::slicer::BackwardSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses function retrieveValueBoxesToTransformStmt(final Stmt) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function CompleteSlicingPart(final SlicingEngine) in line 62
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses variable backwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+      uses variable forwardPart defined in edu::ksu::cis::indus::slicer::CompleteSlicingPart
+   variable backwardPart in line 44
+   variable engine in line 49
+   variable forwardPart in line 54
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/CriteriaSpecHelper.java
+module edu::ksu::cis::indus::slicer::CriteriaSpecHelper
+   function getOccurringExpr(final ISliceCriterion) in line 50
+      protection public
+      10 lines of code
+      1 parameters
+      2 conditional paths
+   function getOccurringStmt(final ISliceCriterion) in line 70
+      protection public
+      13 lines of code
+      1 parameters
+      3 conditional paths
+   function isConsiderExecution(final ISliceCriterion) in line 92
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function CriteriaSpecHelper() in line 37
+      3 lines of code
+      0 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/DependenceExtractor.java
+module edu::ksu::cis::indus::slicer::DependenceExtractor
+   inherits from edu::ksu::cis::indus::common::collections::IClosure
+   function execute(final IDependencyAnalysis<?,?,?,?,?,?>) in line 232
+      protection public
+      9 lines of code
+      1 parameters
+      1 conditional paths
+   function getEntityForIdentifierBasedDataDA(final Local,final Stmt) in line 266
+      protection public
+      3 lines of code
+      2 parameters
+      1 conditional paths
+   function populateContextsForInterProceduralDependences(final Collection< IDependencyAnalysis.DependenceSort >,final Collection<?>) in line 326
+      55 lines of code
+      2 parameters
+      1 conditional paths
+   function populateCriteriaBaseToContextsMap(final IDependencyAnalysis<?,?,?,?,?,?>,final Collection<?>) in line 389
+      29 lines of code
+      2 parameters
+      1 conditional paths
+   function setDepID2ContextRetrieverMapping(@NonNull final Map< IDependencyAnalysis.DependenceSort, ICallingContextRetriever >) in line 275
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function DependenceExtractor(final SlicingEngine) in line 219
+      6 lines of code
+      1 parameters
+      1 conditional paths
+   variable criteriabase2contexts in line 186
+   variable dependences in line 191
+   variable depID2ctxtRetriever in line 196
+   variable engine in line 201
+   variable entity in line 176
+   variable LOGGER in line 116
+   variable occurringCallingContext in line 206
+   variable occurringMethod in line 181
+   variable READY_DA_PPR in line 122
+   variable REFERENTIAL_DA_PPR in line 138
+   variable retriever in line 211
+   variable SYNCHRONIZATION_DA_PPR in line 163
+module edu::ksu::cis::indus::slicer::DependenceExtractor::IDependenceRetriver
+   function getDependences(@NonNull IDependencyAnalysis<?,?,?,?,?,?>,@NonNull Object,@NonNull SootMethod) in line 81
+      protection public
+      1 lines of code
+      3 parameters
+      1 conditional paths
+   function getEntityForIdentifierBasedDataDA(Local,Stmt) in line 91
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+module edu::ksu::cis::indus::slicer::DependenceExtractor::IProgramPointRetriever
+   function getProgramPoints(Stmt) in line 110
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/ExprLevelSliceCriterion.java
+module edu::ksu::cis::indus::slicer::ExprLevelSliceCriterion
+   inherits from edu::ksu::cis::indus::slicer::AbstractSliceCriterion
+   function equals(final Object) in line 53
+      protection public
+      13 lines of code
+      1 parameters
+      1 conditional paths
+   function getCriterion() in line 89
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getOccurringStmt() in line 99
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function hashCode() in line 70
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function toString() in line 77
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+   variable expr in line 48
+   variable stmt in line 43
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/ForwardSlicingPart.java
+module edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   inherits from edu::ksu::cis::indus::slicer::IDirectionSensitivePartOfSlicingEngine
+   function continueProcessing() in line 82
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function generateCriteriaForTheCallToMethod(final SootMethod,final SootMethod,final Stmt) in line 92
+      protection public
+      21 lines of code
+      3 parameters
+      3 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function generateCriteriaToIncludeArgumentReadStmts(final int,final Collection< SootMethod >) in line 320
+      23 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function generateCriteriaToIncludeCallees(final Stmt,final SootMethod,final Collection< SootMethod >) in line 120
+      protection public
+      31 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+      uses function enterMethod(final CallTriple) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function returnFromMethod() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function getDependences(final IDependencyAnalysis,final Object,final SootMethod) in line 157
+      protection public
+      15 lines of code
+      3 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function getEntityForIdentifierBasedDataDA(@SuppressWarnings("unused") final Local,final Stmt) in line 178
+      protection public
+      9 lines of code
+      2 parameters
+      2 conditional paths
+   function processLocalAt(final Local,final Stmt,final SootMethod) in line 193
+      protection public
+      43 lines of code
+      3 parameters
+      7 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+      uses function enterMethod(final CallTriple) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaToIncludeArgumentReadStmts(final int,final Collection< SootMethod >) defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+      uses function returnFromMethod() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function processNewExpr(final Stmt,final SootMethod) in line 242
+      protection public
+      6 lines of code
+      2 parameters
+      2 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function processParameterRef(final IdentityStmt,final SootMethod) in line 254
+      protection public
+      3 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+   function reset() in line 263
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function retrieveValueBoxesToTransformExpr(final ValueBox,final Stmt) in line 272
+      protection public
+      29 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable engine defined in edu::ksu::cis::indus::slicer::ForwardSlicingPart
+      uses function getCollector() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function retrieveValueBoxesToTransformStmt(final Stmt) in line 307
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   variable engine in line 65
+   variable LOGGER in line 60
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/IDirectionSensitivePartOfSlicingEngine.java
+module edu::ksu::cis::indus::slicer::IDirectionSensitivePartOfSlicingEngine
+   inherits from edu::ksu::cis::indus::slicer::DependenceExtractor::IDependenceRetriver
+   function continueProcessing() in line 44
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function generateCriteriaForTheCallToMethod(SootMethod,SootMethod,Stmt) in line 58
+      protection public
+      1 lines of code
+      3 parameters
+      1 conditional paths
+   function generateCriteriaToIncludeCallees(Stmt,SootMethod,Collection< SootMethod >) in line 72
+      protection public
+      1 lines of code
+      3 parameters
+      1 conditional paths
+   function processLocalAt(Local,Stmt,SootMethod) in line 82
+      protection public
+      1 lines of code
+      3 parameters
+      1 conditional paths
+   function processNewExpr(final Stmt,final SootMethod) in line 95
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function processParameterRef(IdentityStmt,SootMethod) in line 107
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function reset() in line 112
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function retrieveValueBoxesToTransformExpr(ValueBox,Stmt) in line 124
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function retrieveValueBoxesToTransformStmt(Stmt) in line 135
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/ISliceCriterion.java
+module edu::ksu::cis::indus::slicer::ISliceCriterion
+   function getCallStack() in line 63
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function getOccurringMethod() in line 72
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function setCallStack(final Stack< CallTriple >) in line 81
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/MethodLevelSliceCriterion.java
+module edu::ksu::cis::indus::slicer::MethodLevelSliceCriterion
+   inherits from edu::ksu::cis::indus::slicer::AbstractSliceCriterion
+   function equals(Object) in line 31
+      protection public
+      11 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/SliceCollector.java
+module edu::ksu::cis::indus::slicer::SliceCollector
+   function getClassesInSlice() in line 103
+      protection public
+      3 lines of code
+      0 parameters
+      3 conditional paths
+      uses variable taggedClasses defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function getMethodsInSlice() in line 133
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable taggedMethods defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function getTagName() in line 142
+      protection public
+      3 lines of code
+      0 parameters
+      3 conditional paths
+      uses variable tagName defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function hasBeenCollected(final Host) in line 174
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable tagName defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function includeInSlice(final Collection<?extends Host >) in line 186
+      protection public
+      6 lines of code
+      1 parameters
+      2 conditional paths
+   function includeInSlice(final Host) in line 200
+      protection public
+      45 lines of code
+      1 parameters
+      11 conditional paths
+      uses variable tagName defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable tag defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable taggedMethods defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable taggedClasses defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processGotos() in line 251
+      protection public
+      9 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable engine defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function process(final Collection< SootMethod >,final BasicBlockGraphMgr) defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses variable taggedMethods defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function toString() in line 264
+      protection public
+      40 lines of code
+      0 parameters
+      8 conditional paths
+      uses variable taggedClasses defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function processGotos() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable taggedMethods defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable tag defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable tagName defined in edu::ksu::cis::indus::slicer::SliceCollector
+   variable engine in line 66
+   variable LOGGER in line 61
+   variable tag in line 71
+   variable taggedClasses in line 76
+   variable taggedMethods in line 81
+   variable tagName in line 86
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/SliceCriteriaFactory.java
+module edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function clone(final ISliceCriterion) in line 125
+      protection public
+      35 lines of code
+      1 parameters
+      7 conditional paths
+      uses function getStmtCriteria(final SootMethod,final Stmt,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function setCallStack(final Stack< CallTriple >) defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+      uses function getExprCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function getMethodCriteria(final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) in line 175
+      protection public
+      19 lines of code
+      4 parameters
+      4 conditional paths
+      uses function getExprCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getCriteria(final SootMethod) in line 203
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+   function getCriteria(final SootMethod,final Stmt,final boolean) in line 221
+      protection public
+      3 lines of code
+      3 parameters
+      1 conditional paths
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getCriteria(final SootMethod,final Stmt,final boolean,final boolean) in line 239
+      protection public
+      16 lines of code
+      4 parameters
+      3 conditional paths
+      uses function getStmtCriteria(final SootMethod,final Stmt,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function getExprCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) in line 269
+      protection public
+      4 lines of code
+      4 parameters
+      1 conditional paths
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getCriteria(final SootMethod,final Stmt,final ValueBox,final boolean,final boolean) in line 289
+      protection public
+      15 lines of code
+      5 parameters
+      3 conditional paths
+      uses function getExprCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getExprCriteria(final SootMethod,final Stmt,final ValueBox,final boolean) in line 317
+      7 lines of code
+      4 parameters
+      1 conditional paths
+   function getFactory() in line 98
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable SINGLETON defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function getMethodCriteria(final SootMethod,final boolean) in line 334
+      6 lines of code
+      2 parameters
+      1 conditional paths
+   function getStmtCriteria(final SootMethod,final Stmt,final boolean) in line 352
+      6 lines of code
+      3 parameters
+      1 conditional paths
+   function isSlicingCriterion(final Object) in line 108
+      protection public
+      8 lines of code
+      1 parameters
+      2 conditional paths
+   function SliceCriteriaFactory() in line 86
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable SINGLETON in line 79
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/SliceGotoProcessor.java
+module edu::ksu::cis::indus::slicer::SliceGotoProcessor
+   function methodBodyContainsNonTrivialSlice(@NonNull @NonNullContainer final Collection< BasicBlock >) in line 198
+      13 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable sliceCollector defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function process(final Collection< SootMethod >,final BasicBlockGraphMgr) in line 96
+      protection public
+      11 lines of code
+      2 parameters
+      3 conditional paths
+   function process(final SootMethod,final BasicBlockGraph) in line 116
+      74 lines of code
+      2 parameters
+      11 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses variable method defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function processForIntraBasicBlockGotos(@NonNull final BasicBlock,@NonNull @NonNullContainer final Collection< BasicBlock >) defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function methodBodyContainsNonTrivialSlice(@NonNull @NonNullContainer final Collection< BasicBlock >) defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses variable GOTO_STMT_PREDICATE defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses variable sliceCollector defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processForIntraBasicBlockGotos(@NonNull final BasicBlock,@NonNull @NonNullContainer final Collection< BasicBlock >) in line 219
+      15 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable sliceCollector defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable GOTO_STMT_PREDICATE defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processForIntraBasicBlockGotos(final BasicBlockGraph) in line 244
+      9 lines of code
+      1 parameters
+      2 conditional paths
+      uses function processForIntraBasicBlockGotos(@NonNull final BasicBlock,@NonNull @NonNullContainer final Collection< BasicBlock >) defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+   function SliceGotoProcessor(final SliceCollector) in line 84
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable sliceCollector defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+   variable GOTO_STMT_PREDICATE in line 61
+      protection public
+   variable LOGGER in line 66
+   variable method in line 76
+   variable sliceCollector in line 71
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/SliceType.java
+module edu::ksu::cis::indus::slicer::SliceType
+   function name(@NonNull final SliceType) in line 51
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   variable BACKWARD_SLICE in line 33
+      protection public
+   variable COMPLETE_SLICE in line 38
+      protection public
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/SlicingEngine.java
+module edu::ksu::cis::indus::slicer::SlicingEngine
+   function enterMethod(final CallTriple) in line 229
+      protection public
+      8 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function generateCriteriaBasedOnStmtLevelDependences(final Stmt,final SootMethod,final Collection< IDependencyAnalysis<?,?,?,?,?,?>>) in line 793
+      56 lines of code
+      3 parameters
+      9 conditional paths
+      uses variable dependenceExtractor defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function setCallStackCache(final Stack< CallTriple >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable sliceType defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function generateMethodLevelSliceCriteria(final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function generateCriteriaForInvokeExprIn(final Stmt,final SootMethod) in line 859
+      28 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable cgi defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable nonStartMethodPredicate defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function generateCriteriaForLocals(final Collection< ValueBox >,final Stmt,final SootMethod) in line 897
+      49 lines of code
+      3 parameters
+      8 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controller defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable dependenceExtractor defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function generateMethodLevelSliceCriteria(final SootMethod) in line 953
+      14 lines of code
+      1 parameters
+      3 conditional paths
+      uses function shouldMethodLevelCriteriaBeGenerated(final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function setContext(final Collection< ISliceCriterion >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable workbag defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function getActivePart() in line 243
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable activePart defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function getCollector() in line 253
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function getSystem() in line 262
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable system defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function haveCollectedAllInvocationSites(@NonNull final SootMethod) in line 975
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function ifInsideContext() in line 271
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function includeTypesInSlice(@NonNull @NonNullContainer final Collection< Type >) in line 984
+      11 lines of code
+      1 parameters
+      4 conditional paths
+   function initialize() in line 280
+      protection public
+      9 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function getTagName() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable useInterferenceDACache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controller defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function isNotIncludedInSlice(final Host) in line 1003
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function markAsCollectedAllInvocationSites(@NonNull final SootMethod) in line 1012
+      7 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function recordCallStackForMethod(@NonNull final SootMethod) in line 1026
+      26 lines of code
+      1 parameters
+      7 conditional paths
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function recordCallStackForVisitedMethod(final SimpleNode< Object >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function recordCallStackForVisitedMethod(final SimpleNode< Object >) in line 1061
+      54 lines of code
+      1 parameters
+      10 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function reset() in line 295
+      protection public
+      16 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable cgi defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable criteria defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable activePart defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable workbag defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function returnFromMethod() in line 317
+      protection public
+      11 lines of code
+      0 parameters
+      3 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function ifInsideContext() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setAnalysesControllerAndDependenciesToUse(final AnalysesController,final Collection< IDependencyAnalysis.DependenceSort >) in line 338
+      protection public
+      16 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable controller defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controlflowBasedDAs defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setBasicBlockGraphManager(final BasicBlockGraphMgr) in line 361
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable bbgMgr defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setCallStackCache(final Stack< CallTriple >) in line 1121
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setCgi(final ICallGraphInfo) in line 371
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable cgi defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setContext(final Collection< ISliceCriterion >) in line 1131
+      12 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function setCallStack(final Stack< CallTriple >) defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+   function setDepID2ContextRetrieverMapping(final Map< IDependencyAnalysis.DependenceSort, ICallingContextRetriever >) in line 381
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable dependenceExtractor defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setInitMapper(final INewExpr2InitMapper) in line 391
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable initMapper defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setSliceCriteria(final Collection< ISliceCriterion >) in line 402
+      protection public
+      39 lines of code
+      1 parameters
+      9 conditional paths
+      uses variable controller defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable criteria defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function clone(final ISliceCriterion) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+   function setSliceScopeDefinition(final SpecificationBasedScopeDefinition) in line 447
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable sliceScope defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setSliceType(final SliceType) in line 458
+      protection public
+      12 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable sliceType defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable dependenceExtractor defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setSystem(final IEnvironment) in line 476
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable system defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function setTagName(final String) in line 486
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function shouldMethodLevelCriteriaBeGenerated(final SootMethod) in line 1151
+      13 lines of code
+      1 parameters
+      4 conditional paths
+      uses function isNotIncludedInSlice(final Host) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function haveCollectedAllInvocationSites(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function recordCallStackForMethod(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function slice() in line 493
+      protection public
+      52 lines of code
+      0 parameters
+      32 conditional paths
+      uses variable workbag defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable criteria defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable activePart defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable sliceScope defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable system defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function transformAndGenerateNewCriteriaForExpr(final ExprLevelSliceCriterion) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function transformAndGenerateNewCriteriaForStmt(final Stmt,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function transformAndGenerateNewCriteriaForMethod(final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function isNotIncludedInSlice(final Host) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function haveCollectedAllInvocationSites(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function ifInsideContext() defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function markAsCollectedAllInvocationSites(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable cgi defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function setContext(final Collection< ISliceCriterion >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaForInvokeExprIn(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable sliceType defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable bbgMgr defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable initMapper defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function includeTypesInSlice(@NonNull @NonNullContainer final Collection< Type >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function transformAndGenerateNewCriteriaForExpr(final ExprLevelSliceCriterion) in line 1172
+      36 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable sliceType defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function transformAndGenerateNewCriteriaForStmt(final Stmt,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function transformAndGenerateToConsiderExecution(final Stmt,final SootMethod,final Collection< ValueBox >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaForInvokeExprIn(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function transformAndGenerateNewCriteriaForMethod(final SootMethod) in line 1215
+      18 lines of code
+      1 parameters
+      4 conditional paths
+      uses function generateCriteriaBasedOnStmtLevelDependences(final Stmt,final SootMethod,final Collection< IDependencyAnalysis<?,?,?,?,?,?>>) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controlflowBasedDAs defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function markAsCollectedAllInvocationSites(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function recordCallStackForMethod(@NonNull final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function transformAndGenerateNewCriteriaForStmt(final Stmt,final SootMethod,final boolean) in line 1246
+      35 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable callStackCache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable sliceType defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function transformAndGenerateToConsiderExecution(final Stmt,final SootMethod,final Collection< ValueBox >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaForInvokeExprIn(final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function isNotIncludedInSlice(final Host) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaBasedOnStmtLevelDependences(final Stmt,final SootMethod,final Collection< IDependencyAnalysis<?,?,?,?,?,?>>) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controlflowBasedDAs defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function transformAndGenerateToConsiderExecution(final Stmt,final SootMethod,final Collection< ValueBox >) in line 1292
+      64 lines of code
+      3 parameters
+      12 conditional paths
+      uses function isNotIncludedInSlice(final Host) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable directionSensitiveInfo defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable controller defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable useInterferenceDACache defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function includeTypesInSlice(@NonNull @NonNullContainer final Collection< Type >) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaBasedOnStmtLevelDependences(final Stmt,final SootMethod,final Collection< IDependencyAnalysis<?,?,?,?,?,?>>) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses function generateCriteriaForLocals(final Collection< ValueBox >,final Stmt,final SootMethod) defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   function SlicingEngine() in line 216
+      protection public
+      5 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::slicer::SlicingEngine
+      uses variable callStringGraph defined in edu::ksu::cis::indus::slicer::SlicingEngine
+   variable activePart in line 116
+   variable bbgMgr in line 121
+   variable callStackCache in line 128
+   variable callStringGraph in line 133
+   variable cgi in line 138
+   variable collector in line 143
+   variable controlflowBasedDAs in line 149
+   variable controller in line 154
+   variable criteria in line 161
+   variable dependenceExtractor in line 167
+   variable directionSensitiveInfo in line 172
+   variable initMapper in line 177
+   variable nonStartMethodPredicate in line 182
+   variable sliceScope in line 187
+   variable sliceType in line 194
+   variable system in line 199
+   variable useInterferenceDACache in line 204
+   variable workbag in line 211
+module edu::ksu::cis::indus::slicer::SlicingEngine::NonStartMethodPredicate
+   inherits from edu::ksu::cis::indus::common::collections::IPredicate
+   function evaluate(final SootMethod) in line 103
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/StmtLevelSliceCriterion.java
+module edu::ksu::cis::indus::slicer::StmtLevelSliceCriterion
+   inherits from edu::ksu::cis::indus::slicer::AbstractSliceCriterion
+   function equals(final Object) in line 48
+      protection public
+      12 lines of code
+      1 parameters
+      1 conditional paths
+   function getCriterion() in line 85
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function hashCode() in line 64
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function toString() in line 71
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+   variable stmt in line 43
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/transformations/ExecutableSlicePostProcessorAndModifier.java
+module edu::ksu::cis::indus::slicer::transformations::ExecutableSlicePostProcessorAndModifier
+   inherits from edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function getClassHierarchyContainingClasses(final Collection< SootClass >) in line 67
+      19 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable retain defined in edu::ksu::cis::indus::slicer::transformations::ExecutableSlicePostProcessorAndModifier
+      uses variable environment defined in edu::ksu::cis::indus::slicer::transformations::ExecutableSlicePostProcessorAndModifier
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function ExecutableSlicePostProcessorAndModifier(final IEnvironment,final Collection< String >) in line 59
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable environment defined in edu::ksu::cis::indus::slicer::transformations::ExecutableSlicePostProcessorAndModifier
+      uses variable retain defined in edu::ksu::cis::indus::slicer::transformations::ExecutableSlicePostProcessorAndModifier
+   variable environment in line 50
+   variable retain in line 45
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/slicer/transformations/TagBasedDestructiveSliceResidualizer.java
+module edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   inherits from edu::ksu::cis::indus::processing::AbstractProcessor
+   function callback(final SootClass) in line 612
+      protection public
+      14 lines of code
+      1 parameters
+      3 conditional paths
+      uses function consolidateClass() defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable fieldsToKill defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function callback(final SootField) in line 632
+      protection public
+      9 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable fieldsToKill defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function callback(final SootMethod) in line 647
+      protection public
+      14 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function consolidateMethod() defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function callback(final Stmt,@SuppressWarnings("unused") final Context) in line 669
+      protection public
+      11 lines of code
+      2 parameters
+      3 conditional paths
+      uses function pruneLocals(final Stmt) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable stmtProcessor defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable stmtsToBeNOPed defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function consolidate() in line 686
+      protection public
+      39 lines of code
+      0 parameters
+      8 conditional paths
+      uses function consolidateClass() defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable fieldsToKill defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function consolidateClass() in line 819
+      10 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function consolidateMethod() defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable fieldsToKill defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function consolidateMethod() in line 835
+      97 lines of code
+      0 parameters
+      13 conditional paths
+      uses variable stmtsToBeNOPed defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function removeTrapsNotInSlice(final Body) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function injectReturnsIntoDanglingNopBlocks(final Chain) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function pluginSignatureCorrectBody(final JimpleBody,final Jimple) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function hookup(final ProcessingController) in line 731
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function injectReturnsIntoDanglingNopBlocks(final Chain) in line 940
+      33 lines of code
+      1 parameters
+      5 conditional paths
+   function pluginSignatureCorrectBody(final JimpleBody,final Jimple) in line 981
+      49 lines of code
+      2 parameters
+      5 conditional paths
+   function processingBegins() in line 739
+      protection public
+      9 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable currClass defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable stmtsToBeNOPed defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function pruneLocals(final Stmt) in line 1037
+      18 lines of code
+      1 parameters
+      5 conditional paths
+   function removeTrapsNotInSlice(final Body) in line 1062
+      25 lines of code
+      1 parameters
+      5 conditional paths
+   function residualizeSystem(final IEnvironment) in line 755
+      protection public
+      27 lines of code
+      1 parameters
+      3 conditional paths
+      uses function hookup(final ProcessingController) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function unhook(final ProcessingController) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function setBasicBlockGraphMgr(final BasicBlockGraphMgr) in line 789
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable bbgMgr defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   function setTagToResidualize(final String) in line 799
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function unhook(final ProcessingController) in line 809
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function TagBasedDestructiveSliceResidualizer() in line 593
+      protection public
+      13 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable stmtsToBeNOPed defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable stmtProcessor defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses variable fieldsToKill defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+   variable bbgMgr in line 568
+   variable currClass in line 573
+   variable fieldsToKill in line 578
+   variable stmtProcessor in line 583
+   variable stmtsToBeNOPed in line 588
+module edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::StmtResidualizer
+   inherits from soot::jimple::AbstractStmtSwitch
+   function caseAssignStmt(final AssignStmt) in line 131
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses function residualizeDefStmt(final DefinitionStmt) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::StmtResidualizer
+   function caseIdentityStmt(final IdentityStmt) in line 140
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses function residualizeDefStmt(final DefinitionStmt) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::StmtResidualizer
+   function caseInvokeStmt(final InvokeStmt) in line 149
+      protection public
+      7 lines of code
+      1 parameters
+      2 conditional paths
+      uses function residualize(final ValueBox) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::ValueResidualizer
+   function caseLookupSwitchStmt(final LookupSwitchStmt) in line 162
+      protection public
+      7 lines of code
+      1 parameters
+      2 conditional paths
+   function caseReturnStmt(final ReturnStmt) in line 175
+      protection public
+      7 lines of code
+      1 parameters
+      2 conditional paths
+   function caseTableSwitchStmt(final TableSwitchStmt) in line 188
+      protection public
+      7 lines of code
+      1 parameters
+      2 conditional paths
+   function caseThrowStmt(final ThrowStmt) in line 201
+      protection public
+      69 lines of code
+      1 parameters
+      9 conditional paths
+      uses variable bbgMgr defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer
+      uses function prepareInitIn(final SootClass) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::StmtResidualizer
+   function prepareInitIn(final SootClass) in line 305
+      62 lines of code
+      1 parameters
+      7 conditional paths
+   function residualizeDefStmt(final DefinitionStmt) in line 375
+      26 lines of code
+      1 parameters
+      4 conditional paths
+      uses function residualize(final ValueBox) defined in edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::ValueResidualizer
+module edu::ksu::cis::indus::slicer::transformations::TagBasedDestructiveSliceResidualizer::ValueResidualizer
+   inherits from soot::jimple::AbstractJimpleValueSwitch
+   function caseInterfaceInvokeExpr(final InterfaceInvokeExpr) in line 418
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function caseSpecialInvokeExpr(final SpecialInvokeExpr) in line 428
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function caseStaticInvokeExpr(final StaticInvokeExpr) in line 438
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function caseVirtualInvokeExpr(final VirtualInvokeExpr) in line 447
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function defaultCase(final Object) in line 457
+      protection public
+      8 lines of code
+      1 parameters
+      2 conditional paths
+   function residualize(final ValueBox) in line 472
+      protection public
+      9 lines of code
+      1 parameters
+      2 conditional paths
+   function residualizeInvokeExpr(final InvokeExpr) in line 488
+      14 lines of code
+      1 parameters
+      3 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/toolkits/bandera/SlicerConfiguration.java
+module edu::ksu::cis::indus::toolkits::bandera::SlicerConfiguration
+   function SlicerConfiguration() in line 49
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/SlicerConfiguration.java
+module edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   inherits from edu::ksu::cis::indus::tools::AbstractToolConfiguration
+   inherits from Cloneable
+   inherits from edu::ksu::cis::indus::tools::IToolConfigurationFactory
+   function areAssertionsOnlyInAppClassesConsidered() in line 387
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function areCommonUncheckedExceptionsConsidered() in line 397
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function areSynchronizationsOnlyInAppClassesConsidered() in line 407
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function considerAssertionsInAppClassesOnly(final boolean) in line 417
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function considerCommonUncheckedExceptions(final boolean) in line 427
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function considerSynchronizationsInAppClassesOnly(final boolean) in line 437
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function createToolConfiguration() in line 444
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function equals(final Object) in line 451
+      protection public
+      11 lines of code
+      1 parameters
+      2 conditional paths
+      uses function SlicerConfiguration() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getBooleanProperty(final Comparable<?>) in line 1057
+      10 lines of code
+      1 parameters
+      2 conditional paths
+   function getCallingContextLimit() in line 468
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getDeadlockCriteriaSelectionStrategy() in line 477
+      protection public
+      8 lines of code
+      0 parameters
+      2 conditional paths
+   function getDependenceAnalyses(final IDependencyAnalysis.DependenceSort) in line 493
+      protection public
+      8 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getDivergenceDirection() in line 1074
+      16 lines of code
+      0 parameters
+      4 conditional paths
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getExecutableSlice() in line 507
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getNatureOfDivergenceDepAnalysis() in line 517
+      protection public
+      8 lines of code
+      0 parameters
+      2 conditional paths
+   function getNatureOfInterferenceDepAnalysis() in line 532
+      protection public
+      8 lines of code
+      0 parameters
+      2 conditional paths
+   function getNatureOfReadyDepAnalysis() in line 547
+      protection public
+      8 lines of code
+      0 parameters
+      2 conditional paths
+   function getPropertyAware() in line 561
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getReadyDAClass(final Comparable<?>) in line 1098
+      16 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getSliceForDeadlock() in line 570
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getSliceToPreserveAssertions() in line 579
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function getSliceType() in line 589
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function hashCode() in line 596
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function initialize() in line 604
+      protection public
+      30 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isCallSiteSensitiveReadyUsed() in line 640
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isDivergenceDepAnalysisUsed() in line 649
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isExplicitExceptionalExitSensitiveControlDependenceUsed() in line 659
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isInterferenceDepAnalysisUsed() in line 669
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isNonTerminationSensitiveControlDependenceUsed() in line 679
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isOFAUsedForInterference() in line 688
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isOFAUsedForReady() in line 697
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isReadyDepAnalysisUsed() in line 706
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isReadyRule1Used() in line 716
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isReadyRule2Used() in line 726
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isReadyRule3Used() in line 736
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isReadyRule4Used() in line 746
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isSafeLockAnalysisUsedForReady() in line 755
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function isSynchronizationDepAnalysisUsed() in line 765
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses function getBooleanProperty(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function processProperty(@SuppressWarnings("unused") final Comparable<?>,@SuppressWarnings("unused") final Object) in line 1013
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2critGenerators defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupDeadlockPreservation() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupAssertionPreservation() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupDivergenceDependence() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupSynchronizationDependence() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupInterferenceDependence() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupReadyDependence() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupSliceTypeRelatedData() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setCallingContextLimit(final int) in line 774
+      protection public
+      9 lines of code
+      1 parameters
+      2 conditional paths
+   function setDeadlockCriteriaSelectionStrategy(final String) in line 790
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setExecutableSlice(final boolean) in line 800
+      protection public
+      7 lines of code
+      1 parameters
+      3 conditional paths
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function equals(final Object) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+   function setNatureOfDivergenceDepAnalysis(final String) in line 816
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setNatureOfInterferenceDepAnalysis(final String) in line 828
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setNatureOfReadyDepAnalysis(final String) in line 840
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setPropertyAware(final boolean) in line 849
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setSliceForDeadlock(final boolean) in line 859
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setSliceToPreserveAssertions(final boolean) in line 868
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setSliceType(final SliceType) in line 878
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setupAssertionPreservation() in line 1118
+      17 lines of code
+      0 parameters
+      3 conditional paths
+      uses function areAssertionsOnlyInAppClassesConsidered() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2critGenerators defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable ASSERTION_PRESERVING_CRITERIA_GENERATOR_ID defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupDeadlockPreservation() in line 1141
+      29 lines of code
+      0 parameters
+      6 conditional paths
+      uses function getSliceForDeadlock() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2critGenerators defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable DEADLOCK_PRESERVING_CRITERIA_GENERATOR_ID defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setCriteriaContextualizer(final ISliceCriteriaContextualizer) defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::AbstractSliceCriteriaGenerator
+      uses variable DUMMY_CONTEXTUALIZER defined in edu::ksu::cis::indus::tools::slicer::contextualizers::ISliceCriteriaContextualizer
+      uses function setCriteriaFilterPredicate(final ISliceCriteriaPredicate< T2 >) defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::AbstractSliceCriteriaGenerator
+      uses function getCallingContextLimit() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function areSynchronizationsOnlyInAppClassesConsidered() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setSiteSelectionPredicate(final IPredicate< T1 >) defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::AbstractSliceCriteriaGenerator
+   function setupDivergenceDependence() in line 1176
+      46 lines of code
+      0 parameters
+      9 conditional paths
+      uses function isDivergenceDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getNatureOfDivergenceDepAnalysis() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getDivergenceDirection() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupInterferenceDependence() in line 1228
+      80 lines of code
+      0 parameters
+      7 conditional paths
+      uses function isInterferenceDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getNatureOfInterferenceDepAnalysis() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isOFAUsedForInterference() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupNatureOfReadyDep(final Comparable<?>) in line 1314
+      60 lines of code
+      1 parameters
+      5 conditional paths
+      uses function getReadyDAClass(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupRDARules() in line 1378
+      28 lines of code
+      0 parameters
+      6 conditional paths
+      uses function isReadyRule1Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule2Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule3Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule4Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupReadyDependence() in line 1410
+      36 lines of code
+      0 parameters
+      5 conditional paths
+      uses function isReadyDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupNatureOfReadyDep(final Comparable<?>) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getNatureOfReadyDepAnalysis() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isOFAUsedForReady() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isSafeLockAnalysisUsedForReady() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isCallSiteSensitiveReadyUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupRDARules() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupSliceTypeRelatedData() in line 1452
+      27 lines of code
+      0 parameters
+      5 conditional paths
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isNonTerminationSensitiveControlDependenceUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+   function setupSynchronizationDependence() in line 1483
+      12 lines of code
+      0 parameters
+      2 conditional paths
+      uses function isSynchronizationDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function useCallSiteSensitiveReady(final boolean) in line 887
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useDivergenceDepAnalysis(final boolean) in line 896
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useExplicitExceptionalExitSensitiveControlDependence(final boolean) in line 906
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useInterferenceDepAnalysis(final boolean) in line 915
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useNonTerminationSensitiveControlDependence(final boolean) in line 925
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useOFAForInterference(final boolean) in line 934
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useOFAForReady(final boolean) in line 943
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useReadyDepAnalysis(final boolean) in line 952
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useReadyRule1(final boolean) in line 961
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useReadyRule2(final boolean) in line 970
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useReadyRule3(final boolean) in line 979
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useReadyRule4(final boolean) in line 988
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useSafeLockAnalysisForReady(final boolean) in line 997
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function useSynchronizationDepAnalysis(final boolean) in line 1006
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function SlicerConfiguration() in line 321
+      35 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable id2critGenerators defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable id2dependencyAnalyses defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable dependencesToUse defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses variable FACTORY_SINGLETON defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function initialize() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   variable ASSERTION_PRESERVING_CRITERIA_GENERATOR_ID in line 286
+   variable DEADLOCK_PRESERVING_CRITERIA_GENERATOR_ID in line 291
+   variable dependencesToUse in line 306
+   variable FACTORY_SINGLETON in line 296
+   variable id2critGenerators in line 311
+   variable id2dependencyAnalyses in line 316
+   variable LOGGER in line 301
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/toolkits/bandera/SlicerConfigurationView.java
+module edu::ksu::cis::indus::toolkits::bandera::SlicerConfigurationView
+   inherits from edu::ksu::cis::bandera::tool::ToolConfigurationView
+   inherits from edu::ksu::cis::bandera::tool::ToolIconView
+   function configure() in line 96
+      protection public
+      7 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable configurator defined in edu::ksu::cis::indus::toolkits::bandera::SlicerConfigurationView
+   function getActiveIcon() in line 61
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getDisabledIcon() in line 68
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getIcon() in line 75
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getText() in line 82
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getToolTipText() in line 89
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable configurator in line 45
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/toolkits/bandera/SlicerTool.java
+module edu::ksu::cis::indus::toolkits::bandera::SlicerTool
+   inherits from edu::ksu::cis::bandera::util::BaseObservable
+   inherits from edu::ksu::cis::bandera::tool::Tool
+   function getConfiguration() in line 172
+      protection public
+      17 lines of code
+      0 parameters
+      1 conditional paths
+   function getInputParameterList() in line 193
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getOutputMap() in line 200
+      protection public
+      5 lines of code
+      0 parameters
+      1 conditional paths
+   function getOutputParameterList() in line 209
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getToolConfigurationView() in line 216
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getToolIconView() in line 223
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function quit() in line 230
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+   function run() in line 238
+      protection public
+      35 lines of code
+      0 parameters
+      1 conditional paths
+   function setConfiguration(final String) in line 279
+      protection public
+      17 lines of code
+      1 parameters
+      1 conditional paths
+   function setInputMap(final Map) in line 308
+      protection public
+      65 lines of code
+      1 parameters
+      1 conditional paths
+   function SlicerTool() in line 161
+      protection public
+      7 lines of code
+      0 parameters
+      1 conditional paths
+   variable abortFlag in line 131
+   variable activeConfID in line 136
+   variable configuration in line 141
+   variable configurationView in line 146
+   variable CRITERIA in line 75
+      protection public
+   variable CRITERIA_SPECIFICATION in line 80
+      protection public
+   variable ID_OF_CONFIGURATION_TO_USE in line 85
+      protection public
+   variable IN_ARGUMENTS_IDS in line 100
+   variable LOGGER in line 105
+   variable OUT_ARGUMENTS_IDS in line 110
+   variable ROOT_METHODS in line 90
+      protection public
+   variable SCENE in line 95
+      protection public
+   variable scene in line 151
+   variable TAG_NAME in line 115
+   variable tool in line 156
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/SlicerTool.java
+module edu::ksu::cis::indus::tools::slicer::SlicerTool
+   inherits from edu::ksu::cis::indus::tools::AbstractTool
+   function addCriteria(final Collection< ISliceCriterion >) in line 394
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function addCriteriaGenerator(final ISliceCriteriaGenerator<?,?>) in line 405
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function checkConfiguration() in line 767
+      13 lines of code
+      0 parameters
+      1 conditional paths
+   function clearCriteria() in line 412
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function dependencyAnalysisPhase(final SlicerConfiguration) in line 796
+      64 lines of code
+      1 parameters
+      1 conditional paths
+   function destringizeConfiguration(final String) in line 422
+      protection public
+      35 lines of code
+      1 parameters
+      1 conditional paths
+   function execute(final Phase,final Phase) in line 467
+      protection public
+      48 lines of code
+      2 parameters
+      1 conditional paths
+   function getBasicBlockGraphManager() in line 521
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getCallGraph() in line 530
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getCriteria() in line 540
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getDAs() in line 550
+      protection public
+      12 lines of code
+      0 parameters
+      1 conditional paths
+   function getECBA() in line 569
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getEscapeInfo() in line 579
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getMonitorInfo() in line 588
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getOFAnalyzer() in line 597
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getPhase() in line 606
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getRootMethods() in line 616
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getStmtGraphFactory() in line 625
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getSystem() in line 635
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function initialize() in line 642
+      protection public
+      7 lines of code
+      0 parameters
+      1 conditional paths
+   function lowLevelAnalysisPhase() in line 866
+      73 lines of code
+      0 parameters
+      1 conditional paths
+   function postProcessSlice() in line 944
+      7 lines of code
+      0 parameters
+      1 conditional paths
+   function removeCriteriaGenerator(final ISliceCriteriaGenerator<?,?>) in line 657
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function reset() in line 664
+      protection public
+      25 lines of code
+      0 parameters
+      1 conditional paths
+   function setActiveConfiguration(final String) in line 696
+      protection public
+      5 lines of code
+      1 parameters
+      1 conditional paths
+   function setRootMethods(final Collection< SootMethod >) in line 709
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+   function setSliceScopeDefinition(final SpecificationBasedScopeDefinition) in line 720
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setSystem(final IEnvironment) in line 730
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setTagName(final String) in line 740
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function slicingPhase(final SlicerConfiguration) in line 958
+      82 lines of code
+      1 parameters
+      1 conditional paths
+   function stringizeConfiguration() in line 747
+      protection public
+      14 lines of code
+      0 parameters
+      1 conditional paths
+   function SlicerTool(final ITokenManager< T, Value, Type >,final IStmtGraphFactory<?>) in line 310
+      protection public
+      76 lines of code
+      2 parameters
+      1 conditional paths
+   variable activePart in line 170
+   variable aliasUD in line 175
+   variable bbgMgr in line 182
+   variable callGraph in line 189
+   variable cgBasedPreProcessCtrl in line 194
+   variable cgPreProcessCtrl in line 199
+   variable criteria in line 206
+   variable criteriaGenerators in line 211
+   variable daController in line 218
+   variable DEPENDENCE_MAJOR_PHASE in line 137
+      protection public
+   variable ecba in line 223
+   variable engine in line 228
+   variable FLOW_ANALYSIS_TAG_NAME in line 142
+      protection public
+   variable INDENT in line 152
+   variable info in line 233
+   variable initMapper in line 238
+   variable LOGGER in line 157
+   variable monitorInfo in line 243
+   variable ofa in line 248
+   variable pairMgr in line 253
+   variable phase in line 258
+   variable rootMethods in line 265
+   variable safelockAnalysis in line 270
+   variable SLICE_MAJOR_PHASE in line 147
+      protection public
+   variable sliceScopeDefinition in line 275
+   variable staticFieldUD in line 280
+   variable stmtGraphFactory in line 285
+   variable system in line 290
+   variable theTokenMgr in line 295
+   variable threadGraph in line 300
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/contextualizers/AbstractSliceCriteriaCallStackContextualizer.java
+module edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   inherits from edu::ksu::cis::indus::tools::slicer::contextualizers::ISliceCriteriaContextualizer
+   abstract class
+   function addCriteriaWithGivenCallStackToResult(final ISliceCriterion,final Stack< CallTriple >,final Collection< ISliceCriterion >) in line 123
+      5 lines of code
+      3 parameters
+      1 conditional paths
+      uses function setCallStack(final Stack< CallTriple >) defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+   function contextualize(final Collection< ISliceCriterion >,final Collection< Stack< CallTriple >>) in line 140
+      26 lines of code
+      2 parameters
+      5 conditional paths
+      uses function getSlicerTool() defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getCallGraph() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function addCriteriaWithGivenCallStackToResult(final ISliceCriterion,final Stack< CallTriple >,final Collection< ISliceCriterion >) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getOccurringMethod() defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+   function getCallingContextsForProgramPoint(final Context) in line 97
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   function getCallingContextsForThis(final SootMethod) in line 110
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   function getSlicerTool() in line 82
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable slicerTool defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getCallingContextsForProgramPoint(final Context) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getCallingContextsForThis(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function processCriteriaBasedOnProgramPoint(final Context,final Collection< ISliceCriterion >) in line 64
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses function getCallingContextsForProgramPoint(final Context) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function contextualize(final Collection< ISliceCriterion >,final Collection< Stack< CallTriple >>) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function processCriteriaBasedOnThis(final SootMethod,final Collection< ISliceCriterion >) in line 72
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses function getCallingContextsForThis(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function contextualize(final Collection< ISliceCriterion >,final Collection< Stack< CallTriple >>) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function setSlicerTool(final SlicerTool<?>) in line 57
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable slicerTool defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   variable slicerTool in line 50
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/contextualizers/DeadlockPreservingCriteriaCallStackContextualizer.java
+module edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+   inherits from edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function getCallingContextsForProgramPoint(final Context) in line 56
+      14 lines of code
+      1 parameters
+      2 conditional paths
+      uses function getSlicerTool() defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getECBA() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function initialize(final EquivalenceClassBasedEscapeAnalysis) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+      uses variable ecr defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+   function getCallingContextsForThis(final SootMethod) in line 74
+      15 lines of code
+      1 parameters
+      2 conditional paths
+      uses function getSlicerTool() defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+      uses function getECBA() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function initialize(final EquivalenceClassBasedEscapeAnalysis) defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+      uses variable ecr defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+   function initialize(final EquivalenceClassBasedEscapeAnalysis) in line 96
+      5 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable ecr defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+      uses function getSlicerTool() defined in edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function DeadlockPreservingCriteriaCallStackContextualizer(final ThreadEscapeInfoBasedCallingContextRetriever) in line 49
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable ecr defined in edu::ksu::cis::indus::tools::slicer::contextualizers::DeadlockPreservingCriteriaCallStackContextualizer
+   variable ecr in line 43
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/contextualizers/ISliceCriteriaContextualizer.java
+module edu::ksu::cis::indus::tools::slicer::contextualizers::ISliceCriteriaContextualizer
+   function processCriteriaBasedOnProgramPoint(Context,Collection< ISliceCriterion >) in line 67
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function processCriteriaBasedOnThis(SootMethod,Collection< ISliceCriterion >) in line 78
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function setSlicerTool(SlicerTool<?>) in line 85
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   variable DUMMY_CONTEXTUALIZER in line 41
+      protection public
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/contextualizers/StaticSliceCriteriaCallStackContextualizer.java
+module edu::ksu::cis::indus::tools::slicer::contextualizers::StaticSliceCriteriaCallStackContextualizer
+   inherits from edu::ksu::cis::indus::tools::slicer::contextualizers::AbstractSliceCriteriaCallStackContextualizer
+   function getCallingContextsForProgramPoint(@SuppressWarnings("unused") final Context) in line 63
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable contexts defined in edu::ksu::cis::indus::tools::slicer::contextualizers::StaticSliceCriteriaCallStackContextualizer
+   function getCallingContextsForThis(@SuppressWarnings("unused") final SootMethod) in line 71
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable contexts defined in edu::ksu::cis::indus::tools::slicer::contextualizers::StaticSliceCriteriaCallStackContextualizer
+   function StaticSliceCriteriaCallStackContextualizer(final Collection< Stack< CallTriple >>) in line 56
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable contexts defined in edu::ksu::cis::indus::tools::slicer::contextualizers::StaticSliceCriteriaCallStackContextualizer
+   variable contexts in line 47
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/AbstractSliceCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::AbstractSliceCriteriaGenerator
+   inherits from edu::ksu::cis::indus::tools::slicer::criteria::generators::ISliceCriteriaGenerator
+   abstract class
+   function contextualizeCriteriaBasedOnProgramPoint(@NonNull final Context,@NonNull @NonNullContainer final Collection< ISliceCriterion >) in line 108
+      6 lines of code
+      2 parameters
+      1 conditional paths
+   function contextualizeCriteriaBasedOnThis(@NonNull final SootMethod,@NonNull @NonNullContainer final Collection< ISliceCriterion >) in line 122
+      6 lines of code
+      2 parameters
+      1 conditional paths
+   function getCriteria(final SlicerTool<?>) in line 67
+      protection public
+      12 lines of code
+      1 parameters
+      1 conditional paths
+   function getCriteriaTemplateMethod() in line 151
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function getSlicerTool() in line 158
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function setCriteriaContextualizer(final ISliceCriteriaContextualizer) in line 83
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setCriteriaFilterPredicate(final ISliceCriteriaPredicate< T2 >) in line 90
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function setSiteSelectionPredicate(final IPredicate< T1 >) in line 97
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function shouldConsiderSite(final T1) in line 135
+      10 lines of code
+      1 parameters
+      1 conditional paths
+   function shouldGenerateCriteriaFrom(@NonNull final T2) in line 168
+      10 lines of code
+      1 parameters
+      1 conditional paths
+   variable contextualizer in line 47
+   variable criteriaPredicate in line 52
+   variable siteSelectionPredicate in line 57
+   variable slicerTool in line 62
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/AbstractStmtBasedSliceCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::AbstractStmtBasedSliceCriteriaGenerator
+   inherits from AbstractSliceCriteriaGenerator< SootMethod, T1 >
+   abstract class
+   function getCriteriaTemplateMethod() in line 69
+      59 lines of code
+      0 parameters
+      1 conditional paths
+   function getEntityForCriteriaFiltering(@NonNull final Stmt) in line 137
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function getProcessingMethod() in line 146
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function shouldConsiderStmt(@SuppressWarnings("unused") final Stmt) in line 158
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   variable LOGGER in line 57
+   variable processingMethodCache in line 62
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/DeadlockPreservingCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::DeadlockPreservingCriteriaGenerator
+   inherits from AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+   function generateCriteriaForMethodBoundary(final SootMethod,final BasicBlockGraphMgr,final SliceCriteriaFactory) in line 150
+      22 lines of code
+      3 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::DeadlockPreservingCriteriaGenerator
+   function getCriteriaTemplateMethod() in line 66
+      73 lines of code
+      0 parameters
+      10 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::DeadlockPreservingCriteriaGenerator
+      uses function getSlicerTool() defined in AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function getBasicBlockGraphManager() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function getMonitorInfo() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function shouldConsiderSite(final T1) defined in AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function shouldGenerateCriteriaFrom(@NonNull final T2) defined in AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function generateCriteriaForMethodBoundary(final SootMethod,final BasicBlockGraphMgr,final SliceCriteriaFactory) defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::DeadlockPreservingCriteriaGenerator
+      uses function contextualizeCriteriaBasedOnThis(@NonNull final SootMethod,@NonNull @NonNullContainer final Collection< ISliceCriterion >) defined in AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses function contextualizeCriteriaBasedOnProgramPoint(@NonNull final Context,@NonNull @NonNullContainer final Collection< ISliceCriterion >) defined in AbstractSliceCriteriaGenerator< SootMethod, Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function getCallGraph() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   variable LOGGER in line 59
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/FieldBasedCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::FieldBasedCriteriaGenerator
+   inherits from AbstractStmtBasedSliceCriteriaGenerator< SootField >
+   function getEntityForCriteriaFiltering(final Stmt) in line 37
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function shouldConsiderStmt(final Stmt) in line 44
+      3 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/ISliceCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::ISliceCriteriaGenerator
+   function getCriteria(@NonNull SlicerTool<?>) in line 48
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   function setCriteriaContextualizer(@NonNull ISliceCriteriaContextualizer) in line 55
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   function setCriteriaFilterPredicate(@NonNull ISliceCriteriaPredicate< T2 >) in line 62
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+   function setSiteSelectionPredicate(IPredicate< T1 >) in line 70
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/LineNumberBasedCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::LineNumberBasedCriteriaGenerator
+   inherits from AbstractStmtBasedSliceCriteriaGenerator< Stmt >
+   function shouldConsiderStmt(final Stmt) in line 63
+      10 lines of code
+      1 parameters
+      2 conditional paths
+      uses function getProcessingMethod() defined in AbstractStmtBasedSliceCriteriaGenerator< Stmt >
+      uses variable className2lineNos defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::LineNumberBasedCriteriaGenerator
+   function LineNumberBasedCriteriaGenerator(final Properties) in line 51
+      protection public
+      8 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable className2lineNos defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::LineNumberBasedCriteriaGenerator
+   variable className2lineNos in line 43
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/StaticSliceCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::StaticSliceCriteriaGenerator
+   inherits from AbstractSliceCriteriaGenerator< Object, Object >
+   function getCriteriaTemplateMethod() in line 73
+      15 lines of code
+      0 parameters
+      2 conditional paths
+      uses variable staticCriteria defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::StaticSliceCriteriaGenerator
+      uses function contextualizeCriteriaBasedOnThis(@NonNull final SootMethod,@NonNull @NonNullContainer final Collection< ISliceCriterion >) defined in AbstractSliceCriteriaGenerator< Object, Object >
+      uses function getOccurringMethod() defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+   function StaticSliceCriteriaGenerator(final Collection< ISliceCriterion >) in line 59
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable staticCriteria defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::StaticSliceCriteriaGenerator
+   variable staticCriteria in line 50
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/generators/StmtTypeBasedSliceCriteriaGenerator.java
+module edu::ksu::cis::indus::tools::slicer::criteria::generators::StmtTypeBasedSliceCriteriaGenerator
+   inherits from AbstractStmtBasedSliceCriteriaGenerator< Stmt >
+   function shouldConsiderStmt(final Stmt) in line 72
+      10 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable subClassPredicate defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::StmtTypeBasedSliceCriteriaGenerator
+      uses variable stmtTypes defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::StmtTypeBasedSliceCriteriaGenerator
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::generators::StmtTypeBasedSliceCriteriaGenerator
+   variable LOGGER in line 46
+   variable stmtTypes in line 51
+   variable subClassPredicate in line 56
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/predicates/AbstractSliceCriteriaPredicate.java
+module edu::ksu::cis::indus::tools::slicer::criteria::predicates::AbstractSliceCriteriaPredicate
+   inherits from edu::ksu::cis::indus::tools::slicer::criteria::predicates::ISliceCriteriaPredicate
+   abstract class
+   function getSlicerTool() in line 49
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function setSlicerTool(final SlicerTool<?>) in line 40
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   variable slicerTool in line 35
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/predicates/AssertionSliceCriteriaPredicate.java
+module edu::ksu::cis::indus::tools::slicer::criteria::predicates::AssertionSliceCriteriaPredicate
+   inherits from AbstractSliceCriteriaPredicate< Stmt >
+   function evaluate(final Stmt) in line 55
+      protection public
+      19 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::predicates::AssertionSliceCriteriaPredicate
+   function AssertionSliceCriteriaPredicate() in line 48
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable LOGGER in line 43
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/predicates/EscapingSliceCriteriaPredicate.java
+module edu::ksu::cis::indus::tools::slicer::criteria::predicates::EscapingSliceCriteriaPredicate
+   inherits from AbstractSliceCriteriaPredicate< Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+   function evaluate(final Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod >) in line 40
+      protection public
+      20 lines of code
+      1 parameters
+      3 conditional paths
+      uses function getSlicerTool() defined in AbstractSliceCriteriaPredicate< Triple< EnterMonitorStmt, ExitMonitorStmt, SootMethod > >
+      uses function getEscapeInfo() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/predicates/ISliceCriteriaPredicate.java
+module edu::ksu::cis::indus::tools::slicer::criteria::predicates::ISliceCriteriaPredicate
+   inherits from edu::ksu::cis::indus::common::collections::IPredicate
+   function setSlicerTool(SlicerTool<?>) in line 38
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/predicates/ScopeBasedFieldPredicate.java
+module edu::ksu::cis::indus::tools::slicer::criteria::predicates::ScopeBasedFieldPredicate
+   inherits from AbstractSliceCriteriaPredicate< SootField >
+   function evaluate(final SootField) in line 44
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable matcher defined in edu::ksu::cis::indus::tools::slicer::criteria::predicates::ScopeBasedFieldPredicate
+      uses function getSlicerTool() defined in AbstractSliceCriteriaPredicate< SootField >
+   function setMatcher(final SpecificationBasedScopeDefinition) in line 54
+      protection public
+      3 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable matcher defined in edu::ksu::cis::indus::tools::slicer::criteria::predicates::ScopeBasedFieldPredicate
+   variable matcher in line 35
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/specification/SliceCriteriaParser.java
+module edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaParser
+   function deserialize(final String,final Scene) in line 80
+      protection public
+      26 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaParser
+      uses function getCriteria(final Scene) defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+   function serialize(final Collection< ISliceCriterion >) in line 120
+      protection public
+      27 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable INDENT defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaParser
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaParser
+   function SliceCriteriaParser() in line 61
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable INDENT in line 54
+   variable LOGGER in line 49
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/specification/SliceCriteriaSpec.java
+module edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+   function createCriteriaContainer() in line 116
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getCriteria(final Scene) in line 71
+      protection public
+      14 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable criteria defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+      uses function getCriteria(final Scene) defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+      uses function SliceCriteriaSpec() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+   function SliceCriteriaSpec() in line 57
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable criteria defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+      uses function createCriteriaContainer() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriteriaSpec
+   variable criteria in line 52
+   variable LOGGER in line 47
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/criteria/specification/SliceCriterionSpec.java
+module edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+   inherits from Cloneable
+   function createParameterTypeNamesContainer() in line 308
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function getCriteria(final Scene) in line 127
+      protection public
+      57 lines of code
+      1 parameters
+      7 conditional paths
+      uses function trim() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable className defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable parameterTypeNames defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable methodName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable returnTypeName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable stmtIndex defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable CRITERIA_FACTORY defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses function getCriteria(final Local,final Collection< Stmt >,final SootMethod,final boolean) defined in edu::ksu::cis::indus::slicer::SliceCriteriaFactory
+      uses variable exprIndex defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable considerEntireStmt defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable considerExecution defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+   function getNamesOfTypes(final List< Type >) in line 195
+      protection public
+      8 lines of code
+      1 parameters
+      2 conditional paths
+   function toString() in line 207
+      protection public
+      9 lines of code
+      0 parameters
+      8 conditional paths
+      uses function trim() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses function getOccurringMethod() defined in edu::ksu::cis::indus::slicer::ISliceCriterion
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses function SliceCriterionSpec() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable className defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable methodName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable parameterTypeNames defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses function getNamesOfTypes(final List< Type >) defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable returnTypeName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable stmtIndex defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable exprIndex defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable considerExecution defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable considerEntireStmt defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+   function trim() in line 315
+      22 lines of code
+      0 parameters
+      6 conditional paths
+      uses variable className defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable methodName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable returnTypeName defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses variable parameterTypeNames defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+   function SliceCriterionSpec() in line 112
+      3 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable parameterTypeNames defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+      uses function createParameterTypeNamesContainer() defined in edu::ksu::cis::indus::tools::slicer::criteria::specification::SliceCriterionSpec
+   variable className in line 77
+   variable considerEntireStmt in line 92
+   variable considerExecution in line 97
+   variable CRITERIA_FACTORY in line 65
+   variable exprIndex in line 102
+   variable LOGGER in line 60
+   variable methodName in line 82
+   variable parameterTypeNames in line 72
+   variable returnTypeName in line 87
+   variable stmtIndex in line 107
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/processing/ExecutableSlicePostProcessor.java
+module edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   inherits from edu::ksu::cis::indus::tools::slicer::processing::ISlicePostProcessor
+   function fixupAbstractMethodsInClassHierarchy() in line 215
+      63 lines of code
+      0 parameters
+      11 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function getClassesInSlice() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function getClassHierarchyContainingClasses(final Collection< SootClass >) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function gatherCollectedAbstractMethodsInSuperClasses(final Map< SootClass, Collection< SootMethod >>,final SootClass) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function gatherCollectedAbstractMethodsInSuperClasses(final Map< SootClass, Collection< SootMethod >>,final SootClass) in line 292
+      29 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function getClassHierarchyContainingClasses(final Collection< SootClass >) in line 208
+      3 lines of code
+      1 parameters
+      1 conditional paths
+   function pickARandomReturnPoint(final Collection< BasicBlock >) in line 330
+      25 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processAndIncludeExitStmt(final Stmt) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function pickReturnPoints(final SootMethod) in line 363
+      50 lines of code
+      1 parameters
+      8 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function getTagName() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable bbgMgr defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable cd defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processAndIncludeExitStmt(final Stmt) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function pickARandomReturnPoint(final Collection< BasicBlock >) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function process(final Collection< SootMethod >,final BasicBlockGraphMgr,final SliceCollector) in line 139
+      protection public
+      48 lines of code
+      3 parameters
+      10 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function toString() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable bbgMgr defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable cd defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable methodWorkBag defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processMethod(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable stmtCollected defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processStmts(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function pickReturnPoints(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function fixupAbstractMethodsInClassHierarchy() defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function processAndIncludeExitStmt(final Stmt) in line 422
+      6 lines of code
+      1 parameters
+      2 conditional paths
+      uses function processThrowStmt(final ThrowStmt) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processAssignmentsForTypes(final Stmt) in line 436
+      23 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processHandlers(final SootMethod,final Stmt,final BasicBlockGraph) in line 469
+      28 lines of code
+      3 parameters
+      5 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+   function processMethod(final SootMethod) in line 506
+      27 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable methodWorkBag defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function processStmts(final SootMethod) in line 541
+      49 lines of code
+      1 parameters
+      11 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable bbgMgr defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function processHandlers(final SootMethod,final Stmt,final BasicBlockGraph) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable stmtCollected defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function processMethod(final SootMethod) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processThrowStmt(final ThrowStmt) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function processAssignmentsForTypes(final Stmt) defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function processThrowStmt(final ThrowStmt) in line 598
+      11 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable collector defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses function hasBeenCollected(final Host) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function includeInSlice(final Collection<?extends Host >) defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function reset() in line 191
+      protection public
+      4 lines of code
+      0 parameters
+      1 conditional paths
+      uses variable methodWorkBag defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+      uses variable processedMethodCache defined in edu::ksu::cis::indus::tools::slicer::processing::ExecutableSlicePostProcessor
+   function ExecutableSlicePostProcessor() in line 125
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable bbgMgr in line 94
+   variable cd in line 114
+   variable collector in line 89
+   variable LOGGER in line 84
+   variable methodWorkBag in line 109
+   variable processedMethodCache in line 102
+   variable stmtCollected in line 120
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/processing/ISlicePostProcessor.java
+module edu::ksu::cis::indus::tools::slicer::processing::ISlicePostProcessor
+   function process(final Collection< SootMethod >,final BasicBlockGraphMgr,final SliceCollector) in line 44
+      protection public
+      1 lines of code
+      3 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/SlicerConfigurator.java
+module edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+   inherits from edu::ksu::cis::indus::tools::AbstractToolConfigurator
+   function checkConfiguration(final IToolConfiguration) in line 87
+      6 lines of code
+      1 parameters
+      2 conditional paths
+   function setup() in line 97
+      46 lines of code
+      0 parameters
+      1 conditional paths
+      uses function setupSliceInfoUI(final Composite) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupDependenceDepUI(final Composite) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupDivergenceDepUI(final Composite) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupInteferenceDepUI(final Composite) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupReadyDepUI(final Composite) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+   function setupAssertionUI(final Composite,final SlicerConfiguration) in line 152
+      46 lines of code
+      2 parameters
+      1 conditional paths
+      uses function areAssertionsOnlyInAppClassesConsidered() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getSliceToPreserveAssertions() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupCallingContextUI(final Composite,final SlicerConfiguration) in line 613
+      63 lines of code
+      2 parameters
+      3 conditional paths
+      uses function getPropertyAware() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getCallingContextLimit() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setCallingContextLimit(final int) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupDeadlockUI(final Composite,final SlicerConfiguration) in line 207
+      96 lines of code
+      2 parameters
+      8 conditional paths
+      uses function areSynchronizationsOnlyInAppClassesConsidered() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getDeadlockCriteriaSelectionStrategy() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function getSliceForDeadlock() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupDependenceDepUI(final Composite) in line 311
+      58 lines of code
+      1 parameters
+      1 conditional paths
+      uses function isSynchronizationDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isExplicitExceptionalExitSensitiveControlDependenceUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupDivergenceDepUI(final Composite) in line 377
+      90 lines of code
+      1 parameters
+      9 conditional paths
+      uses function isDivergenceDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupInteferenceDepUI(final Composite) in line 475
+      129 lines of code
+      1 parameters
+      9 conditional paths
+      uses function isInterferenceDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isOFAUsedForInterference() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupReadyDepUI(final Composite) in line 684
+      181 lines of code
+      1 parameters
+      9 conditional paths
+      uses function isReadyDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isOFAUsedForReady() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isSafeLockAnalysisUsedForReady() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isCallSiteSensitiveReadyUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule1Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule2Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule3Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isReadyRule4Used() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function isInterferenceDepAnalysisUsed() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+   function setupSliceInfoUI(final Composite) in line 873
+      89 lines of code
+      1 parameters
+      9 conditional paths
+      uses function getSliceType() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses enumvalue FORWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses function getExecutableSlice() defined in edu::ksu::cis::indus::tools::slicer::SlicerConfiguration
+      uses function setupCallingContextUI(final Composite,final SlicerConfiguration) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupAssertionUI(final Composite,final SlicerConfiguration) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses function setupDeadlockUI(final Composite,final SlicerConfiguration) defined in edu::ksu::cis::indus::tools::slicer::SlicerConfigurator
+      uses variable BACKWARD_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+      uses variable COMPLETE_SLICE defined in edu::ksu::cis::indus::slicer::SliceType
+   function widgetDisposed(final DisposeEvent) in line 73
+      protection public
+      4 lines of code
+      1 parameters
+      1 conditional paths
+file /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus.javaslicer/src/edu/ksu/cis/indus/tools/slicer/SlicerToolHelper.java
+module edu::ksu::cis::indus::tools::slicer::SlicerToolHelper
+   function applyPostProcessor(final SlicerTool<?>,final ISlicePostProcessor) in line 71
+      protection public
+      8 lines of code
+      2 parameters
+      1 conditional paths
+      uses function getMethodsInSlice() defined in edu::ksu::cis::indus::slicer::SliceCollector
+      uses function getBasicBlockGraphManager() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function process(final Collection< SootMethod >,final BasicBlockGraphMgr,final SliceCollector) defined in edu::ksu::cis::indus::tools::slicer::processing::ISlicePostProcessor
+      uses function process(final Collection< SootMethod >,final BasicBlockGraphMgr) defined in edu::ksu::cis::indus::slicer::SliceGotoProcessor
+   function loadConfigurationInFile(final String) in line 89
+      protection public
+      29 lines of code
+      1 parameters
+      4 conditional paths
+      uses variable LOGGER defined in edu::ksu::cis::indus::tools::slicer::SlicerToolHelper
+   function optimizeForSpaceAfterResidualization(final SlicerTool<?>,final Collection< String >) in line 128
+      protection public
+      19 lines of code
+      2 parameters
+      3 conditional paths
+      uses function getSystem() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+   function optimizeForSpaceBeforeResidualization(final SlicerTool<?>,final Collection< String >) in line 155
+      protection public
+      7 lines of code
+      2 parameters
+      1 conditional paths
+      uses function getSystem() defined in edu::ksu::cis::indus::tools::slicer::SlicerTool
+      uses function applyPostProcessor(final SlicerTool<?>,final ISlicePostProcessor) defined in edu::ksu::cis::indus::tools::slicer::SlicerToolHelper
+   function SlicerToolHelper() in line 60
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   variable LOGGER in line 55

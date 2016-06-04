@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+
+use Modern::Perl '2014';
+use experimental 'signatures';
+
+our @METRICS = qw(
+  acc
+  accm
+  amloc
+  an
+  anpm
+  asom
+  auv
+  bd
+  bf
+  cbo
+  da
+  dbz
+  df
+  dit
+  dnp
+  dupv
+  fgbo
+  lcom4
+  loc
+  mlk
+  mmloc
+  noa
+  noc
+  nom
+  npa
+  npm
+  obaa
+  osf
+  pitfc
+  rfc
+  rogu
+  rsva
+  saigv
+  sc
+  ua
+  uaf
+  uav
+);
+
+sub each_metric_file($source) {
+  glob("./$source/*/*.metrics");
+}
+
+sub metrics_by_module($file, @metrics) {
+  my $table = ();
+  my $i = -1;
+  open my $FILE, '<', $file;
+  my $_metrics = join '|', @metrics;
+  while(my $line = <$FILE>) {
+    if ($line =~ m/^_module: (.+)/) {
+      $i++;
+      push @{ $table->[$i] }, $1;
+    }
+    if ($line =~ m/^(?:$_metrics): (.+)/) {
+      push @{ $table->[$i] }, $1;
+    }
+  }
+  close $FILE;
+  return @{ $table };
+}
+
+foreach my $source (qw(NIST PAPERS)) {
+  while (my $file = each_metric_file $source) {
+    open my $OUTPUT, '>', "$file.dat";
+    say $OUTPUT "@METRICS";
+    foreach my $row (metrics_by_module($file, @METRICS)) {
+      say $OUTPUT "@{ $row }";
+    }
+    close $OUTPUT;
+  }
+}
