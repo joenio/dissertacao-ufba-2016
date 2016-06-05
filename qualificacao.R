@@ -6,7 +6,7 @@ percentis_for_metric <- function(metric, filename) {
   return(percentis)
 }
 
-metrics_percentis <- function(filename) {
+percentis_by_metric <- function(filename) {
   accm = percentis_for_metric("accm", filename)
   acc = percentis_for_metric("acc", filename)
   amloc = percentis_for_metric("amloc", filename)
@@ -49,7 +49,7 @@ metrics_percentis <- function(filename) {
   return(table)
 }
 
-all_percentis_by_project <- function(metric) {
+percentis_by_project <- function(metric) {
   accessanalysis = percentis_for_metric(metric, "dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
   bakarali = percentis_for_metric(metric, "dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
   errorprone = percentis_for_metric(metric, "dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
@@ -62,6 +62,26 @@ all_percentis_by_project <- function(metric) {
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
   table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sourcemeter, srcml, tacle, wala)
   return(table)
+}
+
+plot_lines_for_project <- function(filename) {
+  metrics = read.table(filename)
+  percentis = quantile(metrics$lcom4, c(.01, .05, .10, .25, .50, .75, .90, .95, .99))
+  plot(percentis, type="o", xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+  axis(1, at=1:length(percentis), labels=names(percentis), cex.axis=0.6)
+  title(main="lcom4")
+  percentis = quantile(metrics$cbo, c(.01, .05, .10, .25, .50, .75, .90, .95, .99))
+  plot(percentis, type="o", xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+  axis(1, at=1:length(percentis), labels=names(percentis), cex.axis=0.6)
+  title(main="cbo")
+  percentis = quantile(metrics$amloc, c(.01, .05, .10, .25, .50, .75, .90, .95, .99))
+  plot(percentis, type="o", xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+  axis(1, at=1:length(percentis), labels=names(percentis), cex.axis=0.6)
+  title(main="amloc")
+  percentis = quantile(metrics$sc, c(.01, .05, .10, .25, .50, .75, .90, .95, .99))
+  plot(percentis, type="o", xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+  axis(1, at=1:length(percentis), labels=names(percentis), cex.axis=0.6)
+  title(main="sc")
 }
 
 knit("qualificacao.Rtex")
