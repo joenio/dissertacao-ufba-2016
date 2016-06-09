@@ -16,7 +16,7 @@ rebuild:
 	make
 
 watch:
-	inotify-hookable --watch-files qualificacao.tex --watch-files dissertacao.tex --on-modify-command make rebuild
+	inotify-hookable --watch-files qualificacao.{tex,Rtex,R} --watch-files dissertacao.tex --on-modify-command make rebuild
 
 knitr:
 	cd dataset; ./analyze-all-projects; cd ..

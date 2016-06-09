@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-
 use Modern::Perl '2014';
 use experimental 'signatures';
 
+our @SOURCES = qw(NIST PAPERS);
 our @METRICS = qw(
   acc
   accm
@@ -43,10 +43,6 @@ our @METRICS = qw(
   uav
 );
 
-sub each_metric_file($source) {
-  glob("./$source/*/*.metrics");
-}
-
 sub metrics_by_module($file, @metrics) {
   my $table = ();
   my $i = -1;
@@ -65,13 +61,35 @@ sub metrics_by_module($file, @metrics) {
   return @{ $table };
 }
 
-foreach my $source (qw(NIST PAPERS)) {
-  while (my $file = each_metric_file $source) {
-    open my $OUTPUT, '>', "$file.dat";
-    say $OUTPUT "@METRICS";
-    foreach my $row (metrics_by_module($file, @METRICS)) {
-      say $OUTPUT "@{ $row }";
+foreach my $source (@SOURCES) {
+  foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/$source/*")) {
+    foreach my $dir (grep { -d $_ } glob("$tool/*")) {
+      unless (-e "$dir.doxyparse") {
+        say "doxyparse $dir > $dir.doxyparse";
+        `doxyparse $dir > $dir.doxyparse`;
+      }
+      unless (-e "$dir.analizo.metrics") {
+        say "analizo metrics $dir > $dir.analizo.metrics";
+        `analizo metrics $dir > $dir.analizo.metrics`;
+      }
+      unless (-e "$dir.sloccount") {
+        say "sloccount $dir > $dir.sloccount";
+        `sloccount $dir > $dir.sloccount`;
+      }
     }
-    close $OUTPUT;
+  }
+}
+
+foreach my $source (@SOURCES) {
+  foreach my $file (glob("./$source/*/*.metrics")) {
+    unless (-e "$file.dat") {
+      open my $OUTPUT, '>', "$file.dat";
+      say "+ $file -> $file.dat";
+      say $OUTPUT "@METRICS";
+      foreach my $row (metrics_by_module($file, @METRICS)) {
+        say $OUTPUT "@{ $row }";
+      }
+      close $OUTPUT;
+    }
   }
 }
