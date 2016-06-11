@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use Modern::Perl '2014';
 use experimental 'signatures';
+use File::Basename;
 
 our @SOURCES = qw(NIST PAPERS);
 our @METRICS = qw(
@@ -43,6 +44,10 @@ our @METRICS = qw(
   uav
 );
 
+our @GLOBAL_METRICS = qw(
+  total_modules
+);
+
 sub metrics_by_module($file, @metrics) {
   my $table = ();
   my $i = -1;
@@ -59,6 +64,19 @@ sub metrics_by_module($file, @metrics) {
   }
   close $FILE;
   return @{ $table };
+}
+
+sub global_metrics($file, @names) {
+  my %metrics = ();
+  open my $FILE, '<', $file;
+  my $_metrics = join '|', @names;
+    while(my $line = <$FILE>) {
+    if ($line =~ m/^($_metrics): (.+)/) {
+      $metrics{$1} = $2;
+    }
+  }
+  close $FILE;
+  return %metrics;
 }
 
 foreach my $source (@SOURCES) {
@@ -93,3 +111,18 @@ foreach my $source (@SOURCES) {
     }
   }
 }
+
+# write global metrics to "analizo.metrics.dat" file
+open my $OUTPUT, '>', "analizo.metrics.dat";
+say $OUTPUT "@GLOBAL_METRICS";
+foreach my $source (@SOURCES) {
+  foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/$source/*")) {
+    foreach my $file (glob("$tool/*.metrics")) {
+      my %metrics = global_metrics($file, @GLOBAL_METRICS);
+      print $OUTPUT basename($tool), " ";
+      print $OUTPUT join(" ", map { $metrics{$_} } @GLOBAL_METRICS);
+      print $OUTPUT "\n";
+    }
+  }
+}
+close $OUTPUT;

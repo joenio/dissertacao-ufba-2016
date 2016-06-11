@@ -1,7 +1,47 @@
 library(knitr)
+library(xtable)
 
 # global options for knitr
 opts_chunk$set(echo=FALSE, cache=TRUE, fig.pos='h')
+
+metric_by_project <- function(metric) {
+  metrics = read.table("dataset/analizo.metrics.dat")
+  accessanalysis = metrics["accessanalysis", metric]
+  bakarali = metrics["bakar-ali", metric]
+  errorprone = metrics["error-prone", metric]
+  indus = metrics["indus", metric]
+  inputtracer = metrics["inputtracer", metric]
+  jastadd = metrics["jastadd", metric]
+  sourcemeter = metrics["source-meter", metric]
+  # está dando erro de sintaxe no R ao ler o arquivo .dat
+  #simplicissimus =
+  srcml = metrics["srcml", metric]
+  tacle = metrics["tacle", metric]
+  wala = metrics["wala", metric]
+  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sourcemeter, srcml, tacle, wala)
+  return(table)
+}
+
+metric_by_nist_project <- function(metric) {
+  metrics = read.table("dataset/analizo.metrics.dat")
+  boon = metrics["boon", metric]
+  clang = metrics["clang", metric]
+  closure = metrics["closure", metric]
+  cppcheck = metrics["cppcheck", metric]
+  cqual = metrics["cqual", metric]
+  findbugs = metrics["findbugs", metric]
+  findsecuritybugs = metrics["findsecuritybugs", metric]
+  jlint = metrics["jlint", metric]
+  pixy = metrics["pixy", metric]
+  pmd = metrics["pmd", metric]
+  rats = metrics["rats", metric]
+  smatch = metrics["smatch", metric]
+  splint = metrics["splint", metric]
+  uno = metrics["uno", metric]
+  wap = metrics["wap", metric]
+  table = data.frame(boon, clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  return(table)
+}
 
 percentis_for_metric <- function(metric, filename) {
   metrics = read.table(filename)
@@ -63,7 +103,14 @@ plot_lines_for_project <- function(filename) {
 }
 
 knitr_latex_table <- function(table, caption) {
-  knitr::kable(format(t(table), digits=2), longtable=TRUE, caption = caption)
+  xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+}
+
+add_column <- function(table1, table2, colname) {
+  t_colnames = c("classes", rownames(table1))
+  table = data.frame(t(table2), t(table1))
+  colnames(table) <- t_colnames
+  return(t(table))
 }
 
 knit("qualificacao.Rtex")

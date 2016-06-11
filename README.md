@@ -13,20 +13,7 @@ Mais detalhes em:
 
 # TODO
 
-* Entender o termo caracterização utilizado pelo grupo Chris
-
-Efeitos da complexidade estrutural incluem maior esforço, e consequentemente
-maior custo, em atividades de compreensão e manutenção de software.
-
-O tamanho do software é um atributo que tem sido recorrentemente observado por pesqui-
-sadores e engenheiros de software. Muitos acreditam que há uma relação entre tamanho
-do software e sua complexidade. Parnas (Parnas, 1994) menciona o tamanho do sistema
-como um dos fatores que tornam sistemas difı́ceis de alterar e evoluir. Em seus estu-
-dos iniciais sobre evolução de software, Lehman incluiu entre suas leis de evolução de
-software tanto “Crescimento Contı́nuo” como “Complexidade Crescente” (Lehman et al.,
-1997). A evidência existente de que a complexidade ciclomática (Mccabe, 1976) possui
-uma forte correlação com o tamanho (Meulen; Revilla, 2007; Jay et al., 2009; Herraiz;
-Hassan, 2011) fortalece essa corrente de pensamento.
+* [OK] Entender o termo caracterização utilizado pelo grupo Chris
 
 Outra possibilidade de trabalho futuro envolve tentar identificar associação entre a
 métrica utilizada para complexidade estrutural e outros atributos de qualidade de soft-
