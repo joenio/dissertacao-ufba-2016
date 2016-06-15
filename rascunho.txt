@@ -1,213 +1,1148 @@
+* Feedback de paulo sobre os dados:
+  * CBO claramente tem um comportamento diferente das demais, geralmente
+    o crescimento é exponencial ou calda longa, mas CBO não tem mostrado
+    este comportamento, as vezes é calda loga inertida
+  * Na qualificação posso mostrar todas as métricas e na discussão
+    irei selecionar algumas (possivelmente CBO, LCOM4 e SC)
+  * Fácil notar só olhando a tabela que no percentil 75% (muito frequente)
+    os valores estão bons, bons significa próximo dos valores teóricos ideais
+  * Os valores dos percentis 90% e acima são pontos fora da curva, n podemos
+    usar estes valores como alerta para indicar que o projeto está ruim
+  * O crescimento reflete o mesmo comportamento dos estudos de paulo e
+    kanashiro
+
+* Feedback Chris/Paulo:
+  * Na fund teorica cito arquitetura da ferramenta de analise estatica,
+    irei discutir isto na metodologia/analise?
+  * Pode ser que consiga fazer um link com arq e as caracteristicas
+    e metricas
+  * A caracterização da SC irá indicar que a qualidade n é ruim necessariamente
+    mas que é uma caractaristica natural deste domínio, e isto irá guiar
+    como proceder para evoluir e manter tais ferramentas
+  * Tese de Paulo 4.1 e 4.3 (percentis, a média pode nos enganar)
+  * A SC é mais alta neste domínio de aplicação (hipótese)
+  * Ao menos objetivo geral, especifico, questao e hipoteses, contribuicoes, etc...
+  * ... porque? para quem quiser manter/evoluir uma ferramenta de analise estatica
+    entender que uma SC X ou Y para este dominio n eh ruim, mas é uma caracteristica natural
+  * Para um sub-conjunto das ferramentas a arquitetura pode ser utilizada (...)
+    (recuperar a arquitetura e dar subsidios para quem quer evoluir onde deve ser feito,
+     exemplo, se quero adicinar suporte a nova linguagem onde irei mexer?)
+  * Hipótese/discussao: parser com suporte multi-linguagem é mais complexo
+  * Falar de análise estática na fundamentação
 
 
-Anotacoes gerais:
-
-* Manutenabilidade destas ferramentas
-* Usar o mesmo criterio usado por terceiro sobre complexidade ciclomatica
-* Possivelmente, incluir SBES
-
-Agenda:
-
-* Piloto tá ok!
-* Baixar os códigos + Códigos NIST = documentar os codigos
-* Rodar com o analizo
-* Atualizar a base de papers do sbes25 para JSS, buscar os ultimos 4 anos
-  * Rodar os scripts, isso vai alimentar meu mestrado, mas vai tb criar um novo artigo
-* Na qualificacao mostrar dados do NIST, Piloto + resultados do SBES
-
-Aqui irei documentar a execução do plano do mapeamento contido na dissertação a
-partir de trabalhos publicados nos anos de 2013 e 2014 nas conferências SCAM e
-CSMR:
-
-%\cite{Wohlin2012}
-
-%Portanto, tais softwares possuem um papel importante nos estudos realizados, e
-%a disponibilidade do código-fonte é citado como uma grande oportunidade para a
-%expansão dos resultados destas pesquisas, como afirmado por
-
-%O crescimento no número de pesquisas e publicações em Engenharia de Software
-%Experimental desperta a atenção para a necessidade de verificar a validade dos
-%estudos empíricos realizados -- um ponto central em qualquer pesquisa
-%científica. A validade de um estudo empírico deve ser averiguada com o intuito
-%de aumentar o nível de confiança em seus resultados, replicação costuma ser
-%citado como um importante meio para atingir tal objetivo \cite{Almqvist2006}.
-%
-%Um dos primeiros artigos discutindo replicação de experimentos em Engenharia
-%de Software foi publicado por Basili et al. \cite{Mantyla2010} e sugere
-%replicação não apenas como uma escolha, mas como um possível "próximo passo" a
-%ser tomado após o experimento original ser concluído. Apesar do conceito
-%replicação de estudos empíricos em Engenharia de Software estar usualmente
-%associado à experimentação, argumenta-se que ele deve ser estendido para
-%incluir ao menos estudos de caso e surveys \cite{Basili1986}.
-%
-
-Em ciência
-da computação enfatiza acesso aos dados digitais e códigos usados para gerar
-os resultados, descrições de algoritmos, etc.
-
-% continua a ser um grande desafio.
-%
-%Diante a importância do tema alguns Jornais e instituiçoes governamentais
-%requerem do autor que arquive todos os dados gerados na pesquisa provendo
-%assim que qualquer um possa reproduzir o estudo futuramente, a importância
-%pode ser também evidenciada através do inúmeros estudos e propostas
-%endereçando este problema, por exemplo:
-
-
-%Se baseia basicamente em disponibilizar todos os artefatos da pesquisa além da
-%própria publicação, por exemplo, conjunto de dados, códigos fonte e qualquer
-%outro artefato gerado durante o estudo.
-
-%Dentre as inúmeras iniciativas voltadas à reprodutibilidade
-%de pesquisas científicas, destaco aqui o movimento chamado "Ciência Aberta" e
-%a sua grande área "Open Reproducible Research" voltada a disseminar práticas
-%que garantam a capacidade de replicação de estudos.
-
-
-%) a disponibilidade do código é o requisito mínimo.
-%Este é um problema sério já que um dos fundamentos
-%da ciência é que novas descobertas sejam reproduzidas antes de serem
-%consideradas parte da base de conhecimento \cite{Stodden2009}.
-
-%Este conceito é um ponto central do método
-%científico e continua a receber bastante atenção como pode ser verificado em
-%estudos recentes \cite{Stodden2009} \cite{Vitek2011} \cite{Stodden2012}
-%\cite{Krishnamurthi2015} \cite{Stodden2015} \cite{GithubReproducibilityGuide}.
-
-%\citeonline{Stodden2009} preocupada com as barreiras legais para
-%disponibilidade de artefatos de pesquisa propõe o framework "Reproducible
-%Research Standard (RRS)", onde sugere formas de usar o licenciamento e as leis
-%de copyright da melhor forma para manter disponíveis os produtos gerados
-%durante pesquisas e assim viabilizar reprodutibilidade.  Em
-%2012 um workshop intitulado "Reproducible Research: Tools and Strategies for
-%Scientific Computing" \cite{Stodden2012} discutiu especificamente iniciativas
-%e ferramentas voltadas a apoiar pesquisas reprodutíveis.
-% \citeonline{Stodden2015} demonstram o
-%projeto "ResearchCompendia.org", uma infraestrtura para reprodutibilidade e
-%colaboração em ciência computacional. Além destes e tantos outros estudos em
-%\cite{GithubReproducibilityGuide} é possível acessar um guia sobre como
-%desenvolver pesquisas cientíticas de forma que promovam a reprodutibilidade.
-
-%os pesquisadores diante disto e preocupado em criar uma linguagem comum entre
-
-
-
-%\subsection{Ciência Aberta}
-%
-%Ciência Aberta é um movimento que tem por objetivo tornar a pesquisa
-%científica, seus dados e sua disseminação acessíveis à todos os interessados,
-%sejam amadores ou profissionais \cite{WikipediaOpenScience}. Sua principal
-%motivação está em possibilitar a reprodução dos resultados de pesquisas e em
-%garantir transparência das metodologias utilizadas, isto aumenta o impacto
-%social das pesquisas e gera economia de tempo e dinheiro para os pesquisadores
-%e para as instituições \cite{Nesta2010}.
-%
-%Este movimento é guiado por princípios básicos de transparência,
-%acessibilidade e reusabilidade universais, disseminadas via ferramentas
-%online, ele é dividido em quatro grandes áreas: (1) Open Access, (2) Open
-%Data, (3) Open Source e (4) Open Reproducible Research. Dentre elas destaca-se
-%a Open Reproducible Research por preocupar-se com a reprodutibilidade dos
-%resultados de pesquisas de forma independente \cite{Stodden2009} e aberta, no
-%entanto, esta área tem recebido ainda pouca atenção da comunidade de pesquisa
-%\cite{Nancy2015} \cite{Grand2010Open} apesar do aumento geral do interesse
-%pelas práticas da Ciência Aberta \cite{Grand2010}.
-%
-%Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
-%resultados, é raro que façam o mesmo com toda a produção gerada durante a
-%pesquisa. A maioria dos componentes necessários para a reprodução dos
-%resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
-%permanecem não publicados. Este é um problema sério já que um dos fundamentos
-%da ciência é que novas descobertas sejam reproduzidas antes de serem
-%consideradas parte da base de conhecimento \cite{Stodden2009}.
-
-
-%\cite{Kitchenham1996} \cite{McConnell2004} \cite{Iso25022}
-%\cite{WikiBooksSoftwareEngineering} \cite{Staines2015} 
-
-
-%\citeonline{WikiBooksSoftwareEngineering} enumera algumas questões à respeito
-%da usabilidade úteis para mensurar tal característica:
-%
-%\begin{enumerate}
-%  \item A interface de usuário é intuitica (auto-explicativa/auto-documentada)?
-%  \item É fácil de executar uma operação simples?
-%  \item É possível executar operações complexas?
-%  \item O software dá mensagens de erro compreensíveis?
-%  \item Os elementos se comportam como esperado?
-%  \item O software é bem documentado?
-%  \item A interface do usuário é responsiva ou muito lenta?
-%\end{enumerate}
-
-Dentre as inúmeras sub-áreas da engenharia de software, este trabalho irá
-focar do domínio de ferramentas de análise de código-fonte, esta escolha tem
-por base o domínio do pesquisador nesta área e a escolha de um domínio é
-necessário para reduzir o escopo e viabilizar a revisão de estudos e
-ferramentas de um domínio específico, do contrário o trabalho seria muito
-extenso e a revisão sistemática seria inviável dentro do prazo de um trabalho
-de pesquisa num mestrado.
-
-
-%e está presente em todas as áreas do conhecimento
-
-%. O termo
-%reprodutibilidade tem uso relativamente concensual entre os pesquisadores de
-%diversas áreas mas existem termos correlatos que precisam ser esclarecidos à
-%fim de evitar ...
-
-%Segundo \citeonline{Feitelson2015} nós temos {\it repetição} como a habilidade
-%de refazer exatamente o que outra pessoa fez usando os artefatos originais.
-%{\it Replicação} como a habilidade de replicar com precisão exatamente o que
-%outra pessoa fez, recriando os artefatos. {\it Variação} como a habilidade de
-%repetir ou replicar exatamente o que outra pessoa fez, mas com alguma
-%modificação controlada nos parâmetros. {\it Reprodução} como a habilidade de
-%recriar o espírito do que outra pessoa fez, usando seus próprios artefatos. E
-%{\it corroboração} como a habilidade de obter os mesmos resultados de outra
-%pessoa, usando outros meios e procedimentos experimentais.
-
-Muitos trabalhos estudam a relação entre as métricas de software e sua
-qualidade \cite{Basili1996} \cite{Briand2000} \cite{Subramanyam2003}
-\cite{Nagappan2006} \cite{Gousios2007}.
 
 
 Métricas de design ou métricas de código-fonte são aquelas voltadas à medir
 artefatos de código-fonte e podem ser classificados entre métricas procedurais
 ou orientadas à objetos \cite{Mohamed1994}.
 
-
-% +\section{Trabalhos relacionados}
-%  
-% +Pesquisas sobre o recente tópico, Ciência Aberta, \citeonline{Prlic2012} dão
-% +dicas para o desenvolvimento aberto de software científico e citam que
-% +disponibilizar o código criado durante pesquisas não apenas aumenta o impacto
-% +como também se torna essencial para outros reproduzirem os resultados
-% +encontrados. Eles citam ainda que manutenabilidade e disponibilidade do
-% +software após a publicação é o maior problema enfrentado pelos pesquisadores
-% +que desenvolvem tais softwares, e é aí que a participação no desenvolvimento
-% +aberto desde o início pode trazer maior benefício.
-
-
-
-%\begin{itemize}
-%  \item O software pode ser instalado facilmente? (Portability: Installability)
-%    \begin{itemize}
-%      \item O software possui alguma instrução de instalação? (understandability ou learnability)
-%      \item O software é facilmente encontrado para obtenção? (download, requisito para operability)
-%    \end{itemize}
-%  \item O usuário consegue utilizar o sistema sem muito esforço? (Usability: Operability)
-%    \begin{itemize}
-%      \item O software ao ser instalado devidamente executa suas funções mínimas sem erros? (compliance)
-%    \end{itemize}
-%\end{itemize}
-%\cite{Padayachee2010}
-
 Além disso, incluir ferramentas da indústria possibilita avaliar se temos
 diferenças em relação à qualidade entre as ferramentas acadêmicas (``softwares
 científicos'') e as ferramentas da indústria.
 
+\subsection{Qualidade de software}
 
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.25]{imagens/reproducibility-spectrum.png}
-  \caption{The spectrum of reproducibility\cite{Peng2011}}
-  \label{reproducibility-spectrum}
-\end{figure}
+Qualidade de software diz respeito à quão bem um software é projetado e o
+quanto este software está em conformidade com o projeto, embora existam
+inúmeras definições há um concenso de que existem duas dimensões básicas para medir a
+qualidade de um software, estas dimensões estão relacionadas à características
+de qualidade interna e de qualidade externa.
+
+Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
+características que preocupam o desenvolvedor, como: manutenabilidade,
+flexibilidade, portabilidade, reusabilidade, legibilidade, testabilidade e
+compreensão. São questões relacionadas ao código-fonte e em como o software
+foi construído, como design e boas práticas por exemplo.
+
+Qualidade externa são aquelas características que afetam o usuário, como por
+exemplo: exatidão, usabilidade, eficiência, confiabilidade, integridade,
+adaptabilidade, acurácia e robustez. Estas características impactam
+extritamente no uso do software e não em como o software foi construído.
+
+Segundo a ISO/IEC 25010 \cite{iso2011iec25010} essas características podem ser
+divididas em subcaracterísticas. A característica usabilidade por exemplo é
+dividida nas seguintes subcaracterísticas: capacidade de compreensão,
+capacidade de aprendizado, operabilidade, atratividade e conformidade. Esta
+característica está relacionada, por exemplo, a facilidade com que usuários aprendem e
+utilizam um sistema, e passa por questões como facilidade de instalação,
+aprendizado, e uso.
+
+Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
+características de qualidade externa \cite{McConnell2004}, softwares que não
+possuem boa manutenabilidade por exemplo afetam a habilidade de correção de
+defeitos, que por sua vez afetam as características de exatidão e
+confiabilidade.
+
+Dito isso podemos perceber que é possível inferir características de qualidade
+externa de um software a partir de seus atributos de qualidade interna, o que
+pode ser realizado a partir da análise de suas métricas de código-fonte.
+
+
+
+
+
+
+
+
+\section{Objetivos}
+
+O objetivo principal deste trabalho é compreender as ferramentas de software
+para análise de código fonte, do ponto de vista de sua manutenabilidade, a
+partir da análise de sua complexidade estrutural, discutindo quais
+características arquiteturais explicam tal fator de qualidade interna.
+
+Objetivos específicos:
+
+\begin{itemize}
+  \item Realizar uma revisão da literatura para caraterizar a arquitetura das
+    ferramentas de análise estática de código-fonte.
+  \item Realizar uma revisão estruturada, com base em artigos publicados em
+    conferências relacionadas, para selecionar e obter código-fonte de
+    ferramentas científicas (explicadas na Seção XX), para coletar suas
+    métricas de código-fonte.
+  \item Selecionar e obter o código-fonte de ferramentas de análise estática
+    desenvolvidas pelo indústria  (explicadas na Seção XX), para coletar suas
+    métricas de código-fonte.
+  \item Propor intervalos de referência  para a observação parametrizada da
+    qualidade interna das ferramentas de análise estática, a partir de suas
+    métricas de código-fonte.
+  \item Cálculo da distância beysiana entre valores de referência e os valores
+    das ferramentas estudadas
+  \item Evoluir uma ferramenta de análise de código-fonte para coleta de
+    métricas de código-fonte.
+  \item Um conjunto de estratégias para a manutenção e evolução de ferramentas
+    de análise estática de código-fonte
+\end{itemize}
+
+\section{Contribuições esperadas}
+
+\begin{enumerate}
+  \item [CC1:] Um conjunto de intervalos de referência da frequência dos
+    valores de métricas de código-fonte para o domínio de ferramentas de
+    análise estática
+  \item [CC2:] Explicação da alta complexidade estrutural em ferramentas de
+    análise de código-fonte
+  \item [CT1:] Evolução de uma ferramenta de análise de código-fonte
+\end{enumerate}
+
+\chapter{Análise estática de código-fonte}
+
+(contextualizar engenharia de software -> qualidade -> métricas -> análise estática)
+
+\section{Ferramentas de análise estática de código-fonte}
+
+Ferramentas de análise estática de código-fonte são ferramentas capazes de
+realizar a leitura de código-fonte de um projeto de software de forma
+automatizada ou semi-automatizada e extrair daí informações sobre as entidades
+do software, como módulos, classes, funções, métodos, variáveis, seus
+relacionamentos, suas características e diversas outras informações possíveis
+de serem exraídas diretamente do código-fonte que seja útil ao engenheiro de
+software.
+
+Estas informaçoes costumam ser aplicadas à tarefas comuns da engenharia de
+software, como por exemplo, recuperação arquitetural, localização de falhas,
+manutenção, refatoração, compreensão, análise de performance, visualização,
+entre outras.
+
+Segundo \citeonline{Kirkov2010} estas ferramentas possuem uma
+anatomia comum, composta de quatro componentes básicos - construção de
+modelos; algoritmos de análise e reconhecimento de padrões; base de
+conhecimento de padrões; e representação final.
+
+A construção de modelos de um programa é o primeiro passo e é feito por um
+parser de código-fonte \cite{Binkley2007}. A base de conhecimento de padrões é
+usada para representar e armazenar informações sobre potenciais problemas
+encontrados no código-fonte. O objetivo do algoritmo de análise e
+reconhecumento de padroes é classificar as informações encontradas no modelo a
+partir da base de conhecumento de padroes. A representação final é um
+relatório ou outro tipo de visualização apresentada através de uma interface
+de usuário apropriada.
+
+Esta representação final pode ser por exemplo um relatório contendo os valores
+de métricas calculadas para o software sendo analisado, e é esta
+caractarística das ferramentas de análise estática de código-fonte que será
+utilizada neste trabalho para recuperar métricas de produto de software que
+reflitam os atributos de qualidade dos software científicos estudados.
+
+\section{Software científico}
+
+Softwares científicos são ferramentas de software desenvolvidas no decorrer de
+pesquisas científicas como parte de um estudo, podem ser pequenos scripts,
+protótipos, ou mesmo produtos de software completos que demonstram ou refletem
+os resultados de uma pesquisa. Em Engenharia de Software este tipo de software
+desempenha um papel essencial e sua importância pode ser notada através do
+grande número de conferências com sessões específicas sobre publicação de
+ferramentas.
+
+\chapter{Métricas de design de código-fonte}
+
+(ver trabalho de Arthur Del Spot e Tese de Paulo, SC (focar) conforme Terceiro)
+
+Uma métrica, segundo a definição da ISO/IEC 25010 \cite{iso2011iec25010}, é a
+composição de procedimentos para a definição de escalas e métodos para
+medidas, em engenharia de software estas métricas podem ser classificadas em três categorias: métricas de
+produto, métricas de processo e métricas de projeto.
+
+Métricas de produto são aquelas que
+descrevem as características de artefatos do desenvolvimento, como documentos,
+diagramas, código-fonte e arquivos binários. Métricas de processo medem atributos relacionados
+ao ciclo de desenvolvimento do software. Métricas de projeto são aquelas
+que descrevem as características dos recursos disponíveis ao desenvolvimento.
+
+Neste trabalho, nosso interesse estão nas métricas de produto, que podem ser
+classificadas entre internas ou externas, ou seja, aquelas que medem
+propriedades visíveis apenas aos desenvolvedores ou que medem propriedades
+visíveis aos usuários, respectivamente. Iremos extrair propriedades dos
+softwares científicos a fim de medir a sua qualidade interna através de um
+conjunto de métricas previamente definido, este conjunto tomará como base o
+trabalho realizado por \citeonline{Meirelles2013} onde foi realizado um estudo
+associando qualidade de software à qualidade de código-fonte através da
+observação de métricas de código-fonte. E será realizado através de
+ferramentas de análise estática de código-fonte.
+
+\chapter{Metodologia}
+
+%explicar:
+%* revisão estruturada
+%* análise de distribuição dos valores das métricas
+%
+%(ver TCC de Ronaldo e Kanashiro)
+%( falar que média não serve, distribuição é a solução... etc )
+
+Visando então avaliar a qualidade de ``softwares científicos'' será feito um
+levantamento de artigos com publicação de ferramentas do domínio {\it análise
+estática de código-fonte}. Este domínio foi selecionado com base na
+experiência do pesquisador nesta área, o que facilita encontrar fontes sobre
+ferramentas, bem como analisar e estudar tais softwares. O foco em um domínio
+se justifica pela necessidade de reduzir o escopo do estudo a fim de
+viabilizar o trabalho dentro do tempo previsto em um programa de mestrado.
+
+Além dos software científicos iremos também incluir ferramentas de análise
+estática desenvolvidas na indústria, o objetivo é aumentar o número de
+ferramentas analisadas visto que existe uma suspeita de encontrar um número
+pequeno de softwares científicos com disponibilidade de código-fonte.
+
+Após o levantamento e seleção das ferramentas será feita a caracterização
+inicial e posteriormente análise estática do seu código-fonte, onde teremos
+métricas para cada ferramenta e possivelmente valores referência para
+ferramentas de análise estática, estes valores de referência darão origem a
+recomendações de refatoração para ferramentas deste mesmo domínio de
+aplicação.
+
+Por final traçaremos um paralelo entre caracteristicas de qualidade externa e
+valores de métricas de qualidade interna, especialmente em relação à
+portabilidade e usabilidade a fim de responder nossa questão de pesquisa
+e validar suas hipóteses.
+
+\section{Hipóteses}
+
+Para guiar os estudos, conforme os objetivos acima, definimos as seguintes
+hipóteses (explicadas na Seção XX):
+
+\begin{enumerate}
+  \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
+    de código-fonte para ferramentas de análise estática a partir de um
+    conjunto de softwares científicos e da indústria}
+  \item[{\bf H2:}] {\em Ferramentas de análise estáticas  tendem a ter uma
+    maior complexidade estrutural que outros domínios de aplicação}
+  \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
+    código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
+    complexidade estrutural}
+\end{enumerate}
+
+A hipótese {\bf H1} será validada com a avaliação dos artigos que publicam
+software científico com fontes para obtenção mas que não se encontram mais
+disponíveis.
+
+A hipótese {\bf H2} será validada (depende do capítulo \ref{estatistica}) ...
+
+A hipótese {\bf H3} será validade a partir do cálculo das métricas de
+código-fonte das ferramentas da indústria e sua comparação aos valores de
+referência encontrados para as ferramentas de análise estática.
+
+A hipótese {\bf H4} será validada com a tentativa de instalação e o uso das
+funções mínimas de cada software científico avaliado, será feito a tentativa
+de instalar a ferramenta, instruções de instalação e uso serão pesquisados nos
+artigos relacionados bem como junto ao código-fonte do software. Espera-se que
+aqueles softwares com maior dificuldade de instalação e uso terão valores de
+métricas piores.
+
+\section{Planejamento do estudo}
+
+\subsection{Seleção das métricas}
+
+\citeonline{Meirelles2013} realizou uma série de estudos onde associou
+características de qualidade de produto de software à características de
+qualidade de código-fonte, através de métricas de código-fonte, em um destes estudos
+utilizou-se métricas que medem aspectos relevantes à manutenibilidade do
+software, como a preocupação aqui também está na manutenibilidade
+das ferramentas iremos utilizar a mesma seleção de métricas utilizada por
+\citeonline{Meirelles2013}.
+
+\begin{itemize}
+
+  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
+    mede o acoplamento entre objetos do software \cite{Chidamber1994}.
+
+  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
+    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
+
+  \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
+    complexidade do software \cite{Darcy2005}.
+
+  \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
+    código por método)}: indica se o código está bem distribuído entre os
+    métodos, quanto maior mais ``pesados'' são os métodos (??)
+
+  \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
+    complexidade ciclomática por método)}: mede a complexidade do programa
+    \cite{McCabe1976}.
+
+  \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
+    número de métodos dentre todos os métodos que podem ser invocados em
+    resposta a uma mensagem enviada por um objeto de uma classe
+    \cite{Sharble1993}.
+
+  \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
+    herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
+
+  \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
+    filhos de uma classe \cite{Rosenberg1997}.
+
+  \item {\bf COF} {\it Coupling Factor (Fator de acoplamento)}: razão entre o
+    número máximo possível de acoplamentos no sistema e o número atual de
+    acoplamentos possíveis por herança \cite{Harrison1998}.
+
+\end{itemize}
+
+Estas métricas serão coletadas para cada classe/módulo presente nas
+ferramentas de análise estática selecionadas e servirão de base para
+avaliar a qualidade das mesmas.
+
+\subsection{Seleção da ferramenta de análise estática de código-fonte}
+
+Para realizar a caracterização das ferramentas e extrair suas métricas
+será necessário uma ferramenta que permita automatizar este
+processo, neste trabalho utilizaremos a ferramenta de análise estática Analizo
+\cite{Terceiro2010}.
+
+Analizo é um {\it toolkit} livre, multi-linguagem e extensível para análise de
+código-fonte, calcula uma grande quantidade de métricas, como CBO, LCOM4, RFC,
+LOC, entre outras, e suporta análise das linguagens de programação C, C++ e
+Java.
+
+É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
+atualizações frequentes, sua última versão 1.19.0 lançada em 18 de Fevereiro
+de 2016 será a versão utilizada neste estudo.
+
+\subsection{Seleção das fontes de ferramentas de análise estática}\label{levantamento}
+
+Para ser possível validar as hipóteses aqui levantadas é necessário realizar
+uma busca por ferramentas de análise estática desenvolvidas no contexto da
+academia e da indústria, para isso, será feito um planejamento detalhado para
+realizar a seleção de ferramentas em cada um destes contextos.
+
+No contexto acadêmica a busca por ferramentas será feita
+através de artigos publicados em conferências que tenham histórico de
+publicação sobre ferramentas de análise estática de código fonte. Estes
+artigos serão analisados e aqueles com publicação de ferramenta de análise
+estática serão selecionados.
+
+Na indústria, a busca por ferramentas será feita a partir
+de referências encontradas na internet, algumas organizações mantém listas de
+ferramentas para análise de código-fonte, a Wikipedia por exemplo, mantém uma lista
+de ferramentas, estas referências serão utilizadas como ponto de partida e
+cada ferramenta será analisada a fim de validar se são da indústria ou
+surgiram em contexto acadêmico.
+
+Uma vez que as ferramentas tenham sido selecionadas iniciaremos a extração de
+seus atributos de qualidade interna a partir do cálculo de suas métricas com o
+Analizo.
+
+\section{Coleta de dados}
+
+A partir das fontes selecionadas na etapa anterior serão realizadas duas
+atividades para identificar e mapear as ferramentas de análise estática com
+código-fonte disponível, uma atividade relacionada ao levantamento de
+ferramentas da academia, outra atividade relacionada ao levantamento de
+ferramentas da indústria.
+
+\subsection{Ferramentas da academia}
+
+A seleção de ferramentas será relizada através de uma revisão estruturada dos
+artigos selecionados a partir da conferência SCAM - Source Code Analysis and
+Manipulation Working Conference\footnote{http://www.ieee-scam.org} e mais uma
+dentre as seguintes conferências:
+
+\begin{itemize}
+  \item ASE - Automated Software
+    Engineering\footnote{http://ase-conferences.org}
+  \item CSMR\footnote{A conferência CSMR tornou-se SANER - Software Analysis,
+    Evolution, and Reengineering a partir da edição 2015.} - Conference on
+    Software Maintenance and
+    Reengineering\footnote{http://ansymore.uantwerpen.be/csmr-wcre}
+  \item ICSME - International Conference on Software Maintenance and
+    Evolution\footnote{http://www.icsme.org}
+\end{itemize}
+
+Chamamos de revisão estruturada um processo disciplinado para seleção de
+artigos a partir de critérios bem definidos de forma que seja possível a
+reprodução do estudo por parte de pesquisadores interessados. Alguns
+resultados preliminares podem ser consultados na Tabela \ref{artigos-do-scam}
+da Seção \ref{resultados}.
+
+\subsection{Ferramentas da indústria}
+
+A seleção de ferramentas da indústria será feita de forma não estruturada a
+partir de uma busca livre e manual encontradas no site do projeto
+SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance Metrics and
+Tool Evaluation} disponível em \citeonline{SamateAnalysers} mantém uma lista
+de ferramentas de análise estática, detalhes sobre o projeto pode ser
+encontrado em \citeonline{Ribeiro2015}.
+
+Esta fonte será pesquisada manualmente em busca de ferramentas de análise
+estática que tenham sido desenvolvidas no contexto da indústria, alguns
+resultados preliminares podem ser encontrados nas Tabelas
+\ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
+
+\subsection{Caracterização dos artigos}
+
+Os artigos selecionados a partir da revisão estruturada serão avaliados a fim
+de caracterizar se se tratam de publicação de ferramenta de análise estática
+de código-fonte, esta revisão será realizada de forma semi-automatizada, o
+primeiro passo será automatizado a partir de um
+script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
+que busca os seguintes termos no conteúdo dos artigos:
+
+\begin{verbatim}
+  "tool" OU "framework"; E
+  "download" OU "available"; E
+  "http" OU "ftp"; E
+  "static analysis" OU "parser".
+\end{verbatim}
+
+O segundo passo, manual, é realizar uma leitura do artigo a fim de identificar
+se realmente trata-se de um artigo com publicação de {\it software
+científico}, uma vez que se confirme que o artigo publica um software,
+identifica-se se o software é uma ferramenta de análise estática, softwares
+que sejam mais abrangentes do que apenas análise estática mas que contenham
+esta função em seu conjunto também será considerados.
+
+Uma vez identificado os artigos que publicam {\it softwares científicos} de
+análise estática, procuramos no próprio artigo referências de onde encontrar o
+software, neste momento algumas ações serão tomadas a partir da situação
+encontrada.
+
+\begin{itemize}
+
+  \item Aqueles autores que afirmam que a ferramenta está disponível mas o
+    artigo não cita referências de onde encontrar serão contactados por email
+    solicitando informações de onde obter o código-fonte.
+
+  \item Os artigos que indicam onde obter o cófigo-fonte mas o acesso ao local
+    indicado não está disponível, ou está disponível mas o software não se
+    encontra lá, os autores também serão contactados solicitando informações
+    atualizadas de onde obter uma cópia do código-fonte da ferramenta
+
+  \item Os demais artigos que indicam onde obter o cófigo-fonte e a referência
+    está correta, iremos fazer downlod da última versão disponível do software
+
+\end{itemize}
+
+Uma vez que os autores contactados por email respondam com informações de onde
+obter o software iremos adicinar estes softwares na lista de softwares a serem
+analisados.
+
+\subsection{Caracterização das ferramentas}
+
+As ferramentas da indústria e acadêmicas serão analisadas com o Analizo para
+extração das métricas de código-fonte préviamente
+selecionadas, estas métricas serão relacionadas à caractarística e atributos
+de qualidade das ferramentas.
+
+As métricas coletadas serão também utilizadas para identificar se existem
+valores de referência para métricas de ferramentas de análise estática, caso
+existam, estes valores de métricas serão utilizadas para calcular quão
+distante cada ferramenta analisada se encontra dos valores de referência, isto
+será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
+mesmo estudo foi feito para o sistema Android e seus aplicativos.
+
+\section{Exemplo de uso}
+
+Por fim, os valores de referência encontradas serão documentados e servirão de
+base para criar um guia de sugestões para refatoração de ferramentas de
+análise estática. Tomaremos como exemplo de uso a própria ferramenta Analizo,
+onde iremos calcular suas métricas e a partir de uma comparação com os
+valores de referência indicaremos refatorações que façam a ferramenta de
+aproximar dos valores de referência.
+
+Estas indicações serão feitas utilizando o mesmo método de
+\citeonline{Almeida2010} onde foi feito um estudo mapeando boas práticas de
+programação em valores de métricas de código-fonte, estas boas práticas são
+baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
+Code}, onde sugerem práticas de desenvolvimento úteis para que um código
+tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
+identificam melhorias de implementação através do uso de valores de métricas e
+oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
+códigos.
+
+\chapter{Cronograma}
+
+\begin{table}[h]
+  \caption{Cronograma até a defesa}
+  \centering
+  \begin{tabular}{| l | c | c | c | c | c | c |}
+    \hline
+    Atividade & Junho & Julho & Agosto & Setembro & Outubro & Novembro (?) \\
+    \hline
+    Qualificação &    &       &        &          &         &              \\
+    ???          &    &       &        &          &         &              \\
+    ???          &    &       &        &          &         &              \\
+    ???          &    &       &        &          &         &              \\
+    \hline
+  \end{tabular}
+  \label{cronograma-defesa}
+\end{table}
+
+\begin{table}[h]
+  \caption{Cronograma até a qualificação}
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Data          & Atividade \\
+    \hline
+    20 Junho      & texto final para os orientadores \\
+    22/23 Junho   & feedback final dos orientadores \\
+    23 à 27 Junho & correções finais \\
+    27 Junho      & envio para banca \\
+    27 Junho à 04 Julho & compilação dos últimos resultados, inclusive o que não entraram no texto da quali (mas que podem ser apresentados na defesa da Quali) \\
+    6/7/8 Julho   & (a depender do dia da sua viagem para SSA): Prévia/ensaio da apresentação no LAPPIS/UnB. \\
+    11 Julho      & Qualificação, na UFBA \\
+    \hline
+  \end{tabular}
+  \label{artigos-do-scam}
+\end{table}
+
+\chapter{Análise}
+
+\section{Resultados preliminares}\label{resultados}
+
+A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
+cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
+estática com código fonte disponível.
+
+\begin{table}
+\caption{Total de artigos analisados por edições do SCAM}
+\centering
+\begin{tabular}{| l | c | c | c |}
+\hline
+Edição    & Total de artigos & Script filter & Artigos com ferramenta \\
+\hline
+SCAM 2001 & 23               & 6             & -                      \\
+SCAM 2002 & 18               & 6             & -                      \\
+SCAM 2003 & 21               & 7             & -                      \\
+SCAM 2004 & 17               & 3             & -                      \\
+SCAM 2005 & 19               & 7             & -                      \\
+SCAM 2006 & 22               & 9             & 2                      \\
+SCAM 2007 & 23               & 7             & 1                      \\
+SCAM 2008 & 29               & 14            & -                      \\
+SCAM 2009 & 20               & 10            & -                      \\
+SCAM 2010 & 21               & 15            & 1                      \\
+SCAM 2011 & 21               & 9             & 1                      \\
+SCAM 2012 & 22               & 12            & 4                      \\
+SCAM 2013 & 24               & 12            & -                      \\
+SCAM 2014 & 35               & 16            & 1                      \\
+SCAM 2015 & 30               & 18            & ?                      \\
+\hline
+Total     & 315              & 133           & 10                     \\
+\hline
+\end{tabular}
+\label{artigos-do-scam}
+\end{table}
+
+As Tabelas \ref{ferramentas-do-nist-com-codigo} e
+\ref{ferramentas-do-nist-sem-codigo} apresentam ferramentas do NIST após
+avaliação inicial sobre disponibilidade do código-fonte. Das 54 ferramentas
+apenas 19 tinham código fonte disponível.
+
+% Todos foram baixados em "dataset/NIST".
+
+\begin{table}
+\caption{Lista de ferramentas do SAMATE - NIST com código fonte não disponível}
+\centering
+\begin{tabular}{| l | l |}
+\hline
+Ferramenta & Avaliacao  \\
+\hline
+ABASH                     & código não disponível \\
+ApexSec Security Console  & código não disponível \\
+Astrée                    & código não disponível \\
+bugScout                  & código não disponível \\
+C/C++test®                & código não disponível \\
+dotTEST™                  & código não disponível \\
+Jtest®                    & código não disponível \\
+HP Code Advisor (cadvise) & código não disponível \\
+Checkmarx CxSAST          & código não disponível \\
+CodeCenter                & código não disponível \\
+CodePeer                  & código não disponível \\
+CodeSecure                & site offline \\
+CodeSonar                 & código não disponível \\
+Coverity SAVE™            & código não disponível \\
+Csur                      & código não disponível \\
+DoubleCheck               & código não disponível \\
+Fluid                     & código não disponível \\
+Goanna Studio and Goanna Central & código não disponível \\
+HP QAInspect              & código não disponível \\
+Insight                   & código não disponível \\
+ObjectCenter              & código não disponível \\
+Parfait                   & código não disponível \\
+PLSQLScanner 2008         & código não disponível \\
+PHP-Sat                   & link para código offline \\
+PolySpace                 & código não disponível \\
+PREfix and PREfast        & código não disponivel \\
+QA-C, QA-C++, QA-J        & código não disponível \\
+Qualitychecker            & código não disponível \\
+Rational AppScan Source Edition & código não disponível \\
+Resource Standard Metrics (RSM) & código não disponível \\
+SCA                       & código não disponível \\
+SPARK tool set            & código não disponível \\
+TBmisra®, TBsecure®       & código não disponível \\
+PVS-Studio                & código não disponível \\
+xg++                      & código não disponível \\
+\hline
+\end{tabular}
+\label{ferramentas-do-nist-sem-codigo}
+\end{table}
+
+\begin{table}[h]
+\caption{Lista de ferramentas do SAMATE - NIST com código fonte disponível}
+\centering
+\begin{tabular}{| l | l |}
+\hline
+Ferramenta & Avaliacao  \\
+\hline
+BOON                      & código disponível \\
+Clang Static Analyzer     & código disponível \\
+Closure Compiler          & código disponível \\
+Cppcheck                  & código disponível \\
+CQual                     & código disponível \\
+FindBugs                  & código disponível \\
+FindSecurityBugs          & código disponível \\
+Flawfinder                & código disponível \\
+Jlint                     & código disponível \\
+LAPSE                     & código disponível \\
+Pixy                      & código disponível \\
+PMD                       & código disponível \\
+pylint                    & codigo disponivel \\
+RATS (Rough Auditing Tool for Security) & código disponível \\
+Smatch                    & código disponível \\
+Splint                    & código disponível \\
+UNO                       & código disponível \\
+Yasca                     & código disponível \\
+WAP                       & código disponível \\
+\hline
+\end{tabular}
+\label{ferramentas-do-nist-com-codigo}
+\end{table}
+
+Assim, temos um total de 19 ferramentas da indústria com código-fonte
+disponível e ??? da academia com código fonte disponível, é preciso avaliar em
+qual linguagem de programação foi escrita cada ferramentas pois só iremos
+analisar aquelas em C, C++ ou Java que são suportadas pelo Analizo.
+
+A ferramenta utilizada para identificar a linguagem de programação em que
+estes softwares foram escritos foi a sloccount, uma ferramenta livre para
+contagem de linhas de código fonte, onde se calcula em quais linguagens de
+programação um software foi escrito.
+
+%Abaixo destaco a linguagem de programação que tem maior
+%porção em porcentagem.
+
+Após analise ficamos com um total de 25 ferramentas, 15 da indústria e 10 da
+academia, a Tabela \ref{total-de-ferramentas} traz um resumo de todos as
+ferramentas analisadas.
+
+\begin{table}[h]
+\caption{Lista com total de ferramentas a serem analisadas}
+\centering
+\begin{tabular}{| l | c | c |}
+\hline
+Ferramenta & Linguagem & Fonte \\
+\hline
+BOON                  & ansic                & industria \\
+CQual                 & ansic                & industria \\
+RATS                  & ansic                & industria \\
+Smatch                & ansic                & industria \\
+Splint                & ansic                & industria \\
+UNO                   & ansic                & industria \\
+Clang Static Analyzer & cpp                  & industria \\
+Cppcheck              & cpp                  & industria \\
+Jlint                 & cpp                  & industria \\
+WAP                   & java                 & industria \\
+Closure Compiler      & java                 & industria \\
+FindBugs              & java                 & industria \\
+FindSecurityBugs      & java                 & industria \\
+Pixy                  & java                 & industria \\
+PMD                   & java                 & industria \\
+Indus                 & java                 & academia  \\
+TACLE                 & java                 & academia  \\
+JastAdd               & java                 & academia  \\
+WALA                  & java                 & academia  \\
+error-prone           & java                 & academia  \\
+AccessAnalysis        & java                 & academia  \\
+Bakar Alir            & java/ada/python      & academia  \\
+InputTracer           & ansic                & academia  \\
+Simplicissimus        & ansic                & academia  \\
+srcML                 & cpp/cs (cs = C\# ?)  & academia  \\
+Source Meter          & java                 & academia  \\
+\hline
+\end{tabular}
+\label{total-de-ferramentas}
+\end{table}
+
+\clearpage
+
+\subsection{Métricas dos softwares científicos}
+
+%% begin.rcode metrica-acc, fig.align='center', results="asis"
+% table = percentis_by_project("acc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica acc")
+%% end.rcode
+
+%% begin.rcode metrica-accm, fig.align='center', results="asis"
+% table = percentis_by_project("accm")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica accm")
+%% end.rcode
+
+%% begin.rcode metrica-amloc, fig.align='center', results="asis"
+% table = percentis_by_project("amloc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica amloc")
+%% end.rcode
+
+%% begin.rcode metrica-anpm, fig.align='center', results="asis"
+% table = percentis_by_project("anpm")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica anpm")
+%% end.rcode
+
+%% begin.rcode metrica-cbo, fig.align='center', results="asis"
+% table = percentis_by_project("cbo")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica cbo")
+%% end.rcode
+
+%% begin.rcode metrica-dit, fig.align='center', results="asis"
+% table = percentis_by_project("dit")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica dit")
+%% end.rcode
+
+%% begin.rcode metrica-lcom4, fig.align='center', results="asis"
+% table = percentis_by_project("lcom4")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica lcom4")
+%% end.rcode
+
+%% begin.rcode metrica-loc, fig.align='center', results="asis"
+% table = percentis_by_project("loc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica loc")
+%% end.rcode
+
+%% begin.rcode metrica-mmloc, fig.align='center', results="asis"
+% table = percentis_by_project("mmloc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica mmloc")
+%% end.rcode
+
+%% begin.rcode metrica-noa, fig.align='center', results="asis"
+% table = percentis_by_project("noa")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica noa")
+%% end.rcode
+
+%% begin.rcode metrica-noc, fig.align='center', results="asis"
+% table = percentis_by_project("noc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica noc")
+%% end.rcode
+
+%% begin.rcode metrica-nom, fig.align='center', results="asis"
+% table = percentis_by_project("nom")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica nom")
+%% end.rcode
+
+%% begin.rcode metrica-npa, fig.align='center', results="asis"
+% table = percentis_by_project("npa")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica npa")
+%% end.rcode
+
+%% begin.rcode metrica-npm, fig.align='center', results="asis"
+% table = percentis_by_project("npm")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica npm")
+%% end.rcode
+
+%% begin.rcode metrica-rfc, fig.align='center', results="asis"
+% table = percentis_by_project("rfc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica rfc")
+%% end.rcode
+
+%% begin.rcode metrica-sc, fig.align='center', results="asis"
+% table = percentis_by_project("sc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica sc")
+%% end.rcode
+
+\clearpage
+
+\subsection{Métricas das ferramentas da indústria}
+
+%% begin.rcode metrica-acc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("acc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica acc")
+%% end.rcode
+
+%% begin.rcode metrica-accm-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("accm")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica accm")
+%% end.rcode
+
+%% begin.rcode metrica-amloc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("amloc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica amloc")
+%% end.rcode
+
+%% begin.rcode metrica-anpm-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("anpm")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica anpm")
+%% end.rcode
+
+%% begin.rcode metrica-cbo-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("cbo")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica cbo")
+%% end.rcode
+
+%% begin.rcode metrica-dit-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("dit")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica dit")
+%% end.rcode
+
+%% begin.rcode metrica-lcom4-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("lcom4")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica lcom4")
+%% end.rcode
+
+%% begin.rcode metrica-loc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("loc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica loc")
+%% end.rcode
+
+%% begin.rcode metrica-mmloc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("mmloc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica mmloc")
+%% end.rcode
+
+%% begin.rcode metrica-noa-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("noa")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica noa")
+%% end.rcode
+
+%% begin.rcode metrica-noc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("noc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica noc")
+%% end.rcode
+
+%% begin.rcode metrica-nom-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("nom")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica nom")
+%% end.rcode
+
+%% begin.rcode metrica-npa-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("npa")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica npa")
+%% end.rcode
+
+%% begin.rcode metrica-npm-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("npm")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica npm")
+%% end.rcode
+
+%% begin.rcode metrica-rfc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("rfc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica rfc")
+%% end.rcode
+
+%% begin.rcode metrica-sc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("sc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica sc")
+%% end.rcode
+
+\clearpage
+
+\subsection{Gráficos das métricas para os softwares científicos}
+
+%% begin.rcode grafico-accessanalysis, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta accessanalysis"
+% plot_lines_for_project("dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-bakar-ali, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta bakar-ali"
+% plot_lines_for_project("dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-error-prone, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta error-prone"
+% plot_lines_for_project("dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-indus, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta indus"
+% plot_lines_for_project("dataset/PAPERS/indus/indus.staticanalyses.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-inputtracer, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta inputtracer"
+% plot_lines_for_project("dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-jastadd, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta jastadd"
+% plot_lines_for_project("dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-source-meter, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta source-meter"
+% plot_lines_for_project("dataset/PAPERS/source-meter/SonarQube-plug-in-master.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-srcml, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta srcml"
+% plot_lines_for_project("dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-tacle, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta tacle"
+% plot_lines_for_project("dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-wala, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta wala"
+% plot_lines_for_project("dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
+%% end.rcode
+
+\clearpage
+
+\subsection{Gráficos das métricas para as ferramentas da indústria}
+
+%% begin.rcode grafico-boon-industria, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta boon"
+% plot_lines_for_project("dataset/NIST/boon/boon-1.0.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-clang-industria, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta clang"
+% plot_lines_for_project("dataset/NIST/clang/clang-tools-extra-3.7.1.src.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-closure-compiler, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta closure-compiler"
+% plot_lines_for_project("dataset/NIST/closure-compiler/compiler-latest.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-cppcheck, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta cppcheck"
+% plot_lines_for_project("dataset/NIST/cppcheck/cppcheck-1.72.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-cqual, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta cqual"
+% plot_lines_for_project("dataset/NIST/cqual/cqual-0.981.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-findbugs, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta findbugs"
+% plot_lines_for_project("dataset/NIST/findbugs/findbugs-3.0.1.analizo.metrics.dat")
+%% end.rcode
+
+
+%% begin.rcode grafico-findsecuritybugs, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta findsecuritybugs"
+% plot_lines_for_project("dataset/NIST/findsecuritybugs/findsecbugs-plugin-1.4.5-sources.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-jlint, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta jlint"
+% plot_lines_for_project("dataset/NIST/jlint/jlint-3.1.2.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-pixy, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta pixy"
+% plot_lines_for_project("dataset/NIST/pixy/pixy-master.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-pmd, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta pmd"
+% plot_lines_for_project("dataset/NIST/pmd/pmd-src-5.4.1.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-rats, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta rats"
+% plot_lines_for_project("dataset/NIST/rats/rats-2.4.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-smatch, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta smatch"
+% plot_lines_for_project("dataset/NIST/smatch/smatch.git.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-splint, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta splint"
+% plot_lines_for_project("dataset/NIST/splint/splint-3.1.2.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-uno, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta uno"
+% plot_lines_for_project("dataset/NIST/uno/uno.analizo.metrics.dat")
+%% end.rcode
+
+%% begin.rcode grafico-wap, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta wap"
+% plot_lines_for_project("dataset/NIST/wap/wap-2.1.analizo.metrics.dat")
+%% end.rcode
+
+\clearpage
+\subsection{Gráfico resumido com distribuição de métricas}
+
+%% begin.rcode grafico-lcom4, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("lcom4")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="lcom4")
+%% end.rcode
+
+%% begin.rcode grafico-cbo, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("cbo")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="cbo")
+%% end.rcode
+
+%% begin.rcode grafico-sc, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("sc")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="sc")
+%% end.rcode
+
+%% begin.rcode grafico-sc-nist, fig.show='hold', fig.cap="distribuição para todas as ferramenta da indústria"
+% table = percentis_by_nist_project("sc")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="sc")
+%% end.rcode
+
+%% begin.rcode grafico-amloc, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("amloc")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="amloc")
+%% end.rcode
+
+%% begin.rcode grafico-accm, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("accm")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="accm")
+%% end.rcode
+
+%% begin.rcode grafico-rfc, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("rfc")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="rfc")
+%% end.rcode
+
+%% begin.rcode grafico-acc, fig.show='hold', fig.cap="distribuição para todas as ferramenta"
+% table = percentis_by_project("acc")
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% legend("topleft", legend=names(table), col=1:length(table), pch=1)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="acc")
+%% end.rcode
+
+%% begin.rcode accm-vs-amloc, fig.show='hold', fig.cap="distribuição de percentis para todas as ferramentas"
+% accm = percentis_by_project("accm")
+% amloc = percentis_by_project("amloc")
+% accm_min = min(data.frame(accm[6,], accm[7,], accm[8,]))
+% accm_max = max(data.frame(accm[6,], accm[7,], accm[8,]))
+% amloc_min = min(data.frame(amloc[6,], amloc[7,], amloc[8,]))
+% amloc_max = max(data.frame(amloc[6,], amloc[7,], amloc[8,]))
+% matplot(1, type="l", xlab="accm", xlim=c(accm_min, accm_max), ylab="amloc", ylim=c(amloc_min, amloc_max))
+% lines(data.frame(sort(t(accm[6,])), sort(t(amloc[6,]))), col=2, type="o")
+% lines(data.frame(sort(t(accm[7,])), sort(t(amloc[7,]))), col=3, type="o")
+% lines(data.frame(sort(t(accm[8,])), sort(t(amloc[8,]))), col=4, type="o")
+% legend("topleft", legend=c("75%", "90%", "95%"), col=c(2, 3, 4), pch=1)
+% title(main="accm x amloc")
+%% end.rcode
+
+% %% begin.rcode sc-vs-amloc, fig.show='hold', fig.cap="distribuição de percentis para todas as ferramentas"
+% % sc = percentis_by_project("sc")
+% % amloc = percentis_by_project("amloc")
+% % sc_min = min(data.frame(sc[6,], sc[7,], sc[8,]))
+% % sc_max = max(data.frame(sc[6,], sc[7,], sc[8,]))
+% % amloc_min = min(data.frame(amloc[6,], amloc[7,], amloc[8,]))
+% % amloc_max = max(data.frame(amloc[6,], amloc[7,], amloc[8,]))
+% % matplot(1, type="l", xlab="sc", xlim=c(sc_min, sc_max), ylab="amloc", ylim=c(amloc_min, amloc_max))
+% % lines(data.frame(sort(t(sc[6,])), sort(t(amloc[6,]))), col=2, type="o")
+% % lines(data.frame(sort(t(sc[7,])), sort(t(amloc[7,]))), col=3, type="o")
+% % lines(data.frame(sort(t(sc[8,])), sort(t(amloc[8,]))), col=4, type="o")
+% % legend("topleft", legend=c("75%", "90%", "95%"), col=c(2, 3, 4), pch=1)
+% % title(main="sc x amloc")
+% %% end.rcode
+
+\subsection{Regressão ...}
+
+...
+
+\chapter{Conclusão}
+
+(à fazer)
