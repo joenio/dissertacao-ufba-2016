@@ -1,3 +1,12 @@
+compreender ferramentas de análise estática a partir de atributos de sua
+qualidade interna a partir da preocupação de sua manutenção, dando como
+resultado informaçoes úteis para auxiliar a evolução de tais ferramentas
+
+O objetivo principal deste trabalho é compreender as ferramentas de software
+para análise de código fonte, do ponto de vista de sua manutenabilidade, a
+partir da análise de sua complexidade estrutural, discutindo quais
+características arquiteturais explicam tal fator de qualidade interna.
+
 * Feedback de paulo sobre os dados:
   * CBO claramente tem um comportamento diferente das demais, geralmente
     o crescimento é exponencial ou calda longa, mas CBO não tem mostrado
@@ -41,80 +50,6 @@ Além disso, incluir ferramentas da indústria possibilita avaliar se temos
 diferenças em relação à qualidade entre as ferramentas acadêmicas (``softwares
 científicos'') e as ferramentas da indústria.
 
-\subsection{Qualidade de software}
-
-Qualidade de software diz respeito à quão bem um software é projetado e o
-quanto este software está em conformidade com o projeto, embora existam
-inúmeras definições há um concenso de que existem duas dimensões básicas para medir a
-qualidade de um software, estas dimensões estão relacionadas à características
-de qualidade interna e de qualidade externa.
-
-Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
-características que preocupam o desenvolvedor, como: manutenabilidade,
-flexibilidade, portabilidade, reusabilidade, legibilidade, testabilidade e
-compreensão. São questões relacionadas ao código-fonte e em como o software
-foi construído, como design e boas práticas por exemplo.
-
-Qualidade externa são aquelas características que afetam o usuário, como por
-exemplo: exatidão, usabilidade, eficiência, confiabilidade, integridade,
-adaptabilidade, acurácia e robustez. Estas características impactam
-extritamente no uso do software e não em como o software foi construído.
-
-Segundo a ISO/IEC 25010 \cite{iso2011iec25010} essas características podem ser
-divididas em subcaracterísticas. A característica usabilidade por exemplo é
-dividida nas seguintes subcaracterísticas: capacidade de compreensão,
-capacidade de aprendizado, operabilidade, atratividade e conformidade. Esta
-característica está relacionada, por exemplo, a facilidade com que usuários aprendem e
-utilizam um sistema, e passa por questões como facilidade de instalação,
-aprendizado, e uso.
-
-Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
-características de qualidade externa \cite{McConnell2004}, softwares que não
-possuem boa manutenabilidade por exemplo afetam a habilidade de correção de
-defeitos, que por sua vez afetam as características de exatidão e
-confiabilidade.
-
-Dito isso podemos perceber que é possível inferir características de qualidade
-externa de um software a partir de seus atributos de qualidade interna, o que
-pode ser realizado a partir da análise de suas métricas de código-fonte.
-
-
-
-
-
-
-
-
-\section{Objetivos}
-
-O objetivo principal deste trabalho é compreender as ferramentas de software
-para análise de código fonte, do ponto de vista de sua manutenabilidade, a
-partir da análise de sua complexidade estrutural, discutindo quais
-características arquiteturais explicam tal fator de qualidade interna.
-
-Objetivos específicos:
-
-\begin{itemize}
-  \item Realizar uma revisão da literatura para caraterizar a arquitetura das
-    ferramentas de análise estática de código-fonte.
-  \item Realizar uma revisão estruturada, com base em artigos publicados em
-    conferências relacionadas, para selecionar e obter código-fonte de
-    ferramentas científicas (explicadas na Seção XX), para coletar suas
-    métricas de código-fonte.
-  \item Selecionar e obter o código-fonte de ferramentas de análise estática
-    desenvolvidas pelo indústria  (explicadas na Seção XX), para coletar suas
-    métricas de código-fonte.
-  \item Propor intervalos de referência  para a observação parametrizada da
-    qualidade interna das ferramentas de análise estática, a partir de suas
-    métricas de código-fonte.
-  \item Cálculo da distância beysiana entre valores de referência e os valores
-    das ferramentas estudadas
-  \item Evoluir uma ferramenta de análise de código-fonte para coleta de
-    métricas de código-fonte.
-  \item Um conjunto de estratégias para a manutenção e evolução de ferramentas
-    de análise estática de código-fonte
-\end{itemize}
-
 \section{Contribuições esperadas}
 
 \begin{enumerate}
@@ -130,76 +65,9 @@ Objetivos específicos:
 
 (contextualizar engenharia de software -> qualidade -> métricas -> análise estática)
 
-\section{Ferramentas de análise estática de código-fonte}
-
-Ferramentas de análise estática de código-fonte são ferramentas capazes de
-realizar a leitura de código-fonte de um projeto de software de forma
-automatizada ou semi-automatizada e extrair daí informações sobre as entidades
-do software, como módulos, classes, funções, métodos, variáveis, seus
-relacionamentos, suas características e diversas outras informações possíveis
-de serem exraídas diretamente do código-fonte que seja útil ao engenheiro de
-software.
-
-Estas informaçoes costumam ser aplicadas à tarefas comuns da engenharia de
-software, como por exemplo, recuperação arquitetural, localização de falhas,
-manutenção, refatoração, compreensão, análise de performance, visualização,
-entre outras.
-
-Segundo \citeonline{Kirkov2010} estas ferramentas possuem uma
-anatomia comum, composta de quatro componentes básicos - construção de
-modelos; algoritmos de análise e reconhecimento de padrões; base de
-conhecimento de padrões; e representação final.
-
-A construção de modelos de um programa é o primeiro passo e é feito por um
-parser de código-fonte \cite{Binkley2007}. A base de conhecimento de padrões é
-usada para representar e armazenar informações sobre potenciais problemas
-encontrados no código-fonte. O objetivo do algoritmo de análise e
-reconhecumento de padroes é classificar as informações encontradas no modelo a
-partir da base de conhecumento de padroes. A representação final é um
-relatório ou outro tipo de visualização apresentada através de uma interface
-de usuário apropriada.
-
-Esta representação final pode ser por exemplo um relatório contendo os valores
-de métricas calculadas para o software sendo analisado, e é esta
-caractarística das ferramentas de análise estática de código-fonte que será
-utilizada neste trabalho para recuperar métricas de produto de software que
-reflitam os atributos de qualidade dos software científicos estudados.
-
-\section{Software científico}
-
-Softwares científicos são ferramentas de software desenvolvidas no decorrer de
-pesquisas científicas como parte de um estudo, podem ser pequenos scripts,
-protótipos, ou mesmo produtos de software completos que demonstram ou refletem
-os resultados de uma pesquisa. Em Engenharia de Software este tipo de software
-desempenha um papel essencial e sua importância pode ser notada através do
-grande número de conferências com sessões específicas sobre publicação de
-ferramentas.
-
 \chapter{Métricas de design de código-fonte}
 
 (ver trabalho de Arthur Del Spot e Tese de Paulo, SC (focar) conforme Terceiro)
-
-Uma métrica, segundo a definição da ISO/IEC 25010 \cite{iso2011iec25010}, é a
-composição de procedimentos para a definição de escalas e métodos para
-medidas, em engenharia de software estas métricas podem ser classificadas em três categorias: métricas de
-produto, métricas de processo e métricas de projeto.
-
-Métricas de produto são aquelas que
-descrevem as características de artefatos do desenvolvimento, como documentos,
-diagramas, código-fonte e arquivos binários. Métricas de processo medem atributos relacionados
-ao ciclo de desenvolvimento do software. Métricas de projeto são aquelas
-que descrevem as características dos recursos disponíveis ao desenvolvimento.
-
-Neste trabalho, nosso interesse estão nas métricas de produto, que podem ser
-classificadas entre internas ou externas, ou seja, aquelas que medem
-propriedades visíveis apenas aos desenvolvedores ou que medem propriedades
-visíveis aos usuários, respectivamente. Iremos extrair propriedades dos
-softwares científicos a fim de medir a sua qualidade interna através de um
-conjunto de métricas previamente definido, este conjunto tomará como base o
-trabalho realizado por \citeonline{Meirelles2013} onde foi realizado um estudo
-associando qualidade de software à qualidade de código-fonte através da
-observação de métricas de código-fonte. E será realizado através de
-ferramentas de análise estática de código-fonte.
 
 \chapter{Metodologia}
 
@@ -210,263 +78,6 @@ ferramentas de análise estática de código-fonte.
 %(ver TCC de Ronaldo e Kanashiro)
 %( falar que média não serve, distribuição é a solução... etc )
 
-Visando então avaliar a qualidade de ``softwares científicos'' será feito um
-levantamento de artigos com publicação de ferramentas do domínio {\it análise
-estática de código-fonte}. Este domínio foi selecionado com base na
-experiência do pesquisador nesta área, o que facilita encontrar fontes sobre
-ferramentas, bem como analisar e estudar tais softwares. O foco em um domínio
-se justifica pela necessidade de reduzir o escopo do estudo a fim de
-viabilizar o trabalho dentro do tempo previsto em um programa de mestrado.
-
-Além dos software científicos iremos também incluir ferramentas de análise
-estática desenvolvidas na indústria, o objetivo é aumentar o número de
-ferramentas analisadas visto que existe uma suspeita de encontrar um número
-pequeno de softwares científicos com disponibilidade de código-fonte.
-
-Após o levantamento e seleção das ferramentas será feita a caracterização
-inicial e posteriormente análise estática do seu código-fonte, onde teremos
-métricas para cada ferramenta e possivelmente valores referência para
-ferramentas de análise estática, estes valores de referência darão origem a
-recomendações de refatoração para ferramentas deste mesmo domínio de
-aplicação.
-
-Por final traçaremos um paralelo entre caracteristicas de qualidade externa e
-valores de métricas de qualidade interna, especialmente em relação à
-portabilidade e usabilidade a fim de responder nossa questão de pesquisa
-e validar suas hipóteses.
-
-\section{Hipóteses}
-
-Para guiar os estudos, conforme os objetivos acima, definimos as seguintes
-hipóteses (explicadas na Seção XX):
-
-\begin{enumerate}
-  \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
-    de código-fonte para ferramentas de análise estática a partir de um
-    conjunto de softwares científicos e da indústria}
-  \item[{\bf H2:}] {\em Ferramentas de análise estáticas  tendem a ter uma
-    maior complexidade estrutural que outros domínios de aplicação}
-  \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
-    código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
-    complexidade estrutural}
-\end{enumerate}
-
-A hipótese {\bf H1} será validada com a avaliação dos artigos que publicam
-software científico com fontes para obtenção mas que não se encontram mais
-disponíveis.
-
-A hipótese {\bf H2} será validada (depende do capítulo \ref{estatistica}) ...
-
-A hipótese {\bf H3} será validade a partir do cálculo das métricas de
-código-fonte das ferramentas da indústria e sua comparação aos valores de
-referência encontrados para as ferramentas de análise estática.
-
-A hipótese {\bf H4} será validada com a tentativa de instalação e o uso das
-funções mínimas de cada software científico avaliado, será feito a tentativa
-de instalar a ferramenta, instruções de instalação e uso serão pesquisados nos
-artigos relacionados bem como junto ao código-fonte do software. Espera-se que
-aqueles softwares com maior dificuldade de instalação e uso terão valores de
-métricas piores.
-
-\section{Planejamento do estudo}
-
-\subsection{Seleção das métricas}
-
-\citeonline{Meirelles2013} realizou uma série de estudos onde associou
-características de qualidade de produto de software à características de
-qualidade de código-fonte, através de métricas de código-fonte, em um destes estudos
-utilizou-se métricas que medem aspectos relevantes à manutenibilidade do
-software, como a preocupação aqui também está na manutenibilidade
-das ferramentas iremos utilizar a mesma seleção de métricas utilizada por
-\citeonline{Meirelles2013}.
-
-\begin{itemize}
-
-  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
-    mede o acoplamento entre objetos do software \cite{Chidamber1994}.
-
-  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
-    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
-
-  \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
-    complexidade do software \cite{Darcy2005}.
-
-  \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
-    código por método)}: indica se o código está bem distribuído entre os
-    métodos, quanto maior mais ``pesados'' são os métodos (??)
-
-  \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
-    complexidade ciclomática por método)}: mede a complexidade do programa
-    \cite{McCabe1976}.
-
-  \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
-    número de métodos dentre todos os métodos que podem ser invocados em
-    resposta a uma mensagem enviada por um objeto de uma classe
-    \cite{Sharble1993}.
-
-  \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
-    herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
-
-  \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
-    filhos de uma classe \cite{Rosenberg1997}.
-
-  \item {\bf COF} {\it Coupling Factor (Fator de acoplamento)}: razão entre o
-    número máximo possível de acoplamentos no sistema e o número atual de
-    acoplamentos possíveis por herança \cite{Harrison1998}.
-
-\end{itemize}
-
-Estas métricas serão coletadas para cada classe/módulo presente nas
-ferramentas de análise estática selecionadas e servirão de base para
-avaliar a qualidade das mesmas.
-
-\subsection{Seleção da ferramenta de análise estática de código-fonte}
-
-Para realizar a caracterização das ferramentas e extrair suas métricas
-será necessário uma ferramenta que permita automatizar este
-processo, neste trabalho utilizaremos a ferramenta de análise estática Analizo
-\cite{Terceiro2010}.
-
-Analizo é um {\it toolkit} livre, multi-linguagem e extensível para análise de
-código-fonte, calcula uma grande quantidade de métricas, como CBO, LCOM4, RFC,
-LOC, entre outras, e suporta análise das linguagens de programação C, C++ e
-Java.
-
-É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
-atualizações frequentes, sua última versão 1.19.0 lançada em 18 de Fevereiro
-de 2016 será a versão utilizada neste estudo.
-
-\subsection{Seleção das fontes de ferramentas de análise estática}\label{levantamento}
-
-Para ser possível validar as hipóteses aqui levantadas é necessário realizar
-uma busca por ferramentas de análise estática desenvolvidas no contexto da
-academia e da indústria, para isso, será feito um planejamento detalhado para
-realizar a seleção de ferramentas em cada um destes contextos.
-
-No contexto acadêmica a busca por ferramentas será feita
-através de artigos publicados em conferências que tenham histórico de
-publicação sobre ferramentas de análise estática de código fonte. Estes
-artigos serão analisados e aqueles com publicação de ferramenta de análise
-estática serão selecionados.
-
-Na indústria, a busca por ferramentas será feita a partir
-de referências encontradas na internet, algumas organizações mantém listas de
-ferramentas para análise de código-fonte, a Wikipedia por exemplo, mantém uma lista
-de ferramentas, estas referências serão utilizadas como ponto de partida e
-cada ferramenta será analisada a fim de validar se são da indústria ou
-surgiram em contexto acadêmico.
-
-Uma vez que as ferramentas tenham sido selecionadas iniciaremos a extração de
-seus atributos de qualidade interna a partir do cálculo de suas métricas com o
-Analizo.
-
-\section{Coleta de dados}
-
-A partir das fontes selecionadas na etapa anterior serão realizadas duas
-atividades para identificar e mapear as ferramentas de análise estática com
-código-fonte disponível, uma atividade relacionada ao levantamento de
-ferramentas da academia, outra atividade relacionada ao levantamento de
-ferramentas da indústria.
-
-\subsection{Ferramentas da academia}
-
-A seleção de ferramentas será relizada através de uma revisão estruturada dos
-artigos selecionados a partir da conferência SCAM - Source Code Analysis and
-Manipulation Working Conference\footnote{http://www.ieee-scam.org} e mais uma
-dentre as seguintes conferências:
-
-\begin{itemize}
-  \item ASE - Automated Software
-    Engineering\footnote{http://ase-conferences.org}
-  \item CSMR\footnote{A conferência CSMR tornou-se SANER - Software Analysis,
-    Evolution, and Reengineering a partir da edição 2015.} - Conference on
-    Software Maintenance and
-    Reengineering\footnote{http://ansymore.uantwerpen.be/csmr-wcre}
-  \item ICSME - International Conference on Software Maintenance and
-    Evolution\footnote{http://www.icsme.org}
-\end{itemize}
-
-Chamamos de revisão estruturada um processo disciplinado para seleção de
-artigos a partir de critérios bem definidos de forma que seja possível a
-reprodução do estudo por parte de pesquisadores interessados. Alguns
-resultados preliminares podem ser consultados na Tabela \ref{artigos-do-scam}
-da Seção \ref{resultados}.
-
-\subsection{Ferramentas da indústria}
-
-A seleção de ferramentas da indústria será feita de forma não estruturada a
-partir de uma busca livre e manual encontradas no site do projeto
-SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance Metrics and
-Tool Evaluation} disponível em \citeonline{SamateAnalysers} mantém uma lista
-de ferramentas de análise estática, detalhes sobre o projeto pode ser
-encontrado em \citeonline{Ribeiro2015}.
-
-Esta fonte será pesquisada manualmente em busca de ferramentas de análise
-estática que tenham sido desenvolvidas no contexto da indústria, alguns
-resultados preliminares podem ser encontrados nas Tabelas
-\ref{ferramentas-do-nist-com-codigo} e \ref{ferramentas-do-nist-sem-codigo}.
-
-\subsection{Caracterização dos artigos}
-
-Os artigos selecionados a partir da revisão estruturada serão avaliados a fim
-de caracterizar se se tratam de publicação de ferramenta de análise estática
-de código-fonte, esta revisão será realizada de forma semi-automatizada, o
-primeiro passo será automatizado a partir de um
-script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
-que busca os seguintes termos no conteúdo dos artigos:
-
-\begin{verbatim}
-  "tool" OU "framework"; E
-  "download" OU "available"; E
-  "http" OU "ftp"; E
-  "static analysis" OU "parser".
-\end{verbatim}
-
-O segundo passo, manual, é realizar uma leitura do artigo a fim de identificar
-se realmente trata-se de um artigo com publicação de {\it software
-científico}, uma vez que se confirme que o artigo publica um software,
-identifica-se se o software é uma ferramenta de análise estática, softwares
-que sejam mais abrangentes do que apenas análise estática mas que contenham
-esta função em seu conjunto também será considerados.
-
-Uma vez identificado os artigos que publicam {\it softwares científicos} de
-análise estática, procuramos no próprio artigo referências de onde encontrar o
-software, neste momento algumas ações serão tomadas a partir da situação
-encontrada.
-
-\begin{itemize}
-
-  \item Aqueles autores que afirmam que a ferramenta está disponível mas o
-    artigo não cita referências de onde encontrar serão contactados por email
-    solicitando informações de onde obter o código-fonte.
-
-  \item Os artigos que indicam onde obter o cófigo-fonte mas o acesso ao local
-    indicado não está disponível, ou está disponível mas o software não se
-    encontra lá, os autores também serão contactados solicitando informações
-    atualizadas de onde obter uma cópia do código-fonte da ferramenta
-
-  \item Os demais artigos que indicam onde obter o cófigo-fonte e a referência
-    está correta, iremos fazer downlod da última versão disponível do software
-
-\end{itemize}
-
-Uma vez que os autores contactados por email respondam com informações de onde
-obter o software iremos adicinar estes softwares na lista de softwares a serem
-analisados.
-
-\subsection{Caracterização das ferramentas}
-
-As ferramentas da indústria e acadêmicas serão analisadas com o Analizo para
-extração das métricas de código-fonte préviamente
-selecionadas, estas métricas serão relacionadas à caractarística e atributos
-de qualidade das ferramentas.
-
-As métricas coletadas serão também utilizadas para identificar se existem
-valores de referência para métricas de ferramentas de análise estática, caso
-existam, estes valores de métricas serão utilizadas para calcular quão
-distante cada ferramenta analisada se encontra dos valores de referência, isto
-será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
-mesmo estudo foi feito para o sistema Android e seus aplicativos.
 
 \section{Exemplo de uso}
 
@@ -1146,3 +757,141 @@ Source Meter          & java                 & academia  \\
 \chapter{Conclusão}
 
 (à fazer)
+
+
+
+
+Código-fonte é qualquer
+estático, textual, legivel para humanos, completamente executavel desricao de
+um programa de computador pode ser compilado automaticamente em uma forma
+executavel.
+
+
+
+\section{Qualidade de software}
+
+%2- Não teremos uma seção "Qualidade de software", muito perigoso porque é uma
+%Área muito ampla e cheio de papo-mole. Apenas, na introdução deste capítulo,
+%Vamos situação a análise estática como algo ligado às atividades de observação
+%De qualidade interna. Você vai definir análise estática e apresentar os tipos,
+%Na primeira subseção.
+
+
+Qualidade de software diz respeito à quão bem um software é projetado e o
+quanto este software está em conformidade com o projeto, embora existam
+inúmeras definições há um concenso de que existem duas dimensões básicas para medir a
+qualidade de um software, estas dimensões estão relacionadas à características
+de qualidade interna e de qualidade externa.
+
+Segundo \citeonline{McConnell2004}, qualidade interna são aquelas
+características que preocupam o desenvolvedor, como: manutenabilidade,
+flexibilidade, portabilidade, reusabilidade, legibilidade, testabilidade e
+compreensão. São questões relacionadas ao código-fonte e em como o software
+foi construído, como design e boas práticas por exemplo.
+
+Qualidade externa são aquelas características que afetam o usuário, como por
+exemplo: exatidão, usabilidade, eficiência, confiabilidade, integridade,
+adaptabilidade, acurácia e robustez. Estas características impactam
+extritamente no uso do software e não em como o software foi construído.
+
+Segundo a ISO/IEC 25010 \cite{iso2011iec25010} essas características podem ser
+divididas em subcaracterísticas. A característica usabilidade por exemplo é
+dividida nas seguintes subcaracterísticas: capacidade de compreensão,
+capacidade de aprendizado, operabilidade, atratividade e conformidade. Esta
+característica está relacionada, por exemplo, a facilidade com que usuários aprendem e
+utilizam um sistema, e passa por questões como facilidade de instalação,
+aprendizado, e uso.
+
+Sabe-se que, em algum nível, as caractarísticas de qualidade interna afetam as
+características de qualidade externa \cite{McConnell2004}, softwares que não
+possuem boa manutenabilidade por exemplo afetam a habilidade de correção de
+defeitos, que por sua vez afetam as características de exatidão e
+confiabilidade.
+
+Dito isso podemos perceber que é possível inferir características de qualidade
+externa de um software a partir de seus atributos de qualidade interna, o que
+pode ser realizado a partir da análise de suas métricas de código-fonte.
+
+\section{Desafios da análise estática}
+
+Principal 2: Less is More. Does this movement that
+started in graphic design speak to source-code analysis?
+Any programmer who has set out to write an analysis tool
+confronts significant obstacles. First, simple parsing is not
+as simple as it should be. For example, C++ is not LR(n)
+(for any n!). Furthermore, the presence of casting, pointer
+arithmetic, dynamic class loading, reflection, and the like,
+complicate semantic analysis. This leads to the question
+“how good a tool would I need to create for programmers to
+use a ‘simple’ language?” Language design seems headed
+in the opposite direction (Fortran “9x” is an excellent ex-
+ample). Against an increasing need for higher precision
+source-code analysis, modern languages increasingly re-
+quire tools to handle only partially known behavior (in the
+case of Java this is caused by features such as generics, user-
+defined types, plug-in components, reflection, and dynamic
+class loading). These features increase flexibility at run-
+time, but compromise static analysis. In considering each
+of the following research areas, consider also the role that
+analysis quality should play in the language design debate.
+
+Until alternate formalisms come into common usage,
+source code will continue to be definitive in describing pro-
+gram behavior. Based on the past 40 years, programming
+languages can be expected to continue to incorporate new
+features that complicate program semantics. Given its cen-
+tral role in software engineering, source code and source-
+code analysis will remain “hot topics” and thus the focus
+of intense research activity into the foreseeable future. To
+ensure future progress including necessary, but unforeseen
+breakthroughs, it is important for future source-code anal-
+ysis research to continue to investigate a wide diversity of
+ideas.
+
+%Many of these tools
+%are seeking the same kind of programming errors, but, to
+%date, only a few tools have been compared with each other.
+%In this paper, we will look at what the static code analyzers
+%can do and we will try to present a systematic tree of
+%features and assets of static code analysis tools. Finally, we
+%will attempt to compare a few tools for static analysis of
+%code in our newly developed systematic tree.
+%
+%este artigo faz uma caracterizacao muito interessante de ferramentas de
+%análise estática, cria categorias para caracterizar, muito bom! é algo do que
+%eu gostaria de fazer originalmente, posso guardar isso pro futuro e usar as
+%mesmas caracteristicas para aplicar em outro grupo de ferramentas.
+%
+%(/home/joenio/Downloads/Taxonomy of Static Code Analysis Tools.pdf)
+
+\subsection{Seleção da ferramenta de análise estática de código-fonte}
+
+Para realizar a caracterização das ferramentas e extrair suas métricas
+será necessário uma ferramenta que permita automatizar este
+processo, neste trabalho utilizaremos a ferramenta de análise estática Analizo
+\cite{Terceiro2010}.
+
+Analizo é um {\it toolkit} livre, multi-linguagem e extensível para análise de
+código-fonte, calcula uma grande quantidade de métricas, como CBO, LCOM4, RFC,
+LOC, entre outras, e suporta análise das linguagens de programação C, C++ e
+Java.
+
+É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
+atualizações frequentes, sua última versão 1.19.0 lançada em 18 de Fevereiro
+de 2016 será a versão utilizada neste estudo.
+
+
+\section{Software científico}
+
+Softwares científicos são ferramentas de software desenvolvidas no decorrer de
+pesquisas científicas como parte de um estudo, podem ser pequenos scripts,
+protótipos, ou mesmo produtos de software completos que demonstram ou refletem
+os resultados de uma pesquisa. Em Engenharia de Software este tipo de software
+desempenha um papel essencial e sua importância pode ser notada através do
+grande número de conferências com sessões específicas sobre publicação de
+ferramentas.
+
+ferramentas, bem como analisar e estudar tais softwares. O foco em um domínio
+se justifica pela necessidade de reduzir o escopo do estudo a fim de
+viabilizar o trabalho dentro do tempo previsto em um programa de mestrado.
+
