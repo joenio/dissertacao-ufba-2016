@@ -46,6 +46,7 @@ our @METRICS = qw(
 
 our @GLOBAL_METRICS = qw(
   total_modules
+  change_cost
 );
 
 sub metrics_by_module($file, @metrics) {
@@ -89,6 +90,10 @@ foreach my $source (@SOURCES) {
       unless (-e "$dir.analizo.metrics") {
         say "analizo metrics $dir > $dir.analizo.metrics";
         `analizo metrics $dir > $dir.analizo.metrics`;
+      }
+      unless (-e "$dir.analizo.dsm.png") {
+        say "analizo dsm -o $dir.analizo.dsm.png $dir";
+        `analizo dsm -o $dir.analizo.dsm.png $dir`;
       }
       unless (-e "$dir.sloccount") {
         say "sloccount $dir > $dir.sloccount";

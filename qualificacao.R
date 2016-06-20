@@ -97,9 +97,7 @@ plot_lines_for_project <- function(filename) {
   plot_lines_for_metric("lcom4", filename)
   plot_lines_for_metric("cbo", filename)
   plot_lines_for_metric("sc", filename)
-  plot_lines_for_metric("acc", filename)
-  plot_lines_for_metric("rfc", filename)
-  plot_lines_for_metric("accm", filename)
+  plot_lines_for_metric("amloc", filename)
 }
 
 knitr_latex_table <- function(table, caption) {
@@ -107,7 +105,7 @@ knitr_latex_table <- function(table, caption) {
 }
 
 add_column <- function(table1, table2, colname) {
-  t_colnames = c("classes", rownames(table1))
+  t_colnames = c(paste(colname), rownames(table1))
   table = data.frame(t(table2), t(table1))
   colnames(table) <- t_colnames
   return(t(table))
