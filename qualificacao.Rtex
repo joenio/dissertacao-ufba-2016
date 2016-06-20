@@ -4,7 +4,7 @@
 \usepackage{fancyvrb}
 \usepackage[alf]{abntex2cite}
 \usepackage{graphicx}
-\usepackage{longtable}
+%\usepackage{longtable}
 \usepackage{multicol}
 \DeclareGraphicsExtensions{.pdf}
 
@@ -261,29 +261,41 @@ características de qualidade de código-fonte através da observação de
 suas métricas.
 
 \begin{itemize}
-  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
-    mede o acoplamento entre objetos do software \cite{Chidamber1994}.
-  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
-    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
-  \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
-    complexidade do software \cite{Darcy2005}.
-  \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
-    código por método)}: indica se o código está bem distribuído entre os
-    métodos, quanto maior mais ``pesados'' são os métodos (??)
+  \item {\bf ACC} {\it Aferent Connections per Class (Conexões aferentes de
+    uma classe)}: Mede a conectividade de uma classe.
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
+  \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
+    código por método)}: indica se o código está bem distribuído entre os
+    métodos, quanto maior mais ``pesados'' são os métodos (??)
+  \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
+    Número de Parâmetros por Método)}: calcula a média de parâmetros dos
+    métodos da classe (Bansiya e Davi, 1997).
+  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
+    mede o acoplamento entre objetos do software \cite{Chidamber1994}.
+  \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
+    herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
+  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
+    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
+  \item {\bf LOC} {\it Lines of Code (Número de linhas de código)}: mede o
+    número de linhas excluindo linhas em branco e comentários.
+  \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: calcula o
+    número de atributos de uma classe
+  \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
+    filhos de uma classe \cite{Rosenberg1997}.
+  \item {\bf NOM} {\it Number of Methods (Número de métodos)}: mede o tamanho
+    das classes em termos das suas operações implementadas.
+  \item {\bf NPA} {\it Number of Public Attributes (Número de atributos
+    públicos)}: mede o encapsulamento.
+  \item {\bf NPM} {\it Number of Public Methods (Número de métodos públicos)}:
+    representa o tamanho da ``interface'' da classe.
   \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
     número de métodos dentre todos os métodos que podem ser invocados em
     resposta a uma mensagem enviada por um objeto de uma classe
     \cite{Sharble1993}.
-  \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
-    herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
-  \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
-    filhos de uma classe \cite{Rosenberg1997}.
-  \item {\bf COF} {\it Coupling Factor (Fator de acoplamento)}: razão entre o
-    número máximo possível de acoplamentos no sistema e o número atual de
-    acoplamentos possíveis por herança \cite{Harrison1998}.
+  \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
+    complexidade do software \cite{Darcy2005}.
 \end{itemize}
 
 \subsection{Complexidade estrutural}
@@ -325,7 +337,7 @@ A avaliação destes valores juntamente com as características arquiteturais
 encontradas darão origem a recomendações de refatoração para ferramentas de
 análise estática de código-fonte.
 
-\section{Trabalhos relacionados}
+\section{Trabalhos relacionados}\label{trabalhos-relacionados}
 
 %4- Os trabalhos relacionados, num primeiro momento, devem ser colocados na
 %primeira subseção da metodologia, para fazer um ganho com o que tem diferente
@@ -353,24 +365,20 @@ hipóteses:
     complexidade estrutural}
 \end{enumerate}
 
-(pendente) ``explicar as hipóteses aqui.''
+A hipótese {\bf H1} será validada a partir da análise das métricas calculadas
+para cada uma das ferramentas estudadas, esta análise levará em consideração a
+caracterização das ferramentas (explicados na Seção
+\ref{caracterizacao-das-ferramentas}), em especial um subconjunto das
+ferramentas com melhores valores de métricas.
 
-%A hipótese {\bf H1} será validada com a avaliação dos artigos que publicam
-%software científico com fontes para obtenção mas que não se encontram mais
-%disponíveis.
-%
-%A hipótese {\bf H2} será validada (depende do capítulo \ref{estatistica}) ...
-%
-%A hipótese {\bf H3} será validade a partir do cálculo das métricas de
-%código-fonte das ferramentas da indústria e sua comparação aos valores de
-%referência encontrados para as ferramentas de análise estática.
-%
-%A hipótese {\bf H4} será validada com a tentativa de instalação e o uso das
-%funções mínimas de cada software científico avaliado, será feito a tentativa
-%de instalar a ferramenta, instruções de instalação e uso serão pesquisados nos
-%artigos relacionados bem como junto ao código-fonte do software. Espera-se que
-%aqueles softwares com maior dificuldade de instalação e uso terão valores de
-%métricas piores.
+A hipótese {\bf H2} será validada a partir da comparação com os trabalhos
+relacionados (Seção \ref{trabalhos-relacionados}), onde
+realizou-se estudos similares com cálculo e distribuição de métricas
+utilizando conjuntos de softwares e ferramentas distintos dos estudados aqui.
+
+A hipótese {\bf H3} será validada a partir do cálculo da distância das
+métricas de cada ferramenta com os valores de referências encontrados neste
+estudo (explicados na Seção \ref{distancia}).
 
 \section{Planejamento do estudo}
 
@@ -514,17 +522,27 @@ pelo Analizo serão selecionadas.
 
 \section{Análise de dados}
 
-(pendente)
+Após download do código-fonte de cada ferramenta em sua versão mais recente,
+foi utilizada a ferramenta Analizo para a coleta das métricas. Com todas as
+métricas perfeitamente calculadas utilizamos a linguagem R para manipulação
+dos dados, tabelas e plotagem de gráficos.
 
-\subsection{Distribuição dos valores das métricas}
+Foram calculados os percentis de cada métrica para cada ferramenta analisada,
+cada percentil é a centésima parte dos dados ordenados de forma crescente, os
+percentis calculados foram: 1, 5, 10, 25, 50, 75, 90, 95 e 99. Dentre estes
+iremos discutir os resultados em função dos percentis 75, 90 e 95,
+correspondendo a valores muito frequentes, frequentes e pouco frequentes,
+respectivamente.
 
-(pendente) ``como será calculado a distrução dos valores''.
+\subsection{Distribuição dos valores das métricas}\label{distancia}
+
+(pendente) ``como será calculado a distribuição dos valores''.
 
 \subsection{Cálculo de distância e modelo de aproximação}
 
 (pendente) ``como será feito este cálculo''.
 
-\subsection{Caracterização das ferramentas}
+\subsection{Caracterização das ferramentas}\label{caracterizacao-das-ferramentas}
 
 %As métricas coletadas serão também utilizadas para identificar se existem
 %valores de referência para métricas de ferramentas de análise estática, caso
@@ -624,116 +642,170 @@ das melhores ferramentas''.
 
 \subsection{Métricas para as ferramentas da academia}
 
+\subsubsection{Conexões aferentes de uma classe (ACC)}
+
+A Tabela \ref{metrica-acc} apresenta a métrica ACC para cada ferramenta
+acadêmica.
+
 %% begin.rcode metrica-acc, fig.align='center', results="asis"
 % table = percentis_by_project("acc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica acc")
+% knitr_latex_table(table, "percentis da métrica acc", "metrica-acc")
 %% end.rcode
+
+\subsubsection{Média de complexidade ciclomática por método (ACCM)}
+
+A Tabela \ref{metrica-accm} ...
 
 %% begin.rcode metrica-accm, fig.align='center', results="asis"
 % table = percentis_by_project("accm")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica accm")
+% knitr_latex_table(table, "percentis da métrica accm", "metrica-accm")
 %% end.rcode
+
+\subsubsection{Média do número de linhas de código por método (AMLOC)}
+
+A Tabela \ref{metrica-amloc}...
 
 %% begin.rcode metrica-amloc, fig.align='center', results="asis"
 % table = percentis_by_project("amloc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica amloc")
+% knitr_latex_table(table, "percentis da métrica amloc", "metrica-amloc")
 %% end.rcode
+
+\subsubsection{Média do Número de Parâmetros por Método (ANPM)}
+
+A Tabela \ref{metrica-anpm}...
 
 %% begin.rcode metrica-anpm, fig.align='center', results="asis"
 % table = percentis_by_project("anpm")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica anpm")
+% knitr_latex_table(table, "percentis da métrica anpm", "metrica-anpm")
 %% end.rcode
+
+\subsubsection{Acoplamento entre objetos (CBO)}
+
+A Tabela \ref{metrica-cbo}...
 
 %% begin.rcode metrica-cbo, fig.align='center', results="asis"
 % table = percentis_by_project("cbo")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica cbo")
+% knitr_latex_table(table, "percentis da métrica cbo", "metrica-cbo")
 %% end.rcode
+
+\subsubsection{Profundidade da árvore de herança (DIT)}
+
+A Tabela \ref{metrica-dit}...
 
 %% begin.rcode metrica-dit, fig.align='center', results="asis"
 % table = percentis_by_project("dit")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica dit")
+% knitr_latex_table(table, "percentis da métrica dit", "metrica-dit")
 %% end.rcode
+
+\subsubsection{Ausência de coesão em métodos (LCOM4)}
+
+A Tabela \ref{metrica-lcom4}...
 
 %% begin.rcode metrica-lcom4, fig.align='center', results="asis"
 % table = percentis_by_project("lcom4")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica lcom4")
+% knitr_latex_table(table, "percentis da métrica lcom4", "metrica-lcom4")
 %% end.rcode
+
+\subsubsection{Número de linhas de código (LOC)}
+
+A Tabela \ref{metrica-loc}...
 
 %% begin.rcode metrica-loc, fig.align='center', results="asis"
 % table = percentis_by_project("loc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica loc")
+% knitr_latex_table(table, "percentis da métrica loc", "metrica-loc")
 %% end.rcode
 
-%% begin.rcode metrica-mmloc, fig.align='center', results="asis"
-% table = percentis_by_project("mmloc")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica mmloc")
-%% end.rcode
+\subsubsection{Número de atributos (NOA)}
+
+A Tabela \ref{metrica-noa}...
 
 %% begin.rcode metrica-noa, fig.align='center', results="asis"
 % table = percentis_by_project("noa")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noa")
+% knitr_latex_table(table, "percentis da métrica noa", "metrica-noa")
 %% end.rcode
+
+\subsubsection{Número de filhos (NOC)}
+
+A Tabela \ref{metrica-noc}...
 
 %% begin.rcode metrica-noc, fig.align='center', results="asis"
 % table = percentis_by_project("noc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noc")
+% knitr_latex_table(table, "percentis da métrica noc", "metrica-noc")
 %% end.rcode
+
+\subsubsection{Número de métodos (NOM)}
+
+A Tabela \ref{metrica-nom}...
 
 %% begin.rcode metrica-nom, fig.align='center', results="asis"
 % table = percentis_by_project("nom")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica nom")
+% knitr_latex_table(table, "percentis da métrica nom", "metrica-nom")
 %% end.rcode
+
+\subsubsection{Número de atributos públicos (NPA)}
+
+A Tabela \ref{metrica-npa}...
 
 %% begin.rcode metrica-npa, fig.align='center', results="asis"
 % table = percentis_by_project("npa")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npa")
+% knitr_latex_table(table, "percentis da métrica npa", "metrica-npa")
 %% end.rcode
+
+\subsubsection{Número de métodos públicos (NPM)}
+
+A Tabela \ref{metrica-npm}...
 
 %% begin.rcode metrica-npm, fig.align='center', results="asis"
 % table = percentis_by_project("npm")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npm")
+% knitr_latex_table(table, "percentis da métrica npm", "metrica-npm")
 %% end.rcode
+
+\subsubsection{Resposta para uma classe (RFC)}
+
+A Tabela \ref{metrica-rfc}...
 
 %% begin.rcode metrica-rfc, fig.align='center', results="asis"
 % table = percentis_by_project("rfc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica rfc")
+% knitr_latex_table(table, "percentis da métrica rfc", "metrica-rfc")
 %% end.rcode
+
+\subsubsection{Complexidade estrutural (SC)}
+
+A Tabela \ref{metrica-sc}...
 
 %% begin.rcode metrica-sc, fig.align='center', results="asis"
 % table = percentis_by_project("sc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica sc")
+% knitr_latex_table(table, "percentis da métrica sc", "metrica-sc")
 %% end.rcode
 
 \clearpage
@@ -744,112 +816,105 @@ das melhores ferramentas''.
 % table = percentis_by_nist_project("acc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica acc")
+% knitr_latex_table(table, "percentis da métrica acc", "metrica-acc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-accm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("accm")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica accm")
+% knitr_latex_table(table, "percentis da métrica accm", "metrica-accm-industria")
 %% end.rcode
 
 %% begin.rcode metrica-amloc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("amloc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica amloc")
+% knitr_latex_table(table, "percentis da métrica amloc", "metrica-amloc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-anpm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("anpm")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica anpm")
+% knitr_latex_table(table, "percentis da métrica anpm", "metrica-anpm-industria")
 %% end.rcode
 
 %% begin.rcode metrica-cbo-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("cbo")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica cbo")
+% knitr_latex_table(table, "percentis da métrica cbo", "metrica-cbo-industria")
 %% end.rcode
 
 %% begin.rcode metrica-dit-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("dit")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica dit")
+% knitr_latex_table(table, "percentis da métrica dit", "metrica-dit-industria")
 %% end.rcode
 
 %% begin.rcode metrica-lcom4-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("lcom4")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica lcom4")
+% knitr_latex_table(table, "percentis da métrica lcom4", "metrica-lcom4-industria")
 %% end.rcode
 
 %% begin.rcode metrica-loc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("loc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica loc")
-%% end.rcode
-
-%% begin.rcode metrica-mmloc-industria, fig.align='center', results="asis"
-% table = percentis_by_nist_project("mmloc")
-% total_modules = metric_by_nist_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica mmloc")
+% knitr_latex_table(table, "percentis da métrica loc", "metrica-loc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-noa-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("noa")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noa")
+% knitr_latex_table(table, "percentis da métrica noa", "metrica-noa-industria")
 %% end.rcode
 
 %% begin.rcode metrica-noc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("noc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noc")
+% knitr_latex_table(table, "percentis da métrica noc", "metrica-noc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-nom-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("nom")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica nom")
+% knitr_latex_table(table, "percentis da métrica nom", "metrica-nom-industria")
 %% end.rcode
 
 %% begin.rcode metrica-npa-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("npa")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npa")
+% knitr_latex_table(table, "percentis da métrica npa", "metrica-npa-industria")
 %% end.rcode
 
 %% begin.rcode metrica-npm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("npm")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npm")
+% knitr_latex_table(table, "percentis da métrica npm", "metrica-npm-industria")
 %% end.rcode
 
 %% begin.rcode metrica-rfc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("rfc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica rfc")
+% knitr_latex_table(table, "percentis da métrica rfc", "metrica-rfc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-sc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("sc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica sc")
+% knitr_latex_table(table, "percentis da métrica sc", "metrica-sc-industria")
 %% end.rcode
 
 \clearpage

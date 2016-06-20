@@ -100,8 +100,8 @@ plot_lines_for_project <- function(filename) {
   plot_lines_for_metric("amloc", filename)
 }
 
-knitr_latex_table <- function(table, caption) {
-  xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+knitr_latex_table <- function(table, caption, label) {
+  xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
 }
 
 add_column <- function(table1, table2, colname) {
