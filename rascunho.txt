@@ -1,3 +1,36 @@
+feedback chris 21/06:
+* caracterizar outras dimensões das ferramentas, fudamentar isso e analisar as ferramentas
+* qual a motivacao para calcular distancia Bayesiana, o uso, serve para decidir adotar
+* qual a motivacao da manutenabilidade, se uma empresa quer adotar mas tem uma livre q n faz
+  tudo q ela quer mas algum faz 70% e tem uma boa manutenabilidade, ele pode usar isso pra
+  decisão, ...
+* Darci, tese de terceiro, explicar melhor como vou usar SC
+* talvez n de trabalho, pegar um algoritmo de clusterizacao, algo simples, pega
+  o codigo e pelas dependencias clusteriza
+* existe uma arquitetura ideal, a arquitetura das ferramentas podem srr avaliadas
+  se seguem, por exemplo, (objetivo: coletar para calcular ou propor intervalos de referencia)
+  (recuperar arquitetura das ferramentas para propor uma arquitetura de referencia)
+* mojo eh uma ferramenta que calcula a distancia entre os 2, pegar um algoritmo
+  de clusterizacao pronto (bunch ou acedecee)
+  (posso pedir para matheus)
+* merece uma explorada nisso porque no geral, consigo avaliar a aderencia de uma ferramenta a
+  partir de uma arquitetura de referencia (isto eh para comport a parte de analisa da complexidade estrutural)
+* considerar possibilidade recuperar arquitetura
+* o objetivo eh apenas ter mais um componente, nao preciso entrar a fundo nem justificar
+  a escolha de um algoritmo X ou Y
+* Mover analizo para metodologia e voltar a falar no estudo de caso, em cada ponto
+  eu falo apenas o que eh necessario
+* a hipotese 3 exige melhorar a fundamentacao sobre complexidade estrutural
+
+paulo 22/06:
+* motivacao eh, eu como desenvolvedor quero evoluir o Analizo, analise
+  estatica envolve isso, para evoluir eu preciso entender e caracterizar, as
+  ferramentas que estao ai n sao tao novas, queremos olhar para caracterizar
+  para servir de base para evoluir essas ferramentas, datar as conferencias,
+  descrever o historico e surgimento delas...
+* o calculo bayesiano eh para prova a H3, enfatizar a diferenca da qualidade
+  de codigo da industria e dos artigos
+
 * Feedback de paulo sobre os dados:
   * CBO claramente tem um comportamento diferente das demais, geralmente
     o crescimento é exponencial ou calda longa, mas CBO não tem mostrado
@@ -151,3 +184,621 @@ ideas.
 %mesmas caracteristicas para aplicar em outro grupo de ferramentas.
 %
 %(/home/joenio/Downloads/Taxonomy of Static Code Analysis Tools.pdf)
+
+
+ Compara três ferramentas lider de mercado em
+2006/7: PolySpace Verifier, Coverity Prevent e Klocwork K7. Identificar
+funcionalidades sifnificativas de ferramentas de analise estática, mas  que
+não são fornecidas por compiladores normais. Por análise estática dizemos
+métodos para racionalizar sobre propriedades de runtime do código de um
+programa sem execurar. Ferramentas de análise estática para detecção de
+defeitos em runtime e vulnerabilidades de segurança podem ser categorizados
+em: String e combinação de padrões, Análise Unsound dataflow, Análise sound
+dataflow \cite{Emanuelsson2008}.
+
+As ferramentas mais comumente usadas
+podem ser classificadas em diversas categorias: tecnologia, disponibilidade de
+regras (rules), linguagens suportadas, extensibilidade, e muitas outras.
+Apenas poucas tem sido comparadas umas contra outras. Estas ferramentas
+procurar error que compiladores não olham. Analisadores estático de código
+trabalham de diferentes formas, podem operar no código-fonte, outros em código
+intermediário. Outra diferença é o fato de diferentes analisadores operarem em
+diferentes linguagens, como C, C++, C# ou Java. Alguns exemplos de problemas
+que podem ser reconhecidos por analisador estático de código: Syntactic
+problems, unreachable source code, undeclared variables, non-initialized
+variables, non used functions and procedures, variables used before
+initialization, non use of values from functions, wrong use of pointers.
+
+Categorias para caracterizar análise estática de código:
+
+Entrada - quais tipos de arquivos podem ser carregados na ferramenta:
+
+Código-fonte - arquivos de código texto podem ser carregados
+Byte code - arquivos com Java Byte Code ou Microsoft
+Linguagem intermediária (MSIL) pode ser carregada
+
+Linguagens suportadas - quais linguagens de programação a ferramenta suporta
+
+.NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
+VB .NET - suporta VB.NET
+C# - suporta C#
+Java - suporta linguagem de programação Java
+C, C++ - suporta linguagem de programação C ou C++
+
+Tecnologia - quais tecnologias são usadas para procurar erros no código
+
+Dataflow - busca por erros com dataflow
+Sintaxe - busca por errors de sintaxe e correctness
+Prova de teoremas - procurar erros em provar diferentes teoremas
+Verificação de modelos - procurar erros com verificação de modelo
+
+Regras - conjunto de regras, quais são suportadas por diferentes código estático
+
+Estilo - inspecina a aparecencia do código fonte
+Naming - checa se as varáveis são nomeadas corretamente (ortografia, padroes de nomenclatura, ...)
+Geral - regras gerais de analise estática de código
+Comcorrencia - erros com execução de código de concorrente
+Exceções - erros lançando ou não exceções
+Performance - erros de performance das aplicações
+Interoperabilidade - erros de comportamento comum
+Segurança - erros que podem impactar na segurança da aplicação
+SQL - procurar por "SQL injections" e outros erros de SQL
+Buffer overflow - erros de segurança, que explorar buffer overflow
+Manutenabilidade - regras para melhor manutenabilidade da aplicação
+
+Configurabilidade - abilidade de configurar a ferramenta
+
+Documento texto - comfiguração é feita via documento texto
+XML - configuração pe feita por documento XML
+GUI - configuraçãi é feita via interface gráfica
+Ruleset - ferramenta pode ligar/desligar conjunto de regras
+
+Extensibility – if tool can be extended with own rules
+
+Possible – it is possible to extend
+Not Possible – it is not possible to extend
+
+Availability – in what way is tool available
+
+Open Source – tool is free and source code is available
+Free – tool is free, but source code is not available
+Commercial – tool is available for payment
+
+User experience – in what way can tool be used in what is offered to us
+
+Environment integration – how is tool integrated with working environment
+Automatic locating errors in code – when tool finds an error, it can put as at the location of the error
+Extensive help on faults – if tool gives you help on resolving errors
+User interface – availability of user interface
+Command Line – it can be run from command line prompt
+GUI – tool can be run from GUI interface
+
+10. Output – presentation of the results from tool
+
+Text file – tool can present results in text file
+List – tool can present results in custom user interface control in GUI
+XML file – tool can present results in XML data
+HTML file – tool can present results in HTML data
+
+(Figure 1 Taxonomy of static code analysis tools)
+
+caracterizou as seguintes ferramentas: CheckStyle, FindBugs, Gendarme, StyleCop
+
+\cite{Novak2010}
+
+Análise estática é eficaz e complementar a testes dinamicos. Assim seu uso é
+comendado no contexto da maioria dos softwares criticos. A análise menos
+profunda métodos que não requerem extensiva informacao de design pode ser
+usado pela maioria dos softwares. Nao existem padroes apropriados. Isto
+implica que a especificação da análise estática a ser realizada requer cuidado
+e esforço. Igualmente, o potencial beneficio desssas analises nem rempre pode
+ser facilmente apreciadas. A profundidade e natureza de uma analise precisa
+ser especificada. Para dizer que analise estatica foi realizada eh apenas uma
+forma de dizer que o software foi testado. Entretando ao menos estes 2
+problemas (profundiade e natureza) precisa ser especificada ate certo ponto. O
+prerequisito para a validade de diferente formas de analise precisa ser
+reconhecida, para permitir avaliacao objetiva da validade de uma particular
+aplicacao de uma analise tecnica. A linguagem de entrada influencia a
+profundidade da analise estatica pode ser feita facilmente. Linguagens que sao
+esencialmente dinamicas, como C, sao mais dificeis de analisar que linguagens,
+como Ada, que incluem tipagem forte e restrições de alcance. Entretando, a
+natureza da linguagem de entrada precisa ser levada em conta na especificacao
+da analises a ser realizada. O uso de mais rigorosos linguagens 'engenharia de
+software' e conjuntos apropriados podem permitir menos profunda formas de
+analise para ser classificado em regras da linguagem, entao nós experamos que
+separar passos de controles e fluxo de dados analise nao sao mais requeridos.
+
+\cite{Wichmann1995}
+
+Para entender as
+limitacoes destas tecnicas que estas ferramentas usam, eh importante entender
+metricas usadas para avaliar sua performance. Recall é a medida da habilidade
+da ferramenta de encontrar problemas reais. Precisão mede a habilidade da
+ferramenta de excluir falso positivos. Performance, apesar de n ser
+formalmente definido, esta eh uma medida do quando recurso computacional
+precisa para gerar seus resultados. Estas 3 metricas geralmente operam em
+oposicao entre elas.  Ferramenta de analise estatica avancadas oferecem muito
+para melhorar a qualidade de software. As melhores ferramentas sao faceis de
+integrar no ciclo de desenvolvimento, e podem produzir alta qualidade de
+resultados rapidamente sem requerer esforço adicional de engenharia
+\cite{Anderson2008}.
+
+Existem muitas tecnicas sob o guarda chuva do termo analise estatica de
+código, e estes podem ser caracterizados pela sua natureza e profundiade.
+Natureza refere ao conjunto de objetivos da analise e pode estar preocupado
+com propriedades especificas como portabiliade. Profundiade significa
+profundidade analitica da tecnica.
+
+\cite{German2003}
+
+The expressive power of programming languages makes
+analysis even harder. Analysis routines must be explicitly
+developed to handle coding complexities, such as loops,
+conditional control flow, arrays, different variable types,
+interprocedural function calls, and aliasing. In practice no
+tool handles all possible code constructs.
+
+\cite{Black2007}
+
+The purpose of this project is to evaluate existing source code analysis tools, according to metrics
+prioritizing ease of use and “quick gains” over more efficient but more complex solutions.
+
+Categories of software analysis
+tools can be established according to various criteria. One of the most relevant and interesting
+criteria is whether a process is “manual” or “automatic”. Manual software improvement processes
+involve a developer or a quality analysis expert to actively evaluate the piece of software, make use
+of their previously acquired knowledge to understand it and identify its shortcomings. Automatic
+methods consist of a tool that performs a predetermined series of tests on the piece of software it is
+given and produces a report of its analysis.
+
+avaliou uma série de ferramentas usando metricas de qualidade externa: Installation
+Configuration
+Support
+Reports
+Errors found
+Handles projects?
+
+Astree
+BOON
+CCA
+HP Code A
+cppcheck
+CQual
+Csur
+Flawfinder
+ITS4
+Smatch
+Splint
+RATS
+
+CodePro
+FindBugs
+Hammurapi
+JCSC
+IBM
+PMD
+QJPro
+
+B::Lint
+Perl::Critic
+RATS
+Taint Mode
+
+Sandcat
+Pixy
+RATS
+
+PEP8
+PyChecker
+Pylint
+RATS
+
+\cite{Hofer2010}
+
+The BCS SIGIST defines static analysis of source code
+as the “analysis of a program carried out without executing
+the program” [24]. This definition emphasizes the contrast
+to dynamic analysis, where the behaviour of program is
+observed while it is executed.
+
+Static analysis is not exclusively used for finding security
+problems. Applications can also be found, for instance, in
+compiler optimization or improvement of general code quality.
+
+In general, static analysis problems are undecidable [11].
+Thus, no analysis can be sound and complete. This means that
+a static analysis program is either unable to reliably detect all
+targeted problems or is prone to false positives, i.e., it reports
+findings which turn out to be wrong on closer examination. A
+further discussion about the implications and necessary trade-
+offs is given in [28] and [2]. In practice, most tools expose
+both variants of erroneous behaviour.
+Available static analysis for security programs exist in the
+form of freeware [26] [25] [22], academic prototypes [5] [2]
+[12] [23], company-internal tools (e.g., Microsoft’s Prefast [7]
+and Prefix [13]), and commercial products (see [18] for an
+overview).
+
+Evaluation criteria
+Quality of the analysis.
+Implemented trade-offs between precision and scalability.
+Set of known vulnerability types.
+Usability of the tool.
+
+evaluating the quality of a static analysis tool for security
+
+\cite{Johns2011}
+
+This study evaluated three
+ASA tools: IntelliJ ® IDEA, Jlint, and FindBugs.
+
+In conclusion, our results indicate that the ASA tools that
+we evaluated are not effective in detecting the faults that
+are eventually reported. However, two of the tools can find
+program structures that are candidates for refactoring. The
+cost of using these tools may be prohibitive due to the large
+number of false positives.
+Our research focused on the use of three ASA tools for
+Java programs. In future work, we plan to examine cod-
+ing concerns reported by additional ASA tools, and study
+software written in other programming languages such as
+C/C++. Also, we plan to identify the types of faults that
+ASA tools can detect more successfully.
+
+\cite{Wedyan2009}
+
+Existe até uma patente para análise estática de código fonte!!! \cite{Chelf2008}
+
+Tese onde avlia 4 ferramentas em relaçao a buffer overflow \cite{Kratkiewicz2005}
+
+
+Static analysis tools can handle large-scale software and find
+thousands of defects. But do they improve software security?
+We evaluate the effect of static analysis tool use on software
+security in open source projects. We measure security by
+vulnerability reports in the National Vulnerability Database.
+
+But does their use improve software security?
+
+The goal of this
+study is to evaluate the effect of tools on software security.
+
+A number of studies have compared different static analysis tools
+for finding security defects, e.g.
+
+\cite{Okun2007}
+
+Static analysis (SA) tools are being used for early detection
+of software defects.
+
+This paper presents the evaluation of four static
+analysis tools and their capabilities to detect Java concur-
+rency bugs and bug patterns. The tools, i.e., Coverity Pre-
+vent, Jtest, FindBugs, and Jlint, are evaluated using concur-
+rent benchmark programs and a collection of multithreaded
+bug patterns.
+
+Are commercial SA tools better than open source
+SA tools in detecting Java concurrency defects?
+
+In addition, we found several studies evaluating static anal-
+ysis tools from different perspectives other than detecting
+concurrency bugs. A study by Painchaud et al. [18] evalu-
+ated four commercial and seven open source static analysis
+tools. Their study also recommended a six steps methodol-
+ogy to assess the software quality.
+
+F. Wedyan et al. [24] evaluated the usefulness of automated
+static analysis tools for Java program. They evaluate the
+effectiveness of static analysis tools for detecting defects and
+identifying code refactoring modifications.
+
+[18] F. Painchaud, R. Carbone, and D. Valcartier. Java
+software verification tools: Evaluation and
+recommended methodology. Technical memorandum
+TM 2005-226, Defence R&D Canada, 2007.
+
+[24] F. Wedyan, D. Alrmuny, and J. M. Bieman. The
+effectiveness of automated static analysis tools for
+fault detection and refactoring prediction. In Proc. of
+the 2nd Int’l Conf. on Software Testing, Verification,
+and Validation (ICST), pages 141–150, April 2009.
+
+\cite{Al2010}
+
+Using static analysis tools can detect software
+vulnerabilities, which is important for improving the security
+of software. Static analysis technology has developed rapidly,
+but the comparison and evaluation of static analysis
+techniques and tools are not much. This paper focuses on
+software vulnerability static analysis techniques and tools.
+First we discuss the commonly-used static analysis techniques
+and tools, and compare these tools in a technical perspective,
+and then we analyze the characteristics of these tools through
+the experiment, finally, combining dynamic analysis, we
+propose an efficient software vulnerability detection method.
+
+Static analysis is simple, fast and can be effective to find
+bugs in the code. Therefore, many software analysis tools
+are designed and achieved by static analysis technology. The
+first static analysis tool is FlexeLint in 1980s years; it used
+pattern matching method to identify gaps. In recent years, a
+number of complex and powerful static analysis tools began
+to appear.
+
+But few
+studies have analyzed and evaluated different static analysis
+tools, so it is quite negative to promote and apply static
+analysis tools.
+
+Our study focused on
+identifying static analysis functionality provided by the tools
+and surveying the underlying supporting technology. First
+we discuss commonly-used static analysis techniques and
+tools, and then from a technical point of view we compare
+these tools, after that through the experiment we analyze the
+characteristics of these tools,
+
+ITS4
+SPLINT
+UNO
+Checkstyle
+ESC / Java
+FindBugs
+PMD
+
+\cite{Li2010}
+
+These tools scan software for bug patterns or
+show that the software is free from a particular class of defects.
+
+Among others, we have developed the following five tools.
+FindBugs FindBugs [4] is a static analysis tool that finds coding
+mistakes or defects in Java programs. The approach taken by the
+FindBugs project is to start with real bugs in real software, abstract
+
+a bug pattern from those bugs, and devise the simplest possible
+detector that can effectively find that bug pattern, as evaluated by
+trying the proposed detector on test cases for that bug pattern as
+well as tens of millions of lines of production software. FindBugs
+now finds more than 250 bug patterns. Some bug detectors, such
+as those reporting null pointer errors [5], reflect lots of work over
+a long period of time, and find lots of errors. But there is also a
+long tail of bug detectors/patterns: many patterns only occur a few
+times per million lines of code, but in total find a substantial number
+of defects. Such detectors are frequently conceived, implemented,
+evaluated and tuned within the space of a few hours.
+FindBugs can be run within multiple environments, and also
+supports historical tracking [8] so that the persistence of defects
+across successive builds of a software project can be captured.
+FindBugs has been downloaded more than 300,000 times, and
+is now in use by many large companies and open source efforts.
+This provides an opportunity to study open code bases and see how
+the defects identified by FindBugs change over time, both in cases
+where FindBugs is in use and in cases where it is not. FindBugs
+also provides an excellent delivery vehicle for allowing new defect
+detection research ideas to be quickly disseminated.
+
+em trabalhos futuros faz perguntas muito importantes do meu ponto de vista!
+
+What do we need to do to make a tool useful for a developer?
+Much academic research has focused on the fundamental algo-
+rithmic challenges of such tools rather than their usability. We
+need to study, both scientifically and anecdotally, what design
+choices make tools better or worse in practice.
+
+How can we help programmers understand the output of a static
+analysis tool? We need better ways to present static analysis
+results in terms of the abstractions the developer has in mind.
+Just as we would like to have standard tool front-ends, can we
+develop standard back-ends for presenting analysis results?
+
+\cite{Foster2007}
+
+In this paper we compare three static code analysis tools.
+The tools represent three different approaches in the field
+of static analysis: Fortify SCA is a non-annotation based
+heuristic analyzer, Splint represents an annotation based
+heuristic analyzer, and Frama-C an annotation based cor-
+rect analyzer. The tools are compared by analysing their
+performance when checking a demonstration code with in-
+tentionally implemented errors.
+
+This is the area where the static analysis
+tools come into play: they aid the auditor by pointing to
+possible bugs and failures in coding practice, thus saving
+time and effort
+
+tools: SCA, Splint, Frama-C, ACSL
+
+Static code analysis tools can be very expensive, have
+steep learning curves, be too old for any serious work or
+need annotations to be written to libraries. They should be
+carefully studied before selecting which one to use in a soft-
+ware project.
+
+\cite{Mantere2009}
+
+Context: Static analysis tools are used to discover security vulnerabilities in source code. They suffer from
+false negatives and false positives. A false positive is a reported vulnerability in a program that is not really
+a security problem. A false negative is a vulnerability in the code which is not detected by the tool.
+
+We propose some recommendations for improving the reliability
+and usefulness of static analysis tools and the process of benchmarking.
+
+Static analysis is not the only technique to analyze a system
+against the presence of security problems. Dynamic testing meth-
+ods are used to discover vulnerabilities using different techniques
+during the execution of the system being studied, as shown in
+Aggarwal and Jalote [21], SAMATE [6], Petukhov and Kozlov [22].
+At the present state of technology, static and dynamic tools appear
+to be clearly complementary, as also suggested for example in
+Zheng et al. [11] when comparing static analysis tools (including
+K8-Insight, one of the tools analyzed in our study) with dynamic
+testing tools.
+
+This
+work is also complete in code complexity variety. The code complex-
+ity concept refers to variants in the code, which can lead to a con-
+crete vulnerability: directly in main body, in a called function, in a
+loop, array, pointer, etc. Tools may not detect a concrete vulnera-
+bility when the code complexity changes, therefore a benchmark
+should include code complexity diversity for each vulnerability.
+
+Some other works analyze static source code tools against dif-
+ferent programs. For example, Rutar et al. in [35] analyzed five dif-
+ferent tools (Bandera, ESC/Java 2, FindBugs, JLint, and PMD) against
+a well known number of Java programs. Their results show that the
+tools find non-overlapping vulnerabilities and authors proposed a
+meta-tool to allow developers to identify the different classes of
+vulnerabilities.
+
+Wagner et al. [36] compared three different static analysis
+tools: FindBugs, PMD and QJ Pro. They were executed against five
+industrial projects and one development project from a university
+environment which were in use or in the final testing phase. Their
+results showed again very different results for the three tools.
+
+As Fig. 2 shows, the code is transformed using a combination of
+different techniques as lexical and semantic analysis, abstract syn-
+tax and parsing. The program model is analyzed using intraproce-
+dural (local) analysis for examination of individual functions and
+interprocedural (global) analysis for the interaction between func-
+tions, using tracking control flow and data flow, pointer aliasing,
+etc.
+
+Different schemes exist to categorize static security analysis
+tools according to McGraw [42]. The classification can be made
+attending to the languages they understand or to the kind of vul-
+nerabilities searched. Another criterion is the length of the code
+to be analyzed, only small applications or big projects. We consider
+that the most relevant taxonomy for the purpose of our work is
+shown in Chess and West [4]. This taxonomy refers to the general
+purpose of the tools and differentiates between the following
+types:
+
+Style checking
+These tools (for example, the lint tool in UNIX) usually enforce a
+more selective and more superficial set of rules than a type check-
+er. They perform checks based on lexical and syntactic analysis
+(earlier generation of static analysis) to discover problems as
+inconsistencies in function calls, return values in some places
+and not in others, functions called with varying numbers of argu-
+ments, function calls that pass arguments of other types. This anal-
+ysis has obviously limitations, when compared with other types
+
+(Fig. 2. Static analysis tools process.)
+
+Program understanding
+These tools are designed for helping users to make sense of a
+project code. They are included in many Integrated Development
+Environments and are designed to help programmers to gain in-
+sight into the way a program works. They help the reviewer who
+performs security analysis to understand the code and discover
+vulnerabilities but, in any case, this is a manual review of all code
+and it is time consuming. An example is the Fujaba Tool [43].
+
+Program verification and property checking
+These tools accept a specification and a body of code and then
+attempt to prove that the code is a correct implementation of the
+specification. Some examples are CBMC [44], Polyspace tools [25],
+Codesonar [45], or Satabs [46].
+Finally, this classification refers to the most modern and sophis-
+ticated tools. We use the names given to these static analysis tools
+by Chess and West in [4]: ‘‘bug finding’’ tools and ‘‘security review’’
+tools. We consider more in detail both types of tools because of
+their application for the security analysis of projects of hundreds
+of thousands or millions of lines of code.
+
+3.3. ‘‘Bug finding’’ static analysis tools
+
+A number of these tools is available as, for example, FindBugs
+[47], a general tool for identifying vulnerabilities in Java code
+or Prevent, a commercial tool from Coverity [32], available for
+C/C++, Java, J2EE and C#. Also Microsoft has its own tool, Microsoft
+Visual Studio 2005 with the ‘‘/analyze’’ option, sometimes known
+as Prefast [48], which is able to check common coding error in C
+and C++ languages. Finally Klocwork offers Insight [33], available
+
+also for C/C++, Java, J2EE and C #, a product suite that allows graph-
+ical exploration of programs with hundreds of thousands or mil-
+lions of lines of code.
+
+3.4. ‘‘Security review’’ static analysis tools
+
+These tools combine many of the techniques of the previous
+tools but with the much stricter goal of identifying specific security
+vulnerabilities. As claimed by their vendors, their design imple-
+ments in fact a combination of property checkers and ‘‘bug finding’’
+class of tools techniques, because many security properties can be
+expressed briefly as program properties. The designers of these
+tools prefer the cautious side of the balance between false positives
+and negatives. These tools prefer to show many points in the code
+that should be manually reviewed after the execution of the tool,
+producing more false positives when compared with ‘‘bug finding’’
+tools.
+Two of the most relevant ‘‘security review’’ tools are Ounce 6,
+now a product from IBM [49] and SCA (Source Code Analyzer) from
+Fortify Software [50], now an HP company. SCA is able to analyze
+code in different languages, as C/C++, C#, ASP NET, VB.NET, COBOL,
+CFML, HTML, Java, JavaScript, AJAX, JSP, PHP, PL/SQL, Python, Visual
+Basic, VBScript and XML.
+
+tools: Satabs, CBMC
+
+\cite{Diaz2013}
+
+we take a look at some of the different categories of static analysis tools
+
+Type checking
+Style checking
+Program understanding
+Program verification
+Property checking
+Bug finding
+Security review
+
+compara algumas ferramentas para bug finding em Java \cite{Rutar2004}
+
+For style checking Java, we
+like the open source program PMD (http://pmd.sourceforge.net) because it
+makes it easy to choose the style rules you’d like to enforce and almost as
+easy to add your own rules. PMD also offers some rudimentary bug detec-
+tion capability. Parasoft (http://www.parasoft.com) sells a combination bug
+finder/style checker for Java, C, and C++.
+
+Program understanding
+The open source Fujaba tool suite (http://wwwcs.uni-paderborn.de/cs/
+fujaba/), pictured in Figure 2.1, enables a developer to move back and forth
+between UML diagrams and Java source code. In some cases, Fujaba can
+also infer design patterns from the source code it reads.
+CAST Systems (http://www.castsoftware.com) focuses on cataloging and
+exploring large software systems.
+
+Program Verification and Property Checking
+Praxis High Integrity Systems (http://www.praxis-his.com) offers a
+commercial program verification tool for a subset of the Ada programming
+language [Barnes, 2003]. Escher Technologies (http://www.eschertech.com)
+has its own programming language that can be compiled into C++ or Java.
+Numerous university research projects exist in both the program verification
+and property checking realm; we discuss many of them in Chapter 4. Poly-
+space (http://www.polyspace.com) and Grammatech (http://www.gramat-
+ech.com) both sell property checking tools.
+
+Bug finding
+We think FindBugs does an excellent job of identifying bugs in Java code.
+Coverity makes a bug finder for C and C++ (http://www.coverity.com).
+Microsoft’s Visual Studio 2005 includes the \analyze option (sometimes
+called Prefast) that checks for common coding errors in C and C++.
+Klocwork (http://www.klocwork.com) offers a combination program
+understanding and bug finding static analysis tool that enables graphical
+exploration of large programs.
+
+Security Review
+Fortify Software (http://www.fortify.com) and Ounce Labs
+(http://www.ouncelabs.com) make static analysis tools that specifically
+A third company, Secure Software, sold a static analysis tool aimed
+at security, but in early 2007, Fortify acquired Secure’s intellectual property.
+Go Fortify!
+
+\cite{Chess2007}

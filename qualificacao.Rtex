@@ -61,7 +61,17 @@
 %paulo: 1- Num primeiro momento, não precisa de uma subseção "motivação" na
 %introdução, pois, acho que atrapalha a escrita. 
 
-(pendente)
+(pendente) ``segue abaixo uma proposta da motivação escrita de forma livre e
+informal''.
+
+{\it Eu, como um desenvolvedor de ferramenta de análise estática de
+código-fonte, estou interessado em compreender a fundo este domínio de
+aplicação, suas técnicas e limitações, bem como compreender o estado da arte
+das ferramentas existentes na indústria e na academia, através da
+caracterização de seus atributos de qualidade interna, a fim de ter
+conhecimento suficiente para tomada de decisão sobre a evolução e manutenção
+da minha própria ferramenta de análise estática, a ser realizada durante este
+trabalho, com objetivo de melhorar seus atributos de qualidade interna.}
 
 \section{Objetivos}
 
@@ -74,8 +84,8 @@ qualidade interna.
 Objetivos específicos:
 
 \begin{itemize}
-  \item Realizar uma revisão da literatura para caraterizar a arquitetura das
-    ferramentas de análise estática de código-fonte.
+  \item Realizar uma revisão da literatura para conceituar análise estática de
+    código-fonte.
   \item Realizar uma revisão estruturada, com base em artigos publicados em
     conferências relacionadas, para selecionar e obter código-fonte de
     ferramentas de análise estática (explicadas na Seção
@@ -91,19 +101,20 @@ Objetivos específicos:
     das ferramentas estudadas.
   \item Evoluir uma ferramenta de análise de código-fonte para coleta de
     métricas de código-fonte (detalhado na Seção \ref{evolucao-analizo}).
-  \item Um conjunto de estratégias para a manutenção e evolução de ferramentas
-    de análise estática de código-fonte.
 \end{itemize}
 
 \section{Contribuições esperadas}
 
+A partir destes objetivos teremos ao final deste etudo as seguintes
+contribuições científicas ({\bf CC}) e tecnológicas ({\bf CT}):
+
 \begin{enumerate}
-  \item [CC1:] Um conjunto de intervalos de referência da frequência dos
+  \item [{\bf CC1:}] Um conjunto de intervalos de referência da frequência dos
     valores de métricas de código-fonte para o domínio de ferramentas de
-    análise estática
-  \item [CC2:] Explicação da alta complexidade estrutural em ferramentas de
-    análise de código-fonte
-  \item [CT1:] Evolução de uma ferramenta de análise de código-fonte
+    análise estática.
+  \item [{\bf CC2:}] Explicação da alta complexidade estrutural em ferramentas de
+    análise de código-fonte.
+  \item [{\bf CT1:}] Evolução de uma ferramenta de análise de código-fonte.
 \end{enumerate}
 
 \chapter{Análise estática de código-fonte}
@@ -111,7 +122,8 @@ Objetivos específicos:
 Análise estática de código-fonte é um ramo da engenharia de software voltado a
 obter informações acerca de um programa a partir do seu código-fonte sem
 necessidade de execução, e sem requerer qualquer outro artefato do programa
-além do próprio código. É considerada uma atividade meio com objetivo de
+além do próprio código.
+É considerada uma atividade meio com objetivo de
 suportar uma variedade de tarefas comuns da engenharia de software, muitas
 dessas tarefas são substancialmente úteis em atividades de manutenção,
 \citeonline{Binkley2007} define uma extensa lista dessas atividades, segue
@@ -144,6 +156,8 @@ pergunta: ``O que é que este programa significa?''
 
 \section{Anatomia da análise de código-fonte}
 
+Análise de código-fonte é um conceito guarda-chuva onde se encontram tanto a
+análise estática de código-fonte quanto a análise dinâmica.
 \citeonline{Cruz2009}, \citeonline{Binkley2007} realizaram um estudo onde
 definiram a estrutura comum da análise de código-fonte em três componentes: a)
 extração de dados, b) representação interna, e c) análise da representação
@@ -165,7 +179,7 @@ As seções à seguir detalham cada um destes componentes.
 
 O processo de recuperar dados para futuro processamento ou armazenamento é
 chamado de extração de dados, exportar estes dados em uma representação
-intermadiária é uma estratégia comum para facilitar análise e transformação de
+intermediária é uma estratégia comum para facilitar análise e transformação de
 dados e possivelmente adição de metadados. 
 
 O primeiro componente da análise de código-fonte é a extração de dados,
@@ -173,11 +187,11 @@ responsável por processar o código-fonte e transformar em uma ou mais
 representações internas. Em essência este componente converte a sintaxe de um
 programa em uma outra sintaxe abstrata e mais adequada para análise posterior.
 
-Este componente é usualmente chamado de analisador sintático (ou {\it parser}) e a tarefa realizada por
-ele é considerada como um mal necessário da análise de código-fonte.
-Apesar de teoricamente não ser uma tarefa difícil, a complexidade das
-linguagens de programação modernas podem restringir significativamente a
-análise de código-fonte.
+Este componente é usualmente chamado de analisador sintático (ou {\it parser})
+e a tarefa realizada por ele é considerada como um mal necessário da análise
+de código-fonte.  Apesar de teoricamente não ser uma tarefa difícil, a
+complexidade das linguagens de programação modernas podem restringir
+significativamente a análise de código-fonte.
 
 \subsection{Representação interna}
 
@@ -198,9 +212,7 @@ Graph (CFG), ou Call Graph. Outros formatos conhecidos são:
     \item Identifiers Table
     \item Abstract Syntax Tree (AST)
     \item Decorated Abstract Syntax Tree (AST)
-    \item Control Flow Graph (CFG)
     \item Value Dependence Graph (VDG)
-    \item Call Graph
     \item Module Dependence Graph (MDG)
     \item Trace Flow Graph (TFG)
     \item Static Single Assignment (SSA)
@@ -232,6 +244,408 @@ complexidade.
 Estas características da análise vão afetar o resultado gerado quanto à
 confiabiliade, completude, garantia de precisão, eficiência, performance,
 complexidade computacional, precisão da informaçao, entre outras.
+
+%\section{Teoria da análise estática}
+%
+%(falar de falso positivos / negativos)
+%
+%(Tools that are sound with respect to a counterexample are sometimes called
+%complete in academic circles.)
+%
+%Existem diferentes técnicas de análise estática de código-fonte, que variam desde
+%simples análises léxicas, análises de fluxo de dados à análise de grafos de fluxo de con-
+%trole. Ao apontar defeitos no código, uma ferramenta de análise estática pode ou não
+%cometer erros quando analisando determinado trecho de código, dada a natureza do
+%defeito ali presente (ou ausência de defeitos) e à técnica de análise empregada. Al-
+%gumas técnicas são menos complexas e estão mais suscetíveis a erros do que outras
+%(KRATKIEWICZ, 2005). Ainda assim, cada uma das técnicas de análise estática tem
+%suas limitações (CUOQ; KIRCHNER; YAKOBOWSKI, 2012), o que justifica o uso de e
+%a busca por diferentes técnicas de análise.
+%
+%Como definido em (BLACK et al., 2007), chama-se falso positivo, ou alarme
+%falso, um trecho de código apontado como defeituoso por uma ferramenta de análise
+%estática que, na verdade, não se trata de um defeito, ou seja, a ferramenta cometeu
+%um erro ao apontar um trecho de código não defeituoso como defeituoso. Chama-se falso
+%negativo um defeito no código fonte, que se enquadra na categoria de defeitos detectados
+%pela ferramenta que analisa o código em questão, que não foi detectado pela ferramenta,
+%ou seja, a ferramenta cometeu um erro ao não apontar um trecho de código defeituoso.
+%Uma ferramenta ideal não cometeria erros, apontando todos os defeitos do código
+%(mesmo que apenas em uma dada categoria) e nunca apontando um trecho de código
+%correto como defeituoso (a ferramenta não comete falsos positivos nem falsos negativos).
+%Trabalhos anteriores mostram que é impossível, mesmo em teoria, produzir tal ferramenta
+%(BLACK et al., 2007) devido ao Teorema de Rice (RICE, 1953), que prova que para
+%qualquer propriedade de software que não seja trivial, não existe algoritmo capaz de decidir
+%se um programa qualquer possui tal propriedade, de modo que buscam-se aproximações
+%para a solução de problemas ou tomadas de decisões relacionadas à análise estática. É
+%possível, porém, produzir ferramentas capazes de cometer apenas um dos tipos de erro
+%(falsos positivos ou falsos negativos). À análise estática que não gera falsos negativos, ou
+%seja, aponta todos os defeitos no código, chamamos análise correta. À análise estática
+%que não gera falsos positivos, ou seja, todos os possíveis defeitos apontados por ela são
+%de fato trechos de código defeituosos, chama-se análise completa. Por fim, pode-se
+%relacionar os termos com os Teoremas de Incompletude (GODEL et al., 1986), de modo
+%que não é possível realizar uma análise completa e correta.
+
+\section{Usos da análise estática de código-fonte}
+
+A idéia de que programas de computador podem ser utilizados para analisar
+código-fonte de outros programas tem uma história de mais de 40 anos, o
+programa PFORT \cite{Ryder1974} foi projetado para localizar potenciais
+problemas na portabilidade de código Fortran, neste momento fornecedores
+tinham distintos dialetos de Fortran, e uma compilação sem erros não indicava
+que o programa estava correto segundo os padrões da linguagem
+\cite{Wichmann1995}.
+
+Desde então ferramentas de análise estática tem surgido para os mais diversos
+fins, muitas delas surgiram a partir dos estudos e desenvolvimento de
+compiladores. O {\it parser} utilizado nessas ferramentas devem interpretar o
+código-fonte de um programa da mesma forma que os compiladores o fazem, assim
+são projetados de forma bastante próxima à compiladores reais
+\cite{Anderson2008}.
+
+As ferramentas de análise estática de código-fonte tem se tornado mais e mais
+comum no ciclo de desenvolvimento de programas de computador, o campo de
+aplicação destas ferramentas é bastante amplo e variado, cobrindo uma enorme
+gama de objetivos. \citeonline{Chess2007} definem algumas categorias
+comuns onde a análise estática é aplicada:
+
+\begin{multicols}{2}
+  \begin{itemize}
+    \item Verificação de tipo
+    \item Verificaçao de estilo
+    \item Compreensão de programa
+    \item Verificação programa
+    \item Localização de bugs
+    \item Avaliação de segurança
+  \end{itemize}
+\end{multicols}
+
+As seções a seguir descrevem brevemente cada categoria citada.
+
+\subsection{Verificação de tipo}
+
+A forma mais amplamente utilizada de análise estática, e uma das quais os
+programadores estão mais familiarizados, é a checagem de tipo. Programadores
+dão pouca atenção à isto, visto que as regras são
+definidas pela linguagem de programação e executadas pelo próprio compilador,
+de forma que não se torna necessário entender como a análise acontece.
+No entando, esta atividade de verificação é análise estática e elimina
+toda uma categoria de erros de programaçao. Por exemplo, previne que
+programadores acidentalmente atribuam valores de forma incorreta à variáveis.
+Ainda, ao capturar erros em tempo de compilação, esta checagem de tipo previne
+erros em tempo de execução.
+
+\subsection{Verificaçao de estilo}
+
+%mas no entando mais meticulosa 
+
+Os verificadores de estilo são um tipo de análise estática que aplicam regras
+de forma mais superficial do que os verificadores de tipo. São regras
+relacionadas à espaços em branco, nomes, funções depreciadas, comentários,
+estrutura do programa, entre outros.  A maioria dos verificadores de estilo
+costumam ser bem flexíveis quanto ao conjunto de regras que aplicam uma vez
+que os programadores costumam ser bastante apegados aos seus próprios estilos
+de proramação. Os erros produzidos pelos verificadores de estilo
+frequentemente afetam a leitura e a manutenabilidade do código-fonte, e nao
+indicando potenciais erros em tempo de execução como fariam os verificadores
+de tipo.
+
+\subsection{Compreensão de programa}
+
+Ferramentas de compreensão de programa ajudam programadores a terem uma visão
+clara frente a grandes programas de computador, ou seja, programas com alto
+volume de código-fonte. Ambientes de desenvolvimento integrados (IDE)
+geralmente incluem funcionalidade de compreensão, exemplo disto incluem
+atividades como ``encontrar todos os usos de um certo método'' ou ``encontrar
+a declaração de uma variável global''. Análises mais avançadas chegam a
+incluir, por exemplo, refatoração automática. No entando, estas ferramentas de
+compreensão costumam ser particularmente úteis para programadores interessados
+em entender um grande conjunto de código-fonte escrito por outros
+programadores.
+
+\subsection{Verificação de programa}
+
+Ferramentas de verificação de programa aceitam como entrada uma especificação
+e um conjunto de código-fonte e tenta provar que o código está deacordo com a
+especificação. Quando a especificação é uma descrição completa de todo o
+programa, a ferramenta de verificação poderá realizar uma checagem de
+equivalência para garantir que o código-fonte e a especificação combinam de
+forma exata. Programadores raramente tem acesso a uma especificação detalhada
+suficientemente para ser usada numa checagem de equivalência, o trabalho de
+criar esta especificação pode ser maior do que o trabalho de escrever o
+próprio código-fonte do programa, desta forma este tipo de verificação formal
+raramente acontece. Sendo mais comum a verificação em relação a uma
+especificação parcial que detalha apenas parte do comportamento do programa.
+Isto costuma ser chamado de verificação de propriedade, grande parte das
+ferramentas de verificação de propriedade funcionam aplicando inferências
+lógicas ou verificação de modelos.
+
+%Soundness is an important characteristic in an academic context, where anything less might
+%garner the label “unprincipled.” But for large real-world bodies of code,
+%it is almost impossible to meet the conditions stipulated by the tool, so the
+%soundness guarantee is not meaningful. For this reason, soundness is rarely
+%a requirement from a practitioner’s point of view.
+
+\subsection{Localização de bugs}
+
+O propósito de uma ferramenta de localização de bugs não está em questões de
+formatação, como é a verificação de estilo, nem em realizar uma exaustiva e
+completa comparação contra uma especificação, como uma ferramenta de
+verificacao de programa. Ao invés disso, um localizador de bugs está
+preocupado em apontar locais onde o programa, possivelmente, irá se comportar
+de forma inesperada. A maioria das ferramentas de localização de bugs são
+fáceis de usar porque costumam vir com um conjunto de regras (bug idioms) para
+descrição de padrões de código que indicam bugs. Algumas destas ferramentas
+costumam usar os mesmos algoritmos utilizados por ferramentas de verificação
+de propriedade.
+
+\subsection{Avaliação de segurança}
+
+Ferramentas de análise estática para segurança usam as mesmas técnicas
+encontradas nas outras ferramentas, mas por ter um propósito diferente, identificar
+problemas de segurança, aplicam estas técnicas de forma diferente. As
+primeiras ferramentas de segurança (ITS4, RATS, Flawfinder) eram pouco mais do
+que um ``grep'' melhorado; na maior parte, elas escaneavam o codigo procurando
+por funcoes como por exemplo ``strcpy()'' que sao facilmente usadas de forma
+inadequada e devem ser inspecionadas manualmente no processo de revisao de
+código-fonte. Mas a evolução deste tipo de ferramenta de segurança levou a
+utilizarem técnicas híbridas de verificação de propriedade e de localização de
+bugs. De forma que muitas propriedades de segurança podem ser suscintamente
+expressas como propriedades de programas.
+
+%Para um property checker, buscas potenciais
+%vulnerabilidades de buffer overflow podem ser feitas como a checagem da
+%propriedade "este prorama nao acessa um endereco fora dos limites de memoria
+%alocados". Para o dominio de localizacao de bugs, ferramentas de seguranca
+%adoram a nocao que desenvoovedores continuam recintando o mesmo metodo
+%inseguro para resolver um problema, o que pode ser descrito como um idiome
+%inseguro de programacao.
+%Neste sentido, estas ferramentas estao talvez mais
+%perto relacionadamente com verificadores de estilo - o que elas apontam nao
+%necessariamente podem causar problemas de segurança, mas indicam que há razões
+%para preocupar-se com problemas de segurança. 
+%Ao longo do tempo estas
+%ferramentas foram indicadas por terem alto indice de falso positivos porque
+%pessoas tentavam interpretas a saida da ferramenta como uma lista de bugs ao
+%inves de uma ajuda/apoio durante a revisao de codigo. 
+
+\section{Técnicas e métodos de análise estática}
+
+Inúmeras técnicas e métodos distintos podem ser utilizados pelas ferramentas
+de análise estática, seja com o objetivo de verificação de tipos, localização
+de bugs, compreensão de programa, avaliação de segurança, ou outro fim
+qualquer. Tais técnicas estão relacionadas à análise propriamente dita, e,
+segundo \citeonline{German2003}, \citeonline{Li2010}, \citeonline{Hofer2010}
+as técnicas e métodos mais comumente encontradas nas ferramentas atuais são:
+
+\subsection{Lexical analysis}
+
+Análise léxica é baseada na análise da estrutura de gramática, similar ao
+compilador C. Este método de análise divide o programa em pequenos fragmentos,
+e compara estes fragmentos com bibliotecas de brechas para determinar se são
+de fato brechas. Não leva em consideração a sintaxe do programa, a
+semântica ou a interação entre as subrotinas, o índice de falto positivos é
+alta.
+
+\subsection{Text-based Pattern Matching}
+
+Combinação de padrões de texto é a maneira mais simples e rápida de procurar
+vulnerabilidades num código fonte.
+
+\subsection{Type inference}
+
+Inferência de tipos refere-se a inferir o tipo de variáveis
+e funções através do compilador, e avaliar se o acesso a variáveis e funções
+está em conformidade com as regras. Linguagens de programação com sistema de
+tipagem incluem mecanismos para definição de tipos de dados e conjunto de
+regras para tipagem.
+
+\subsection{Data flow analysis}
+
+Análise de fluxo de dados resume-se a coletar informação semântica do
+código-fonte do programa, e com métodos algébricos deduzir a definição e uso
+das variáveis em tempo de compilação. O objetivo é mostrar que nenhum caminho
+de execução no programa acessa uma variável sem definição prévia de valor.
+
+%Esta pode ser uma atividade
+%complexa, como variaveis globais podem ser acessadas de qualquer lugar. Esta
+%analise tb pode detectar outras anomalias como multiplas gravacoes sem
+%leitura.
+%Com o uso de Control
+%Flow Graph a análise de fluxo de dados determina se um valor no programa é
+%atribuído para uma possível vulnerabilidade de variáveis.
+
+%\subsection{Control Flow Analysis}
+%
+%CFA - Control Flow Analysis (Controle de Análise de Fluxo) (incluindo Complexidade Ciclomática)
+%
+%CFA pode ser conduzida usando ferramentas ou manualmente sob varios niveis de
+%abstracao (modulo, nó, etc) e é pelos seguintes razões:
+%
+%Garantir que o código é executado na sequencia correta
+%Garantir que o código é bem estruturado
+%Localizar qualquer código sintaticamente não atingivel
+%Destacar partes do código (ex loops) onde o termino precisa ser considerado
+%
+%Isto pode resultar em representacoes diagramas e graficos do codigo sendo
+%produzido.
+%
+%Interprocedural analysis is fairly straightforward in a language with only first-
+%order functions. If we introduce higher-order functions, objects, or function
+%pointers, then control flow and dataflow suddenly becomes intertwined. The
+%task of control flow analysis is to approximate conservatively the control flow
+%graph for such languages.
+%\cite{Schwartzbach2008}
+
+\subsection{Rule checking}
+
+Verificação de regra é checar a segurança do programa usando regras de
+segurança pré-estabelecidas. Existe algumas regras de segurança no projeto do
+programa, tal como nos privilégios de ``root'' se o programa chama a função
+``exec'' isto vai trazer implicações de segurança.
+
+\subsection{Constraint analysis}
+
+Análise de restrição é dividida em geração de restrição e resolução de
+restrição no processo de análise de programa. Geração de restrição significa
+estabelecer tipos de variáveis ou analisar limitações do sistema entre
+diferentes estados usando as regras de geração de restrição; resolução de
+restrição é para resolver as restrições do sistema.
+
+\subsection{Patch comparison}
+
+Comparação patch inclui comparação de patch de código-fonte e comparação patch
+de código-binário, e é usado principalmente para encontrar brechas
+"conhecidos". Após as vulnerabilidades de segurança do programa serem
+encontradas, os fabricantes normalmente lançam patches correspondentes, assim
+você pode comparar o código com os patches para determinar a localização e as
+causas da vulnerabilidade.
+
+\subsection{Symbolic execution}
+
+% (Path Function Analysis or Also Called Semantic Analysis)
+
+Execução simbólica é para repsentar as entradas do programa através do uso de
+valores simbolicos ao invés de dados reais, e produz expressões algébricas
+sobre a entrada de símbolos no processo de implementação. Pelo método de
+resolução de restrição de execução simbólica pode detectar possibilidade de
+erros.
+
+Usada para verificar propriedades de uma programa atravoes de manipulacao
+algebrica do codigo fonte, sem requerer especificacao formal. Envolve checar
+semantica de cada caminho atraves secoes do programa ou precedimentos.
+Ferramentas sofisticadas dao expressoes para uma precisa relacao matematica
+entre as entradas e saidas de uma secao particular do programa: Ele
+efetivamente da a funcoes de transferir para esta secao do programa. Ele passa
+pelo codigo, associado expressoes ao inves de valores para cada variavel.
+Entao a logica sequencial é convertida em um conjunto de associacoes paralelas
+que os valores de saida sao expresso em termos de valores de entrada - este
+formato eh facil de interpretar. Ferramentas produzem saida para cada caminho
+cosistindo de condicoes que causa o caminho ser executado, e o resultado da
+execucao do caminho.
+
+\subsection{Abstract interpretation}
+
+Interpretação abstrata é uma descrição formal da análise do programa. Pelo
+fato de apenas controlar atributos de programa de preocupaçao dos usuários, a
+interpretação da análise semântica é similar ao seu significado semantivo
+real.
+
+\subsection{Theorem proving}
+
+Prova de teoremas é baseada na análise semantiva do programa, e pode resolver
+problemas de ``infinite state systems''. Prova de teoremas primeiro converte o
+programa em fórmulas de lógica, então prova que o programa é um teorema válido
+usando axiomas e regras.
+
+\subsection{Model checking}
+
+O processo de verificaçao de modelos primeiro contrói um modelo formal do
+programa tal como uma máquina de estado ou grafo direcionado, então examina e
+compara o modelo para verificar se o sistema cumpre as características
+pré-definidas. Se verificação de modelos realmente se encaixa na categoria de
+análise de código fonte automática é discutível.  Na verdade, esta técnica
+requer a definição e descrição das propriedades que devem ser verificados por
+um pedaço de software, na maioria das vezes em um formato específico
+ferramenta. No entanto, uma vez que esta especificação foi estabelecida
+nenhuma entrada humana adicional é necessário para realizar a análise.
+
+\subsection{Formal Checking}
+
+% Verificacao formal (Also Called Compliance Analysis)
+
+É o processo de prover, num processo automatizado, que o codigo do programa eh
+correto em respeito a uma especificacao formal dos seus requisitos. Todas as
+possibilidades de execucao sao exploradas, o que n eh possivel via teste
+dinamico somente. Dependendo do poder da ferrmente sendo usada, e sua
+habilidade de simplificacao, o  envolvimento da analise pode ser alto ou
+baixo.
+
+%Compliance analysis effectively performs a proof of the code against a
+%lowlevel mathematical specification. In this respect, it is by far the most
+%rigorous of the static analysis techniques.
+
+\subsection{Information Flow Analysis}
+
+Identifica como execução de uma unidade de código cria dependência entre
+entradas e saídas. Estas dependências podem ser verificadas contra as
+dependências da especificação. Esta análise é frequentemente apropriada para
+uma saída crítica que pode ser rastreada de volta às entradas da interface do
+programa.
+
+\subsection{Syntax Checks}
+
+Verificação de sintaxe tem o objetivo de encontrar regras de violação de
+linguagem tais como a utilizaçao de uma variável de tipo incorreto ou antes de
+ser declarada. Os compiladores de algumas linguagens como Ada e Pascal
+realizam checagem de sintaxe automaticamente, enquanto que linguagens como C e
+assembler precisam de ferramentas adicionais.
+
+\subsection{Range Checking}
+
+Análise de verificação de intervalo tem objetivo de verificar que os valores
+dos dados permanecem dentro de intervalos especificados, bem como manter a
+precisão especificada. Esta técnica pode detectar: Overflow and underflow
+analysis, Rounding errors, Array bounds, Stack usage analysis.
+
+%Tools Available
+%There are a number of static code analy-
+%sis tools available. They offer different
+%depths of analysis, and some will only
+%operate on a few languages. Most of
+%them run on uncompiled source code
+%and first translate to an intermediate lan-
+%guage, which the analysis tool itself can
+%read.
+%The time taken for the tool to analyze
+%the code may be only a small fraction of
+%the time taken to carry out static analysis
+%of the code. Many tools produce reams
+%of data that must be laboriously analyzed
+%and processed; staff requires skill and a
+%lot of training.
+
+\section{Formatos de representação interna}
+
+(pendente) ``falar sobre os formatos citados anteriormente, mostrar os usos
+comuns destes formatos''.
+
+%Control and Dataflow Analysis
+%
+%One representation that is widely used in formal methods for optimizing and verifying source code
+%is that of Control Flow Graphs (CFG). In a CFG, each node represents a basic bloc of code, i.e.
+%lines of code that will not be executed independently during normal program execution. In other
+%words, the nodes do not contain any jumps or labels (jump targets). The jumps are represented by
+%directed edges. Usually CFG implementations have two special nodes: the “entry point”, which is
+%the starting point of the execution; and the “exit point”, where the execution exits the graph.
+
+\section{Ferramentas para cálculo de métricas de código-fonte}
+
+%* qual a diferenca entre um analisador, um compilador, tradutor, etc...
+
+(pendente) ``fazer link com métricas para entrar na próxima seção''.
+Referencias: \cite{Kratkiewicz2005} \cite{Black2007} \cite{Emanuelsson2008}
+\cite{Chelf2008} \cite{Wedyan2009} \cite{Novak2010} \cite{Johns2011}
+\cite{Alemerien2013} \cite{Ataide2014}.
 
 \section{Métricas de código-fonte}
 
@@ -311,17 +725,6 @@ Esta métrica pode dar indícios importantes sobre características arquiteturai
 de um programa de software, e podem explicar seus atributos de qualidade
 interna.
 
-\section{Analizo}
-
-Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
-e extensível para análise de código-fonte, calcula uma grande quantidade de
-métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
-programação C, C++ e Java.
-
-É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
-atualizações frequentes, sua última versão 1.19.0 foi lançada em 18 de
-Fevereiro de 2016 e será esta a versão utilizada neste estudo.
-
 \chapter{Metodologia}
 
 Visando então caracterizar as ferramentas de análise estática de código-fonte
@@ -379,6 +782,17 @@ utilizando conjuntos de softwares e ferramentas distintos dos estudados aqui.
 A hipótese {\bf H3} será validada a partir do cálculo da distância das
 métricas de cada ferramenta com os valores de referências encontrados neste
 estudo (explicados na Seção \ref{distancia}).
+
+\section{Analizo}
+
+Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
+e extensível para análise de código-fonte, calcula uma grande quantidade de
+métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
+programação C, C++ e Java.
+
+É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
+atualizações frequentes, sua última versão 1.19.0 foi lançada em 18 de
+Fevereiro de 2016 e será esta a versão utilizada neste estudo.
 
 \section{Planejamento do estudo}
 
@@ -555,6 +969,41 @@ respectivamente.
 
 \chapter{Resultados preliminares}
 
+\section{Ferramentas}
+
+\subsection{Indus}
+
+Uma biblioteca de {\it program
+slicing}\footnote{http://en.wikipedia.org/wiki/Program\_slicing} publicada no
+artigo ``An Overview of the Indus Framework for Analysis and Slicing of
+Concurrent Java Software'' do SCAM 2006, disponível em
+http://indus.projects.cis.ksu.edu. O projeto é dividido em 3 módulos, os
+seguintes arquivos contendo o código-fonte dos mesmos foram copiados
+localmente para análise:
+
+\begin{itemize}
+  \item indus.indus-src-20091220.zip
+  \item indus.javaslicer-src-20091220.zip
+  \item indus.staticanalyses-src-20070305.zip
+\end{itemize}
+
+\subsection{AccessAnalysis}
+
+Um plugin do Eclipse de análise estática para cálculo das métricas IGAT e IGAM
+publicada no artigo ``AccessAnalysis — A Tool for Measuring the
+Appropriateness of Access Modifiers in Java Systems'' do SCAM 2012,
+disponível em http://accessanalysis.sourceforge.net. O código-fonte da versão
+1.2 foi utilizada neste estudo:
+
+\begin{itemize}
+  \item AccessAnalysis-1.2-src.zip
+\end{itemize}
+
+\subsection{Bakar Alir}
+
+SCAM 2012/06392111.pdf 
+ http://www.sireum.org/downloads/Alir, link desatualizado, mas link para github leva aos sources
+
 \section{Análise exploratória da revisão estruturada}
 
 %(pendente) ``documentar aqui os artigos incluídos na revisão estruturada,
@@ -639,6 +1088,11 @@ aproximação, valores de referências, discussão sobre cada métrica, discuss�
 sobre as ferramentas com melhor qualidade, discutir detalhes da arquitetura
 das melhores ferramentas''.
 
+Vamos analisar os dados e tentar explicar seu comportamento
+com relação às características das ferramentas, compará-los a outros estudos, e até mesmo
+comparar com dados de métricas em aplicativos, utilizando os próprios aplicativos do
+sistema como base de comparação
+
 \subsection{Métricas para as ferramentas da academia}
 
 \subsubsection{Conexões aferentes de uma classe (ACC)}
@@ -666,13 +1120,26 @@ A Tabela \ref{metrica-accm} ...
 
 \subsubsection{Média do número de linhas de código por método (AMLOC)}
 
-A Tabela \ref{metrica-amloc}...
+LOC representa o número de linhas de código fonte de um módulo, enquanto AMLOC
+a média do número de linhas dos métodos daquele módulo. O valor de AMLOC deve
+ser o menor possível, pois métodos grandes ``abrem espaço'' para problemas de
+complexidade excessiva.
+
+As Tabelas \ref{metrica-amloc} e \ref{metrica-amloc-industria} apresentam a
+métrica AMLOC para as ferramentas da academia e da indústria, respectivamente.
 
 %% begin.rcode metrica-amloc, fig.align='center', results="asis"
 % table = percentis_by_project("amloc")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica amloc", "metrica-amloc")
+% knitr_latex_table(table, "percentis da métrica AMLOC para as ferramentas da academia", "metrica-amloc")
+%% end.rcode
+
+%% begin.rcode metrica-amloc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("amloc")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica AMLOC para as ferramentas da indústria", "metrica-amloc-industria")
 %% end.rcode
 
 \subsubsection{Média do Número de Parâmetros por Método (ANPM)}
@@ -823,13 +1290,6 @@ A Tabela \ref{metrica-sc}...
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
 % knitr_latex_table(table, "percentis da métrica accm", "metrica-accm-industria")
-%% end.rcode
-
-%% begin.rcode metrica-amloc-industria, fig.align='center', results="asis"
-% table = percentis_by_nist_project("amloc")
-% total_modules = metric_by_nist_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica amloc", "metrica-amloc-industria")
 %% end.rcode
 
 %% begin.rcode metrica-anpm-industria, fig.align='center', results="asis"
