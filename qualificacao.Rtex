@@ -142,36 +142,43 @@ O capítulo ...
 
 O capítulo ... A seção~\ref{revisao-estruturada}) ...
 
-
-
-
 %-----------------------------------------------------%
 \xchapter{Fundamentação Teórica}
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 
-
 A análise estática de código é o primeiro passo para coletar informações
-necessárias para diversas atividades de verificação, medição e melhoria
-da qualidade de produtos de software.  (colocar algumas refs)
+necessárias para diversas atividades de verificação, medição e melhoria da
+qualidade de produtos de software \cite{Cruz2009} \cite{Kirkov2010}.
 
-A análise estática de código é realizada com base apenas
-no código-fonte de um programa ou sistema de software,
-para descobrir problemas e propriedades de sua qualidade estrutural.  [REF] 
+A análise estática de código é realizada com base apenas no código-fonte de um
+programa ou sistema de software, para descobrir problemas e propriedades de
+sua qualidade estrutural \cite{Chess2007}.
 
-Ferramentas de análise estática estão disponíveis há decadas, 
-em especial, para programadores. 
-A ferramenta lint [colocar URL] ... e ... FALAR sobre.
+Ferramentas de análise estática estão disponíveis há decadas, em especial,
+para programadores. A ferramenta Lint \cite{Johnson1978}, considerada a
+primeira ferramenta de análise estática \cite{Gosain2015}, é uma ferramenta
+para examinar programas escritos em linguagem C com a capacidade de aplicar
+regras de tipagem mais estritas do que os próprios compiladores
+da linguagem.
+
+% \cite{Li2010} cita FlexeLint como a primeira ferramenta de análise estática
 
 Neste trabalho, ... 
 interesse em ferramentas de análise estática de código para desenvolvedores.
 
+Neste trabalho o nosso interesse reside em compreender características de
+qualidade interna de ferramentas de análise estática de código-fonte do ponto
+de vista do desenvolvedor interessado em manter e evoluir tais ferramentas
+melhorando seus atributos de qualidade interna.
 
-Estrutura da seção: 
-Análise estática de código-fonte (seção \ref{sec:analise})
-
-Anatomia da análise de código-fonte \ref{sec:anatomia}
-
- etc.
+A seção \ref{sec:analise} apresenta a definição de análise estática de
+código-fonte e suas principais aplicações; A seção \ref{sec:anatomia} descreve
+a anatomia comum da análise de código-fonte em suas partes básicas. A seção
+\ref{formatos} traz uma breve descrição dos formatos de representação interna
+mais comuns. A seção \ref{tecnicas} apresenta as técnicas e métodos mais
+comuns de análise. A seção \ref{metricas} traz definição de métricas de
+software, secao \ref{metricas-de-codigo} apresenta as métricas utilizadas neste
+estudo. (pendente capitulo sobre estatistica).
 
 \section{Análise estática de código-fonte} \label{sec:analise}
 
@@ -225,7 +232,6 @@ dialetos de Fortran, uma compilação sem erros não indicava
 que o programa estava correto segundo os padrões da linguagem
 \cite{Wichmann1995}.
 
-
 Desde então, ferramentas de análise estática de código-fonte
 têm surgido para os mais diversos fins 
 -- muitas delas a partir de pesquisa e desenvolvimento na área de compiladores. 
@@ -234,9 +240,9 @@ aos analisadores usados em compiladores \cite{Anderson2008}.
 
 O uso de ferramentas de análise estática de código-fonte têm 
 se tornado mais e mais comum no ciclo de desenvolvimento de software.
-O  campo de aplicação destas ferramentas é bastante variado, 
+O campo de aplicação destas ferramentas é bastante variado, 
 cobrindo diferentes objetivos. Dentre as atividades em que a análise
-estática de código-fonte é usada \citeonline{Chess2007}, destacam-se:
+estática de código-fonte é usada \cite{Chess2007}, destacam-se:
 
 \begin{description}
     \item \textit{Verificação de tipos}. 
@@ -328,23 +334,21 @@ expressas como propriedades de programas.
 %pessoas tentavam interpretas a saida da ferramenta como uma lista de bugs ao
 %inves de uma ajuda/apoio durante a revisao de codigo. 
 
-
 \subsection{Anatomia da análise de código-fonte} \label{sec:anatomia}
-
 
 Ferramentas de análise estática de código-fonte estão organizadas em 
 partes ou componentes, responsáveis por implementar 
-três funções básicas \citeonline{Cruz2009}, \citeonline{Binkley2007}: 
+três funções básicas \cite{Cruz2009} \cite{Binkley2007}: 
 a) extração de dados, b) geração de representação interna, e c) análise. 
 A ferramenta de análise de código-fonte
-CodeSonar\footnote{http://www.grammatech.com/products/source-code-analysis}
+CodeSonar\footnote{https://www.grammatech.com/products/codesonar}
 segue tal organização, conforme mostra 
 a Figura \ref{static-analysis-representation}.
 
 \begin{figure}[h]
   \center
   \includegraphics[scale=0.4]{imagens/static-analysis-representation.png}
-  \caption{CodeSonar: Static Analysis Representation [REF?]}
+  \caption{CodeSonar: Representação da Análise Estática \cite{GrammaTech2016}}
   \label{static-analysis-representation}
 \end{figure}
 
@@ -361,9 +365,7 @@ responsável por ler o código-fonte do programa e gerar uma ou mais
 representações internas para ele. 
 Em essência, este componente converte a sintaxe de um
 programa em uma outra sintaxe abstrata e mais adequada para análise posterior.
-%
 Este componente é usualmente chamado de analisador sintático (ou {\it parser}).
-%e a tarefa realizada por ele é considerada como um mal necessário da análise de código-fonte.  
 Apesar de teoricamente não ser uma tarefa difícil, a
 complexidade das linguagens de programação modernas podem dificultar
 a análise de código-fonte.
@@ -387,7 +389,7 @@ compiladores; algumas delas são produzidas diretamente pelo {\it parser}
 enquanto outras requerem uma análise específica. 
 Os formatos mais comuns são baseados em grafos. 
 
-Alguns formatos utilizaados são:
+Alguns formatos comumente utilizados são:
 \begin{multicols}{2}
   \begin{itemize}
     \item Identifiers Table
@@ -475,7 +477,7 @@ complexidade computacional, precisão da informaçao, entre outras.
 %relacionar os termos com os Teoremas de Incompletude (GODEL et al., 1986), de modo
 %que não é possível realizar uma análise completa e correta.
 
-\subsection{Formatos de representação interna}
+\subsection{Formatos de representação interna} \label{formatos}
 
 (pendente) ``falar sobre os formatos citados anteriormente, mostrar os usos
 comuns destes formatos''.
@@ -517,7 +519,7 @@ if|while|for|foreach|case|default|continue|goto|&&| etc.
 %the starting point of the execution; and the “exit point”, where the execution exits the graph.
 
 
-\subsection{Técnicas de análise}
+\subsection{Técnicas de análise} \label{tecnicas}
 
 Inúmeras técnicas e métodos distintos podem ser utilizados pelas ferramentas
 de análise estática, seja com o objetivo de verificação de tipos, localização
@@ -704,24 +706,24 @@ analysis, Rounding errors, Array bounds, Stack usage analysis.
 
 
 %--------------------------------------%
-\section{Métricas de software}
+\section{Métricas de software} \label{metricas}
 
-No glossário de terminologia para engenharia de software\footnote{IEEE-STD-610.12-1990 Glossary of Software Engineering Terminology} do IEEE \cite{ieee-std-610-12-1990}, 
+No glossário de terminologia para engenharia de software\footnote{IEEE-STD-610.12-1990 Glossary of Software Engineering Terminology} do IEEE \cite{ieee1990ieee}, 
 a qualidade de software é definida como 
 (1) o grau em que um sistema, componente ou processo atende a requisitos especificados e 
 (2) o grau em que um sistema, componente ou processo atende às necessidades ou expectativas
 de um usuário. 
 
 %Segundo o padrão ISO/IEC 25010 \cite{iso2011iec25010}, 
-uma métrica é a composição de procedimentos para a definição de 
-escalas e métodos para medição.
+%uma métrica é a composição de procedimentos para a definição de 
+%escalas e métodos para medição.
 
 Segundo o padrão para metodologia de qualidade de métricas de software\footnote{IEEE-STD-1061-1998 Standard for Software Quality Metrics Methodology} do IEEE,
 uma métrica de qualidade de software é 
 ``uma função cujas entradas são dados de software e cuja saída é um valor numérico,
 que pode ser interpretado como o grau em que um software''
  ( .. sistema, componente ou processo ... ) 
-``possui um determinado atributo que afeta sua qualidade'' \cite{ieee-std-1061-1998}.
+``possui um determinado atributo que afeta sua qualidade'' \cite{software1998ieee}.
 
 %Metrics make a statement about some quality attributes, are quantitative, 
 %but will have to be interpreted by a human.
@@ -744,15 +746,15 @@ Neste trabalho, apenas métricas de produto serão utilizadas.
 
 Métricas de produto podem ser classificadas em 
 internas (medem propriedades visíveis apenas aos desenvolvedores)
-ou externas (medem propriedades visíveis aos usuários) [REF].
+ou externas (medem propriedades visíveis aos usuários) \cite{Mohamed1994}.
 
 Neste trabalho, são utilizadas métricas de produto e,
 especificamente, métricas de código-fonte,
 que cobrem aspectos de tamanho, complexidade e qualidade que podem ser medidos
-a partir do código-fonte de um software, 
-ao longo de sua evolução no tempo.
+a partir do código-fonte de um software.
+%, ao longo de sua evolução no tempo.
 
-\subsection{Métricas de código-fonte}
+\subsection{Métricas de código-fonte} \label{metricas-de-codigo}
 
 As propriedades visíveis aos desenvolvedores podem ser medidas através de
 métricas de código-fonte.
@@ -766,16 +768,16 @@ suas métricas.
 
 \begin{itemize}
   \item {\bf ACC} {\it Aferent Connections per Class (Conexões aferentes de
-    uma classe)}: Mede a conectividade de uma classe.
+    uma classe)}: Mede a conectividade de uma classe. [REF]
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
   \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
     código por método)}: indica se o código está bem distribuído entre os
-    métodos, quanto maior mais ``pesados'' são os métodos (??)
+    métodos, quanto maior mais ``pesados'' são os métodos. [REF]
   \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
     Número de Parâmetros por Método)}: calcula a média de parâmetros dos
-    métodos da classe (Bansiya e Davi, 1997).
+    métodos da classe \cite{Jagdish1997}.
   \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
     mede o acoplamento entre objetos do software \cite{Chidamber1994}.
   \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
@@ -783,17 +785,17 @@ suas métricas.
   \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
     métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
   \item {\bf LOC} {\it Lines of Code (Número de linhas de código)}: mede o
-    número de linhas excluindo linhas em branco e comentários.
+    número de linhas excluindo linhas em branco e comentários. [REF]
   \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: calcula o
-    número de atributos de uma classe
+    número de atributos de uma classe. [REF]
   \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
     filhos de uma classe \cite{Rosenberg1997}.
   \item {\bf NOM} {\it Number of Methods (Número de métodos)}: mede o tamanho
-    das classes em termos das suas operações implementadas.
+    das classes em termos das suas operações implementadas. [REF]
   \item {\bf NPA} {\it Number of Public Attributes (Número de atributos
-    públicos)}: mede o encapsulamento.
+    públicos)}: mede o encapsulamento. [REF]
   \item {\bf NPM} {\it Number of Public Methods (Número de métodos públicos)}:
-    representa o tamanho da ``interface'' da classe.
+    representa o tamanho da ``interface'' da classe. [REF]
   \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
     número de métodos dentre todos os métodos que podem ser invocados em
     resposta a uma mensagem enviada por um objeto de uma classe
