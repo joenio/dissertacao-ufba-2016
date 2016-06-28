@@ -73,7 +73,7 @@ percentis_by_project <- function(metric) {
   accessanalysis = percentis_for_metric(metric, "dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
   bakarali = percentis_for_metric(metric, "dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
   errorprone = percentis_for_metric(metric, "dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
-  indus = percentis_for_metric(metric, "dataset/PAPERS/indus/indus.staticanalyses.analizo.metrics.dat")
+  indus = percentis_for_metric(metric, "dataset/PAPERS/indus/indus.analizo.metrics.dat")
   inputtracer = percentis_for_metric(metric, "dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
   jastadd = percentis_for_metric(metric, "dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
   sourcemeter = percentis_for_metric(metric, "dataset/PAPERS/source-meter/SonarQube-plug-in-master.analizo.metrics.dat")

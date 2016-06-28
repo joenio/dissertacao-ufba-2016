@@ -23,11 +23,6 @@ feedback chris 21/06:
 * a hipotese 3 exige melhorar a fundamentacao sobre complexidade estrutural
 
 paulo 22/06:
-* motivacao eh, eu como desenvolvedor quero evoluir o Analizo, analise
-  estatica envolve isso, para evoluir eu preciso entender e caracterizar, as
-  ferramentas que estao ai n sao tao novas, queremos olhar para caracterizar
-  para servir de base para evoluir essas ferramentas, datar as conferencias,
-  descrever o historico e surgimento delas...
 * o calculo bayesiano eh para prova a H3, enfatizar a diferenca da qualidade
   de codigo da industria e dos artigos
 
@@ -81,16 +76,6 @@ análise estática. Tomaremos como exemplo de uso a própria ferramenta Analizo,
 onde iremos calcular suas métricas e a partir de uma comparação com os
 valores de referência indicaremos refatorações que façam a ferramenta de
 aproximar dos valores de referência.
-
-Estas indicações serão feitas utilizando o mesmo método de
-\citeonline{Almeida2010} onde foi feito um estudo mapeando boas práticas de
-programação em valores de métricas de código-fonte, estas boas práticas são
-baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
-Code}, onde sugerem práticas de desenvolvimento úteis para que um código
-tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
-identificam melhorias de implementação através do uso de valores de métricas e
-oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
-códigos.
 
 \chapter{Cronograma}
 
@@ -286,6 +271,11 @@ caracterizou as seguintes ferramentas: CheckStyle, FindBugs, Gendarme, StyleCop
 
 \cite{Novak2010}
 
+\cite{Novak2010} em seu artigo ``Taxonomy of Static Code Analysis Tools''
+constrói uma taxonomia para ferramentas de análise estática a partir do estudo
+de quatro ferramentas de análise estática populares.
+
+
 Análise estática é eficaz e complementar a testes dinamicos. Assim seu uso é
 comendado no contexto da maioria dos softwares criticos. A análise menos
 profunda métodos que não requerem extensiva informacao de design pode ser
@@ -447,10 +437,7 @@ ASA tools can detect more successfully.
 
 \cite{Wedyan2009}
 
-Existe até uma patente para análise estática de código fonte!!! \cite{Chelf2008}
-
 Tese onde avlia 4 ferramentas em relaçao a buffer overflow \cite{Kratkiewicz2005}
-
 
 Static analysis tools can handle large-scale software and find
 thousands of defects. But do they improve software security?
@@ -802,3 +789,318 @@ at security, but in early 2007, Fortify acquired Secure’s intellectual propert
 Go Fortify!
 
 \cite{Chess2007}
+
+
+
+
+%Control and Dataflow Analysis
+%
+%One representation that is widely used in formal methods for optimizing and verifying source code
+%is that of Control Flow Graphs (CFG). In a CFG, each node represents a basic bloc of code, i.e.
+%lines of code that will not be executed independently during normal program execution. In other
+%words, the nodes do not contain any jumps or labels (jump targets). The jumps are represented by
+%directed edges. Usually CFG implementations have two special nodes: the “entry point”, which is
+%the starting point of the execution; and the “exit point”, where the execution exits the graph.
+
++%Another commonly used graph is the Dependence Graph, introduced in the context of work
++%with parallelizing and highly optimizing compilers [FOW87], where vertices represent the state-
++%ments and predicates of a program. These graphs have been used in other analyses [HRB88,
++%HR92]. 
++%
++%Other sorts of graphs, also referred in the literature, include Dynamic Call Graphs [QH04,
++%PV06] (is intended to record an execution of a program) and XTA graphs built in support of
++%dynamic reachibility-based interprocedural analysis [QH04].
++
+
+    \item Trace Flow Graph (TFG)
+    \item Value Dependence Graph (VDG)
+
+
+
+%Tools Available
+%There are a number of static code analy-
+%sis tools available. They offer different
+%depths of analysis, and some will only
+%operate on a few languages. Most of
+%them run on uncompiled source code
+%and first translate to an intermediate lan-
+%guage, which the analysis tool itself can
+%read.
+%The time taken for the tool to analyze
+%the code may be only a small fraction of
+%the time taken to carry out static analysis
+%of the code. Many tools produce reams
+%of data that must be laboriously analyzed
+%and processed; staff requires skill and a
+%lot of training.
+
+
+
+
+%Esta pode ser uma atividade
+%complexa, como variaveis globais podem ser acessadas de qualquer lugar. Esta
+%analise tb pode detectar outras anomalias como multiplas gravacoes sem
+%leitura.
+%Com o uso de Control
+%Flow Graph a análise de fluxo de dados determina se um valor no programa é
+%atribuído para uma possível vulnerabilidade de variáveis.
+
+%\item \textit{Control Flow Analysis.}
+%
+%CFA - Control Flow Analysis (Controle de Análise de Fluxo) (incluindo Complexidade Ciclomática)
+%
+%CFA pode ser conduzida usando ferramentas ou manualmente sob varios niveis de
+%abstracao (modulo, nó, etc) e é pelos seguintes razões:
+%
+%Garantir que o código é executado na sequencia correta
+%Garantir que o código é bem estruturado
+%Localizar qualquer código sintaticamente não atingivel
+%Destacar partes do código (ex loops) onde o termino precisa ser considerado
+%
+%Isto pode resultar em representacoes diagramas e graficos do codigo sendo
+%produzido.
+%
+%Interprocedural analysis is fairly straightforward in a language with only first-
+%order functions. If we introduce higher-order functions, objects, or function
+%pointers, then control flow and dataflow suddenly becomes intertwined. The
+%task of control flow analysis is to approximate conservatively the control flow
+%graph for such languages.
+%\cite{Schwartzbach2008}
+
+
+%\item \textit{}.
+%Trace Flow Graph (TFG)
+%  É usado para representar programas concorrentes, é baseado no modelo CFG e
+%  extendido com informações adicionais nos vértices e nós para controle de
+%  fluxo inter processo.
+
+
+%\item \textit{Program Dependence Graph (PDG)}.
+%PDG representa tanto controle quando dados dependencias juntos num grafo só.
+%Foi desenvovido para apoiar otimizacoes necessarias para paralelismo. É um
+%grafo firecionado, onde nós são as instruções, expressões ou regiões de nós, e
+%arestas são controle ou dependencia de dados.
+%Statement nodes represent instructions in the program. Predicate nodes test a con-
+%ditional statement and have true and false edges to represent the choice taken on
+%evaluation of the predicate. Region nodes group all nodes with the same control depen-
+%dences together and order them into a hierarchy.
+
+
+
+%\item \textit{Grafo acíclico dirigido}.
+%  Grafo acíclico dirigido (DAG - Directed Acyclic Graph) é uma AST com
+%    transformação suficiente para avitar duplocações de instruções, ela
+%    permite cada nó possuir multiplos pais. Isto permite sub-arvores identicas
+%    no grapho serem reutilizadas. Isso faz o DAG ser uma forma mais compacta
+%    resultando em economia de memoria e processamento.
+
+por exemplo gerar código removendo redundancias a fim de evitar computar
+resultados já obtidos.
+
+
+%Para um property checker, buscas potenciais
+%vulnerabilidades de buffer overflow podem ser feitas como a checagem da
+%propriedade "este prorama nao acessa um endereco fora dos limites de memoria
+%alocados". Para o dominio de localizacao de bugs, ferramentas de seguranca
+%adoram a nocao que desenvoovedores continuam recintando o mesmo metodo
+%inseguro para resolver um problema, o que pode ser descrito como um idiome
+%inseguro de programacao.
+%Neste sentido, estas ferramentas estao talvez mais
+%perto relacionadamente com verificadores de estilo - o que elas apontam nao
+%necessariamente podem causar problemas de segurança, mas indicam que há razões
+%para preocupar-se com problemas de segurança. 
+%Ao longo do tempo estas
+%ferramentas foram indicadas por terem alto indice de falso positivos porque
+%pessoas tentavam interpretas a saida da ferramenta como uma lista de bugs ao
+%inves de uma ajuda/apoio durante a revisao de codigo. 
+
+
+\item \textit{Tabela de identificadores}.
+  Tabela de identificadores (Identifiers Table) é uma tabela contendo todos os
+    identificadores extraídos do código fonte.
+
+
+%The authors state that optimizing a
+%program in VDG form is simpler to implement, easier to express formally, and faster
+%than equivalent CFG analysis. 
+%An interesting property of the VDG is that is is implic-
+%itly in SSA form: for every operator node, that node will have zero or more successors
+%using its value.
+%The original construction algorithm for the VDG begins from a CFG, where single-
+%entry, single-exit (SESE) analysis is performed.
+
+
+Na Data flow analysis é comum pensar no programa como um grafo: os nós são os
+blocos elementares e as arestas descrevem como o controle pode passar de um
+bloco elementar para outro. Podem existir muitas abordagens neste tipo de
+análise, exemplos, equational approach, constraint based approach.
+
+    regras de segurança no projeto do programa, tal como nos privilégios de
+    ``root'' se o programa chama a função ``exec'' isto vai trazer implicações
+    de segurança.
+
+    Após as vulnerabilidades de segurança do programa serem
+encontradas, os fabricantes normalmente lançam patches correspondentes, assim
+você pode comparar o código com os patches para determinar a localização e as
+causas da vulnerabilidade.
+
+Usada para verificar propriedades de uma programa através de manipulação
+algebrica do codigo fonte, sem requerer especificacao formal. Envolve checar
+semantica de cada caminho atraves secoes do programa ou precedimentos.
+Ferramentas sofisticadas dao expressoes para uma precisa relacao matematica
+entre as entradas e saidas de uma secao particular do programa: Ele
+efetivamente da a funcoes de transferir para esta secao do programa. Ele passa
+pelo codigo, associado expressoes ao inves de valores para cada variavel.
+Entao a logica sequencial é convertida em um conjunto de associacoes paralelas
+que os valores de saida sao expresso em termos de valores de entrada - este
+formato eh facil de interpretar. Ferramentas produzem saida para cada caminho
+cosistindo de condicoes que causa o caminho ser executado, e o resultado da
+execucao do caminho.
+
+Se verificação de modelos realmente se encaixa na categoria de
+análise de código fonte automática é discutível.  Na verdade, , na maioria das vezes em um formato específico
+ferramenta. No entanto, uma vez que esta especificação foi estabelecida
+nenhuma entrada humana adicional é necessário para realizar a análise.
+
+  
+%Esta técnica pode
+%detectar: Overflow and underflow analysis, Rounding errors, Array bounds,
+%Stack usage analysis.
+
+%\section{Teoria da análise estática}
+%
+% The expressive power of programming languages makes
+% analysis even harder. Analysis routines must be explicitly
+% developed to handle coding complexities, such as loops,
+% conditional control flow, arrays, different variable types,
+% interprocedural function calls, and aliasing. In practice no
+% tool handles all possible code constructs.
+% \cite{Black2007} 
+%
+%(falar de falso positivos / negativos)
+%
+%(Tools that are sound with respect to a counterexample are sometimes called
+%complete in academic circles.)
+%
+%Existem diferentes técnicas de análise estática de código-fonte, que variam desde
+%simples análises léxicas, análises de fluxo de dados até a análise de grafos de fluxo de con-
+%trole. Ao apontar defeitos no código, uma ferramenta de análise estática pode ou não
+%cometer erros quando analisando determinado trecho de código, dada a natureza do
+%defeito ali presente (ou ausência de defeitos) e à técnica de análise empregada. Al-
+%gumas técnicas são menos complexas e estão mais suscetíveis a erros do que outras
+%(KRATKIEWICZ, 2005). Ainda assim, cada uma das técnicas de análise estática tem
+%suas limitações (CUOQ; KIRCHNER; YAKOBOWSKI, 2012), o que justifica o uso de e
+%a busca por diferentes técnicas de análise.
+%
+%Como definido em (BLACK et al., 2007), chama-se falso positivo, ou alarme
+%falso, um trecho de código apontado como defeituoso por uma ferramenta de análise
+%estática que, na verdade, não se trata de um defeito, ou seja, a ferramenta cometeu
+%um erro ao apontar um trecho de código não defeituoso como defeituoso. Chama-se falso
+%negativo um defeito no código fonte, que se enquadra na categoria de defeitos detectados
+%pela ferramenta que analisa o código em questão, que não foi detectado pela ferramenta,
+%ou seja, a ferramenta cometeu um erro ao não apontar um trecho de código defeituoso.
+%Uma ferramenta ideal não cometeria erros, apontando todos os defeitos do código
+%(mesmo que apenas em uma dada categoria) e nunca apontando um trecho de código
+%correto como defeituoso (a ferramenta não comete falsos positivos nem falsos negativos).
+%Trabalhos anteriores mostram que é impossível, mesmo em teoria, produzir tal ferramenta
+%(BLACK et al., 2007) devido ao Teorema de Rice (RICE, 1953), que prova que para
+%qualquer propriedade de software que não seja trivial, não existe algoritmo capaz de decidir
+%se um programa qualquer possui tal propriedade, de modo que buscam-se aproximações
+%para a solução de problemas ou tomadas de decisões relacionadas à análise estática. É
+%possível, porém, produzir ferramentas capazes de cometer apenas um dos tipos de erro
+%(falsos positivos ou falsos negativos). À análise estática que não gera falsos negativos, ou
+%seja, aponta todos os defeitos no código, chamamos análise correta. À análise estática
+%que não gera falsos positivos, ou seja, todos os possíveis defeitos apontados por ela são
+%de fato trechos de código defeituosos, chama-se análise completa. Por fim, pode-se
+%relacionar os termos com os Teoremas de Incompletude (GODEL et al., 1986), de modo
+%que não é possível realizar uma análise completa e correta.
+
+    
+%Este formato é usado pela ferramenta Bunch e apresenta programas em um
+%nível grosseiro de granularidade. Seus certices representam modulos do sistema
+%e as arestas as dependencias entre eles.
+
+    
+%Foi
+%desenvolvida para substituir o CFG como base de analises e transformacoes.
+
+ Tais técnicas estão relacionadas à análise propriamente dita.
+
+
+%Segundo o padrão ISO/IEC 25010 \cite{iso2011iec25010}, 
+%uma métrica é a composição de procedimentos para a definição de 
+%escalas e métodos para medição.
+
+
+\cite{Chelf2008} uma patente ``SYSTEMS AND METHODS FOR PERFORMING STATIC
+ANALYSIS ON SOURCE CODE'' descrevendo métodos e técnicas de análise estática
+de código-fonte.
+
+%\subsection{Ferramentas para cálculo de métricas de código-fonte}
+%
+%Estes diversos métodos e técnicas, formatos de representação interna estão
+%presentes em diversas ferramentas de análise estática de código fonte, sejam
+%proprietários, livres, comerciais ou não-comerciais. Uma das aplicações está o
+%cálculo de métricas de código-fonte.
+%
+%(pendente)
+
+\cite{Rutar2004} em seu artigo ``A Comparison of Bug Finding Tools for Java''
+compara cinco ferramentas para bug finding em Java e discute as técnisas
+utilizadas por cada uma e seu impacto nos resultados.
+
+\cite{Kratkiewicz2005} em seu artigo ``Evaluating Static Analysis Tools for
+Detecting Buffer Overflows in C Code'' avalia cinco ferramentas de análise
+estática usando conjunto de testes para determinar seus pontos fortes e fracos
+em detecção de uma variadade de falhas de buffer overflow em código C.
+
+\cite{Okun2007} em seu artigo ``Effect of Static Analysis Tools on Software
+Security: Preliminary Investigation'' avalia os efeitos de ferramentas de
+segurança com objetivo de identificar se estas ferramentas melhoram de fato a
+segurança de softwares.
+
+\cite{Emanuelsson2008} em seu artigo ``A Comparative Study of Industrial
+Static Analysis Tools'' avalia três ferramentas de análise estática da
+indústria e se baseia em informações encontradas em outros artigos e manuais
+destas ferramentas. Com objetivo principal de mapear as funcionalidades mais
+significantes de ferramentas deste domínio que não são fornecidas por
+compiladores normais.
+
+\cite{Wedyan2009} em seu artigo ``The Effectiveness of Automated Static
+Analysis Tools for Fault Detection and Refactoring Prediction'' avaliou três
+ferramentas, propretária, software livre, desenvolvida por pesquisadores sobre
+a efetividade de detectar falhas e predizer refatorações.
+
+\cite{Mantere2009} em seu artigo ``Comparison of Static Code Analysis Tools''
+compara três ferramentas da nálise estática de código-fonte, avalia a
+performance através de experimentos e dá subsídios para ajudar na seleção de
+uma ferramenta a ser tulizada em algum projeto.
+
+\cite{Al2010} em seu artigo ``Comparing Four Static Analysis Tools for Java
+Concurrency Bugs'' avalia quatro ferramentas de análise estática em relação à
+capacidade de detectar bugs em programas concorrentes em Java e response se
+ferramenta comerciais são melhores que ferramentas open source para isto.
+
+\cite{Li2010} em seu artigo ``A Comparative Study on Software Vulnerability
+Static Analysis Techniques and Tools'' compara sete diferentes ferramentas de
+análise estática com foco em detecção de vulnerabilidades, comparando suas
+caracteristicas através de um experimento.
+
+\cite{Johns2011} em seu artigo ``Scanstud: A Methodology for Systematic,
+Fine-grained Evaluation of Static Analysis Tools'' avaliou a qualidade de
+ferramentas de análise estática de segurança a partir de uma série de
+critérios.
+
+\cite{Alemerien2013} em seu artigo ``Experimental Evaluation of Static Source
+Code Analysis tools'' avalia 2 ferramentas de análise estática para cálculo de
+métricas com objetivo de entender as diferenças de valores encontradas por
+cada ferramenta e suas inconsistências.
+
+\cite{Ataide2014} em seu artigo ``Static Code Analisys'' analisa os resultados
+gerados por três ferramentas de análise estática que podem ser efecientemente
+usadas por programadores para remover vulnerabilidades comuns em softwares.
+
+
+%ASE primeira edição em 1990
+%CSMR/SANER primeira edição em 1993
+%ICSM/ICSME tem mais de 20 anos com primeira edição em 1993
