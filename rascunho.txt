@@ -1104,3 +1104,288 @@ usadas por programadores para remover vulnerabilidades comuns em softwares.
 %ASE primeira edição em 1990
 %CSMR/SANER primeira edição em 1993
 %ICSM/ICSME tem mais de 20 anos com primeira edição em 1993
+
+valores referencia no trabalho de paulo:
+
+ACC
+
+Esses dados sinalizam que o monitoramento dessa métrica pode variar de acordo com a lin-
+guagem de programação, domínio de aplicação ou mesmo de acordo com a maturidade (idade) do
+projeto. Aqui, para a métrica ACC, vamos sugerir como referência de valores frequentes os projetos
+com um certo equílibro dentre os demais, não necessariamente os com melhores valores. Para essa
+escolha subjetiva, estamos considerando o conceito das métricas discutidos na Seção3.1.2.
+
+Para projetos escritos em C, o código do Linux sinaliza ter valores frequentes não tão bons
+quanto o do Android, mas factíveis de serem usados como uma referência para C: de 0 a 2,0: muito
+frequente; de 2,1 a 7,0: frequente; de 7,1 a 13,0: pouco frequente; acima de 13,0: não frequente.
+
+Para C++, o código do Firefox, mesmo com ACC não tão bom quanto o OpenOce, indica um
+equilíbrio para usarmos seus valores frequentes: de 0 a 2,0: muito frequente; de 2,1 a 7,0: frequente;
+de 7,1 a 15,0: pouco frequente; acima de 15,0: não frequente.
+
+Para Java, o Open JDK8 pode ser
+nossa referência ao observarmos os 14 projetos: de 0 a 1,0: muito frequente; 1,1 a 5,0: frequente; de
+5,1 12,0: pouco frequente; acima de 12,0: não frequente.
+
+\cite{Oliveira2013} define os intervalos 0 a 2, 2 a 7, e 7 a 15 como
+excelente, bom e regular.
+
+\cite{Meirelles2013} define como referência para Java os intervalos 0 a 1, 1 a
+5, e 5 a 12 para os percentis 75, 90 e 95, respectivamente.
+
+NPA
+
+Os valores frequentes observados da métrica de atributos públicos das classes e variáveis públicas
+dos módulos, de acordo com o apresentado na Tabela 4.27, podem ser agrupadas para as linguagens
+C++ e Java. 
+
+Para os projetos escritos em C sugerimos os valores de NPA para o código do GCC,
+uma vez que não identicamos um projeto com valores equilibrados dentre os demais, segundo nossa
+interpretação. O GCC apresenta os melhores valores, assim, para C temos: 0 muito frequente; até
+2 frequente; de 3 a 5 pouco frequente; acima de 5 não frequente.
+
+ Para os projetos escritos em C++
+sugerimos: 0 muito frequente; 1 frequente; de 2 a 4 pouco frequente; acima de 4 não frequente. Por
+m,
+
+ para os projetos escritos em Java identicamos: 0 muito frequente; 1 frequente; 2 e 3 pouco
+frequentes; acima de 3 não frequente.
+
+ACCM
+
+Da mesma forma como apresentado para a métrica ACC, no caso da métrica de complexidade
+ciclomática, não conseguimos denir um conjunto de valores frequentes único para cada linguagem.
+Dessa forma, com a mesma abordagem, observamos que os valores para a métrica ACCM para o
+Linux, Firefox e Open JDK8 demonstram um equilíbrio entre os demais para podermos sugerir
+seus valores como frequentes. Para C, de 0 a 3,6 muito frequente; de 3,1 a 5,3 frequente; de 5,4 a
+7,0 pouco frequente, acima de 7,0 não frequente. Para projetos escritos em C++, de 0 a 2,0 muito
+frequente; de 2,1 a 4,0 frequente; 4,1 a 6,0 pouco frequente; acima de 6 não frequente. Para os
+projetos Java, de 0 a 2,8 muito frequente; de 2,9 a 4,4 frequente; de 4,5 a 6,0 pouco frequente;
+acima de 6 não frequente.
+
+Meirelles
+(2013) definiu intervalos semelhantes para códigos em C, e valores um pouco reduzidos
+para códigos em C++ e Java (0 a 2, 2 a 4, e 4 a 6 para os percentis 75, 90 e 95 respecti-
+vamente).
+
+Reforçando a importância dessa métrica em uma análise estática de código, Oliveira
+(2013) define a mesma com um peso adicional em relação a outras métricas em seu estudo.
+Valores de referência definidos para esse estudo foram 1 a 3, 3 a 5, e 5 a 7, para excelente,
+bom e regular, respectivamente.
+
+O valor teórico ideal para essa métrica é quando
+o software tem apenas um caminho de execução, com complexidade ciclomática
+igual a 1.
+
+RFC
+
+Para a métrica RFC, avaliamos que podemos interpretar os valores frequentes vericando os
+percentis 75, 90 e 95, apesar da mediana poder ser considerada um ponto de corte ao observamos os
+dados da Tabela 4.31. Como refutamos nossa hipótese H3 por conta da variação entre os valores dessa
+métrica entre os projetos, ou seja, não conseguimos indicar valores únicos, mesmo agrupando por
+linguagem de programação, sugerimos observar os valores da métrica RFC dos projetos FreeBSD,
+Chrome e Open JDK8. Para os projetos escritos em C, sugerimos: de 0 a 54 muito frequente; de 55 a
+152 frequente; de 153 a 271 pouco frequente; acima de 272 não frequente. Para os os projetos escritos
+em C++, temos: de 0 a 29 muito frequente; de 30 a 64 frequente; de 65 a 102 pouco frequente;
+acima de 102 não frequente. Ainda, para os projetos escritos em Java, indicamos: de 0 a 9 muito
+frequente; de 10 a 26 frequente; de 27 a 59 pouco frequente; acima de 59 não frequente.
+
+Meirelles (2013) define como bons intervalos para projetos Java valores de 0 a 9,
+10 a 26, e 27 a 59, para os percentis 75, 90 e 95, respectivamente. Os valores na análise
+da API obtidos neste trabalho estão bem acima desse valor, estando em seu percentil 75
+um valor perto de 30, que seria no máximo regular nessa escala.
+
+Baseando-se em todas essas observações, consideramos os seguintes intervalos:
+• Valores abaixo 31 são frequentes para API Android. Para os aplicativos do sistema,
+existe uma grande variância de valores, porém estando em sua grande maioria abaixo
+de 38 para o percentil 75.
+• RFC chegou a 130 em aplicativos nativos, porém no geral não alcançam o valor 85.
+Esse mesmo valor é o limite para a API do sistema.
+• Valores acima de 85 são valores considerados altos para a métrica RFC, e são pouco
+frequentes nos dados analisados. Valores acima de 140 não são frequentes.
+
+1994). Uma classe com alto valor de RFC
+pode ser uma classe com um número muito grande de métodos, e/ou uma classe bastante
+dependente de outra(s) classe(s). Um valor alto de RFC pode indicar baixa coesão e alto
+acoplamento. Valores mais próximos a zero são os ideais teóricos dessa métrica.
+
+AMLOC
+
+Baseado nos valores observados no código do Linux, para um código escrito em C: de 0 a
+15,6 muito frequente; de 15,7 a 25,5 frequente; de 25,6 a 39,3 pouco frequente; acima de 39,3 não
+frequente. Para os projetos em C++, de acordo com valores do Firefox: de 0 a 8,0 muito frequente;
+de 9 a 19,5 frequente; 19,6 a 37 pouco frequente; acima de 37 não frequente. Por m, para os projetos
+escritos em Java, conforme observado no código do Open JDK8, temos para a AMLOC: de 0 a 8,3
+muito frequente; de 8,4 a 18 frequente; de 19 a 34 pouco frequente; acima de 34 não frequente.
+
+Intervalos encontrados:
+• Valores abaixo de 14 são muito frequentes nos aplicativos e na API;
+• Enquanto no sistema os valores para o percentil 90 estão abaixo de 31, nos aplicativos
+eles alcançam esse valor em poucos casos, ficando em sua maioria abaixo de 25;
+• Valores acima de 31 são pouco frequentes em ambos os casos;
+
+ O valor de AMLOC
+deve ser o menor possível, pois métodos grandes ``abrem espaço'' para
+problemas de complexidade excessiva.
+
+DIT
+
+Nossa hipótese H3 é positiva para a métrica DIT. Conseguimos sugerir valores frequentes para
+os projetos escritos em C++ e Java, observamos os valores dos percentis na Tabela 4.15. Para os
+projetos C++ indicamos: 0 e 1 muito frequente; 2 e 3 frequente; 4 pouco frequente; acima de 4 não
+frequente. No caso dos projetos escritos em Java, interpretamos: de 0 a 2 muito frequente; 3 e 4
+frequente; 5 e 6 pouco frequente; acima de 6 não frequente.
+
+, e caso haja herança múltipla, DIT mede a distância máxima até o nó raiz da ár-
+vore de herança (CHIDAMBER; KEMERER, 1994). Se ela não herda nada, tem DIT igual
+a 0
+
+Os valores são em geral baixos, chegando a no máximo 4 até o percentil
+95 em todos as versões da API, demonstrando valores bem menores dos que os intervalos
+definidos por Meirelles (2013) para Java, que chegam até 2, 4 e 6 para os percentis 75, 90
+e 95, respectivamente. Oliveira (2013) utiliza os mesmos intervalos para excelente, bom,
+e regular, respectivamente. Ferreira et al. (2009) não define intervalos para essa métrica,
+mas indica um valor 2 como referência.
+
+Sobre árvore de herança, consideramos os seguintes intervalos para o Android:
+• DIT até 1 e NOC igual a 0 são valores muito frequentes em todas as amostras.
+• DIT até 2 e NOC igual a 1 são valores frequentes em todas as amostras.
+• DIT até 4 e NOC igual a 2 são valores pouco frequentes para a API, mas para seus
+aplicativos os valores de DIT no percentil 95 permanecem no número 2.
+
+LCOM4
+
+Para os projetos escritos em C temos: de 0 a 5 muito frequente; de 6 a 12 frequente; de 12 a 20
+pouco frequente; acima de 20 não frequente. Se compararmos com os valores da LCOM4 no código
+do Linux, ca evidenciado algo muitas vezes dito por programadores do
+Kernel
+sobre o FreeBSD
+ter um código mais organizado e legível que o Linux. Certamente, a maior ausência de coesão nas
+funções dos módulos do Linux reete nesse tipo de constatação. Baseado no código do Chrome, os
+valores da LCOM para C++ são: de 0 a 5 muito frequente; de 6 a 10 frequente; de 10 a 14 pouco
+frequente; acima de 14 não frequente. Para os projetos escritos em Java sugerimos: de 0 a 3 muito
+frequente; de 4 a 7 frequente; de 8 a 12 pouco frequente; acima de 12 não frequente.
+
+. O valor ideal teórico de LCOM4 é 1, que representa a maior coesão possível,
+e valores maiores que isso podem indicar que a classe está com muita responsabilidade,
+tentando alcançar muitos propósitos distintos.
+
+A Tabela 12 mostra que em todas as versões da API Android o valor muito fre-
+quente é 3. De 3 a 7 são valores frequentes, e de 7 a 12 pouco frequentes. Valores acima
+de 12 não são frequentes no sistema.
+
+Meirelles (2013) define para projetos Java intervalos de 0 a 3, 4 a 7, e 8 a 12 para
+os percentis 75, 90 e 95, respectivamente. Os resultados encontrados aqui acompanharam
+muito bem esses intervalos.
+
+A Tabela 13 mostra que os intervalos 0 a 4, 4 a 7, e 7 a
+12 são válidos para a grande maioria dos aplicativos. Os resultados são muito parecidos
+com os valores para a API, sendo que a métrica só aumenta em 1 no percentil 75.
+
+LOC
+
+Partindo da mediana como primeiro ponto de corte, para os projetos escritos em C temos: de
+0 a 79 muito frequente; de 80 a 324 frequente; de 325 a 877 pouco frequente; acima de 877 não
+frequente. Para os projetos C++ sugerimos: de 0 a 31 muito frequente; de 32 a 84 frequente, de
+85 a 207 pouco frequente; acima de 207 não frequente. Para projetos escritos em Java indicamos:
+de 0 a 33 muito frequente; de 34 a 87 frequente; de 88 a 200 pouco frequente; acima de 200 não
+frequente.
+
+ Para efetuar comparações entre sistemas usando LOC, é necessário
+que ambos tenham sido feitos na mesma linguagem de programação e que o estilo esteja
+normalizado (Jones, 1991).
+
+Os intervalos sugeridos para o LOC de uma classe (Java e C++)
+são: até 70 (bom); entre 70 e 130 (regular); de 130 em diante (ruim).
+
+ANPM
+
+ Seu valor mínimo é zero
+e não existe um limite máximo para o seu resultado, mas um número alto de parâmetros
+pode indicar que um método pode ter mais uma responsabilidade, ou seja, mais de uma
+função \cite{Jagdish1997}.
+
+Dessa forma, para projetos escritos em C
+sinalizamos: de 0 a 3,0 muito frequente; de 3,1 a 4,0 frequente; 4,1 a 5,0 pouco frequente; acima de
+5,0 não frequente. Aos projetos escritos em C++ podemos indicar: de 0 a 2,0 muito frequente; 2,1
+a 3,0 frequente; 3,1 a 5,0 pouco frequente; acima de 5,0 não frequente. Para os projetos em Java
+temos: de 0 a 1,5 muito frequente; de 1,6 a 2,0 frequente; de 2,1 a 4,0 pouco frequente; acima de
+4,0 não frequente.
+
+NOA
+
+Seguindo nossa abordagem para a maioria das métricas apresentadas até aqui, sugerimos os
+valores frequentes para a métrica NOA vericando os percetins 75, 90 e 95. Para os projetos escritos
+em C, baseado nos valores do número de variáveis dos módulos do FreeBSD, temos: de 0 a 9 muito
+frequente; de 10 a 29 frequente; de 30 a 57 pouco frequente; acima de 57 não frequente. Baseado
+nos valores de NOA para o Chrome, sugerimos: de 0 a 4 muito frequente; de 5 a 8 frequente; de 9
+a 13 pouco frequente; acima de 13 não frequente. Para os projetos escritos em Java, de acordo com
+os valores de NOA para o Eclipse, indicamos: de 0 a 3 muito frequente; de 4 a 8 frequente; de 9 a
+12 pouco frequente.
+
+ Seu valor mínimo é zero e não
+existe um limite máximo para o seu resultado. Uma classe com muitos atributos
+pode indicar que ela tem muitas responsabilidades e apresentar pouca coesão,
+i.e., deve estar tratando de vários assuntos diferentes.
+
+NOM
+
+A variação dos valores, mesmo nos projetos da mesma linguagem, não nos levou a indicarmos
+valores frequentes únicos por linguagem de programação, por exemplo. Dessa forma, nossa hipótese
+H3, como para a maioria das métricas, foi refutada para a métrica NOM. Assim, indicamos os
+projetos FreeBSD, Chrome e OpenJDK8 como fonte dos valores frequentes, segundo nossa inter-
+pretação e abordagem. Para os projetos escritos em C temos: de 0 a 13 muito frequente; de 14 a
+29 frequente; de 30 a 48 pouco frequente; acima de 48 não frequente. Para os projetos escritos em
+C++ indicamos: de 0 a 10 muito frequente; de 11 a 17 frequente; 18 a 26 pouco frequente; acima
+de 26 não frequente.
+
+Essa métrica é usada para ajudar a identicar o potencial de reúso de uma
+classe. Em geral, as classes com um grande número de métodos são mais difíceis
+de serem reutilizadas, pois elas são propensas a serem menos coesas (Lorenz e
+Kidd, 1994).
+
+CBO
+
+De qualquer forma, para os projetos escritos em C, indicamos os valores de
+CBO baseado também no código do Linux  argumentamos que também para CBO seus valores
+têm um equílibrio para servir de referência aos demais escritos em C: de 0 a 5 muito frequente, de
+6 a 9 frequente; de 9 a 12 pouco frequente; acima de 12 não frequente.
+Para os projetos escritos em C++ sugerimos os valores de CBO do Chrome como uma possível
+referência dos valores frequentes: de 0 a 3 muito frequente; 4 e 5 frequente; 6 e 7 pouco frequente;
+acima de 7 não frequente. No caso dos projetos Java, já observamos no gráco da Figura 4.5(b) que
+os valores de CBO das classes do Eclipse e do Open JDK são bem próximos. Olhando a Tabela 4.13,
+vericamos que os percentis 75, 90 e 95 têm os mesmos valores para esses projetos: de 0 a 3 muito
+frequente; de 4 a 6 frequente; de 7 a 9 pouco frequente; acima de 9 não frequente. Portando, em
+relação à nossa hipótese H3, apenas conseguimos agrupar valores únicos para a métrica CBO
+em códigos escritos em Java. Nos casos de C e C++ apenas apresentamos um dos projetos como
+uma referência, de acordo com nossa interpretação do Linux e do Chrome para com os respectivos
+projetos da mesma linguagem, ou seja, para C e C++ nossa hipótese H3 é negada.
+
+NOC
+
+Para o NOC, conseguimos sugerir valores frequentes para os projetos escritos em C++ e Java,
+observamos os valores dos percentis na Tabela 4.15. Assim, conrmando nossa hipótese H3, sobre
+valores frequente por linguagem de programação. Para os projetos C++ indicamos: 0 muito fre-
+quente; 1 frequente; 2 pouco frequente; acima de 2 não frequente. No caso dos projetos escritos em
+Java, interpretamos da seguinte forma: de 0 muito frequente; 1 e 2 frequente; 3 pouco frequente;
+acima de 3 não frequente.
+
+NPM
+
+Nossa terceira hipótese não é correspondida para os valores de NPM, conforme observamos nos
+valores reportados na Tabela 4.29. Dessa forma, sugerimos vericar os valores de NPM do GCC,
+Chrome e Open JDK8. Para os projetos escritos em C temos: de 0 a 2 muito frequente; de 3 a 5
+frequente; de 6 a 14 pouco frequente; acima de 14 não frequente. No caso dos projetos escritos em
+C++ indicamos: de 0 a 3 muito frequente; de 4 a 7 frequente; de 8 a 13 pouco frequente; acima de
+13 não frequente.
+
+SC
+
+No caso da métrica de complexidade estrutural, mais uma vez refutamos a hipótese H3, como
+podemos observar nos valores reportados na Tabela 4.33. Novamente, avaliamos os projetos FreeBSD,
+Chrome e OpenJDK como possíveis referências para C, C++ e Java, respectivamente. Assim, para
+a métrica SC em projetos escritos em C, temos: de 0 a 18 muito frequente; de 19 a 77 frequente; de
+78 a 168 pouco frequente; acima de 168 não frequente. Para os projetos em C++, indicamos: de 0 a
+12 muito frequente; de 13 a 28 frequente; de 29 a 51 pouco frequente; acima de 51 não frequente. Por
+último, para os projetos escritos em Java, sugerimos: de 0 a 6 muito frequente; de 7 a 21 frequente;
+de 22 a 45 pouco frequente; acima de 45 não frequente.

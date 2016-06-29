@@ -74,8 +74,8 @@
 A tecnologia de análise estática tem se desenvolvido rapidamente, mas a
 comparação e avaliação de técnicas e ferramentas não tem acompanhado tal
 velocidade \cite{Li2010}, e, apesar de existirem estudos avaliando ferramentas
-de análise estática de código-fonte, neste trabalho não encontramos nenhum
-estudo avaliando tais ferramentas em termos de suas características de
+de análise estática de código-fonte, não foram encontrados
+estudos avaliando tais ferramentas do ponto de vista de sua
 qualidade interna.
 
 Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização de bugs para Java e
@@ -134,7 +134,7 @@ Objetivos específicos:
   \item Propor intervalos de referência para a observação parametrizada da
     qualidade interna das ferramentas de análise estática, a partir de suas
     métricas de código-fonte.
-  \item Calcular a distância Bayesiana entre valores de referência e os valores
+  \item Calcular a distância Euclidiana entre valores de referência e os valores
     das ferramentas estudadas.
   \item Aplicar a abordagem em um estudo para avaliação de uma ferramenta de análise de código-fonte.
 \end{itemize}
@@ -713,7 +713,7 @@ observação de suas métricas.
 
 \begin{itemize}
   \item {\bf ACC} {\it Aferent Connections per Class (Conexões aferentes de
-    uma classe)}: Mede a conectividade de uma classe. [REF]
+    uma classe)}: Mede a conectividade de uma classe \cite{Brito1994}.
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
@@ -766,7 +766,7 @@ interna.
 
 \section{Pensar em título - fundamentos de matemática e estatística}
 
-\subsection{Distância Bayesiana}
+\subsection{Distância Euclidiana}
 \subsection{etc}
 
 %------------------------------------------------------%
@@ -1020,37 +1020,130 @@ mais recente, a ferramenta Analizo será utilizada para a coleta das métricas.
 
 \section{Análise de dados} \label{analise}
 
-Os dados coletados incluem .... DESCREVER.
+Os dados coletados incluem métricas de código-fonte para cada módulo/classe de
+cada ferramenta selecionada. As métricas coletadas foram as métricas descritas na
+Seção \ref{metricas-de-codigo}.
 
-métricas .
+A linguagem R \cite{Ihaka1996} será usada para manipulação de dados, tabelas
+e plotagem de gráficos.
 
-A linguagem R \cite{Ihaka1996} será usada  para manipulação de  dados, tabelas e plotagem de gráficos.
+\subsection{Distribuição dos valores das métricas}
 
-Foram calculados os percentis de cada métrica para cada ferramenta analisada.
+Foram calculados os percentis de cada métrica para cada ferramenta analisada,
+a partir dos valores de métricas extraídos pelo Analizo para cada
+módulo/classe das ferramentas analisadas.
 Cada percentil é a centésima parte dos dados ordenados de forma crescente.
 Os percentis calculados foram: 1, 5, 10, 25, 50, 75, 90, 95 e 99. Dentre estes
 iremos discutir os resultados em função dos percentis 75, 90 e 95,
 correspondendo a valores muito frequentes, frequentes e pouco frequentes,
 respectivamente.
 
-\subsection{Distribuição dos valores das métricas} \label{distancia}
+\subsection{Cálculo de distância e modelo de aproximação} \label{distancia}
 
-(pendente) ``como será calculado a distribuição dos valores''.
-
-\subsection{Cálculo de distância e modelo de aproximação}
-
-(pendente) ``como será feito este cálculo''.
+As métricas coletadas serão também utilizadas para identificar se existem
+valores de referência para métricas de ferramentas de análise estática, caso
+existam, estes valores de métricas serão utilizados para calcular quão
+distante cada ferramenta analisada se encontra dos valores de referência, isto
+será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
+mesmo estudo foi feito para o sistema Android e seus aplicativos.
 
 \subsection{Caracterização das ferramentas} \label{caracterizacao-das-ferramentas}
 
-%As métricas coletadas serão também utilizadas para identificar se existem
-%valores de referência para métricas de ferramentas de análise estática, caso
-%existam, estes valores de métricas serão utilizados para calcular quão
-%distante cada ferramenta analisada se encontra dos valores de referência, isto
-%será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
-%mesmo estudo foi feito para o sistema Android e seus aplicativos.
+%Apenas poucas tem sido comparadas umas contra outras
 
-(pendente) ``como as ferramentas serão caracterizadas''.
+\citeonline{Novak2010} através de um estudo para construção de uma taxonomia
+para ferramentas de análise estática propõe uma classificação para tais
+ferramentas, dentre esta classificaçao iremos adotar neste trabalho as
+seguintes categorias:
+
+\begin{description}
+
+  \item {\it Entrada - quais tipos de arquivos podem ser carregados na
+    ferramenta:}
+    \begin{itemize}
+      \item Código-fonte - arquivos de código texto podem ser carregados
+      \item Byte code - arquivos com Java Byte Code ou Microsoft
+      \item Linguagem intermediária (MSIL) pode ser carregada
+    \end{itemize}
+
+
+  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta
+    suporta:}
+    \begin{itemize}
+      \item .NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
+      \item VB .NET - suporta VB.NET
+      \item C\# - suporta C\#
+      \item Java - suporta linguagem de programação Java
+      \item C, C++ - suporta linguagem de programação C ou C++
+    \end{itemize}
+
+  \item {\it Tecnologia - quais tecnologias são usadas para procurar erros no
+    código:}
+    \begin{itemize}
+      \item Dataflow - busca por erros com dataflow
+      \item Sintaxe - busca por errors de sintaxe e correctness
+      \item Prova de teoremas - procurar erros em provar diferentes teoremas
+      \item Verificação de modelos - procurar erros com verificação de modelo
+    \end{itemize}
+
+  \item {\it Regras - conjunto de regras, quais são suportadas por diferentes
+    código estático:}
+    \begin{itemize}
+      \item Estilo - inspecina a aparecencia do código fonte
+      \item Naming - checa se as varáveis são nomeadas corretamente (ortografia, padroes de nomenclatura, ...)
+      \item Geral - regras gerais de analise estática de código
+      \item Comcorrencia - erros com execução de código de concorrente
+      \item Exceções - erros lançando ou não exceções
+      \item Performance - erros de performance das aplicações
+      \item Interoperabilidade - erros de comportamento comum
+      \item Segurança - erros que podem impactar na segurança da aplicação
+      \item SQL - procurar por "SQL injections" e outros erros de SQL
+      \item Buffer overflow - erros de segurança, que explorar buffer overflow
+      \item Manutenabilidade - regras para melhor manutenabilidade da aplicação
+    \end{itemize}
+
+  \item {\it Configurabilidade - abilidade de configurar a ferramenta:}
+    \begin{itemize}
+      \item Documento texto - comfiguração é feita via documento texto
+      \item XML - configuração pe feita por documento XML
+      \item GUI - configuraçãi é feita via interface gráfica
+      \item Ruleset - ferramenta pode ligar/desligar conjunto de regras
+    \end{itemize}
+
+  \item {\it Extensibilidade - se a ferramenta pode ser extendida com regras
+    próprias:}
+    \begin{itemize}
+      \item Possível - é possível extender
+      \item Não possível - não é possível extender
+    \end{itemize}
+
+  \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
+    \begin{itemize}
+      \item Open Source – tool is free and source code is available
+      \item Free – tool is free, but source code is not available
+      \item Commercial – tool is available for payment
+    \end{itemize}
+
+  \item {\it Experiência do usuário - de que forma a  ferramenta pode ser
+    usada como é oferecida:}
+    \begin{itemize}
+      \item Environment integration – how is tool integrated with working environment
+      \item Automatic locating errors in code – when tool finds an error, it can put as at the location of the error
+      \item Extensive help on faults – if tool gives you help on resolving errors
+      \item User interface – availability of user interface
+      \item Command Line – it can be run from command line prompt
+      \item GUI – tool can be run from GUI interface
+    \end{itemize}
+
+  \item {\it Saída - representação dos resultados da ferramenta:}
+    \begin{itemize}
+      \item Text file – tool can present results in text file
+      \item List – tool can present results in custom user interface control in GUI
+      \item XML file – tool can present results in XML data
+      \item HTML file – tool can present results in HTML data
+    \end{itemize}
+
+\end{description}
 
 \section{Avaliação da ferramenta Analizo}
 
@@ -1093,25 +1186,10 @@ nos proximos passos.''
 
 \xchapter{Resultados preliminares}{} \label{resultados}
 
-\section{Ferramentas selecionadas} 
+\section{Ferramentas acadêmicas selecionadas} 
 
-Ferramentas selecionadas ... 
-
-\subsection{Indus}
-
-Indus é uma biblioteca de {\it program
-slicing}\footnote{http://en.wikipedia.org/wiki/Program\_slicing} publicada no
-artigo ``An Overview of the Indus Framework for Analysis and Slicing of
-Concurrent Java Software'' do SCAM 2006, disponível em
-http://indus.projects.cis.ksu.edu. 
-O projeto está organizado em três módulos.
-Os seguintes arquivos, contendo o código-fonte dos três módulos,
-foram copiados localmente para análise:
-\begin{itemize}
-  \item indus.indus-src-20091220.zip
-  \item indus.javaslicer-src-20091220.zip
-  \item indus.staticanalyses-src-20070305.zip
-\end{itemize}
+Ferramentas selecionadas a partir da revisão estruturada detalhada na seção
+\ref{revisao-estruturada}.
 
 \subsection{AccessAnalysis}
 
@@ -1119,20 +1197,241 @@ AccessAnalysis é um plugin do Eclipse de análise estática
 para cálculo das métricas IGAT e IGAM
 publicadas no artigo ``AccessAnalysis — A Tool for Measuring the
 Appropriateness of Access Modifiers in Java Systems'' do SCAM 2012,
-disponível em http://accessanalysis.sourceforge.net. 
+disponível em \url{http://accessanalysis.sourceforge.net}. 
 O código-fonte da versão 1.2 foi utilizado neste estudo:
 
 \begin{itemize}
   \item AccessAnalysis-1.2-src.zip
 \end{itemize}
 
+Escrito em Java.
+
 \subsection{Bakar Alir}
 
-Bakar Alir é ... ?
+Bakar Alir é uma ferramenta de {\it program slices} com suporte a visualização
+desenvolvido como um plugin Eclipse construído sob a arquitetura do Sireum
+publicada no artigo ``Bakar Alir - Supporting Developers in Construction of
+Information Flow Contracts in SPARK'' do SCAM 2012, disponível em
+\url{http://www.sireum.org/downloads/Alir}\footnote{link desatualizado mas com
+referência para o projeto no GitHub em http://github.com/sireum/bakar}.
 
-SCAM 2012/06392111.pdf 
- http://www.sireum.org/downloads/Alir, link desatualizado, mas link para github leva aos sources
+\begin{itemize}
+  \item bakar-dev-20160415-002013.tar.gz
+\end{itemize}
 
+Escrito em Java.
+
+\subsection{error-prone}
+
+error-prone é uma ferramenta de localização de bugs construída em cima do
+compilador {\it javac} publicada no artigo ``Building Useful Program Analysis
+Tools Using an Extensible Java Compiler'' do SCAM 2012 disponível em
+\url{http://code.google.com/p/error-prone}.
+
+\begin{itemize}
+  \item error-prone-2.0.9.tar.gz
+\end{itemize}
+
+Escrito em Java.
+
+\subsection{Indus}
+
+Indus é uma biblioteca de {\it program
+slicing}\footnote{http://en.wikipedia.org/wiki/Program\_slicing} publicada no
+artigo ``An Overview of the Indus Framework for Analysis and Slicing of
+Concurrent Java Software'' do SCAM 2006, disponível em
+\url{http://indus.projects.cis.ksu.edu}. 
+O projeto está organizado em três módulos.
+Os seguintes arquivos, contendo o código-fonte dos três módulos,
+foram copiados localmente para análise:
+
+\begin{itemize}
+  \item indus.indus-src-20091220.zip
+  \item indus.javaslicer-src-20091220.zip
+  \item indus.staticanalyses-src-20070305.zip
+\end{itemize}
+
+Escrito em Java.
+
+\subsection{InputTracer}
+
+InputTracer é uma ferramenta de análise dinâmica de binários x86 em Linux
+publicado no artigo ``InputTracer: A Data-flow Analysis Tool for Manual
+Program Comprehension of x86 Binaries'' do SCAM 2012 disponível em:
+\url{http://www.ida.liu.se/divisions/adit/security/InputTracer}.
+
+\begin{itemize}
+  \item valgrind-inputtracer.tar.gz
+\end{itemize}
+
+Escrito em C.
+
+\subsection{JastAdd}
+
+JastAdd é um sistema para análise de código-fonte através da descrição de
+atributos via gramática de atributos (AG) publicado no artigo ``Extending
+Attribute Grammars with Collection Attributes – Evaluation and Applications''
+do SCAM 2007 disponível em \url{http://jastadd.cs.lth.se/web}.
+
+\begin{itemize}
+  \item jastadd2-src.zip
+\end{itemize}
+
+Escrito em Java.
+
+\subsection{Sonar Qube Plug-in}
+
+Sonar Qube Plug-in é um plugin para o SourceMeter que extende a análise de
+código Java com o uso do SonarQube publicado no artigo ``SourceMeter SonarQube
+plug-in'' do SCAM 2014 disponível em:
+\url{http://github.com/FrontEndART/SonarQube-plug-in}.
+
+\begin{itemize}
+  \item SonarQube-plug-in-master.zip
+\end{itemize}
+
+% Não cita a licença da ferramenta, diz que é free e pode ser baixado em
+% http://www.sourcemeter.com
+% Licença: não livre
+
+Escrito em Java.
+
+\subsection{srcML}
+
+srcML é um formato texto para representação de código-fonte e um conjunto de
+ferramentas de transformação {\it source-to-source} publicada no artigo
+``Lightweight Transformation and Fact Extraction with the srcML Toolkit'' do
+SCAM 2011 disponível em
+\url{http://www.sdml.info/projects/srcml/trunk}\footnote{este endereço retornou "not
+found" em contato com os autores por email indicaram que o projeto foi movido
+para http://www.srcML.org}
+
+\begin{itemize}
+  \item srcML-src.tar.gz
+\end{itemize}
+
+Escrito em C++.
+
+\subsection{TACLE}
+
+TACLE é um plugin do Eclipse para análise de tipo ({\it Type Analysis}) e construção
+de visualizaçao de grafos de chamada ({\it Call Graph}) publicado no artigo
+``Estimating the Run-Time Progress of a Call Graph Construction Algorithm'' do
+SCAM 2006 disponível em \url{http://presto.cse.ohio-state.edu/tacle}\footnote{este
+link está indisponível, por email os autores indicaram o endereço
+http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
+
+\begin{itemize}
+  \item tacle\_1\_2\_1\_src.zip
+\end{itemize}
+
+Escrito em Java.
+
+\subsection{WALA}
+
+WALA é uma ferramenta de análise estática para {\it bytecode} Java publicado
+no artigo ``Effective Static Analysis to Find Concurrency Bugs In Java'' do
+SCAM 2010 disponível em
+\url{http://wala.sourceforge.net/wiki/index.php/Main_Page}.
+
+\begin{itemize}
+  \item WALA-R\_1.3.8.tar.gz
+\end{itemize}
+
+Escrito em Java
+
+\section{Ferramentas da indústria selecionadas} 
+
+\subsection{BOON}
+
+Disponível em \url{http://people.eecs.berkeley.edu/~daw/boon}.
+
+Escrito em C.
+
+\subsection{Clang Static Analyzer}
+
+Disponível em \url{http://clang-analyzer.llvm.org}.
+
+Escrito em C++.
+
+\subsection{Closure Compiler}
+
+Disponível em \url{https://developers.google.com/closure/compiler}.
+
+Escrito em Java.
+
+\subsection{Cppcheck}
+
+Disponível em \url{http://sourceforge.net/projects/cppcheck}.
+
+Escrito em C++.
+
+\subsection{CQual}
+
+Disponível em \url{http://www.cs.umd.edu/~jfoster/cqual}.
+
+Escrito em C.
+
+\subsection{FindBugs}
+
+Disponível em \url{http://findbugs.sourceforge.net}.
+
+Escrito em Java.
+
+\subsection{FindSecurityBugs}
+
+Disponível em \url{http://find-sec-bugs.github.io}.
+
+Escrito em Java.
+
+\subsection{Jlint}
+
+Disponível em \url{http://sourceforge.net/projects/jlint}.
+
+Escrito em C++.
+
+\subsection{Pixy}
+
+Disponível em \url{http://github.com/oliverklee/pixy}.
+
+Escrito em Java.
+
+\subsection{PMD}
+
+Disponível em \url{http://pmd.github.io}.
+
+Escrito em Java.
+
+\subsection{RATS}
+
+Disponível em
+\url{http://code.google.com/archive/p/rough-auditing-tool-for-security}.
+
+Escrito em C.
+
+\subsection{Smatch}
+
+Disponível em \url{http://smatch.sourceforge.net}.
+
+Escrito em C.
+
+\subsection{Splint}
+
+Disponível em \url{http://www.splint.org}.
+
+Escrito em C.
+
+\subsection{UNO}
+
+Disponível em \url{http://spinroot.com/uno}.
+
+Escrito em C.
+
+\subsection{WAP}
+
+Disponível em \url{http://awap.sourceforge.net}.
+
+Escrito em Java.
 
 \section{Análise exploratória da revisão estruturada}
 
@@ -1145,7 +1444,7 @@ A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
 cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
 estática com código fonte disponível.
 
-\begin{table}[h]
+\begin{table}[h!]
 \caption{Total de artigos analisados por edições do SCAM}
 \centering
 \begin{tabular}{| l | c | c | c |}
@@ -1182,28 +1481,28 @@ eram suportadas pelo Analizo. Dos 315 artigos avaliados na revisão estruturada
 apenas 10 tinham ferramentas disponíveis capaz de serem analizadas pelo
 Analizo.
 
-\begin{table}[h]
+\begin{table}[h!]
   \caption{Lista com total de ferramentas a serem analisadas}
   \centering
   \begin{tabular}{| c | l | l | c | l | l |}
     \hline
     n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
     \hline
-    1  & BOON                     & ansic     & 16 & Indus                   & java       \\
-    2  & CQual                    & ansic     & 17 & TACLE                   & java       \\
-    3  & RATS                     & ansic     & 18 & JastAdd                 & java       \\
-    4  & Smatch                   & ansic     & 19 & WALA                    & java       \\
-    5  & Splint                   & ansic     & 20 & error-prone             & java       \\
-    6  & UNO                      & ansic     & 21 & AccessAnalysis          & java       \\
-    7  & Clang Static Analyzer    & cpp       & 22 & Bakar Alir              & java       \\
-    8  & Cppcheck                 & cpp       & 23 & InputTracer             & ansic      \\
-    9  & Jlint                    & cpp       & 24 & srcML                   & cpp        \\
-    10 & WAP                      & java      & 25 & Source Meter            & java       \\
-    11 & Closure Compiler         & java      &    &                         &            \\
-    12 & FindBugs                 & java      &    &                         &            \\
-    13 & FindSecurityBugs         & java      &    &                         &            \\
-    14 & Pixy                     & java      &    &                         &            \\
-    15 & PMD                      & java      &    &                         &            \\
+    1  & BOON                     & ansic     & 16 & AccessAnalysis          & java       \\
+    2  & Clang Static Analyzer    & cpp       & 17 & Bakar Alir              & java       \\
+    3  & Closure Compiler         & java      & 18 & error-prone             & java       \\
+    4  & Cppcheck                 & cpp       & 19 & Indus                   & java       \\
+    5  & CQual                    & ansic     & 20 & InputTracer             & ansic      \\
+    6  & FindBugs                 & java      & 21 & JastAdd                 & java       \\
+    7  & FindSecurityBugs         & java      & 22 & Sonar Qube Plug-in      & java       \\
+    8  & Jlint                    & cpp       & 23 & srcML                   & cpp        \\
+    9  & Pixy                     & java      & 24 & TACLE                   & java       \\
+    10 & PMD                      & java      & 25 & WALA                    & java       \\
+    11 & RATS                     & ansic     &    &                         &            \\
+    12 & Smatch                   & ansic     &    &                         &            \\
+    13 & Splint                   & ansic     &    &                         &            \\
+    14 & UNO                      & ansic     &    &                         &            \\
+    15 & WAP                      & java      &    &                         &            \\
     \hline
   \end{tabular}
   \label{total-de-ferramentas}
@@ -1213,21 +1512,25 @@ Assim, temos um total de 25 ferramentas, 15 da indústria e 10 da academia.
 
 \section{Análise exploratória dos valores das métricas}
 
-(pendente) ``métricas das ferramentas, cálculo dos percentis, score de
-aproximação, valores de referências, discussão sobre cada métrica, discussão
-sobre as ferramentas com melhor qualidade, discutir detalhes da arquitetura
-das melhores ferramentas''.
+%(pendente) ``métricas das ferramentas, cálculo dos percentis, score de
+%aproximação, valores de referências, discussão sobre cada métrica, discussão
+%sobre as ferramentas com melhor qualidade, discutir detalhes da arquitetura
+%das melhores ferramentas''.
 
-Vamos analisar os dados e tentar explicar seu comportamento
-com relação às características das ferramentas, compará-los a outros estudos, e até mesmo
-comparar com dados de métricas em aplicativos, utilizando os próprios aplicativos do
-sistema como base de comparação.
-
+Vamos analisar os dados e tentar explicar seu comportamento com relação às
+características das ferramentas, compará-los a outros estudos.
 
 \subsection{Conexões aferentes de uma classe (ACC)}
 
-As Tabelas \ref{metrica-acc} e \ref{metrica-acc-industria} apresentam a
-métrica ACC para as ferramentas da academia e da indústria, respectivamente.
+ACC é um valor parcial de uma das métricas MOOD (Metrics for Object Oriented
+Design) \cite{Brito1994} e mede o nível de acoplamento de uma classe.
+
+Os intervalos sugeridos são: até 2 (bom); entre 2 e 20 (regular); de 20 em
+diante (ruim).
+
+As Tabelas \ref{metrica-acc} e \ref{metrica-acc-industria} apresentam os
+valores da métrica ACC para as ferramentas da academia e da indústria,
+respectivamente.
 
 %% begin.rcode metrica-acc, fig.align='center', results="asis"
 % table = percentis_by_project("acc")
@@ -1245,21 +1548,33 @@ métrica ACC para as ferramentas da academia e da indústria, respectivamente.
 
 \subsection{Média de complexidade ciclomática por método (ACCM)}
 
-A Tabela \ref{metrica-accm} ...
+ACCM contabiliza o número de caminhos independentes que métodos de uma classe
+pode seguir em sua execução.
+
+As Tabelas \ref{metrica-accm} e \ref{metrica-accm-industria} apresentam os
+valores da métrica ACCM para as ferramentas da academia e da indústria,
+respectivamente.
 
 %% begin.rcode metrica-accm, fig.align='center', results="asis"
 % table = percentis_by_project("accm")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica accm", "metrica-accm")
+% knitr_latex_table(table, "percentis da métrica ACCM para as ferramentas da academia", "metrica-accm")
+%% end.rcode
+
+%% begin.rcode metrica-accm-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("accm")
+% total_modules = metric_by_nist_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica ACCM para as ferramentas da indústria", "metrica-accm-industria")
 %% end.rcode
 
 \subsection{Média do número de linhas de código por método (AMLOC)}
 
-LOC representa o número de linhas de código fonte de um módulo, enquanto AMLOC
-a média do número de linhas dos métodos daquele módulo. O valor de AMLOC deve
-ser o menor possível, pois métodos grandes ``abrem espaço'' para problemas de
-complexidade excessiva.
+AMLOC é a média do número de linhas dos métodos de um módulo.
+
+Os intervalos sugeridos são: até 10 (bom); entre 10 e 13 (regular); de 13 em
+diante (ruim).
 
 As Tabelas \ref{metrica-amloc} e \ref{metrica-amloc-industria} apresentam a
 métrica AMLOC para as ferramentas da academia e da indústria, respectivamente.
@@ -1278,233 +1593,277 @@ métrica AMLOC para as ferramentas da academia e da indústria, respectivamente.
 % knitr_latex_table(table, "percentis da métrica AMLOC para as ferramentas da indústria", "metrica-amloc-industria")
 %% end.rcode
 
-\subsection{Média do Número de Parâmetros por Método (ANPM)}
+\subsection{Média do número de parâmetros por método (ANPM)}
 
-A Tabela \ref{metrica-anpm}...
+ANPM é a média de parâmetros dos métodos de uma classe.
+
+As Tabelas \ref{metrica-anpm} e \ref{metrica-anpm-industria} apresentam a
+métrica ANPM para as ferramentas da academia e da indústria, respectivamente.
 
 %% begin.rcode metrica-anpm, fig.align='center', results="asis"
 % table = percentis_by_project("anpm")
 % total_modules = metric_by_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica anpm", "metrica-anpm")
-%% end.rcode
-
-\subsection{Acoplamento entre objetos (CBO)}
-
-A Tabela \ref{metrica-cbo}...
-
-%% begin.rcode metrica-cbo, fig.align='center', results="asis"
-% table = percentis_by_project("cbo")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica cbo", "metrica-cbo")
-%% end.rcode
-
-\subsection{Profundidade da árvore de herança (DIT)}
-
-A Tabela \ref{metrica-dit}...
-
-%% begin.rcode metrica-dit, fig.align='center', results="asis"
-% table = percentis_by_project("dit")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica dit", "metrica-dit")
-%% end.rcode
-
-\subsection{Ausência de coesão em métodos (LCOM4)}
-
-A Tabela \ref{metrica-lcom4}...
-
-%% begin.rcode metrica-lcom4, fig.align='center', results="asis"
-% table = percentis_by_project("lcom4")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica lcom4", "metrica-lcom4")
-%% end.rcode
-
-\subsection{Número de linhas de código (LOC)}
-
-A Tabela \ref{metrica-loc}...
-
-%% begin.rcode metrica-loc, fig.align='center', results="asis"
-% table = percentis_by_project("loc")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica loc", "metrica-loc")
-%% end.rcode
-
-\subsection{Número de atributos (NOA)}
-
-A Tabela \ref{metrica-noa}...
-
-%% begin.rcode metrica-noa, fig.align='center', results="asis"
-% table = percentis_by_project("noa")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noa", "metrica-noa")
-%% end.rcode
-
-\subsection{Número de filhos (NOC)}
-
-A Tabela \ref{metrica-noc}...
-
-%% begin.rcode metrica-noc, fig.align='center', results="asis"
-% table = percentis_by_project("noc")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noc", "metrica-noc")
-%% end.rcode
-
-\subsection{Número de métodos (NOM)}
-
-A Tabela \ref{metrica-nom}...
-
-%% begin.rcode metrica-nom, fig.align='center', results="asis"
-% table = percentis_by_project("nom")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica nom", "metrica-nom")
-%% end.rcode
-
-\subsection{Número de atributos públicos (NPA)}
-
-A Tabela \ref{metrica-npa}...
-
-%% begin.rcode metrica-npa, fig.align='center', results="asis"
-% table = percentis_by_project("npa")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npa", "metrica-npa")
-%% end.rcode
-
-\subsection{Número de métodos públicos (NPM)}
-
-A Tabela \ref{metrica-npm}...
-
-%% begin.rcode metrica-npm, fig.align='center', results="asis"
-% table = percentis_by_project("npm")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npm", "metrica-npm")
-%% end.rcode
-
-\subsection{Resposta para uma classe (RFC)}
-
-A Tabela \ref{metrica-rfc}...
-
-%% begin.rcode metrica-rfc, fig.align='center', results="asis"
-% table = percentis_by_project("rfc")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica rfc", "metrica-rfc")
-%% end.rcode
-
-\subsection{Complexidade estrutural (SC)}
-
-A Tabela \ref{metrica-sc}...
-
-%% begin.rcode metrica-sc, fig.align='center', results="asis"
-% table = percentis_by_project("sc")
-% total_modules = metric_by_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica sc", "metrica-sc")
-%% end.rcode
-
-\clearpage
-
-
-% nao separar em secoes.
-%\section{Métricas para as ferramentas da indústria}
-
-%% begin.rcode metrica-accm-industria, fig.align='center', results="asis"
-% table = percentis_by_nist_project("accm")
-% total_modules = metric_by_nist_project("total_modules")
-% table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica accm", "metrica-accm-industria")
+% knitr_latex_table(table, "percentis da métrica ANPM para as ferramentas da academia", "metrica-anpm")
 %% end.rcode
 
 %% begin.rcode metrica-anpm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("anpm")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica anpm", "metrica-anpm-industria")
+% knitr_latex_table(table, "percentis da métrica ANPM para as ferramentas da indústria", "metrica-anpm-industria")
+%% end.rcode
+
+\subsection{Acoplamento entre objetos (CBO)}
+
+CBO é a recíproca da métrica ACC e mede quantas classes são utilizadas por uma
+certa classe.
+
+As Tabelas \ref{metrica-cbo} e \ref{metrica-cbo-industria} apresentam a
+métrica CBO para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-cbo, fig.align='center', results="asis"
+% table = percentis_by_project("cbo")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica CBO para as ferramentas da academia", "metrica-cbo")
 %% end.rcode
 
 %% begin.rcode metrica-cbo-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("cbo")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica cbo", "metrica-cbo-industria")
+% knitr_latex_table(table, "percentis da métrica CBO para as ferramentas da indústria", "metrica-cbo-industria")
+%% end.rcode
+
+\subsection{Profundidade da árvore de herança (DIT)}
+
+DIT mede a profundidade que uma classe se encontra na árvore de herança.
+
+Os intervalos sugeridos são: até 2 (bom); entre 2 e 4 (regular); de 4 em
+diante (ruim).
+
+As Tabelas \ref{metrica-dit} e \ref{metrica-dit-industria} apresentam a
+métrica DIT para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-dit, fig.align='center', results="asis"
+% table = percentis_by_project("dit")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica DIT para as ferramentas da academia", "metrica-dit")
 %% end.rcode
 
 %% begin.rcode metrica-dit-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("dit")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica dit", "metrica-dit-industria")
+% knitr_latex_table(table, "percentis da métrica DIT para as ferramentas da indústria", "metrica-dit-industria")
+%% end.rcode
+
+\subsection{Ausência de coesão em métodos (LCOM4)}
+
+LCOM4 calcula quantos conjuntos de métodos relacionados existem dentro de uma
+classe, isto é, métodos que compartilham utilização de algum atributo ou que
+se referenciam.
+
+Os intervalos sugeridos para código C++ e Java são: até 2 (bom); entre 2 e 5
+(regular); de 5 em diante (ruim).
+
+As Tabelas \ref{metrica-lcom4} e \ref{metrica-lcom4-industria} apresentam a
+métrica LCOM4 para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-lcom4, fig.align='center', results="asis"
+% table = percentis_by_project("lcom4")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica LCOM4 para as ferramentas da academia", "metrica-lcom4")
 %% end.rcode
 
 %% begin.rcode metrica-lcom4-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("lcom4")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica lcom4", "metrica-lcom4-industria")
+% knitr_latex_table(table, "percentis da métrica LCOM4 para as ferramentas da indústria", "metrica-lcom4-industria")
+%% end.rcode
+
+\subsection{Número de linhas de código (LOC)}
+
+LOC é a medida mais comum para o tamanho de um software, conta o número linhas
+executáveis excluindo linhas em branco e comentários.
+
+Os intervalos sugeridos para o LOC de uma classe (Java e C++) são: até 70
+(bom); entre 70 e 130 (regular); de 130 em diante (ruim).
+
+As Tabelas \ref{metrica-loc} e \ref{metrica-loc-industria} apresentam a
+métrica LOC para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-loc, fig.align='center', results="asis"
+% table = percentis_by_project("loc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica LOC para as ferramentas da academia", "metrica-loc")
 %% end.rcode
 
 %% begin.rcode metrica-loc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("loc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica loc", "metrica-loc-industria")
+% knitr_latex_table(table, "percentis da métrica LOC para as ferramentas da indústria", "metrica-loc-industria")
+%% end.rcode
+
+\subsection{Número de atributos (NOA)}
+
+NOA contabiliza o número de atributos de uma classe.
+
+As Tabelas \ref{metrica-noa} e \ref{metrica-noa-industria} apresentam a
+métrica NOA para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-noa, fig.align='center', results="asis"
+% table = percentis_by_project("noa")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica NOA para as ferramentas da academia", "metrica-noa")
 %% end.rcode
 
 %% begin.rcode metrica-noa-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("noa")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noa", "metrica-noa-industria")
+% knitr_latex_table(table, "percentis da métrica NOA para as ferramentas da indústria", "metrica-noa-industria")
+%% end.rcode
+
+\subsection{Número de filhos (NOC)}
+
+NOC é o número total de flhos de uma classe.
+
+As Tabelas \ref{metrica-noc} e \ref{metrica-noc-industria} apresentam a
+métrica NOC para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-noc, fig.align='center', results="asis"
+% table = percentis_by_project("noc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica NOC para as ferramentas da academia", "metrica-noc")
 %% end.rcode
 
 %% begin.rcode metrica-noc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("noc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica noc", "metrica-noc-industria")
+% knitr_latex_table(table, "percentis da métrica NOC para as ferramentas da indústria", "metrica-noc-industria")
+%% end.rcode
+
+\subsection{Número de métodos (NOM)}
+
+NOM indica o tamanho das classes em termos das suas operações implementadas.
+
+As Tabelas \ref{metrica-nom} e \ref{metrica-nom-industria} apresentam a
+métrica NOM para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-nom, fig.align='center', results="asis"
+% table = percentis_by_project("nom")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica NOM para as ferramentas da academia", "metrica-nom")
 %% end.rcode
 
 %% begin.rcode metrica-nom-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("nom")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica nom", "metrica-nom-industria")
+% knitr_latex_table(table, "percentis da métrica NOM para as ferramentas da indústria", "metrica-nom-industria")
+%% end.rcode
+
+\subsection{Número de atributos públicos (NPA)}
+
+NPA mede o encapsulamento entre classes.
+
+Os intervalos sugeridos para Java e C++ são: até 1 (bom); entre 1 e 9
+(regular); de 9 em diante (ruim).
+
+As Tabelas \ref{metrica-npa} e \ref{metrica-npa-industria} apresentam a
+métrica NPA para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-npa, fig.align='center', results="asis"
+% table = percentis_by_project("npa")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica NPA para as ferramentas da academia", "metrica-npa")
 %% end.rcode
 
 %% begin.rcode metrica-npa-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("npa")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npa", "metrica-npa-industria")
+% knitr_latex_table(table, "percentis da métrica NPA para as ferramentas da indústria", "metrica-npa-industria")
+%% end.rcode
+
+\subsection{Número de métodos públicos (NPM)}
+
+NPM indica o tamanho da ``interface'' da classe.
+
+Os intervalos sugeridos para Java e C++ são: até 10 (bom); entre 10 e 40
+(regular); de 40 em diante (ruim).
+
+As Tabelas \ref{metrica-npm} e \ref{metrica-npm-industria} apresentam a
+métrica NPA para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-npm, fig.align='center', results="asis"
+% table = percentis_by_project("npm")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica NPM para as ferramentas da academia", "metrica-npm")
 %% end.rcode
 
 %% begin.rcode metrica-npm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("npm")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica npm", "metrica-npm-industria")
+% knitr_latex_table(table, "percentis da métrica NPM para as ferramentas da indústria", "metrica-npm-industria")
+%% end.rcode
+
+\subsection{Resposta para uma classe (RFC)}
+
+RFC conta o número de métodos que podem ser executados a partir de uma
+mensagem enviada a um objeto dessa classe.
+
+As Tabelas \ref{metrica-rfc} e \ref{metrica-rfc-industria} apresentam a
+métrica RFC para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-rfc, fig.align='center', results="asis"
+% table = percentis_by_project("rfc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica RFC para as ferramentas da academia", "metrica-rfc")
 %% end.rcode
 
 %% begin.rcode metrica-rfc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("rfc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica rfc", "metrica-rfc-industria")
+% knitr_latex_table(table, "percentis da métrica RFC para as ferramentas da indústria", "metrica-rfc-industria")
+%% end.rcode
+
+\subsection{Complexidade estrutural (SC)}
+
+SC é medida através da combinação das métricas de acoplamento (CBO) e coesão
+(LCOM4).
+
+As Tabelas \ref{metrica-sc} e \ref{metrica-sc-industria} apresentam a
+métrica SC para as ferramentas da academia e da indústria, respectivamente.
+
+%% begin.rcode metrica-sc, fig.align='center', results="asis"
+% table = percentis_by_project("sc")
+% total_modules = metric_by_project("total_modules")
+% table = add_column(table, total_modules, colname = "classes")
+% knitr_latex_table(table, "percentis da métrica SC para as ferramentas da academia", "metrica-sc")
 %% end.rcode
 
 %% begin.rcode metrica-sc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("sc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
-% knitr_latex_table(table, "percentis da métrica sc", "metrica-sc-industria")
+% knitr_latex_table(table, "percentis da métrica SC para as ferramentas da indústria", "metrica-sc-industria")
 %% end.rcode
 
 \clearpage

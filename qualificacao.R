@@ -12,13 +12,13 @@ metric_by_project <- function(metric) {
   indus = metrics["indus", metric]
   inputtracer = metrics["inputtracer", metric]
   jastadd = metrics["jastadd", metric]
-  sourcemeter = metrics["source-meter", metric]
+  sonarqubeplugin = metrics["sonarqube-plugin", metric]
   # está dando erro de sintaxe no R ao ler o arquivo .dat
   #simplicissimus =
   srcml = metrics["srcml", metric]
   tacle = metrics["tacle", metric]
   wala = metrics["wala", metric]
-  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sourcemeter, srcml, tacle, wala)
+  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
   return(table)
 }
 
@@ -76,13 +76,13 @@ percentis_by_project <- function(metric) {
   indus = percentis_for_metric(metric, "dataset/PAPERS/indus/indus.analizo.metrics.dat")
   inputtracer = percentis_for_metric(metric, "dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
   jastadd = percentis_for_metric(metric, "dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
-  sourcemeter = percentis_for_metric(metric, "dataset/PAPERS/source-meter/SonarQube-plug-in-master.analizo.metrics.dat")
+  sonarqubeplugin = percentis_for_metric(metric, "dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
   # está dando erro de sintaxe no R ao ler o arquivo .dat
   #simplicissimus = percentis_for_metric(metric, "dataset/PAPERS/simplicissimus/Simplicissimus.analizo.metrics.dat")
   srcml = percentis_for_metric(metric, "dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
-  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sourcemeter, srcml, tacle, wala)
+  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
   return(table)
 }
 
@@ -101,7 +101,8 @@ plot_lines_for_project <- function(filename) {
 }
 
 knitr_latex_table <- function(table, caption, label) {
-  xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
+  xt <- xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
+  print(xt, table.placement="h!")
 }
 
 add_column <- function(table1, table2, colname) {
