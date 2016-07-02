@@ -1,16 +1,13 @@
 \documentclass[qual, classic, a4paper]{ufbathesis}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage[brazil]{babel}
 \usepackage{fancyvrb}
 \usepackage[alf]{abntex2cite}
 \usepackage{graphicx}
-%\usepackage{longtable}
 \usepackage{multicol}
-\DeclareGraphicsExtensions{.pdf}
-%\usepackage{caption}
 \usepackage{enumitem}
 \usepackage{float}
+\DeclareGraphicsExtensions{.pdf}
 
 \defenseyear{2016}
 \date{08 de Julho de 2016}
@@ -85,7 +82,7 @@ Desta forma, estudar e comparar tais ferramentas a fim de compreender seus
 atributos de qualidade interna e entender quais características arquiteturais
 explicam tais atributos é de fundamental importância do ponto de vista de
 desenvolvedores interessados em melhorar a qualidade interna de suas
-ferramentas em atividades de manutenção e evolução.
+ferramentas em atividades de evolução e manutenção.
 
 \section{Objetivos}
 
@@ -128,8 +125,8 @@ A Seção \ref{hipoteses} traz detalhes sobre como cada hipótese será testada.
 São objetivos específicos deste trabalho:
 
 \begin{itemize}
-  \item Realizar uma revisão da literatura para conceituar análise estática de
-    código-fonte.
+%  \item Realizar uma revisão da literatura para conceituar análise estática de
+%    código-fonte.
   \item Selecionar e obter código-fonte de ferramentas de análise estática
     desenvolvidas na academia, para coletar suas métricas de código-fonte.  A
     seleção terá como base o resultado de uma revisão estruturada realizada a
@@ -645,9 +642,8 @@ expectativas de um usuário.
 Segundo o padrão para metodologia de qualidade de métricas de software do IEEE
 \cite{software1998ieee}, uma métrica de qualidade de software é ``uma função
 cujas entradas são dados de software e cuja saída é um valor numérico, que
-pode ser interpretado como o grau em que um software'' ( .. sistema,
-componente ou processo ... ) ``possui um determinado atributo que afeta sua
-qualidade''.
+pode ser interpretado como o grau em que um software possui um determinado
+atributo que afeta sua qualidade''.
 
 %Metrics make a statement about some quality attributes, are quantitative, 
 %but will have to be interpreted by a human.
@@ -836,7 +832,7 @@ falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
 de ferramentas de segurança com objetivo de identificar se estas ferramentas
 melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008}
 avaliam três ferramentas de análise estática da indústria com o objetivo de
-mapear funcionalidades significas destas ferramentas, normalmente não
+mapear funcionalidades significativas destas ferramentas, normalmente não
 fornecidas por compiladores normais. \citeonline{Wedyan2009} avaliaram três
 ferramentas para verificar a efetividade de detectar falhas e predizer
 refatorações. \citeonline{Mantere2009} compararam três ferramentas de análise
@@ -919,9 +915,53 @@ eficiência de ferramentas e técnicas sobre garantia de qualidade em software.
 O site do projeto, disponível em \citeonline{SamateAnalysers}, mantém uma lista
 de ferramentas de análise estática.
 
-As ferramentas selecionadas serão avaliadas, com  extração de
+As ferramentas selecionadas serão avaliadas, com extração de
 seus atributos de qualidade interna a partir do cálculo de suas métricas de
 código-fonte.
+
+\subsection{A ferramenta Analizo}
+
+Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
+e extensível para análise de código-fonte, calcula uma grande quantidade de
+métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
+programação C, C++ e Java.
+
+Ela será a ferramenta utilizada por nós durante este estudo para análise do
+código-fonte das ferramentas selecionadas, a decisão pela ferramenta Analizo
+se deu por conta dela ser também a escolha utilizada nos trabalhos
+relacionados (seção \ref{trabalhos-relacionados}) onde estamos nos apoiando,
+além disso, Analizo também tem sido utilizada em diversos estudos
+desenvolvidos em nosso grupo de pesquisa:
+
+\begin{itemize}
+
+  \item \cite{Terceiro2009} usaram as métricas calculadas pelo Analizo em um
+    estudo exploratório sobre a evolução da complexidade estrutural em
+    projetos de software livre escritos em C.
+
+  \item \cite{Morais2009} usou a ferramenta de cálculo de métricas do Analizo
+    como um backend para o software de avaliação de métricas Kalibro.
+
+  \item \cite{Terceiro2010} usou a funcionalidade de processamento do histórico
+    de metricas para analizar a história completa de mudanças em 7 projetos de
+    servidor web.
+
+  \item \cite{Meirelles2010} usou a ferramenta de processamento em lote do
+    analizo para analisar mais de 6000 projetos de software livre.
+
+  \item \cite{Ronaldo2015} utilizou o cálculo de métricas do Analizo para
+    estudar a ecoluçao da API do sistema operacional Android e seus aplicativos.
+
+\end{itemize}
+
+A seleção de ferramentas a serem estudadas neste trabalho de pesquisa tomará
+como um dos critérios de escolha as linguagens de programação suportadas pelo
+Analizo, ou seja, apenas ferramentas escritas em C, C++ ou Java farão parte do
+nosso estudo.
+
+Analizo é uma ferramenta mantida constantemente, com desenvolvedores ativos, e
+atualizações frequentes, sua última versão 1.19.0 foi lançada em 18 de
+Fevereiro de 2016 e será esta a versão utilizada neste estudo.
 
 \subsection{Revisão estruturada} \label{revisao-estruturada}
 
@@ -993,14 +1033,6 @@ identificar a linguagem de programação usada na implementação de cada
 ferramenta selecionada.  A identificação da linguagem de programação é
 necessária, pois apenas as ferramentas implementadas nas linguagens de
 programação suportadas pela ferramenta Analizo serão consideradas.
-
-Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
-e extensível para análise de código-fonte, calcula uma grande quantidade de
-métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
-programação C, C++ e Java. É uma ferramenta mantida constantemente, com
-desenvolvedores ativos, e atualizações frequentes, sua última versão 1.19.0
-foi lançada em 18 de Fevereiro de 2016 e será esta a versão utilizada neste
-estudo.
 
 \section{Coleta de dados} \label{coleta}
 
