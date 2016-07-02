@@ -15,7 +15,7 @@ watch:
 	inotify-hookable --watch-files qualificacao.Rtex qualificacao.R --watch-files dissertacao.tex --on-modify-command make
 
 knitr:
-	cd dataset; ./analyze-all-projects; cd ..
+	#cd dataset; ./analyze-all-projects; cd ..
 	Rscript qualificacao.R
 
 qualificacao.tex: knitr

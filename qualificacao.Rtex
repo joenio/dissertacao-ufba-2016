@@ -1,5 +1,6 @@
 \documentclass[qual, classic, a4paper]{ufbathesis}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[brazil]{babel}
 \usepackage{fancyvrb}
 \usepackage[alf]{abntex2cite}
@@ -7,7 +8,8 @@
 %\usepackage{longtable}
 \usepackage{multicol}
 \DeclareGraphicsExtensions{.pdf}
-\usepackage{caption}
+%\usepackage{caption}
+\usepackage{enumitem}
 
 \defenseyear{2016}
 \date{08 de Julho de 2016}
@@ -71,143 +73,116 @@
 %da minha própria ferramenta de análise estática, a ser realizada durante este
 %trabalho, com objetivo de melhorar seus atributos de qualidade interna.}
 
-A tecnologia de análise estática tem se desenvolvido rapidamente, mas a
-comparação e avaliação de técnicas e ferramentas não tem acompanhado tal
-velocidade \cite{Li2010}, e, apesar de existirem estudos avaliando ferramentas
-de análise estática de código-fonte, não foram encontrados
-estudos avaliando tais ferramentas do ponto de vista de sua
-qualidade interna.
+O domínio de aplicaçao de análise estática tem evoluído constantemente desde o
+seu surgumento à mais de 40 anos, e apesar da sua evolução constante poucos
+estudos demonstram a preocupação em avaliar ou comparar ferramentas de análise
+estática de código-fonte em relação à seus atributos de qualidade interna, um
+aspecto importante para guiar e auxiliar desenvolvedores em atividades de
+evolução e manutenção de software.
 
-Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização de bugs para Java e
-discute as técnicas utilizadas por cada uma e seu impacto nos resultados.
-\citeonline{Kratkiewicz2005} avalia cinco ferramentas de análise estática para
-determinar seus pontos fortes e fracos em detecção de falhas de buffer
-overflow em código C. \citeonline{Okun2007} avalia os efeitos de ferramentas de
-segurança com objetivo de identificar se estas ferramentas melhoram de fato a
-segurança de programas. \citeonline{Emanuelsson2008} avalia três ferramentas de
-análise estática da indústria com o objetivo de mapear funcionalidades
-significas destas ferramentas, normalmente não fornecidas por compiladores
-normais. \citeonline{Wedyan2009} avaliou três ferramentas sobre a efetividade de
-detectar falhas e predizer refatorações. \citeonline{Mantere2009} compara três
-ferramentas da análise estática de código-fonte em relação à performance e dá
-subsídios para apoiar tomada de decisão sobre seleção de ferramentas de
-análise estática. \citeonline{Al2010} avalia quatro ferramentas de análise estática
-em relação à capacidade de detectar bugs em programas concorrentes em Java e
-response se ferramenta comerciais são melhores do que ferramentas {\it open
-source}. \citeonline{Li2010} compara sete diferentes ferramentas de análise estática
-com foco em detecção de vulnerabilidades, comparando suas caracteristicas
-através de um experimento. \citeonline{Johns2011} avaliou a qualidade de ferramentas
-de análise estática de segurança a partir de uma série de critérios.
-\citeonline{Alemerien2013} avalia duas ferramentas de análise estática para cálculo
-de métricas com objetivo de entender as diferenças nos resultados de cada uma.
-\citeonline{Ataide2014} analisa os resultados gerados por três ferramentas de
-análise estática que podem ser efecientemente usadas por programadores para
-remover vulnerabilidades comuns em programas.
-
-Desta forma estudar tais ferramentas a fim de compreender seus atributos de
-qualidade interna e entender quais características arquiteturais explicam tais
-atributos é de fundamental importância do ponto de vista de desenvolvedor
-interessado em manter e evoluir ferramentas deste domínio de aplicação sem
-afetar negativamente seus atributos de qualidade interna.
+Desta forma estudar e comparar tais ferramentas a fim de compreender seus
+atributos de qualidade interna e entender quais características arquiteturais
+explicam tais atributos é de fundamental importância do ponto de vista de
+desenvolvedores interessados em melhorar a qualidade interna de suas
+ferramentas em atividades de manutenção e evolução.
 
 \section{Objetivos}
 
-O objetivo principal deste trabalho é compreender as ferramentas de software
-para análise estática de código-fonte, do ponto de vista de sua
-manutenabilidade, a partir da análise de sua complexidade estrutural,
-discutindo quais características arquiteturais explicam seus atributos de
-qualidade interna.
+Diante disso, definimos como objetivo principal deste trabalho: compreender
+as ferramentas de software para análise estática de código-fonte, do ponto de
+vista de sua manutenabilidade, a partir da análise de sua complexidade
+estrutural, discutindo quais características arquiteturais explicam seus
+atributos de qualidade interna.
 
+\subsection{Questão de pesquisa}
 
-Objetivos específicos:
+Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
 
-\begin{itemize}
-  \item Realizar uma revisão da literatura para conceituar análise estática de
-    código-fonte.
-  \item Selecionar e obter código-fonte de ferramentas de análise estática 
-  desenvolvidas na academia, para coletar suas métricas de código-fonte. 
-  A seleção terá como base o resultado de uma revisão estruturada feita 
-  a partir de artigos publicados em conferências relacionadas. 
-  \item Selecionar e obter o código-fonte de ferramentas de análise estática
-    desenvolvidas pela indústria, para coletar suas métricas de
-    código-fonte.
-  \item Propor intervalos de referência para a observação parametrizada da
-    qualidade interna das ferramentas de análise estática, a partir de suas
-    métricas de código-fonte.
-  \item Calcular a distância Euclidiana entre valores de referência e os valores
-    das ferramentas estudadas.
-  \item Aplicar a abordagem em um estudo para avaliação de uma ferramenta de análise de código-fonte.
-\end{itemize}
+\begin{enumerate}
+  \item [{\bf Q1:}] {\em Como a complexidade estrutural pode ser interpretada
+    e explicada para ferramentas de software do domínio de aplicação de
+    análise estática de código-fonte?}
+\end{enumerate}
 
-\section{Hipóteses}
+\subsubsection{Hipóteses}
 
-Para guiar os estudos, conforme os objetivos acima, definimos as seguintes
-hipóteses:
+Para responder a questão colocada acima, definimos as seguintes hipóteses:
 
 \begin{enumerate}
   \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
     de código-fonte para ferramentas de análise estática a partir de um
-    conjunto de softwares da academia e da indústria}
+    conjunto de softwares da academia e da indústria.}
   \item[{\bf H2:}] {\em Ferramentas de análise estática tendem a ter uma
     maior complexidade estrutural do que ferramentas de outros domínios de
-    aplicação}
+    aplicação.}
   \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
     código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
-    complexidade estrutural}
+    complexidade estrutural.}
 \end{enumerate}
 
-A Seção \ref{hipoteses} traz detalhes de como cada hipótese será validada.
+A Seção \ref{hipoteses} traz detalhes de como cada hipótese será testada.
 
-Questões de pesquisa:
+\subsection{Objetivos específicos}
+
+São objetivos específicos deste trabalho:
+
 \begin{itemize}
-\item O que?
-\item Como?
-
+  \item Realizar uma revisão da literatura para conceituar análise estática de
+    código-fonte.
+  \item Selecionar e obter código-fonte de ferramentas de análise estática
+    desenvolvidas na academia, para coletar suas métricas de código-fonte.  A
+    seleção terá como base o resultado de uma revisão estruturada feita a
+    partir de artigos publicados em conferências relacionadas. 
+  \item Selecionar e obter código-fonte de ferramentas de análise estática
+    desenvolvidas pela indústria, para coletar suas métricas de código-fonte.
+  \item Propor intervalos de referência para a observação parametrizada da
+    qualidade interna das ferramentas de análise estática, a partir de suas
+    métricas de código-fonte.
+  \item Calcular a distância Euclidiana entre valores de referência e os
+    valores das ferramentas estudadas.
+  \item Aplicar a abordagem em um estudo para avaliação de uma ferramenta de
+    análise de código-fonte.
 \end{itemize}
 
 \section{Contribuições esperadas}
 
-Ao final deste trabalho, as seguintes
-contribuições científicas ({\bf CC}) e tecnológicas ({\bf CT}) 
-são esperadas:
+Ao final deste trabalho, as seguintes contribuições científicas ({\bf CC}) e
+tecnológicas ({\bf CT}) são esperadas:
 
 \begin{enumerate}
   \item [{\bf CC1:}] Um conjunto de intervalos de referência da frequência dos
-    valores de métricas de código-fonte para o domínio de ferramentas de
-    análise estática.
-  \item [{\bf CC2:}] Explicação da alta complexidade estrutural em ferramentas de
-    análise de código-fonte.
-  \item [{\bf CT1:}] Evolução de uma ferramenta de análise de código-fonte.
+    valores de métricas de código-fonte para o domínio de aplicação de
+    análise estática de código-fonte.
+  \item [{\bf CC2:}] Definição de argumentos que expliquem a alta complexidade
+    estrutural em ferramentas de análise estática de código-fonte.
+  \item [{\bf CT1:}] Evolução de uma ferramenta de análise estática de
+    código-fonte.
 \end{enumerate}
 
-%Lembrar que:
-%Neste trabalho, são utilizadas métricas de produto, especificamente,
-%métricas de código-fonte, que cobrem aspectos
-%de tamanho, complexidade e qualidade, que podem ser medidos a partir 
-%do código-fonte de um software, ao longo de sua evolução no tempo.
+Lembrando que neste trabalho, serão utilizadas métricas de produto,
+especificamente, métricas de código-fonte, que cobrem aspectos de tamanho,
+complexidade e qualidade.
 
 \section{Estrutura do texto} 
 
 O capítulo \ref{fundamentacao} apresenta conceitos sobre análise estática e
 métricas de código-fonte necessários para compreensão do trabalho. O capítulo
-\ref{metodologia} apresenta trabalhos relacionados, as hipóteses do estudo e
-apresenta o planejamento sobre a coleta e análise dos dados a serem realizados
-durante este trabalho, por fim o cronograma. O capítulo \ref{conclusoes} traz
-discussão e interpretação dos dados coletados e apresenta os próximos passos
-do estudo.
+\ref{metodologia} apresenta trabalhos relacionados, hipóteses do estudo e o
+planejamento sobre a coleta e análise dos dados a serem realizados durante
+este trabalho, por fim o cronograma. O capítulo \ref{conclusoes} traz a
+discussão e interpretação dos dados e apresenta os próximos passos do estudo.
 
 %-----------------------------------------------------%
 \xchapter{Fundamentação Teórica}
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 \label{fundamentacao}
 
-A análise estática de código é o primeiro passo para coletar informações
-necessárias para diversas atividades de verificação, medição e melhoria da
-qualidade de produtos de software \cite{Cruz2009} \cite{Kirkov2010}.
-
-A análise estática de código é realizada com base apenas no código-fonte de um
-programa ou sistema de software, para descobrir problemas e propriedades de
-sua qualidade estrutural \cite{Chess2007}.
+A análise estática de código-fonte é o primeiro passo para coletar informações
+necessárias em diversas atividades de verificação, medição e melhoria da
+qualidade de produtos de software \cite{Cruz2009} \cite{Kirkov2010}. Ela é
+realizada com base no código-fonte de um programa ou sistema de software, e a
+partir daí descobre problemas e propriedades de sua qualidade estrutural
+\cite{Chess2007}.
 
 Ferramentas de análise estática estão disponíveis há decadas, em especial,
 para programadores. A ferramenta Lint \cite{Johnson1978}, considerada a
@@ -218,40 +193,40 @@ estritas do que as regras dos próprios compiladores da linguagem.
 % \cite{Li2010} cita FlexeLint como a primeira ferramenta de análise estática
 
 Neste trabalho o nosso interesse reside em compreender características de
-qualidade interna de ferramentas de análise estática de código-fonte do ponto
-de vista do desenvolvedor interessado em manter e evoluir tais ferramentas
+qualidade interna de ferramentas deste domínio de aplicaçao, do ponto
+de vista de desenvolvedores interessados em manter e evoluir tais ferramentas
 melhorando seus atributos de qualidade interna.
 
-A seção \ref{sec:analise} apresenta a definição de análise estática de
-código-fonte, suas principais aplicações (\ref{usos}), anatomia das
-ferramentas análise de código-fonte (\ref{anatomia}), os formatos de
-representação interna e técnicas mais comuns da análise (\ref{formatos} e
-\ref{tecnicas}).
+A seção \ref{analise-estatica} apresenta uma definição geral da análise
+estática de código-fonte, suas aplicações, sua anatomia, seus formatos de
+representação intermediária e técnicas mais comuns. A seção \ref{metricas} traz uma
+definição de métricas de software e apresenta um conjunto de métricas
+utilizados neste estudo, trazendo detalhes sobre métricas de complexidade
+estrutural.
 
-A seção \ref{metricas} traz definição de métricas de software, uma lista de
-métricas utilizadas neste estudo (\ref{metricas-de-codigo}) e um detalhamento
-sobre métricas utilizadas para calcular complexidade estrutural
-(\ref{complexidade}) (pendente capitulo sobre estatistica).
+%\ref{formatos}
+%\ref{tecnicas}
+%\ref{usos}
+%\ref{anatomia}
+%(\ref{complexidade}) (pendente capitulo sobre estatistica).
+%(\ref{metricas-de-codigo})
 
-\section{Análise estática de código-fonte} \label{sec:analise}
+\section{Análise estática de código-fonte} \label{analise-estatica}
 
 Análise estática de código-fonte é um ramo da engenharia de software voltado a
 obter informações acerca de um programa a partir do seu código-fonte sem
 necessidade de execução, e sem requerer qualquer outro artefato do programa
 além do próprio código.
 
-Possui muitas das suas abordagens em comum com os estudos da área de análise
-de programa ({\it program analysis}), especialmente na área de compiladores,
-sendo parte dos primeiros passos do processo de compilação. Um tema presente
-em todas as abordagens da análise de programa e consequentemente da análise de
-código-fonte e da análise estática de código-fonte é que elas podem fornecer
-apenas resultados aproximados \cite{Landi1992}.
+É um ramo que possui muitas das suas abordagens em comum com os estudos da
+área de análise de programa ({\it program analysis}), especialmente a área de
+compiladores, pois é parte das primeiras etapas do processo de compilação.
 
 A análise estática de código-fonte é considerada uma atividade meio com
 objetivo de suportar uma variedade de tarefas comuns da engenharia de
 software; muitas dessas tarefas são substancialmente úteis em atividades de
 manutenção. \citeonline{Binkley2007} define uma extensa lista dessas
-atividades, segue abaixo um sub-conjunto delas.
+atividades, alguns exemplos são:
 
 \begin{multicols}{2}
   \begin{itemize}
@@ -271,14 +246,14 @@ atividades, segue abaixo um sub-conjunto delas.
 Seja em qual atividade for, a análise estática possui uma importância
 significativa, pois ao ser capaz de extrair informações diretamente do
 código-fonte de um programa, pode auxiliar a responder com precisão a seguinte
-pergunta: ``O que é que este programa significa?''
+pergunta: ``O que é que este programa significa?''.
 
 \subsection{Usos da análise estática de código-fonte} \label{usos}
 
 A análise de programas trata, de modo geral, da descoberta de problemas e
-fatos sobre programas.  Tal análise por ser realizada sem necessidade de
-executar o programa (análise estática) ou com informações provenientes de sua
-execução (análise dinâmica).
+fatos sobre programas, ela pode ser realizada sem a necessidade de executar o
+programa (análise estática) ou com informações provenientes de sua execução
+(análise dinâmica).
 
 A idéia de que programas de computador podem ser utilizados para analisar
 código-fonte de outros programas tem uma história de mais de 40 anos.  O
@@ -293,11 +268,12 @@ desenvolvimentos da área de compiladores.  O {\it parser} utilizado nessas
 ferramentas têm funcionalidades análogas aos analisadores usados em
 compiladores \cite{Anderson2008}.
 
-O uso de ferramentas de análise estática de código-fonte têm 
-se tornado mais e mais comum no ciclo de desenvolvimento de software.
-O campo de aplicação destas ferramentas é bastante variado, 
-cobrindo diferentes objetivos. Dentre as atividades em que a análise
-estática de código-fonte é usada \cite{Chess2007}, destacam-se:
+O uso de tais ferramentas tem se
+tornado mais e mais comum no ciclo de desenvolvimento de
+software, sendo aplicadas em uma infinidade de atividades distintas visto que o
+campo de aplicação destas ferramentas é bastante variado, cobrindo diferentes
+objetivos. Dentre as atividades em que a análise estática de código-fonte é
+usada \cite{Chess2007}, destacam-se:
 
 \begin{description}
 
@@ -360,23 +336,24 @@ estática de código-fonte é usada \cite{Chess2007}, destacam-se:
     verificacao de programa. Ao invés disso, um localizador de bugs está
     preocupado em apontar locais onde o programa, possivelmente, irá se
     comportar de forma inesperada. A maioria das ferramentas de localização de
-    bugs são fáceis de usar porque costumam vir com um conjunto de regras (bug
-    idioms) para descrição de padrões de código que indicam bugs. Algumas
-    destas ferramentas costumam usar os mesmos algoritmos utilizados por
-    ferramentas de verificação de propriedade.
+    bugs são fáceis de usar porque costumam vir com um conjunto de regras
+    ({\it bug idioms}) para descrição de padrões de código que indicam bugs.
+    Algumas destas ferramentas costumam usar os mesmos algoritmos utilizados
+    por ferramentas de verificação de propriedade.
 
   \item \textit{Avaliação de segurança}. 
     Ferramentas de análise estática para segurança usam as mesmas técnicas
     encontradas nas outras ferramentas, mas por ter um propósito diferente,
     identificar problemas de segurança, aplicam estas técnicas de forma diferente.
     As primeiras ferramentas de segurança (ITS4, RATS, Flawfinder) eram pouco mais
-    do que um ``grep'' melhorado; na maior parte, elas escaneavam o codigo
-    procurando por funções como por exemplo ``strcpy()'' que são facilmente usadas
-    de forma inadequada e devem ser inspecionadas manualmente no processo de
-    revisão de código-fonte. A evolução deste tipo de ferramenta de segurança
-    levou a técnicas híbridas de verificação de propriedade e de localização de
-    bugs, de forma que muitas propriedades de segurança podem ser suscintamente
-    expressas como propriedades de programas.
+    do que um {\it ``grep''} melhorado; na maior parte, elas escaneavam o código
+    procurando por funções como por exemplo {\it ``strcpy()''} que são
+    facilmente usadas de forma inadequada e devem ser inspecionadas
+    manualmente no processo de revisão de código-fonte. A evolução deste tipo
+    de ferramenta de segurança levou a técnicas híbridas de verificação de
+    propriedade e de localização de bugs, de forma que muitas propriedades de
+    segurança podem ser suscintamente expressas como propriedades de
+    programas.
 
 \end{description}
 
@@ -384,8 +361,8 @@ estática de código-fonte é usada \cite{Chess2007}, destacam-se:
 
 Ferramentas de análise estática de código-fonte estão organizadas em partes ou
 componentes, responsáveis por implementar três funções básicas \cite{Cruz2009}
-\cite{Binkley2007}: a) extração de dados, b) geração de representação interna,
-e c) análise. A ferramenta de análise de código-fonte
+\cite{Binkley2007}: a) extração de dados, b) geração de representação
+intermediária, e c) análise. A ferramenta de análise de código-fonte
 CodeSonar\footnote{https://www.grammatech.com/products/codesonar} segue tal
 organização, conforme mostra a Figura \ref{static-analysis-representation}.
 
@@ -404,14 +381,14 @@ organização, conforme mostra a Figura \ref{static-analysis-representation}.
 
     O primeiro componente da análise de código-fonte é a extração de dados,
     responsável por ler o código-fonte do programa e gerar uma ou mais
-    representações internas. Em essência, este componente converte a sintaxe
+    representações intermediárias. Em essência, este componente converte a sintaxe
     de um programa em uma outra sintaxe abstrata e mais adequada para análise
     posterior. Este componente é usualmente chamado de analisador sintático
     (ou {\it parser}) e apesar de teoricamente não ser uma tarefa difícil,
     apresenta enormes desafios diante da complexidade das linguagens de
     programação modernas.
 
-  \item \textit{Representação interna}.
+  \item \textit{Representação intermediária}.
     Exportar os dados extraídos para uma representação intermediária é uma
     estratégia comum para facilitar análise e transformação de dados e
     possivelmente adição de metadados.
@@ -419,13 +396,13 @@ organização, conforme mostra a Figura \ref{static-analysis-representation}.
     Os dados obtidos na extração precisam ser representados em um formato mais
     abstrato. Esta é a responsabilidade do segundo componente da análise de
     código-fonte: armazenar os dados coletados usando uma representação
-    interna em formato mais adequado para análise automática, abstraindo
+    intermediária em formato mais adequado para análise automática, abstraindo
     aspectos particulares do programa e da linguagem de programação.
 
-    Alguns tipos de representação interna têm sua origem na área de
+    Alguns tipos de representação intermediária têm sua origem na área de
     compiladores; algumas delas são produzidas diretamente pelo {\it parser}
-    enquanto outras requerem uma análise específica.  Os formatos mais comuns
-    são baseados em grafos. 
+    enquanto outras requerem uma análise específica. Os formatos mais comuns
+    são geralmente baseados em grafos. 
 
     Alguns formatos comumente utilizados são:
     \begin{multicols}{2}
@@ -454,7 +431,7 @@ organização, conforme mostra a Figura \ref{static-analysis-representation}.
     apoiar este processo.
 
     Diversas técnicas foram desenvolvidas ao longo do tempo para realizar
-    análise, algumas serão brevemente descritas na seção \ref{tecnicas}.
+    análise, algumas delas são brevemente descritas na seção \ref{tecnicas}.
 
 %A análise pode ser categorizada segundo seis dimensões básicas: 
 %\begin{itemize}
@@ -472,28 +449,21 @@ organização, conforme mostra a Figura \ref{static-analysis-representation}.
 
 \end{description}
 
-\subsection{Formatos de representação interna} \label{formatos}
+\subsection{Formatos de representação intermediária} \label{formatos}
 
-Essencialmente, um formato de representação interna é uma abstração precisa
+Essencialmente, um formato de representação intermediária é uma abstração precisa
 das propriedades de um programa representado em um domínio menor. Os
 compiladores normalmente constroem esta representação a fim de possuir um
 modelo do programa sendo compilado, é comum que compiladores utilizem diversos
 formatos durante o curso da compilação.
 
 Em ferramentas de análise estática estes formatos são utilizados durante a
-fase de análise para cumprir diversos objetivos, por exemplo, para calcular
+fase de análise para cumprir diversos objetivos, como por exemplo, calcular
 métricas de código-fonte. A métrica de complexidade ciclomática de McCabe
 \cite{McCabe1976} é definida com base no grafo de fluxo de controle (CFG) do
-programa com o seguinte cálculo:
-
-\begin{equation}
-  CC = e - n + 2p
-\end{equation}
-
-Onde:
-{\bf e} é o número de arestas;
-{\bf n} é o número de nós; e
-{\bf p} é o número de componentes fortemente conectados no grafo CFG.
+programa com o seguinte cálculo $CC = e - n + 2p$. Onde: {\bf e} é o número de
+arestas; {\bf n} é o número de nós; e {\bf p} é o número de componentes
+fortemente conectados no grafo CFG.
 
 %Observação (Chris):
 %Algumas dessas RIs são necessárias para calcular alguns tipos de métricas.
@@ -509,9 +479,9 @@ Onde:
 %
 %\end{verbatim}
 
-Assim, percebe-se que cada formato de representação interna \cite{Nielson2015}
+Assim, percebe-se que cada formato de representação intermediária \cite{Nielson2015}
 \cite{Stanier2013} \cite{Cruz2009} \cite{Ramalho1996} pode ter fins e
-objetivos bastante distintos, entre os formatos mais comuns podemos destacar:
+objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
 
 \begin{description}
 
@@ -519,7 +489,8 @@ objetivos bastante distintos, entre os formatos mais comuns podemos destacar:
     A árvore sintática abstrata (AST - Abstract Syntax Tree) reprenta um
     programa tratando os elementos do código-fonte como operadores e
     operandos organizados em nós numa árvore, este formato de representação é
-    muito popular em tradutores {\it source-to-source}.
+    muito popular em tradutores {\it
+    source-to-source}\footnote{http://en.wikipedia.org/wiki/Source-to-source\_compiler}.
 
   \item \textit{Grafo de fluxo de controle}.
     O grafo de fluxo de controle (CFG - Control Flow Graph ou Call Graph) é um grafo direcionado
@@ -550,7 +521,7 @@ objetivos bastante distintos, entre os formatos mais comuns podemos destacar:
   \item \textit{Atribuição estática única}.
     Atribuição estática única (SSA - Static Single Assignment) pode ser vista
     como uma variação ou uma propriedade de outros formatos de representação
-    interna, é um método que faz cada variável ser atribuída apenas uma única
+    intermediária, é um método que faz cada variável ser atribuída apenas uma única
     vez, facilitando a descoberta de informaçoes sobre os dados representados.
 
   \item \textit{Grafo de dependência de valores}.
@@ -678,8 +649,8 @@ qualidade''.
 %Metrics make a statement about some quality attributes, are quantitative, 
 %but will have to be interpreted by a human.
 
-Métricas de software podem ser classificadas em
-métricas de processo, métricas de projeto e métricas de produto.
+Métricas de software podem ser classificadas em métricas de processo, métricas
+de projeto e métricas de produto.
 
 Métricas de processo medem atributos relacionados ao ciclo de desenvolvimento
 e manutenção de software.  Métricas de projeto indicam se a execução do
@@ -698,8 +669,6 @@ aos usuários) \cite{Mohamed1994}.
 Neste trabalho, são utilizadas métricas de produto e, especificamente,
 métricas de código-fonte, que cobrem aspectos de tamanho, complexidade e
 qualidade que podem ser medidos a partir do código-fonte de um software.
-
-%, ao longo de sua evolução no tempo.
 
 \subsection{Métricas de código-fonte} \label{metricas-de-codigo}
 
@@ -751,23 +720,29 @@ observação de suas métricas.
 
 \subsection{Complexidade estrutural} \label{complexidade}
 
-A complexidade estrutural (SC - Structural Complexity) de um programa
-é uma medida calculada através da combinação das
-métricas de acoplamento (CBO) e coesão (LCOM4).
-Esta medida é, possivelmente, um indicativo de problemas 
-na manutenibilidade de sistemas de software, em
-especial sobre o esforço necessário para atividades de manutenção
-\cite{Terceiro2012}. Ela está relacionada a como os módulos de um programa
-estão organizados bem como à estrutura interna de cada módulo.
+A complexidade estrutural (SC - Structural Complexity) de um programa é uma
+medida calculada através da combinação das métricas de acoplamento (CBO) e
+coesão (LCOM4).  Esta medida é, possivelmente, um indicativo de problemas na
+manutenibilidade de sistemas de software, em especial sobre o esforço
+necessário para atividades de manutenção \cite{Terceiro2012}. Ela está
+relacionada a como os módulos de um programa estão organizados bem como à
+estrutura interna de cada módulo.
 
 Esta métrica pode dar indícios importantes sobre características arquiteturais
 de um programa de software, e pode explicar seus atributos de qualidade
 interna.
 
-\section{Pensar em título - fundamentos de matemática e estatística}
-
-\subsection{Distância Euclidiana}
-\subsection{etc}
+%\section{Pensar em título - fundamentos de matemática e estatística}
+%
+%(nao criar este capitulo agora, ficara no nivel de proposta, discutris na
+%analise dos resultados, mas fica como proposta ainda, devo descrever no texto
+%isso como passos a serem amadurecidos ainda, apresento como primeira analise
+%expliratoria que basicamente replica meirelles, explicar abordagem de paulo
+%, se aprenda observar metrica dentro de contexto, ..., ou de um projeto ao
+%longo do tempo)
+%
+%\subsection{Distância Euclidiana}
+%\subsection{etc}
 
 %------------------------------------------------------%
 \xchapter{Metodologia}{} \label{metodologia}
@@ -776,48 +751,128 @@ interna.
 %capítulo de metodologia resgatando o problema tratado pelo trabalho e que tem
 %estudos da área etc etc...
 
-Seção~\ref{trabalhos-relacionados}
+O objetivo principal deste trabalho é compreender as ferramentas de software
+para análise estática de código-fonte, de forma à interpretar suas
+características de qualidade interna a fim de servirem como referência para
+desenvolvedores em atividades de evolução e manutenção em ferramentas deste
+mesmo domínio.
 
-Seção~\ref{hipoteses}
-
-Seção~\ref{planejamento}
-
-Seção~\ref{coleta}
-
-Seção~\ref{analise}
+A seção \ref{trabalhos-relacionados} traz trabalhos relacionados à compreensão
+e observação de atributos de qualidade interna de programas. A seção
+\ref{hipoteses} detalha como as hipóteses serão testadas. A seção
+\ref{planejamento} descreve o planejamento de estudo e os passos iniciais de
+coleta de dados. A seção \ref{coleta} detalha a coleta de dados e a seção
+\ref{analise} traz informações de como estes dados serão analisados e
+interpretados.
 
 \section{Trabalhos relacionados} \label{trabalhos-relacionados}
+
+%Terceiro, Kecia Ferreira, \cite{Ferreira2009}
+%
+%Terceiro todos os artigos, .... mostrar e evolucao do trabalho dele ate chegar
+%na caractrizacao da complexidade estrutural.
+%
+%O da Kecia posso pegar a inspiracao no trabalho de Paulo, pode n dar tempo de
+%eu entrar nos artigos.. (ler os trab relacionados da tese de paulo).
 
 \citeonline{Meirelles2013} apresenta argumentos para se observar a qualidade
 do software através das métricas de código-fonte, associa qualidade do
 software à qualidade do código. Afirma que uma maneira objetiva de se observar
-as características de um código-fonte é analisando os valores de suas
-métricas. Alerta para o pouco uso de métricas por parte dos desenvolvedores no
-ciclo de desenvolvimento e indica como um dos motivos desta sub-utilização por
-parte dos desenvolvedores é a falta de conhecimento de como coletar
-automaticamente os valores das métricas, interpretar os seus resultados e os
-associar à qualidade do código-fonte. Assim identifica valores para essas
-métricas de forma a servirem de referência para projetos futuros. Analisa
-estatística da correlação entre métricas além de definir um subconjunto
-reduzido de métricas que podem ser monitoradas ao longo do tempo e ainda
-oferecer uma boa visão do projeto.
+as características de um código-fonte é analisando os valores de suas métricas
+e alerta para o pouco uso de métricas por parte dos desenvolvedores no ciclo
+de desenvolvimento e indica que um dos motivos desta sub-utilização
+é a falta de conhecimento de como coletar automaticamente
+os valores das métricas, interpretar os seus resultados e os associar à
+qualidade do código-fonte. Assim, desenvolveu uma abordagem para identificar
+valores de métricas de forma a servirem como referência para projetos futuros,
+onde analisa estatísticamente a correlação entre as métricas e define um
+subconjunto reduzido que podem ser monitoradas ao longo do tempo e
+ainda oferecer uma boa visão do projeto.
 
-\citeonline{Ronaldo2015} realiza um estudo para o monitoramento de métricas de
-código fonte na API do sistema operacional Android, avalia sua evolução,
-estuda as semelhanças da API com outros aplicativos do sistema Android.
-Apresenta uma proposta de cálculo de similaridade entre aplicativos e a API
-Android. Encontra valores de referências para métricas do sistema Android e
-propõe um método de cálculo da distância entre aplicativos e os valores de
-referência.
+\citeonline{Terceiro2010} chama a atenção para a importância de medir e
+compreender aspectos de qualidade interna de software, uma vez que tais
+questões impactam fortemente em atividades de evolução e manutenção. Ele
+afirma que quanto menor a qualidade de código-fonte, maior será o esforço de
+mantê-lo. Uma das formas de medir qualidade interna é em função da
+complexidade estrutural, uma medida que leva em conta a relação entre o
+acoplamento e coesão dos módulos de um programa.
 
-\citeonline{Almeida2010} realizam um estudo mapeando boas práticas de
-programação em valores de métricas de código-fonte, estas boas práticas são
-baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
-Code}, onde sugerem práticas de desenvolvimento úteis para que um código
-tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
-identificam melhorias de implementação através do uso de valores de métricas e
-oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
-códigos.
+Complexidade estrutural representa um aspecto arquitetural e envolve
+tanto a organização interna dos módulos quanto a relação entre eles. Uma alta
+complexidade estrutural faz projetos de software mais difíceis de entender, e
+por isto mesmo, mais difíceis de manter e evoluir.
+
+%Mas um outro aspecto tem sido constantemente associado
+%à complexidade de software, este aspecto é o tamanho de um sistema, ele
+%representa um fator importante nos estudos sobre evolução de software.
+%Tamanho do sistema definitivamente eh um atributo que deve ser observado por
+%pesquisadores e profissionais de software. Alem de senso comum observar que
+%sistemas grandes sao mais dificeis de lidar, muitos acreditam que existe uma
+%associacao entre tamanho e complexidade.
+
+Não podemos perder de vista, no entanto, que projetos diferentes são
+influenciados por fatores diferentes, de forma que a observação dos aspectos
+de qualidade interna devem ser observados e interpretados isoladamente por
+cada projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
+aplicação \cite{Meirelles2013}.
+
+O domínio de aplicação análise estática tem se desenvolvido rapidamente
+com novos métodos, técnicas e ferramentas para os mais diversos
+fins, no entando a comparação e avaliação de técnicas e ferramentas não
+tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem estudos
+avaliando ferramentas de análise estática de código-fonte, poucos avaliam tais
+ferramentas do ponto de vista de vista de sua qualidade interna.
+
+Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
+de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
+nos resultados. \citeonline{Kratkiewicz2005} avalia cinco ferramentas de
+análise estática para determinar seus pontos fortes e fracos em detecção de
+falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
+de ferramentas de segurança com objetivo de identificar se estas ferramentas
+melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008} avalia
+três ferramentas de análise estática da indústria com o objetivo de mapear
+funcionalidades significas destas ferramentas, normalmente não fornecidas por
+compiladores normais. \citeonline{Wedyan2009} avaliou três ferramentas sobre a
+efetividade de detectar falhas e predizer refatorações.
+\citeonline{Mantere2009} compara três ferramentas da análise estática de
+código-fonte em relação à performance e dá subsídios para apoiar tomada de
+decisão sobre seleção de ferramentas de análise estática. \citeonline{Al2010}
+avalia quatro ferramentas de análise estática em relação à capacidade de
+detectar bugs em programas concorrentes em Java e response se ferramenta
+comerciais são melhores do que ferramentas {\it open source}.
+\citeonline{Li2010} compara sete diferentes ferramentas de análise estática
+com foco em detecção de vulnerabilidades, comparando suas caracteristicas
+através de um experimento. \citeonline{Johns2011} avaliou a qualidade de
+ferramentas de análise estática de segurança a partir de uma série de
+critérios. \citeonline{Alemerien2013} avalia duas ferramentas de análise
+estática para cálculo de métricas com objetivo de entender as diferenças nos
+resultados de cada uma. \citeonline{Ataide2014} analisa os resultados gerados
+por três ferramentas de análise estática que podem ser efecientemente usadas
+por programadores para remover vulnerabilidades comuns em programas.
+
+A grande maioria dos estudos citados acima realizam avaliação ou camparação de
+ferramentas de análise estática de código fonte levando em conta aspectos e
+características de qualidade externa, o que nos leva a entender que estudos
+que joguem luz sobre aspectos da qualidade interna neste domínio de aplicação
+são requeridos do ponto de vista principalmente dos desenvolvedores, a fim de
+apoiar atividades de manutenção e evolução.
+
+%\citeonline{Ronaldo2015} realiza um estudo para o monitoramento de métricas de
+%código fonte na API do sistema operacional Android, avalia sua evolução,
+%estuda as semelhanças da API com outros aplicativos do sistema Android.
+%Apresenta uma proposta de cálculo de similaridade entre aplicativos e a API
+%Android. Encontra valores de referências para métricas do sistema Android e
+%propõe um método de cálculo da distância entre aplicativos e os valores de
+%referência.
+
+%\citeonline{Almeida2010} realizam um estudo mapeando boas práticas de
+%programação em valores de métricas de código-fonte, estas boas práticas são
+%baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
+%Code}, onde sugerem práticas de desenvolvimento úteis para que um código
+%tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
+%identificam melhorias de implementação através do uso de valores de métricas e
+%oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
+%códigos.
 
 \section{Hipóteses} \label{hipoteses}
 
@@ -1024,32 +1079,28 @@ Os dados coletados incluem métricas de código-fonte para cada módulo/classe d
 cada ferramenta selecionada. As métricas coletadas foram as métricas descritas na
 Seção \ref{metricas-de-codigo}.
 
-A linguagem R \cite{Ihaka1996} será usada para manipulação de dados, tabelas
-e plotagem de gráficos.
+A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
+estatísticos e gráficos, será utilizada para manipulação de dados, criação
+tabelas e plotagem de gráficos.
 
 \subsection{Distribuição dos valores das métricas}
 
 Foram calculados os percentis de cada métrica para cada ferramenta analisada,
 a partir dos valores de métricas extraídos pelo Analizo para cada
-módulo/classe das ferramentas analisadas.
-Cada percentil é a centésima parte dos dados ordenados de forma crescente.
-Os percentis calculados foram: 1, 5, 10, 25, 50, 75, 90, 95 e 99. Dentre estes
-iremos discutir os resultados em função dos percentis 75, 90 e 95,
-correspondendo a valores muito frequentes, frequentes e pouco frequentes,
-respectivamente.
+módulo/classe das ferramentas analisadas. Cada percentil é a centésima parte
+dos dados ordenados de forma crescente. Os percentis calculados foram: 1, 5,
+10, 25, 50, 75, 90, 95 e 99. Dentre estes iremos discutir os resultados em
+função dos mesmos percentis discutidos por \citeonline{Meirelles2013}, 75, 90
+e 95, correspondendo a valores muito frequentes, frequentes e pouco
+frequentes, respectivamente. Esta discussão irá nos fornecer como resultado
+valores de referências para métricas de código-fonte neste domínio de
+aplicação.
 
 \subsection{Cálculo de distância e modelo de aproximação} \label{distancia}
 
-As métricas coletadas serão também utilizadas para identificar se existem
-valores de referência para métricas de ferramentas de análise estática, caso
-existam, estes valores de métricas serão utilizados para calcular quão
-distante cada ferramenta analisada se encontra dos valores de referência, isto
-será feito com base no trabalho realizado \citeonline{Ronaldo2015} onde o
-mesmo estudo foi feito para o sistema Android e seus aplicativos.
+(pendente) ``ainda não entendi exatamente o que foi feito por ronaldo''.
 
 \subsection{Caracterização das ferramentas} \label{caracterizacao-das-ferramentas}
-
-%Apenas poucas tem sido comparadas umas contra outras
 
 \citeonline{Novak2010} através de um estudo para construção de uma taxonomia
 para ferramentas de análise estática propõe uma classificação para tais
@@ -1058,17 +1109,21 @@ seguintes categorias:
 
 \begin{description}
 
-  \item {\it Entrada - quais tipos de arquivos podem ser carregados na
-    ferramenta:}
+  \item {\it Entrada - quais tipos de arquivos podem ser carregados na ferramenta:}
     \begin{itemize}
       \item Código-fonte - arquivos de código texto podem ser carregados
       \item Byte code - arquivos com Java Byte Code ou Microsoft
       \item Linguagem intermediária (MSIL) pode ser carregada
     \end{itemize}
 
+  \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
+    \begin{itemize}
+      \item Frequentemente >= 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Ocasionalmente < 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Obsoleta 0 vezes ao ano - tempo para novos lançamentos é maior do que 1 ano
+    \end{itemize}
 
-  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta
-    suporta:}
+  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta suporta:}
     \begin{itemize}
       \item .NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
       \item VB .NET - suporta VB.NET
@@ -1077,8 +1132,7 @@ seguintes categorias:
       \item C, C++ - suporta linguagem de programação C ou C++
     \end{itemize}
 
-  \item {\it Tecnologia - quais tecnologias são usadas para procurar erros no
-    código:}
+  \item {\it Tecnologia - quais tecnologias são usadas para procurar erros no código:}
     \begin{itemize}
       \item Dataflow - busca por erros com dataflow
       \item Sintaxe - busca por errors de sintaxe e correctness
@@ -1086,13 +1140,12 @@ seguintes categorias:
       \item Verificação de modelos - procurar erros com verificação de modelo
     \end{itemize}
 
-  \item {\it Regras - conjunto de regras, quais são suportadas por diferentes
-    código estático:}
+  \item {\it Regras - conjunto de regras, quais são suportadas por diferentes código estático:}
     \begin{itemize}
-      \item Estilo - inspecina a aparecencia do código fonte
+      \item Estilo - inspeciona a aparência do código-fonte
       \item Naming - checa se as varáveis são nomeadas corretamente (ortografia, padroes de nomenclatura, ...)
       \item Geral - regras gerais de analise estática de código
-      \item Comcorrencia - erros com execução de código de concorrente
+      \item Concorrencia - erros com execução de código de concorrente
       \item Exceções - erros lançando ou não exceções
       \item Performance - erros de performance das aplicações
       \item Interoperabilidade - erros de comportamento comum
@@ -1102,7 +1155,7 @@ seguintes categorias:
       \item Manutenabilidade - regras para melhor manutenabilidade da aplicação
     \end{itemize}
 
-  \item {\it Configurabilidade - abilidade de configurar a ferramenta:}
+  \item {\it Configurabilidade - habilidade de configurar a ferramenta:}
     \begin{itemize}
       \item Documento texto - comfiguração é feita via documento texto
       \item XML - configuração pe feita por documento XML
@@ -1110,8 +1163,7 @@ seguintes categorias:
       \item Ruleset - ferramenta pode ligar/desligar conjunto de regras
     \end{itemize}
 
-  \item {\it Extensibilidade - se a ferramenta pode ser extendida com regras
-    próprias:}
+  \item {\it Extensibilidade - se a ferramenta pode ser extendida com regras próprias:}
     \begin{itemize}
       \item Possível - é possível extender
       \item Não possível - não é possível extender
@@ -1119,28 +1171,27 @@ seguintes categorias:
 
   \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
     \begin{itemize}
-      \item Open Source – tool is free and source code is available
-      \item Free – tool is free, but source code is not available
-      \item Commercial – tool is available for payment
+      \item Código Aberto ({\it Open Source}) - a ferrament é livre e o código-fonte está disponível
+      \item Grátis ({\it Free}) - a ferramenta é grátis mas o código-fonte não está disponível
+      \item Comercial - a ferramenta está disponível mediante pagamento
     \end{itemize}
 
-  \item {\it Experiência do usuário - de que forma a  ferramenta pode ser
-    usada como é oferecida:}
+  \item {\it Experiência do usuário - de que forma a ferramenta pode ser usada, como é oferecida:}
     \begin{itemize}
-      \item Environment integration – how is tool integrated with working environment
-      \item Automatic locating errors in code – when tool finds an error, it can put as at the location of the error
-      \item Extensive help on faults – if tool gives you help on resolving errors
-      \item User interface – availability of user interface
-      \item Command Line – it can be run from command line prompt
-      \item GUI – tool can be run from GUI interface
+      \item Integração com ambiente - como a ferramenta é integrada ao ambiente de trabalho
+      \item Localização automática de erros no código - quando a ferramenta encontra um erro, ela leva ao local do erro
+      \item Ajuda abrangente sobre falhas - se a ferramenta oferece ajuda na resolução de erros
+      \item Interface de usuário - disponibilidade de uma interface de usuário
+      \item Linha de comando - ela pode ser executada via linha de comando
+      \item GUI - a ferramente pode ser executada em uma interface gráfica (GUI)
     \end{itemize}
 
   \item {\it Saída - representação dos resultados da ferramenta:}
     \begin{itemize}
-      \item Text file – tool can present results in text file
-      \item List – tool can present results in custom user interface control in GUI
-      \item XML file – tool can present results in XML data
-      \item HTML file – tool can present results in HTML data
+      \item Arquivo texto - ferramenta pode apresentar resultados em arquivos texto
+      \item Lista - ferramente pode apresentar resultados numa interface de usuário customizada controlada em GUI
+      \item Arquivo XML - ferramenta pode apresentar resultados em dados XML
+      \item Arquivo HTML - ferramenta pode apresentar resultados em dados HTML
     \end{itemize}
 
 \end{description}
@@ -1159,7 +1210,48 @@ fevereiro de 2016 -- será utilizada neste trabalho.
 
 \section{Cronograma} \label{cronograma}
 
-COLOCAR.
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | c | c | c | c |}
+    \hline
+    {\bf Atividade}                                         & Jul     & Ago       & Set      & Out      \\
+    \hline
+    \hline
+    Qualificação                                            &\checkmark&          &          &          \\
+    \hline
+    Análise da distribuição das métricas                    &\checkmark&          &          &          \\
+    \hline
+    Definição dos valores de referência                     &\checkmark&          &          &          \\
+    \hline
+    Cálculo de distância e modelo de aproximação            &\checkmark&          &          &          \\
+    \hline
+    Finalizar texto da fundamentação teórica e metodologia  &\checkmark&          &          &          \\
+    \hline
+    Caracterização das ferramentas                          &\checkmark&\checkmark&          &          \\
+    \hline
+    Caracterização da complexidade estrutural               &          &\checkmark&          &          \\
+    \hline
+    Documentar e automatizar a abordagem de coleta/análise  &          &\checkmark&          &          \\
+    \hline
+    Revisão estruturada com mais uma conferência            &          &\checkmark&          &          \\
+    \hline
+    Repetir coleta/analise com novas ferramentas            &          &\checkmark&          &          \\
+    \hline
+    Evolução da ferramenta Analizo                          &          &\checkmark&\checkmark&          \\
+    \hline
+    Finalizar texto com discussão dos resultados            &          &          &\checkmark&\checkmark\\
+    \hline
+    Finalizar texto da dissertação                          &          &          &\checkmark&\checkmark\\
+    \hline
+    Preparar slides e material para defesa                  &          &          &          &\checkmark\\
+    \hline
+    Defesa                                                  &          &          &          &\checkmark\\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+
 
 %------------------------------------------%
 \xchapter{Conclusões}{} \label{conclusoes}
@@ -1204,6 +1296,24 @@ O código-fonte da versão 1.2 foi utilizado neste estudo:
   \item AccessAnalysis-1.2-src.zip
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Obsoleta.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão & Ano de lançamento \\
+    \hline
+    1.2 	 & 2012              \\
+    1.1 	 & 2012              \\
+    1.0 	 & 2012              \\
+    0.17 	 & 2010              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{Bakar Alir}
@@ -1219,7 +1329,11 @@ referência para o projeto no GitHub em http://github.com/sireum/bakar}.
   \item bakar-dev-20160415-002013.tar.gz
 \end{itemize}
 
-Escrito em Java.
+Escrito em Java (na verdade tem mais arquivos em Scala).
+
+O GitHub indica apenas 30\% java e o resto outras linguagens, tem 719 arquivos
+com extensao scala e apenas 510 com extensao java. Scala é uma linguagem que
+roda na JVM com sintaxe parecida à Java mas com suporte a paradigma funcional.
 
 \subsection{error-prone}
 
@@ -1231,6 +1345,30 @@ Tools Using an Extensible Java Compiler'' do SCAM 2012 disponível em
 \begin{itemize}
   \item error-prone-2.0.9.tar.gz
 \end{itemize}
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão & Ano de lançamento \\
+    \hline
+    2.0.9  & 2016              \\
+    2.0.8  & 2016              \\
+    2.0.7  & 2015              \\
+    2.0.6  & 2015              \\
+    2.0.5  & 2015              \\
+    2.0.4  & 2015              \\
+    2.0.3  & 2015              \\
+    2.0.2  & 2015              \\
+    2.0.1  & 2015              \\
+    2.0    & 2015              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em Java.
 
@@ -1251,6 +1389,44 @@ foram copiados localmente para análise:
   \item indus.staticanalyses-src-20070305.zip
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    0.8.1	   & 2007              \\
+    0.8.3.10 & 2007              \\
+    0.8.3.11 & 2007              \\
+    0.8.3.12 & 2007              \\
+    0.8.3.15 & 2007              \\
+    0.8.3.1  & 2007              \\
+    0.8.3.6  & 2007              \\
+    0.8.3.7  & 2007              \\
+    0.8.3 	 & 2007              \\
+    0.8 	   & 2007              \\
+    0.7.0 	 & 2006              \\
+    0.7.1 	 & 2006              \\
+    0.7.2.2  & 2006              \\
+    0.7.2 	 & 2006              \\
+    0.6.1 	 & 2005              \\
+    0.6.2 	 & 2005              \\
+    0.6.3 	 & 2005              \\
+    0.6.4.1  & 2005              \\
+    0.6.4 	 & 2005              \\
+    0.5      & 2005              \\
+    0.3      & 2004              \\
+    0.2      & 2004              \\
+    0.1      & 2004              \\
+    0.1a     & 2004              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{InputTracer}
@@ -1263,6 +1439,45 @@ Program Comprehension of x86 Binaries'' do SCAM 2012 disponível em:
 \begin{itemize}
   \item valgrind-inputtracer.tar.gz
 \end{itemize}
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.6.1    & 2011              \\
+    3.6.0    & 2010              \\
+    3.5.0    & 2009              \\
+    3.4.1    & 2009              \\
+    3.4.0    & 2009              \\
+    3.3.1    & 2008              \\
+    3.3.0    & 2007              \\
+    3.2.3    & 2007              \\
+    3.2.2    & 2007              \\
+    3.2.1    & 2006              \\
+    3.2.0    & 2006              \\
+    3.1.1    & 2006              \\
+    3.1.0    & 2005              \\
+    3.0.1    & 2005              \\
+    3.0.0    & 2005              \\
+    2.4.1    & 2005              \\
+    2.4.0    & 2005              \\
+    2.2.0    & 2004              \\
+    2.2.0    & 2004              \\
+    2.1.2    & 2004              \\
+    2.1.1    & 2004              \\
+    2.1.0    & 2003              \\
+    2.0.0    & 2003              \\
+    1.9.6    & 2003              \\
+    1.9.5    & 2003              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em C.
 
@@ -1277,6 +1492,37 @@ do SCAM 2007 disponível em \url{http://jastadd.cs.lth.se/web}.
   \item jastadd2-src.zip
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    2.2.2    & 2016              \\
+    2.2.1    & 2016              \\
+    2.2.1    & 2016              \\
+    2.2.0    & 2016              \\
+    2.1.13   & 2015              \\
+    2.1.12   & 2015              \\
+    2.1.11   & 2015              \\
+    2.1.10   & 2014              \\
+    2.1.9    & 2014              \\
+    2.1.8    & 2014              \\
+    2.1.7    & 2014              \\
+    2.1.6    & 2013              \\
+    2.1.5    & 2013              \\
+    2.1.4    & 2013              \\
+    2.1.3    & 2013              \\
+    2.1.2    & 2013              \\
+    2.1.1    & 2013              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{Sonar Qube Plug-in}
@@ -1285,6 +1531,24 @@ Sonar Qube Plug-in é um plugin para o SourceMeter que extende a análise de
 código Java com o uso do SonarQube publicado no artigo ``SourceMeter SonarQube
 plug-in'' do SCAM 2014 disponível em:
 \url{http://github.com/FrontEndART/SonarQube-plug-in}.
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    8.0      & 2016              \\
+    7.0.5    & 2015              \\ 	
+    7.0.4    & 2015              \\ 	
+    7.0      & 2015              \\ 	
+    \hline
+  \end{tabular}
+\end{table}
 
 \begin{itemize}
   \item SonarQube-plug-in-master.zip
@@ -1310,6 +1574,34 @@ para http://www.srcML.org}
   \item srcML-src.tar.gz
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão       & Ano de lançamento \\
+    \hline
+    0.9.5        & 2015              \\
+    0.8.0        & 2014              \\
+    Trunk 19109c & 2014              \\
+    Trunk 19109b & 2014              \\
+    Trunk 19109  & 2014              \\
+    Trunk 17088  & 2013              \\
+    Trunk 13990  & 2012              \\
+    Trunk 13953  & 2012              \\
+    Trunk 13925  & 2012              \\
+    Trunk 13528  & 2012              \\
+    Trunk 12359  & 2012              \\
+    Trunk 8007   & 2011              \\
+    Trunk 7990   & 2011              \\
+    Trunk 7481   & 2011              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C++.
 
 \subsection{TACLE}
@@ -1325,6 +1617,24 @@ http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
   \item tacle\_1\_2\_1\_src.zip
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    1.2.1    & 2006              \\
+    1.2.0    & 2006              \\
+    1.1.0    & 2005              \\
+    1.0.0    & 2005              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{WALA}
@@ -1338,6 +1648,42 @@ SCAM 2010 disponível em
   \item WALA-R\_1.3.8.tar.gz
 \end{itemize}
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    1.3.9    &    2016           \\
+    1.3.8    &    2015 	         \\
+    1.3.7    &    2015 	         \\
+    1.3.6    &    2013 	         \\
+    1.3.5    &    2013           \\
+    1.3.4 	 &    2012           \\
+    1.3.3 	 &    2012           \\
+    1.3.2 	 &    2011           \\
+    1.3.1 	 &    2010           \\
+    1.3 	   &    2009           \\
+    1.2.2 	 &    2009           \\
+    1.2.1 	 &    2008           \\
+    1.2 	   &    2008           \\
+    1.1.3 	 &    2008           \\
+    1.1.2 	 &    2008           \\
+    1.1.1 	 &    2007           \\
+    1.1 	   &    2007           \\
+    1.0.04 	 &    2007           \\
+    1.0.03 	 &    2007           \\
+    1.0.02 	 &    2007           \\
+    1.0.01 	 &    2007           \\
+    1.0 	   &    2006           \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java
 
 \section{Ferramentas da indústria selecionadas} 
@@ -1346,17 +1692,88 @@ Escrito em Java
 
 Disponível em \url{http://people.eecs.berkeley.edu/~daw/boon}.
 
+ Update: BOON is obsolete technology. The state of research has advanced significantly since BOON was originally replaced, and commercial tools have surpassed BOON. This page is kept primarily for historical interest.
+
+What. BOON is a tool for automatically finding buffer overrun vulnerabilities in C source code. Buffer overruns are one of the most common types of security holes, and we hope that BOON will enable software developers and code auditors to improve the quality of security-critical programs.
+
+Caveats. BOON has many serious limitations and defects, and it is not for the faint of heart. I am not currently working on any further development of BOON, and it comes with no support. Be warned.
+
+Where. The BOON release is available here.
+
+Who. This software was written for David Wagner's Ph.D. dissertation, as part of a collaboration with Jeff Foster, Eric Brewer, and Alex Aiken. This work has been made possible by generous support from the National Science Foundation, as well as software from the BANE research group.
+
+(excluido das analises por apresentar valores mto discrepantes, ao olhar de
+perto percebemos é escrito em uma linguagem para escrita de grmatica (.SML), o pouco
+codigo C sao exemplos e codigo auxiliar)
+
 Escrito em C.
 
 \subsection{Clang Static Analyzer}
 
 Disponível em \url{http://clang-analyzer.llvm.org}.
 
+Junto ao código do próprio Clang.
+
+cfe-3.7.1.src.tar.xz
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.8.0	   & 2016	             \\
+    3.7.1	   & 2016	             \\
+    3.7.0	   & 2015	             \\
+    3.6.2	   & 2015	             \\
+    3.6.1	   & 2015	             \\
+    3.6.0	   & 2015	             \\
+    3.5.2	   & 2015	             \\
+    3.5.1	   & 2015	             \\
+    3.5.0	   & 2014	             \\
+    3.4.2	   & 2014	             \\
+    3.4.1	   & 2014	             \\
+    3.4	     & 2014	             \\
+    3.3	     & 2013	             \\
+    3.2	     & 2012	             \\
+    3.1	     & 2012	             \\
+    3.0	     & 2011	             \\
+    2.9	     & 2011	             \\
+    2.8	     & 2010	             \\
+    2.7	     & 2010	             \\
+    2.6	     & 2009	             \\
+    2.5	     & 2009	             \\
+    2.4	     & 2008	             \\
+    2.3	     & 2008	             \\
+    2.2	     & 2008	             \\
+    2.1	     & 2007	             \\
+    2.0	     & 2007	             \\
+    1.9	     & 2006	             \\
+    1.8	     & 2006	             \\
+    1.7	     & 2006	             \\
+    1.6	     & 2005	             \\
+    1.5	     & 2005	             \\
+    1.4	     & 2004	             \\
+    1.3	     & 2004	             \\
+    1.2	     & 2004              \\
+    1.1	     & 2003              \\
+    1.0	     & 2003              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C++.
 
 \subsection{Closure Compiler}
 
-Disponível em \url{https://developers.google.com/closure/compiler}.
+Disponível em
+\url{https://developers.google.com/closure/compiler}\footnote{O código fonte do
+Closure Compiler pode ser obtido em:
+http://github.com/google/closure-compiler}.
 
 Escrito em Java.
 
@@ -1364,11 +1781,92 @@ Escrito em Java.
 
 Disponível em \url{http://sourceforge.net/projects/cppcheck}.
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    1.74 	   & 2016              \\
+    1.73 	   & 2016              \\
+    1.72 	   & 2016              \\
+    1.71 	   & 2015              \\
+    1.70 	   & 2015              \\
+    1.69 	   & 2015              \\
+    1.68 	   & 2015              \\
+    1.67 	   & 2014              \\
+    1.66 	   & 2014              \\
+    1.65 	   & 2014              \\
+    1.64 	   & 2014              \\
+    1.63 	   & 2014              \\
+    1.62 	   & 2013              \\
+    1.61 	   & 2013              \\
+    1.60.1 	 & 2013              \\
+    1.60 	   & 2013              \\
+    1.59 	   & 2013              \\
+    1.58 	   & 2013              \\
+    1.57 	   & 2012              \\
+    1.56 	   & 2012              \\
+    1.55 	   & 2012              \\
+    1.54 	   & 2012              \\
+    1.53 	   & 2012              \\
+    1.52 	   & 2011              \\
+    1.51 	   & 2011              \\
+    1.50 	   & 2011              \\
+    1.49 	   & 2011              \\
+    1.48 	   & 2011              \\
+    1.47 	   & 2011              \\
+    1.46.1 	 & 2010              \\
+    1.46 	   & 2010              \\
+    1.45 	   & 2010              \\
+    1.44 	   & 2010              \\
+    1.43 	   & 2010              \\
+    1.42 	   & 2010              \\
+    1.41 	   & 2010              \\
+    1.40 	   & 2010              \\
+    1.39 	   & 2009              \\
+    1.38 	   & 2009              \\
+    1.37 	   & 2009              \\
+    1.36 	   & 2009              \\
+    1.35 	   & 2009              \\
+    1.34 	   & 2009              \\
+    1.33 	   & 2009              \\
+    1.32 	   & 2009              \\
+    1.31 	   & 2009              \\
+    1.30 	   & 2009              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C++.
 
 \subsection{CQual}
 
 Disponível em \url{http://www.cs.umd.edu/~jfoster/cqual}.
+
+cqual-0.981.tar.gz
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    0.981 	 & 2004              \\
+    0.991 	 & 2004              \\
+    0.98 	   & 2003              \\
+    0.99 	   & 2003              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em C.
 
@@ -1376,17 +1874,95 @@ Escrito em C.
 
 Disponível em \url{http://findbugs.sourceforge.net}.
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.0.1 	 & 2015              \\
+    3.0.0 	 & 2014              \\
+    2.0.3 	 & 2013              \\
+    2.0.2 	 & 2012              \\
+    2.0.1 	 & 2012              \\
+    2.0.0 	 & 2011              \\
+    1.3.9 	 & 2009              \\
+    1.3.8 	 & 2009              \\
+    1.3.7 	 & 2008              \\
+    1.3.6 	 & 2008              \\
+    1.3.5 	 & 2008              \\
+    1.3.4 	 & 2008              \\
+    1.2.1 	 & 2007              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{FindSecurityBugs}
 
 Disponível em \url{http://find-sec-bugs.github.io}.
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    1.4.6    & 2016              \\
+    1.4.5    & 2016              \\
+    1.4.4    & 2015 	           \\
+    1.4.3    & 2015 	           \\
+    1.4.2    & 2015 	           \\
+    1.4.1    & 2015 	           \\
+    1.4.0    & 2015 	           \\
+    1.3.1    & 2015 	           \\
+    1.3.0    & 2015 	           \\
+    1.2.1    & 2014 	           \\
+    1.2.0    & 2013 	           \\
+    1.1.0    & 2013 	           \\
+    1.0.0    & 2012 	           \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{Jlint}
 
+manual pdf junto ao codigo:
+
+This document described Jlint, a Java program checker that will check your Java code and
+find bugs, inconsistencies and synchronization problems by doing data flow analysis and
+building a lock graph.
+
 Disponível em \url{http://sourceforge.net/projects/jlint}.
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.1.2    & 2011              \\
+    3.1.1    & 2010              \\
+    3.1      & 2006              \\
+    3.0      & 2004              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em C++.
 
@@ -1394,11 +1970,71 @@ Escrito em C++.
 
 Disponível em \url{http://github.com/oliverklee/pixy}.
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Obsoleta.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.0.3    & 2012              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em Java.
 
 \subsection{PMD}
 
 Disponível em \url{http://pmd.github.io}.
+
+pmd-src-5.4.1.zip
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    5.5.0    & 2016              \\
+    5.4.2    & 2016              \\
+    5.4.1    & 2015              \\
+    5.4.0    & 2015              \\
+    5.3.7    & 2016              \\
+    5.3.6    & 2015              \\
+    5.3.5    & 2015              \\
+    5.3.4    & 2015              \\
+    5.3.3    & 2015              \\
+    5.3.2    & 2015              \\
+    5.3.1    & 2015              \\
+    5.3.0    & 2015              \\
+    5.2.3    & 2014              \\
+    5.2.2    & 2014              \\
+    5.2.1    & 2014              \\
+    5.2.0    & 2014              \\
+    5.1.3    & 2014              \\
+    5.1.2    & 2014              \\
+    5.1.1    & 2014              \\
+    5.1.0    & 2014              \\
+    5.0.5    & 2013              \\
+    5.0.4    & 2013              \\
+    5.0.3    & 2013              \\
+    5.0.2    & 2013              \\
+    5.0.1    & 2012              \\
+    5.0.0    & 2012              \\
+    4.3.0    & 2011              \\
+    4.2.6    & 2011              \\
+    4.2.5    & 2009              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em Java.
 
@@ -1407,11 +2043,54 @@ Escrito em Java.
 Disponível em
 \url{http://code.google.com/archive/p/rough-auditing-tool-for-security}.
 
+rats-2.4.tgz
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Obsoleta.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    2.4      & 2013              \\
+    2.3      & 2009              \\
+    1.5      & ??                \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C.
 
 \subsection{Smatch}
 
 Disponível em \url{http://smatch.sourceforge.net}.
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Ocasionalmente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    1.60     & 2015              \\
+    1.59     & 2013              \\
+    1.58     & 2013              \\
+    1.57     & 2013              \\
+    1.56     & 2012              \\
+    1.55     & 2010              \\
+    1.54     & 2010              \\
+    1.53     & 2009              \\
+    1.52     & 2009              \\
+    1.51     & 2009              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em C.
 
@@ -1419,17 +2098,103 @@ Escrito em C.
 
 Disponível em \url{http://www.splint.org}.
 
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Obsoleta.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    3.1.2    & 2007              \\
+    3.1.0    & 2003              \\
+    3.0.1.6  & ??                \\
+    3.0.1.5  & 2002              \\
+    3.0.1.4  & ??                \\
+    3.0.1    & ??                \\
+    3.0.0.19 & ??                \\
+    3.0.0.18 & ??                \\
+    3.0.0.17 & ??                \\
+    3.0.0.15 & ??                \\
+    3.0.0.14 & ??                \\
+    3.0.0.13 & 2001              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C.
 
 \subsection{UNO}
 
 Disponível em \url{http://spinroot.com/uno}.
 
+uno\_v213.tar.gz
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    2.13     & 2007              \\
+    2.12     & 2007              \\
+    2.11     & 2007              \\
+    2.9-2.10 & 2006              \\
+    2.8      & 2005              \\
+    2.7      & 2005              \\
+    2.6      & 2005              \\
+    2.5      & 2005              \\
+    2.4      & 2005              \\
+    2.3      & 2004              \\
+    2.2      & 2004              \\
+    2.1      & 2004              \\
+    2.0      & 2004              \\
+    1.8      & 2003              \\
+    1.7      & 2004              \\
+    1.6      & 2003              \\
+    1.5      & 2003              \\
+    1.4      & 2003              \\
+    1.3      & 2003              \\
+    1.2      & 2003              \\
+    1.1      & 2003              \\
+    \hline
+  \end{tabular}
+\end{table}
+
 Escrito em C.
 
 \subsection{WAP}
 
 Disponível em \url{http://awap.sourceforge.net}.
+
+wap-2.1.tar.gz
+
+Características:
+
+{\it Lançamentos - quantos lanamentos por ano:} Frequentemente.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| l | l |}
+    \hline
+    Versão   & Ano de lançamento \\
+    \hline
+    2.1      & 2015              \\
+    2.0.5    & 2015              \\
+    2.0.4    & 2015              \\
+    2.0.3    & 2015              \\
+    2.0.2    & 2015              \\
+    2.0.1    & 2015              \\
+    2.0      & 2015              \\
+    \hline
+  \end{tabular}
+\end{table}
 
 Escrito em Java.
 
@@ -1488,21 +2253,21 @@ Analizo.
     \hline
     n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
     \hline
-    1  & BOON                     & ansic     & 16 & AccessAnalysis          & java       \\
-    2  & Clang Static Analyzer    & cpp       & 17 & Bakar Alir              & java       \\
-    3  & Closure Compiler         & java      & 18 & error-prone             & java       \\
-    4  & Cppcheck                 & cpp       & 19 & Indus                   & java       \\
-    5  & CQual                    & ansic     & 20 & InputTracer             & ansic      \\
-    6  & FindBugs                 & java      & 21 & JastAdd                 & java       \\
-    7  & FindSecurityBugs         & java      & 22 & Sonar Qube Plug-in      & java       \\
-    8  & Jlint                    & cpp       & 23 & srcML                   & cpp        \\
-    9  & Pixy                     & java      & 24 & TACLE                   & java       \\
-    10 & PMD                      & java      & 25 & WALA                    & java       \\
-    11 & RATS                     & ansic     &    &                         &            \\
-    12 & Smatch                   & ansic     &    &                         &            \\
-    13 & Splint                   & ansic     &    &                         &            \\
-    14 & UNO                      & ansic     &    &                         &            \\
-    15 & WAP                      & java      &    &                         &            \\
+    1  & Clang Static Analyzer    & cpp       & 16 & AccessAnalysis          & java       \\
+    2  & Closure Compiler         & java      & 17 & error-prone             & java       \\
+    3  & Cppcheck                 & cpp       & 18 & Indus                   & java       \\
+    4  & CQual                    & ansic     & 19 & InputTracer             & ansic      \\
+    5  & FindBugs                 & java      & 20 & JastAdd                 & java       \\
+    6  & FindSecurityBugs         & java      & 21 & Sonar Qube Plug-in      & java       \\
+    7  & Jlint                    & cpp       & 22 & srcML                   & cpp        \\
+    8  & Pixy                     & java      & 23 & TACLE                   & java       \\
+    9  & PMD                      & java      & 24 & WALA                    & java       \\
+    10 & RATS                     & ansic     & 25 &                         &            \\
+    11 & Smatch                   & ansic     &    &                         &            \\
+    12 & Splint                   & ansic     &    &                         &            \\
+    13 & UNO                      & ansic     &    &                         &            \\
+    14 & WAP                      & java      &    &                         &            \\
+    15 &&    &                         &            \\
     \hline
   \end{tabular}
   \label{total-de-ferramentas}
@@ -1874,10 +2639,6 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 % plot_lines_for_project("dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
 %% end.rcode
 
-%% begin.rcode grafico-bakar-ali, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta bakar-ali"
-% plot_lines_for_project("dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
-%% end.rcode
-
 %% begin.rcode grafico-error-prone, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta error-prone"
 % plot_lines_for_project("dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
 %% end.rcode
@@ -1913,10 +2674,6 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 \clearpage
 
 \subsection{Gráficos das métricas para as ferramentas da indústria}
-
-%% begin.rcode grafico-boon-industria, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta boon"
-% plot_lines_for_project("dataset/NIST/boon/boon-1.0.analizo.metrics.dat")
-%% end.rcode
 
 %% begin.rcode grafico-clang-industria, fig.show='hold', fig.width=3.5, fig.height=3, fig.cap="distribuição das métricas para a ferramenta clang"
 % plot_lines_for_project("dataset/NIST/clang/clang-tools-extra-3.7.1.src.analizo.metrics.dat")

@@ -7,7 +7,6 @@ opts_chunk$set(echo=FALSE, cache=TRUE, fig.pos='h')
 metric_by_project <- function(metric) {
   metrics = read.table("dataset/analizo.metrics.dat")
   accessanalysis = metrics["accessanalysis", metric]
-  bakarali = metrics["bakar-ali", metric]
   errorprone = metrics["error-prone", metric]
   indus = metrics["indus", metric]
   inputtracer = metrics["inputtracer", metric]
@@ -18,14 +17,13 @@ metric_by_project <- function(metric) {
   srcml = metrics["srcml", metric]
   tacle = metrics["tacle", metric]
   wala = metrics["wala", metric]
-  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
   return(table)
 }
 
 metric_by_nist_project <- function(metric) {
   metrics = read.table("dataset/analizo.metrics.dat")
-  boon = metrics["boon", metric]
-  clang = metrics["clang", metric]
+  #clang = metrics["clang", metric]
   closure = metrics["closure", metric]
   cppcheck = metrics["cppcheck", metric]
   cqual = metrics["cqual", metric]
@@ -39,7 +37,8 @@ metric_by_nist_project <- function(metric) {
   splint = metrics["splint", metric]
   uno = metrics["uno", metric]
   wap = metrics["wap", metric]
-  table = data.frame(boon, clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  #table = data.frame(clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  table = data.frame(closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
   return(table)
 }
 
@@ -50,9 +49,9 @@ percentis_for_metric <- function(metric, filename) {
 }
 
 percentis_by_nist_project <- function(metric) {
-  boon = percentis_for_metric(metric, "dataset/NIST/boon/boon-1.0.analizo.metrics.dat")
-  clang = percentis_for_metric(metric, "dataset/NIST/clang/clang-tools-extra-3.7.1.src.analizo.metrics.dat")
-  closure = percentis_for_metric(metric, "dataset/NIST/closure-compiler/compiler-latest.analizo.metrics.dat")
+  #clang = percentis_for_metric(metric, "dataset/NIST/clang/cfe-3.7.1.src.analizo.metrics.dat")
+
+  closure = percentis_for_metric(metric, "dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619.analizo.metrics.dat")
   cppcheck = percentis_for_metric(metric, "dataset/NIST/cppcheck/cppcheck-1.72.analizo.metrics.dat")
   cqual = percentis_for_metric(metric, "dataset/NIST/cqual/cqual-0.981.analizo.metrics.dat")
   findbugs = percentis_for_metric(metric, "dataset/NIST/findbugs/findbugs-3.0.1.analizo.metrics.dat")
@@ -65,13 +64,13 @@ percentis_by_nist_project <- function(metric) {
   splint = percentis_for_metric(metric, "dataset/NIST/splint/splint-3.1.2.analizo.metrics.dat")
   uno = percentis_for_metric(metric, "dataset/NIST/uno/uno.analizo.metrics.dat")
   wap = percentis_for_metric(metric, "dataset/NIST/wap/wap-2.1.analizo.metrics.dat")
-  table = data.frame(boon, clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  #table = data.frame(clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  table = data.frame(closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
   return(table)
 }
 
 percentis_by_project <- function(metric) {
   accessanalysis = percentis_for_metric(metric, "dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
-  bakarali = percentis_for_metric(metric, "dataset/PAPERS/bakar-ali/bakar-dev-20160415-002013.analizo.metrics.dat")
   errorprone = percentis_for_metric(metric, "dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
   indus = percentis_for_metric(metric, "dataset/PAPERS/indus/indus.analizo.metrics.dat")
   inputtracer = percentis_for_metric(metric, "dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
@@ -82,7 +81,7 @@ percentis_by_project <- function(metric) {
   srcml = percentis_for_metric(metric, "dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
-  table = data.frame(accessanalysis, bakarali, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
   return(table)
 }
 
