@@ -10,6 +10,7 @@
 \DeclareGraphicsExtensions{.pdf}
 %\usepackage{caption}
 \usepackage{enumitem}
+\usepackage{float}
 
 \defenseyear{2016}
 \date{08 de Julho de 2016}
@@ -460,7 +461,7 @@ formatos durante o curso da compilação.
 Em ferramentas de análise estática estes formatos são utilizados durante a
 fase de análise para cumprir diversos objetivos, como por exemplo, calcular
 métricas de código-fonte. A métrica de complexidade ciclomática de McCabe
-\cite{McCabe1976} é definida com base no grafo de fluxo de controle (CFG) do
+\cite{McCabe1976}, por exemplo, é definida com base no grafo de fluxo de controle (CFG) do
 programa com o seguinte cálculo $CC = e - n + 2p$. Onde: {\bf e} é o número de
 arestas; {\bf n} é o número de nós; e {\bf p} é o número de componentes
 fortemente conectados no grafo CFG.
@@ -511,7 +512,7 @@ objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
     uma árvore sintática abstrata (AST) melhorada através de um processo de
     definiçao de atributos para os símbolos do programa de forma declarativa
     com uso de uma Gramática de
-    Atributos\footnote{http://pt.wikipedia.org/wiki/Gramática\_de\_atributos}.
+    Atributos\footnote{https://en.wikipedia.org/wiki/Attribute\_grammar}.
 
   \item \textit{Grafo de dependência de módulos}.
     O grafo de dependência de módulos (MDG - Module Dependence Graph) é um grafo
@@ -558,36 +559,38 @@ ferramentas atuais são:
     fonte.
 
   \item \textit{Inferência de tipos}.
-    A inferência de tipos ({\it Type inference}) refere-se a identificar o tipo
-    de variáveis e funções através e avaliar se o acesso a elas está em
+    A inferência de tipos ({\it Type inference}) refere-se a identificar o
+    tipo de variáveis e funções e avaliar se o acesso a elas está em
     conformidade com as regras da linguagem. Linguagens de programação com
-    sistema de tipagem incluem mecanismos este tipo de análise.
+    sistema de tipagem incluem mecanismos deste tipo de análise.
 
   \item \textit{Análise de fluxo de dados}.
     A análise de fluxo de dados ({\it Data flow analysis}) resume-se a coletar
     informação semântica do código-fonte do programa, e com métodos algébricos
     deduzir a definição e uso das variáveis em tempo de compilação. O objetivo
-    é mostrar que nenhum caminho de execução no programa acessa uma variável
-    sem definição prévia e atribuição de valor.
+    é mostrar que nenhum caminho de execução do programa acessa uma variável
+    sem definição ou atribuição prévia.
 
   \item \textit{Verificação de regra}.
     A verificação de regra ({\it Rule checking}) consiste em checar a segurança
-    do programa usando um conjunto de regras pré-estabelecidas.
+    do programa através de um conjunto de regras pré-estabelecidas.
 
   \item \textit{Análise de restrição}.
-    A análise de restrição ({\it Constraint analysis}) é consiste em gerar
+    A análise de restrição ({\it Constraint analysis}) consiste em gerar
     e resolver restrições no processo de análise de um programa.
 
   \item \textit{Comparação caminho}.
     Comparação caminho ({\it Patch comparison}) inclui comparação de caminho de
     código-fonte e de código-binário e é usada principalmente para encontrar
-    brechas de vulnerabilidade ``conhecidas''.
+    brechas de vulnerabilidade já ``conhecidas'' e previamente divulgadas por
+    fornecedores e praticantes da indústria de software.
 
   \item \textit{Execução simbólica}.
-    A execução simbólica ({\it Symbolic execution}) é usada para representar as
-    entradas de um programa através do uso de valores simbólicos ao invés de
-    dados reais, produz expressões algébricas sobre a entrada dos símbolos no
-    processo de implementação e pode detectar possibilidade de erros.
+    A execução simbólica ({\it Symbolic execution}) é usada para representar
+    as entradas de um programa através do uso de valores simbólicos ao invés
+    de dados reais, produz expressões algébricas sobre a entrada dos símbolos
+    do programa durante o processo de implementação e pode detectar
+    possibilidade de erros.
 
   \item \textit{Interpretação abstrata}.
     Interpretação abstrata ({\it Abstract interpretation}) é uma descrição
@@ -620,7 +623,7 @@ ferramentas atuais são:
 
   \item \textit{Verificação de sintaxe}.
     Verificação de sintaxe ({\it Syntax Checks}) tem o objetivo de encontrar
-    regras de violação tais como a utilização de uma variável do tipo incorreto
+    violação de regras tais como a utilização de uma variável do tipo incorreto
     ou sem declaração.
 
   \item \textit{Verificação de intervalo}.
@@ -653,13 +656,13 @@ Métricas de software podem ser classificadas em métricas de processo, métrica
 de projeto e métricas de produto.
 
 Métricas de processo medem atributos relacionados ao ciclo de desenvolvimento
-e manutenção de software.  Métricas de projeto indicam se a execução do
+e manutenção de software. Métricas de projeto indicam se a execução do
 processo está progredindo conforme planejado (por exemplo, relação entre o
 tamanho do software entregue e o esfoço total dispendido em seu
 desenvolvimento).
 
-Métricas de produto medem atributos de produtos e artefatos (documentos,
-diagramas, código-fonte e arquivos binários) desenvolvidos. Neste trabalho,
+Métricas de produto medem atributos de produtos e artefatos, como documentos,
+diagramas, código-fonte e arquivos binários. Neste trabalho,
 apenas métricas de produto serão utilizadas.
 
 Métricas de produto podem ser classificadas em internas (medem propriedades
@@ -677,18 +680,18 @@ métricas de código-fonte. A observação e o monitoramento de seus valores pod
 indicar aspectos relevantes à manutenibilidade de um programa. Dentre as
 inúmeras métricas de código-fonte iremos destacar aquelas utilizadas no estudo
 de \citeonline{Meirelles2013} onde associou-se características de qualidade de
-produto de software a características de qualidade de código-fonte através da
-observação de suas métricas.
+produto de software à características de qualidade de código-fonte através da
+observação de suas métricas, são elas:
 
 \begin{itemize}
   \item {\bf ACC} {\it Aferent Connections per Class (Conexões aferentes de
-    uma classe)}: Mede a conectividade de uma classe \cite{Brito1994}.
+    uma classe)}: mede a conectividade de uma classe \cite{Brito1994}.
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
   \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
     código por método)}: indica se o código está bem distribuído entre os
-    métodos, quanto maior mais ``pesados'' são os métodos. [REF]
+    métodos, quanto maior mais ``pesados'' são os métodos.
   \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
     Número de Parâmetros por Método)}: calcula a média de parâmetros dos
     métodos da classe \cite{Jagdish1997}.
@@ -699,17 +702,18 @@ observação de suas métricas.
   \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
     métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
   \item {\bf LOC} {\it Lines of Code (Número de linhas de código)}: mede o
-    número de linhas excluindo linhas em branco e comentários. [REF]
-  \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: calcula o
-    número de atributos de uma classe \cite{Kolewe1993}.
+    número de linhas excluindo linhas em branco e comentários
+    \cite{Lorenz1994}.
+  \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: número de
+    atributos de uma classe \cite{Kolewe1993}.
   \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
     filhos de uma classe \cite{Rosenberg1997}.
   \item {\bf NOM} {\it Number of Methods (Número de métodos)}: mede o tamanho
-    das classes em termos das suas operações implementadas. [REF]
+    das classes em termos das suas operações implementadas.
   \item {\bf NPA} {\it Number of Public Attributes (Número de atributos
-    públicos)}: mede o encapsulamento. [REF]
+    públicos)}: mede o encapsulamento \cite{Jagdish1997}.
   \item {\bf NPM} {\it Number of Public Methods (Número de métodos públicos)}:
-    representa o tamanho da ``interface'' da classe. [REF]
+    representa o tamanho da ``interface'' da classe \cite{Jagdish1997}.
   \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
     número de métodos dentre todos os métodos que podem ser invocados em
     resposta a uma mensagem enviada por um objeto de uma classe
@@ -780,7 +784,7 @@ do software através das métricas de código-fonte, associa qualidade do
 software à qualidade do código. Afirma que uma maneira objetiva de se observar
 as características de um código-fonte é analisando os valores de suas métricas
 e alerta para o pouco uso de métricas por parte dos desenvolvedores no ciclo
-de desenvolvimento e indica que um dos motivos desta sub-utilização
+de desenvolvimento, ele indica que um dos motivos desta sub-utilização
 é a falta de conhecimento de como coletar automaticamente
 os valores das métricas, interpretar os seus resultados e os associar à
 qualidade do código-fonte. Assim, desenvolveu uma abordagem para identificar
@@ -789,15 +793,15 @@ onde analisa estatísticamente a correlação entre as métricas e define um
 subconjunto reduzido que podem ser monitoradas ao longo do tempo e
 ainda oferecer uma boa visão do projeto.
 
-\citeonline{Terceiro2010} chama a atenção para a importância de medir e
+\citeonline{Terceiro2010} chamam a atenção para a importância de medir e
 compreender aspectos de qualidade interna de software, uma vez que tais
-questões impactam fortemente em atividades de evolução e manutenção. Ele
-afirma que quanto menor a qualidade de código-fonte, maior será o esforço de
+questões impactam fortemente em atividades de evolução e manutenção. Eles
+afirmam que quanto menor a qualidade de código-fonte, maior será o esforço de
 mantê-lo. Uma das formas de medir qualidade interna é em função da
 complexidade estrutural, uma medida que leva em conta a relação entre o
 acoplamento e coesão dos módulos de um programa.
 
-Complexidade estrutural representa um aspecto arquitetural e envolve
+Complexidade estrutural representa um aspecto arquitetural importante e envolve
 tanto a organização interna dos módulos quanto a relação entre eles. Uma alta
 complexidade estrutural faz projetos de software mais difíceis de entender, e
 por isto mesmo, mais difíceis de manter e evoluir.
@@ -812,16 +816,17 @@ por isto mesmo, mais difíceis de manter e evoluir.
 
 Não podemos perder de vista, no entanto, que projetos diferentes são
 influenciados por fatores diferentes, de forma que a observação dos aspectos
-de qualidade interna devem ser observados e interpretados isoladamente por
-cada projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
+de qualidade interna devem ser observados e interpretados separadamente por
+projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
 aplicação \cite{Meirelles2013}.
 
-O domínio de aplicação análise estática tem se desenvolvido rapidamente
-com novos métodos, técnicas e ferramentas para os mais diversos
-fins, no entando a comparação e avaliação de técnicas e ferramentas não
-tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem estudos
-avaliando ferramentas de análise estática de código-fonte, poucos avaliam tais
-ferramentas do ponto de vista de vista de sua qualidade interna.
+O domínio de aplicação análise estática, por exemplo, carece de observação
+detalhada sobre aspectos de qualidade interna de suas ferramentas, a
+área tem se desenvolvido rapidamente com novos métodos, técnicas e ferramentas
+para os mais diversos fins, no entanto a comparação e avaliação de técnicas e ferramentas
+não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem
+estudos avaliando ferramentas de análise estática de código-fonte, poucos
+fazem isso do ponto de vista de vista de sua qualidade interna.
 
 Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
 de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
@@ -829,50 +834,34 @@ nos resultados. \citeonline{Kratkiewicz2005} avalia cinco ferramentas de
 análise estática para determinar seus pontos fortes e fracos em detecção de
 falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
 de ferramentas de segurança com objetivo de identificar se estas ferramentas
-melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008} avalia
-três ferramentas de análise estática da indústria com o objetivo de mapear
-funcionalidades significas destas ferramentas, normalmente não fornecidas por
-compiladores normais. \citeonline{Wedyan2009} avaliou três ferramentas sobre a
-efetividade de detectar falhas e predizer refatorações.
-\citeonline{Mantere2009} compara três ferramentas da análise estática de
-código-fonte em relação à performance e dá subsídios para apoiar tomada de
-decisão sobre seleção de ferramentas de análise estática. \citeonline{Al2010}
-avalia quatro ferramentas de análise estática em relação à capacidade de
-detectar bugs em programas concorrentes em Java e response se ferramenta
-comerciais são melhores do que ferramentas {\it open source}.
-\citeonline{Li2010} compara sete diferentes ferramentas de análise estática
-com foco em detecção de vulnerabilidades, comparando suas caracteristicas
-através de um experimento. \citeonline{Johns2011} avaliou a qualidade de
-ferramentas de análise estática de segurança a partir de uma série de
-critérios. \citeonline{Alemerien2013} avalia duas ferramentas de análise
-estática para cálculo de métricas com objetivo de entender as diferenças nos
-resultados de cada uma. \citeonline{Ataide2014} analisa os resultados gerados
-por três ferramentas de análise estática que podem ser efecientemente usadas
-por programadores para remover vulnerabilidades comuns em programas.
+melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008}
+avaliam três ferramentas de análise estática da indústria com o objetivo de
+mapear funcionalidades significas destas ferramentas, normalmente não
+fornecidas por compiladores normais. \citeonline{Wedyan2009} avaliaram três
+ferramentas para verificar a efetividade de detectar falhas e predizer
+refatorações. \citeonline{Mantere2009} compararam três ferramentas de análise
+estática de código-fonte em relação à performance e dão subsídios para apoiar
+tomada de decisão sobre seleção de ferramentas de análise estática.
+\citeonline{Al2010} avaliaram quatro ferramentas de análise estática em
+relação à capacidade de detectar bugs em programas concorrentes em Java e
+responde se ferramentas comerciais são melhores do que ferramentas {\it open
+source}. \citeonline{Li2010} comparam sete diferentes ferramentas de análise
+estática com foco em detecção de vulnerabilidades, comparando suas
+caracteristicas através de um experimento. \citeonline{Johns2011} avaliaram a
+qualidade de ferramentas de análise estática de segurança a partir de uma
+série de critérios. \citeonline{Alemerien2013} avaliaram duas ferramentas de
+análise estática para cálculo de métricas com objetivo de entender as
+diferenças nos resultados de cada uma. \citeonline{Ataide2014} analisa os
+resultados gerados por três ferramentas de análise estática que podem ser
+eficientemente usadas por programadores para remover vulnerabilidades comuns
+em programas.
 
-A grande maioria dos estudos citados acima realizam avaliação ou camparação de
-ferramentas de análise estática de código fonte levando em conta aspectos e
+Dentre estes estudos, a grande maioria realiza avaliação ou camparação de
+ferramentas de análise estática de código-fonte levando em conta aspectos e
 características de qualidade externa, o que nos leva a entender que estudos
 que joguem luz sobre aspectos da qualidade interna neste domínio de aplicação
-são requeridos do ponto de vista principalmente dos desenvolvedores, a fim de
-apoiar atividades de manutenção e evolução.
-
-%\citeonline{Ronaldo2015} realiza um estudo para o monitoramento de métricas de
-%código fonte na API do sistema operacional Android, avalia sua evolução,
-%estuda as semelhanças da API com outros aplicativos do sistema Android.
-%Apresenta uma proposta de cálculo de similaridade entre aplicativos e a API
-%Android. Encontra valores de referências para métricas do sistema Android e
-%propõe um método de cálculo da distância entre aplicativos e os valores de
-%referência.
-
-%\citeonline{Almeida2010} realizam um estudo mapeando boas práticas de
-%programação em valores de métricas de código-fonte, estas boas práticas são
-%baseadas nos trabalhos de \cite{Martin2012} e \cite{Beck2007} sobre {\it Clean
-%Code}, onde sugerem práticas de desenvolvimento úteis para que um código
-%tenham expressividade, simplicidade e flexibilidade. Neste trabalho os autores
-%identificam melhorias de implementação através do uso de valores de métricas e
-%oferecem aos desenvolvedores uma maneira de pensarem em melhorias para os seus
-%códigos.
+são requeridos do ponto de vista principalmente dos desenvolvedores
+interessados em atividades de manutenção e evolução.
 
 \section{Hipóteses} \label{hipoteses}
 
@@ -881,15 +870,15 @@ métricas de código-fonte para ferramentas de análise estática a partir de um
 conjunto de softwares da academia e da indústria}) será validada a partir da
 análise das métricas calculadas para cada uma das ferramentas estudadas.  Esta
 análise levará em consideração a caracterização das ferramentas
-(Seção~\ref{caracterizacao-das-ferramentas}), em especial, um subconjunto das
-ferramentas com melhores valores de métricas.
+(Seção~\ref{caracterizacao-das-ferramentas}), em especial, em um subconjunto
+de ferramentas com melhores valores de métricas.
 
 A hipótese {\bf H2} ({\em Ferramentas de análise estática tendem a ter uma
 maior complexidade estrutural do que ferramentas de outros domínios de
 aplicação}) será validada a partir da comparação com os trabalhos relacionados
 (Seção \ref{trabalhos-relacionados}) que realizaram estudos similares, com
-cálculo e distribuição de métricas, e utilizando conjunto ferramentas distinto
-do estudado aqui.
+cálculo e distribuição de métricas, mas que utilizam como objeto de estudo
+conjuntos ferramentas de outros domínios de aplicação.
 
 A hipótese {\bf H3} ({\em Dentre as ferramentas de análise estática de
 código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
@@ -912,17 +901,15 @@ estudo (Seção \ref{distancia}).
 
 \subsection{Seleção de ferramentas de análise estática} \label{levantamento}
 
-A seleção de ferramentas de análise estática será realizada 
-por meio de uma busca por ferramentas desenvolvidas no contexto da
-academia e da indústria, com base em critérios pré-definidos.
-Será feito um planejamento detalhado para
-realizar a seleção de ferramentas em cada um destes contextos.
+A seleção de ferramentas de análise estática será realizada por meio de uma
+busca por ferramentas desenvolvidas no contexto da academia e da indústria,
+com base em critérios pré-definidos.  Será feito um planejamento detalhado
+para realizar a seleção de ferramentas em cada um destes contextos.
 
-No contexto acadêmico, a busca por ferramentas será feita
-em artigos publicados em conferências que tenham histórico de
-publicação sobre ferramentas de análise estática de código-fonte. 
-Estes artigos serão analisados e aqueles com publicação de ferramenta
-serão selecionados.
+No contexto acadêmico, a busca por ferramentas será feita em artigos
+publicados em conferências que tenham histórico de publicação sobre
+ferramentas de análise estática de código-fonte.  Estes artigos serão
+analisados e aqueles com publicação de ferramenta serão selecionados.
 
 Na indústria, a busca por ferramentas será feita a partir da base mantida pelo
 projeto SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance
@@ -938,24 +925,22 @@ código-fonte.
 
 \subsection{Revisão estruturada} \label{revisao-estruturada}
 
-A revisão estruturada é um processo disciplinado para seleção de
-artigos a partir de critérios bem definidos, 
-de forma que seja possível a reprodução do estudo 
-por parte de pesquisadores interessados.
+A revisão estruturada é um processo disciplinado para seleção de artigos a
+partir de critérios bem definidos, de forma que seja possível a reprodução do
+estudo por parte de pesquisadores interessados.
 
-A revisão está organizada em atividades de  
-(1) busca de artigos (definição das fontes de busca, 
-definição de critérios de busca, definição de script de busca, realização da busca nas fontes)
-e (2) caracterização / seleção de artigos. 
+A revisão está organizada em atividades de (1) busca de artigos (definição
+das fontes de busca, definição de critérios de busca, definição de script de
+busca, realização da busca nas fontes) e (2) caracterização / seleção de
+artigos. 
 
-No primeiro passo da revisão estruturada,
-as fontes de busca serão definidas, considerando
-conferências que abordam o tema de interesse do estudo. 
+No primeiro passo da revisão estruturada, as fontes de busca serão definidas,
+considerando conferências que abordam o tema de interesse do estudo. 
 
-A busca textual será realizada automaticamente, utilizando um 
+A busca textual será realizada automaticamente, utilizando um
 script\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
-escrito especialmente para este estudo.
-A busca seleciona artigos que contêm os seguintes termos:
+escrito especialmente para este estudo. Esta busca seleciona os artigos que
+contenham os seguintes termos:
 
 \begin{verbatim}
   "tool" OU "framework"; E
@@ -964,80 +949,78 @@ A busca seleciona artigos que contêm os seguintes termos:
   "static analysis" OU "parser".
 \end{verbatim}
 
-Uma cópia local de todos os artigos encontrados, em formato PDF,
-será feita.
+Uma cópia local de todos os artigos encontrados, em formato PDF, será feita.
 
-No segundo passo, a seleção de artigos será feita com
-base nos artigos encontrados pela busca.
-Na seleção, pretende-se identificar se cada artigo resulta, de fato,
-em publicação de ferramenta de análise estática.
-Uma vez que se confirme que o artigo publica uma ferramenta,
-este artigo será incluído para leitura. 
-Ferramentas que sejam mais abrangentes do que apenas análise estática mas que
-contenham esta função em seu conjunto também serão selecionadas.
+No segundo passo, a seleção de artigos será feita com base nos artigos
+encontrados pela busca no passo anterior.  Nesta seleção, pretende-se
+identificar se cada artigo resulta, de fato, em publicação de ferramenta de
+análise estática. Uma vez que se confirme que o artigo publica uma
+ferramenta, este artigo será incluído para leitura. Ferramentas que sejam
+mais abrangentes do que apenas análise estática mas que contenham esta função
+em seu conjunto também serão selecionadas.
 
-Uma vez identificados os artigos que publicaram ferramentas de
-análise estática, procuramos no próprio artigo referências de onde encontrar o
-software. Neste contexto,  algumas ações serão tomadas a partir da situação
-encontrada.
+Uma vez identificados os artigos que publicaram ferramentas de análise
+estática, procuramos no próprio artigo por referências de onde encontrar o
+código-fonte da ferramenta. Neste contexto, algumas ações serão tomadas a
+partir de algumas situações.
 
 \begin{itemize}
 
-  \item Autores que afirmam que a ferramenta está disponível mas o
-    artigo não contém referências de onde encontrar o software. Os autores serão
-    contactados por email, solicitando informações de onde obter o
-    código-fonte.
+  \item Se os autores afirmam que a ferramenta está disponível mas o artigo
+    não contém referências de onde encontrar o código-fonte, então estes
+    autores serão contactados, por email, solicitando informações de onde
+    obter o código-fonte da ferramenta.
 
-  \item Artigos indicam onde obter o código-fonte da ferramenta, mas o acesso ao local
+  \item Se o artigo indica onde obter o código-fonte da ferramenta, mas o acesso ao local
     indicado não está disponível, ou está disponível mas o software não se
-    encontra lá. Os autores também serão contactados, solicitando informações
+    encontra lá, então os autores serão contactados, solicitando informações
     atualizadas de onde obter uma cópia do código-fonte da ferramenta.
 
-  \item Artigos indicam onde obter o código-fonte da ferramenta e a referência
-    está correta. Será feito o download da última versão disponível do software.
+  \item Artigos que indicam onde obter o código-fonte da ferramenta e a referência
+    está correta. Será feito o download do código-fonte da última versão
+    disponível.
 
 \end{itemize}
 
 Uma vez que os autores contactados por email respondam com informações sobre
 local para obter o software, iremos adicionar a ferramenta ao conjunto de ferramentas 
-a serem analisadas.
+a serem analisadas. O Apêndice \ref{emails} contém uma cópia dos emails
+enviados a alguns autores.
 
-Por fim, a ferramenta livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount} 
-será  utilizada para identificar a linguagem de programação usada na implementação de cada
-ferramenta selecionada. 
-A identificação da linguagem de programação usada é necessária,
-pois apenas as ferramentas implementadas nas linguagens de programação suportadas 
-pela ferramenta Analizo serão consideradas.
-%
+Por fim, a ferramenta livre {\it
+sloccount}\footnote{http://www.dwheeler.com/sloccount} será  utilizada para
+identificar a linguagem de programação usada na implementação de cada
+ferramenta selecionada.  A identificação da linguagem de programação é
+necessária, pois apenas as ferramentas implementadas nas linguagens de
+programação suportadas pela ferramenta Analizo serão consideradas.
+
 Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
 e extensível para análise de código-fonte, calcula uma grande quantidade de
 métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
-programação C, C++ e Java.
-É uma ferramenta mantida constantemente, com desenvolvedores ativos, e
-atualizações frequentes, sua última versão 1.19.0 foi lançada em 18 de
-Fevereiro de 2016 e será esta a versão utilizada neste estudo.
+programação C, C++ e Java. É uma ferramenta mantida constantemente, com
+desenvolvedores ativos, e atualizações frequentes, sua última versão 1.19.0
+foi lançada em 18 de Fevereiro de 2016 e será esta a versão utilizada neste
+estudo.
 
 \section{Coleta de dados} \label{coleta}
 
 Serão realizadas duas etapas para identificar e mapear as ferramentas de
-análise estática com código-fonte disponível: uma atividade de seleção de
+análise estática com código-fonte disponível: uma atividade para seleção de
 ferramentas da academia, descrita na Seção \ref{ferramentas-da-academia}, e
 outra atividade para seleção de ferramentas da indústria, descrita na Seção
 \ref{ferramentas-da-industria}.
 
-As ferramentas selecionadas para o estudo serão analisadas com Analizo 
-para extração dos valores de métricas de código-fonte.
-Esta análise utilizará o comando {\it metrics}
-da suite de Analizo, que calcula métricas globais de projeto 
-e métricas por módulos.
-Este estudo levará em consideração a distribuição das métricas por módulos.
+As ferramentas selecionadas para o estudo serão analisadas com Analizo para
+extração dos valores de métricas de código-fonte.  Esta análise utilizará o
+comando {\it metrics} do de Analizo, que calcula métricas globais de projeto e
+métricas por módulos. Este estudo levará em consideração a distribuição das
+métricas por módulos.
 
 \subsection{Ferramentas da academia} \label{ferramentas-da-academia}
 
-A seleção de ferramentas da academia será relizada por meio
-de uma revisão estruturada (seção~\ref{revisao-estruturada}).
-As fontes de busca para busca de artigos
-são a conferência SCAM - Source Code Analysis and Manipulation Working
+A seleção de ferramentas da academia será relizada por meio de uma revisão
+estruturada (seção~\ref{revisao-estruturada}). A fonte de busca para artigos
+será a conferência SCAM - Source Code Analysis and Manipulation Working
 Conference\footnote{http://www.ieee-scam.org} e mais uma dentre as seguintes
 conferências:
 
@@ -1052,13 +1035,13 @@ conferências:
     Evolution\footnote{http://www.icsme.org}
 \end{itemize}
 
-São todas conferências com histórico de mais de 20 anos, ambas com trilhas
-para publicação de ferramentas sobre temas com relacionamento estreito com o
-tema estudado aqui, o que representa um grande probabilidade de encontrar-mos
-ferramentas de análise estática de código-fonte. A decisão de incluir apenas
-mais uma conferência além da conferência SCAM se justifica por questões de
-cronograma, o tempo previsto para finalizar este trabalho não permite incluir
-mais uma fonte de pesquisa para ferramentas da academia.
+Todas estas conferências possuem trilhas para publicação de ferramentas e tem
+como tema, áreas de estudo relacionadas à análise de programa e análise
+estática, o que representa um grande potencial de encontrar-mos ferramentas de
+análise estática de código-fonte publicadas em suas mais de 20 edições. A
+decisão de incluir apenas mais uma conferência além da conferência SCAM se
+justifica pelo pouco tempo que temos para concluir este trabalho, de forma que
+não seria viável incluir mais fontes.
 
 Após download do código-fonte de cada ferramenta selecionada, em sua versão
 mais recente, a ferramenta Analizo será utilizada para a coleta das métricas. 
@@ -1076,12 +1059,15 @@ mais recente, a ferramenta Analizo será utilizada para a coleta das métricas.
 \section{Análise de dados} \label{analise}
 
 Os dados coletados incluem métricas de código-fonte para cada módulo/classe de
-cada ferramenta selecionada. As métricas coletadas foram as métricas descritas na
-Seção \ref{metricas-de-codigo}.
+cada ferramenta selecionada, tanto da indústria quanto da academia. As
+métricas a serem analisadas e interpretadas são as métricas descritas na Seção
+\ref{metricas-de-codigo}.
 
 A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
 estatísticos e gráficos, será utilizada para manipulação de dados, criação
-tabelas e plotagem de gráficos.
+tabelas e plotagem de gráficos. Todos os cálculos em linguagem R utilizados
+neste trabalho estão disponíveis
+em \footnote{https://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
 
 \subsection{Distribuição dos valores das métricas}
 
@@ -1103,9 +1089,9 @@ aplicação.
 \subsection{Caracterização das ferramentas} \label{caracterizacao-das-ferramentas}
 
 \citeonline{Novak2010} através de um estudo para construção de uma taxonomia
-para ferramentas de análise estática propõe uma classificação para tais
-ferramentas, dentre esta classificaçao iremos adotar neste trabalho as
-seguintes categorias:
+para ferramentas de análise estática propuseram uma classificação a partir de
+uma série de categorias, dentre estas categorias iremos adotar neste trabalho
+as seguintes:
 
 \begin{description}
 
@@ -1196,6 +1182,9 @@ seguintes categorias:
 
 \end{description}
 
+As seções \ref{ferramentas-selecionadas} e \ref{ferramentas-selecionadas-nist}
+trazem uma caracterização das ferramentas segundo às categorias acima.
+
 \section{Avaliação da ferramenta Analizo}
 
 Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
@@ -1278,7 +1267,7 @@ nos proximos passos.''
 
 \xchapter{Resultados preliminares}{} \label{resultados}
 
-\section{Ferramentas acadêmicas selecionadas} 
+\section{Ferramentas acadêmicas selecionadas} \label{ferramentas-selecionadas}
 
 Ferramentas selecionadas a partir da revisão estruturada detalhada na seção
 \ref{revisao-estruturada}.
@@ -1686,7 +1675,7 @@ Características:
 
 Escrito em Java
 
-\section{Ferramentas da indústria selecionadas} 
+\section{Ferramentas da indústria selecionadas} \label{ferramentas-selecionadas-nist}
 
 \subsection{BOON}
 
@@ -2818,6 +2807,79 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 %sugestões de refatoração para ferramentas de análise estática, estas sugestões
 %serão aplicadas na refatoração do Analizo.''
 
+\xchapter{Emails enviados durante revisão-estruturada}
+{Cópia dos emails enviados a alguns autores solicitando informações de onde obter
+o código-fonte das ferramentas publicadas nos artigos} \label{emails}
+
+\section{Email enviado aos autores do CodeBoost}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/codeboost.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do ETXL}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/etxl.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do I2SD}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/i2sd.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do MSP}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/msp.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do Proteum/FL}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/proteum-fl.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do Sapid/XML}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/sapid-xml.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do Simplicissimus}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/simplicissimus.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do srcML}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/srcml.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do TACLE}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/tacle.pdf}
+\end{figure}
+
+\section{Email enviado aos autores do XOgastan}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.7]{imagens/emails/xogastan.pdf}
+\end{figure}
 
 \end{document}
 
