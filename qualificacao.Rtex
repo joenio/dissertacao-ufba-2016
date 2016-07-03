@@ -29,10 +29,6 @@
 \frontmatter
 \presentationpage
 
-\acknowledgements
-
-(pendente)
-
 \resumo
 
 (pendente)
@@ -899,7 +895,7 @@ estudo (Seção \ref{distancia}).
 
 A seleção de ferramentas de análise estática será realizada por meio de uma
 busca por ferramentas desenvolvidas no contexto da academia e da indústria,
-com base em critérios pré-definidos.  Será feito um planejamento detalhado
+com base em critérios pré-definidos. Será feito um planejamento detalhado
 para realizar a seleção de ferramentas em cada um destes contextos.
 
 No contexto acadêmico, a busca por ferramentas será feita em artigos
@@ -1103,20 +1099,48 @@ em \footnote{https://github.com/joenio/dissertacao-ufba-2016/blob/master/qualifi
 
 \subsection{Distribuição dos valores das métricas}
 
-Foram calculados os percentis de cada métrica para cada ferramenta analisada,
-a partir dos valores de métricas extraídos pelo Analizo para cada
-módulo/classe das ferramentas analisadas. Cada percentil é a centésima parte
-dos dados ordenados de forma crescente. Os percentis calculados foram: 1, 5,
-10, 25, 50, 75, 90, 95 e 99. Dentre estes iremos discutir os resultados em
-função dos mesmos percentis discutidos por \citeonline{Meirelles2013}, 75, 90
-e 95, correspondendo a valores muito frequentes, frequentes e pouco
-frequentes, respectivamente. Esta discussão irá nos fornecer como resultado
-valores de referências para métricas de código-fonte neste domínio de
-aplicação.
+Iremos calcular os percentis de cada métrica para cada ferramenta a partir dos
+valores das métricas dos seus módulos, um percentil é a centésima parte dos
+dados ordenados de forma crescente, iremos calcular os percentis 1, 5, 10, 25,
+50, 75, 90, 95 e 99, e dentre eles iremos discutir os resultados em função dos
+percentis 75, 90 e 95, assim como feito por \citeonline{Meirelles2013},
+correspondendo a valores muito frequentes, frequentes e pouco frequentes,
+respectivamente.
+
+Esta discussão irá nos fornecer como resultado intervalos de referência para
+métricas de código-fonte neste domínio de aplicação, estes intervalos serão
+definidos a partir da interpretação manual dos percentis e serão analisados
+usando modelos de regressão a fim de serem compreendidos e validados, uma
+comparação com intervalos encontrados nos trabalhos relacionados (seção
+\ref{trabalhos-relacionados}) também será realizada com objetivo de reforçar
+estes valores.
 
 \subsection{Cálculo de distância e modelo de aproximação} \label{distancia}
 
-(pendente) ``ainda não entendi exatamente o que foi feito por ronaldo''.
+A partir da distribuição das métricas nos percentis 75, 90 e 95 e dos
+intervalos de referência encontrados propomos uma abordagem para calcular o
+quão distante cada ferramenta se encontra destes intervalos.  Esta abordagem
+terá como base um fator de aproximação chamado {\it score} de similaridade,
+este {\it score} será primeiramente calculado para os intervalos de referência
+e servirão como base de comparação para o cálculo da distância de cada
+ferramenta.
+
+O {\it score} de similaridade será calculado a nível de projeto, ou seja,
+teremos um único valor para cada ferramenta calculado a partir de suas várias
+métricas. Para isto, iremos abstrair o significado individual de cada métrica,
+o que pode não ser muito efetivo já que diferentes métricas possuem diferentes
+grandezas. Para resolver este problema será feita uma normalização dos valores
+das várias métricas a fim de deixá-las num mesmo intervalo, com uma certa
+equivalência, seguindo uma ideia semelhante ao que é feito com a distância
+euclidiana, onde todas as variáveis tem suas distâncias unificadas em um único
+valor.
+
+Os valores do {\it score} calculados a partir dos intervalos de referência
+serão centralizados em 0, indicando o centro de comparação para o cálculo da
+distância com cada ferramenta, desta forma, ferramentas com {\it score} acima
+de 0 indicam valores piores em relação aos intervalos de referência, e
+ferramentas com {\it score} abaixo de 0 indicam valores melhores do que os
+intervalos de referência.
 
 \subsection{Caracterização das ferramentas} \label{caracterizacao-das-ferramentas}
 
@@ -1215,7 +1239,7 @@ as seguintes:
 \end{description}
 
 As seções \ref{ferramentas-selecionadas} e \ref{ferramentas-selecionadas-nist}
-trazem uma caracterização das ferramentas segundo às categorias acima.
+trazem uma caracterização inicial das ferramentas segundo às categorias acima.
 
 \section{Avaliação da ferramenta Analizo}
 

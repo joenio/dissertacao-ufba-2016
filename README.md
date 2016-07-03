@@ -57,9 +57,17 @@ instalado com o seguinte comando:
 
 ## Referências sobre estatística
 
-### Vídeo: FGV / IBRE – Estatística com R: 16 Quantis e Percentis 
+### Vídeo: FGV / IBRE – Estatística com R: 16 Quantis e Percentis
 
 * https://www.youtube.com/watch?v=pZN-RmV4M6E
+
+### Vídeo: Regressão Linear Simples - Ajuste de Reta
+
+* https://www.youtube.com/watch?v=e5dKAK4Df04
+
+### Vídeo: Regressão Linear Múltipla - Introdução
+
+* https://www.youtube.com/watch?v=TLlzToeIpGc
 
 ## Contato
 
