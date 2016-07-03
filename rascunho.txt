@@ -108,41 +108,6 @@ aproximar dos valores de referência.
 
 \section{Resultados preliminares}\label{resultados}
 
-\section{Desafios da análise estática}
-
-Principal 2: Less is More. Does this movement that
-started in graphic design speak to source-code analysis?
-Any programmer who has set out to write an analysis tool
-confronts significant obstacles. First, simple parsing is not
-as simple as it should be. For example, C++ is not LR(n)
-(for any n!). Furthermore, the presence of casting, pointer
-arithmetic, dynamic class loading, reflection, and the like,
-complicate semantic analysis. This leads to the question
-“how good a tool would I need to create for programmers to
-use a ‘simple’ language?” Language design seems headed
-in the opposite direction (Fortran “9x” is an excellent ex-
-ample). Against an increasing need for higher precision
-source-code analysis, modern languages increasingly re-
-quire tools to handle only partially known behavior (in the
-case of Java this is caused by features such as generics, user-
-defined types, plug-in components, reflection, and dynamic
-class loading). These features increase flexibility at run-
-time, but compromise static analysis. In considering each
-of the following research areas, consider also the role that
-analysis quality should play in the language design debate.
-
-Until alternate formalisms come into common usage,
-source code will continue to be definitive in describing pro-
-gram behavior. Based on the past 40 years, programming
-languages can be expected to continue to incorporate new
-features that complicate program semantics. Given its cen-
-tral role in software engineering, source code and source-
-code analysis will remain “hot topics” and thus the focus
-of intense research activity into the foreseeable future. To
-ensure future progress including necessary, but unforeseen
-breakthroughs, it is important for future source-code anal-
-ysis research to continue to investigate a wide diversity of
-ideas.
 
 %Many of these tools
 %are seeking the same kind of programming errors, but, to
@@ -375,39 +340,6 @@ RATS
 
 \cite{Hofer2010}
 
-The BCS SIGIST defines static analysis of source code
-as the “analysis of a program carried out without executing
-the program” [24]. This definition emphasizes the contrast
-to dynamic analysis, where the behaviour of program is
-observed while it is executed.
-
-Static analysis is not exclusively used for finding security
-problems. Applications can also be found, for instance, in
-compiler optimization or improvement of general code quality.
-
-In general, static analysis problems are undecidable [11].
-Thus, no analysis can be sound and complete. This means that
-a static analysis program is either unable to reliably detect all
-targeted problems or is prone to false positives, i.e., it reports
-findings which turn out to be wrong on closer examination. A
-further discussion about the implications and necessary trade-
-offs is given in [28] and [2]. In practice, most tools expose
-both variants of erroneous behaviour.
-Available static analysis for security programs exist in the
-form of freeware [26] [25] [22], academic prototypes [5] [2]
-[12] [23], company-internal tools (e.g., Microsoft’s Prefast [7]
-and Prefix [13]), and commercial products (see [18] for an
-overview).
-
-Evaluation criteria
-Quality of the analysis.
-Implemented trade-offs between precision and scalability.
-Set of known vulnerability types.
-Usability of the tool.
-
-evaluating the quality of a static analysis tool for security
-
-\cite{Johns2011}
 
 This study evaluated three
 ASA tools: IntelliJ ® IDEA, Jlint, and FindBugs.
@@ -957,59 +889,6 @@ nenhuma entrada humana adicional é necessário para realizar a análise.
 %detectar: Overflow and underflow analysis, Rounding errors, Array bounds,
 %Stack usage analysis.
 
-%\section{Teoria da análise estática}
- Um tema presente
-em todas as abordagens da análise de programa e consequentemente da análise de
-código-fonte e da análise estática de código-fonte é que elas podem fornecer
-apenas resultados aproximados \cite{Landi1992}.
-
-
-%
-% The expressive power of programming languages makes
-% analysis even harder. Analysis routines must be explicitly
-% developed to handle coding complexities, such as loops,
-% conditional control flow, arrays, different variable types,
-% interprocedural function calls, and aliasing. In practice no
-% tool handles all possible code constructs.
-% \cite{Black2007} 
-%
-%(falar de falso positivos / negativos)
-%
-%(Tools that are sound with respect to a counterexample are sometimes called
-%complete in academic circles.)
-%
-%Existem diferentes técnicas de análise estática de código-fonte, que variam desde
-%simples análises léxicas, análises de fluxo de dados até a análise de grafos de fluxo de con-
-%trole. Ao apontar defeitos no código, uma ferramenta de análise estática pode ou não
-%cometer erros quando analisando determinado trecho de código, dada a natureza do
-%defeito ali presente (ou ausência de defeitos) e à técnica de análise empregada. Al-
-%gumas técnicas são menos complexas e estão mais suscetíveis a erros do que outras
-%(KRATKIEWICZ, 2005). Ainda assim, cada uma das técnicas de análise estática tem
-%suas limitações (CUOQ; KIRCHNER; YAKOBOWSKI, 2012), o que justifica o uso de e
-%a busca por diferentes técnicas de análise.
-%
-%Como definido em (BLACK et al., 2007), chama-se falso positivo, ou alarme
-%falso, um trecho de código apontado como defeituoso por uma ferramenta de análise
-%estática que, na verdade, não se trata de um defeito, ou seja, a ferramenta cometeu
-%um erro ao apontar um trecho de código não defeituoso como defeituoso. Chama-se falso
-%negativo um defeito no código fonte, que se enquadra na categoria de defeitos detectados
-%pela ferramenta que analisa o código em questão, que não foi detectado pela ferramenta,
-%ou seja, a ferramenta cometeu um erro ao não apontar um trecho de código defeituoso.
-%Uma ferramenta ideal não cometeria erros, apontando todos os defeitos do código
-%(mesmo que apenas em uma dada categoria) e nunca apontando um trecho de código
-%correto como defeituoso (a ferramenta não comete falsos positivos nem falsos negativos).
-%Trabalhos anteriores mostram que é impossível, mesmo em teoria, produzir tal ferramenta
-%(BLACK et al., 2007) devido ao Teorema de Rice (RICE, 1953), que prova que para
-%qualquer propriedade de software que não seja trivial, não existe algoritmo capaz de decidir
-%se um programa qualquer possui tal propriedade, de modo que buscam-se aproximações
-%para a solução de problemas ou tomadas de decisões relacionadas à análise estática. É
-%possível, porém, produzir ferramentas capazes de cometer apenas um dos tipos de erro
-%(falsos positivos ou falsos negativos). À análise estática que não gera falsos negativos, ou
-%seja, aponta todos os defeitos no código, chamamos análise correta. À análise estática
-%que não gera falsos positivos, ou seja, todos os possíveis defeitos apontados por ela são
-%de fato trechos de código defeituosos, chama-se análise completa. Por fim, pode-se
-%relacionar os termos com os Teoremas de Incompletude (GODEL et al., 1986), de modo
-%que não é possível realizar uma análise completa e correta.
 
     
 %Este formato é usado pela ferramenta Bunch e apresenta programas em um
