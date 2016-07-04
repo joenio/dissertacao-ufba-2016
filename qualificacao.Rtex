@@ -1290,15 +1290,35 @@ de qualidade interna a partir desta abordagem.
 
 Os resultados preliminares são apresentados no Apêndice.
 
-SINTESE AQUI ?  TRENDS? 
+Caracterizamos algumas ferramentas da academia e da insústria em relação à
+característica de frequencia de lançamentos e em relação a linguagem em que é
+escrita.
 
-(pendente) ``discutir as contribuições dando resposta ao que foi colocado na
-introdução, fizemos isto, conseguimos estes resultados, e iremos fazer aquilo
-nos proximos passos.''
+A distribuição dos percentis das métricas nos mostram numa análise inicial que
+para a maioria das métricas será difícil encontrar um padrão de intervalos de
+referência para as ferramentas, mostrando valores sem significado, valor 0,
+para algumas ferramentas em algumas métricas.
+
+Até o momento a análise e interpretação das métricas não mostrou ter
+diferenças significativas entre ferramentas da academia e da indústria.
+
+Mas os percentis 75, 90 e 95 se mostram como boa escolha para evitar os pontos
+fora da curva e valores enviesados.
 
 \section{Próximos passos}
 
-(pendente)
+Os próximos passos estão concentrados no estudo dos valores de distribuição
+das métricas nos percentis 75, 90 e 95, comparar os valores e comportamentos
+encontrados em nossos dados com os trabalhos de referência sobre valores de
+métricas de código-fonte e sua discussão sobre a qualidade interna.
+
+Numa primeira análise foram encontrados valores para algumas métricas bastante
+discrepantes, isto denunciou que o código-fonte de algumas ferramentas foram
+obtidos de forma incorreta, o que nos levou a analisar novamente tais
+ferramentas para extração de suas métricas, estas ferramentas foram deixadas
+de fora desta análise inicial pois estamos coletando suas métricas ainda. A
+coleta de métricas pode levar horas ou dias, dependendo do tamanho do software
+analisado.
 
 %------------------------------------------%
 
@@ -2192,12 +2212,12 @@ SCAM 2008 & 29               & 14            & -                      \\
 SCAM 2009 & 20               & 10            & -                      \\
 SCAM 2010 & 21               & 15            & 1                      \\
 SCAM 2011 & 21               & 9             & 1                      \\
-SCAM 2012 & 22               & 12            & 4                      \\
+SCAM 2012 & 22               & 12            & 3                      \\
 SCAM 2013 & 24               & 12            & -                      \\
 SCAM 2014 & 35               & 16            & 1                      \\
 SCAM 2015 & 30               & 18            & 0                      \\
 \hline
-Total     & 315              & 133           & 10                     \\
+Total     & 315              & 133           & 9                      \\
 \hline
 \end{tabular}
 \label{artigos-do-scam}
@@ -2206,9 +2226,9 @@ Total     & 315              & 133           & 10                     \\
 A Tabela \ref{total-de-ferramentas} apresenta um resumo com todas as
 ferramentas, tanto da academia quanto da indústria, após a avaliação final
 sobre disponibilidade do código-fonte e possibilidade de ser analizada. Das 54
-ferramentas do NIST apenas 19 tinham código fonte disponível, destas apenas 15
+ferramentas do NIST apenas 19 tinham código fonte disponível, destas apenas 14
 eram suportadas pelo Analizo. Dos 315 artigos avaliados na revisão estruturada
-apenas 10 tinham ferramentas disponíveis capaz de serem analizadas pelo
+apenas 9 tinham ferramentas disponíveis capaz de serem analizadas pelo
 Analizo.
 
 \begin{table}[h!]
@@ -2218,27 +2238,26 @@ Analizo.
     \hline
     n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
     \hline
-    1  & Clang Static Analyzer    & cpp       & 16 & AccessAnalysis          & java       \\
-    2  & Closure Compiler         & java      & 17 & error-prone             & java       \\
-    3  & Cppcheck                 & cpp       & 18 & Indus                   & java       \\
-    4  & CQual                    & ansic     & 19 & InputTracer             & ansic      \\
-    5  & FindBugs                 & java      & 20 & JastAdd                 & java       \\
-    6  & FindSecurityBugs         & java      & 21 & Sonar Qube Plug-in      & java       \\
-    7  & Jlint                    & cpp       & 22 & srcML                   & cpp        \\
-    8  & Pixy                     & java      & 23 & TACLE                   & java       \\
-    9  & PMD                      & java      & 24 & WALA                    & java       \\
-    10 & RATS                     & ansic     & 25 &                         &            \\
+    1  & Clang Static Analyzer    & cpp       & 15 & AccessAnalysis          & java       \\
+    2  & Closure Compiler         & java      & 16 & error-prone             & java       \\
+    3  & Cppcheck                 & cpp       & 17 & Indus                   & java       \\
+    4  & CQual                    & ansic     & 18 & InputTracer             & ansic      \\
+    5  & FindBugs                 & java      & 19 & JastAdd                 & java       \\
+    6  & FindSecurityBugs         & java      & 20 & Sonar Qube Plug-in      & java       \\
+    7  & Jlint                    & cpp       & 21 & srcML                   & cpp        \\
+    8  & Pixy                     & java      & 22 & TACLE                   & java       \\
+    9  & PMD                      & java      & 23 & WALA                    & java       \\
+    10 & RATS                     & ansic     &    &                         &            \\
     11 & Smatch                   & ansic     &    &                         &            \\
     12 & Splint                   & ansic     &    &                         &            \\
     13 & UNO                      & ansic     &    &                         &            \\
     14 & WAP                      & java      &    &                         &            \\
-    15 &&    &                         &            \\
     \hline
   \end{tabular}
   \label{total-de-ferramentas}
 \end{table}
 
-Assim, temos um total de 25 ferramentas, 15 da indústria e 10 da academia.
+Assim, temos um total de 23 ferramentas, 14 da indústria e 9 da academia.
 
 \section{Análise exploratória dos valores das métricas}
 
@@ -2253,10 +2272,9 @@ características das ferramentas, compará-los a outros estudos.
 \subsection{Conexões aferentes de uma classe (ACC)}
 
 ACC é um valor parcial de uma das métricas MOOD (Metrics for Object Oriented
-Design) \cite{Brito1994} e mede o nível de acoplamento de uma classe.
-
-Os intervalos sugeridos são: até 2 (bom); entre 2 e 20 (regular); de 20 em
-diante (ruim).
+Design) \cite{Brito1994} e mede o nível de acoplamento de uma classe. O
+cálculo é feito através do número de classes que fazem referência a um outra
+por meio de métodos ou atributos.
 
 As Tabelas \ref{metrica-acc} e \ref{metrica-acc-industria} apresentam os
 valores da métrica ACC para as ferramentas da academia e da indústria,
@@ -2269,6 +2287,11 @@ respectivamente.
 % knitr_latex_table(table, "percentis da métrica ACC para as ferramentas da academia", "metrica-acc")
 %% end.rcode
 
+Duas ferramentas, accessanalysis e error-prone, tiveram valor 0 no percentil
+75, é estranho que 75\% das classes destas 2 ferramentas, ambas escritas em
+Java, não façam acesso através de métodos ou atributos a nenhuma outra classe
+do mesmo sistema.
+
 %% begin.rcode metrica-acc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("acc")
 % total_modules = metric_by_nist_project("total_modules")
@@ -2276,10 +2299,15 @@ respectivamente.
 % knitr_latex_table(table, "percentis da métrica ACC para as ferramentas da indústria", "metrica-acc-industria")
 %% end.rcode
 
+As ferramentas cqual e uno tiveram valores no percentil 75\% bem acima das
+demais ferramentas, 24 e 34, respectivamente. Onde entre todas as outras o
+maior valor foi 8.
+
 \subsection{Média de complexidade ciclomática por método (ACCM)}
 
 ACCM contabiliza o número de caminhos independentes que métodos de uma classe
-pode seguir em sua execução.
+pode seguir em sua execução. O cálculo é feito a partir do número de
+estruturas condicionais encontrados nos métodos de um programa.
 
 As Tabelas \ref{metrica-accm} e \ref{metrica-accm-industria} apresentam os
 valores da métrica ACCM para as ferramentas da academia e da indústria,
@@ -2292,6 +2320,10 @@ respectivamente.
 % knitr_latex_table(table, "percentis da métrica ACCM para as ferramentas da academia", "metrica-accm")
 %% end.rcode
 
+Esta métrica apresenta um comportamento sem muitas exceções dentro de cada
+percentil, com intervalos entre 1.0 e 2.1 para percentil 75\%, 2.0 e 3.4 para
+percentil 90\% e 2.9 e 5.0 para percentil 95\%.
+
 %% begin.rcode metrica-accm-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("accm")
 % total_modules = metric_by_nist_project("total_modules")
@@ -2299,12 +2331,15 @@ respectivamente.
 % knitr_latex_table(table, "percentis da métrica ACCM para as ferramentas da indústria", "metrica-accm-industria")
 %% end.rcode
 
+Também entre as ferramentas da indústria esta métrica não apresenta variações
+muito grandes, com intervalos entre 1.0 e 6.9 para 75\%, 2.0 e 8.9 para
+percentil 90\% e entre 4.0 e 15.6 para 95\%.
+
 \subsection{Média do número de linhas de código por método (AMLOC)}
 
-AMLOC é a média do número de linhas dos métodos de um módulo.
-
-Os intervalos sugeridos são: até 10 (bom); entre 10 e 13 (regular); de 13 em
-diante (ruim).
+AMLOC é a média do número de linhas dos métodos de um módulo, apenas linhas
+com código executável é calculada, comentários e linhas em branco são
+desconsideradas do cálculo.
 
 As Tabelas \ref{metrica-amloc} e \ref{metrica-amloc-industria} apresentam a
 métrica AMLOC para as ferramentas da academia e da indústria, respectivamente.
@@ -2316,12 +2351,21 @@ métrica AMLOC para as ferramentas da academia e da indústria, respectivamente.
 % knitr_latex_table(table, "percentis da métrica AMLOC para as ferramentas da academia", "metrica-amloc")
 %% end.rcode
 
+Os valores para ferramentas da academia não nos chama atenção para nada
+especial, com intervalos entre 5.4 e 14.5 para o percentil 75\%, entre 10.7 e
+31.5 pra percentil 90\% e entre 15.4 e 51.4 para 95\%.
+
 %% begin.rcode metrica-amloc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("amloc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
 % knitr_latex_table(table, "percentis da métrica AMLOC para as ferramentas da indústria", "metrica-amloc-industria")
 %% end.rcode
+
+Para a indústria os intervalos foram entre 7.0 e 36.9 para o percentil 75\%,
+entre 16.0 e 62.1 para percentil 90\% e entre 22.0 e 119.7 para 95\%. A
+ferramenta chama atenção por apresentr o menor valor no percentil 75\%, 7, e o
+maior valor no prcentil 95\%, 119.7.
 
 \subsection{Média do número de parâmetros por método (ANPM)}
 
@@ -2589,11 +2633,25 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 % knitr_latex_table(table, "percentis da métrica SC para as ferramentas da academia", "metrica-sc")
 %% end.rcode
 
+%% begin.rcode sumario-sc, fig.align='center', results="asis"
+% table = percentis_by_project("sc")
+% table = table[-1:-5,]
+% xt = xtable(summary(t(table)), caption="resumo da métrica SC nos percentis 75, 90 e 95 para as ferramentas da academia")
+% print(xt, table.placement="H")
+%% end.rcode
+
 %% begin.rcode metrica-sc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("sc")
 % total_modules = metric_by_nist_project("total_modules")
 % table = add_column(table, total_modules, colname = "classes")
 % knitr_latex_table(table, "percentis da métrica SC para as ferramentas da indústria", "metrica-sc-industria")
+%% end.rcode
+
+%% begin.rcode sumario-sc-industria, fig.align='center', results="asis"
+% table = percentis_by_nist_project("sc")
+% table = table[-1:-5,]
+% xt = xtable(summary(t(table)), caption="resumo da métrica SC nos percentis 75, 90 e 95 para as ferramentas da indústria")
+% print(xt, table.placement="H")
 %% end.rcode
 
 \clearpage
