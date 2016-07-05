@@ -32,21 +32,20 @@
 
 \resumo
 
-(pendente)
+Análise estática de código-fonte é um tema em constante evolução, ferramentas
+deste domínio continuam a ser desenvolvidas tanto na academia quanto na
+indústria, compreender os aspectos que refletem nos atributos de qualidade
+interna destas ferramentas é uma atividade primordial do ponto de vista dos
+desenvolvedores destas ferramentas. Neste sentido uma das abordagens é a
+observação dos valores de métricas de código-fonte, de forma a jogar luz sobre
+aspectos arquiteturais importantes que justifiquem ou denunciem problemas em
+sua qualidade interna. Assim propomos uma abordagem para realizar esta
+observação de forma que tenhamos como resultado final referências de valores
+de métricas de código-fonte para ferramentas deste domínio.
 
 \begin{keywords}
 
-  (pendente)
-
-\end{keywords}
-
-\abstract
-
-(pendente)
-
-\begin{keywords}
-
-  (pendente)
+  métricas de código-fonte, ferramentas de análise estática, engenharia de software.
 
 \end{keywords}
 
@@ -58,15 +57,6 @@
 
 %------------------------------------------%
 \xchapter{Introdução}{}
-
-%{\it Eu, como um desenvolvedor de ferramenta de análise estática de
-%código-fonte, estou interessado em compreender a fundo este domínio de
-%aplicação, suas técnicas e limitações, bem como compreender o estado da arte
-%das ferramentas existentes na indústria e na academia, através da
-%caracterização de seus atributos de qualidade interna, a fim de ter
-%conhecimento suficiente para tomada de decisão sobre a evolução e manutenção
-%da minha própria ferramenta de análise estática, a ser realizada durante este
-%trabalho, com objetivo de melhorar seus atributos de qualidade interna.}
 
 O domínio de aplicação de análise estática tem evoluído constantemente desde o
 seu surgimento a mais de 40 anos, e apesar da sua evolução constante poucos
@@ -122,8 +112,6 @@ A Seção \ref{hipoteses} traz detalhes sobre como cada hipótese será testada.
 São objetivos específicos deste trabalho:
 
 \begin{itemize}
-%  \item Realizar uma revisão da literatura para conceituar análise estática de
-%    código-fonte.
   \item Selecionar e obter código-fonte de ferramentas de análise estática
     desenvolvidas na academia, para coletar suas métricas de código-fonte.  A
     seleção terá como base o resultado de uma revisão estruturada realizada a
@@ -183,8 +171,6 @@ primeira ferramenta de análise estática \cite{Gosain2015}, foi criada para
 examinar programas escritos em linguagem C e aplicar regras de tipagem mais
 estritas do que as regras dos próprios compiladores da linguagem.
 
-% \cite{Li2010} cita FlexeLint como a primeira ferramenta de análise estática
-
 Neste trabalho o nosso interesse reside em compreender características de
 qualidade interna de ferramentas deste domínio de aplicação, do ponto
 de vista de desenvolvedores interessados em manter e evoluir tais ferramentas
@@ -196,13 +182,6 @@ representação intermediária e técnicas mais comuns. A seção \ref{metricas}
 definição de métricas de software e apresenta um conjunto de métricas
 utilizados neste estudo, trazendo detalhes sobre métricas de complexidade
 estrutural.
-
-%\ref{formatos}
-%\ref{tecnicas}
-%\ref{usos}
-%\ref{anatomia}
-%(\ref{complexidade}) (pendente capitulo sobre estatistica).
-%(\ref{metricas-de-codigo})
 
 \section{Análise estática de código-fonte} \label{analise-estatica}
 
@@ -446,20 +425,6 @@ programa com o seguinte cálculo $CC = e - n + 2p$. Onde: {\bf e} é o número d
 arestas; {\bf n} é o número de nós; e {\bf p} é o número de componentes
 fortemente conectados no grafo CFG.
 
-%Observação (Chris):
-%Algumas dessas RIs são necessárias para calcular alguns tipos de métricas.
-%Às vezes há alguns workarounds em ferramentas, em
-%geral, dependentes de linguagem.
-%
-%Mas algumas ferramentas implementam a métrica de outra forma.
-%\begin{verbatim}
-%NDepend:
-%
-%CC = 1 + {number of the following expressions found in a method} :
-%if|while|for|foreach|case|default|continue|goto|&&| etc.
-%
-%\end{verbatim}
-
 Assim, percebe-se que cada formato de representação intermediária \cite{Nielson2015}
 \cite{Stanier2013} \cite{Cruz2009} \cite{Ramalho1996} pode ter fins e
 objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
@@ -521,9 +486,6 @@ de bugs, compreensão de programas, avaliação de segurança, ou outra finalida
 qualquer. Segundo \citeonline{German2003}, \citeonline{Li2010},
 \citeonline{Hofer2010} as técnicas e métodos mais comumente encontrados nas
 ferramentas atuais são:
-
-% análise de fluxo de dados, erros de runtime (divisão por zero, overflows, etc.), 
-% análise de impacto, medições, identificação de \textit{code smells},  e reengenharia de software.
 
 \begin{description}
 
@@ -628,9 +590,6 @@ cujas entradas são dados de software e cuja saída é um valor numérico, que
 pode ser interpretado como o grau em que um software possui um determinado
 atributo que afeta sua qualidade''.
 
-%Metrics make a statement about some quality attributes, are quantitative, 
-%but will have to be interpreted by a human.
-
 Métricas de software podem ser classificadas em métricas de processo, métricas
 de projeto e métricas de produto.
 
@@ -715,24 +674,8 @@ Esta métrica pode dar indícios importantes sobre características arquiteturai
 de um programa de software e pode explicar seus atributos de qualidade
 interna.
 
-%\section{Pensar em título - fundamentos de matemática e estatística}
-%
-%(nao criar este capitulo agora, ficara no nivel de proposta, discutris na
-%analise dos resultados, mas fica como proposta ainda, devo descrever no texto
-%isso como passos a serem amadurecidos ainda, apresento como primeira analise
-%expliratoria que basicamente replica meirelles, explicar abordagem de paulo
-%, se aprenda observar metrica dentro de contexto, ..., ou de um projeto ao
-%longo do tempo)
-%
-%\subsection{Distância Euclidiana}
-%\subsection{etc}
-
 %------------------------------------------------------%
 \xchapter{Metodologia}{} \label{metodologia}
-
-%Antes de falar dos trabalhos relacionados, deve-se ter uma introdução no
-%capítulo de metodologia resgatando o problema tratado pelo trabalho e que tem
-%estudos da área etc etc...
 
 O objetivo principal deste trabalho é compreender as ferramentas de software
 para análise estática de código-fonte, de forma à interpretar suas
@@ -749,14 +692,6 @@ coleta de dados. A seção \ref{coleta} detalha a coleta de dados e a seção
 interpretados.
 
 \section{Trabalhos relacionados} \label{trabalhos-relacionados}
-
-%Terceiro, Kecia Ferreira, \cite{Ferreira2009}
-%
-%Terceiro todos os artigos, .... mostrar e evolucao do trabalho dele ate chegar
-%na caractrizacao da complexidade estrutural.
-%
-%O da Kecia posso pegar a inspiracao no trabalho de Paulo, pode n dar tempo de
-%eu entrar nos artigos.. (ler os trab relacionados da tese de paulo).
 
 \citeonline{Meirelles2013} apresenta argumentos para se observar a qualidade
 do software através das métricas de código-fonte, associa qualidade do
@@ -784,14 +719,6 @@ Complexidade estrutural representa um aspecto arquitetural importante e envolve
 tanto a organização interna dos módulos quanto a relação entre eles. Uma alta
 complexidade estrutural faz projetos de software mais difíceis de entender, e
 por isto mesmo, mais difíceis de manter e evoluir.
-
-%Mas um outro aspecto tem sido constantemente associado
-%à complexidade de software, este aspecto é o tamanho de um sistema, ele
-%representa um fator importante nos estudos sobre evolução de software.
-%Tamanho do sistema definitivamente eh um atributo que deve ser observado por
-%pesquisadores e profissionais de software. Alem de senso comum observar que
-%sistemas grandes sao mais dificeis de lidar, muitos acreditam que existe uma
-%associacao entre tamanho e complexidade.
 
 Não podemos perder de vista, no entanto, que projetos diferentes são
 influenciados por fatores diferentes, de forma que a observação dos aspectos
@@ -868,17 +795,6 @@ métricas de cada ferramenta com os valores de referências encontrados neste
 estudo (Seção \ref{distancia}).
 
 \section{Planejamento do estudo} \label{planejamento}
-
-%\subsection{Seleção de métricas}
-%
-%Estas métricas serão coletadas para cada classe/módulo presente nas
-%ferramentas de análise estática selecionadas e servirão de base para
-%avaliar a qualidade das mesmas.
-%
-%(pendente) ``retomar complexidade estrutural e linkar com trabalho de
-%terceiro, iremos olhar com mais detalhes algumas ferramentas e para este
-%subconjunto vamos analisar a organização arquitetural dos módulos, isto
-%será base para o guia de refatoração que faremos.''
 
 \subsection{Seleção de ferramentas de análise estática} \label{levantamento}
 
@@ -1404,7 +1320,9 @@ mais cuidado, e possivelmente realizar análises mais aprofundadas com ela.
 Isto claramente faz um certo gancho com o objetivo geral deste trabalho,
 caractarizar a complexidade estrutural de ferramentas de análise estática,
 pois uma das formas de calcular complexidade estrutural, e que possivelmente
-iremos utilizar aqui, é feita em relação à \texttt{cbo} e \texttt{lcom4}.
+iremos utilizar aqui, é feita em relação à \texttt{cbo} e \texttt{lcom4}. Na
+Figura \ref{fig:grafico-comparativo} é fácil perceber o quanto \texttt{cbo} destoa
+das outras métricas.
 
 %% begin.rcode grafico-comparativo, fig.show='hold', fig.cap="distribuição dos percentis para as ferramentas da academia e da indústria"
 % par(mfrow=c(3,2), oma=c(0,0,0,0))
@@ -1447,13 +1365,14 @@ das métricas nos percentis 75, 90 e 95, comparar os valores e comportamentos
 encontrados em nossos dados com os trabalhos de referência sobre valores de
 métricas de código-fonte e sua discussão sobre a qualidade interna.
 
-Numa primeira análise foram encontrados valores para algumas métricas bastante
-discrepantes, isto denunciou que o código-fonte de algumas ferramentas foram
-obtidos de forma incorreta, o que nos levou a analisar novamente tais
-ferramentas para extração de suas métricas, estas ferramentas foram deixadas
-de fora desta análise inicial pois estamos coletando suas métricas ainda. A
-coleta de métricas pode levar horas ou dias, dependendo do tamanho do software
-analisado.
+Após esta análise inicial iremos adicionar mais ferramentas a partir de uma
+nova revisão estruturada, e então atualizar os valores e discussões de forma a
+refletir a inclusão das novas ferramentas selecionadas neste ciclo de revisão.
+
+A partir daí teremos definição dos valores de referência para ferramentas de
+análise estática de código-fonte, com isto iremos calcular quanto cada
+ferramenta está distante dos valores de referência, isto dará indícios sobre a
+qualidade interna de cada ferramenta.
 
 %------------------------------------------%
 
@@ -1684,10 +1603,6 @@ utilizado em nosso estudo obtido no site da ferramenta foi o
     \end{itemize}
 
 \end{description}
-
-% Não cita a licença da ferramenta, diz que é free e pode ser baixado em
-% http://www.sourcemeter.com
-% Licença: não livre
 
 \section{srcML}
 
