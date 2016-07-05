@@ -111,4 +111,70 @@ add_column <- function(table1, table2, colname) {
   return(t(table))
 }
 
+table_percentil <- function(percentil, caption) {
+  table = percentis_by_project("acc")
+  acc = table[c(percentil),]
+  table = percentis_by_project("accm")
+  accm = table[c(percentil),]
+  table = percentis_by_project("amloc")
+  amloc = table[c(percentil),]
+  table = percentis_by_project("anpm")
+  anpm = table[c(percentil),]
+  table = percentis_by_project("cbo")
+  cbo = table[c(percentil),]
+  table = percentis_by_project("lcom4")
+  lcom4 = table[c(percentil),]
+  table = percentis_by_project("loc")
+  loc = table[c(percentil),]
+  table = percentis_by_project("noa")
+  noa = table[c(percentil),]
+  table = percentis_by_project("nom")
+  nom = table[c(percentil),]
+  table = percentis_by_project("npa")
+  npa = table[c(percentil),]
+  table = percentis_by_project("npm")
+  npm = table[c(percentil),]
+  table = percentis_by_project("rfc")
+  rfc = table[c(percentil),]
+  table = percentis_by_project("sc")
+  sc = table[c(percentil),]
+  table = data.frame(t(acc), t(accm), t(amloc), t(anpm), t(cbo), t(lcom4), t(loc), t(noa), t(nom), t(npa), t(npm), t(rfc), t(sc))
+  colnames(table) = c('acc', 'accm', 'amloc', 'anpm', 'cbo', 'lcom4', 'loc', 'noa', 'nom', 'npa', 'npm', 'rfc', 'sc')
+  xt = xtable(table, caption=caption, digits=0)
+  print(xt, table.placement="H", include.rownames=FALSE)
+}
+
+table_percentil_nist <- function(percentil, caption) {
+  table = percentis_by_nist_project("acc")
+  acc = table[c(percentil),]
+  table = percentis_by_nist_project("accm")
+  accm = table[c(percentil),]
+  table = percentis_by_nist_project("amloc")
+  amloc = table[c(percentil),]
+  table = percentis_by_nist_project("anpm")
+  anpm = table[c(percentil),]
+  table = percentis_by_nist_project("cbo")
+  cbo = table[c(percentil),]
+  table = percentis_by_nist_project("lcom4")
+  lcom4 = table[c(percentil),]
+  table = percentis_by_nist_project("loc")
+  loc = table[c(percentil),]
+  table = percentis_by_nist_project("noa")
+  noa = table[c(percentil),]
+  table = percentis_by_nist_project("nom")
+  nom = table[c(percentil),]
+  table = percentis_by_nist_project("npa")
+  npa = table[c(percentil),]
+  table = percentis_by_nist_project("npm")
+  npm = table[c(percentil),]
+  table = percentis_by_nist_project("rfc")
+  rfc = table[c(percentil),]
+  table = percentis_by_nist_project("sc")
+  sc = table[c(percentil),]
+  table = data.frame(t(acc), t(accm), t(amloc), t(anpm), t(cbo), t(lcom4), t(loc), t(noa), t(nom), t(npa), t(npm), t(rfc), t(sc))
+  colnames(table) = c('acc', 'accm', 'amloc', 'anpm', 'cbo', 'lcom4', 'loc', 'noa', 'nom', 'npa', 'npm', 'rfc', 'sc')
+  xt = xtable(table, caption=caption, digits=0)
+  print(xt, table.placement="H", include.rownames=FALSE)
+}
+
 knit("qualificacao.Rtex")

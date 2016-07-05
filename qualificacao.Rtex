@@ -7,6 +7,7 @@
 \usepackage{multicol}
 \usepackage{enumitem}
 \usepackage{float}
+\usepackage{rotating}
 \DeclareGraphicsExtensions{.pdf}
 
 \defenseyear{2016}
@@ -834,7 +835,7 @@ resultados gerados por três ferramentas de análise estática que podem ser
 eficientemente usadas por programadores para remover vulnerabilidades comuns
 em programas.
 
-Dentre estes estudos, a grande maioria realiza avaliação ou camparação de
+Dentre estes estudos, a grande maioria realiza avaliação ou comparação de
 ferramentas de análise estática de código-fonte levando em conta aspectos e
 características de qualidade externa, o que nos leva a entender que estudos
 que joguem luz sobre aspectos da qualidade interna neste domínio de aplicação
@@ -842,6 +843,8 @@ são requeridos do ponto de vista principalmente dos desenvolvedores
 interessados em atividades de manutenção e evolução.
 
 \section{Hipóteses} \label{hipoteses}
+
+Segue como nossas hipóteses serão testadas.
 
 A hipótese {\bf H1} ({\em É possível calcular valores de referência de
 métricas de código-fonte para ferramentas de análise estática a partir de um
@@ -954,8 +957,7 @@ estudo por parte de pesquisadores interessados.
 
 A revisão está organizada em atividades de (1) busca de artigos (definição
 das fontes de busca, definição de critérios de busca, definição de script de
-busca, realização da busca nas fontes) e (2) caracterização / seleção de
-artigos. 
+busca, realização da busca nas fontes) e (2) seleção de artigos. 
 
 No primeiro passo da revisão estruturada, as fontes de busca serão definidas,
 considerando conferências que abordam o tema de interesse do estudo. 
@@ -1081,7 +1083,7 @@ A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
 estatísticos e gráficos, será utilizada para manipulação de dados, criação de
 tabelas e plotagem de gráficos. Todos os cálculos em linguagem R utilizados
 neste trabalho estão disponíveis
-em \footnote{https://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
+em nosso repositório\footnote{https://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
 
 \subsection{Distribuição dos valores das métricas}
 
@@ -1145,8 +1147,8 @@ ferramentas a partir das seguintes categorias:
 
   \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
       \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
     \end{itemize}
 
@@ -1267,72 +1269,67 @@ das ferramentas segundo às categorias acima.
 
 \section{Resultados preliminares}
 
-Os resultados preliminares são apresentados no Apêndice.
+\subsection{Revisão estruturada}
 
-Caracterizamos algumas ferramentas da academia e da insústria em relação à
-característica de frequencia de lançamentos e em relação a linguagem em que é
-escrita.
-
-A distribuição dos percentis das métricas nos mostram numa análise inicial que
-para a maioria das métricas será difícil encontrar um padrão de intervalos de
-referência para as ferramentas, mostrando valores sem significado, valor 0,
-para algumas ferramentas em algumas métricas.
-
-Até o momento a análise e interpretação das métricas não mostrou ter
-diferenças significativas entre ferramentas da academia e da indústria.
-
-Mas os percentis 75, 90 e 95 se mostram como boa escolha para evitar os pontos
-fora da curva e valores enviesados.
-
-\subsection{Análise exploratória da revisão estruturada}
-
-A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
-cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
-estática com código fonte disponível.
+Realizamos uma busca por ferramentas na conferência SCAM, onde 315 artigos
+foram avaliados em duas etapas referentes as duas atividades da revisão
+estruturada: (1) busca automatizada a partir do script de busca e (2) seleção
+a partir da leitura do artigo. A primeira etapa resultou em 133 artigos,
+destes apenas 9 foram selecionados na segunda etapa, resultando daí 9
+ferramentas de análise estática com disponibilidade de código-fonte.
+A Tabela \ref{artigos-do-scam} apresenta um resumo desta revisão estruturada.
 
 \begin{table}[H]
-\caption{Total de artigos analisados por edições do SCAM}
+\caption{Total de artigos analisados em cada edição do SCAM}
 \centering
 \begin{tabular}{| l | c | c | c |}
 \hline
-Edição    & Total de artigos & Script filter & Artigos com ferramenta \\
+Edição    & Total de artigos & (1) Busca & (2) Seleção \\
 \hline
-SCAM 2001 & 23               & 6             & -                      \\
-SCAM 2002 & 18               & 6             & -                      \\
-SCAM 2003 & 21               & 7             & -                      \\
-SCAM 2004 & 17               & 3             & -                      \\
-SCAM 2005 & 19               & 7             & -                      \\
-SCAM 2006 & 22               & 9             & 2                      \\
-SCAM 2007 & 23               & 7             & 1                      \\
-SCAM 2008 & 29               & 14            & -                      \\
-SCAM 2009 & 20               & 10            & -                      \\
-SCAM 2010 & 21               & 15            & 1                      \\
-SCAM 2011 & 21               & 9             & 1                      \\
-SCAM 2012 & 22               & 12            & 3                      \\
-SCAM 2013 & 24               & 12            & -                      \\
-SCAM 2014 & 35               & 16            & 1                      \\
-SCAM 2015 & 30               & 18            & 0                      \\
+SCAM 2001 & 23    & 6         & -           \\
+SCAM 2002 & 18    & 6         & -           \\
+SCAM 2003 & 21    & 7         & -           \\
+SCAM 2004 & 17    & 3         & -           \\
+SCAM 2005 & 19    & 7         & -           \\
+SCAM 2006 & 22    & 9         & 2           \\
+SCAM 2007 & 23    & 7         & 1           \\
+SCAM 2008 & 29    & 14        & -           \\
+SCAM 2009 & 20    & 10        & -           \\
+SCAM 2010 & 21    & 15        & 1           \\
+SCAM 2011 & 21    & 9         & 1           \\
+SCAM 2012 & 22    & 12        & 3           \\
+SCAM 2013 & 24    & 12        & -           \\
+SCAM 2014 & 35    & 16        & 1           \\
+SCAM 2015 & 30    & 18        & 0           \\
 \hline
-Total     & 315              & 133           & 9                      \\
+Total     & 315   & 133       & 9           \\
 \hline
 \end{tabular}
 \label{artigos-do-scam}
 \end{table}
 
-A Tabela \ref{total-de-ferramentas} apresenta um resumo com todas as
-ferramentas, tanto da academia quanto da indústria, após a avaliação final
-sobre disponibilidade do código-fonte e possibilidade de ser analizada. Das 54
-ferramentas do NIST apenas 19 tinham código fonte disponível, destas apenas 14
-eram suportadas pelo Analizo. Dos 315 artigos avaliados na revisão estruturada
-apenas 9 tinham ferramentas disponíveis capaz de serem analizadas pelo
-Analizo.
+\subsection{Seleção e caracterização das ferramentas}
+
+Junto à revisão estruturada para seleção de ferramentas da academia, fizemos
+uma seleção manual no catálogo de ferramentas de análise estática do projeto
+SAMATE\footnote{https://samate.nist.gov/index.php/Source\_Code\_Security\_Analyzers.html}
+para encontrar ferramentas da indústria, nesta seleção os critérios foram,
+ferramentas com código-fonte disponível, implementadas nas linguagens de
+programação suportadas pelo Analizo. Nesta seleção, de um total de 54 ferramentas
+presentes no catálogo do projeto SAMATE, 19 tinham código-fonte
+disponível, destas apenas 14 eram suportadas pelo Analizo.
+
+De forma que somando as ferramentas selecionadas na academia e na indústria
+temos um total de 23 ferramentas, 14 da indústria e 9 da academia.  A
+Tabela \ref{total-de-ferramentas} resume este total trazendo o nome de cada
+ferramenta e a linguagem de programação em que é escrita.
 
 \begin{table}[H]
-  \caption{Lista com total de ferramentas a serem analisadas}
+  \caption{Ferramentas selecionadas e em qual linguagem é escrita}
   \centering
   \begin{tabular}{| c | l | l | c | l | l |}
     \hline
-    n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
+    \# & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
     \hline
     1  & Clang Static Analyzer    & cpp       & 15 & AccessAnalysis          & java       \\
     2  & Closure Compiler         & java      & 16 & error-prone             & java       \\
@@ -1353,7 +1350,62 @@ Analizo.
   \label{total-de-ferramentas}
 \end{table}
 
-Assim, temos um total de 23 ferramentas, 14 da indústria e 9 da academia.
+Para cada uma dessas 23 ferramentas selecionadas foi realizado uma caracterização
+inicial em relaçao à categoria {\it Lançamentos ({\it Releases}) - quantos lançamentos
+por ano}, identificando se é:
+
+\begin{itemize}
+  \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
+  \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
+  \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
+\end{itemize}
+
+Os detalhes desta caracterização são apresentados no Apêndice \ref{caracterizacao-ferramentas}.
+
+\subsection{Análise exploratória dos valores das métricas}
+
+A distribuição dos percentis das métricas nos mostram numa análise inicial que
+para a maioria das métricas será difícil encontrar um padrão de intervalos de
+referência para as ferramentas, mostrando valores sem significado, valor 0,
+para algumas ferramentas em algumas métricas.
+
+%% begin.rcode metricas-academia-90, fig.align='center', results="asis"
+% table_percentil('90%', 'valores das métricas no percentil 90 para as ferramentas da academia')
+%% end.rcode
+
+%% begin.rcode metricas-industria-90, fig.align='center', results="asis"
+% table_percentil_nist('90%', 'valores das métricas no percentil 90 para as ferramentas da indústria')
+%% end.rcode
+
+%% begin.rcode grafico-comparativo, fig.show='hold', fig.cap="distribuição dos percentis para as ferramentas da academia e da indústria"
+% par(mfrow=c(2,2), oma=c(0,0,0,0))
+%
+% table = data.frame(percentis_by_project("lcom4"), percentis_by_nist_project("lcom4"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="lcom4")
+%
+% table = data.frame(percentis_by_project("cbo"), percentis_by_nist_project("cbo"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="cbo")
+%
+% table = data.frame(percentis_by_project("acc"), percentis_by_nist_project("acc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="acc")
+%
+% table = data.frame(percentis_by_project("sc"), percentis_by_nist_project("sc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="sc")
+%% end.rcode
+
+Até o momento a análise e interpretação das métricas não mostrou ter
+diferenças significativas entre ferramentas da academia e da indústria.
+
+Mas os percentis 75, 90 e 95 se mostram como boa escolha para evitar os pontos
+fora da curva e valores enviesados.
 
 \section{Próximos passos}
 
@@ -1439,7 +1491,7 @@ Características da ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1556,7 +1608,7 @@ utilizado em nosso estudo obtido no site da ferramenta foi o
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1590,7 +1642,7 @@ utilizado em nosso estudo obtido no site da ferramenta foi o
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1634,7 +1686,7 @@ Características da ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1713,7 +1765,7 @@ utilizado em nosso estudo obtido no site da ferramenta foi o
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1758,7 +1810,7 @@ código em \texttt{cfe-3.7.1.src.tar.xz}. Características da ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1801,7 +1853,7 @@ Características da ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1839,7 +1891,7 @@ código em \texttt{cppcheck-1.72.tar.bz2}. Características da ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1909,7 +1961,7 @@ Uma ferramenta para localização de bugs em código Java disponível em
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -1944,7 +1996,7 @@ em nosso estudo obtido no site da ferramenta foi o
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -2049,7 +2101,7 @@ ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -2117,7 +2169,7 @@ ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -2223,7 +2275,7 @@ ferramenta:
       \end{tabular}
     \end{table}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
     \end{itemize}
 
   \item {\it Linguagem de programação - em qual linguagem a ferramenta é escrita:}
@@ -2233,15 +2285,8 @@ ferramenta:
 
 \end{description}
 
-\xchapter{Análise exploratória dos valores das métricas}{}
-
-%(pendente) ``métricas das ferramentas, cálculo dos percentis, score de
-%aproximação, valores de referências, discussão sobre cada métrica, discussão
-%sobre as ferramentas com melhor qualidade, discutir detalhes da arquitetura
-%das melhores ferramentas''.
-
-Vamos analisar os dados e tentar explicar seu comportamento com relação às
-características das ferramentas, compará-los a outros estudos.
+\xchapter{Análise exploratória dos valores das métricas}{Análise e
+interpretação dos valores das métricas coletadas para cada ferramenta.}
 
 \subsection{Conexões aferentes de uma classe (ACC)}
 
@@ -2610,6 +2655,7 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 %% begin.rcode sumario-sc, fig.align='center', results="asis"
 % table = percentis_by_project("sc")
 % table = table[-1:-5,]
+% table = table[-4,]
 % xt = xtable(summary(t(table)), caption="resumo da métrica SC nos percentis 75, 90 e 95 para as ferramentas da academia")
 % print(xt, table.placement="H")
 %% end.rcode
@@ -2624,73 +2670,10 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 %% begin.rcode sumario-sc-industria, fig.align='center', results="asis"
 % table = percentis_by_nist_project("sc")
 % table = table[-1:-5,]
+% table = table[-4,]
 % xt = xtable(summary(t(table)), caption="resumo da métrica SC nos percentis 75, 90 e 95 para as ferramentas da indústria")
 % print(xt, table.placement="H")
 %% end.rcode
-
-\clearpage
-
-\subsection{Gráfico resumido}
-
-%% begin.rcode grafico-lcom4, fig.show='hold', fig.cap="distribuição para as ferramentas da academia"
-% par(mfrow=c(2,2))
-
-% table = percentis_by_project("lcom4")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="lcom4")
-
-% table = percentis_by_project("cbo")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="cbo")
-
-% table = percentis_by_project("amloc")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="amloc")
-
-% table = percentis_by_project("sc")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="sc")
-
-%% end.rcode
-
-%% begin.rcode grafico-cbo-nist, fig.show='hold', fig.cap="distribuição para as ferramentas da indústria"
-% par(mfrow=c(2,2))
-
-% table = percentis_by_nist_project("lcom4")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="lcom4")
-
-% table = percentis_by_nist_project("cbo")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="cbo")
-
-% table = percentis_by_nist_project("amloc")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="amloc")
-
-% table = percentis_by_nist_project("sc")
-% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
-% legend("topleft", legend=names(table), col=1:length(table), pch=1)
-% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
-% title(main="sc")
-
-%% end.rcode
-
-\clearpage
 
 \end{document}
 
