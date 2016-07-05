@@ -78,7 +78,7 @@ Desta forma, estudar e comparar tais ferramentas a fim de compreender seus
 atributos de qualidade interna e entender quais características arquiteturais
 explicam tais atributos é de fundamental importância do ponto de vista de
 desenvolvedores interessados em melhorar a qualidade interna de suas
-ferramentas em atividades de evolução e manutenção.
+ferramentas.
 
 \section{Objetivos}
 
@@ -161,9 +161,9 @@ complexidade e qualidade.
 
 O capítulo \ref{fundamentacao} apresenta conceitos sobre análise estática e
 métricas de código-fonte necessários para compreensão do trabalho. O capítulo
-\ref{metodologia} apresenta trabalhos relacionados, hipóteses do estudo, o
-planejamento sobre a coleta e análise dos dados a serem realizados durante
-este trabalho e o cronograma. O capítulo \ref{conclusoes} traz a
+\ref{metodologia} apresenta trabalhos relacionados, hipóteses do estudo,
+planejamento sobre a coleta e análise dos dados
+e o cronograma do estudo. O capítulo \ref{conclusoes} traz a
 discussão e interpretação dos dados e apresenta os próximos passos do estudo.
 
 %-----------------------------------------------------%
@@ -214,7 +214,7 @@ além do próprio código.
 
 É um ramo que possui muitas das suas abordagens em comum com os estudos da
 área de análise de programa ({\it program analysis}), especialmente a área de
-compiladores, pois é parte das primeiras etapas do processo de compilação.
+compiladores, onde atua especialmente nas primeiras etapas do processo de compilação.
 
 A análise estática de código-fonte é considerada uma atividade meio com
 objetivo de suportar uma variedade de tarefas comuns da engenharia de
@@ -241,6 +241,8 @@ Seja em qual atividade for, a análise estática possui uma importância
 significativa, pois ao ser capaz de extrair informações diretamente do
 código-fonte de um programa, pode auxiliar a responder com precisão a seguinte
 pergunta: ``O que é que este programa significa?''.
+
+\cite{Harman2010}
 
 \subsection{Usos da análise estática de código-fonte} \label{usos}
 
@@ -942,7 +944,8 @@ Analizo, ou seja, apenas ferramentas escritas em C, C++ ou Java farão parte do
 nosso estudo.
 
 Analizo é uma ferramenta mantida constantemente, com desenvolvedores ativos, e
-atualizações frequentes, sua última versão 1.19.0 foi lançada em 18 de
+atualizações frequentes, sua última versão 1.19.0 foi lançada (no escopo deste
+trabalho) em 18 de
 Fevereiro de 2016 e será esta a versão utilizada neste estudo.
 
 \subsection{Revisão estruturada} \label{revisao-estruturada}
@@ -1006,8 +1009,7 @@ partir de algumas situações.
 
 Uma vez que os autores contactados por email respondam com informações sobre
 como obter o software, iremos adicionar a ferramenta ao conjunto de ferramentas
-a serem analisadas. O Apêndice \ref{emails} contém uma cópia dos emails
-enviados a alguns autores.
+a serem analisadas.
 
 Por fim, a ferramenta livre {\it
 sloccount}\footnote{http://www.dwheeler.com/sloccount} será  utilizada para
@@ -1245,40 +1247,30 @@ de qualidade interna a partir desta abordagem.
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{| l | c | c | c | c |}
+  \begin{tabular}{| l | c | c | c | c | c |}
     \hline
-    {\bf Atividade}                                         & Jul     & Ago       & Set      & Out      \\
+    {\bf Atividade}                                & Jul     & Ago       & Set      & Out      & Nov      \\
     \hline
     \hline
-    Qualificação                                            &\checkmark&          &          &          \\
+    Qualificação                                   &\checkmark&          &          &          &          \\
     \hline
-    Análise da distribuição das métricas                    &\checkmark&          &          &          \\
+    Análise da distribuição das métricas           &\checkmark&          &          &          &          \\
     \hline
-    Definição dos valores de referência                     &\checkmark&          &          &          \\
+    Definição dos valores de referência            &          &\checkmark&          &          &          \\
     \hline
-    Cálculo de distância e modelo de aproximação            &\checkmark&          &          &          \\
+    Cálculo de distância e modelo de aproximação   &          &\checkmark&          &          &          \\
     \hline
-    Finalizar texto da fundamentação teórica e metodologia  &\checkmark&          &          &          \\
+    Revisão estruturada com mais uma conferência   &          &\checkmark&          &          &          \\
     \hline
-    Caracterização das ferramentas                          &\checkmark&\checkmark&          &          \\
+    Adicionar coleta/análise com novas ferramentas &          &          &\checkmark&          &          \\
+    \hline                                                                                     
+    Caracterização das ferramentas                 &          &          &\checkmark&          &          \\
+    \hline                                                                                     
+    Caracterização da complexidade estrutural      &          &          &          &\checkmark&          \\
+    \hline                                                                                     
+    Evolução da ferramenta Analizo                 &\checkmark&\checkmark&\checkmark&\checkmark&\checkmark\\
     \hline
-    Caracterização da complexidade estrutural               &          &\checkmark&          &          \\
-    \hline
-    Documentar e automatizar a abordagem de coleta/análise  &          &\checkmark&          &          \\
-    \hline
-    Revisão estruturada com mais uma conferência            &          &\checkmark&          &          \\
-    \hline
-    Repetir coleta/análise com novas ferramentas            &          &\checkmark&          &          \\
-    \hline
-    Evolução da ferramenta Analizo                          &          &\checkmark&\checkmark&          \\
-    \hline
-    Finalizar texto com discussão dos resultados            &          &          &\checkmark&\checkmark\\
-    \hline
-    Finalizar texto da dissertação                          &          &          &\checkmark&\checkmark\\
-    \hline
-    Preparar slides e material para defesa                  &          &          &          &\checkmark\\
-    \hline
-    Defesa                                                  &          &          &          &\checkmark\\
+    Defesa                                         &          &          &          &          &\checkmark\\
     \hline
   \end{tabular}
 \end{table}
@@ -2828,80 +2820,6 @@ métrica SC para as ferramentas da academia e da indústria, respectivamente.
 %% end.rcode
 
 \clearpage
-
-\xchapter{Emails enviados durante revisão-estruturada}
-{Cópia dos emails enviados a alguns autores solicitando informações de onde obter
-o código-fonte das ferramentas publicadas nos artigos} \label{emails}
-
-\section{Email enviado aos autores do CodeBoost}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/codeboost.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do ETXL}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/etxl.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do I2SD}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/i2sd.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do MSP}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/msp.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do Proteum/FL}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/proteum-fl.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do Sapid/XML}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/sapid-xml.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do Simplicissimus}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/simplicissimus.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do srcML}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/srcml.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do TACLE}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/tacle.pdf}
-\end{figure}
-
-\section{Email enviado aos autores do XOgastan}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[scale=0.7]{imagens/emails/xogastan.pdf}
-\end{figure}
 
 \end{document}
 
