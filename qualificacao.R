@@ -111,7 +111,7 @@ add_column <- function(table1, table2, colname) {
   return(t(table))
 }
 
-table_percentil <- function(percentil, caption) {
+percentil_all_projects <- function(percentil) {
   table = percentis_by_project("acc")
   acc = table[c(percentil),]
   table = percentis_by_project("accm")
@@ -140,11 +140,10 @@ table_percentil <- function(percentil, caption) {
   sc = table[c(percentil),]
   table = data.frame(t(acc), t(accm), t(amloc), t(anpm), t(cbo), t(lcom4), t(loc), t(noa), t(nom), t(npa), t(npm), t(rfc), t(sc))
   colnames(table) = c('acc', 'accm', 'amloc', 'anpm', 'cbo', 'lcom4', 'loc', 'noa', 'nom', 'npa', 'npm', 'rfc', 'sc')
-  xt = xtable(table, caption=caption, digits=0)
-  print(xt, table.placement="H", include.rownames=FALSE)
+  return(table)
 }
 
-table_percentil_nist <- function(percentil, caption) {
+percentil_all_nist_projects <- function(percentil) {
   table = percentis_by_nist_project("acc")
   acc = table[c(percentil),]
   table = percentis_by_nist_project("accm")
@@ -173,8 +172,7 @@ table_percentil_nist <- function(percentil, caption) {
   sc = table[c(percentil),]
   table = data.frame(t(acc), t(accm), t(amloc), t(anpm), t(cbo), t(lcom4), t(loc), t(noa), t(nom), t(npa), t(npm), t(rfc), t(sc))
   colnames(table) = c('acc', 'accm', 'amloc', 'anpm', 'cbo', 'lcom4', 'loc', 'noa', 'nom', 'npa', 'npm', 'rfc', 'sc')
-  xt = xtable(table, caption=caption, digits=0)
-  print(xt, table.placement="H", include.rownames=FALSE)
+  return(table)
 }
 
 knit("qualificacao.Rtex")
