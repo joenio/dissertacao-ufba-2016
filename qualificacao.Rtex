@@ -1133,9 +1133,8 @@ intervalos de referência.
 \subsection{Caracterização das ferramentas} \label{caracterizacao-das-ferramentas}
 
 \citeonline{Novak2010} através de um estudo para construção de uma taxonomia
-para ferramentas de análise estática propuseram uma classificação a partir de
-uma série de categorias, dentre estas categorias iremos adotar neste trabalho
-as seguintes:
+para ferramentas de análise estática propuseram uma classificação para
+ferramentas a partir das seguintes categorias:
 
 \begin{description}
 
@@ -1148,9 +1147,9 @@ as seguintes:
 
   \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
     \begin{itemize}
-      \item Frequentemente >= 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
-      \item Ocasionalmente < 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
-      \item Obsoleta 0 vezes ao ano - tempo para novos lançamentos é maior do que 1 ano
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezer por ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vees ao ano
+      \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
     \end{itemize}
 
   \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta suporta:}
@@ -1219,29 +1218,19 @@ as seguintes:
   \item {\it Saída - representação dos resultados da ferramenta:}
     \begin{itemize}
       \item Arquivo texto - ferramenta pode apresentar resultados em arquivos texto
-      \item Lista - ferramente pode apresentar resultados numa interface de usuário customizada controlada em GUI
+      \item Lista - ferramenta pode apresentar resultados numa interface de usuário customizada controlada em GUI
       \item Arquivo XML - ferramenta pode apresentar resultados em dados XML
       \item Arquivo HTML - ferramenta pode apresentar resultados em dados HTML
     \end{itemize}
 
 \end{description}
 
+Iremos utilizar algumas destas categorias na caracterização das ferramentas
+selecionadas neste estudo, e vamos também caracterizar em relação à linguagem de
+programação a qual foi escrita.
+
 As seções \ref{ferramentas-selecionadas} e \ref{ferramentas-selecionadas-nist}
 trazem uma caracterização inicial das ferramentas segundo às categorias acima.
-
-\section{Avaliação da ferramenta Analizo}
-
-A ferramenta Analizo, além de ser utilizada para coleta das métricas das
-ferramentas selecionadas, será também utilizada num exemplo de uso onde iremos
-realizar atividades de evolução e manutenção guiadas a partir dos valores de
-referências e das informações aprendidas sobre as características
-arquiteturais das ferramentas de análise estática de código-fonte.
-
-Para tal, a ferramenta Analizo será também caracterizada a partir dos mesmos
-critérios utilizados na caracterização das demais ferramentas, seu {\it score}
-de similaridade será calculado antes e depois das atividades de evolução e
-manutenção, e então iremos avaliar se foi possível melhorar os seus atributos
-de qualidade interna a partir desta abordagem.
 
 \section{Cronograma} \label{cronograma}
 
@@ -1297,6 +1286,77 @@ diferenças significativas entre ferramentas da academia e da indústria.
 Mas os percentis 75, 90 e 95 se mostram como boa escolha para evitar os pontos
 fora da curva e valores enviesados.
 
+\subsection{Análise exploratória da revisão estruturada}
+
+A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
+cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
+estática com código fonte disponível.
+
+\begin{table}[H]
+\caption{Total de artigos analisados por edições do SCAM}
+\centering
+\begin{tabular}{| l | c | c | c |}
+\hline
+Edição    & Total de artigos & Script filter & Artigos com ferramenta \\
+\hline
+SCAM 2001 & 23               & 6             & -                      \\
+SCAM 2002 & 18               & 6             & -                      \\
+SCAM 2003 & 21               & 7             & -                      \\
+SCAM 2004 & 17               & 3             & -                      \\
+SCAM 2005 & 19               & 7             & -                      \\
+SCAM 2006 & 22               & 9             & 2                      \\
+SCAM 2007 & 23               & 7             & 1                      \\
+SCAM 2008 & 29               & 14            & -                      \\
+SCAM 2009 & 20               & 10            & -                      \\
+SCAM 2010 & 21               & 15            & 1                      \\
+SCAM 2011 & 21               & 9             & 1                      \\
+SCAM 2012 & 22               & 12            & 3                      \\
+SCAM 2013 & 24               & 12            & -                      \\
+SCAM 2014 & 35               & 16            & 1                      \\
+SCAM 2015 & 30               & 18            & 0                      \\
+\hline
+Total     & 315              & 133           & 9                      \\
+\hline
+\end{tabular}
+\label{artigos-do-scam}
+\end{table}
+
+A Tabela \ref{total-de-ferramentas} apresenta um resumo com todas as
+ferramentas, tanto da academia quanto da indústria, após a avaliação final
+sobre disponibilidade do código-fonte e possibilidade de ser analizada. Das 54
+ferramentas do NIST apenas 19 tinham código fonte disponível, destas apenas 14
+eram suportadas pelo Analizo. Dos 315 artigos avaliados na revisão estruturada
+apenas 9 tinham ferramentas disponíveis capaz de serem analizadas pelo
+Analizo.
+
+\begin{table}[H]
+  \caption{Lista com total de ferramentas a serem analisadas}
+  \centering
+  \begin{tabular}{| c | l | l | c | l | l |}
+    \hline
+    n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
+    \hline
+    1  & Clang Static Analyzer    & cpp       & 15 & AccessAnalysis          & java       \\
+    2  & Closure Compiler         & java      & 16 & error-prone             & java       \\
+    3  & Cppcheck                 & cpp       & 17 & Indus                   & java       \\
+    4  & CQual                    & ansic     & 18 & InputTracer             & ansic      \\
+    5  & FindBugs                 & java      & 19 & JastAdd                 & java       \\
+    6  & FindSecurityBugs         & java      & 20 & Sonar Qube Plug-in      & java       \\
+    7  & Jlint                    & cpp       & 21 & srcML                   & cpp        \\
+    8  & Pixy                     & java      & 22 & TACLE                   & java       \\
+    9  & PMD                      & java      & 23 & WALA                    & java       \\
+    10 & RATS                     & ansic     &    &                         &            \\
+    11 & Smatch                   & ansic     &    &                         &            \\
+    12 & Splint                   & ansic     &    &                         &            \\
+    13 & UNO                      & ansic     &    &                         &            \\
+    14 & WAP                      & java      &    &                         &            \\
+    \hline
+  \end{tabular}
+  \label{total-de-ferramentas}
+\end{table}
+
+Assim, temos um total de 23 ferramentas, 14 da indústria e 9 da academia.
+
 \section{Próximos passos}
 
 Os próximos passos estão concentrados no estudo dos valores de distribuição
@@ -1320,10 +1380,9 @@ analisado.
 
 \xchapter{Resultados preliminares}{} \label{resultados}
 
-\section{Ferramentas acadêmicas selecionadas} \label{ferramentas-selecionadas}
+\section{Caracterização das ferramentas acadêmicas} \label{ferramentas-selecionadas}
 
-Ferramentas selecionadas a partir da revisão estruturada detalhada na seção
-\ref{revisao-estruturada}.
+Caracterização inicial das ferramentas selecionadas a partir da revisão estruturada.
 
 \subsection{AccessAnalysis}
 
@@ -1668,7 +1727,7 @@ utilizado em nosso estudo obtido no site da ferramenta foi o
 
 \end{description}
 
-\section{Ferramentas da indústria selecionadas} \label{ferramentas-selecionadas-nist}
+\section{Caracterização das ferramentas da indústria} \label{ferramentas-selecionadas-nist}
 
 \subsection{Clang Static Analyzer}
 
@@ -2179,77 +2238,6 @@ ferramenta:
     \end{itemize}
 
 \end{description}
-
-\section{Análise exploratória da revisão estruturada}
-
-A Tabela \ref{artigos-do-scam} apresenta um resumo do número de artigos em
-cada edição do SCAM e quantos artigos trazem publicação de ferramenta de análise
-estática com código fonte disponível.
-
-\begin{table}[h!]
-\caption{Total de artigos analisados por edições do SCAM}
-\centering
-\begin{tabular}{| l | c | c | c |}
-\hline
-Edição    & Total de artigos & Script filter & Artigos com ferramenta \\
-\hline
-SCAM 2001 & 23               & 6             & -                      \\
-SCAM 2002 & 18               & 6             & -                      \\
-SCAM 2003 & 21               & 7             & -                      \\
-SCAM 2004 & 17               & 3             & -                      \\
-SCAM 2005 & 19               & 7             & -                      \\
-SCAM 2006 & 22               & 9             & 2                      \\
-SCAM 2007 & 23               & 7             & 1                      \\
-SCAM 2008 & 29               & 14            & -                      \\
-SCAM 2009 & 20               & 10            & -                      \\
-SCAM 2010 & 21               & 15            & 1                      \\
-SCAM 2011 & 21               & 9             & 1                      \\
-SCAM 2012 & 22               & 12            & 3                      \\
-SCAM 2013 & 24               & 12            & -                      \\
-SCAM 2014 & 35               & 16            & 1                      \\
-SCAM 2015 & 30               & 18            & 0                      \\
-\hline
-Total     & 315              & 133           & 9                      \\
-\hline
-\end{tabular}
-\label{artigos-do-scam}
-\end{table}
-
-A Tabela \ref{total-de-ferramentas} apresenta um resumo com todas as
-ferramentas, tanto da academia quanto da indústria, após a avaliação final
-sobre disponibilidade do código-fonte e possibilidade de ser analizada. Das 54
-ferramentas do NIST apenas 19 tinham código fonte disponível, destas apenas 14
-eram suportadas pelo Analizo. Dos 315 artigos avaliados na revisão estruturada
-apenas 9 tinham ferramentas disponíveis capaz de serem analizadas pelo
-Analizo.
-
-\begin{table}[h!]
-  \caption{Lista com total de ferramentas a serem analisadas}
-  \centering
-  \begin{tabular}{| c | l | l | c | l | l |}
-    \hline
-    n & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
-    \hline
-    1  & Clang Static Analyzer    & cpp       & 15 & AccessAnalysis          & java       \\
-    2  & Closure Compiler         & java      & 16 & error-prone             & java       \\
-    3  & Cppcheck                 & cpp       & 17 & Indus                   & java       \\
-    4  & CQual                    & ansic     & 18 & InputTracer             & ansic      \\
-    5  & FindBugs                 & java      & 19 & JastAdd                 & java       \\
-    6  & FindSecurityBugs         & java      & 20 & Sonar Qube Plug-in      & java       \\
-    7  & Jlint                    & cpp       & 21 & srcML                   & cpp        \\
-    8  & Pixy                     & java      & 22 & TACLE                   & java       \\
-    9  & PMD                      & java      & 23 & WALA                    & java       \\
-    10 & RATS                     & ansic     &    &                         &            \\
-    11 & Smatch                   & ansic     &    &                         &            \\
-    12 & Splint                   & ansic     &    &                         &            \\
-    13 & UNO                      & ansic     &    &                         &            \\
-    14 & WAP                      & java      &    &                         &            \\
-    \hline
-  \end{tabular}
-  \label{total-de-ferramentas}
-\end{table}
-
-Assim, temos um total de 23 ferramentas, 14 da indústria e 9 da academia.
 
 \section{Análise exploratória dos valores das métricas}
 
