@@ -9,6 +9,9 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
+Slides para a apresentação da qualificação:
+* http://joenio.me/slides/qualificacao.html
+
 ## GQM
 
 Nivel conceitual:
