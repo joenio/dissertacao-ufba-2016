@@ -1,0 +1,192 @@
+\xchapter{Conclusões}{} \label{conclusoes}
+
+\section{Resultados preliminares}
+
+\subsection{Revisão estruturada}
+
+Realizamos uma busca por ferramentas na conferência SCAM, onde 315 artigos
+foram avaliados em duas etapas referentes as duas atividades da revisão
+estruturada: (1) busca automatizada a partir do script de busca e (2) seleção
+a partir da leitura do artigo. A primeira etapa resultou em 133 artigos,
+destes apenas 9 foram selecionados na segunda etapa, resultando daí 9
+ferramentas de análise estática com disponibilidade de código-fonte.
+A Tabela \ref{artigos-do-scam} apresenta um resumo desta revisão estruturada.
+
+\begin{table}[H]
+\caption{Total de artigos analisados em cada edição do SCAM}
+\centering
+\begin{tabular}{| l | c | c | c |}
+\hline
+Edição    & Total de artigos & (1) Busca & (2) Seleção \\
+\hline
+SCAM 2001 & 23    & 6         & -           \\
+SCAM 2002 & 18    & 6         & -           \\
+SCAM 2003 & 21    & 7         & -           \\
+SCAM 2004 & 17    & 3         & -           \\
+SCAM 2005 & 19    & 7         & -           \\
+SCAM 2006 & 22    & 9         & 2           \\
+SCAM 2007 & 23    & 7         & 1           \\
+SCAM 2008 & 29    & 14        & -           \\
+SCAM 2009 & 20    & 10        & -           \\
+SCAM 2010 & 21    & 15        & 1           \\
+SCAM 2011 & 21    & 9         & 1           \\
+SCAM 2012 & 22    & 12        & 3           \\
+SCAM 2013 & 24    & 12        & -           \\
+SCAM 2014 & 35    & 16        & 1           \\
+SCAM 2015 & 30    & 18        & 0           \\
+\hline
+Total     & 315   & 133       & 9           \\
+\hline
+\end{tabular}
+\label{artigos-do-scam}
+\end{table}
+
+\subsection{Seleção e caracterização das ferramentas}
+
+Junto à revisão estruturada para seleção de ferramentas da academia, fizemos
+uma seleção manual no catálogo de ferramentas de análise estática do projeto
+SAMATE\footnote{https://samate.nist.gov/index.php/Source\_Code\_Security\_Analyzers.html}
+para encontrar ferramentas da indústria, nesta seleção os critérios foram,
+ferramentas com código-fonte disponível, implementadas nas linguagens de
+programação suportadas pelo Analizo. Nesta seleção, de um total de 54 ferramentas
+presentes no catálogo do projeto SAMATE, 19 tinham código-fonte
+disponível, destas apenas 14 eram suportadas pelo Analizo.
+
+De forma que somando as ferramentas selecionadas na academia e na indústria
+temos um total de 23 ferramentas, 14 da indústria e 9 da academia.  A
+Tabela \ref{total-de-ferramentas} resume este total trazendo o nome de cada
+ferramenta e a linguagem de programação em que é escrita.
+
+\begin{table}[H]
+  \caption{Ferramentas selecionadas e em qual linguagem é escrita}
+  \centering
+  \begin{tabular}{| c | l | l | c | l | l |}
+    \hline
+    \# & Ferramentas da indústria & Linguagem  & n  & Ferramentas da academia & Linguagem  \\
+    \hline
+    1  & Clang Static Analyzer    & cpp       & 15 & AccessAnalysis          & java       \\
+    2  & Closure Compiler         & java      & 16 & error-prone             & java       \\
+    3  & Cppcheck                 & cpp       & 17 & Indus                   & java       \\
+    4  & CQual                    & ansic     & 18 & InputTracer             & ansic      \\
+    5  & FindBugs                 & java      & 19 & JastAdd                 & java       \\
+    6  & FindSecurityBugs         & java      & 20 & Sonar Qube Plug-in      & java       \\
+    7  & Jlint                    & cpp       & 21 & srcML                   & cpp        \\
+    8  & Pixy                     & java      & 22 & TACLE                   & java       \\
+    9  & PMD                      & java      & 23 & WALA                    & java       \\
+    10 & RATS                     & ansic     &    &                         &            \\
+    11 & Smatch                   & ansic     &    &                         &            \\
+    12 & Splint                   & ansic     &    &                         &            \\
+    13 & UNO                      & ansic     &    &                         &            \\
+    14 & WAP                      & java      &    &                         &            \\
+    \hline
+  \end{tabular}
+  \label{total-de-ferramentas}
+\end{table}
+
+Para cada uma dessas 23 ferramentas selecionadas foi realizado uma caracterização
+inicial em relaçao à categoria {\it Lançamentos ({\it Releases}) - quantos lançamentos
+por ano}, identificando se é:
+
+\begin{itemize}
+  \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
+  \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
+  \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
+\end{itemize}
+
+Os detalhes desta caracterização são apresentados no Apêndice \ref{caracterizacao-ferramentas}.
+
+\subsection{Análise exploratória dos valores das métricas}
+
+Numa análise preliminar dos valores das métricas nos percentis 75, 90 e 95,
+apresentados no Apêndice \ref{analise-metricas}, percebemos uma forte
+similaridade com o trabalho em que estamos nos apoiando \cite{Meirelles2013}
+em relação aos intervalos dos valores de métricas.
+
+A Tabela \ref{metricas-90} faz um resumo da distribuição das métricas para todas
+as ferramentas estudadas neste trabalho no
+percentil 90, cada linha
+representa uma ferramenta, os nomes foram suprimidos para ganhar
+espaço.
+
+%% begin.rcode metricas-90, fig.align='center', results="asis"
+% percentil = '90%'
+% table = data.frame(t(percentil_all_projects(percentil)), t(percentil_all_nist_projects(percentil)))
+% xt = xtable(t(table), caption='valores das métricas no percentil 90 para as ferramentas da academia e indústria', digits=0, label='metricas-90')
+% print(xt, table.placement="H", include.rownames=FALSE)
+%% end.rcode
+
+Podemos perceber, por exemplo, que para a métrica \texttt{accm}, no percentil 90,
+as ferramentas se encontram entre os valores 2 à 9, o que coloca a maioria
+delas nos intervalos sugeridos por \cite{Meirelles2013} para
+códigos C, C++ e Java, ou seja, 3,1 a 5,3, 2,1 a 4,0 e 2,9 a 4,4,
+respectivamente.
+
+A mesma similaridade é percebida para a métrica \texttt{anpm}, onde as
+ferramentas se encontram entre os valores de 1 a 3 e os intervalos sugeridos por
+\cite{Meirelles2013} para códigos C, C++ e Java estão entre 3,1 a 4,0, 2,1 a
+3,0 e 1,6 a 2,0. De forma que a maioria das ferramentas se encontram dentro
+dos intervalos sugeridos por \cite{Meirelles2013}.
+
+Já para a métrica de acomplamento \texttt{cbo} esta similaridade não se repete
+, nossas ferramentas variam de 7 a 986, e os intervalos propostos por
+\cite{Meirelles2013} estão entre 6 a 9, 4 a 5 e 4 a 6, para C, C++ e Java
+respectivamente. Percebemos claramente que \texttt{cbo} tem um comportamento
+distinto, o que nos leva a considerar que iremos precisar esta métrica com
+mais cuidado, e possivelmente realizar análises mais aprofundadas com ela.
+
+Isto claramente faz um certo gancho com o objetivo geral deste trabalho,
+caractarizar a complexidade estrutural de ferramentas de análise estática,
+pois uma das formas de calcular complexidade estrutural, e que possivelmente
+iremos utilizar aqui, é feita em relação à \texttt{cbo} e \texttt{lcom4}. Na
+Figura \ref{fig:grafico-comparativo} é fácil perceber o quanto \texttt{cbo} destoa
+das outras métricas.
+
+%% begin.rcode grafico-comparativo, fig.show='hold', fig.cap="distribuição dos percentis para as ferramentas da academia e da indústria"
+% par(mfrow=c(3,2), oma=c(0,0,0,0))
+%
+% table = data.frame(percentis_by_project("accm"), percentis_by_nist_project("accm"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="accm")
+%
+% table = data.frame(percentis_by_project("nom"), percentis_by_nist_project("nom"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="nom")
+%
+% table = data.frame(percentis_by_project("lcom4"), percentis_by_nist_project("lcom4"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="lcom4")
+%
+% table = data.frame(percentis_by_project("cbo"), percentis_by_nist_project("cbo"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="cbo")
+%
+% table = data.frame(percentis_by_project("acc"), percentis_by_nist_project("acc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="acc")
+%
+% table = data.frame(percentis_by_project("sc"), percentis_by_nist_project("sc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="sc")
+%% end.rcode
+
+\section{Próximos passos}
+
+Os próximos passos estão concentrados no estudo dos valores de distribuição
+das métricas nos percentis 75, 90 e 95, comparar os valores e comportamentos
+encontrados em nossos dados com os trabalhos de referência sobre valores de
+métricas de código-fonte e sua discussão sobre a qualidade interna.
+
+Após esta análise inicial iremos adicionar mais ferramentas a partir de uma
+nova revisão estruturada, e então atualizar os valores e discussões de forma a
+refletir a inclusão das novas ferramentas selecionadas neste ciclo de revisão.
+
+A partir daí teremos definição dos valores de referência para ferramentas de
+análise estática de código-fonte, com isto iremos calcular quanto cada
+ferramenta está distante dos valores de referência, isto dará indícios sobre a
+qualidade interna de cada ferramenta.
