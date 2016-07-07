@@ -1,7 +1,7 @@
 # DOCUMENT VARIABLES
 
 NAME= dissertacao qualificacao
-CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/*
+CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* figure/* *.Rtex
 
 # PROJECT VARIABLES
 
@@ -16,6 +16,7 @@ watch:
 
 knitr:
 	#cd dataset; ./analyze-all-projects; cd ..
+	latexpand qualificacao.tex > qualificacao.Rtex
 	Rscript qualificacao.R
 
 qualificacao.tex: knitr
