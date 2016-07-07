@@ -175,4 +175,4 @@ percentil_all_nist_projects <- function(percentil) {
   return(table)
 }
 
-knit("qualificacao.Rtex")
+knit("_qualificacao.Rtex")
