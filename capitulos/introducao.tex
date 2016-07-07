@@ -1,25 +1,95 @@
 \xchapter{Introdução}{}
 
+% Contexto. O contexto faz parte da motivação do trabalho.
+\section{Contexto}
+A análise estática de programas ...
+tem se mostrado útil ... monitoramento da qualidade ...
+adoção no processo de desenvolvimento de software ...
+uso crescente de ferramentas ... 
+
+% Problema. 
+\section{Problema}
+% Uma maneira de evidenciar a contribuição do trabalho é 
+% definir bem o problema a ser resolvido. 
+% Nesse caso, pode-se discutir: o problema em questão, a definição formal 
+% do problema e sua importância, relevância, aplicações práticas.
+
+A tecnologia de análise estática tem se desenvolvido rapidamente, mas a
+comparação e avaliação de técnicas e ferramentas não tem acompanhado tal
+velocidade \cite{Li2010}.
+
+% Trabalhos Relacionados. 
+\section{Trabalhos relacionados}
+% Outra maneira de evidenciar a contribuição do trabalho 
+% é discutir os trabalhos relacionados (resumidamente) ainda na introdução. 
+% Esses trabalhos estão no mesmo contexto, não resolvem o problema ou 
+% apresentam apenas soluções parciais. 
+% Além disso, o trabalho atual pode ser a extensão ou continuação de um trabalho 
+% anterior. Nesse caso, o trabalho original deve ser mencionado na introdução.
+
+Diversos trabalhos avaliam ferramentas de análise estática de código-fonte,
+em geral, que possuem um mesmo propósito (detecção de bugs, 
+detecção de vulnerabilidades, detecção de anomalias, etc.),
+sob a perspectiva de seus usuários, 
+e com foco em atributos de qualidade externa, tais como, desempenho, 
+precisão e cobertura de seus resultados. 
+
+Por exemplo, \cite{Rutar2004} \citeo{Kratkiewicz2005} \cite{Okun2007}
+\cite{Emanuelsson2008} \cite{Wedyan2009} \cite{Mantere2009} \citeo{Al2010}
+\cite{Li2010} \cite{Johns2011} \cite{Alemerien2013} \cite{Ataide2014} realizam
+estudos comparando ferramentas de análise estática através dos seus atributos
+de qualidade externa.
+
+Entretanto, não foram encontrados estudos que avaliam 
+ferramentas de análise estática de código-fonte 
+com foco em sua qualidade interna, 
+considerando o ponto de vista de desenvolvedores interessados 
+não apenas em usar, mas também em manter e evoluir tais ferramentas.
+
+Em tal contexto, surge o problema de identificar, medir e analisar fatores
+técnicos que influenciam na manutenção de uma ferramenta de análise estática. 
+
+\section{Relevância}
+% ABAIXO: por que vale a pena tratar analisador estático
+% como caso especial? Por que se concentrar nesse domínio?
+% Por que abordagens independentes de domínio não atendem?
+
+Estudar ferramentas de análise estática a fim de compreender seus atributos de
+qualidade interna e entender quais características %arquiteturais 
+explicam tais atributos é de fundamental importância do 
+ponto de vista de usuários (gerentes, desenvolvedores) interessados
+em adotar, usar, manter e evoluir ferramentas deste domínio de aplicação.
+% sem afetar negativamente seus atributos de qualidade interna.
+
+% compreensão, arquitetura;  falar de métricas de produto, valores de referência
+A arquitetura de software tem papel importante na compreensão e evolução 
+de [ ref ] ...
+módulos e dependências entre eles ... coesão e acoplamento entre módulos ...
+complexidade estrutural ...
+ 
+Complexidade estrutural crescente em projetos de software pode resultar
+no aumento no esforço necessário para atividades de manutenção.
+
+A qualidade interna de ferramentas de análise estática pode ser 
+por meio de ... métricas de ... 
+Valores de referência são importantes ...
+Em geral, valores de referência são encontrados para linguagens de programação.
+E para domínios?
+
+% ------------------
+
 O domínio de aplicação de análise estática tem evoluído constantemente desde o
 seu surgimento a mais de 40 anos, e apesar da sua evolução constante poucos
 estudos demonstram a preocupação em avaliar ou comparar ferramentas de análise
-estática de código-fonte em relação a seus atributos de qualidade interna, um
+estática de código-fonte em relação à seus atributos de qualidade interna, um
 aspecto importante para guiar e auxiliar desenvolvedores em atividades de
 evolução e manutenção de software.
 
-Desta forma, estudar e comparar tais ferramentas a fim de compreender seus
+Desta forma estudar e comparar tais ferramentas a fim de compreender seus
 atributos de qualidade interna e entender quais características arquiteturais
 explicam tais atributos é de fundamental importância do ponto de vista de
 desenvolvedores interessados em melhorar a qualidade interna de suas
 ferramentas.
-
-\section{Objetivos}
-
-Diante disso, definimos como objetivo principal deste trabalho: compreender
-as ferramentas de software para análise estática de código-fonte do ponto de
-vista de sua manutenabilidade, a partir da análise de sua complexidade
-estrutural, discutindo quais características arquiteturais explicam seus
-atributos de qualidade interna.
 
 \subsection{Questão de pesquisa}
 
@@ -31,32 +101,24 @@ Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
     análise estática de código-fonte?}
 \end{enumerate}
 
-\subsubsection{Hipóteses}
+% Aim, Main Research Goal
+\section{Objetivo geral}
 
-Para responder a questão colocada acima, definimos as seguintes hipóteses:
+Diante disso, definimos como objetivo principal deste trabalho: compreender
+as ferramentas de software para análise estática de código-fonte do ponto de
+vista de sua manutenabilidade, a partir da análise de sua complexidade
+estrutural, discutindo quais características arquiteturais explicam seus
+atributos de qualidade interna.
 
-\begin{enumerate}
-  \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
-    de código-fonte para ferramentas de análise estática a partir de um
-    conjunto de softwares da academia e da indústria.}
-  \item[{\bf H2:}] {\em Ferramentas de análise estática tendem a ter uma
-    maior complexidade estrutural do que ferramentas de outros domínios de
-    aplicação.}
-  \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
-    código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
-    complexidade estrutural.}
-\end{enumerate}
-
-A Seção \ref{hipoteses} traz detalhes sobre como cada hipótese será testada.
-
-\subsection{Objetivos específicos}
+% Objectives
+\section{Objetivos específicos}
 
 São objetivos específicos deste trabalho:
 
 \begin{itemize}
   \item Selecionar e obter código-fonte de ferramentas de análise estática
     desenvolvidas na academia, para coletar suas métricas de código-fonte.  A
-    seleção terá como base o resultado de uma revisão estruturada realizada a
+    seleção terá como base o resultado de uma revisão estruturada feita a
     partir de artigos publicados em conferências relacionadas. 
   \item Selecionar e obter código-fonte de ferramentas de análise estática
     desenvolvidas pela indústria, para coletar suas métricas de código-fonte.

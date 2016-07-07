@@ -1,3 +1,11 @@
+% A Preliminary Literature Review which indicates: 
+% (i) that you have studied the work of the major authors in your research field 
+% (ii) that you are familiar with the major themes relevant to that subject area 
+% (iii) what further investigations you intend to pursue as part of this dissertation. 
+% You should bear in mind that you are reviewing the literature in order to develop sharper, 
+% more insightful and focused research questions about your topic. 
+% Therefore, your literature review should lead to and justify your research objectives and questions.
+
 \xchapter{Fundamentação Teórica}
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 \label{fundamentacao}
@@ -29,20 +37,20 @@ estrutural.
 
 \section{Análise estática de código-fonte} \label{analise-estatica}
 
-Análise estática de código-fonte é um ramo da engenharia de software voltado a
-obter informações acerca de um programa a partir do seu código-fonte sem
+Análise estática de código-fonte é tem como objetivo prover
+informações acerca de um programa a partir do seu código-fonte sem
 necessidade de execução, e sem requerer qualquer outro artefato do programa
 além do próprio código.
 
 É um ramo que possui muitas das suas abordagens em comum com os estudos da
-área de análise de programa ({\it program analysis}), especialmente a área de
+área de análise de programas ({\it program analysis}), especialmente na área de
 compiladores, onde atua especialmente nas primeiras etapas do processo de compilação.
 
 A análise estática de código-fonte é considerada uma atividade meio com
 objetivo de suportar uma variedade de tarefas comuns da engenharia de
 software; muitas dessas tarefas são substancialmente úteis em atividades de
 manutenção. \citeonline{Binkley2007} define uma extensa lista dessas
-atividades, alguns exemplos são:
+atividades, incluindo:
 
 \begin{multicols}{2}
   \begin{itemize}
@@ -61,16 +69,16 @@ atividades, alguns exemplos são:
 
 Seja em qual atividade for, a análise estática possui uma importância
 significativa, pois ao ser capaz de extrair informações diretamente do
-código-fonte de um programa, pode auxiliar a responder com precisão a seguinte
-pergunta: ``O que é que este programa significa?''. Esta importância se torna
-ainda mais aparente diante da ``lei'' da tendência para execução
-\cite{Harman2010} que indica que todos os tipos de notação tem a tendência de
-se tornar executáveis.
+código-fonte de um programa, pode auxiliar a responder perguntas necessárias
+para as diversas atividades de desenvolvimento e evolução de software. Esta
+importância se torna ainda mais aparente diante da ``lei'' da tendência para
+execução \cite{Harman2010} que indica que todos os tipos de notação tem a
+tendência de se tornar executáveis.
 
 \subsection{Usos da análise estática de código-fonte} \label{usos}
 
 A análise de programas trata, de modo geral, da descoberta de problemas e
-fatos sobre programas. Essa análise pode ser realizada sem a necessidade de executar o
+fatos sobre programas, ela pode ser realizada sem a necessidade de executar o
 programa (análise estática) ou com informações provenientes de sua execução
 (análise dinâmica).
 
@@ -97,7 +105,7 @@ usada \cite{Chess2007}, destacam-se:
 \begin{description}
 
   \item \textit{Verificação de tipos}. 
-    A forma mais amplamente utilizada de análise estática e uma das quais os
+    A forma mais amplamente utilizada de análise estática, e uma das quais os
     programadores estão mais familiarizados, é a checagem de tipo.
     Programadores dão pouca atenção a isto, visto que as regras são definidas
     pela linguagem de programação e executadas pelo próprio compilador, de
@@ -133,17 +141,17 @@ usada \cite{Chess2007}, destacam-se:
 
   \item \textit{Verificação de programas}.
     Ferramentas de verificação de programa aceitam como entrada uma especificação
-    e um conjunto de código-fonte e tenta provar que o código está de acordo
+    e um conjunto de código-fonte e tenta provar que o código está deacordo
     com a especificação. Quando a especificação é uma descrição completa de
     todo o programa, a ferramenta de verificação poderá realizar uma checagem
     de equivalência para garantir que o código-fonte e a especificação
     combinam de forma exata. Programadores raramente têm acesso a uma
-    especificação suficientemente detalhada para ser usada numa checagem de
-    equivalência e o trabalho de criar esta especificação pode ser maior do que
-    o trabalho de escrever o próprio código-fonte do programa, desta forma,
+    especificação detalhada suficientemente para ser usada numa checagem de
+    equivalência, o trabalho de criar esta especificação pode ser maior do que
+    o trabalho de escrever o próprio código-fonte do programa, desta forma
     este tipo de verificação formal raramente acontece. Sendo mais comum a
     verificação em relação a uma especificação parcial que detalha apenas
-    parte do comportamento do programa.  Isto costuma ser chamado de
+    parte do comportamento do programa. Isto costuma ser chamado de
     verificação de propriedade, grande parte das ferramentas de verificação de
     propriedade funcionam aplicando inferências lógicas ou verificação de
     modelos.
@@ -279,7 +287,7 @@ objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
   \item \textit{Árvore sintática abstrata}.
     A árvore sintática abstrata (AST - Abstract Syntax Tree) representa um
     programa tratando os elementos do código-fonte como operadores e
-    operandos organizados em nós numa árvore. Este formato de representação é
+    operandos organizados em nós numa árvore, este formato de representação é
     muito popular em tradutores {\it
     source-to-source}\footnote{http://en.wikipedia.org/wiki/Source-to-source\_compiler}.
 
@@ -293,7 +301,7 @@ objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
   \item \textit{Grafo de fluxo de dados}.
     O grafo de fluxo de dados (DFG - Data Flow Graph) é também um grafo
     direcionado onde as arestas representam o fluxo de dados entre as
-    operações do programa. Este formato pode ser visto como um companheiro do
+    operações do programa, este formato pode ser visto como um companheiro do
     grafo de fluxo de controle (CFG) e pode ser gerado ao longo de uma mesma
     análise.
 
@@ -353,7 +361,7 @@ ferramentas atuais são:
 
   \item \textit{Análise de fluxo de dados}.
     A análise de fluxo de dados ({\it Data flow analysis}) resume-se a coletar
-    informação semântica do código-fonte do programa e com métodos algébricos
+    informação semântica do código-fonte do programa, e com métodos algébricos
     deduzir a definição e uso das variáveis em tempo de compilação. O objetivo
     é mostrar que nenhum caminho de execução do programa acessa uma variável
     sem definição ou atribuição prévia.
@@ -410,12 +418,11 @@ ferramentas atuais são:
 
   \item \textit{Verificação de sintaxe}.
     Verificação de sintaxe ({\it Syntax Checks}) tem o objetivo de encontrar
-    violação de regras tais como a utilização de uma variável do tipo incorreto
-    ou sem declaração.
+    violação de regras tais como expressões mal-formadas ou fora do padrão.
 
   \item \textit{Verificação de intervalo}.
     A análise de verificação de intervalo ({\it Range Checking}) tem o objetivo
-    de verificar se os valores dos dados permanecem dentro de intervalos
+    de verificar que os valores dos dados permanecem dentro de intervalos
     especificados, bem como manter a precisão especificada.
 
 \end{description}
