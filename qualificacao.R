@@ -175,4 +175,39 @@ percentil_all_nist_projects <- function(percentil) {
   return(table)
 }
 
+histograma <- function(metric, caption) {
+  accessanalysis = read.table("dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
+  errorprone = read.table("dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
+  indus = read.table("dataset/PAPERS/indus/indus.analizo.metrics.dat")
+  inputtracer = read.table("dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
+  jastadd = read.table("dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
+  sonarqubeplugin = read.table("dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
+  srcml = read.table("dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
+  tacle = read.table("dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
+  wala = read.table("dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
+
+  closure = read.table("dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619.analizo.metrics.dat")
+  cppcheck = read.table("dataset/NIST/cppcheck/cppcheck-1.72.analizo.metrics.dat")
+  cqual = read.table("dataset/NIST/cqual/cqual-0.981.analizo.metrics.dat")
+  findbugs = read.table("dataset/NIST/findbugs/findbugs-3.0.1.analizo.metrics.dat")
+  findsecuritybugs = read.table("dataset/NIST/findsecuritybugs/findsecbugs-plugin-1.4.5-sources.analizo.metrics.dat")
+  jlint = read.table("dataset/NIST/jlint/jlint-3.1.2.analizo.metrics.dat")
+  pixy = read.table("dataset/NIST/pixy/pixy-master.analizo.metrics.dat")
+  pmd = read.table("dataset/NIST/pmd/pmd-src-5.4.1.analizo.metrics.dat")
+  rats = read.table("dataset/NIST/rats/rats-2.4.analizo.metrics.dat")
+  smatch = read.table("dataset/NIST/smatch/smatch.git.analizo.metrics.dat")
+  splint = read.table("dataset/NIST/splint/splint-3.1.2.analizo.metrics.dat")
+  uno = read.table("dataset/NIST/uno/uno.analizo.metrics.dat")
+  wap = read.table("dataset/NIST/wap/wap-2.1.analizo.metrics.dat")
+
+  x = c(accessanalysis[,metric], errorprone[,metric], indus[,metric], inputtracer[,metric], jastadd[,metric], sonarqubeplugin[,metric], srcml[,metric], tacle[,metric], wala[,metric], closure[,metric], cppcheck[,metric], cqual[,metric], findbugs[,metric], findsecuritybugs[,metric], jlint[,metric], pixy[,metric], pmd[,metric], rats[,metric], smatch[,metric], splint[,metric], uno[,metric], wap[,metric])
+
+  nonzeros = x[x > 0 & x < 500]
+  h = hist(nonzeros, main=metric, xlab="valor", ylab="frequência")
+  xfit <- seq(min(nonzeros),max(nonzeros),length=40)
+  yfit <- dnorm(xfit,mean=mean(nonzeros),sd=sd(nonzeros))
+  yfit <- yfit*diff(h$mids[1:2])*length(nonzeros)
+  lines(xfit, yfit, col="blue", lwd=2)
+}
+
 knit("_qualificacao.Rtex")
