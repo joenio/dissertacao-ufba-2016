@@ -9,29 +9,15 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
-Slides para a apresentação da qualificação:
-* http://joenio.me/slides/qualificacao.html
-
-## GQM
-
-Nivel conceitual:
-
-* Vamos caracterizar ferramentas de analise estatica de codigo fonte
-* Com respeito a sua qualidade interna
-* Do ponto de vista do engenheiro de software
-* No contexto de softwares academicos e industriais
+Slides:
+* http://joenio.me/slides/caracterizacao-analise-estatica.html
 
 ## Compilando
 
 Projeto escrito em latex para compilar é necessários ter um ambiente latex
-básico e o projeto latex-mk texlive-publishers texlive-lang-portuguese.
+básico e o projeto latex-mk, texlive-publishers, texlive-lang-portuguese.
 
     make
-
-Monitora alterações nos arquivos do projeto e recompila PDF automaticamente,
-depende to pacote inotify-hookable.
-
-    make watch
 
 ### Debian Testing
 
@@ -44,8 +30,8 @@ depende to pacote inotify-hookable.
 
 ## Script para revisão estruturada semi-automatizada
 
-O script depende do comando `pdftotext`, em sistemas Debian ele pode ser
-instalado com o seguinte comando:
+O script `revisao-estruturada/filter` depende do comando `pdftotext`, em
+sistemas Debian ele pode ser instalado com o seguinte comando:
 
     apt-get install poppler-utils
 
