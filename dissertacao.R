@@ -210,4 +210,4 @@ histograma <- function(metric, caption) {
   lines(xfit, yfit, col="blue", lwd=2)
 }
 
-knit("_qualificacao.Rtex")
+knit("_dissertacao.Rtex")
