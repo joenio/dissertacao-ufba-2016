@@ -264,6 +264,9 @@ organização, conforme mostra a Figura \ref{static-analysis-representation}.
 
 \subsection{Formatos de representação intermediária} \label{formatos}
 
+\cite{Zaytsev2015} autor enumera e descreve uma quantidade de grafos de
+representação interna para programacao funcional.
+
 Essencialmente, um formato de representação intermediária é uma abstração precisa
 das propriedades de um programa representado em um domínio menor. Os
 compiladores normalmente constroem esta representação a fim de possuir um
@@ -486,7 +489,39 @@ observação de suas métricas, são elas:
     Número de Parâmetros por Método)}: calcula a média de parâmetros dos
     métodos da classe \cite{Jagdish1997}.
   \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
-    mede o acoplamento entre objetos do software \cite{Chidamber1994}.
+    mede o acoplamento entre objetos do software \cite{Chidamber1994}
+    calculando em nível de classe o número total de acessos à outras classes do
+    mesmo sistema, é comum ser também chamada de Fan-out da classe. CBO é então
+    definida pela seguinte fórmula:
+
+\[ CBO(C) = \sum_{i=1}^{n} cliente(C, Ci) \]
+
+Onde:
+\[ cliente(C, Ci) =
+  \begin{cases}
+    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
+    0 \text{ caso contrario} \\
+  \end{cases}
+\]
+
+$ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
+entre módulos ou classes.
+
+Apesar de ser possível formalizar a métrica CBO sua descriçao original é
+bastante complexa, levando à implementações variadas do seu cálculo
+\cite{Lincke2008}. A definição original, por exemplo, inclui explicitamente
+acoplamento via herança \cite{Harrison1998}, no entando não deixa claro como
+deve ser tratado métodos herdados \cite{Briand1999}. A definição original
+afirma também que apenas chamadas explícitas (e não chamadas implicitas) de
+construtores são contabilizadas. Algumas definições de CBO incluem não apenas $
+cliente(C, Ci) $ mas também a recíproca $ cliente(Ci, C) $ de forma que o valor
+final inclui classes que ela acessa somado ao número de classes do sistema que
+a acessam \cite{Sant2008}.
+
+Quanto mais as classes forem independentes, mais fácil é reutilizá-las e menos
+arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
+testes, pois mais partes do sistema dependem delas.
+
   \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
     herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
   \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
@@ -513,6 +548,15 @@ observação de suas métricas, são elas:
 \end{itemize}
 
 \subsection{Complexidade estrutural} \label{complexidade}
+
+Many studies have demonstrated a significant correlation between
+LOC and the cyclomatic number. The researchers usually suggest that
+this correlation proves that cyclomatic number increases with size; that
+is, larger code is more complex code. However, careful interpretation of
+the measures and their association reveals only that the number of deci-
+sions increases with code length, a far less profound conclusion. The cyclo-
+matic number may be just another size measure. Chapter 9 contains more
+detailed discussion of validation for the McCabe measures.
 
 A complexidade estrutural (SC - Structural Complexity) de um programa é uma
 medida calculada através da combinação das métricas de acoplamento (CBO) e
