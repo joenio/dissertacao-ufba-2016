@@ -12,23 +12,52 @@ Mais detalhes em:
 Slides:
 * http://joenio.me/slides/caracterizacao-analise-estatica.html
 
+(todas as instruções abaixo consideram que você está rodando o sistema
+operacional Debian GNU/Linux)
+
 ## Compilando
 
-Projeto escrito em latex para compilar é necessários ter um ambiente latex
+Projeto escrito em LaTeX para compilar é necessários ter um ambiente latex
 básico e algumas extensões.
 
     apt-get install latex-mk texlive-publishers texlive-lang-portuguese
 
+Além do ambiente LaTeX é necessário instalar as dependencias do script para
+extração e análise dos dados utilizados neste estudo, localizado em
+`./dataset/analize-all-projects` (não é necessário executar este script
+manualmente).
+
+    apt-get install libmodern-perl-perl sloccount
+
+Instale também as ferramentas `analizo` e `doxyparse` seguindo as seguintes
+instruções:
+
+* http://www.analizo.org/installation.html
+* http://github.com/analizo/analizo/wiki/Doxyparse
+
+Apesar de não ser necessário executar o script para extração e análise dos
+dados manualmente ele pode ser executado da seguinte forma:
+
+    cd dataset
+    ./analyze-all-projects
+
+Algumas extensões da linguagem R precisam ser instaladas e a depender da versão
+do Debian utilizado as instruções podem ser diferentes.
+
+### Debian Testing (como root)
+
+    apt-get install r-recommended r-cran-knitr r-cran-xtable
+
+### Debian Jessie (como root)
+
+    apt-get install r-recommended r-cran-evaluate r-cran-digest r-cran-stringr
+    R -e "install.packages('knitr', repos = 'http://www.rforge.net/', type = 'source', dependencies = TRUE)"
+
+### Compilar
+
+Após instalar todas as dependências basta executar o `make` na raiz do projeto.
+
     make
-
-### Debian Testing
-
-    sudo apt-get install r-recommended r-cran-knitr r-cran-xtable
-
-### Debian Jessie
-
-    sudo apt-get install r-recommended r-cran-evaluate r-cran-digest r-cran-stringr
-    sudo R -e "install.packages('knitr', repos = 'http://www.rforge.net/', type = 'source', dependencies = TRUE)"
 
 ## Script para revisão estruturada semi-automatizada
 
@@ -36,15 +65,6 @@ O script `revisao-estruturada/filter` depende do comando `pdftotext`, em
 sistemas Debian ele pode ser instalado com o seguinte comando:
 
     apt-get install poppler-utils
-
-## Script para extrair e preparar dados com métricas dos projetos
-
-    apt-get install libmodern-perl-perl sloccount
-
-É necessário ter instalado também as ferramentas `analizo` e `doxyparse`.
-
-    cd dataset
-    ./analyze-all-projects
 
 ## Referências sobre estatística
 
