@@ -15,13 +15,15 @@ Slides:
 ## Compilando
 
 Projeto escrito em latex para compilar é necessários ter um ambiente latex
-básico e o projeto latex-mk, texlive-publishers, texlive-lang-portuguese.
+básico e algumas extensões.
+
+    apt-get install latex-mk texlive-publishers texlive-lang-portuguese
 
     make
 
 ### Debian Testing
 
-    sudo apt-get install r-recommended r-cran-knitr
+    sudo apt-get install r-recommended r-cran-knitr r-cran-xtable
 
 ### Debian Jessie
 
