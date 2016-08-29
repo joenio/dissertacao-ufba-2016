@@ -80,6 +80,20 @@ sistemas Debian ele pode ser instalado com o seguinte comando:
 
 * https://www.youtube.com/watch?v=TLlzToeIpGc
 
+## Agradecimentos
+
+* Rodrigo Rocha
+* Daniela Feitosa
+* Paulo Meirelles
+* Christina von Flach
+* Ivan Machado
+* Claudio Sant'ana
+* Marcos Ronaldo
+* Fabiana Goa
+* Lucas Kanashiro
+* Antonio Terceiro
+* Crescêncio
+
 ## Contato
 
 joenio EM joenio.me
