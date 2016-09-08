@@ -1,0 +1,37 @@
+<html><head><title>calling-convention-attributes.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/calling-convention-attributes.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/calling-convention-attributes.c";
+top.document.title  = "calling-convention-attributes.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((cdecl)) <a href="dictionary_C.html#3707">c1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((cdecl)) *<a href="dictionary_C.html#3708">c2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_C.html#3708">c2</a> <a href="dictionary_C.html#3709">c2ptr</a></span><span class="default">;</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((__cdecl__)) <a href="dictionary_C.html#3710">c_1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((__cdecl__)) *<a href="dictionary_C.html#3711">c_2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_C.html#3711">c_2</a> <a href="dictionary_C.html#3712">c_2ptr</a></span><span class="default">;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((stdcall)) <a href="dictionary_S.html#3713">s1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((stdcall)) *<a href="dictionary_S.html#3714">s2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_S.html#3714">s2</a> <a href="dictionary_S.html#3715">s2ptr</a></span><span class="default">;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((__stdcall__)) <a href="dictionary_S.html#3716">s_1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((__stdcall__)) *<a href="dictionary_S.html#3717">s_2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_S.html#3717">s_2</a> <a href="dictionary_S.html#3718">s_2ptr</a></span><span class="default">;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((fastcall)) <a href="dictionary_F.html#3719">f1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((fastcall)) *<a href="dictionary_F.html#3720">f2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_F.html#3720">f2</a> <a href="dictionary_F.html#3721">f2ptr</a></span><span class="default">;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">extern void </span><span class="default">__attribute__((__fastcall__)) <a href="dictionary_F.html#3722">f_1</a>(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">typedef void </span><span class="default">(__attribute__((__fastcall__)) *<a href="dictionary_F.html#3723">f_2</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">typedef <a href="dictionary_F.html#3723">f_2</a> <a href="dictionary_F.html#3724">f_2ptr</a></span><span class="default">;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * check-name: Calling convention attributes</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> */</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+</pre></body></html>

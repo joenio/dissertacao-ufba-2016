@@ -1,0 +1,36 @@
+<html><head><title>sm_math2.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/sm_math2.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/sm_math2.c";
+top.document.title  = "sm_math2.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;check_debug.h&quot;</span>
+<a name="2"><font size=-1>2     </font></a><span class="string"></span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="keyword">unsigned char <a href="dictionary_B.html#7427">buf</a></span><span class="default">[</span><span class="number">2</span><span class="default">];</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_T.html#17424">test</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">)</span>
+<a name="6"><font size=-1>6     </font></a><span class="default">{</span>
+<a name="7"><font size=-1>7     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_A.html#7429">a</a> </span><span class="default">= <a href="dictionary_B.html#7427">buf</a>[</span><span class="number">1</span><span class="default">];</span>
+<a name="8"><font size=-1>8     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_B.html#7430">b</a> </span><span class="default">= <a href="dictionary_B.html#7427">buf</a>[</span><span class="number">0</span><span class="default">] &lt;&lt; </span><span class="number">8</span><span class="default">;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_C.html#7431">c</a> </span><span class="default">= (<a href="dictionary_B.html#7427">buf</a>[</span><span class="number">0</span><span class="default">] &lt;&lt; </span><span class="number">8</span><span class="default">) | <a href="dictionary_B.html#7427">buf</a>[</span><span class="number">1</span><span class="default">];</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default">	<a href="dictionary_Non-Alpha.html#3750">__smatch_implied</a>(<a href="dictionary_A.html#7429">a</a>);</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">	<a href="dictionary_Non-Alpha.html#3750">__smatch_implied</a>(<a href="dictionary_B.html#7430">b</a>);</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">	<a href="dictionary_Non-Alpha.html#3750">__smatch_implied</a>(<a href="dictionary_C.html#7431">c</a>);</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">}</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * check-name: smatch math #2</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * check-command: smatch -I.. sm_math2.c</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> *</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * check-output-start</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">sm_math2.c:11 test() implied: a = '0-255'</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">sm_math2.c:12 test() implied: b = '0,256-65280'</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">sm_math2.c:13 test() implied: c = '0-65535'</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * check-output-end</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> */</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"></span>
+</pre></body></html>

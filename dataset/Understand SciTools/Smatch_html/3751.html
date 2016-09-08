@@ -1,0 +1,52 @@
+<html><head><title>nested-declarator2.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/nested-declarator2.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/nested-declarator2.c";
+top.document.title  = "nested-declarator2.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">typedef int <a href="dictionary_T.html#641">T</a></span><span class="default">;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_F.html#3719">f1</a></span><span class="default">(</span><span class="keyword">int</span><span class="default">);</span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_F.html#3752">f2</a></span><span class="default">(<a href="dictionary_T.html#641">T</a>);</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span><span class="keyword">static void </span><span class="default">(*<a href="dictionary_F.html#3753">f3</a>)(</span><span class="keyword">int</span><span class="default">) = <a href="dictionary_F.html#3752">f2</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">static void </span><span class="default">(*<a href="dictionary_F.html#3754">f4</a>)(T) = <a href="dictionary_F.html#3719">f1</a>;</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_F.html#3755">f5</a></span><span class="default">(</span><span class="keyword">void </span><span class="default">(</span><span class="keyword">int</span><span class="default">));</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_F.html#3756">f6</a></span><span class="default">(</span><span class="keyword">void </span><span class="default">(T));</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_Z.html#3757">z</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_X.html#3758">x</a></span><span class="default">)</span>
+<a name="9"><font size=-1>9     </font></a><span class="default">{</span>
+<a name="10"><font size=-1>10     </font></a><span class="default">	</span><span class="keyword">int </span><span class="default">(<a href="dictionary_T.html#3759">T</a>) = <a href="dictionary_X.html#3758">x</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">	<a href="dictionary_F.html#3755">f5</a>(<a href="dictionary_F.html#3752">f2</a>);</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">	<a href="dictionary_F.html#3756">f6</a>(<a href="dictionary_F.html#3753">f3</a>);</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">}</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_F.html#3760">f8</a></span><span class="default">();</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">static int </span><span class="default">(<a href="dictionary_X.html#3761">x</a>) = </span><span class="number">1</span><span class="default">;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_W.html#3762">w1</a></span><span class="default">(<a href="dictionary_Y.html#3763">y</a>)</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_Y.html#3763">y</a></span><span class="default">;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">{</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">	<a href="dictionary_X.html#3761">x</a> = <a href="dictionary_Y.html#3763">y</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">}</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_W.html#3764">w2</a></span><span class="default">(</span><span class="keyword">int </span><span class="default">());</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_W.html#3765">w3</a></span><span class="default">(...);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_F.html#3766">f9</a></span><span class="default">(__attribute__((mode(DI))) <a href="dictionary_T.html#641">T</a>);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_W.html#3767">w4</a></span><span class="default">(</span><span class="keyword">int </span><span class="default">f(x,y));</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_B.html#3768">bad1</a></span><span class="default">(__attribute__((mode(DI))) x);</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">static int </span><span class="default">(-bad2);</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">static void </span><span class="default">[</span><span class="number">2</span><span class="default">](*bad3);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * check-name: more on handling of ( in direct-declarator</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * check-error-start:</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">nested-declarator2.c:17:1: warning: non-ANSI definition of function 'w1'</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">nested-declarator2.c:21:21: warning: non-ANSI function declaration of function '&lt;noident&gt;'</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">nested-declarator2.c:22:16: warning: variadic functions must have one named argument</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">nested-declarator2.c:24:21: warning: identifier list not in definition</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">nested-declarator2.c:25:45: error: don't know how to apply mode to incomplete type</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">nested-declarator2.c:26:13: error: Expected ) in nested declarator</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">nested-declarator2.c:26:13: error: got -</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">nested-declarator2.c:27:16: error: Expected ; at the end of type declaration</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">nested-declarator2.c:27:16: error: got (</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * check-error-end:</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span>
+</pre></body></html>

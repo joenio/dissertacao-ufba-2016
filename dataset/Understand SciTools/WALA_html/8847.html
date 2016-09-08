@@ -1,0 +1,83 @@
+<html><head><title>CallGraphTransitiveClosure.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ipa/callgraph/CallGraphTransitiveClosure.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ipa/callgraph/CallGraphTransitiveClosure.java";
+top.document.title  = "CallGraphTransitiveClosure.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2007 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#3">Collection</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#6">Iterator</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#489">Map</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.dataflow.<a href="dictionary_C.html#1878">graph</a>.<a href="dictionary_C.html#2526">BitVectorSolver</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#1880">fixpoint</a>.<a href="dictionary_C.html#2538">BitVectorVariable</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#3914">modref</a>.<a href="dictionary_C.html#8867">GenReach</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#629">util</a>.<a href="dictionary_C.html#624">CancelException</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#629">util</a>.<a href="dictionary_C.html#3585">CancelRuntimeException</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#247">collections</a>.<a href="dictionary_C.html#533">HashMapFactory</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#1610">functions</a>.<a href="dictionary_C.html#1607">Function</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.graph.<a href="dictionary_C.html#541">impl</a>.<a href="dictionary_C.html#1608">GraphInverter</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#408">intset</a>.<a href="dictionary_C.html#625">OrdinalSet</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * Utility class for computing an analysis result for call graph nodes and their</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * transitive callees, given the results for individual nodes.</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * </span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_C.html#8848">CallGraphTransitiveClosure</a> </span><span class="default">{</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  </span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">   * Compute the transitive closure of an analysis result over all callees.</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">   * </span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">   * @param cg the call graph</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   * @param nodeResults analysis result for each individual node</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">   * @return a map from each node to the analysis result for the node and its transitive callees</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">   */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">  </span><span class="keyword">public static </span><span class="default">&lt;<a href="dictionary_C.html#8857">T</a>&gt; <a href="dictionary_J.html#489">Map</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_C.html#625">OrdinalSet</a>&lt;<a href="dictionary_C.html#8857">T</a>&gt;&gt; <a href="dictionary_C.html#8856">transitiveClosure</a>(<a href="dictionary_C.html#614">CallGraph</a> <a href="dictionary_C.html#8862">cg</a>, <a href="dictionary_J.html#489">Map</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_C.html#8857">T</a>&gt;&gt; <a href="dictionary_C.html#8864">nodeResults</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">      </span><span class="comment">// invert the call graph, to compute the bottom-up result</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">      <a href="dictionary_C.html#8867">GenReach</a></span><span class="default">&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_C.html#8857">T</a>&gt; <a href="dictionary_C.html#8863">gr</a> = </span><span class="keyword">new <a href="dictionary_C.html#8869">GenReach</a></span><span class="default">&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_C.html#8857">T</a>&gt;(<a href="dictionary_C.html#1608">GraphInverter</a>.<a href="dictionary_C.html#8868">invert</a>(<a href="dictionary_C.html#8862">cg</a>), <a href="dictionary_C.html#8864">nodeResults</a>);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">      <a href="dictionary_C.html#2526">BitVectorSolver</a>&lt;<a href="dictionary_C.html#383">CGNode</a>&gt; <a href="dictionary_C.html#8866">solver</a> = </span><span class="keyword">new <a href="dictionary_C.html#3979">BitVectorSolver</a></span><span class="default">&lt;<a href="dictionary_C.html#383">CGNode</a>&gt;(<a href="dictionary_C.html#8863">gr</a>);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">      <a href="dictionary_C.html#8866">solver</a>.<a href="dictionary_C.html#3980">solve</a>(</span><span class="keyword">null</span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">      <a href="dictionary_J.html#489">Map</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_C.html#625">OrdinalSet</a>&lt;<a href="dictionary_C.html#8857">T</a>&gt;&gt; <a href="dictionary_C.html#8865">result</a> = <a href="dictionary_C.html#533">HashMapFactory</a>.<a href="dictionary_C.html#547">make</a>();</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#6">Iterator</a>&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#383">CGNode</a></span><span class="default">&gt; <a href="dictionary_C.html#8860">it</a> = <a href="dictionary_C.html#8862">cg</a>.<a href="dictionary_C.html#1405">iterator</a>(); <a href="dictionary_C.html#8860">it</a>.<a href="dictionary_H.html#95">hasNext</a>();) {</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">        <a href="dictionary_C.html#383">CGNode</a> <a href="dictionary_C.html#8861">n</a> = <a href="dictionary_C.html#8860">it</a>.<a href="dictionary_N.html#97">next</a>();</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">        <a href="dictionary_C.html#2538">BitVectorVariable</a> <a href="dictionary_C.html#8859">bv</a> = <a href="dictionary_C.html#8866">solver</a>.<a href="dictionary_C.html#2549">getOut</a>(<a href="dictionary_C.html#8861">n</a>);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">        <a href="dictionary_C.html#8865">result</a>.<a href="dictionary_P.html#514">put</a>(<a href="dictionary_C.html#8861">n</a>, </span><span class="keyword">new <a href="dictionary_C.html#3956">OrdinalSet</a></span><span class="default">&lt;<a href="dictionary_C.html#8857">T</a>&gt;(<a href="dictionary_C.html#8859">bv</a>.<a href="dictionary_C.html#2550">getValue</a>(), <a href="dictionary_C.html#8863">gr</a>.<a href="dictionary_C.html#8870">getLatticeValues</a>()));</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">      }</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#8865">result</a></span><span class="default">;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#624">CancelException</a> <a href="dictionary_C.html#8858">e</a>) {</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">      </span><span class="keyword">throw new <a href="dictionary_C.html#3585">CancelRuntimeException</a></span><span class="default">(<a href="dictionary_C.html#8858">e</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    }</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  }</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  </span>
+<a name="60"><font size=-1>60     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">   * Collect analysis result for each {@link CGNode} in a {@link Map}.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">   */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">  </span><span class="keyword">public static </span><span class="default">&lt;<a href="dictionary_C.html#8850">T</a>&gt; <a href="dictionary_J.html#489">Map</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_C.html#8850">T</a>&gt;&gt; <a href="dictionary_C.html#8849">collectNodeResults</a>(<a href="dictionary_C.html#614">CallGraph</a> <a href="dictionary_C.html#8853">cg</a>, <a href="dictionary_C.html#1607">Function</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_C.html#8850">T</a>&gt;&gt; <a href="dictionary_C.html#8854">nodeResultComputer</a>) {</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    <a href="dictionary_J.html#489">Map</a>&lt;<a href="dictionary_C.html#383">CGNode</a>, <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_C.html#8850">T</a>&gt;&gt; <a href="dictionary_C.html#8855">result</a> = <a href="dictionary_C.html#533">HashMapFactory</a>.<a href="dictionary_C.html#547">make</a>();</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#6">Iterator</a>&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#383">CGNode</a></span><span class="default">&gt; <a href="dictionary_C.html#8851">it</a> = <a href="dictionary_C.html#8853">cg</a>.<a href="dictionary_C.html#1405">iterator</a>(); <a href="dictionary_C.html#8851">it</a>.<a href="dictionary_H.html#95">hasNext</a>();) {</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">      <a href="dictionary_C.html#383">CGNode</a> <a href="dictionary_C.html#8852">n</a> = <a href="dictionary_C.html#8851">it</a>.<a href="dictionary_N.html#97">next</a>();</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">      <a href="dictionary_C.html#8855">result</a>.<a href="dictionary_P.html#514">put</a>(<a href="dictionary_C.html#8852">n</a>, <a href="dictionary_C.html#8854">nodeResultComputer</a>.<a href="dictionary_C.html#1617">apply</a>(<a href="dictionary_C.html#8852">n</a>));</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    }</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#8855">result</a></span><span class="default">;</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  }</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">}</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+</pre></body></html>

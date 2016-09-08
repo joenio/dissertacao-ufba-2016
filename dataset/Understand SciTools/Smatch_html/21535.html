@@ -1,0 +1,102 @@
+<html><head><title>check_deref_check.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/check_deref_check.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/check_deref_check.c";
+top.document.title  = "check_deref_check.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (C) 2009 Dan Carpenter.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * This program is free software; you can redistribute it and/or</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * modify it under the terms of the GNU General Public License</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * as published by the Free Software Foundation; either version 2</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * of the License, or (at your option) any later version.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * This program is distributed in the hope that it will be useful,</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * GNU General Public License for more details.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * You should have received a copy of the GNU General Public License</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * along with this program; if not, see http://www.gnu.org/copyleft/gpl.txt</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;smatch.h&quot;</span>
+<a name="19"><font size=-1>19     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;smatch_extra.h&quot;</span>
+<a name="20"><font size=-1>20     </font></a><span class="string"></span>
+<a name="21"><font size=-1>21     </font></a><span class="string"></span><span class="keyword">static int <a href="dictionary_M.html#21536">my_id</a></span><span class="default">;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default"><a href="dictionary_S.html#240">STATE</a>(<a href="dictionary_D.html#21537">derefed</a>);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_U.html#21538">underef</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#301">sm_state</a> </span><span class="default">*<a href="dictionary_S.html#21539">sm</a>, </span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_M.html#21540">mod_expr</a>)</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">{</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">	<a href="dictionary_S.html#316">set_state</a>(<a href="dictionary_M.html#21536">my_id</a>, <a href="dictionary_S.html#21539">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>, <a href="dictionary_S.html#21539">sm</a>-&gt;<a href="dictionary_S.html#305">sym</a>, &amp;<a href="dictionary_U.html#306">undefined</a>);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">}</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_M.html#1749">match_dereference</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#21542">expr</a>)</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">{</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#21542">expr</a>-&gt;<a href="dictionary_E.html#20">type</a> != EXPR_PREOP)</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">	<a href="dictionary_E.html#21542">expr</a> = <a href="dictionary_S.html#43">strip_expr</a>(<a href="dictionary_E.html#21542">expr</a>-&gt;<a href="dictionary_E.html#26">unop</a>);</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_I.html#1763">is_pointer</a>(<a href="dictionary_E.html#21542">expr</a>))</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#1734">implied_not_equal</a>(<a href="dictionary_E.html#21542">expr</a>, </span><span class="number">0</span><span class="default">))</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#1804">is_impossible_path</a>())</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">	<a href="dictionary_S.html#623">set_state_expr</a>(<a href="dictionary_M.html#21536">my_id</a>, <a href="dictionary_E.html#21542">expr</a>, &amp;<a href="dictionary_D.html#21537">derefed</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">}</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_S.html#7812">set_param_dereferenced</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_A.html#21544">arg</a>, </span><span class="keyword">char </span><span class="default">*<a href="dictionary_K.html#21545">key</a>, </span><span class="keyword">char </span><span class="default">*<a href="dictionary_U.html#21546">unused</a>)</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#21547">sym</a>;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">	</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#21548">name</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	<a href="dictionary_N.html#21548">name</a> = <a href="dictionary_G.html#1759">get_variable_from_key</a>(<a href="dictionary_A.html#21544">arg</a>, <a href="dictionary_K.html#21545">key</a>, &amp;<a href="dictionary_S.html#21547">sym</a>);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_N.html#21548">name</a> || !<a href="dictionary_S.html#21547">sym</a>)</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">		</span><span class="keyword">goto </span><span class="default">free;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#1745">implied_not_equal_name_sym</a>(<a href="dictionary_N.html#21548">name</a>, <a href="dictionary_S.html#21547">sym</a>, </span><span class="number">0</span><span class="default">))</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">	<a href="dictionary_S.html#316">set_state</a>(<a href="dictionary_M.html#21536">my_id</a>, <a href="dictionary_N.html#21548">name</a>, <a href="dictionary_S.html#21547">sym</a>, &amp;<a href="dictionary_D.html#21537">derefed</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">free:</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">	<a href="dictionary_F.html#212">free_string</a>(<a href="dictionary_N.html#21548">name</a>);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">}</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_M.html#23247">match_condition</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#21551">expr</a>)</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">{</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#301">sm_state</a> </span><span class="default">*<a href="dictionary_S.html#21552">sm</a>;</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_Non-Alpha.html#9155">__in_pre_condition</a>)</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span>
+<a name="70"><font size=-1>70     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_G.html#70">get_macro_name</a>(<a href="dictionary_E.html#21551">expr</a>-&gt;<a href="dictionary_E.html#71">pos</a>))</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_I.html#1763">is_pointer</a>(<a href="dictionary_E.html#21551">expr</a>))</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">	<a href="dictionary_S.html#21552">sm</a> = <a href="dictionary_G.html#607">get_sm_state_expr</a>(<a href="dictionary_M.html#21536">my_id</a>, <a href="dictionary_E.html#21551">expr</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_S.html#21552">sm</a> || <a href="dictionary_S.html#21552">sm</a>-&gt;<a href="dictionary_S.html#374">state</a> != &amp;<a href="dictionary_D.html#21537">derefed</a>)</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default">	<a href="dictionary_S.html#56">sm_msg</a>(</span><span class="string">&quot;warn: variable dereferenced before check '%s' (see line %d)&quot;</span><span class="default">, <a href="dictionary_S.html#21552">sm</a>-&gt;name, sm-&gt;line);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">	<a href="dictionary_S.html#623">set_state_expr</a>(<a href="dictionary_M.html#21536">my_id</a>, <a href="dictionary_E.html#21551">expr</a>, &amp;<a href="dictionary_U.html#306">undefined</a>);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">}</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_C.html#809">check_deref_check</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_I.html#21553">id</a></span><span class="default">)</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">{</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">	<a href="dictionary_M.html#21536">my_id</a> = <a href="dictionary_I.html#21553">id</a>;</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_M.html#1749">match_dereference</a>, DEREF_HOOK);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_M.html#23247">match_condition</a>, CONDITION_HOOK);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">	<a href="dictionary_S.html#1768">select_call_implies_hook</a>(DEREFERENCE, &amp;<a href="dictionary_S.html#7812">set_param_dereferenced</a>);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">	<a href="dictionary_A.html#1766">add_modification_hook</a>(<a href="dictionary_M.html#21536">my_id</a>, &amp;<a href="dictionary_U.html#21538">underef</a>);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">}</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+</pre></body></html>

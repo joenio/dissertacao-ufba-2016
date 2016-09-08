@@ -1,0 +1,989 @@
+<html><head><title>host_arm_defs.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/host_arm_defs.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/host_arm_defs.h";
+top.document.title  = "host_arm_defs.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- begin                                   host_arm_defs.h ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   framework.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   Copyright (C) 2004-2010 OpenWorks LLP</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">      info@open-works.net</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02110-1301, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">*/</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#105385">__VEX_HOST_ARM_DEFS_H</a></span>
+<a name="32"><font size=-1>32     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#105385">__VEX_HOST_ARM_DEFS_H</a></span>
+<a name="33"><font size=-1>33     </font></a><span class="preproc"></span>
+<a name="34"><font size=-1>34     </font></a><span class="preproc"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_A.html#104147">arm_hwcaps</a></span><span class="default">;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="comment">/* --------- Registers. --------- */</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">/* The usual HReg abstraction.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">   There are 16 general purpose regs.</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">*/</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"></span><span class="keyword">extern void <a href="dictionary_P.html#4443">ppHRegARM</a> </span><span class="default">( <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104150">hregARM_R0</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104151">hregARM_R1</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104152">hregARM_R2</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104153">hregARM_R3</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104154">hregARM_R4</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104155">hregARM_R5</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104156">hregARM_R6</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104157">hregARM_R7</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104158">hregARM_R8</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104159">hregARM_R9</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104160">hregARM_R10</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104161">hregARM_R11</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104162">hregARM_R12</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104163">hregARM_R13</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104164">hregARM_R14</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104165">hregARM_R15</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104166">hregARM_D8</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104167">hregARM_D9</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104168">hregARM_D10</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104169">hregARM_D11</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104170">hregARM_D12</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104171">hregARM_S26</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104172">hregARM_S27</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104173">hregARM_S28</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104174">hregARM_S29</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104175">hregARM_S30</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104176">hregARM_Q8</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104177">hregARM_Q9</a>  </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104178">hregARM_Q10</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104179">hregARM_Q11</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104180">hregARM_Q12</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104181">hregARM_Q13</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104182">hregARM_Q14</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_H.html#104183">hregARM_Q15</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span><span class="comment">/* Number of registers used arg passing in function calls */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#105386">ARM_N_ARGREGS</a> </span><span class="number">4   </span><span class="comment">/* r0, r1, r2, r3 */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment"></span>
+<a name="83"><font size=-1>83     </font></a><span class="comment"></span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">/* --------- Condition codes. --------- */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment"></span>
+<a name="86"><font size=-1>86     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="87"><font size=-1>87     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">      ARMcc_EQ  = </span><span class="number">0</span><span class="default">,  </span><span class="comment">/* equal                          : Z=1 */</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">      </span><span class="default">ARMcc_NE  = </span><span class="number">1</span><span class="default">,  </span><span class="comment">/* not equal                      : Z=0 */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment"></span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">      </span><span class="default">ARMcc_HS  = </span><span class="number">2</span><span class="default">,  </span><span class="comment">/* &gt;=u (higher or same)           : C=1 */</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">      </span><span class="default">ARMcc_LO  = </span><span class="number">3</span><span class="default">,  </span><span class="comment">/* &lt;u  (lower)                    : C=0 */</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment"></span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">      </span><span class="default">ARMcc_MI  = </span><span class="number">4</span><span class="default">,  </span><span class="comment">/* minus (negative)               : N=1 */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">      </span><span class="default">ARMcc_PL  = </span><span class="number">5</span><span class="default">,  </span><span class="comment">/* plus (zero or +ve)             : N=0 */</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment"></span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">      </span><span class="default">ARMcc_VS  = </span><span class="number">6</span><span class="default">,  </span><span class="comment">/* overflow                       : V=1 */</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">      </span><span class="default">ARMcc_VC  = </span><span class="number">7</span><span class="default">,  </span><span class="comment">/* no overflow                    : V=0 */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment"></span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">      </span><span class="default">ARMcc_HI  = </span><span class="number">8</span><span class="default">,  </span><span class="comment">/* &gt;u   (higher)                  : C=1 &amp;&amp; Z=0 */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">      </span><span class="default">ARMcc_LS  = </span><span class="number">9</span><span class="default">,  </span><span class="comment">/* &lt;=u  (lower or same)           : C=0 || Z=1 */</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment"></span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">      </span><span class="default">ARMcc_GE  = </span><span class="number">10</span><span class="default">, </span><span class="comment">/* &gt;=s (signed greater or equal)  : N=V */</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">      </span><span class="default">ARMcc_LT  = </span><span class="number">11</span><span class="default">, </span><span class="comment">/* &lt;s  (signed less than)         : N!=V */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment"></span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">      </span><span class="default">ARMcc_GT  = </span><span class="number">12</span><span class="default">, </span><span class="comment">/* &gt;s  (signed greater)           : Z=0 &amp;&amp; N=V */</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">      </span><span class="default">ARMcc_LE  = </span><span class="number">13</span><span class="default">, </span><span class="comment">/* &lt;=s (signed less or equal)     : Z=1 || N!=V */</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment"></span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">      </span><span class="default">ARMcc_AL  = </span><span class="number">14</span><span class="default">, </span><span class="comment">/* always (unconditional) */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">      </span><span class="default">ARMcc_NV  = </span><span class="number">15  </span><span class="comment">/* never (basically undefined meaning), deprecated */</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">   <a href="dictionary_A.html#104189">ARMCondCode</a>;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104187">showARMCondCode</a> ( <a href="dictionary_A.html#104189">ARMCondCode</a> );</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span><span class="comment">/* --------- Memory address expressions (amodes). --------- */</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment"></span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">/* --- Addressing Mode 1 --- */</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="122"><font size=-1>122     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">      ARMam1_RI=</span><span class="number">1</span><span class="default">,   </span><span class="comment">/* reg +/- imm12 */</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">      </span><span class="default">ARMam1_RRS     </span><span class="comment">/* reg1 + (reg2 &lt;&lt; 0, 1 2 or 3) */</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">   <a href="dictionary_A.html#105389">ARMAMode1Tag</a>;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="129"><font size=-1>129     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">      <a href="dictionary_A.html#105389">ARMAMode1Tag</a> <a href="dictionary_T.html#104213">tag</a>;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104218">reg</a>;</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">            <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#104219">simm13</a>; </span><span class="comment">/* -4095 .. +4095 */</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_R.html#104216">RI</a>;</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_B.html#104228">base</a>;</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_I.html#104229">index</a>;</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104230">shift</a>; </span><span class="comment">/* 0, 1 2 or 3 */</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_R.html#104226">RRS</a>;</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">      } <a href="dictionary_A.html#104214">ARMam1</a>;</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">   }</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">   <a href="dictionary_A.html#104207">ARMAMode1</a>;</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104207">ARMAMode1</a></span><span class="default">* <a href="dictionary_A.html#104206">ARMAMode1_RI</a>  ( <a href="dictionary_H.html#973">HReg</a> reg, <a href="dictionary_I.html#113">Int</a> simm13 );</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104207">ARMAMode1</a></span><span class="default">* <a href="dictionary_A.html#104220">ARMAMode1_RRS</a> ( <a href="dictionary_H.html#973">HReg</a> base, <a href="dictionary_H.html#973">HReg</a> index, <a href="dictionary_U.html#8">UInt</a> shift );</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104231">ppARMAMode1</a> </span><span class="default">( <a href="dictionary_A.html#104207">ARMAMode1</a>* );</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default"></span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span><span class="comment">/* --- Addressing Mode 2 --- */</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="153"><font size=-1>153     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">      ARMam2_RI=</span><span class="number">3</span><span class="default">,   </span><span class="comment">/* reg +/- imm8 */</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">      </span><span class="default">ARMam2_RR      </span><span class="comment">/* reg1 + reg2 */</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">   <a href="dictionary_A.html#105395">ARMAMode2Tag</a>;</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="160"><font size=-1>160     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">      <a href="dictionary_A.html#105395">ARMAMode2Tag</a> <a href="dictionary_T.html#104246">tag</a>;</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104251">reg</a>;</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">            <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#104252">simm9</a>; </span><span class="comment">/* -255 .. 255 */</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_R.html#104249">RI</a>;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_B.html#104260">base</a>;</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_I.html#104261">index</a>;</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">         } <a href="dictionary_R.html#104258">RR</a>;</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">      } <a href="dictionary_A.html#104247">ARMam2</a>;</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">   }</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">   <a href="dictionary_A.html#104240">ARMAMode2</a>;</span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104240">ARMAMode2</a></span><span class="default">* <a href="dictionary_A.html#104239">ARMAMode2_RI</a> ( <a href="dictionary_H.html#973">HReg</a> reg, <a href="dictionary_I.html#113">Int</a> simm9 );</span>
+<a name="176"><font size=-1>176     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104240">ARMAMode2</a></span><span class="default">* <a href="dictionary_A.html#104253">ARMAMode2_RR</a> ( <a href="dictionary_H.html#973">HReg</a> base, <a href="dictionary_H.html#973">HReg</a> index );</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104262">ppARMAMode2</a> </span><span class="default">( <a href="dictionary_A.html#104240">ARMAMode2</a>* );</span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span>
+<a name="181"><font size=-1>181     </font></a><span class="default"></span><span class="comment">/* --- Addressing Mode suitable for VFP --- */</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">/* The simm11 is encoded as 8 bits + 1 sign bit,</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">   so can only be 0 % 4. */</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="185"><font size=-1>185     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">      <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104276">reg</a>;</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#104277">simm11</a>; </span><span class="comment">/* -1020, -1016 .. 1016, 1020 */</span>
+<a name="188"><font size=-1>188     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">   <a href="dictionary_A.html#104271">ARMAModeV</a>;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104271">ARMAModeV</a></span><span class="default">* <a href="dictionary_M.html#104270">mkARMAModeV</a> ( <a href="dictionary_H.html#973">HReg</a> reg, <a href="dictionary_I.html#113">Int</a> simm11 );</span>
+<a name="192"><font size=-1>192     </font></a><span class="default"></span>
+<a name="193"><font size=-1>193     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104278">ppARMAModeV</a> </span><span class="default">( <a href="dictionary_A.html#104271">ARMAModeV</a>* );</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span><span class="comment">/* --- Addressing Mode suitable for Neon --- */</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="197"><font size=-1>197     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">      ARMamN_R=</span><span class="number">5</span><span class="default">,</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">      ARMamN_RR</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">      </span><span class="comment">/* ... */</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">   <a href="dictionary_A.html#105402">ARMAModeNTag</a>;</span>
+<a name="203"><font size=-1>203     </font></a><span class="default"></span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="205"><font size=-1>205     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">      <a href="dictionary_A.html#105402">ARMAModeNTag</a> <a href="dictionary_T.html#104293">tag</a>;</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104298">rN</a>;</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104299">rM</a>;</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">         } <a href="dictionary_R.html#104296">RR</a>;</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104306">rN</a>;</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">         } <a href="dictionary_R.html#104304">R</a>;</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">         </span><span class="comment">/* ... */</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_A.html#104294">ARMamN</a>;</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">   }</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">   <a href="dictionary_A.html#104287">ARMAModeN</a>;</span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span>
+<a name="220"><font size=-1>220     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104287">ARMAModeN</a></span><span class="default">* <a href="dictionary_M.html#104286">mkARMAModeN_RR</a> ( <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104287">ARMAModeN</a></span><span class="default">* <a href="dictionary_M.html#104300">mkARMAModeN_R</a> ( <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104313">ppARMAModeN</a> </span><span class="default">( <a href="dictionary_A.html#104287">ARMAModeN</a>* );</span>
+<a name="223"><font size=-1>223     </font></a><span class="default"></span>
+<a name="224"><font size=-1>224     </font></a><span class="default"></span><span class="comment">/* --------- Reg or imm-8x4 operands --------- */</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">/* a.k.a (a very restricted form of) Shifter Operand,</span>
+<a name="226"><font size=-1>226     </font></a><span class="comment">   in the ARM parlance. */</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment"></span>
+<a name="228"><font size=-1>228     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="229"><font size=-1>229     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">      ARMri84_I84=</span><span class="number">7</span><span class="default">,   </span><span class="comment">/* imm8 `ror` (2 * imm4) */</span>
+<a name="231"><font size=-1>231     </font></a><span class="comment">      </span><span class="default">ARMri84_R        </span><span class="comment">/* reg */</span>
+<a name="232"><font size=-1>232     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">   <a href="dictionary_A.html#105408">ARMRI84Tag</a>;</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="236"><font size=-1>236     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">      <a href="dictionary_A.html#105408">ARMRI84Tag</a> <a href="dictionary_T.html#104325">tag</a>;</span>
+<a name="238"><font size=-1>238     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">            <a href="dictionary_U.html#1212">UShort</a> <a href="dictionary_I.html#104330">imm8</a>;</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">            <a href="dictionary_U.html#1212">UShort</a> <a href="dictionary_I.html#104331">imm4</a>;</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">         } <a href="dictionary_I.html#104328">I84</a>;</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104338">reg</a>;</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">         } <a href="dictionary_R.html#104336">R</a>;</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">      } <a href="dictionary_A.html#104326">ARMri84</a>;</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">   }</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">   <a href="dictionary_A.html#104319">ARMRI84</a>;</span>
+<a name="249"><font size=-1>249     </font></a><span class="default"></span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104319">ARMRI84</a></span><span class="default">* <a href="dictionary_A.html#104318">ARMRI84_I84</a> ( <a href="dictionary_U.html#1212">UShort</a> imm8, <a href="dictionary_U.html#1212">UShort</a> imm4 );</span>
+<a name="251"><font size=-1>251     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104319">ARMRI84</a></span><span class="default">* <a href="dictionary_A.html#104332">ARMRI84_R</a>   ( <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="252"><font size=-1>252     </font></a><span class="default"></span>
+<a name="253"><font size=-1>253     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104339">ppARMRI84</a> </span><span class="default">( <a href="dictionary_A.html#104319">ARMRI84</a>* );</span>
+<a name="254"><font size=-1>254     </font></a><span class="default"></span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span>
+<a name="256"><font size=-1>256     </font></a><span class="default"></span><span class="comment">/* --------- Reg or imm5 operands --------- */</span>
+<a name="257"><font size=-1>257     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="258"><font size=-1>258     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">      ARMri5_I5=</span><span class="number">9</span><span class="default">,   </span><span class="comment">/* imm5, 1 .. 31 only (no zero!) */</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment">      </span><span class="default">ARMri5_R       </span><span class="comment">/* reg */</span>
+<a name="261"><font size=-1>261     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="262"><font size=-1>262     </font></a><span class="default">   <a href="dictionary_A.html#105414">ARMRI5Tag</a>;</span>
+<a name="263"><font size=-1>263     </font></a><span class="default"></span>
+<a name="264"><font size=-1>264     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="265"><font size=-1>265     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">      <a href="dictionary_A.html#105414">ARMRI5Tag</a> <a href="dictionary_T.html#104353">tag</a>;</span>
+<a name="267"><font size=-1>267     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="268"><font size=-1>268     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="269"><font size=-1>269     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_I.html#104358">imm5</a>;</span>
+<a name="270"><font size=-1>270     </font></a><span class="default">         } <a href="dictionary_I.html#104356">I5</a>;</span>
+<a name="271"><font size=-1>271     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="272"><font size=-1>272     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104365">reg</a>;</span>
+<a name="273"><font size=-1>273     </font></a><span class="default">         } <a href="dictionary_R.html#104363">R</a>;</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">      } <a href="dictionary_A.html#104354">ARMri5</a>;</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">   }</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">   <a href="dictionary_A.html#104348">ARMRI5</a>;</span>
+<a name="277"><font size=-1>277     </font></a><span class="default"></span>
+<a name="278"><font size=-1>278     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104348">ARMRI5</a></span><span class="default">* <a href="dictionary_A.html#104347">ARMRI5_I5</a> ( <a href="dictionary_U.html#8">UInt</a> imm5 );</span>
+<a name="279"><font size=-1>279     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104348">ARMRI5</a></span><span class="default">* <a href="dictionary_A.html#104359">ARMRI5_R</a>  ( <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="280"><font size=-1>280     </font></a><span class="default"></span>
+<a name="281"><font size=-1>281     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104366">ppARMRI5</a> </span><span class="default">( <a href="dictionary_A.html#104348">ARMRI5</a>* );</span>
+<a name="282"><font size=-1>282     </font></a><span class="default"></span>
+<a name="283"><font size=-1>283     </font></a><span class="default"></span><span class="comment">/* -------- Neon Immediate operand -------- */</span>
+<a name="284"><font size=-1>284     </font></a><span class="comment"></span>
+<a name="285"><font size=-1>285     </font></a><span class="comment">/* imm8 = abcdefgh, B = NOT(b);</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment"></span>
+<a name="287"><font size=-1>287     </font></a><span class="comment">type | value (64bit binary)</span>
+<a name="288"><font size=-1>288     </font></a><span class="comment">-----+-------------------------------------------------------------------------</span>
+<a name="289"><font size=-1>289     </font></a><span class="comment">   0 | 00000000 00000000 00000000 abcdefgh 00000000 00000000 00000000 abcdefgh</span>
+<a name="290"><font size=-1>290     </font></a><span class="comment">   1 | 00000000 00000000 abcdefgh 00000000 00000000 00000000 abcdefgh 00000000</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">   2 | 00000000 abcdefgh 00000000 00000000 00000000 abcdefgh 00000000 00000000</span>
+<a name="292"><font size=-1>292     </font></a><span class="comment">   3 | abcdefgh 00000000 00000000 00000000 abcdefgh 00000000 00000000 00000000</span>
+<a name="293"><font size=-1>293     </font></a><span class="comment">   4 | 00000000 abcdefgh 00000000 abcdefgh 00000000 abcdefgh 00000000 abcdefgh</span>
+<a name="294"><font size=-1>294     </font></a><span class="comment">   5 | abcdefgh 00000000 abcdefgh 00000000 abcdefgh 00000000 abcdefgh 00000000</span>
+<a name="295"><font size=-1>295     </font></a><span class="comment">   6 | abcdefgh abcdefgh abcdefgh abcdefgh abcdefgh abcdefgh abcdefgh abcdefgh</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">   7 | 00000000 00000000 abcdefgh 11111111 00000000 00000000 abcdefgh 11111111</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">   8 | 00000000 abcdefgh 11111111 11111111 00000000 abcdefgh 11111111 11111111</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment">   9 | aaaaaaaa bbbbbbbb cccccccc dddddddd eeeeeeee ffffffff gggggggg hhhhhhhh</span>
+<a name="299"><font size=-1>299     </font></a><span class="comment">  10 | aBbbbbbc defgh000 00000000 00000000 aBbbbbbc defgh000 00000000 00000000</span>
+<a name="300"><font size=-1>300     </font></a><span class="comment">-----+-------------------------------------------------------------------------</span>
+<a name="301"><font size=-1>301     </font></a><span class="comment"></span>
+<a name="302"><font size=-1>302     </font></a><span class="comment">Type 10 is:</span>
+<a name="303"><font size=-1>303     </font></a><span class="comment">   (-1)^S * 2^exp * mantissa</span>
+<a name="304"><font size=-1>304     </font></a><span class="comment">where S = a, exp = UInt(B:c:d) - 3, mantissa = (16 + UInt(e:f:g:h)) / 16</span>
+<a name="305"><font size=-1>305     </font></a><span class="comment">*/</span>
+<a name="306"><font size=-1>306     </font></a><span class="comment"></span>
+<a name="307"><font size=-1>307     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="308"><font size=-1>308     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">      <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_T.html#104380">type</a>;</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">      <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_I.html#104381">imm8</a>;</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">   }</span>
+<a name="312"><font size=-1>312     </font></a><span class="default">   <a href="dictionary_A.html#104375">ARMNImm</a>;</span>
+<a name="313"><font size=-1>313     </font></a><span class="default"></span>
+<a name="314"><font size=-1>314     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104375">ARMNImm</a></span><span class="default">* <a href="dictionary_A.html#104374">ARMNImm_TI</a> ( <a href="dictionary_U.html#8">UInt</a> type, <a href="dictionary_U.html#8">UInt</a> imm8 );</span>
+<a name="315"><font size=-1>315     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_A.html#104382">ARMNImm_to_Imm64</a> </span><span class="default">( <a href="dictionary_A.html#104375">ARMNImm</a>* );</span>
+<a name="316"><font size=-1>316     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104375">ARMNImm</a></span><span class="default">* <a href="dictionary_I.html#104388">Imm64_to_ARMNImm</a> ( <a href="dictionary_U.html#1057">ULong</a> );</span>
+<a name="317"><font size=-1>317     </font></a><span class="default"></span>
+<a name="318"><font size=-1>318     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104391">ppARMNImm</a> </span><span class="default">( <a href="dictionary_A.html#104375">ARMNImm</a>* );</span>
+<a name="319"><font size=-1>319     </font></a><span class="default"></span>
+<a name="320"><font size=-1>320     </font></a><span class="default"></span><span class="comment">/* ------ Neon Register or Scalar Operand ------ */</span>
+<a name="321"><font size=-1>321     </font></a><span class="comment"></span>
+<a name="322"><font size=-1>322     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="323"><font size=-1>323     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="324"><font size=-1>324     </font></a><span class="default">      ARMNRS_Reg=</span><span class="number">11</span><span class="default">,</span>
+<a name="325"><font size=-1>325     </font></a><span class="default">      ARMNRS_Scalar</span>
+<a name="326"><font size=-1>326     </font></a><span class="default">   }</span>
+<a name="327"><font size=-1>327     </font></a><span class="default">   <a href="dictionary_A.html#104397">ARMNRS_tag</a>;</span>
+<a name="328"><font size=-1>328     </font></a><span class="default"></span>
+<a name="329"><font size=-1>329     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="330"><font size=-1>330     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">      <a href="dictionary_A.html#104397">ARMNRS_tag</a> <a href="dictionary_T.html#104402">tag</a>;</span>
+<a name="332"><font size=-1>332     </font></a><span class="default">      <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104403">reg</a>;</span>
+<a name="333"><font size=-1>333     </font></a><span class="default">      <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_I.html#104404">index</a>;</span>
+<a name="334"><font size=-1>334     </font></a><span class="default">   }</span>
+<a name="335"><font size=-1>335     </font></a><span class="default">   <a href="dictionary_A.html#104395">ARMNRS</a>;</span>
+<a name="336"><font size=-1>336     </font></a><span class="default"></span>
+<a name="337"><font size=-1>337     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104395">ARMNRS</a></span><span class="default">* <a href="dictionary_M.html#104394">mkARMNRS</a>(<a href="dictionary_A.html#104397">ARMNRS_tag</a>, <a href="dictionary_H.html#973">HReg</a> reg, <a href="dictionary_U.html#8">UInt</a> index);</span>
+<a name="338"><font size=-1>338     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#104405">ppARMNRS</a> </span><span class="default">( <a href="dictionary_A.html#104395">ARMNRS</a>* );</span>
+<a name="339"><font size=-1>339     </font></a><span class="default"></span>
+<a name="340"><font size=-1>340     </font></a><span class="default"></span><span class="comment">/* --------- Instructions. --------- */</span>
+<a name="341"><font size=-1>341     </font></a><span class="comment"></span>
+<a name="342"><font size=-1>342     </font></a><span class="comment">/* --------- */</span>
+<a name="343"><font size=-1>343     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="344"><font size=-1>344     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="345"><font size=-1>345     </font></a><span class="default">      ARMalu_ADD=</span><span class="number">20</span><span class="default">,   </span><span class="comment">/* plain 32-bit add */</span>
+<a name="346"><font size=-1>346     </font></a><span class="comment">      </span><span class="default">ARMalu_ADDS,     </span><span class="comment">/* 32-bit add, and set the flags */</span>
+<a name="347"><font size=-1>347     </font></a><span class="comment">      </span><span class="default">ARMalu_ADC,      </span><span class="comment">/* 32-bit add with carry */</span>
+<a name="348"><font size=-1>348     </font></a><span class="comment">      </span><span class="default">ARMalu_SUB,      </span><span class="comment">/* plain 32-bit subtract */</span>
+<a name="349"><font size=-1>349     </font></a><span class="comment">      </span><span class="default">ARMalu_SUBS,     </span><span class="comment">/* 32-bit subtract, and set the flags */</span>
+<a name="350"><font size=-1>350     </font></a><span class="comment">      </span><span class="default">ARMalu_SBC,      </span><span class="comment">/* 32-bit subtract with carry */</span>
+<a name="351"><font size=-1>351     </font></a><span class="comment">      </span><span class="default">ARMalu_AND,</span>
+<a name="352"><font size=-1>352     </font></a><span class="default">      ARMalu_BIC,</span>
+<a name="353"><font size=-1>353     </font></a><span class="default">      ARMalu_OR,</span>
+<a name="354"><font size=-1>354     </font></a><span class="default">      ARMalu_XOR</span>
+<a name="355"><font size=-1>355     </font></a><span class="default">   }</span>
+<a name="356"><font size=-1>356     </font></a><span class="default">   <a href="dictionary_A.html#104410">ARMAluOp</a>;</span>
+<a name="357"><font size=-1>357     </font></a><span class="default"></span>
+<a name="358"><font size=-1>358     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104408">showARMAluOp</a> ( <a href="dictionary_A.html#104410">ARMAluOp</a> op );</span>
+<a name="359"><font size=-1>359     </font></a><span class="default"></span>
+<a name="360"><font size=-1>360     </font></a><span class="default"></span>
+<a name="361"><font size=-1>361     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="362"><font size=-1>362     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="363"><font size=-1>363     </font></a><span class="default">      ARMsh_SHL=</span><span class="number">40</span><span class="default">,</span>
+<a name="364"><font size=-1>364     </font></a><span class="default">      ARMsh_SHR,</span>
+<a name="365"><font size=-1>365     </font></a><span class="default">      ARMsh_SAR</span>
+<a name="366"><font size=-1>366     </font></a><span class="default">   }</span>
+<a name="367"><font size=-1>367     </font></a><span class="default">   <a href="dictionary_A.html#104423">ARMShiftOp</a>;</span>
+<a name="368"><font size=-1>368     </font></a><span class="default"></span>
+<a name="369"><font size=-1>369     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104421">showARMShiftOp</a> ( <a href="dictionary_A.html#104423">ARMShiftOp</a> op );</span>
+<a name="370"><font size=-1>370     </font></a><span class="default"></span>
+<a name="371"><font size=-1>371     </font></a><span class="default"></span>
+<a name="372"><font size=-1>372     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="373"><font size=-1>373     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="374"><font size=-1>374     </font></a><span class="default">      ARMun_NEG=</span><span class="number">50</span><span class="default">,</span>
+<a name="375"><font size=-1>375     </font></a><span class="default">      ARMun_NOT,</span>
+<a name="376"><font size=-1>376     </font></a><span class="default">      ARMun_CLZ</span>
+<a name="377"><font size=-1>377     </font></a><span class="default">   }</span>
+<a name="378"><font size=-1>378     </font></a><span class="default">   <a href="dictionary_A.html#104429">ARMUnaryOp</a>;</span>
+<a name="379"><font size=-1>379     </font></a><span class="default"></span>
+<a name="380"><font size=-1>380     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104427">showARMUnaryOp</a> ( <a href="dictionary_A.html#104429">ARMUnaryOp</a> op );</span>
+<a name="381"><font size=-1>381     </font></a><span class="default"></span>
+<a name="382"><font size=-1>382     </font></a><span class="default"></span>
+<a name="383"><font size=-1>383     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="384"><font size=-1>384     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="385"><font size=-1>385     </font></a><span class="default">      ARMmul_PLAIN=</span><span class="number">60</span><span class="default">,</span>
+<a name="386"><font size=-1>386     </font></a><span class="default">      ARMmul_ZX,</span>
+<a name="387"><font size=-1>387     </font></a><span class="default">      ARMmul_SX</span>
+<a name="388"><font size=-1>388     </font></a><span class="default">   }</span>
+<a name="389"><font size=-1>389     </font></a><span class="default">   <a href="dictionary_A.html#104435">ARMMulOp</a>;</span>
+<a name="390"><font size=-1>390     </font></a><span class="default"></span>
+<a name="391"><font size=-1>391     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104433">showARMMulOp</a> ( <a href="dictionary_A.html#104435">ARMMulOp</a> op );</span>
+<a name="392"><font size=-1>392     </font></a><span class="default"></span>
+<a name="393"><font size=-1>393     </font></a><span class="default"></span>
+<a name="394"><font size=-1>394     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="395"><font size=-1>395     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="396"><font size=-1>396     </font></a><span class="default">      ARMvfp_ADD=</span><span class="number">70</span><span class="default">,</span>
+<a name="397"><font size=-1>397     </font></a><span class="default">      ARMvfp_SUB,</span>
+<a name="398"><font size=-1>398     </font></a><span class="default">      ARMvfp_MUL,</span>
+<a name="399"><font size=-1>399     </font></a><span class="default">      ARMvfp_DIV</span>
+<a name="400"><font size=-1>400     </font></a><span class="default">   }</span>
+<a name="401"><font size=-1>401     </font></a><span class="default">   <a href="dictionary_A.html#104441">ARMVfpOp</a>;</span>
+<a name="402"><font size=-1>402     </font></a><span class="default"></span>
+<a name="403"><font size=-1>403     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104439">showARMVfpOp</a> ( <a href="dictionary_A.html#104441">ARMVfpOp</a> op );</span>
+<a name="404"><font size=-1>404     </font></a><span class="default"></span>
+<a name="405"><font size=-1>405     </font></a><span class="default"></span>
+<a name="406"><font size=-1>406     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="407"><font size=-1>407     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="408"><font size=-1>408     </font></a><span class="default">      ARMvfpu_COPY=</span><span class="number">80</span><span class="default">,</span>
+<a name="409"><font size=-1>409     </font></a><span class="default">      ARMvfpu_NEG,</span>
+<a name="410"><font size=-1>410     </font></a><span class="default">      ARMvfpu_ABS,</span>
+<a name="411"><font size=-1>411     </font></a><span class="default">      ARMvfpu_SQRT</span>
+<a name="412"><font size=-1>412     </font></a><span class="default">   }</span>
+<a name="413"><font size=-1>413     </font></a><span class="default">   <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a>;</span>
+<a name="414"><font size=-1>414     </font></a><span class="default"></span>
+<a name="415"><font size=-1>415     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104446">showARMVfpUnaryOp</a> ( <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a> op );</span>
+<a name="416"><font size=-1>416     </font></a><span class="default"></span>
+<a name="417"><font size=-1>417     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="418"><font size=-1>418     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">      ARMneon_VAND=</span><span class="number">90</span><span class="default">,</span>
+<a name="420"><font size=-1>420     </font></a><span class="default">      ARMneon_VORR,</span>
+<a name="421"><font size=-1>421     </font></a><span class="default">      ARMneon_VXOR,</span>
+<a name="422"><font size=-1>422     </font></a><span class="default">      ARMneon_VADD,</span>
+<a name="423"><font size=-1>423     </font></a><span class="default">      ARMneon_VADDFP,</span>
+<a name="424"><font size=-1>424     </font></a><span class="default">      ARMneon_VRHADDS,</span>
+<a name="425"><font size=-1>425     </font></a><span class="default">      ARMneon_VRHADDU,</span>
+<a name="426"><font size=-1>426     </font></a><span class="default">      ARMneon_VPADDFP,</span>
+<a name="427"><font size=-1>427     </font></a><span class="default">      ARMneon_VABDFP,</span>
+<a name="428"><font size=-1>428     </font></a><span class="default">      ARMneon_VSUB,</span>
+<a name="429"><font size=-1>429     </font></a><span class="default">      ARMneon_VSUBFP,</span>
+<a name="430"><font size=-1>430     </font></a><span class="default">      ARMneon_VMAXU,</span>
+<a name="431"><font size=-1>431     </font></a><span class="default">      ARMneon_VMAXS,</span>
+<a name="432"><font size=-1>432     </font></a><span class="default">      ARMneon_VMAXF,</span>
+<a name="433"><font size=-1>433     </font></a><span class="default">      ARMneon_VMINU,</span>
+<a name="434"><font size=-1>434     </font></a><span class="default">      ARMneon_VMINS,</span>
+<a name="435"><font size=-1>435     </font></a><span class="default">      ARMneon_VMINF,</span>
+<a name="436"><font size=-1>436     </font></a><span class="default">      ARMneon_VQADDU,</span>
+<a name="437"><font size=-1>437     </font></a><span class="default">      ARMneon_VQADDS,</span>
+<a name="438"><font size=-1>438     </font></a><span class="default">      ARMneon_VQSUBU,</span>
+<a name="439"><font size=-1>439     </font></a><span class="default">      ARMneon_VQSUBS,</span>
+<a name="440"><font size=-1>440     </font></a><span class="default">      ARMneon_VCGTU,</span>
+<a name="441"><font size=-1>441     </font></a><span class="default">      ARMneon_VCGTS,</span>
+<a name="442"><font size=-1>442     </font></a><span class="default">      ARMneon_VCGEU,</span>
+<a name="443"><font size=-1>443     </font></a><span class="default">      ARMneon_VCGES,</span>
+<a name="444"><font size=-1>444     </font></a><span class="default">      ARMneon_VCGTF,</span>
+<a name="445"><font size=-1>445     </font></a><span class="default">      ARMneon_VCGEF,</span>
+<a name="446"><font size=-1>446     </font></a><span class="default">      ARMneon_VCEQ,</span>
+<a name="447"><font size=-1>447     </font></a><span class="default">      ARMneon_VCEQF,</span>
+<a name="448"><font size=-1>448     </font></a><span class="default">      ARMneon_VEXT,</span>
+<a name="449"><font size=-1>449     </font></a><span class="default">      ARMneon_VMUL,</span>
+<a name="450"><font size=-1>450     </font></a><span class="default">      ARMneon_VMULFP,</span>
+<a name="451"><font size=-1>451     </font></a><span class="default">      ARMneon_VMULLU,</span>
+<a name="452"><font size=-1>452     </font></a><span class="default">      ARMneon_VMULLS,</span>
+<a name="453"><font size=-1>453     </font></a><span class="default">      ARMneon_VMULP,</span>
+<a name="454"><font size=-1>454     </font></a><span class="default">      ARMneon_VMULLP,</span>
+<a name="455"><font size=-1>455     </font></a><span class="default">      ARMneon_VQDMULH,</span>
+<a name="456"><font size=-1>456     </font></a><span class="default">      ARMneon_VQRDMULH,</span>
+<a name="457"><font size=-1>457     </font></a><span class="default">      ARMneon_VPADD,</span>
+<a name="458"><font size=-1>458     </font></a><span class="default">      ARMneon_VPMINU,</span>
+<a name="459"><font size=-1>459     </font></a><span class="default">      ARMneon_VPMINS,</span>
+<a name="460"><font size=-1>460     </font></a><span class="default">      ARMneon_VPMINF,</span>
+<a name="461"><font size=-1>461     </font></a><span class="default">      ARMneon_VPMAXU,</span>
+<a name="462"><font size=-1>462     </font></a><span class="default">      ARMneon_VPMAXS,</span>
+<a name="463"><font size=-1>463     </font></a><span class="default">      ARMneon_VPMAXF,</span>
+<a name="464"><font size=-1>464     </font></a><span class="default">      ARMneon_VTBL,</span>
+<a name="465"><font size=-1>465     </font></a><span class="default">      ARMneon_VQDMULL,</span>
+<a name="466"><font size=-1>466     </font></a><span class="default">      ARMneon_VRECPS,</span>
+<a name="467"><font size=-1>467     </font></a><span class="default">      ARMneon_VRSQRTS,</span>
+<a name="468"><font size=-1>468     </font></a><span class="default">      </span><span class="comment">/* ... */</span>
+<a name="469"><font size=-1>469     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="470"><font size=-1>470     </font></a><span class="default">   <a href="dictionary_A.html#104455">ARMNeonBinOp</a>;</span>
+<a name="471"><font size=-1>471     </font></a><span class="default"></span>
+<a name="472"><font size=-1>472     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="473"><font size=-1>473     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="474"><font size=-1>474     </font></a><span class="default">      ARMneon_VSHL=</span><span class="number">150</span><span class="default">,</span>
+<a name="475"><font size=-1>475     </font></a><span class="default">      ARMneon_VSAL, </span><span class="comment">/* Yah, not SAR but SAL */</span>
+<a name="476"><font size=-1>476     </font></a><span class="comment">      </span><span class="default">ARMneon_VQSHL,</span>
+<a name="477"><font size=-1>477     </font></a><span class="default">      ARMneon_VQSAL</span>
+<a name="478"><font size=-1>478     </font></a><span class="default">   }</span>
+<a name="479"><font size=-1>479     </font></a><span class="default">   <a href="dictionary_A.html#104561">ARMNeonShiftOp</a>;</span>
+<a name="480"><font size=-1>480     </font></a><span class="default"></span>
+<a name="481"><font size=-1>481     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="482"><font size=-1>482     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="483"><font size=-1>483     </font></a><span class="default">      ARMneon_COPY=</span><span class="number">160</span><span class="default">,</span>
+<a name="484"><font size=-1>484     </font></a><span class="default">      ARMneon_COPYLU,</span>
+<a name="485"><font size=-1>485     </font></a><span class="default">      ARMneon_COPYLS,</span>
+<a name="486"><font size=-1>486     </font></a><span class="default">      ARMneon_COPYN,</span>
+<a name="487"><font size=-1>487     </font></a><span class="default">      ARMneon_COPYQNSS,</span>
+<a name="488"><font size=-1>488     </font></a><span class="default">      ARMneon_COPYQNUS,</span>
+<a name="489"><font size=-1>489     </font></a><span class="default">      ARMneon_COPYQNUU,</span>
+<a name="490"><font size=-1>490     </font></a><span class="default">      ARMneon_NOT,</span>
+<a name="491"><font size=-1>491     </font></a><span class="default">      ARMneon_EQZ,</span>
+<a name="492"><font size=-1>492     </font></a><span class="default">      ARMneon_DUP,</span>
+<a name="493"><font size=-1>493     </font></a><span class="default">      ARMneon_PADDLS,</span>
+<a name="494"><font size=-1>494     </font></a><span class="default">      ARMneon_PADDLU,</span>
+<a name="495"><font size=-1>495     </font></a><span class="default">      ARMneon_CNT,</span>
+<a name="496"><font size=-1>496     </font></a><span class="default">      ARMneon_CLZ,</span>
+<a name="497"><font size=-1>497     </font></a><span class="default">      ARMneon_CLS,</span>
+<a name="498"><font size=-1>498     </font></a><span class="default">      ARMneon_VCVTxFPxINT,</span>
+<a name="499"><font size=-1>499     </font></a><span class="default">      ARMneon_VQSHLNSS,</span>
+<a name="500"><font size=-1>500     </font></a><span class="default">      ARMneon_VQSHLNUU,</span>
+<a name="501"><font size=-1>501     </font></a><span class="default">      ARMneon_VQSHLNUS,</span>
+<a name="502"><font size=-1>502     </font></a><span class="default">      ARMneon_VCVTFtoU,</span>
+<a name="503"><font size=-1>503     </font></a><span class="default">      ARMneon_VCVTFtoS,</span>
+<a name="504"><font size=-1>504     </font></a><span class="default">      ARMneon_VCVTUtoF,</span>
+<a name="505"><font size=-1>505     </font></a><span class="default">      ARMneon_VCVTStoF,</span>
+<a name="506"><font size=-1>506     </font></a><span class="default">      ARMneon_VCVTFtoFixedU,</span>
+<a name="507"><font size=-1>507     </font></a><span class="default">      ARMneon_VCVTFtoFixedS,</span>
+<a name="508"><font size=-1>508     </font></a><span class="default">      ARMneon_VCVTFixedUtoF,</span>
+<a name="509"><font size=-1>509     </font></a><span class="default">      ARMneon_VCVTFixedStoF,</span>
+<a name="510"><font size=-1>510     </font></a><span class="default">      ARMneon_VCVTF16toF32,</span>
+<a name="511"><font size=-1>511     </font></a><span class="default">      ARMneon_VCVTF32toF16,</span>
+<a name="512"><font size=-1>512     </font></a><span class="default">      ARMneon_REV16,</span>
+<a name="513"><font size=-1>513     </font></a><span class="default">      ARMneon_REV32,</span>
+<a name="514"><font size=-1>514     </font></a><span class="default">      ARMneon_REV64,</span>
+<a name="515"><font size=-1>515     </font></a><span class="default">      ARMneon_ABS,</span>
+<a name="516"><font size=-1>516     </font></a><span class="default">      ARMneon_VNEGF,</span>
+<a name="517"><font size=-1>517     </font></a><span class="default">      ARMneon_VRECIP,</span>
+<a name="518"><font size=-1>518     </font></a><span class="default">      ARMneon_VRECIPF,</span>
+<a name="519"><font size=-1>519     </font></a><span class="default">      ARMneon_VABSFP,</span>
+<a name="520"><font size=-1>520     </font></a><span class="default">      ARMneon_VRSQRTEFP,</span>
+<a name="521"><font size=-1>521     </font></a><span class="default">      ARMneon_VRSQRTE</span>
+<a name="522"><font size=-1>522     </font></a><span class="default">      </span><span class="comment">/* ... */</span>
+<a name="523"><font size=-1>523     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="524"><font size=-1>524     </font></a><span class="default">   <a href="dictionary_A.html#104509">ARMNeonUnOp</a>;</span>
+<a name="525"><font size=-1>525     </font></a><span class="default"></span>
+<a name="526"><font size=-1>526     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="527"><font size=-1>527     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="528"><font size=-1>528     </font></a><span class="default">      ARMneon_SETELEM=</span><span class="number">200</span><span class="default">,</span>
+<a name="529"><font size=-1>529     </font></a><span class="default">      ARMneon_GETELEMU,</span>
+<a name="530"><font size=-1>530     </font></a><span class="default">      ARMneon_GETELEMS,</span>
+<a name="531"><font size=-1>531     </font></a><span class="default">      ARMneon_VDUP,</span>
+<a name="532"><font size=-1>532     </font></a><span class="default">   }</span>
+<a name="533"><font size=-1>533     </font></a><span class="default">   <a href="dictionary_A.html#104552">ARMNeonUnOpS</a>;</span>
+<a name="534"><font size=-1>534     </font></a><span class="default"></span>
+<a name="535"><font size=-1>535     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="536"><font size=-1>536     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="537"><font size=-1>537     </font></a><span class="default">      ARMneon_TRN=</span><span class="number">210</span><span class="default">,</span>
+<a name="538"><font size=-1>538     </font></a><span class="default">      ARMneon_ZIP,</span>
+<a name="539"><font size=-1>539     </font></a><span class="default">      ARMneon_UZP</span>
+<a name="540"><font size=-1>540     </font></a><span class="default">      </span><span class="comment">/* ... */</span>
+<a name="541"><font size=-1>541     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="542"><font size=-1>542     </font></a><span class="default">   <a href="dictionary_A.html#104570">ARMNeonDualOp</a>;</span>
+<a name="543"><font size=-1>543     </font></a><span class="default"></span>
+<a name="544"><font size=-1>544     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104453">showARMNeonBinOp</a> ( <a href="dictionary_A.html#104455">ARMNeonBinOp</a> op );</span>
+<a name="545"><font size=-1>545     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104507">showARMNeonUnOp</a> ( <a href="dictionary_A.html#104509">ARMNeonUnOp</a> op );</span>
+<a name="546"><font size=-1>546     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104550">showARMNeonUnOpS</a> ( <a href="dictionary_A.html#104552">ARMNeonUnOpS</a> op );</span>
+<a name="547"><font size=-1>547     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104559">showARMNeonShiftOp</a> ( <a href="dictionary_A.html#104561">ARMNeonShiftOp</a> op );</span>
+<a name="548"><font size=-1>548     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104568">showARMNeonDualOp</a> ( <a href="dictionary_A.html#104570">ARMNeonDualOp</a> op );</span>
+<a name="549"><font size=-1>549     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104505">showARMNeonBinOpDataType</a> ( <a href="dictionary_A.html#104455">ARMNeonBinOp</a> op );</span>
+<a name="550"><font size=-1>550     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104548">showARMNeonUnOpDataType</a> ( <a href="dictionary_A.html#104509">ARMNeonUnOp</a> op );</span>
+<a name="551"><font size=-1>551     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104557">showARMNeonUnOpSDataType</a> ( <a href="dictionary_A.html#104552">ARMNeonUnOpS</a> op );</span>
+<a name="552"><font size=-1>552     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104566">showARMNeonShiftOpDataType</a> ( <a href="dictionary_A.html#104561">ARMNeonShiftOp</a> op );</span>
+<a name="553"><font size=-1>553     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_S.html#104574">showARMNeonDualOpDataType</a> ( <a href="dictionary_A.html#104570">ARMNeonDualOp</a> op );</span>
+<a name="554"><font size=-1>554     </font></a><span class="default"></span>
+<a name="555"><font size=-1>555     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="556"><font size=-1>556     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="557"><font size=-1>557     </font></a><span class="default">      </span><span class="comment">/* baseline */</span>
+<a name="558"><font size=-1>558     </font></a><span class="comment">      </span><span class="default">ARMin_Alu=</span><span class="number">220</span><span class="default">,</span>
+<a name="559"><font size=-1>559     </font></a><span class="default">      ARMin_Shift,</span>
+<a name="560"><font size=-1>560     </font></a><span class="default">      ARMin_Unary,</span>
+<a name="561"><font size=-1>561     </font></a><span class="default">      ARMin_CmpOrTst,</span>
+<a name="562"><font size=-1>562     </font></a><span class="default">      ARMin_Mov,</span>
+<a name="563"><font size=-1>563     </font></a><span class="default">      ARMin_Imm32,</span>
+<a name="564"><font size=-1>564     </font></a><span class="default">      ARMin_LdSt32,</span>
+<a name="565"><font size=-1>565     </font></a><span class="default">      ARMin_LdSt16,</span>
+<a name="566"><font size=-1>566     </font></a><span class="default">      ARMin_LdSt8U,</span>
+<a name="567"><font size=-1>567     </font></a><span class="default">      ARMin_Ld8S,</span>
+<a name="568"><font size=-1>568     </font></a><span class="default">      ARMin_Goto,</span>
+<a name="569"><font size=-1>569     </font></a><span class="default">      ARMin_CMov,</span>
+<a name="570"><font size=-1>570     </font></a><span class="default">      ARMin_Call,</span>
+<a name="571"><font size=-1>571     </font></a><span class="default">      ARMin_Mul,</span>
+<a name="572"><font size=-1>572     </font></a><span class="default">      ARMin_LdrEX,</span>
+<a name="573"><font size=-1>573     </font></a><span class="default">      ARMin_StrEX,</span>
+<a name="574"><font size=-1>574     </font></a><span class="default">      </span><span class="comment">/* vfp */</span>
+<a name="575"><font size=-1>575     </font></a><span class="comment">      </span><span class="default">ARMin_VLdStD,</span>
+<a name="576"><font size=-1>576     </font></a><span class="default">      ARMin_VLdStS,</span>
+<a name="577"><font size=-1>577     </font></a><span class="default">      ARMin_VAluD,</span>
+<a name="578"><font size=-1>578     </font></a><span class="default">      ARMin_VAluS,</span>
+<a name="579"><font size=-1>579     </font></a><span class="default">      ARMin_VUnaryD,</span>
+<a name="580"><font size=-1>580     </font></a><span class="default">      ARMin_VUnaryS,</span>
+<a name="581"><font size=-1>581     </font></a><span class="default">      ARMin_VCmpD,</span>
+<a name="582"><font size=-1>582     </font></a><span class="default">      ARMin_VCMovD,</span>
+<a name="583"><font size=-1>583     </font></a><span class="default">      ARMin_VCMovS,</span>
+<a name="584"><font size=-1>584     </font></a><span class="default">      ARMin_VCvtSD,</span>
+<a name="585"><font size=-1>585     </font></a><span class="default">      ARMin_VXferD,</span>
+<a name="586"><font size=-1>586     </font></a><span class="default">      ARMin_VXferS,</span>
+<a name="587"><font size=-1>587     </font></a><span class="default">      ARMin_VCvtID,</span>
+<a name="588"><font size=-1>588     </font></a><span class="default">      ARMin_FPSCR,</span>
+<a name="589"><font size=-1>589     </font></a><span class="default">      ARMin_MFence,</span>
+<a name="590"><font size=-1>590     </font></a><span class="default">      </span><span class="comment">/* Neon */</span>
+<a name="591"><font size=-1>591     </font></a><span class="comment">      </span><span class="default">ARMin_NLdStQ,</span>
+<a name="592"><font size=-1>592     </font></a><span class="default">      ARMin_NLdStD,</span>
+<a name="593"><font size=-1>593     </font></a><span class="default">      ARMin_NUnary,</span>
+<a name="594"><font size=-1>594     </font></a><span class="default">      ARMin_NUnaryS,</span>
+<a name="595"><font size=-1>595     </font></a><span class="default">      ARMin_NDual,</span>
+<a name="596"><font size=-1>596     </font></a><span class="default">      ARMin_NBinary,</span>
+<a name="597"><font size=-1>597     </font></a><span class="default">      ARMin_NBinaryS,</span>
+<a name="598"><font size=-1>598     </font></a><span class="default">      ARMin_NShift,</span>
+<a name="599"><font size=-1>599     </font></a><span class="default">      ARMin_NeonImm,</span>
+<a name="600"><font size=-1>600     </font></a><span class="default">      ARMin_NCMovQ,</span>
+<a name="601"><font size=-1>601     </font></a><span class="default">      </span><span class="comment">/* This is not a NEON instruction. Actually there is no corresponding</span>
+<a name="602"><font size=-1>602     </font></a><span class="comment">         instruction in ARM instruction set at all. We need this one to</span>
+<a name="603"><font size=-1>603     </font></a><span class="comment">         generate spill/reload of 128-bit registers since current register</span>
+<a name="604"><font size=-1>604     </font></a><span class="comment">         allocator demands them to consist of no more than two instructions.</span>
+<a name="605"><font size=-1>605     </font></a><span class="comment">         We will split this instruction into 2 or 3 ARM instructions on the</span>
+<a name="606"><font size=-1>606     </font></a><span class="comment">         emiting phase.</span>
+<a name="607"><font size=-1>607     </font></a><span class="comment"></span>
+<a name="608"><font size=-1>608     </font></a><span class="comment">         NOTE: source and destination registers should be different! */</span>
+<a name="609"><font size=-1>609     </font></a><span class="comment">      </span><span class="default">ARMin_Add32</span>
+<a name="610"><font size=-1>610     </font></a><span class="default">   }</span>
+<a name="611"><font size=-1>611     </font></a><span class="default">   <a href="dictionary_A.html#105436">ARMInstrTag</a>;</span>
+<a name="612"><font size=-1>612     </font></a><span class="default"></span>
+<a name="613"><font size=-1>613     </font></a><span class="default"></span><span class="comment">/* Destinations are on the LEFT (first operand) */</span>
+<a name="614"><font size=-1>614     </font></a><span class="comment"></span>
+<a name="615"><font size=-1>615     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="616"><font size=-1>616     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="617"><font size=-1>617     </font></a><span class="default">      <a href="dictionary_A.html#105436">ARMInstrTag</a> <a href="dictionary_T.html#104582">tag</a>;</span>
+<a name="618"><font size=-1>618     </font></a><span class="default">      </span><span class="keyword">union </span><span class="default">{</span>
+<a name="619"><font size=-1>619     </font></a><span class="default">         </span><span class="comment">/* ADD/SUB/AND/OR/XOR, vanilla ALU op */</span>
+<a name="620"><font size=-1>620     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="621"><font size=-1>621     </font></a><span class="default">            <a href="dictionary_A.html#104410">ARMAluOp</a> <a href="dictionary_O.html#104619">op</a>;</span>
+<a name="622"><font size=-1>622     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_D.html#104620">dst</a>;</span>
+<a name="623"><font size=-1>623     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104621">argL</a>;</span>
+<a name="624"><font size=-1>624     </font></a><span class="default">            <a href="dictionary_A.html#104319">ARMRI84</a>* <a href="dictionary_A.html#104622">argR</a>;</span>
+<a name="625"><font size=-1>625     </font></a><span class="default">         } <a href="dictionary_A.html#104617">Alu</a>;</span>
+<a name="626"><font size=-1>626     </font></a><span class="default">         </span><span class="comment">/* SHL/SHR/SAR, 2nd arg is reg or imm */</span>
+<a name="627"><font size=-1>627     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="628"><font size=-1>628     </font></a><span class="default">            <a href="dictionary_A.html#104423">ARMShiftOp</a> <a href="dictionary_O.html#104632">op</a>;</span>
+<a name="629"><font size=-1>629     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_D.html#104633">dst</a>;</span>
+<a name="630"><font size=-1>630     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_A.html#104634">argL</a>;</span>
+<a name="631"><font size=-1>631     </font></a><span class="default">            <a href="dictionary_A.html#104348">ARMRI5</a>*    <a href="dictionary_A.html#104635">argR</a>;</span>
+<a name="632"><font size=-1>632     </font></a><span class="default">         } <a href="dictionary_S.html#104630">Shift</a>;</span>
+<a name="633"><font size=-1>633     </font></a><span class="default">         </span><span class="comment">/* NOT/NEG/CLZ */</span>
+<a name="634"><font size=-1>634     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="635"><font size=-1>635     </font></a><span class="default">            <a href="dictionary_A.html#104429">ARMUnaryOp</a> <a href="dictionary_O.html#104644">op</a>;</span>
+<a name="636"><font size=-1>636     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_D.html#104645">dst</a>;</span>
+<a name="637"><font size=-1>637     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_S.html#104646">src</a>;</span>
+<a name="638"><font size=-1>638     </font></a><span class="default">         } <a href="dictionary_U.html#104642">Unary</a>;</span>
+<a name="639"><font size=-1>639     </font></a><span class="default">         </span><span class="comment">/* CMP/TST; subtract/and, discard result, set NZCV */</span>
+<a name="640"><font size=-1>640     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="641"><font size=-1>641     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>     <a href="dictionary_I.html#104655">isCmp</a>;</span>
+<a name="642"><font size=-1>642     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104656">argL</a>;</span>
+<a name="643"><font size=-1>643     </font></a><span class="default">            <a href="dictionary_A.html#104319">ARMRI84</a>* <a href="dictionary_A.html#104657">argR</a>;</span>
+<a name="644"><font size=-1>644     </font></a><span class="default">         } <a href="dictionary_C.html#104653">CmpOrTst</a>;</span>
+<a name="645"><font size=-1>645     </font></a><span class="default">         </span><span class="comment">/* MOV dst, src -- reg-reg (or reg-imm8x4) move */</span>
+<a name="646"><font size=-1>646     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="647"><font size=-1>647     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_D.html#104665">dst</a>;</span>
+<a name="648"><font size=-1>648     </font></a><span class="default">            <a href="dictionary_A.html#104319">ARMRI84</a>* <a href="dictionary_S.html#104666">src</a>;</span>
+<a name="649"><font size=-1>649     </font></a><span class="default">         } <a href="dictionary_M.html#104663">Mov</a>;</span>
+<a name="650"><font size=-1>650     </font></a><span class="default">         </span><span class="comment">/* Pseudo-insn; make a 32-bit immediate */</span>
+<a name="651"><font size=-1>651     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="652"><font size=-1>652     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104674">dst</a>;</span>
+<a name="653"><font size=-1>653     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_I.html#104675">imm32</a>;</span>
+<a name="654"><font size=-1>654     </font></a><span class="default">         } <a href="dictionary_I.html#104672">Imm32</a>;</span>
+<a name="655"><font size=-1>655     </font></a><span class="default">         </span><span class="comment">/* 32-bit load or store */</span>
+<a name="656"><font size=-1>656     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="657"><font size=-1>657     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_I.html#104684">isLoad</a>;</span>
+<a name="658"><font size=-1>658     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_R.html#104685">rD</a>;</span>
+<a name="659"><font size=-1>659     </font></a><span class="default">            <a href="dictionary_A.html#104207">ARMAMode1</a>* <a href="dictionary_A.html#104686">amode</a>;</span>
+<a name="660"><font size=-1>660     </font></a><span class="default">         } <a href="dictionary_L.html#104682">LdSt32</a>;</span>
+<a name="661"><font size=-1>661     </font></a><span class="default">         </span><span class="comment">/* 16-bit load or store */</span>
+<a name="662"><font size=-1>662     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="663"><font size=-1>663     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_I.html#104696">isLoad</a>;</span>
+<a name="664"><font size=-1>664     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_S.html#104697">signedLoad</a>;</span>
+<a name="665"><font size=-1>665     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_R.html#104698">rD</a>;</span>
+<a name="666"><font size=-1>666     </font></a><span class="default">            <a href="dictionary_A.html#104240">ARMAMode2</a>* <a href="dictionary_A.html#104699">amode</a>;</span>
+<a name="667"><font size=-1>667     </font></a><span class="default">         } <a href="dictionary_L.html#104694">LdSt16</a>;</span>
+<a name="668"><font size=-1>668     </font></a><span class="default">         </span><span class="comment">/* 8-bit (unsigned) load or store */</span>
+<a name="669"><font size=-1>669     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="670"><font size=-1>670     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_I.html#104708">isLoad</a>;</span>
+<a name="671"><font size=-1>671     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_R.html#104709">rD</a>;</span>
+<a name="672"><font size=-1>672     </font></a><span class="default">            <a href="dictionary_A.html#104207">ARMAMode1</a>* <a href="dictionary_A.html#104710">amode</a>;</span>
+<a name="673"><font size=-1>673     </font></a><span class="default">         } <a href="dictionary_L.html#104706">LdSt8U</a>;</span>
+<a name="674"><font size=-1>674     </font></a><span class="default">         </span><span class="comment">/* 8-bit signed load */</span>
+<a name="675"><font size=-1>675     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="676"><font size=-1>676     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_R.html#105449">rD</a>;</span>
+<a name="677"><font size=-1>677     </font></a><span class="default">            <a href="dictionary_A.html#104240">ARMAMode2</a>* <a href="dictionary_A.html#105450">amode</a>;</span>
+<a name="678"><font size=-1>678     </font></a><span class="default">         } <a href="dictionary_L.html#105451">Ld8S</a>;</span>
+<a name="679"><font size=-1>679     </font></a><span class="default">         </span><span class="comment">/* Pseudo-insn.  Go to guest address gnext, on given</span>
+<a name="680"><font size=-1>680     </font></a><span class="comment">            condition, which could be ARMcc_AL. */</span>
+<a name="681"><font size=-1>681     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="682"><font size=-1>682     </font></a><span class="default">            <a href="dictionary_I.html#2371">IRJumpKind</a>  <a href="dictionary_J.html#104719">jk</a>;</span>
+<a name="683"><font size=-1>683     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#104720">cond</a>;</span>
+<a name="684"><font size=-1>684     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_G.html#104721">gnext</a>;</span>
+<a name="685"><font size=-1>685     </font></a><span class="default">         } <a href="dictionary_G.html#104717">Goto</a>;</span>
+<a name="686"><font size=-1>686     </font></a><span class="default">         </span><span class="comment">/* Mov src to dst on the given condition, which may not</span>
+<a name="687"><font size=-1>687     </font></a><span class="comment">            be ARMcc_AL. */</span>
+<a name="688"><font size=-1>688     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="689"><font size=-1>689     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#104730">cond</a>;</span>
+<a name="690"><font size=-1>690     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#104731">dst</a>;</span>
+<a name="691"><font size=-1>691     </font></a><span class="default">            <a href="dictionary_A.html#104319">ARMRI84</a>*    <a href="dictionary_S.html#104732">src</a>;</span>
+<a name="692"><font size=-1>692     </font></a><span class="default">         } <a href="dictionary_C.html#104728">CMov</a>;</span>
+<a name="693"><font size=-1>693     </font></a><span class="default">         </span><span class="comment">/* Pseudo-insn.  Call target (an absolute address), on given</span>
+<a name="694"><font size=-1>694     </font></a><span class="comment">            condition (which could be ARMcc_AL). */</span>
+<a name="695"><font size=-1>695     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="696"><font size=-1>696     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#104741">cond</a>;</span>
+<a name="697"><font size=-1>697     </font></a><span class="default">            <a href="dictionary_H.html#462">HWord</a>       <a href="dictionary_T.html#104742">target</a>;</span>
+<a name="698"><font size=-1>698     </font></a><span class="default">            <a href="dictionary_I.html#113">Int</a>         <a href="dictionary_N.html#104743">nArgRegs</a>; </span><span class="comment">/* # regs carrying args: 0 .. 4 */</span>
+<a name="699"><font size=-1>699     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_C.html#104739">Call</a>;</span>
+<a name="700"><font size=-1>700     </font></a><span class="default">         </span><span class="comment">/* (PLAIN) 32 *  32 -&gt; 32:  r0    = r2 * r3</span>
+<a name="701"><font size=-1>701     </font></a><span class="comment">            (ZX)    32 *u 32 -&gt; 64:  r1:r0 = r2 *u r3</span>
+<a name="702"><font size=-1>702     </font></a><span class="comment">            (SX)    32 *s 32 -&gt; 64:  r1:r0 = r2 *s r3</span>
+<a name="703"><font size=-1>703     </font></a><span class="comment">            Why hardwired registers?  Because the ARM ARM specifies</span>
+<a name="704"><font size=-1>704     </font></a><span class="comment">            (eg for straight MUL) the result (Rd) and the left arg (Rm)</span>
+<a name="705"><font size=-1>705     </font></a><span class="comment">            may not be the same register.  That's not a constraint we</span>
+<a name="706"><font size=-1>706     </font></a><span class="comment">            can enforce in the register allocator (without mucho extra</span>
+<a name="707"><font size=-1>707     </font></a><span class="comment">            complexity).  Hence hardwire it.  At least using caller-saves</span>
+<a name="708"><font size=-1>708     </font></a><span class="comment">            registers, which are less likely to be in use. */</span>
+<a name="709"><font size=-1>709     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="710"><font size=-1>710     </font></a><span class="default">            <a href="dictionary_A.html#104435">ARMMulOp</a> <a href="dictionary_O.html#104750">op</a>;</span>
+<a name="711"><font size=-1>711     </font></a><span class="default">         } <a href="dictionary_M.html#104748">Mul</a>;</span>
+<a name="712"><font size=-1>712     </font></a><span class="default">         </span><span class="comment">/* LDREX{,H,B} r0, [r1]</span>
+<a name="713"><font size=-1>713     </font></a><span class="comment">            Again, hardwired registers since this is not performance</span>
+<a name="714"><font size=-1>714     </font></a><span class="comment">            critical, and there are possibly constraints on the</span>
+<a name="715"><font size=-1>715     </font></a><span class="comment">            registers that we can't express in the register allocator.*/</span>
+<a name="716"><font size=-1>716     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="717"><font size=-1>717     </font></a><span class="default">            <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#104757">szB</a>; </span><span class="comment">/* currently only 4 is allowed */</span>
+<a name="718"><font size=-1>718     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_L.html#104755">LdrEX</a>;</span>
+<a name="719"><font size=-1>719     </font></a><span class="default">         </span><span class="comment">/* STREX{,H,B} r0, r1, [r2]</span>
+<a name="720"><font size=-1>720     </font></a><span class="comment">            r0 = SC( [r2] = r1 )</span>
+<a name="721"><font size=-1>721     </font></a><span class="comment">            Ditto comment re fixed registers. */</span>
+<a name="722"><font size=-1>722     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="723"><font size=-1>723     </font></a><span class="default">            <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#104764">szB</a>; </span><span class="comment">/* currently only 4 is allowed */</span>
+<a name="724"><font size=-1>724     </font></a><span class="comment">         </span><span class="default">} <a href="dictionary_S.html#104762">StrEX</a>;</span>
+<a name="725"><font size=-1>725     </font></a><span class="default">         </span><span class="comment">/* VFP INSTRUCTIONS */</span>
+<a name="726"><font size=-1>726     </font></a><span class="comment">         /* 64-bit Fp load/store */</span>
+<a name="727"><font size=-1>727     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="728"><font size=-1>728     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_I.html#104773">isLoad</a>;</span>
+<a name="729"><font size=-1>729     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_D.html#104774">dD</a>;</span>
+<a name="730"><font size=-1>730     </font></a><span class="default">            <a href="dictionary_A.html#104271">ARMAModeV</a>* <a href="dictionary_A.html#104775">amode</a>;</span>
+<a name="731"><font size=-1>731     </font></a><span class="default">         } <a href="dictionary_V.html#104771">VLdStD</a>;</span>
+<a name="732"><font size=-1>732     </font></a><span class="default">         </span><span class="comment">/* 32-bit Fp load/store */</span>
+<a name="733"><font size=-1>733     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="734"><font size=-1>734     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_I.html#104784">isLoad</a>;</span>
+<a name="735"><font size=-1>735     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>       <a href="dictionary_F.html#104785">fD</a>;</span>
+<a name="736"><font size=-1>736     </font></a><span class="default">            <a href="dictionary_A.html#104271">ARMAModeV</a>* <a href="dictionary_A.html#104786">amode</a>;</span>
+<a name="737"><font size=-1>737     </font></a><span class="default">         } <a href="dictionary_V.html#104782">VLdStS</a>;</span>
+<a name="738"><font size=-1>738     </font></a><span class="default">         </span><span class="comment">/* 64-bit FP binary arithmetic */</span>
+<a name="739"><font size=-1>739     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="740"><font size=-1>740     </font></a><span class="default">            <a href="dictionary_A.html#104441">ARMVfpOp</a> <a href="dictionary_O.html#104796">op</a>;</span>
+<a name="741"><font size=-1>741     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_D.html#104797">dst</a>;</span>
+<a name="742"><font size=-1>742     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104798">argL</a>;</span>
+<a name="743"><font size=-1>743     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104799">argR</a>;</span>
+<a name="744"><font size=-1>744     </font></a><span class="default">         } <a href="dictionary_V.html#104794">VAluD</a>;</span>
+<a name="745"><font size=-1>745     </font></a><span class="default">         </span><span class="comment">/* 32-bit FP binary arithmetic */</span>
+<a name="746"><font size=-1>746     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="747"><font size=-1>747     </font></a><span class="default">            <a href="dictionary_A.html#104441">ARMVfpOp</a> <a href="dictionary_O.html#104809">op</a>;</span>
+<a name="748"><font size=-1>748     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_D.html#104810">dst</a>;</span>
+<a name="749"><font size=-1>749     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104811">argL</a>;</span>
+<a name="750"><font size=-1>750     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>     <a href="dictionary_A.html#104812">argR</a>;</span>
+<a name="751"><font size=-1>751     </font></a><span class="default">         } <a href="dictionary_V.html#104807">VAluS</a>;</span>
+<a name="752"><font size=-1>752     </font></a><span class="default">         </span><span class="comment">/* 64-bit FP unary, also reg-reg move */</span>
+<a name="753"><font size=-1>753     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="754"><font size=-1>754     </font></a><span class="default">            <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a> <a href="dictionary_O.html#104821">op</a>;</span>
+<a name="755"><font size=-1>755     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#104822">dst</a>;</span>
+<a name="756"><font size=-1>756     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_S.html#104823">src</a>;</span>
+<a name="757"><font size=-1>757     </font></a><span class="default">         } <a href="dictionary_V.html#104819">VUnaryD</a>;</span>
+<a name="758"><font size=-1>758     </font></a><span class="default">         </span><span class="comment">/* 32-bit FP unary, also reg-reg move */</span>
+<a name="759"><font size=-1>759     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="760"><font size=-1>760     </font></a><span class="default">            <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a> <a href="dictionary_O.html#104832">op</a>;</span>
+<a name="761"><font size=-1>761     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#104833">dst</a>;</span>
+<a name="762"><font size=-1>762     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_S.html#104834">src</a>;</span>
+<a name="763"><font size=-1>763     </font></a><span class="default">         } <a href="dictionary_V.html#104830">VUnaryS</a>;</span>
+<a name="764"><font size=-1>764     </font></a><span class="default">         </span><span class="comment">/* 64-bit FP compare and move results to CPSR (FCMPD;FMSTAT) */</span>
+<a name="765"><font size=-1>765     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="766"><font size=-1>766     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#104842">argL</a>;</span>
+<a name="767"><font size=-1>767     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#104843">argR</a>;</span>
+<a name="768"><font size=-1>768     </font></a><span class="default">         } <a href="dictionary_V.html#104840">VCmpD</a>;</span>
+<a name="769"><font size=-1>769     </font></a><span class="default">         </span><span class="comment">/* 64-bit FP mov src to dst on the given condition, which may</span>
+<a name="770"><font size=-1>770     </font></a><span class="comment">            not be ARMcc_AL. */</span>
+<a name="771"><font size=-1>771     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="772"><font size=-1>772     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#104852">cond</a>;</span>
+<a name="773"><font size=-1>773     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#104853">dst</a>;</span>
+<a name="774"><font size=-1>774     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_S.html#104854">src</a>;</span>
+<a name="775"><font size=-1>775     </font></a><span class="default">         } <a href="dictionary_V.html#104850">VCMovD</a>;</span>
+<a name="776"><font size=-1>776     </font></a><span class="default">         </span><span class="comment">/* 32-bit FP mov src to dst on the given condition, which may</span>
+<a name="777"><font size=-1>777     </font></a><span class="comment">            not be ARMcc_AL. */</span>
+<a name="778"><font size=-1>778     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="779"><font size=-1>779     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#104863">cond</a>;</span>
+<a name="780"><font size=-1>780     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#104864">dst</a>;</span>
+<a name="781"><font size=-1>781     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_S.html#104865">src</a>;</span>
+<a name="782"><font size=-1>782     </font></a><span class="default">         } <a href="dictionary_V.html#104861">VCMovS</a>;</span>
+<a name="783"><font size=-1>783     </font></a><span class="default">         </span><span class="comment">/* Convert between 32-bit and 64-bit FP values (both ways).</span>
+<a name="784"><font size=-1>784     </font></a><span class="comment">            (FCVTSD, FCVTDS) */</span>
+<a name="785"><font size=-1>785     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="786"><font size=-1>786     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_S.html#104874">sToD</a>; </span><span class="comment">/* True: F32-&gt;F64.  False: F64-&gt;F32 */</span>
+<a name="787"><font size=-1>787     </font></a><span class="comment">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104875">dst</a></span><span class="default">;</span>
+<a name="788"><font size=-1>788     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_S.html#104876">src</a>;</span>
+<a name="789"><font size=-1>789     </font></a><span class="default">         } <a href="dictionary_V.html#104872">VCvtSD</a>;</span>
+<a name="790"><font size=-1>790     </font></a><span class="default">         </span><span class="comment">/* Transfer a VFP D reg to/from two integer registers (VMOV) */</span>
+<a name="791"><font size=-1>791     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="792"><font size=-1>792     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_T.html#104886">toD</a>;</span>
+<a name="793"><font size=-1>793     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104887">dD</a>;</span>
+<a name="794"><font size=-1>794     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104888">rHi</a>;</span>
+<a name="795"><font size=-1>795     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104889">rLo</a>;</span>
+<a name="796"><font size=-1>796     </font></a><span class="default">         } <a href="dictionary_V.html#104884">VXferD</a>;</span>
+<a name="797"><font size=-1>797     </font></a><span class="default">         </span><span class="comment">/* Transfer a VFP S reg to/from an integer register (VMOV) */</span>
+<a name="798"><font size=-1>798     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="799"><font size=-1>799     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_T.html#104898">toS</a>;</span>
+<a name="800"><font size=-1>800     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_F.html#104899">fD</a>;</span>
+<a name="801"><font size=-1>801     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#104900">rLo</a>;</span>
+<a name="802"><font size=-1>802     </font></a><span class="default">         } <a href="dictionary_V.html#104896">VXferS</a>;</span>
+<a name="803"><font size=-1>803     </font></a><span class="default">         </span><span class="comment">/* Convert between 32-bit ints and 64-bit FP values (both ways</span>
+<a name="804"><font size=-1>804     </font></a><span class="comment">            and both signednesses). (FSITOD, FUITOD, FTOSID, FTOUID) */</span>
+<a name="805"><font size=-1>805     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="806"><font size=-1>806     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_I.html#104910">iToD</a>; </span><span class="comment">/* True: I32-&gt;F64.  False: F64-&gt;I32 */</span>
+<a name="807"><font size=-1>807     </font></a><span class="comment">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_S.html#104911">syned</a></span><span class="default">; </span><span class="comment">/* True: I32 is signed.  False: I32 is unsigned */</span>
+<a name="808"><font size=-1>808     </font></a><span class="comment">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104912">dst</a></span><span class="default">;</span>
+<a name="809"><font size=-1>809     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_S.html#104913">src</a>;</span>
+<a name="810"><font size=-1>810     </font></a><span class="default">         } <a href="dictionary_V.html#104908">VCvtID</a>;</span>
+<a name="811"><font size=-1>811     </font></a><span class="default">         </span><span class="comment">/* Move a 32-bit value to/from the FPSCR (FMXR, FMRX) */</span>
+<a name="812"><font size=-1>812     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="813"><font size=-1>813     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_T.html#104921">toFPSCR</a>;</span>
+<a name="814"><font size=-1>814     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_I.html#104922">iReg</a>;</span>
+<a name="815"><font size=-1>815     </font></a><span class="default">         } <a href="dictionary_F.html#104919">FPSCR</a>;</span>
+<a name="816"><font size=-1>816     </font></a><span class="default">         </span><span class="comment">/* Mem fence.  An insn which fences all loads and stores as</span>
+<a name="817"><font size=-1>817     </font></a><span class="comment">            much as possible before continuing.  On ARM we emit the</span>
+<a name="818"><font size=-1>818     </font></a><span class="comment">            sequence</span>
+<a name="819"><font size=-1>819     </font></a><span class="comment">               mcr 15,0,r0,c7,c10,4 (DSB)</span>
+<a name="820"><font size=-1>820     </font></a><span class="comment">               mcr 15,0,r0,c7,c10,5 (DMB)</span>
+<a name="821"><font size=-1>821     </font></a><span class="comment">               mcr 15,0,r0,c7,c5,4 (ISB)</span>
+<a name="822"><font size=-1>822     </font></a><span class="comment">            which is probably total overkill, but better safe than</span>
+<a name="823"><font size=-1>823     </font></a><span class="comment">            sorry.</span>
+<a name="824"><font size=-1>824     </font></a><span class="comment">         */</span>
+<a name="825"><font size=-1>825     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="826"><font size=-1>826     </font></a><span class="default">         } <a href="dictionary_M.html#105473">MFence</a>;</span>
+<a name="827"><font size=-1>827     </font></a><span class="default">         </span><span class="comment">/* Neon data processing instruction: 3 registers of the same</span>
+<a name="828"><font size=-1>828     </font></a><span class="comment">            length */</span>
+<a name="829"><font size=-1>829     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="830"><font size=-1>830     </font></a><span class="default">            <a href="dictionary_A.html#104455">ARMNeonBinOp</a> <a href="dictionary_O.html#104588">op</a>;</span>
+<a name="831"><font size=-1>831     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104989">dst</a>;</span>
+<a name="832"><font size=-1>832     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#104987">argL</a>;</span>
+<a name="833"><font size=-1>833     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#104988">argR</a>;</span>
+<a name="834"><font size=-1>834     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104589">size</a>;</span>
+<a name="835"><font size=-1>835     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#104990">Q</a>;</span>
+<a name="836"><font size=-1>836     </font></a><span class="default">         } <a href="dictionary_N.html#104586">NBinary</a>;</span>
+<a name="837"><font size=-1>837     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="838"><font size=-1>838     </font></a><span class="default">            <a href="dictionary_A.html#104455">ARMNeonBinOp</a> <a href="dictionary_O.html#105476">op</a>;</span>
+<a name="839"><font size=-1>839     </font></a><span class="default">            <a href="dictionary_A.html#104395">ARMNRS</a>* <a href="dictionary_D.html#105477">dst</a>;</span>
+<a name="840"><font size=-1>840     </font></a><span class="default">            <a href="dictionary_A.html#104395">ARMNRS</a>* <a href="dictionary_A.html#105478">argL</a>;</span>
+<a name="841"><font size=-1>841     </font></a><span class="default">            <a href="dictionary_A.html#104395">ARMNRS</a>* <a href="dictionary_A.html#105479">argR</a>;</span>
+<a name="842"><font size=-1>842     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#105480">size</a>;</span>
+<a name="843"><font size=-1>843     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#105481">Q</a>;</span>
+<a name="844"><font size=-1>844     </font></a><span class="default">         } <a href="dictionary_N.html#105482">NBinaryS</a>;</span>
+<a name="845"><font size=-1>845     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="846"><font size=-1>846     </font></a><span class="default">            <a href="dictionary_A.html#104561">ARMNeonShiftOp</a> <a href="dictionary_O.html#105019">op</a>;</span>
+<a name="847"><font size=-1>847     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#105022">dst</a>;</span>
+<a name="848"><font size=-1>848     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#105020">argL</a>;</span>
+<a name="849"><font size=-1>849     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_A.html#105021">argR</a>;</span>
+<a name="850"><font size=-1>850     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104605">size</a>;</span>
+<a name="851"><font size=-1>851     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#105023">Q</a>;</span>
+<a name="852"><font size=-1>852     </font></a><span class="default">         } <a href="dictionary_N.html#104603">NShift</a>;</span>
+<a name="853"><font size=-1>853     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="854"><font size=-1>854     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_I.html#104934">isLoad</a>;</span>
+<a name="855"><font size=-1>855     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104935">dQ</a>;</span>
+<a name="856"><font size=-1>856     </font></a><span class="default">            <a href="dictionary_A.html#104287">ARMAModeN</a> *<a href="dictionary_A.html#104936">amode</a>;</span>
+<a name="857"><font size=-1>857     </font></a><span class="default">         } <a href="dictionary_N.html#104932">NLdStQ</a>;</span>
+<a name="858"><font size=-1>858     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="859"><font size=-1>859     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_I.html#104945">isLoad</a>;</span>
+<a name="860"><font size=-1>860     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104946">dD</a>;</span>
+<a name="861"><font size=-1>861     </font></a><span class="default">            <a href="dictionary_A.html#104287">ARMAModeN</a> *<a href="dictionary_A.html#104947">amode</a>;</span>
+<a name="862"><font size=-1>862     </font></a><span class="default">         } <a href="dictionary_N.html#104943">NLdStD</a>;</span>
+<a name="863"><font size=-1>863     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="864"><font size=-1>864     </font></a><span class="default">            <a href="dictionary_A.html#104552">ARMNeonUnOpS</a> <a href="dictionary_O.html#104599">op</a>;</span>
+<a name="865"><font size=-1>865     </font></a><span class="default">            <a href="dictionary_A.html#104395">ARMNRS</a>*  <a href="dictionary_D.html#104966">dst</a>;</span>
+<a name="866"><font size=-1>866     </font></a><span class="default">            <a href="dictionary_A.html#104395">ARMNRS</a>*  <a href="dictionary_S.html#104965">src</a>;</span>
+<a name="867"><font size=-1>867     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104601">size</a>;</span>
+<a name="868"><font size=-1>868     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#104967">Q</a>;</span>
+<a name="869"><font size=-1>869     </font></a><span class="default">         } <a href="dictionary_N.html#104597">NUnaryS</a>;</span>
+<a name="870"><font size=-1>870     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="871"><font size=-1>871     </font></a><span class="default">            <a href="dictionary_A.html#104509">ARMNeonUnOp</a> <a href="dictionary_O.html#104593">op</a>;</span>
+<a name="872"><font size=-1>872     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>  <a href="dictionary_D.html#104956">dst</a>;</span>
+<a name="873"><font size=-1>873     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>  <a href="dictionary_S.html#104955">src</a>;</span>
+<a name="874"><font size=-1>874     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104595">size</a>;</span>
+<a name="875"><font size=-1>875     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#104957">Q</a>;</span>
+<a name="876"><font size=-1>876     </font></a><span class="default">         } <a href="dictionary_N.html#104591">NUnary</a>;</span>
+<a name="877"><font size=-1>877     </font></a><span class="default">         </span><span class="comment">/* Takes two arguments and modifies them both. */</span>
+<a name="878"><font size=-1>878     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="879"><font size=-1>879     </font></a><span class="default">            <a href="dictionary_A.html#104570">ARMNeonDualOp</a> <a href="dictionary_O.html#104975">op</a>;</span>
+<a name="880"><font size=-1>880     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>  <a href="dictionary_A.html#104976">arg1</a>;</span>
+<a name="881"><font size=-1>881     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>  <a href="dictionary_A.html#104977">arg2</a>;</span>
+<a name="882"><font size=-1>882     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#104609">size</a>;</span>
+<a name="883"><font size=-1>883     </font></a><span class="default">            <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_Q.html#104978">Q</a>;</span>
+<a name="884"><font size=-1>884     </font></a><span class="default">         } <a href="dictionary_N.html#104607">NDual</a>;</span>
+<a name="885"><font size=-1>885     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="886"><font size=-1>886     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_D.html#104998">dst</a>;</span>
+<a name="887"><font size=-1>887     </font></a><span class="default">            <a href="dictionary_A.html#104375">ARMNImm</a>* <a href="dictionary_I.html#104999">imm</a>;</span>
+<a name="888"><font size=-1>888     </font></a><span class="default">         } <a href="dictionary_N.html#104996">NeonImm</a>;</span>
+<a name="889"><font size=-1>889     </font></a><span class="default">         </span><span class="comment">/* 128-bit Neon move src to dst on the given condition, which</span>
+<a name="890"><font size=-1>890     </font></a><span class="comment">            may not be ARMcc_AL. */</span>
+<a name="891"><font size=-1>891     </font></a><span class="comment">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="892"><font size=-1>892     </font></a><span class="default">            <a href="dictionary_A.html#104189">ARMCondCode</a> <a href="dictionary_C.html#105008">cond</a>;</span>
+<a name="893"><font size=-1>893     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#105009">dst</a>;</span>
+<a name="894"><font size=-1>894     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_S.html#105010">src</a>;</span>
+<a name="895"><font size=-1>895     </font></a><span class="default">         } <a href="dictionary_N.html#105006">NCMovQ</a>;</span>
+<a name="896"><font size=-1>896     </font></a><span class="default">         </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="897"><font size=-1>897     </font></a><span class="default">            </span><span class="comment">/* Note: rD != rN */</span>
+<a name="898"><font size=-1>898     </font></a><span class="comment">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#105039">rD</a></span><span class="default">;</span>
+<a name="899"><font size=-1>899     </font></a><span class="default">            <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_R.html#105040">rN</a>;</span>
+<a name="900"><font size=-1>900     </font></a><span class="default">            <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_I.html#105041">imm32</a>;</span>
+<a name="901"><font size=-1>901     </font></a><span class="default">         } <a href="dictionary_A.html#105037">Add32</a>;</span>
+<a name="902"><font size=-1>902     </font></a><span class="default">      } <a href="dictionary_A.html#104584">ARMin</a>;</span>
+<a name="903"><font size=-1>903     </font></a><span class="default">   }</span>
+<a name="904"><font size=-1>904     </font></a><span class="default">   <a href="dictionary_A.html#104580">ARMInstr</a>;</span>
+<a name="905"><font size=-1>905     </font></a><span class="default"></span>
+<a name="906"><font size=-1>906     </font></a><span class="default"></span>
+<a name="907"><font size=-1>907     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104610">ARMInstr_Alu</a>      ( <a href="dictionary_A.html#104410">ARMAluOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104319">ARMRI84</a>* );</span>
+<a name="908"><font size=-1>908     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104623">ARMInstr_Shift</a>    ( <a href="dictionary_A.html#104423">ARMShiftOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104348">ARMRI5</a>* );</span>
+<a name="909"><font size=-1>909     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104636">ARMInstr_Unary</a>    ( <a href="dictionary_A.html#104429">ARMUnaryOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="910"><font size=-1>910     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104647">ARMInstr_CmpOrTst</a> ( <a href="dictionary_B.html#78">Bool</a> isCmp, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104319">ARMRI84</a>* );</span>
+<a name="911"><font size=-1>911     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104658">ARMInstr_Mov</a>      ( <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104319">ARMRI84</a>* );</span>
+<a name="912"><font size=-1>912     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104667">ARMInstr_Imm32</a>    ( <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_U.html#8">UInt</a> );</span>
+<a name="913"><font size=-1>913     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104676">ARMInstr_LdSt32</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104207">ARMAMode1</a>* );</span>
+<a name="914"><font size=-1>914     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104687">ARMInstr_LdSt16</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_B.html#78">Bool</a> signedLoad,</span>
+<a name="915"><font size=-1>915     </font></a><span class="default">                                     <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104240">ARMAMode2</a>* );</span>
+<a name="916"><font size=-1>916     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104700">ARMInstr_LdSt8U</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104207">ARMAMode1</a>* );</span>
+<a name="917"><font size=-1>917     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#105492">ARMInstr_Ld8S</a>     ( <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104240">ARMAMode2</a>* );</span>
+<a name="918"><font size=-1>918     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104711">ARMInstr_Goto</a>     ( <a href="dictionary_I.html#2371">IRJumpKind</a>, <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#973">HReg</a> gnext );</span>
+<a name="919"><font size=-1>919     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104722">ARMInstr_CMov</a>     ( <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_A.html#104319">ARMRI84</a>* src );</span>
+<a name="920"><font size=-1>920     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104733">ARMInstr_Call</a>     ( <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#462">HWord</a>, <a href="dictionary_I.html#113">Int</a> nArgRegs );</span>
+<a name="921"><font size=-1>921     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104744">ARMInstr_Mul</a>      ( <a href="dictionary_A.html#104435">ARMMulOp</a> op );</span>
+<a name="922"><font size=-1>922     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104751">ARMInstr_LdrEX</a>    ( <a href="dictionary_I.html#113">Int</a> szB );</span>
+<a name="923"><font size=-1>923     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104758">ARMInstr_StrEX</a>    ( <a href="dictionary_I.html#113">Int</a> szB );</span>
+<a name="924"><font size=-1>924     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104765">ARMInstr_VLdStD</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104271">ARMAModeV</a>* );</span>
+<a name="925"><font size=-1>925     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104776">ARMInstr_VLdStS</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104271">ARMAModeV</a>* );</span>
+<a name="926"><font size=-1>926     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104787">ARMInstr_VAluD</a>    ( <a href="dictionary_A.html#104441">ARMVfpOp</a> op, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="927"><font size=-1>927     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104800">ARMInstr_VAluS</a>    ( <a href="dictionary_A.html#104441">ARMVfpOp</a> op, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="928"><font size=-1>928     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104813">ARMInstr_VUnaryD</a>  ( <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="929"><font size=-1>929     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104824">ARMInstr_VUnaryS</a>  ( <a href="dictionary_A.html#104448">ARMVfpUnaryOp</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="930"><font size=-1>930     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104835">ARMInstr_VCmpD</a>    ( <a href="dictionary_H.html#973">HReg</a> argL, <a href="dictionary_H.html#973">HReg</a> argR );</span>
+<a name="931"><font size=-1>931     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104844">ARMInstr_VCMovD</a>   ( <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="932"><font size=-1>932     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104855">ARMInstr_VCMovS</a>   ( <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="933"><font size=-1>933     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104866">ARMInstr_VCvtSD</a>   ( <a href="dictionary_B.html#78">Bool</a> sToD, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="934"><font size=-1>934     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104877">ARMInstr_VXferD</a>   ( <a href="dictionary_B.html#78">Bool</a> toD, <a href="dictionary_H.html#973">HReg</a> dD, <a href="dictionary_H.html#973">HReg</a> rHi, <a href="dictionary_H.html#973">HReg</a> rLo );</span>
+<a name="935"><font size=-1>935     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104890">ARMInstr_VXferS</a>   ( <a href="dictionary_B.html#78">Bool</a> toS, <a href="dictionary_H.html#973">HReg</a> fD, <a href="dictionary_H.html#973">HReg</a> rLo );</span>
+<a name="936"><font size=-1>936     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104901">ARMInstr_VCvtID</a>   ( <a href="dictionary_B.html#78">Bool</a> iToD, <a href="dictionary_B.html#78">Bool</a> syned,</span>
+<a name="937"><font size=-1>937     </font></a><span class="default">                                     <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src );</span>
+<a name="938"><font size=-1>938     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104914">ARMInstr_FPSCR</a>    ( <a href="dictionary_B.html#78">Bool</a> toFPSCR, <a href="dictionary_H.html#973">HReg</a> iReg );</span>
+<a name="939"><font size=-1>939     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104923">ARMInstr_MFence</a>   ( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="940"><font size=-1>940     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104926">ARMInstr_NLdStQ</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104287">ARMAModeN</a>* );</span>
+<a name="941"><font size=-1>941     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104937">ARMInstr_NLdStD</a>   ( <a href="dictionary_B.html#78">Bool</a> isLoad, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104287">ARMAModeN</a>* );</span>
+<a name="942"><font size=-1>942     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104948">ARMInstr_NUnary</a>   ( <a href="dictionary_A.html#104509">ARMNeonUnOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="943"><font size=-1>943     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104958">ARMInstr_NUnaryS</a>  ( <a href="dictionary_A.html#104509">ARMNeonUnOp</a>, <a href="dictionary_A.html#104395">ARMNRS</a>*, <a href="dictionary_A.html#104395">ARMNRS</a>*,</span>
+<a name="944"><font size=-1>944     </font></a><span class="default">                                     <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="945"><font size=-1>945     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104968">ARMInstr_NDual</a>    ( <a href="dictionary_A.html#104570">ARMNeonDualOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="946"><font size=-1>946     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104979">ARMInstr_NBinary</a>  ( <a href="dictionary_A.html#104455">ARMNeonBinOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>,</span>
+<a name="947"><font size=-1>947     </font></a><span class="default">                                     <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="948"><font size=-1>948     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#105011">ARMInstr_NShift</a>   ( <a href="dictionary_A.html#104561">ARMNeonShiftOp</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a>,</span>
+<a name="949"><font size=-1>949     </font></a><span class="default">                                     <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="950"><font size=-1>950     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#104991">ARMInstr_NeonImm</a>  ( <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_A.html#104375">ARMNImm</a>* );</span>
+<a name="951"><font size=-1>951     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#105000">ARMInstr_NCMovQ</a>   ( <a href="dictionary_A.html#104189">ARMCondCode</a>, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_H.html#973">HReg</a> );</span>
+<a name="952"><font size=-1>952     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_A.html#104580">ARMInstr</a></span><span class="default">* <a href="dictionary_A.html#105029">ARMInstr_Add32</a>    ( <a href="dictionary_H.html#973">HReg</a> rD, <a href="dictionary_H.html#973">HReg</a> rN, <a href="dictionary_U.html#8">UInt</a> imm32 );</span>
+<a name="953"><font size=-1>953     </font></a><span class="default"></span>
+<a name="954"><font size=-1>954     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_P.html#4442">ppARMInstr</a> </span><span class="default">( <a href="dictionary_A.html#104580">ARMInstr</a>* );</span>
+<a name="955"><font size=-1>955     </font></a><span class="default"></span>
+<a name="956"><font size=-1>956     </font></a><span class="default"></span>
+<a name="957"><font size=-1>957     </font></a><span class="default"></span><span class="comment">/* Some functions that insulate the register allocator from details</span>
+<a name="958"><font size=-1>958     </font></a><span class="comment">   of the underlying instruction set. */</span>
+<a name="959"><font size=-1>959     </font></a><span class="comment"></span><span class="keyword">extern void <a href="dictionary_G.html#4438">getRegUsage_ARMInstr</a> </span><span class="default">( <a href="dictionary_H.html#4390">HRegUsage</a>*, <a href="dictionary_A.html#104580">ARMInstr</a>*, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="960"><font size=-1>960     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_M.html#4439">mapRegs_ARMInstr</a>     </span><span class="default">( <a href="dictionary_H.html#4392">HRegRemap</a>*, <a href="dictionary_A.html#104580">ARMInstr</a>*, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="961"><font size=-1>961     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_I.html#4437">isMove_ARMInstr</a>      </span><span class="default">( <a href="dictionary_A.html#104580">ARMInstr</a>*, <a href="dictionary_H.html#973">HReg</a>*, <a href="dictionary_H.html#973">HReg</a>* );</span>
+<a name="962"><font size=-1>962     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_E.html#4445">emit_ARMInstr</a>        </span><span class="default">( <a href="dictionary_U.html#449">UChar</a>* buf, <a href="dictionary_I.html#113">Int</a> nbuf, <a href="dictionary_A.html#104580">ARMInstr</a>*, </span>
+<a name="963"><font size=-1>963     </font></a><span class="default">                                   <a href="dictionary_B.html#78">Bool</a>, </span><span class="keyword">void</span><span class="default">* dispatch );</span>
+<a name="964"><font size=-1>964     </font></a><span class="default"></span>
+<a name="965"><font size=-1>965     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_G.html#4440">genSpill_ARM</a>  </span><span class="default">( </span><span class="comment">/*OUT*/<a href="dictionary_H.html#4352">HInstr</a></span><span class="default">** i1, </span><span class="comment">/*OUT*/<a href="dictionary_H.html#4352">HInstr</a></span><span class="default">** i2,</span>
+<a name="966"><font size=-1>966     </font></a><span class="default">                            <a href="dictionary_H.html#973">HReg</a> rreg, <a href="dictionary_I.html#113">Int</a> offset, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="967"><font size=-1>967     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_G.html#4441">genReload_ARM</a> </span><span class="default">( </span><span class="comment">/*OUT*/<a href="dictionary_H.html#4352">HInstr</a></span><span class="default">** i1, </span><span class="comment">/*OUT*/<a href="dictionary_H.html#4352">HInstr</a></span><span class="default">** i2,</span>
+<a name="968"><font size=-1>968     </font></a><span class="default">                            <a href="dictionary_H.html#973">HReg</a> rreg, <a href="dictionary_I.html#113">Int</a> offset, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="969"><font size=-1>969     </font></a><span class="default"></span>
+<a name="970"><font size=-1>970     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_G.html#4436">getAllocableRegs_ARM</a> </span><span class="default">( <a href="dictionary_I.html#113">Int</a>*, <a href="dictionary_H.html#973">HReg</a>** );</span>
+<a name="971"><font size=-1>971     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#977">HInstrArray</a></span><span class="default">* <a href="dictionary_I.html#4444">iselSB_ARM</a>   ( <a href="dictionary_I.html#561">IRSB</a>*, <a href="dictionary_V.html#2377">VexArch</a>,</span>
+<a name="972"><font size=-1>972     </font></a><span class="default">                                   <a href="dictionary_V.html#2379">VexArchInfo</a>*, <a href="dictionary_V.html#2381">VexAbiInfo</a>* );</span>
+<a name="973"><font size=-1>973     </font></a><span class="default"></span>
+<a name="974"><font size=-1>974     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">/* ndef __VEX_HOST_ARM_DEFS_H */</span>
+<a name="975"><font size=-1>975     </font></a><span class="comment"></span>
+<a name="976"><font size=-1>976     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="977"><font size=-1>977     </font></a><span class="comment">/*--- end                                     host_arm_defs.h ---*/</span>
+<a name="978"><font size=-1>978     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="979"><font size=-1>979     </font></a><span class="comment"></span>
+</pre></body></html>

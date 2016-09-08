@@ -1,0 +1,39 @@
+<html><head><title>StructureTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/test/java/net/sourceforge/pmd/lang/java/dfa/StructureTest.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/test/java/net/sourceforge/pmd/lang/java/dfa/StructureTest.java";
+top.document.title  = "StructureTest.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#4152">dfa</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">org.junit.Assert.assertEquals;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>.<a href="dictionary_N.html#759">LanguageRegistry</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#576">ast</a>.<a href="dictionary_N.html#510">Node</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#578">dfa</a>.<a href="dictionary_N.html#7132">Structure</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#45">java</a>.<a href="dictionary_N.html#1056">JavaLanguageModule</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#54">ast</a>.<a href="dictionary_N.html#740">ASTMethodDeclaration</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#923">junit</a>.<a href="dictionary_O.html#921">Test</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_N.html#7127">StructureTest</a> </span><span class="default">{</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span>
+<a name="18"><font size=-1>18     </font></a><span class="default">    @<a href="dictionary_O.html#921">Test</a></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#7129">testAddResultsinDFANodeContainingAddedNode</a></span><span class="default">() {</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">        <a href="dictionary_N.html#7132">Structure</a> <a href="dictionary_N.html#7131">s</a> = </span><span class="keyword">new <a href="dictionary_N.html#7133">Structure</a></span><span class="default">(<a href="dictionary_N.html#759">LanguageRegistry</a>.<a href="dictionary_N.html#768">getLanguage</a>(<a href="dictionary_N.html#1056">JavaLanguageModule</a>.<a href="dictionary_N.html#1062">NAME</a>).<a href="dictionary_N.html#769">getDefaultVersion</a>().<a href="dictionary_N.html#2800">getLanguageVersionHandler</a>().<a href="dictionary_N.html#2338">getDataFlowHandler</a>());</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">        <a href="dictionary_N.html#510">Node</a> <a href="dictionary_N.html#7130">n</a> = </span><span class="keyword">new <a href="dictionary_N.html#2368">ASTMethodDeclaration</a></span><span class="default">(</span><span class="number">1</span><span class="default">);</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">        <a href="dictionary_A.html#1282">assertEquals</a>(<a href="dictionary_N.html#7130">n</a>, <a href="dictionary_N.html#7131">s</a>.<a href="dictionary_N.html#7134">createNewNode</a>(<a href="dictionary_N.html#7130">n</a>).<a href="dictionary_N.html#3733">getNode</a>());</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">    }</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span>
+<a name="25"><font size=-1>25     </font></a><span class="default">    </span><span class="keyword">public static </span><span class="default">junit.<a href="dictionary_J.html#1509">framework</a>.<a href="dictionary_J.html#1508">Test</a> <a href="dictionary_N.html#7128">suite</a>() {</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">        </span><span class="keyword">return new </span><span class="default">junit.<a href="dictionary_J.html#1509">framework</a>.<a href="dictionary_J.html#1279">JUnit4TestAdapter</a>(<a href="dictionary_N.html#7127">StructureTest</a>.</span><span class="keyword">class</span><span class="default">);</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    }</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">}</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+</pre></body></html>

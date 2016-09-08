@@ -1,0 +1,122 @@
+<html><head><title>ClojurePersistentHashMap.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/newtypes/ClojurePersistentHashMap.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/newtypes/ClojurePersistentHashMap.java";
+top.document.title  = "ClojurePersistentHashMap.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2014 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.jscomp.<a href="dictionary_C.html#2266">newtypes</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#119">annotations</a>.<a href="dictionary_C.html#35">GwtIncompatible</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.lang.<a href="dictionary_J.html#3207">reflect</a>.<a href="dictionary_J.html#36375">Method</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Map;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Set;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="comment">/** A persistent map that simply wraps Clojure's implementation */</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"></span><span class="default">@<a href="dictionary_C.html#35">GwtIncompatible</a>(</span><span class="string">&quot;java.lang.reflect&quot;</span><span class="default">)</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">final class <a href="dictionary_C.html#36337">ClojurePersistentHashMap</a></span><span class="default">&lt;<a href="dictionary_C.html#36338">K</a>, <a href="dictionary_C.html#36339">V</a>&gt; </span><span class="keyword">extends <a href="dictionary_C.html#9613">PersistentMap</a></span><span class="default">&lt;<a href="dictionary_C.html#36338">K</a>, <a href="dictionary_C.html#36339">V</a>&gt; {</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  </span><span class="keyword">private static <a href="dictionary_J.html#36375">Method</a> <a href="dictionary_C.html#36372">assoc</a></span><span class="default">;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  </span><span class="keyword">private static <a href="dictionary_J.html#36375">Method</a> <a href="dictionary_C.html#36374">without</a></span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Map <a href="dictionary_C.html#36373">map</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#36340">ClojurePersistentHashMap</a></span><span class="default">(Map <a href="dictionary_C.html#36341">m</a>) {</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#36373">map</a> = <a href="dictionary_C.html#36341">m</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  }</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default">  </span><span class="keyword">public static </span><span class="default">&lt;<a href="dictionary_C.html#36345">K</a>, <a href="dictionary_C.html#36346">V</a>&gt; <a href="dictionary_C.html#9613">PersistentMap</a>&lt;<a href="dictionary_C.html#36345">K</a>, <a href="dictionary_C.html#36346">V</a>&gt; <a href="dictionary_C.html#36344">create</a>(<a href="dictionary_C.html#2686">Class</a>&lt;? </span><span class="keyword">extends </span><span class="default">Map&gt; <a href="dictionary_C.html#36350">cls</a>)  {</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">      <a href="dictionary_C.html#36372">assoc</a> = <a href="dictionary_C.html#36350">cls</a>.<a href="dictionary_G.html#36348">getDeclaredMethod</a>(</span><span class="string">&quot;assoc&quot;</span><span class="default">, Object.</span><span class="keyword">class</span><span class="default">, Object.</span><span class="keyword">class</span><span class="default">);</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">      <a href="dictionary_C.html#36374">without</a> = <a href="dictionary_C.html#36350">cls</a>.<a href="dictionary_G.html#36348">getDeclaredMethod</a>(</span><span class="string">&quot;without&quot;</span><span class="default">, Object.</span><span class="keyword">class</span><span class="default">);</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">      Map <a href="dictionary_C.html#36351">m</a> = (Map) <a href="dictionary_C.html#36350">cls</a>.<a href="dictionary_G.html#36347">getDeclaredField</a>(</span><span class="string">&quot;EMPTY&quot;</span><span class="default">).<a href="dictionary_G.html#86">get</a>(</span><span class="keyword">null</span><span class="default">);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">      </span><span class="keyword">return new <a href="dictionary_C.html#36340">ClojurePersistentHashMap</a></span><span class="default">&lt;&gt;(<a href="dictionary_C.html#36351">m</a>);</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_R.html#36376">ReflectiveOperationException</a> <a href="dictionary_C.html#36349">e</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">      </span><span class="keyword">throw new <a href="dictionary_R.html#41">RuntimeException</a></span><span class="default">(<a href="dictionary_C.html#36349">e</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">    }</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  }</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#9613">PersistentMap</a></span><span class="default">&lt;<a href="dictionary_C.html#36338">K</a>, <a href="dictionary_C.html#36339">V</a>&gt; <a href="dictionary_C.html#36362">with</a>(<a href="dictionary_C.html#36338">K</a> <a href="dictionary_C.html#36365">key</a>, <a href="dictionary_C.html#36339">V</a> <a href="dictionary_C.html#36367">value</a>) {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">      Map <a href="dictionary_C.html#36366">m</a> = (Map) <a href="dictionary_C.html#36372">assoc</a>.<a href="dictionary_I.html#36363">invoke</a>(</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>, <a href="dictionary_C.html#36365">key</a>, <a href="dictionary_C.html#36367">value</a>);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">      </span><span class="keyword">return new <a href="dictionary_C.html#36340">ClojurePersistentHashMap</a></span><span class="default">&lt;&gt;(<a href="dictionary_C.html#36366">m</a>);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_R.html#36376">ReflectiveOperationException</a> <a href="dictionary_C.html#36364">e</a>) {</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">      </span><span class="keyword">throw new <a href="dictionary_R.html#41">RuntimeException</a></span><span class="default">(<a href="dictionary_C.html#36364">e</a>);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">    }</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">  }</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#9613">PersistentMap</a></span><span class="default">&lt;<a href="dictionary_C.html#36338">K</a>, <a href="dictionary_C.html#36339">V</a>&gt; <a href="dictionary_C.html#36368">without</a>(<a href="dictionary_C.html#36338">K</a> <a href="dictionary_C.html#36370">key</a>) {</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">      Map <a href="dictionary_C.html#36371">m</a> = (Map) <a href="dictionary_C.html#36374">without</a>.<a href="dictionary_I.html#36363">invoke</a>(</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>, <a href="dictionary_C.html#36370">key</a>);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">      </span><span class="keyword">return new <a href="dictionary_C.html#36340">ClojurePersistentHashMap</a></span><span class="default">&lt;&gt;(<a href="dictionary_C.html#36371">m</a>);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_R.html#36376">ReflectiveOperationException</a> <a href="dictionary_C.html#36369">e</a>) {</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">      </span><span class="keyword">throw new <a href="dictionary_R.html#41">RuntimeException</a></span><span class="default">(<a href="dictionary_C.html#36369">e</a>);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    }</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  }</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  @Override</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">  @<a href="dictionary_S.html#615">SuppressWarnings</a>(</span><span class="string">&quot;unchecked&quot;</span><span class="default">)</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#36339">V</a> <a href="dictionary_C.html#36356">get</a></span><span class="default">(Object <a href="dictionary_C.html#36357">key</a>) {</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="keyword">return </span><span class="default">(V) </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#36357">key</a>);</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  }</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  @Override</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  @<a href="dictionary_S.html#615">SuppressWarnings</a>(</span><span class="string">&quot;unchecked&quot;</span><span class="default">)</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  </span><span class="keyword">public </span><span class="default">Set&lt;<a href="dictionary_C.html#36338">K</a>&gt; <a href="dictionary_C.html#36360">keySet</a>() {</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_K.html#2046">keySet</a>();</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  }</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span>
+<a name="77"><font size=-1>77     </font></a><span class="default">  @Override</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">  </span><span class="keyword">public boolean <a href="dictionary_C.html#36342">containsKey</a></span><span class="default">(Object <a href="dictionary_C.html#36343">key</a>) {</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_C.html#1237">containsKey</a>(<a href="dictionary_C.html#36343">key</a>);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">  }</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">  @Override</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">  @<a href="dictionary_S.html#615">SuppressWarnings</a>(</span><span class="string">&quot;unchecked&quot;</span><span class="default">)</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  </span><span class="keyword">public </span><span class="default">Set&lt;Map.Entry&lt;<a href="dictionary_C.html#36338">K</a>, <a href="dictionary_C.html#36339">V</a>&gt;&gt; <a href="dictionary_C.html#36352">entrySet</a>() {</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_E.html#97">entrySet</a>();</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">  }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">  @Override</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">  </span><span class="keyword">public int <a href="dictionary_C.html#36361">size</a></span><span class="default">() {</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_S.html#371">size</a>();</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">  }</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+<a name="93"><font size=-1>93     </font></a><span class="default">  @Override</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">  </span><span class="keyword">public boolean <a href="dictionary_C.html#36359">isEmpty</a></span><span class="default">() {</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_I.html#370">isEmpty</a>();</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">  }</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span>
+<a name="98"><font size=-1>98     </font></a><span class="default">  @Override</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">  </span><span class="keyword">public boolean <a href="dictionary_C.html#36353">equals</a></span><span class="default">(Object <a href="dictionary_C.html#36354">o</a>) {</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#36354">o</a> </span><span class="keyword">instanceof <a href="dictionary_C.html#36337">ClojurePersistentHashMap</a></span><span class="default">) {</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">      <a href="dictionary_C.html#36337">ClojurePersistentHashMap</a> <a href="dictionary_C.html#36355">pm</a> = (ClojurePersistentHashMap) <a href="dictionary_C.html#36354">o</a>;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">      </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#36355">pm</a>.<a href="dictionary_C.html#36373">map</a>);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">    }</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">  }</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">  @Override</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">  </span><span class="keyword">public int <a href="dictionary_C.html#36358">hashCode</a></span><span class="default">() {</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_C.html#36373">map</a>.<a href="dictionary_H.html#5894">hashCode</a>();</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">  }</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">}</span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span>
+</pre></body></html>

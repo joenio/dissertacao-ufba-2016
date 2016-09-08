@@ -1,0 +1,183 @@
+<html><head><title>tokenlist.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cppcheck/cppcheck-1.72/lib/tokenlist.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cppcheck/cppcheck-1.72/lib/tokenlist.h";
+top.document.title  = "tokenlist.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Cppcheck - A tool for static C/C++ code analysis</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (C) 2007-2016 Cppcheck team.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> *</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * This program is free software: you can redistribute it and/or modify</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * it under the terms of the GNU General Public License as published by</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * the Free Software Foundation, either version 3 of the License, or</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * (at your option) any later version.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * This program is distributed in the hope that it will be useful,</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * GNU General Public License for more details.</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * You should have received a copy of the GNU General Public License</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_T.html#1694">tokenlistH</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc">#define <a href="dictionary_T.html#1694">tokenlistH</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc"></span><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;string&gt;</span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;vector&gt;</span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;config.h&quot;</span>
+<a name="27"><font size=-1>27     </font></a><span class="string"></span>
+<a name="28"><font size=-1>28     </font></a><span class="string"></span><span class="keyword">class <a href="dictionary_T.html#524">Token</a></span><span class="default">;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">class <a href="dictionary_S.html#506">Settings</a></span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="comment">/// @addtogroup Core</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">/// @{</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#498">CPPCHECKLIB</a> <a href="dictionary_T.html#1408">TokenList</a> </span><span class="default">{</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    </span><span class="keyword">explicit <a href="dictionary_T.html#1409">TokenList</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#506">Settings</a></span><span class="default">* settings);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    ~<a href="dictionary_T.html#1422">TokenList</a>();</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_T.html#1695">setSettings</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#506">Settings</a> </span><span class="default">*<a href="dictionary_S.html#1696">settings</a>) {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">        <a href="dictionary_T.html#1723">_settings</a> = <a href="dictionary_S.html#1696">settings</a>;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    }</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="comment">/** @return the source file path. e.g. &quot;file.cpp&quot; */</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a>&amp; <a href="dictionary_T.html#1697">getSourceFilePath</a>() </span><span class="keyword">const</span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    </span><span class="comment">/** Is the code C. Used for bailouts */</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_T.html#1698">isC</a></span><span class="default">() </span><span class="keyword">const </span><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1724">_isC</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    }</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    </span><span class="comment">/** Is the code CPP. Used for bailouts */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_T.html#1699">isCPP</a></span><span class="default">() </span><span class="keyword">const </span><span class="default">{</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1725">_isCPP</a></span><span class="default">;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    }</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">     * Delete all tokens in given token list</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">     * @param tok token list to delete</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">     */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">    </span><span class="keyword">static void <a href="dictionary_T.html#1700">deleteTokens</a></span><span class="default">(<a href="dictionary_T.html#524">Token</a> *tok);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_T.html#1701">addtoken</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> str, </span><span class="keyword">const unsigned int </span><span class="default">lineno, </span><span class="keyword">const unsigned int </span><span class="default">fileno, </span><span class="keyword">bool </span><span class="default">split = </span><span class="keyword">false</span><span class="default">);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_T.html#1702">addtoken</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*tok, </span><span class="keyword">const unsigned int </span><span class="default">lineno, </span><span class="keyword">const unsigned int </span><span class="default">fileno);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    </span><span class="keyword">static void <a href="dictionary_T.html#1703">insertTokens</a></span><span class="default">(<a href="dictionary_T.html#524">Token</a> *dest, </span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*src, </span><span class="keyword">unsigned int </span><span class="default">n);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">     * Create tokens from code.</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">     * The code must be preprocessed first:</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">     * - multiline strings are not handled.</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * - UTF in the code are not handled.</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">     * - comments are not handled.</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">     * @param code input stream for code</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">     * @param file0 source file name</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">     */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_T.html#1411">createTokens</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1704">istream</a> &amp;code, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a>&amp; file0 = <a href="dictionary_E.html#1705">emptyString</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    </span><span class="comment">/** Deallocate list */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_T.html#1706">deallocateTokens</a></span><span class="default">();</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default">    </span><span class="comment">/** append file name if seen the first time; return its index in any case */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">    </span><span class="keyword">unsigned int <a href="dictionary_T.html#1707">appendFileIfNew</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;file);</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    </span><span class="comment">/** get first token of list */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*<a href="dictionary_T.html#1413">front</a>() </span><span class="keyword">const </span><span class="default">{</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1720">_front</a></span><span class="default">;</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    }</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">    <a href="dictionary_T.html#524">Token</a> *<a href="dictionary_T.html#1708">front</a>() {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1720">_front</a></span><span class="default">;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    }</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="comment">/** get last token of list */</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*<a href="dictionary_T.html#1709">back</a>() </span><span class="keyword">const </span><span class="default">{</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1721">_back</a></span><span class="default">;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    }</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">    <a href="dictionary_T.html#524">Token</a> *<a href="dictionary_T.html#1710">back</a>() {</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1721">_back</a></span><span class="default">;</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    }</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">     * Get filenames (the sourcefile + the files it include).</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">     * The first filename is the filename for the sourcefile</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">     * @return vector with filenames</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">     */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1095">vector</a>&lt;std::string&gt;&amp; <a href="dictionary_T.html#1711">getFiles</a>() </span><span class="keyword">const </span><span class="default">{</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_T.html#1722">_files</a></span><span class="default">;</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    }</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">     * get filename for given token</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">     * @param tok The given token</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">     * @return filename for the given token</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">     */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a>&amp; <a href="dictionary_T.html#1712">file</a>(</span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*tok) </span><span class="keyword">const</span><span class="default">;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">     * Get file:line for a given token</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">     * @param tok given token</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">     * @return location for given token</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">     */</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_T.html#1713">fileLine</a>(</span><span class="keyword">const <a href="dictionary_T.html#524">Token</a> </span><span class="default">*tok) </span><span class="keyword">const</span><span class="default">;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">    * Calculates a 64-bit checksum of the token list used to compare</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">    * multiple token lists with each other as quickly as possible.</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">    */</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">    </span><span class="keyword">unsigned long long <a href="dictionary_T.html#1714">calculateChecksum</a></span><span class="default">() </span><span class="keyword">const</span><span class="default">;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span>
+<a name="129"><font size=-1>129     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">     * Create abstract syntax tree.</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">     */</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_T.html#1715">createAst</a></span><span class="default">();</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">     * Check abstract syntax tree.</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">     * Throws InternalError on failure</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">     */</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_T.html#1716">validateAst</a></span><span class="default">();</span>
+<a name="139"><font size=-1>139     </font></a><span class="default"></span>
+<a name="140"><font size=-1>140     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">     * Verify that the given token is an element of the tokenlist.</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">     * That method is implemented for debugging purposes.</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">     * @param[in] tok token to be checked</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">     * \return true if token was found in tokenlist, false else. In case of nullptr true is returned.</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">     */</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_T.html#1717">validateToken</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#524">Token</a></span><span class="default">* tok) </span><span class="keyword">const</span><span class="default">;</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span><span class="keyword">private</span><span class="default">:</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default">    </span><span class="comment">/** Disable copy constructor, no implementation */</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">    <a href="dictionary_T.html#1718">TokenList</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#1408">TokenList</a> </span><span class="default">&amp;);</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default">    </span><span class="comment">/** Disable assignment operator, no implementation */</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">    <a href="dictionary_T.html#1408">TokenList</a> </span><span class="default">&amp;</span><span class="keyword">operator</span><span class="default">=(</span><span class="keyword">const <a href="dictionary_T.html#1408">TokenList</a> </span><span class="default">&amp;);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default"></span>
+<a name="156"><font size=-1>156     </font></a><span class="default">    </span><span class="comment">/** Token list */</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">    <a href="dictionary_T.html#524">Token</a> </span><span class="default">*<a href="dictionary_T.html#1720">_front</a>, *<a href="dictionary_T.html#1721">_back</a>;</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default">    </span><span class="comment">/** filenames for the tokenized source code (source + included) */</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1095">vector</a>&lt;std::string&gt; <a href="dictionary_T.html#1722">_files</a>;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default"></span>
+<a name="162"><font size=-1>162     </font></a><span class="default">    </span><span class="comment">/** settings */</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">    </span><span class="keyword">const <a href="dictionary_S.html#506">Settings</a></span><span class="default">* <a href="dictionary_T.html#1723">_settings</a>;</span>
+<a name="164"><font size=-1>164     </font></a><span class="default"></span>
+<a name="165"><font size=-1>165     </font></a><span class="default">    </span><span class="comment">/** File is known to be C/C++ code */</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_T.html#1724">_isC</a></span><span class="default">, <a href="dictionary_T.html#1725">_isCPP</a>;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">};</span>
+<a name="168"><font size=-1>168     </font></a><span class="default"></span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span><span class="comment">/// @}</span>
+<a name="170"><font size=-1>170     </font></a><span class="comment"></span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment"></span><span class="preproc">#endif </span><span class="comment">// tokenlistH</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment"></span>
+</pre></body></html>

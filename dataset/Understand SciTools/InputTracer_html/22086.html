@@ -1,0 +1,31 @@
+<html><head><title>lam_stam.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/s390x/lam_stam.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/s390x/lam_stam.c";
+top.document.title  = "lam_stam.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* LAM, STAM, load,store access multiple */</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;unistd.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="keyword">char <a href="dictionary_O.html#22087">output</a></span><span class="default">[</span><span class="number">44</span><span class="default">];</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">char <a href="dictionary_I.html#22088">input</a></span><span class="default">[</span><span class="number">44</span><span class="default">] = </span><span class="string">&quot;0123456789\n&quot;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string">                 &quot;0123456789\n&quot;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string">                 &quot;0123456789\n&quot;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string">                 &quot;0123456789\n&quot;</span><span class="default">;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#170926">main</a></span><span class="default">()</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">{</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">  </span><span class="keyword">asm volatile</span><span class="default">( </span><span class="string">&quot;larl  1,input\n\t&quot;</span>
+<a name="14"><font size=-1>14     </font></a><span class="string">                &quot;larl  2,output\n\t&quot;</span>
+<a name="15"><font size=-1>15     </font></a><span class="string">                &quot;lam   3,13,0(1)\n\t&quot;</span>
+<a name="16"><font size=-1>16     </font></a><span class="string">                &quot;stam  3,13,0(2)\n\t&quot;</span><span class="default">:::</span><span class="string">&quot;1&quot;</span><span class="default">, </span><span class="string">&quot;2&quot;</span><span class="default">);</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span>
+<a name="18"><font size=-1>18     </font></a><span class="default">  <a href="dictionary_W.html#3495">write</a>(</span><span class="number">1</span><span class="default">, <a href="dictionary_O.html#22087">output</a>, </span><span class="keyword">sizeof <a href="dictionary_O.html#22087">output</a></span><span class="default">);</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">}</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+</pre></body></html>

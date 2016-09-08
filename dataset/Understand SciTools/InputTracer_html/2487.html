@@ -1,0 +1,164 @@
+<html><head><title>safe-ctype.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_demangle/safe-ctype.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_demangle/safe-ctype.h";
+top.document.title  = "safe-ctype.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* &lt;ctype.h&gt; replacement macros.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"></span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">   Copyright (C) 2000, 2001 Free Software Foundation, Inc.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">   Contributed by Zack Weinberg &lt;zackw@stanford.edu&gt;.</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">This file is part of the libiberty library.</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">Libiberty is free software; you can redistribute it and/or</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">modify it under the terms of the GNU Library General Public</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">License as published by the Free Software Foundation; either</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">version 2 of the License, or (at your option) any later version.</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">Libiberty is distributed in the hope that it will be useful,</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">Library General Public License for more details.</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">You should have received a copy of the GNU Library General Public</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">License along with libiberty; see the file COPYING.LIB.  If</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">Boston, MA 02110-1301, USA.  */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">/* This is a compatible replacement of the standard C library's &lt;ctype.h&gt;</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   with the following properties:</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   - Implements all isxxx() macros required by C99.</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   - Also implements some character classes useful when</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">     parsing C-like languages.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   - Does not change behavior depending on the current locale.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">   - Behaves properly for all values in the range of a signed or</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">     unsigned char.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">   To avoid conflicts, this header defines the isxxx functions in upper</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">   case, e.g. ISALPHA not isalpha.  */</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_S.html#157170">SAFE_CTYPE_H</a></span>
+<a name="36"><font size=-1>36     </font></a><span class="preproc">#define <a href="dictionary_S.html#157170">SAFE_CTYPE_H</a></span>
+<a name="37"><font size=-1>37     </font></a><span class="preproc"></span>
+<a name="38"><font size=-1>38     </font></a><span class="preproc"></span><span class="comment">/* Determine host character set.  */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_H.html#157171">HOST_CHARSET_UNKNOWN</a> </span><span class="number">0</span>
+<a name="40"><font size=-1>40     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_H.html#157130">HOST_CHARSET_ASCII</a>   </span><span class="number">1</span>
+<a name="41"><font size=-1>41     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_H.html#157133">HOST_CHARSET_EBCDIC</a>  </span><span class="number">2</span>
+<a name="42"><font size=-1>42     </font></a><span class="number"></span>
+<a name="43"><font size=-1>43     </font></a><span class="number"></span><span class="preproc">#if  </span><span class="string">'\n' </span><span class="default">== </span><span class="number">0x0A </span><span class="default">&amp;&amp; </span><span class="string">' ' </span><span class="default">== </span><span class="number">0x20 </span><span class="default">&amp;&amp; </span><span class="string">'0' </span><span class="default">== </span><span class="number">0x30 </span><span class="preproc">\</span>
+<a name="44"><font size=-1>44     </font></a><span class="preproc">   </span><span class="default">&amp;&amp; </span><span class="string">'A' </span><span class="default">== </span><span class="number">0x41 </span><span class="default">&amp;&amp; </span><span class="string">'a' </span><span class="default">== </span><span class="number">0x61 </span><span class="default">&amp;&amp; </span><span class="string">'!' </span><span class="default">== </span><span class="number">0x21</span>
+<a name="45"><font size=-1>45     </font></a><span class="number"></span><span class="preproc">#  define <a href="dictionary_H.html#157129">HOST_CHARSET</a> <a href="dictionary_H.html#157130">HOST_CHARSET_ASCII</a></span>
+<a name="46"><font size=-1>46     </font></a><span class="preproc">#else</span>
+<a name="47"><font size=-1>47     </font></a><span class="preproc"># if </span><span class="string">'\n' </span><span class="default">== </span><span class="number">0x15 </span><span class="default">&amp;&amp; </span><span class="string">' ' </span><span class="default">== </span><span class="number">0x40 </span><span class="default">&amp;&amp; </span><span class="string">'0' </span><span class="default">== </span><span class="number">0xF0 </span><span class="preproc">\</span>
+<a name="48"><font size=-1>48     </font></a><span class="preproc">   </span><span class="default">&amp;&amp; </span><span class="string">'A' </span><span class="default">== </span><span class="number">0xC1 </span><span class="default">&amp;&amp; </span><span class="string">'a' </span><span class="default">== </span><span class="number">0x81 </span><span class="default">&amp;&amp; </span><span class="string">'!' </span><span class="default">== </span><span class="number">0x5A</span>
+<a name="49"><font size=-1>49     </font></a><span class="number"></span><span class="preproc">#  define <a href="dictionary_H.html#157129">HOST_CHARSET</a> <a href="dictionary_H.html#157133">HOST_CHARSET_EBCDIC</a></span>
+<a name="50"><font size=-1>50     </font></a><span class="preproc"># else</span>
+<a name="51"><font size=-1>51     </font></a><span class="preproc">#  define <a href="dictionary_H.html#157129">HOST_CHARSET</a> <a href="dictionary_H.html#157171">HOST_CHARSET_UNKNOWN</a></span>
+<a name="52"><font size=-1>52     </font></a><span class="preproc"># endif</span>
+<a name="53"><font size=-1>53     </font></a><span class="preproc">#endif</span>
+<a name="54"><font size=-1>54     </font></a><span class="preproc"></span>
+<a name="55"><font size=-1>55     </font></a><span class="preproc"></span><span class="comment">/* Categories.  */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"></span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span><span class="keyword">enum </span><span class="default">{</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  </span><span class="comment">/* In C99 */</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">  </span><span class="default">_sch_isblank  = </span><span class="number">0x0001</span><span class="default">,	</span><span class="comment">/* space \t */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">  </span><span class="default">_sch_iscntrl  = </span><span class="number">0x0002</span><span class="default">,	</span><span class="comment">/* nonprinting characters */</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">  </span><span class="default">_sch_isdigit  = </span><span class="number">0x0004</span><span class="default">,	</span><span class="comment">/* 0-9 */</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">  </span><span class="default">_sch_islower  = </span><span class="number">0x0008</span><span class="default">,	</span><span class="comment">/* a-z */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">  </span><span class="default">_sch_isprint  = </span><span class="number">0x0010</span><span class="default">,	</span><span class="comment">/* any printing character including ' ' */</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">  </span><span class="default">_sch_ispunct  = </span><span class="number">0x0020</span><span class="default">,	</span><span class="comment">/* all punctuation */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">  </span><span class="default">_sch_isspace  = </span><span class="number">0x0040</span><span class="default">,	</span><span class="comment">/* space \t \n \r \f \v */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">  </span><span class="default">_sch_isupper  = </span><span class="number">0x0080</span><span class="default">,	</span><span class="comment">/* A-Z */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">  </span><span class="default">_sch_isxdigit = </span><span class="number">0x0100</span><span class="default">,	</span><span class="comment">/* 0-9A-Fa-f */</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment"></span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">  /* Extra categories useful to cpplib.  */</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">  </span><span class="default">_sch_isidst	= </span><span class="number">0x0200</span><span class="default">,	</span><span class="comment">/* A-Za-z_ */</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">  </span><span class="default">_sch_isvsp    = </span><span class="number">0x0400</span><span class="default">,	</span><span class="comment">/* \n \r */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">  </span><span class="default">_sch_isnvsp   = </span><span class="number">0x0800</span><span class="default">,	</span><span class="comment">/* space \t \f \v \0 */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment"></span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">  /* Combinations of the above.  */</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">  </span><span class="default">_sch_isalpha  = _sch_isupper|_sch_islower,	</span><span class="comment">/* A-Za-z */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">  </span><span class="default">_sch_isalnum  = _sch_isalpha|_sch_isdigit,	</span><span class="comment">/* A-Za-z0-9 */</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">  </span><span class="default">_sch_isidnum  = _sch_isidst|_sch_isdigit,	</span><span class="comment">/* A-Za-z0-9_ */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">  </span><span class="default">_sch_isgraph  = _sch_isalnum|_sch_ispunct,	</span><span class="comment">/* isprint and not space */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">  </span><span class="default">_sch_iscppsp  = _sch_isvsp|_sch_isnvsp,	</span><span class="comment">/* isspace + \0 */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">  </span><span class="default">_sch_isbasic  = _sch_isprint|_sch_iscppsp     </span><span class="comment">/* basic charset of ISO C</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">						   (plus ` and @)  */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment"></span><span class="default">};</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span><span class="comment">/* Character classification.  */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment"></span><span class="keyword">extern const unsigned short <a href="dictionary_Non-Alpha.html#2646">_sch_istable</a></span><span class="default">[</span><span class="number">256</span><span class="default">];</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_Non-Alpha.html#157178">_sch_test</a></span><span class="default">(c, bit) (<a href="dictionary_Non-Alpha.html#2646">_sch_istable</a>[(c) &amp; </span><span class="number">0xff</span><span class="default">] &amp; (unsigned short)(bit))</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#2733">ISALPHA</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isalpha)</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157179">ISALNUM</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isalnum)</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157180">ISBLANK</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isblank)</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157181">ISCNTRL</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_iscntrl)</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#2648">ISDIGIT</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isdigit)</span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157182">ISGRAPH</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isgraph)</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#2672">ISLOWER</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_islower)</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157183">ISPRINT</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isprint)</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157184">ISPUNCT</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_ispunct)</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157185">ISSPACE</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isspace)</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#2735">ISUPPER</a></span><span class="default">(c)  <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isupper)</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157186">ISXDIGIT</a></span><span class="default">(c) <a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isxdigit)</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157187">ISIDNUM</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isidnum)</span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157188">ISIDST</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isidst)</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157189">IS_ISOBASIC</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isbasic)</span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157190">IS_VSPACE</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isvsp)</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157191">IS_NVSPACE</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_isnvsp)</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_I.html#157192">IS_SPACE_OR_NUL</a></span><span class="default">(c)	<a href="dictionary_Non-Alpha.html#157178">_sch_test</a>(c, _sch_iscppsp)</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="comment">/* Character transformation.  */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment"></span><span class="keyword">extern const unsigned char  <a href="dictionary_Non-Alpha.html#157132">_sch_toupper</a></span><span class="default">[</span><span class="number">256</span><span class="default">];</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="keyword">extern const unsigned char  <a href="dictionary_Non-Alpha.html#157131">_sch_tolower</a></span><span class="default">[</span><span class="number">256</span><span class="default">];</span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_T.html#157193">TOUPPER</a></span><span class="default">(c) <a href="dictionary_Non-Alpha.html#157132">_sch_toupper</a>[(c) &amp; </span><span class="number">0xff</span><span class="default">]</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_T.html#157194">TOLOWER</a></span><span class="default">(c) <a href="dictionary_Non-Alpha.html#157131">_sch_tolower</a>[(c) &amp; </span><span class="number">0xff</span><span class="default">]</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span><span class="comment">/* Prevent the users of safe-ctype.h from accidently using the routines</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">   from ctype.h.  Initially, the approach was to produce an error when</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">   detecting that ctype.h has been included.  But this was causing</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">   trouble as ctype.h might get indirectly included as a result of</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">   including another system header (for instance gnulib's stdint.h).</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">   So we include ctype.h here and then immediately redefine its macros.  */</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment"></span>
+<a name="122"><font size=-1>122     </font></a><span class="comment"></span><span class="preproc">#if </span><span class="number">0 </span><span class="comment">/* in valgrind */</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;ctype.h&gt;</span>
+<a name="124"><font size=-1>124     </font></a><span class="string"></span><span class="preproc">#endif </span><span class="comment">/* ! in valgrind */</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment"></span>
+<a name="126"><font size=-1>126     </font></a><span class="comment"></span><span class="preproc">#undef <a href="dictionary_I.html#157195">isalpha</a></span>
+<a name="127"><font size=-1>127     </font></a><span class="preproc">#define <a href="dictionary_I.html#157195">isalpha</a></span><span class="default">(c) do_not_use_isalpha_with_safe_ctype</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157196">isalnum</a></span>
+<a name="129"><font size=-1>129     </font></a><span class="preproc">#define <a href="dictionary_I.html#157196">isalnum</a></span><span class="default">(c) do_not_use_isalnum_with_safe_ctype</span>
+<a name="130"><font size=-1>130     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157197">iscntrl</a></span>
+<a name="131"><font size=-1>131     </font></a><span class="preproc">#define <a href="dictionary_I.html#157197">iscntrl</a></span><span class="default">(c) do_not_use_iscntrl_with_safe_ctype</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157198">isdigit</a></span>
+<a name="133"><font size=-1>133     </font></a><span class="preproc">#define <a href="dictionary_I.html#157198">isdigit</a></span><span class="default">(c) do_not_use_isdigit_with_safe_ctype</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157199">isgraph</a></span>
+<a name="135"><font size=-1>135     </font></a><span class="preproc">#define <a href="dictionary_I.html#157199">isgraph</a></span><span class="default">(c) do_not_use_isgraph_with_safe_ctype</span>
+<a name="136"><font size=-1>136     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157200">islower</a></span>
+<a name="137"><font size=-1>137     </font></a><span class="preproc">#define <a href="dictionary_I.html#157200">islower</a></span><span class="default">(c) do_not_use_islower_with_safe_ctype</span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157201">isprint</a></span>
+<a name="139"><font size=-1>139     </font></a><span class="preproc">#define <a href="dictionary_I.html#157201">isprint</a></span><span class="default">(c) do_not_use_isprint_with_safe_ctype</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157202">ispunct</a></span>
+<a name="141"><font size=-1>141     </font></a><span class="preproc">#define <a href="dictionary_I.html#157202">ispunct</a></span><span class="default">(c) do_not_use_ispunct_with_safe_ctype</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157203">isspace</a></span>
+<a name="143"><font size=-1>143     </font></a><span class="preproc">#define <a href="dictionary_I.html#157203">isspace</a></span><span class="default">(c) do_not_use_isspace_with_safe_ctype</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157204">isupper</a></span>
+<a name="145"><font size=-1>145     </font></a><span class="preproc">#define <a href="dictionary_I.html#157204">isupper</a></span><span class="default">(c) do_not_use_isupper_with_safe_ctype</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_I.html#157205">isxdigit</a></span>
+<a name="147"><font size=-1>147     </font></a><span class="preproc">#define <a href="dictionary_I.html#157205">isxdigit</a></span><span class="default">(c) do_not_use_isxdigit_with_safe_ctype</span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_T.html#157206">toupper</a></span>
+<a name="149"><font size=-1>149     </font></a><span class="preproc">#define <a href="dictionary_T.html#157206">toupper</a></span><span class="default">(c) do_not_use_toupper_with_safe_ctype</span>
+<a name="150"><font size=-1>150     </font></a><span class="default"></span><span class="preproc">#undef <a href="dictionary_T.html#157207">tolower</a></span>
+<a name="151"><font size=-1>151     </font></a><span class="preproc">#define <a href="dictionary_T.html#157207">tolower</a></span><span class="default">(c) do_not_use_tolower_with_safe_ctype</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">/* SAFE_CTYPE_H */</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment"></span>
+</pre></body></html>

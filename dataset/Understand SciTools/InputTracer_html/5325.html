@@ -1,0 +1,250 @@
+<html><head><title>pub_core_options.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/pub_core_options.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/pub_core_options.h";
+top.document.title  = "pub_core_options.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- Command line options.                     pub_core_options.h ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   framework.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   Copyright (C) 2000-2010 Julian Seward</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">      jseward@acm.org</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02111-1307, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">*/</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#43801">__PUB_CORE_OPTIONS_H</a></span>
+<a name="32"><font size=-1>32     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#43801">__PUB_CORE_OPTIONS_H</a></span>
+<a name="33"><font size=-1>33     </font></a><span class="preproc"></span>
+<a name="34"><font size=-1>34     </font></a><span class="preproc"></span><span class="comment">//--------------------------------------------------------------------</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">// PURPOSE: This module holds the variables for all command line options,</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">// plus some functions and macros for manipulating them.  Almost every</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">// other module imports this one, if only for VG_(clo_verbosity).</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">//--------------------------------------------------------------------</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;pub_tool_options.h&quot;</span>
+<a name="41"><font size=-1>41     </font></a><span class="string"></span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span><span class="comment">/* The max number of suppression files. */</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#43802">VG_CLO_MAX_SFILES</a> </span><span class="number">100</span>
+<a name="44"><font size=-1>44     </font></a><span class="number"></span>
+<a name="45"><font size=-1>45     </font></a><span class="number"></span><span class="comment">/* The max number of --require-text-symbol= specification strings. */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#43803">VG_CLO_MAX_REQ_TSYMS</a> </span><span class="number">100</span>
+<a name="47"><font size=-1>47     </font></a><span class="number"></span>
+<a name="48"><font size=-1>48     </font></a><span class="number"></span><span class="comment">/* The max number of --fullpath-after= parameters. */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#43804">VG_CLO_MAX_FULLPATH_AFTER</a> </span><span class="number">100</span>
+<a name="50"><font size=-1>50     </font></a><span class="number"></span>
+<a name="51"><font size=-1>51     </font></a><span class="number"></span><span class="comment">/* Should we stop collecting errors if too many appear?  default: YES */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_error_limit);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="comment">/* Alternative exit code to hand to parent if errors were found.</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">   default: 0 (no, return the application's exit code in the normal</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">   way. */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_error_exitcode);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="comment">/* Enquire about whether to attach to a debugger at errors?   default: NO */</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_db_attach);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="comment">/* The debugger command?  default: whatever gdb ./configure found */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_db_command);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="comment">/* Generating a suppression for each error?   default: 0 (NO)</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">   Other values: 1 (yes, but ask user), 2 (yes, don't ask user) */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_gen_suppressions);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span><span class="comment">/* Sanity-check level: 0 = none, 1 (default), &gt; 1 = expensive. */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_sanity_level);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span><span class="comment">/* Automatically attempt to demangle C++ names?  default: YES */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_demangle);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span><span class="comment">/* Simulate child processes? default: NO */</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_children);</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span><span class="comment">/* String containing comma-separated patterns for executable names</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">   that should not be traced into even when --trace-children=yes */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_trace_children_skip);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span><span class="comment">/* The same as VG_(clo_trace_children), except that these patterns are</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">   tested against the arguments for child processes, rather than the</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">   executable name. */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_trace_children_skip_by_arg);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span><span class="comment">/* After a fork, the child's output can become confusingly</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">   intermingled with the parent's output.  This is especially</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">   problematic when VG_(clo_xml) is True.  Setting</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">   VG_(clo_child_silent_after_fork) causes children to fall silent</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">   after fork() calls.  Although note they become un-silent again</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">   after the subsequent exec(). */</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_child_silent_after_fork);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span><span class="comment">/* If the user specified --log-file=STR and/or --xml-file=STR, these</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">   hold STR after expansion of the %p and %q templates. */</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_log_fname_expanded);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_xml_fname_expanded);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="comment">/* Add timestamps to log messages?  default: NO */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_time_stamp);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span><span class="comment">/* The file descriptor to read for input.  default: 0 == stdin */</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_input_fd);</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="comment">/* The number of suppression files specified. */</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_n_suppressions);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span><span class="comment">/* The names of the suppression files. */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_suppressions)[<a href="dictionary_V.html#43802">VG_CLO_MAX_SFILES</a>];</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span><span class="comment">/* An array of strings harvested from --fullpath-after= flags. */</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_n_fullpath_after);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_fullpath_after)[<a href="dictionary_V.html#43804">VG_CLO_MAX_FULLPATH_AFTER</a>];</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span><span class="comment">/* DEBUG: print generated code?  default: 00000000 ( == NO ) */</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_U.html#449">UChar</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_flags);</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span><span class="comment">/* DEBUG: do bb profiling?  default: 00000000 ( == NO ) */</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_U.html#449">UChar</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_profile_flags);</span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="comment">/* DEBUG: if tracing codegen, be quiet until after this bb ( 0 ) */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_notbelow);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="comment">/* DEBUG: print system calls?  default: NO */</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_syscalls);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span><span class="comment">/* DEBUG: print signal details?  default: NO */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_signals);</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span><span class="comment">/* DEBUG: print symtab details?  default: NO */</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_symtab);</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span><span class="comment">/* DEBUG: restrict symtab etc details to object name pattern.  Default: &quot;*&quot; */</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_trace_symtab_patt);</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span><span class="comment">/* DEBUG: print call-frame-info details?  default: NO */</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_cfi);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span><span class="comment">/* DEBUG:  mimic /usr/bin/readelf --syms?  default: NO */</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_debug_dump_syms);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span><span class="comment">/* DEBUG: mimic /usr/bin/readelf --debug-dump=line?  default: NO */</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_debug_dump_line);</span>
+<a name="125"><font size=-1>125     </font></a><span class="default"></span><span class="comment">/* DEBUG: mimic  /usr/bin/readelf --debug-dump=frames?  default: NO */</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_debug_dump_frames);</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span><span class="comment">/* DEBUG: print redirection details?  default: NO */</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_redir);</span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span><span class="comment">/* DEBUG: print thread scheduling events?  default: NO */</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_trace_sched);</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span><span class="comment">/* DEBUG: do heap profiling?  default: NO */</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_profile_heap);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span><span class="comment">/* DEBUG: display gory details for the k'th most popular error.</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">   default: Infinity. */</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_dump_error);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default"></span><span class="comment">/* Engage miscellaneous weird hacks needed for some progs. */</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_sim_hints);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span><span class="comment">/* Show symbols in the form 'name+offset' ?  Default: NO */</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_sym_offsets);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span><span class="comment">/* Read DWARF3 variable info even if tool doesn't ask for it? */</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_read_var_info);</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span><span class="comment">/* Which prefix to strip from full source file paths, if any. */</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#79">Char</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_prefix_to_strip);</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span><span class="comment">/* An array of strings harvested from --require-text-symbol= </span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">   flags.</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment"></span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">   Each string specifies a pair: a soname pattern and a text symbol</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">   name pattern, separated by a colon.  The patterns can be written</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">   using the normal &quot;?&quot; and &quot;*&quot; wildcards.  For example:</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">   &quot;:*libc.so*:foo?bar&quot;.</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment"></span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">   These flags take effect when reading debuginfo from objects.  If an</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">   object is loaded and the object's soname matches the soname</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">   component of one of the specified pairs, then Valgrind will examine</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">   all the text symbol names in the object.  If none of them match the</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">   symbol name component of that same specification, then the run is</span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">   aborted, with an error message.</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment"></span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">   The purpose of this is to support reliable usage of marked-up</span>
+<a name="161"><font size=-1>161     </font></a><span class="comment">   libraries.  For example, suppose we have a version of GCC's</span>
+<a name="162"><font size=-1>162     </font></a><span class="comment">   libgomp.so which has been marked up with annotations to support</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">   Helgrind.  It is only too easy and confusing to load the 'wrong'</span>
+<a name="164"><font size=-1>164     </font></a><span class="comment">   libgomp.so into the application.  So the idea is: add a text symbol</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment">   in the marked-up library (eg), &quot;annotated_for_helgrind_3_6&quot;, and</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">   then give the flag</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment"></span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">     --require-text-symbol=:*libgomp*so*:annotated_for_helgrind_3_6</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment"></span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">   so that when libgomp.so is loaded, we scan the symbol table, and if</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">   the symbol isn't present the run is aborted, rather than continuing</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">   silently with the un-marked-up library.  Note that you should put</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">   the entire flag in quotes to stop shells messing up the * and ?</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">   wildcards. */</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_I.html#113">Int</a>    <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_n_req_tsyms);</span>
+<a name="176"><font size=-1>176     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_req_tsyms)[<a href="dictionary_V.html#43803">VG_CLO_MAX_REQ_TSYMS</a>];</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span><span class="comment">/* Track open file descriptors? */</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_track_fds);</span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span>
+<a name="181"><font size=-1>181     </font></a><span class="default"></span><span class="comment">/* Should we run __libc_freeres at exit?  Sometimes causes crashes.</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">   Default: YES.  Note this is subservient to VG_(needs).libc_freeres;</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">   if the latter says False, then the setting of VG_(clo_run_libc_freeres)</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">   is ignored.  Ie if a tool says no, I don't want this to run, that</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">   cannot be overridden from the command line. */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_run_libc_freeres);</span>
+<a name="187"><font size=-1>187     </font></a><span class="default"></span>
+<a name="188"><font size=-1>188     </font></a><span class="default"></span><span class="comment">/* Should we show VEX emulation warnings?  Default: NO */</span>
+<a name="189"><font size=-1>189     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_show_emwarns);</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span><span class="comment">/* How much does the stack pointer have to change before tools</span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">   consider a stack switch to have happened?  Default: 2000000 bytes</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">   NB: must be host-word-sized to be correct (hence Word). */</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_W.html#36">Word</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_max_stackframe);</span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span><span class="comment">/* How large should Valgrind allow the primary thread's guest stack to</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">   be? */</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_W.html#36">Word</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_main_stacksize);</span>
+<a name="198"><font size=-1>198     </font></a><span class="default"></span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span><span class="comment">/* Delay startup to allow GDB to be attached?  Default: NO */</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_wait_for_gdb);</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span><span class="comment">/* To what extent should self-checking translations be made?  These</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">   are needed to deal with self-modifying code on uncooperative</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">   platforms. */</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment"></span><span class="keyword">typedef </span>
+<a name="206"><font size=-1>206     </font></a><span class="keyword">   enum </span><span class="default">{ </span>
+<a name="207"><font size=-1>207     </font></a><span class="default">      Vg_SmcNone,  </span><span class="comment">// never generate self-checking translations</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">      </span><span class="default">Vg_SmcStack, </span><span class="comment">// generate s-c-t's for code found in stacks</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">                   // (this is the default)</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment">      </span><span class="default">Vg_SmcAll    </span><span class="comment">// make all translations self-checking.</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">   </span><span class="default">} </span>
+<a name="212"><font size=-1>212     </font></a><span class="default">   <a href="dictionary_V.html#43836">VgSmc</a>;</span>
+<a name="213"><font size=-1>213     </font></a><span class="default"></span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span><span class="comment">/* Describe extent to which self-modifying-code should be</span>
+<a name="215"><font size=-1>215     </font></a><span class="comment">   auto-detected. */</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_V.html#43836">VgSmc</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_smc_check);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default"></span>
+<a name="218"><font size=-1>218     </font></a><span class="default"></span><span class="comment">/* String containing comma-separated names of minor kernel variants,</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">   so they can be properly handled by m_syswrap. */</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_H.html#46">HChar</a></span><span class="default">* <a href="dictionary_V.html#111">VG_</a>(clo_kernel_variant);</span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span><span class="comment">/* Darwin-specific: automatically run /usr/bin/dsymutil to update</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">   .dSYM directories as necessary? */</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(clo_dsymutil);</span>
+<a name="225"><font size=-1>225     </font></a><span class="default"></span>
+<a name="226"><font size=-1>226     </font></a><span class="default"></span><span class="comment">/* Should we trace into this child executable (across execve etc) ?</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment">   This involves considering --trace-children=,</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment">   --trace-children-skip=, --trace-children-skip-by-arg=, and the name</span>
+<a name="229"><font size=-1>229     </font></a><span class="comment">   of the executable.  'child_argv' must not include the name of the</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment">   executable itself; iow child_argv[0] must be the first arg, if any,</span>
+<a name="231"><font size=-1>231     </font></a><span class="comment">   for the child. */</span>
+<a name="232"><font size=-1>232     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_B.html#78">Bool</a> <a href="dictionary_V.html#111">VG_</a></span><span class="default">(should_we_trace_this_child) ( <a href="dictionary_H.html#46">HChar</a>* child_exe_name,</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">                                              <a href="dictionary_H.html#46">HChar</a>** child_argv );</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span><span class="preproc">#endif   </span><span class="comment">// __PUB_CORE_OPTIONS_H</span>
+<a name="236"><font size=-1>236     </font></a><span class="comment"></span>
+<a name="237"><font size=-1>237     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">/*--- end                                                          ---*/</span>
+<a name="239"><font size=-1>239     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="240"><font size=-1>240     </font></a><span class="comment"></span>
+</pre></body></html>

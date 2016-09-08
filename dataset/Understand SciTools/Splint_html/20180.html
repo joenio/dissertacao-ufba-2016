@@ -1,0 +1,45 @@
+<html><head><title>arbints.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/test/tests2.2/arbints.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/test/tests2.2/arbints.c";
+top.document.title  = "arbints.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">typedef </span><span class="comment">/*@integraltype@*/ </span><span class="default">a_int;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="keyword">typedef </span><span class="comment">/*@unsignedintegraltype@*/ </span><span class="default">u_int;</span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">typedef </span><span class="comment">/*@signedintegraltype@*/ </span><span class="default">s_int;</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_F.html#32719">f</a> </span><span class="default">(<a href="dictionary_A.html#20183">a_int</a> <a href="dictionary_A.html#20182">a</a>, <a href="dictionary_U.html#20185">u_int</a> <a href="dictionary_U.html#20184">u</a>, <a href="dictionary_S.html#20187">s_int</a> <a href="dictionary_S.html#20186">s</a>)</span>
+<a name="6"><font size=-1>6     </font></a><span class="default">{</span>
+<a name="7"><font size=-1>7     </font></a><span class="default">  </span><span class="keyword">unsigned long <a href="dictionary_U.html#20188">ul</a></span><span class="default">;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default">  </span><span class="keyword">long <a href="dictionary_L.html#20189">l</a></span><span class="default">;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default">  </span>
+<a name="10"><font size=-1>10     </font></a><span class="default">  <a href="dictionary_P.html#40">printf</a> (</span><span class="string">&quot;the values are: %d %ld %ud&quot;</span><span class="default">, <a href="dictionary_A.html#20182">a</a>, <a href="dictionary_U.html#20184">u</a>, <a href="dictionary_S.html#20186">s</a>); </span><span class="comment">/* expect 3 errors */</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">  <a href="dictionary_U.html#20188">ul</a> </span><span class="default">= <a href="dictionary_A.html#20182">a</a>; </span><span class="comment">/* Assignment of a_int to unsigned long int: ul = a */</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">  /*@+longunsignedintegral@*/</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">  <a href="dictionary_U.html#20188">ul</a> </span><span class="default">= <a href="dictionary_A.html#20182">a</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default">  </span><span class="comment">/*@+longintegral@*/</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">  <a href="dictionary_U.html#20188">ul</a> </span><span class="default">= <a href="dictionary_A.html#20182">a</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_U.html#20184">u</a> == <a href="dictionary_A.html#20182">a</a>) <a href="dictionary_P.html#40">printf</a> (</span><span class="string">&quot;yo!&quot;</span><span class="default">);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default">  </span><span class="comment">/*@+matchanyintegral@*/</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_U.html#20184">u</a> == <a href="dictionary_L.html#20189">l</a>) <a href="dictionary_P.html#40">printf</a> (</span><span class="string">&quot;yo!&quot;</span><span class="default">);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_U.html#20184">u</a> == <a href="dictionary_A.html#20182">a</a>) <a href="dictionary_P.html#40">printf</a> (</span><span class="string">&quot;yo!&quot;</span><span class="default">);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">  </span><span class="comment">/*@=matchanyintegral@*/</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"></span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">  /*@+longsignedintegral@*/</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">  <a href="dictionary_P.html#40">printf</a> </span><span class="default">(</span><span class="string">&quot;i'm okay: %ld&quot;</span><span class="default">, <a href="dictionary_S.html#20186">s</a>);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  </span><span class="comment">/*@+longunsignedunsignedintegral@*/</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">  <a href="dictionary_P.html#40">printf</a> </span><span class="default">(</span><span class="string">&quot;you're not! %ld&quot;</span><span class="default">, <a href="dictionary_U.html#20184">u</a>);</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  <a href="dictionary_P.html#40">printf</a> (</span><span class="string">&quot;you're not! %ud&quot;</span><span class="default">, <a href="dictionary_U.html#20184">u</a>);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_A.html#20182">a</a></span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">}</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+</pre></body></html>

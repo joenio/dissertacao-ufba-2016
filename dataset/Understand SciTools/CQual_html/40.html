@@ -1,0 +1,279 @@
+<html><head><title>flags.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/flags.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/flags.h";
+top.document.title  = "flags.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* This file is part of cqual.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   Copyright (C) 2000-2002 The Regents of the University of California.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">cqual is free software; you can redistribute it and/or modify</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">it under the terms of the GNU General Public License as published by</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">the Free Software Foundation; either version 2, or (at your option)</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">any later version.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">cqual is distributed in the hope that it will be useful,</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">GNU General Public License for more details.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">You should have received a copy of the GNU General Public License</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">along with cqual; see the file COPYING.  If not, write to</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">the Free Software Foundation, 59 Temple Place - Suite 330,</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">Boston, MA 02111-1307, USA. */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_F.html#5071">FLAGS_H</a></span>
+<a name="20"><font size=-1>20     </font></a><span class="preproc">#define <a href="dictionary_F.html#5071">FLAGS_H</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc"></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc"></span><span class="comment">/* -f flags.  */</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;linkage.h&quot;</span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;bool.h&quot;</span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span>
+<a name="27"><font size=-1>27     </font></a><span class="string"><a href="dictionary_E.html#7">EXTERN_C_BEGIN</a></span>
+<a name="28"><font size=-1>28     </font></a><span class="string"></span>
+<a name="29"><font size=-1>29     </font></a><span class="string"></span><span class="comment">/* Nonzero means all references through pointers are volatile.  */</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1415">flag_volatile</a></span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="comment">/* Nonzero means treat all global and extern variables as global.  */</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1416">flag_volatile_global</a></span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="comment">/* Nonzero means just do syntax checking; don't output anything.  */</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1417">flag_syntax_only</a></span><span class="default">;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="comment">/* Nonzero means change certain warnings into errors.</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   Usually these are warnings about failure to conform to some standard.  */</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1418">flag_pedantic_errors</a></span><span class="default">;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span><span class="comment">/* Tag all structures with __attribute__(packed) */</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1419">flag_pack_struct</a></span><span class="default">;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span><span class="comment">/* Options controlling warnings */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"></span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">/* Don't print warning messages.  -w.  */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_I.html#1420">inhibit_warnings</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="comment">/* Print various extra warnings.  -W.  */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_E.html#1421">extra_warnings</a></span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="comment">/* Treat warnings as errors.  -Werror.  */</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1422">warnings_are_errors</a></span><span class="default">;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="comment">/* Nonzero to warn about unused local variables.  */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1423">warn_unused</a></span><span class="default">;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="comment">/* Nonzero to warn about variables used before they are initialized.  */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1424">warn_uninitialized</a></span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about all declarations which shadow others.   */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1425">warn_shadow</a></span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_E.html#1426">error_shadow</a></span><span class="default">; </span><span class="comment">/* Make shadow an error */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment"></span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">/* Warn if a switch on an enum fails to have a case for every enum value.  */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1427">warn_switch</a></span><span class="default">;</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about function definitions that default the return type</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">   or that use a null return and have a return-type other than void.  */</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1428">warn_return_type</a></span><span class="default">;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about pointer casts that increase the required</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">   alignment of the target type (and might therefore lead to a crash</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">   due to a misaligned access).  */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1429">warn_cast_align</a></span><span class="default">;</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about any identifiers that match in the first N</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">   characters.  The value N is in `id_clash_len'.  */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1430">warn_id_clash</a></span><span class="default">;</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span><span class="keyword">extern unsigned <a href="dictionary_I.html#1431">id_clash_len</a></span><span class="default">;</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about any objects definitions whose size is larger</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">   than N bytes.  Also want about function definitions whose returned</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">   values are larger than N bytes. The value N is in `larger_than_size'.  */</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1432">warn_larger_than</a></span><span class="default">;</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span><span class="keyword">extern unsigned <a href="dictionary_L.html#1433">larger_than_size</a></span><span class="default">;</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn if inline function is too large.  */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1434">warn_inline</a></span><span class="default">;</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span><span class="comment">/* Warn if a function returns an aggregate,</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">   since there are often incompatible calling conventions for doing this.  */</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1435">warn_aggregate_return</a></span><span class="default">;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="comment">/* Nonzero means `$' can be in an identifier.  */</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_D.html#893">dollars_in_ident</a></span><span class="default">;</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span><span class="comment">/* Nonzero means allow type mismatches in conditional expressions;</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">   just make their values `void'.   */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1436">flag_cond_mismatch</a></span><span class="default">;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span><span class="comment">/* Nonzero means don't recognize the keyword `asm'.  */</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#740">flag_no_asm</a></span><span class="default">;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="comment">/* Nonzero means environment is hosted (i.e., not freestanding) */</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#5072">flag_hosted</a></span><span class="default">;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about implicit declarations.  */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1437">warn_implicit</a></span><span class="default">;</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span><span class="comment">/* Nonzero means give string constants the type `const char *'</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">   to get extra warnings from them.  These warnings will be too numerous</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">   to be useful, except in thoroughly ANSIfied programs.  */</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1438">warn_write_strings</a></span><span class="default">;</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about sizeof (function) or addition/subtraction</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">   of function pointers.  */</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1439">warn_pointer_arith</a></span><span class="default">;</span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn for all old-style non-prototype function decls.  */</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1440">warn_strict_prototypes</a></span><span class="default">;</span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span>
+<a name="124"><font size=-1>124     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about multiple (redundant) decls for the same single</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">   variable or function.  */</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1441">warn_redundant_decls</a></span><span class="default">;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about extern declarations of objects not at</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">   file-scope level and about *all* declarations of functions (whether</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">   extern or static) not at file-scope level.  Note that we exclude</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">   implicit function declarations.  To get warnings about those, use</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">   -Wimplicit.  */</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1442">warn_nested_externs</a></span><span class="default">;</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about pointer casts that can drop a type qualifier</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">   from the pointer target type.  */</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1443">warn_cast_qual</a></span><span class="default">;</span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span>
+<a name="139"><font size=-1>139     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn when casting a function call to a type that does</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">   not match the return type (e.g. (float)sqrt() or (anything*)malloc()</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">   when there is no previous declaration of sqrt or malloc.  */</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1444">warn_bad_function_cast</a></span><span class="default">;</span>
+<a name="143"><font size=-1>143     </font></a><span class="default"></span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span><span class="comment">/* Warn about traditional constructs whose meanings changed in ANSI C.  */</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#856">warn_traditional</a></span><span class="default">;</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span><span class="comment">/* Warn about *printf or *scanf format/argument anomalies. */</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1445">warn_format</a></span><span class="default">;</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default"></span><span class="comment">/* Warn about a subscript that has type char.  */</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1446">warn_char_subscripts</a></span><span class="default">;</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default"></span><span class="comment">/* Warn if a type conversion is done that might have confusing results.  */</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1447">warn_conversion</a></span><span class="default">;</span>
+<a name="155"><font size=-1>155     </font></a><span class="default"></span>
+<a name="156"><font size=-1>156     </font></a><span class="default"></span><span class="comment">/* Warn if main is suspicious. */</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1448">warn_main</a></span><span class="default">;</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about use of multicharacter literals.  */</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#960">warn_multichar</a></span><span class="default">;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default"></span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span><span class="comment">/* Nonzero means do some things the same way PCC does.  */</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#731">flag_traditional</a></span><span class="default">;</span>
+<a name="164"><font size=-1>164     </font></a><span class="default"></span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span><span class="comment">/* Nonzero means to allow single precision math even if we're generally</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">   being traditional. */</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1449">flag_allow_single_precision</a></span><span class="default">;</span>
+<a name="168"><font size=-1>168     </font></a><span class="default"></span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn about suggesting putting in ()'s.  */</span>
+<a name="170"><font size=-1>170     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1450">warn_parentheses</a></span><span class="default">;</span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span>
+<a name="172"><font size=-1>172     </font></a><span class="default"></span><span class="comment">/* Warn if initializer is not completely bracketed.  */</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1451">warn_missing_braces</a></span><span class="default">;</span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span><span class="comment">/* Warn about comparison of signed and unsigned values.  */</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1452">warn_sign_compare</a></span><span class="default">;</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span><span class="comment">/* Nonzero means message about use of implicit function declarations;</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment"> 1 means warning; 2 means error. */</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_M.html#1453">mesg_implicit_function_declaration</a></span><span class="default">;</span>
+<a name="181"><font size=-1>181     </font></a><span class="default"></span>
+<a name="182"><font size=-1>182     </font></a><span class="default"></span><span class="keyword">extern bool <a href="dictionary_P.html#765">pedantic</a></span><span class="default">; </span><span class="comment">/* Report pedantic warnings if true */</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment"></span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">/* Nonzero means warn about use of implicit int. */</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1454">warn_implicit_int</a></span><span class="default">;</span>
+<a name="186"><font size=-1>186     </font></a><span class="default"></span>
+<a name="187"><font size=-1>187     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn for any global function def</span>
+<a name="188"><font size=-1>188     </font></a><span class="comment">   without separate previous prototype decl.  */</span>
+<a name="189"><font size=-1>189     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1455">warn_missing_prototypes</a></span><span class="default">;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span><span class="comment">/* Nonzero means warn for any global function def</span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">   without separate previous decl.  */</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_W.html#1456">warn_missing_declarations</a></span><span class="default">;</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span><span class="comment">/* Don't print functions as they are compiled and don't print</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">   times taken by the various passes.  -quiet.  */</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_Q.html#1457">quiet_flag</a></span><span class="default">;</span>
+<a name="198"><font size=-1>198     </font></a><span class="default"></span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span><span class="comment">/* Nonzero means `char' should be signed.  */</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1459">flag_signed_char</a></span><span class="default">;</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span><span class="comment">/* Nonzero means give an enum type only as many bytes as it needs.  */</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1460">flag_short_enums</a></span><span class="default">;</span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span>
+<a name="205"><font size=-1>205     </font></a><span class="default"></span><span class="comment">/* Nonzero means to treat bitfields as signed unless they say `unsigned'.  */</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1461">flag_signed_bitfields</a></span><span class="default">;</span>
+<a name="207"><font size=-1>207     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_E.html#1462">explicit_flag_signed_bitfields</a></span><span class="default">;</span>
+<a name="208"><font size=-1>208     </font></a><span class="default"></span>
+<a name="209"><font size=-1>209     </font></a><span class="default"></span><span class="comment">/* Nonzero means don't run real cc1 afterwards */</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1458">flag_parse_only</a></span><span class="default">;</span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span>
+<a name="212"><font size=-1>212     </font></a><span class="default"></span><span class="comment">/* Qualifier inference is being run as a PAM process. */</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1463">flag_pam_mode</a></span><span class="default">;</span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span>
+<a name="215"><font size=-1>215     </font></a><span class="default"></span><span class="comment">/* PAM being run for web interface. */</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#555">flag_pam_html</a></span><span class="default">;</span>
+<a name="217"><font size=-1>217     </font></a><span class="default"></span>
+<a name="218"><font size=-1>218     </font></a><span class="default"></span><span class="comment">/* True if we should print out the qualifier constraint graph in dot</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">   form. */</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1480">flag_print_quals_graph</a></span><span class="default">;</span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span><span class="comment">/* True if we should assume that anything not marked const is</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">   non-const. */</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1464">flag_strict_const</a></span><span class="default">;</span>
+<a name="225"><font size=-1>225     </font></a><span class="default"></span>
+<a name="226"><font size=-1>226     </font></a><span class="default"></span><span class="comment">/* True if we should print out a summary of the results at the end. */</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1465">flag_print_results</a></span><span class="default">;</span>
+<a name="228"><font size=-1>228     </font></a><span class="default"></span>
+<a name="229"><font size=-1>229     </font></a><span class="default"></span><span class="comment">/* True if qualifiers should be preserved through casts. */</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1466">flag_casts_preserve</a></span><span class="default">;</span>
+<a name="231"><font size=-1>231     </font></a><span class="default"></span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span><span class="comment">/* True if const annotations imply we can use subtyping instead of</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment">   equality under a const pointer. */</span>
+<a name="234"><font size=-1>234     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1467">flag_const_subtyping</a></span><span class="default">;</span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span>
+<a name="236"><font size=-1>236     </font></a><span class="default"></span><span class="comment">/* True if we should do the flow-sensitive type qualifiers pass. */</span>
+<a name="237"><font size=-1>237     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1468">flag_flow_sensitive</a></span><span class="default">;</span>
+<a name="238"><font size=-1>238     </font></a><span class="default"></span>
+<a name="239"><font size=-1>239     </font></a><span class="default"></span><span class="comment">/* Do the flow-sensitive analysis even if there are no flow-sensitive</span>
+<a name="240"><font size=-1>240     </font></a><span class="comment">   type qualifiers used */</span>
+<a name="241"><font size=-1>241     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1469">flag_force_flow_sensitive</a></span><span class="default">;</span>
+<a name="242"><font size=-1>242     </font></a><span class="default"></span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span><span class="comment">/* True if we should print out the computed linearities; only valid when</span>
+<a name="244"><font size=-1>244     </font></a><span class="comment">   flag_flow_sensitive is set */</span>
+<a name="245"><font size=-1>245     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1470">flag_print_lin</a></span><span class="default">;</span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span>
+<a name="247"><font size=-1>247     </font></a><span class="default"></span><span class="comment">/* True if we're analyzing a linux kernel driver, so the second and third</span>
+<a name="248"><font size=-1>248     </font></a><span class="comment">   pass should behave specially */</span>
+<a name="249"><font size=-1>249     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1471">flag_driver</a></span><span class="default">;</span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span>
+<a name="251"><font size=-1>251     </font></a><span class="default"></span><span class="comment">/* True if we want cqual issuing warning when qualifiers flow into</span>
+<a name="252"><font size=-1>252     </font></a><span class="comment">   non-qualified casts */</span>
+<a name="253"><font size=-1>253     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1472">flag_casts_warn</a></span><span class="default">;</span>
+<a name="254"><font size=-1>254     </font></a><span class="default"></span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span><span class="comment">/* True if we should display names in an ugly way so that you can tell</span>
+<a name="256"><font size=-1>256     </font></a><span class="comment">   different versions of the same name apart. */</span>
+<a name="257"><font size=-1>257     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#511">flag_ugly</a></span><span class="default">;</span>
+<a name="258"><font size=-1>258     </font></a><span class="default"></span>
+<a name="259"><font size=-1>259     </font></a><span class="default"></span><span class="comment">/* True if we should print out some statistics about running time,</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment">   memory usage, etc. */</span>
+<a name="261"><font size=-1>261     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1473">flag_statistics</a></span><span class="default">;</span>
+<a name="262"><font size=-1>262     </font></a><span class="default"></span>
+<a name="263"><font size=-1>263     </font></a><span class="default"></span><span class="comment">/* True if we should display store contents when printing function types */</span>
+<a name="264"><font size=-1>264     </font></a><span class="comment"></span><span class="keyword">extern int <a href="dictionary_F.html#1474">flag_print_stores</a></span><span class="default">;</span>
+<a name="265"><font size=-1>265     </font></a><span class="default"></span>
+<a name="266"><font size=-1>266     </font></a><span class="default"><a href="dictionary_E.html#29">EXTERN_C_END</a></span>
+<a name="267"><font size=-1>267     </font></a><span class="default"></span>
+<a name="268"><font size=-1>268     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="269"><font size=-1>269     </font></a><span class="preproc"></span>
+</pre></body></html>

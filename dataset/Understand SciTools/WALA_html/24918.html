@@ -1,0 +1,108 @@
+<html><head><title>SSAIndirectionData.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ssa/SSAIndirectionData.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ssa/SSAIndirectionData.java";
+top.document.title  = "SSAIndirectionData.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2007 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#433">ssa</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#3">Collection</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * A mapping that tells, for a given instruction s, what &quot;names&quot; does s def and use &lt;em&gt;indirectly&lt;/em&gt;.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * </span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * For example, an {@link SSALoadIndirectInstruction} takes as an argument a pointer value. This map tells which locals that pointer</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * may alias.</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * </span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * So if we have</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * </span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * Example A:</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * &lt;tt&gt;</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * v2 = SSAAddressOf v1;</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * v7 = #1;</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * v3 = SSALoadIndirect v2; (1)</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * &lt;\tt&gt;</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * </span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * Then this map will tell us that instruction (1) indirectly uses whichever source-level entity (in the source or bytecode) v1 represents.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * </span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> * (Don't be confused by AddressOf v1 .. we're not actually taking the address of v1 ... we're taking the address of some source level entity (like a local variable in source code or bytecode) for which v1 is just an SSA name)</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * </span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * As a more complex example, when we have lexical scoping, we can have the following IR generated, which passes a local by reference:</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * </span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * Example B:</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * &lt;tt&gt;</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * foo:</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> *   v3 = AddressOf v2;</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> *   bar(v3)  (1)</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> * bar(v1):</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> *   StoreIndirect v1, #7.</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> * &lt;/tt&gt;</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> * </span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> * In this case, the instruction (1) potentially defs the locals aliased by v2. The lexical scoping support could/should use this</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> * information to rebuild SSA accounting for the fact that (1) defs v2.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"> * </span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"> */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"></span><span class="keyword">public interface <a href="dictionary_C.html#2993">SSAIndirectionData</a></span><span class="default">&lt;<a href="dictionary_C.html#24919">T</a> </span><span class="keyword">extends <a href="dictionary_C.html#2993">SSAIndirectionData</a></span><span class="default">.<a href="dictionary_C.html#2994">Name</a>&gt; {</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">   * A Name is a mock interface introduced just for strong typing. A Name represents some semantic entity in the program</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">   * representation (e.g. a local variable in the source code or a local number in the bytecode)</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">   */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">  </span><span class="keyword">public interface <a href="dictionary_C.html#2994">Name</a> </span><span class="default">{</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  }</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">   * Returns the set of &quot;source&quot; level names (e.g. local variables in bytecode or source code) for which this map holds information.</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">   */</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">  <a href="dictionary_J.html#3">Collection</a></span><span class="default">&lt;<a href="dictionary_C.html#24919">T</a>&gt; <a href="dictionary_C.html#2996">getNames</a>();</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">   * For the instruction at the given index, and a source-level name, return the SSA value number which represents this</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">   * instruction's def of that name.</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">   * </span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">   * For example, in Example B in header comment above, suppose v2 referred to a &quot;source&quot;-entity called &quot;Local1&quot;.</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">   * Since instruction (1) (call to bar) defs &quot;Local1&quot;, we introduce in this table a new SSA value number, say v7, which represents</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">   * the value of &quot;Local1&quot; immediately after this instruction.   </span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">   */</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">  </span><span class="keyword">int <a href="dictionary_C.html#2995">getDef</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#24920">instructionIndex</a></span><span class="default">, <a href="dictionary_C.html#24919">T</a> <a href="dictionary_C.html#24921">name</a>);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">   * Record the fact that a particular instruction defs a particular SSA value number (newDef), representing the value of a &quot;source&quot; entity</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">   * &quot;name&quot;.</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">   * </span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">   * @see #getDef</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">   */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">  </span><span class="keyword">void <a href="dictionary_C.html#2998">setDef</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#24924">instructionIndex</a></span><span class="default">, <a href="dictionary_C.html#24919">T</a> <a href="dictionary_C.html#24925">name</a>, </span><span class="keyword">int <a href="dictionary_C.html#24926">newDef</a></span><span class="default">);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">   * For the instruction at the given index, and a source-level name, return the SSA value number which represents this</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">   * instruction's use of that name.</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">   * </span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">   * For example, in Example A in header comment above, suppose v1 referred to a &quot;source&quot;-entity called &quot;Local1&quot;.</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">   * Since instruction (1) (LoadIndirect) uses &quot;Local1&quot;, we record in this table the SSA value number that represents &quot;Local1&quot;</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">   * immediately before instruction (1).   So if v1 and v7 both refer to &quot;Local1&quot;, then (1) uses v7.  If v7 does NOT refer to &quot;Local1&quot;,</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">   * then (1) uses v1.</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">   */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">  </span><span class="keyword">int <a href="dictionary_C.html#2997">getUse</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#24922">instructionIndex</a></span><span class="default">, <a href="dictionary_C.html#24919">T</a> <a href="dictionary_C.html#24923">name</a>);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">   *  @see #getUse</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">   */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">  </span><span class="keyword">void <a href="dictionary_C.html#2999">setUse</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#24927">instructionIndex</a></span><span class="default">, <a href="dictionary_C.html#24919">T</a> <a href="dictionary_C.html#24928">name</a>, </span><span class="keyword">int <a href="dictionary_C.html#24929">newUse</a></span><span class="default">);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">}</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+</pre></body></html>

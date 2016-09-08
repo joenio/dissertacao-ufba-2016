@@ -1,0 +1,214 @@
+<html><head><title>MethodPositions.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.shrike/src/com/ibm/wala/sourcepos/MethodPositions.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.shrike/src/com/ibm/wala/sourcepos/MethodPositions.java";
+top.document.title  = "MethodPositions.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2002 - 2014 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *****************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">/*</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * MethodPositions.java</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * Created on 23. Mai 2005, 14:49</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#9148">sourcepos</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#607">io</a>.<a href="dictionary_J.html#41507">DataInputStream</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#607">io</a>.<a href="dictionary_J.html#589">IOException</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * This class represents the MethodPositions attribute.</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * </span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * @author Siegfried Weber</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * @author Juergen Graf &lt;juergen.graf@gmail.com&gt;</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> */</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span><span class="keyword">public final class <a href="dictionary_C.html#45336">MethodPositions</a> extends <a href="dictionary_C.html#41508">PositionsAttribute</a> </span><span class="default">{</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  </span><span class="comment">/** Stores the attribute name of this attribute */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">  </span><span class="keyword">public static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45362">ATTRIBUTE_NAME</a> </span><span class="default">= </span><span class="string">&quot;joana.sourceinfo.MethodPositions&quot;</span><span class="default">;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45363">ERR_COLUMN_ZERO</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: Invalid column number in %1$s.&quot;</span><span class="default">;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45365">ERR_LINE_ZERO</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: Invalid line number in %1$s.&quot;</span><span class="default">;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45367">ERR_RANGE_UNDEFINED</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: %1$s and %2$s are undefined.&quot;</span><span class="default">;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45368">ERR_SET_RANGE_UNDEFINED</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: Invalid positions, so %1$s and %2$s are set undefined.&quot;</span><span class="default">;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45366">ERR_POSITION_UNDEFINED</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: %1$s is undefined.&quot;</span><span class="default">;</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45364">ERR_END_BEFORE_START</a> </span><span class="default">= </span><span class="string">&quot;Error in MethodPositions attribute: %2$s (%4$s) is before %1$s (%3$s).&quot;</span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45369">WARN_INVALID_BLOCK_END</a> </span><span class="default">= </span><span class="string">&quot;Warning in MethodPositions attribute: Invalid method block end position.&quot;</span><span class="default">;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45370">WARN_PARAMETER_NOT_IN_DECLARATION</a> </span><span class="default">= </span><span class="string">&quot;Warning in MethodPositions attribute: Parameter not in the declaration range.&quot;</span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  </span><span class="comment">/** positions of the method declaration */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45372">declaration</a></span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  </span><span class="comment">/** positions of the method parameters */</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45373">parameter</a></span><span class="default">;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">  </span><span class="comment">/** positions of the method block */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45371">block_end</a></span><span class="default">;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">   * Creates a new instance of MethodPositions</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">   * </span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">   * @param data</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">   *          the byte array containing the attribute</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">   * @throws IOException</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">   *           if the attribute can't be read.</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">   */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">  </span><span class="keyword">public <a href="dictionary_C.html#45337">MethodPositions</a></span><span class="default">(</span><span class="keyword">byte</span><span class="default">[] <a href="dictionary_C.html#45338">data</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a> </span><span class="default">{</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">(<a href="dictionary_C.html#45338">data</a>);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15948">PRINT_CHARACTER_RANGE_TABLE</a>) {</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15913">info</a>(</span><span class="string">&quot;MethodPositions found: &quot;</span><span class="default">);</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15913">info</a>(<a href="dictionary_C.html#45361">toString</a>());</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    }</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  }</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  </span><span class="keyword">protected final void <a href="dictionary_C.html#45342">readData</a></span><span class="default">(<a href="dictionary_J.html#41507">DataInputStream</a> <a href="dictionary_C.html#45343">in</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a> </span><span class="default">{</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    <a href="dictionary_C.html#45372">declaration</a> = <a href="dictionary_C.html#45349">readRange</a>(<a href="dictionary_C.html#45343">in</a>, </span><span class="string">&quot;declaration_start&quot;</span><span class="default">, </span><span class="string">&quot;declaration_end&quot;</span><span class="default">, </span><span class="keyword">false</span><span class="default">);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    <a href="dictionary_C.html#45373">parameter</a> = <a href="dictionary_C.html#45349">readRange</a>(<a href="dictionary_C.html#45343">in</a>, </span><span class="string">&quot;parameter_start&quot;</span><span class="default">, </span><span class="string">&quot;parameter_end&quot;</span><span class="default">, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">    <a href="dictionary_C.html#45371">block_end</a> = <a href="dictionary_C.html#45349">readRange</a>(<a href="dictionary_C.html#45343">in</a>, </span><span class="string">&quot;block_end_start&quot;</span><span class="default">, </span><span class="string">&quot;block_end_end&quot;</span><span class="default">, </span><span class="keyword">false</span><span class="default">);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#45373">parameter</a>.<a href="dictionary_C.html#17019">isUndefined</a>()</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">        &amp;&amp; (!<a href="dictionary_C.html#45372">declaration</a>.<a href="dictionary_C.html#17018">getStartPosition</a>().<a href="dictionary_C.html#17033">isBefore</a>(<a href="dictionary_C.html#45373">parameter</a>.<a href="dictionary_C.html#17018">getStartPosition</a>()) || !<a href="dictionary_C.html#45373">parameter</a>.<a href="dictionary_C.html#17017">getEndPosition</a>().<a href="dictionary_C.html#17033">isBefore</a>(</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">            <a href="dictionary_C.html#45372">declaration</a>.<a href="dictionary_C.html#17017">getEndPosition</a>())))</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15942">warn</a>(<a href="dictionary_C.html#45370">WARN_PARAMETER_NOT_IN_DECLARATION</a>);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#45372">declaration</a>.<a href="dictionary_C.html#17017">getEndPosition</a>().<a href="dictionary_C.html#17033">isBefore</a>(<a href="dictionary_C.html#45371">block_end</a>.<a href="dictionary_C.html#17018">getStartPosition</a>()))</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15942">warn</a>(<a href="dictionary_C.html#45369">WARN_INVALID_BLOCK_END</a>);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  }</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">   * Reads a range from the input stream.</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">   * </span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">   * @param in</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">   *          the input stream</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">   * @param startVarName</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">   *          the variable name for the start position</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">   * @param endVarName</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">   *          the variable name for the end position</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">   * @param undefinedAllowed</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">   *          {@code true} if the range may be undefined.</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">   * @return the range</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">   * @throws IOException</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">   *           if the input stream cannot be read</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">   */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45349">readRange</a></span><span class="default">(<a href="dictionary_J.html#41507">DataInputStream</a> <a href="dictionary_C.html#45355">in</a>, <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45358">startVarName</a>, <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45354">endVarName</a>, </span><span class="keyword">boolean <a href="dictionary_C.html#45359">undefinedAllowed</a></span><span class="default">) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a> </span><span class="default">{</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#45360">valid</a> </span><span class="default">= </span><span class="keyword">true</span><span class="default">;</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">    <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45356">range</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    <a href="dictionary_C.html#17026">Position</a> <a href="dictionary_C.html#45357">start</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    <a href="dictionary_C.html#17026">Position</a> <a href="dictionary_C.html#45353">end</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">      <a href="dictionary_C.html#45357">start</a> = <a href="dictionary_C.html#45344">readPosition</a>(<a href="dictionary_C.html#45355">in</a>, <a href="dictionary_C.html#45358">startVarName</a>);</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#27791">InvalidPositionException</a> <a href="dictionary_C.html#45350">e</a>) {</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">      <a href="dictionary_C.html#45360">valid</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    }</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">      <a href="dictionary_C.html#45353">end</a> = <a href="dictionary_C.html#45344">readPosition</a>(<a href="dictionary_C.html#45355">in</a>, <a href="dictionary_C.html#45354">endVarName</a>);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#27791">InvalidPositionException</a> <a href="dictionary_C.html#45351">e</a>) {</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">      <a href="dictionary_C.html#45360">valid</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">    }</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#45360">valid</a>) {</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">      </span><span class="keyword">try </span><span class="default">{</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">        <a href="dictionary_C.html#45356">range</a> = </span><span class="keyword">new <a href="dictionary_C.html#17014">Range</a></span><span class="default">(<a href="dictionary_C.html#45357">start</a>, <a href="dictionary_C.html#45353">end</a>);</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">      } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#17027">InvalidRangeException</a> <a href="dictionary_C.html#45352">e</a>) {</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">        </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#45352">e</a>.<a href="dictionary_C.html#22211">getThisCause</a>()) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">        </span><span class="keyword">case <a href="dictionary_C.html#17034">END_BEFORE_START</a></span><span class="default">:</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">          <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45364">ERR_END_BEFORE_START</a>, <a href="dictionary_C.html#45358">startVarName</a>, <a href="dictionary_C.html#45354">endVarName</a>, <a href="dictionary_C.html#45357">start</a>, <a href="dictionary_C.html#45353">end</a>);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">        </span><span class="keyword">case <a href="dictionary_C.html#17030">START_UNDEFINED</a></span><span class="default">:</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">          <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45366">ERR_POSITION_UNDEFINED</a>, <a href="dictionary_C.html#45358">startVarName</a>);</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">        </span><span class="keyword">case <a href="dictionary_C.html#17032">END_UNDEFINED</a></span><span class="default">:</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">          <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45366">ERR_POSITION_UNDEFINED</a>, <a href="dictionary_C.html#45354">endVarName</a>);</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">        }</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">      }</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">    }</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#45356">range</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">      <a href="dictionary_C.html#45356">range</a> = </span><span class="keyword">new <a href="dictionary_C.html#17013">Range</a></span><span class="default">();</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45368">ERR_SET_RANGE_UNDEFINED</a>, <a href="dictionary_C.html#45358">startVarName</a>, <a href="dictionary_C.html#45354">endVarName</a>);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">    }</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#45356">range</a>.<a href="dictionary_C.html#17019">isUndefined</a>() &amp;&amp; !<a href="dictionary_C.html#45359">undefinedAllowed</a>) {</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">      <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45367">ERR_RANGE_UNDEFINED</a>, <a href="dictionary_C.html#45358">startVarName</a>, <a href="dictionary_C.html#45354">endVarName</a>);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">    }</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#45356">range</a></span><span class="default">;</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">  }</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">   * Reads a position from the input stream.</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">   * </span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">   * @param in</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">   *          the input stream</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">   * @param varName</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">   *          the variable name for this position</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">   * @throws IOException</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">   *           if the input stream cannot be read</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">   * @throws InvalidPositionException</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">   *           if the read position is invalid</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">   */</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#17026">Position</a> <a href="dictionary_C.html#45344">readPosition</a></span><span class="default">(<a href="dictionary_J.html#41507">DataInputStream</a> <a href="dictionary_C.html#45346">in</a>, <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45348">varName</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a></span><span class="default">, <a href="dictionary_C.html#27791">InvalidPositionException</a> {</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">    <a href="dictionary_C.html#17026">Position</a> <a href="dictionary_C.html#45347">pos</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">      <a href="dictionary_C.html#45347">pos</a> = </span><span class="keyword">new <a href="dictionary_C.html#27778">Position</a></span><span class="default">(<a href="dictionary_C.html#45346">in</a>.<a href="dictionary_R.html#41489">readInt</a>());</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#27791">InvalidPositionException</a> <a href="dictionary_C.html#45345">e</a>) {</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">      </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#45345">e</a>.<a href="dictionary_C.html#28186">getThisCause</a>()) {</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#27793">LINE_NUMBER_ZERO</a></span><span class="default">:</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">        <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45365">ERR_LINE_ZERO</a>, <a href="dictionary_C.html#45348">varName</a>);</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">        </span><span class="keyword">throw <a href="dictionary_C.html#45345">e</a></span><span class="default">;</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#27795">COLUMN_NUMBER_ZERO</a></span><span class="default">:</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">        <a href="dictionary_C.html#15861">Debug</a>.<a href="dictionary_C.html#15939">warn</a>(<a href="dictionary_C.html#45363">ERR_COLUMN_ZERO</a>, <a href="dictionary_C.html#45348">varName</a>);</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">        </span><span class="keyword">throw <a href="dictionary_C.html#45345">e</a></span><span class="default">;</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">        assert </span><span class="keyword">false</span><span class="default">;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">      }</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">    }</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#45347">pos</a></span><span class="default">;</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">  }</span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span>
+<a name="172"><font size=-1>172     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">   * Returns the source position range of the method declaration.</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">   * </span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">   * @return the source position range of the method declaration</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">   */</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">  </span><span class="keyword">public final <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45340">getHeaderInfo</a></span><span class="default">() {</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#45372">declaration</a></span><span class="default">;</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">  }</span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span>
+<a name="181"><font size=-1>181     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">   * Returns the source position range of the method parameter declaration.</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">   * </span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">   * @return the source position range of the method parameter declaration</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">   */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">  </span><span class="keyword">public final <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45341">getMethodInfo</a></span><span class="default">() {</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#45373">parameter</a></span><span class="default">;</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">  }</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span>
+<a name="190"><font size=-1>190     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="191"><font size=-1>191     </font></a><span class="comment">   * Returns the source position range of the end of the method block.</span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">   * </span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">   * @return the source position range of the end of the method block</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">   */</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment">  </span><span class="keyword">public final <a href="dictionary_C.html#17012">Range</a> <a href="dictionary_C.html#45339">getFooterInfo</a></span><span class="default">() {</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#45371">block_end</a></span><span class="default">;</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">  }</span>
+<a name="198"><font size=-1>198     </font></a><span class="default"></span>
+<a name="199"><font size=-1>199     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="200"><font size=-1>200     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#45361">toString</a></span><span class="default">() {</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">    </span><span class="keyword">return </span><span class="string">&quot;header: &quot; </span><span class="default">+ <a href="dictionary_C.html#45372">declaration</a> + </span><span class="string">&quot; params: &quot; </span><span class="default">+ <a href="dictionary_C.html#45373">parameter</a> + </span><span class="string">&quot; footer:&quot; </span><span class="default">+ <a href="dictionary_C.html#45371">block_end</a>;</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">  }</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">}</span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span>
+</pre></body></html>

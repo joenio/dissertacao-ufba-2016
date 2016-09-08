@@ -1,0 +1,39 @@
+<html><head><title>asm-empty-clobber.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/asm-empty-clobber.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/validation/asm-empty-clobber.c";
+top.document.title  = "asm-empty-clobber.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_Non-Alpha.html#525">__ASM_FORM</a></span><span class="default">(x)  </span><span class="string">&quot; &quot; </span><span class="preproc">#</span><span class="default">x </span><span class="string">&quot; &quot;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc"># define <a href="dictionary_J.html#526">JUMP_LABEL_INITIAL_NOP</a> </span><span class="string">&quot;.byte 0xe9 \n\t .long 0\n\t&quot;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="preproc"># define <a href="dictionary_Non-Alpha.html#527">__ASM_SEL</a></span><span class="default">(a,b) <a href="dictionary_Non-Alpha.html#525">__ASM_FORM</a>(b)</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_Non-Alpha.html#528">_ASM_PTR</a>        <a href="dictionary_Non-Alpha.html#527">__ASM_SEL</a></span><span class="default">(.long, .quad)</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_J.html#529">JUMP_LABEL</a></span><span class="default">(key, label)                                 </span><span class="preproc">\</span>
+<a name="8"><font size=-1>8     </font></a><span class="preproc">       </span><span class="default">do {                                                    </span><span class="preproc">\</span>
+<a name="9"><font size=-1>9     </font></a><span class="preproc">               </span><span class="default">asm goto(</span><span class="string">&quot;1:&quot;                                   </span><span class="preproc">\</span>
+<a name="10"><font size=-1>10     </font></a><span class="preproc">                       <a href="dictionary_J.html#526">JUMP_LABEL_INITIAL_NOP</a>                  \</span>
+<a name="11"><font size=-1>11     </font></a><span class="preproc">                       </span><span class="string">&quot;.pushsection __jump_table,  \&quot;a\&quot; \n\t&quot;</span><span class="preproc">\</span>
+<a name="12"><font size=-1>12     </font></a><span class="preproc">                       <a href="dictionary_Non-Alpha.html#528">_ASM_PTR</a> </span><span class="string">&quot;1b, %l[&quot; </span><span class="preproc">#</span><span class="default">label </span><span class="string">&quot;], %c0 \n\t&quot; </span><span class="preproc">\</span>
+<a name="13"><font size=-1>13     </font></a><span class="preproc">                       </span><span class="string">&quot;.popsection \n\t&quot;                      </span><span class="preproc">\</span>
+<a name="14"><font size=-1>14     </font></a><span class="preproc">                       </span><span class="default">: :  </span><span class="string">&quot;i&quot; </span><span class="default">(key) :  : label);             </span><span class="preproc">\</span>
+<a name="15"><font size=-1>15     </font></a><span class="preproc">       </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#23541">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#531">argc</a></span><span class="default">, </span><span class="keyword">char </span><span class="default">*<a href="dictionary_A.html#532">argv</a>[])</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">{</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">       <a href="dictionary_J.html#529">JUMP_LABEL</a>(</span><span class="string">&quot;1&quot;</span><span class="default">, do_trace );</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">       </span><span class="keyword">return </span><span class="number">1</span><span class="default">;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">do_trace:</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">       </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">}</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> *  check-name: Asm with goto labels.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> */</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span>
+</pre></body></html>

@@ -1,0 +1,63 @@
+<html><head><title>preen_invars.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/exp-ptrcheck/tests/preen_invars.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/exp-ptrcheck/tests/preen_invars.c";
+top.document.title  = "preen_invars.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;dlfcn.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="comment">/* see comments in preen_invar_so.c for explanation of this */</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_M.html#171029">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="10"><font size=-1>10     </font></a><span class="default">{</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_I.html#47718">i</a></span><span class="default">, <a href="dictionary_R.html#47719">r</a>, <a href="dictionary_S.html#47720">sum</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">  </span><span class="keyword">char</span><span class="default">* <a href="dictionary_I.html#47721">im_a_global_array</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">  </span><span class="keyword">void</span><span class="default">* <a href="dictionary_H.html#47722">hdl</a> = <a href="dictionary_D.html#46819">dlopen</a>(</span><span class="string">&quot;./preen_invars_so.so&quot;</span><span class="default">, <a href="dictionary_R.html#47723">RTLD_NOW</a>);</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_H.html#47722">hdl</a>);</span>
+<a name="15"><font size=-1>15     </font></a><span class="default">  <a href="dictionary_I.html#47721">im_a_global_array</a> = <a href="dictionary_D.html#46823">dlsym</a>(<a href="dictionary_H.html#47722">hdl</a>, </span><span class="string">&quot;im_a_global_array&quot;</span><span class="default">);</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_I.html#47721">im_a_global_array</a>);</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">  </span><span class="comment">/* printf(&quot;%p %p\n&quot;, im_a_global_array, me_too_me_too); */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">  /* poke around in the global array, so as to cause exp-ptrcheck</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">     to generate an Inv_Global invar for it. */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_I.html#47718">i</a> = </span><span class="number">10</span><span class="comment">/*ERROR*/</span><span class="default">; <a href="dictionary_I.html#47718">i</a> &gt;= </span><span class="number">0</span><span class="default">; <a href="dictionary_I.html#47718">i</a>--) {</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">     <a href="dictionary_S.html#47720">sum</a> += <a href="dictionary_I.html#47721">im_a_global_array</a>[<a href="dictionary_I.html#47718">i</a>];</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">  }</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">  </span><span class="comment">/* iterating 10 .. 0 causes an Unknown-&gt;Global transition at i = 9.</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">     We do it this way in order that at the end of a loop, there is a</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">     Global invar in place for the memory read in the loop, so that</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">     the subsequent dlclose (hence munmap) causes it to get preened.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">     Unfortunately there's nothing to show that the preen was</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">     successful or happened at all.  The only way to see is from the</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">     -v output:</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">     --686--  sg_:  251 Invars preened, of which 1 changed</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">     It's the &quot;1 changed&quot; bit which is significant.</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">  */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">  /* let's hope gcc is not clever enough to optimise this away, since</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">     if it does, then it will also nuke the preceding loop, and</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">     thereby render this test program useless. */</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"></span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#47720">sum</a> &amp; </span><span class="number">1</span><span class="default">) <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;%s bar %d\n&quot;</span><span class="default">, </span><span class="string">&quot;foo&quot;</span><span class="default">, <a href="dictionary_S.html#47720">sum</a> &amp; </span><span class="number">1</span><span class="default">); </span><span class="keyword">else</span>
+<a name="43"><font size=-1>43     </font></a><span class="keyword">               <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;foo %s %d\n&quot;</span><span class="default">, </span><span class="string">&quot;bar&quot;</span><span class="default">, </span><span class="number">1 </span><span class="default">- (<a href="dictionary_S.html#47720">sum</a> &amp; </span><span class="number">1</span><span class="default">));</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  </span><span class="comment">/* Now close (== unmap) the array, so that exp-ptrcheck has to check</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">     its collection of Inv_Global invars, and remove this one from</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">     it. */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">  <a href="dictionary_R.html#47719">r</a> </span><span class="default">= <a href="dictionary_D.html#46826">dlclose</a>(<a href="dictionary_H.html#47722">hdl</a>);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_R.html#47719">r</a> == </span><span class="number">0</span><span class="default">);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">}</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+</pre></body></html>

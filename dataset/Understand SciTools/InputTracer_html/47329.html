@@ -1,0 +1,182 @@
+<html><head><title>mremap2.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/linux/mremap2.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/linux/mremap2.c";
+top.document.title  = "mremap2.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_Non-Alpha.html#47330">_GNU_SOURCE</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc"></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;tests/sys_mman.h&quot;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;sys/types.h&gt;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;unistd.h&gt;</span>
+<a name="10"><font size=-1>10     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;errno.h&gt;</span>
+<a name="11"><font size=-1>11     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;syscall.h&gt;</span>
+<a name="12"><font size=-1>12     </font></a><span class="string"></span>
+<a name="13"><font size=-1>13     </font></a><span class="string"></span>
+<a name="14"><font size=-1>14     </font></a><span class="string"></span><span class="preproc">#ifndef <a href="dictionary_R.html#47333">REMAP_FIXED</a></span>
+<a name="15"><font size=-1>15     </font></a><span class="preproc">#define <a href="dictionary_M.html#47332">MREMAP_FIXED</a> </span><span class="number">2</span>
+<a name="16"><font size=-1>16     </font></a><span class="number"></span><span class="preproc">#endif</span>
+<a name="17"><font size=-1>17     </font></a><span class="preproc"></span>
+<a name="18"><font size=-1>18     </font></a><span class="preproc"></span>
+<a name="19"><font size=-1>19     </font></a><span class="preproc"></span><span class="keyword">static int <a href="dictionary_P.html#47334">PAGE</a></span><span class="default">;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_M.html#47335">mapanon_fixed</a> </span><span class="default">( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_S.html#47336">start</a>, <a href="dictionary_S.html#6960">size_t</a> <a href="dictionary_L.html#47337">length</a> )</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">{</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">  </span><span class="keyword">void</span><span class="default">* <a href="dictionary_R.html#47338">r</a> = <a href="dictionary_M.html#15688">mmap</a>(<a href="dictionary_S.html#47336">start</a>, <a href="dictionary_L.html#47337">length</a>, <a href="dictionary_P.html#47339">PROT_NONE</a>, </span>
+<a name="24"><font size=-1>24     </font></a><span class="default">                 <a href="dictionary_M.html#15691">MAP_FIXED</a>|<a href="dictionary_M.html#15692">MAP_PRIVATE</a>|<a href="dictionary_M.html#15693">MAP_ANONYMOUS</a>, </span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">);</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_R.html#47338">r</a> != <a href="dictionary_M.html#15694">MAP_FAILED</a>);</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_R.html#47338">r</a> == <a href="dictionary_S.html#47336">start</a>);</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">}</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_U.html#47340">unmap_and_check</a> </span><span class="default">( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_S.html#47341">start</a>, <a href="dictionary_S.html#6960">size_t</a> <a href="dictionary_L.html#47342">length</a> )</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">{</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">   </span><span class="keyword">int <a href="dictionary_R.html#47343">r</a> </span><span class="default">= <a href="dictionary_M.html#39884">munmap</a>( <a href="dictionary_S.html#47341">start</a>, <a href="dictionary_L.html#47342">length</a> );</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">   <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_R.html#47343">r</a> == </span><span class="number">0</span><span class="default">);</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">}</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_W.html#47344">workingarea</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_T.html#47345">try_dst</a>     = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="comment">// set up working area so expansion limit is 20*PAGE</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">//</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">//   |   10   |   20   |   10   |   60   |</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">//   |  pre   |  src   |  FREE  |  post  |</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">//</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">//  A suitable attempted fixed dst is workingarea + 150*PAGE.</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"></span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_S.html#47346">setup</a> ( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_O.html#47347">other_stuff</a>, </span><span class="keyword">int <a href="dictionary_O.html#47348">other_len</a> </span><span class="default">)</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">{</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_W.html#47344">workingarea</a>) {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">     <a href="dictionary_W.html#47344">workingarea</a> = <a href="dictionary_M.html#15688">mmap</a>(</span><span class="number">0</span><span class="default">, </span><span class="number">200</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>, <a href="dictionary_P.html#47339">PROT_NONE</a>, </span>
+<a name="49"><font size=-1>49     </font></a><span class="default">                           <a href="dictionary_M.html#15693">MAP_ANONYMOUS</a>|<a href="dictionary_M.html#15692">MAP_PRIVATE</a>, </span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">     <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_W.html#47344">workingarea</a>);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">     <a href="dictionary_T.html#47345">try_dst</a> = <a href="dictionary_W.html#47344">workingarea</a> + </span><span class="number">150</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">     <a href="dictionary_U.html#47340">unmap_and_check</a>(<a href="dictionary_W.html#47344">workingarea</a>, </span><span class="number">200</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  }</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#47347">other_stuff</a>) {</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    <a href="dictionary_U.html#47340">unmap_and_check</a>(<a href="dictionary_O.html#47347">other_stuff</a>, <a href="dictionary_O.html#47348">other_len</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  }</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  </span><span class="comment">// get rid of the old working area</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">  <a href="dictionary_U.html#47340">unmap_and_check</a></span><span class="default">( <a href="dictionary_W.html#47344">workingarea</a>, </span><span class="number">200</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">  </span><span class="comment">// pre block</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">  <a href="dictionary_M.html#47335">mapanon_fixed</a></span><span class="default">( <a href="dictionary_W.html#47344">workingarea</a> + </span><span class="number">0</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>, </span><span class="number">9</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  </span><span class="comment">// the area</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">  <a href="dictionary_M.html#47335">mapanon_fixed</a></span><span class="default">( <a href="dictionary_W.html#47344">workingarea</a> + </span><span class="number">10</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>, </span><span class="number">20</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a> );</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  </span><span class="comment">// upper half</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">  <a href="dictionary_M.html#47335">mapanon_fixed</a></span><span class="default">( <a href="dictionary_W.html#47344">workingarea</a> + </span><span class="number">40</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>, </span><span class="number">60</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a> );</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_W.html#47344">workingarea</a> </span><span class="default">+ </span><span class="number">10</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">}</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span><span class="comment">/* show the working area */</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_S.html#119886">show</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">{</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_I.html#47350">i</a></span><span class="default">,<a href="dictionary_R.html#47351">r</a> __attribute__((unused));</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_I.html#47350">i</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_I.html#47350">i</a> &lt; </span><span class="number">200</span><span class="default">; <a href="dictionary_I.html#47350">i</a>++) {</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    <a href="dictionary_R.html#47351">r</a> = <a href="dictionary_M.html#47352">mprotect</a>( <a href="dictionary_W.html#47344">workingarea</a> + <a href="dictionary_I.html#47350">i</a> * <a href="dictionary_P.html#47334">PAGE</a>, <a href="dictionary_P.html#47334">PAGE</a>, <a href="dictionary_P.html#47339">PROT_NONE</a> );</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">    </span><span class="comment">// We used to print 'X' or '.' according to the mprotect result, but the</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">    // results are too variable and the test was never reliable.  So now we</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">    // just always print '.'.  At least this test gives mremap a thorough</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">    // working out and so will detect egregious problems like crashes.</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">    //printf(&quot;%c&quot;, r == 0 ? 'X' : '.');</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">    <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;.&quot;</span><span class="default">);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#47350">i</a> == </span><span class="number">49 </span><span class="default">|| <a href="dictionary_I.html#47350">i</a> == </span><span class="number">99 </span><span class="default">|| <a href="dictionary_I.html#47350">i</a> == </span><span class="number">149</span><span class="default">) <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  }</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">  <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">}</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_D.html#47353">dst</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_S.html#47354">src</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_D.html#47355">dst_impossible</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="keyword">char</span><span class="default">* <a href="dictionary_I.html#47356">identify</a> ( </span><span class="keyword">char</span><span class="default">* <a href="dictionary_P.html#47357">p</a> )</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">{</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#47357">p</a> == <a href="dictionary_D.html#47353">dst</a>)            </span><span class="keyword">return </span><span class="string">&quot;dst&quot;</span><span class="default">;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#47357">p</a> == <a href="dictionary_S.html#47354">src</a>)            </span><span class="keyword">return </span><span class="string">&quot;src&quot;</span><span class="default">;</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#47357">p</a> == <a href="dictionary_D.html#47355">dst_impossible</a>) </span><span class="keyword">return </span><span class="string">&quot;dst_imp!&quot;</span><span class="default">;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#47357">p</a> == <a href="dictionary_T.html#47345">try_dst</a>)        </span><span class="keyword">return </span><span class="string">&quot;dst_poss&quot;</span><span class="default">;</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">  </span><span class="keyword">return </span><span class="string">&quot;other&quot;</span><span class="default">;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">}</span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#171022">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">{</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_A.html#47359">alocal</a></span><span class="default">, <a href="dictionary_M.html#47360">maymove</a>, <a href="dictionary_F.html#47361">fixed</a>, <a href="dictionary_N.html#47362">nsi</a>, <a href="dictionary_D.html#47363">dstpossible</a>;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_N.html#47364">newsizes</a></span><span class="default">[</span><span class="number">6</span><span class="default">] = { </span><span class="number">19</span><span class="default">, </span><span class="number">20</span><span class="default">, </span><span class="number">21</span><span class="default">, </span><span class="number">29</span><span class="default">, </span><span class="number">30</span><span class="default">, </span><span class="number">31 </span><span class="default">};</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default">  </span><span class="keyword">char</span><span class="default">* <a href="dictionary_T.html#47365">tidythis</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">  </span><span class="keyword">int  <a href="dictionary_T.html#47366">tidylen</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_F.html#47367">firsttime</a> </span><span class="default">= </span><span class="number">1</span><span class="default">;</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">  </span><span class="keyword">char <a href="dictionary_B.html#47368">buf</a></span><span class="default">[</span><span class="number">100</span><span class="default">];</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default">  <a href="dictionary_D.html#47355">dst_impossible</a> = (</span><span class="keyword">char</span><span class="default">*)(&amp;<a href="dictionary_A.html#47359">alocal</a>) + </span><span class="number">500 </span><span class="default">* </span><span class="number">1000 </span><span class="default">* </span><span class="number">1000</span><span class="default">;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  <a href="dictionary_P.html#47334">PAGE</a> = <a href="dictionary_S.html#47369">sysconf</a>(<a href="dictionary_Non-Alpha.html#47370">_SC_PAGESIZE</a>);</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span>
+<a name="120"><font size=-1>120     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_M.html#47360">maymove</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_M.html#47360">maymove</a> &lt;= </span><span class="number">1 </span><span class="default">; <a href="dictionary_M.html#47360">maymove</a>++) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_F.html#47361">fixed</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_F.html#47361">fixed</a> &lt;= </span><span class="number">1</span><span class="default">; <a href="dictionary_F.html#47361">fixed</a>++) {</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">    <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_N.html#47362">nsi</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_N.html#47362">nsi</a> &lt; </span><span class="number">6</span><span class="default">; <a href="dictionary_N.html#47362">nsi</a>++) {</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_D.html#47363">dstpossible</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_D.html#47363">dstpossible</a> &lt;= </span><span class="number">1</span><span class="default">; <a href="dictionary_D.html#47363">dstpossible</a>++) {</span>
+<a name="125"><font size=-1>125     </font></a><span class="default"></span>
+<a name="126"><font size=-1>126     </font></a><span class="default">    </span><span class="keyword">char</span><span class="default">* <a href="dictionary_R.html#47371">r</a>;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_N.html#47372">newsize</a> </span><span class="default">= <a href="dictionary_N.html#47364">newsizes</a>[<a href="dictionary_N.html#47362">nsi</a>] * <a href="dictionary_P.html#47334">PAGE</a>;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_F.html#47373">flags</a> </span><span class="default">= (<a href="dictionary_M.html#47360">maymove</a> ? <a href="dictionary_M.html#47374">MREMAP_MAYMOVE</a> : </span><span class="number">0</span><span class="default">)  |</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">                (<a href="dictionary_F.html#47361">fixed</a> ? <a href="dictionary_M.html#47332">MREMAP_FIXED</a> : </span><span class="number">0</span><span class="default">);</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">    <a href="dictionary_D.html#47353">dst</a> = <a href="dictionary_D.html#47363">dstpossible</a> ? <a href="dictionary_T.html#47345">try_dst</a> : <a href="dictionary_D.html#47355">dst_impossible</a>;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">    <a href="dictionary_S.html#47354">src</a> = <a href="dictionary_S.html#47346">setup</a>( <a href="dictionary_T.html#47365">tidythis</a>, <a href="dictionary_T.html#47366">tidylen</a> );</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_F.html#47367">firsttime</a>) {</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">       <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;dst_possible   = %p\n&quot;</span><span class="default">, <a href="dictionary_T.html#47345">try_dst</a> );</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">       <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;dst_impossible = %p\n&quot;</span><span class="default">, <a href="dictionary_D.html#47355">dst_impossible</a> );</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">       <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;           src = %p\n&quot;</span><span class="default">, <a href="dictionary_S.html#47354">src</a>);</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">       <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">       <a href="dictionary_S.html#3435">sprintf</a>(<a href="dictionary_B.html#47368">buf</a>, </span><span class="string">&quot;cat /proc/%d/maps&quot;</span><span class="default">, <a href="dictionary_G.html#3504">getpid</a>());</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">       </span><span class="keyword">if </span><span class="default">(</span><span class="number">0</span><span class="default">) <a href="dictionary_S.html#13233">system</a>(<a href="dictionary_B.html#47368">buf</a>);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">       <a href="dictionary_F.html#47367">firsttime</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">    }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default">    <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;maymv %d   fixed %d   newsz %2d   dstpo %d  dst %p -&gt;  &quot;</span><span class="default">,</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">	   <a href="dictionary_M.html#47360">maymove</a>, <a href="dictionary_F.html#47361">fixed</a>, <a href="dictionary_N.html#47364">newsizes</a>[<a href="dictionary_N.html#47362">nsi</a>], <a href="dictionary_D.html#47363">dstpossible</a>, <a href="dictionary_D.html#47353">dst</a> );</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    <a href="dictionary_R.html#47371">r</a> = (</span><span class="keyword">char</span><span class="default">*)</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">        <a href="dictionary_S.html#24828">syscall</a>(<a href="dictionary_Non-Alpha.html#47375">__NR_mremap</a>, <a href="dictionary_S.html#47354">src</a>, </span><span class="number">20</span><span class="default">*<a href="dictionary_P.html#47334">PAGE</a>, <a href="dictionary_N.html#47372">newsize</a>, <a href="dictionary_F.html#47373">flags</a>, <a href="dictionary_D.html#47353">dst</a>, </span><span class="number">0 </span><span class="default">);</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">    </span><span class="comment">// We used to print the address or error, but that was also unreliable.</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">    //if (r == MAP_FAILED)</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">    //  printf(&quot;error %d\n&quot;, errno);</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">    //else</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">    //  printf(&quot;%p (== %s)\n&quot;, r, identify(r));</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">    <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="153"><font size=-1>153     </font></a><span class="default"></span>
+<a name="154"><font size=-1>154     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(</span><span class="number">1</span><span class="default">) {</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">       <a href="dictionary_S.html#119886">show</a>();</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">       <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">    }</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_R.html#47371">r</a> != <a href="dictionary_M.html#15694">MAP_FAILED</a>) {</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_R.html#47371">r</a> != <a href="dictionary_S.html#47354">src</a> &amp;&amp; <a href="dictionary_R.html#47371">r</a> != <a href="dictionary_T.html#47345">try_dst</a> &amp;&amp; <a href="dictionary_R.html#47371">r</a> != <a href="dictionary_D.html#47355">dst_impossible</a>) {</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">	<a href="dictionary_T.html#47365">tidythis</a> = <a href="dictionary_R.html#47371">r</a>;</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">	<a href="dictionary_T.html#47366">tidylen</a> = <a href="dictionary_N.html#47372">newsize</a>;</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">      }</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">    }</span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span>
+<a name="166"><font size=-1>166     </font></a><span class="default">  }</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">  }</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">  }</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">  }</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">}</span>
+<a name="172"><font size=-1>172     </font></a><span class="default"></span>
+</pre></body></html>

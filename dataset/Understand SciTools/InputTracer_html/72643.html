@@ -1,0 +1,137 @@
+<html><head><title>tc11_XCHG.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/tests/tc11_XCHG.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/tests/tc11_XCHG.c";
+top.document.title  = "tc11_XCHG.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;config.h&quot;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;pthread.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="comment">/* Simple test program, no race.  Parent and child both modify x and</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">   use the hardware bus lock (implicitly, since XCHG r,m on x86/amd64</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   does not require an explicit LOCK prefix.). */</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span><span class="preproc">#undef <a href="dictionary_P.html#72644">PLAT_ppc64_aix5</a></span>
+<a name="13"><font size=-1>13     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72645">PLAT_ppc32_aix5</a></span>
+<a name="14"><font size=-1>14     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72646">PLAT_x86_darwin</a></span>
+<a name="15"><font size=-1>15     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72647">PLAT_amd64_darwin</a></span>
+<a name="16"><font size=-1>16     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72648">PLAT_x86_linux</a></span>
+<a name="17"><font size=-1>17     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72649">PLAT_amd64_linux</a></span>
+<a name="18"><font size=-1>18     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72650">PLAT_ppc32_linux</a></span>
+<a name="19"><font size=-1>19     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72651">PLAT_ppc64_linux</a></span>
+<a name="20"><font size=-1>20     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72652">PLAT_arm_linux</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc">#undef <a href="dictionary_P.html#72653">PLAT_s390x_linux</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc"></span>
+<a name="23"><font size=-1>23     </font></a><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72656">_AIX</a>) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72657">__64BIT__</a>)</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72644">PLAT_ppc64_aix5</a> </span><span class="number">1</span>
+<a name="25"><font size=-1>25     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72656">_AIX</a>) &amp;&amp; !</span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72657">__64BIT__</a>)</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72645">PLAT_ppc32_aix5</a> </span><span class="number">1</span>
+<a name="27"><font size=-1>27     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72658">__APPLE__</a>) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#313">__i386__</a>)</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72646">PLAT_x86_darwin</a> </span><span class="number">1</span>
+<a name="29"><font size=-1>29     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72658">__APPLE__</a>) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72659">__x86_64__</a>)</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72647">PLAT_amd64_darwin</a> </span><span class="number">1</span>
+<a name="31"><font size=-1>31     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#315">__linux__</a>) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#313">__i386__</a>)</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72648">PLAT_x86_linux</a> </span><span class="number">1</span>
+<a name="33"><font size=-1>33     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#315">__linux__</a>) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#72659">__x86_64__</a>)</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72649">PLAT_amd64_linux</a> </span><span class="number">1</span>
+<a name="35"><font size=-1>35     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(__linux__) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(__powerpc__) &amp;&amp; !</span><span class="preproc">defined</span><span class="default">(__powerpc64__)</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72650">PLAT_ppc32_linux</a> </span><span class="number">1</span>
+<a name="37"><font size=-1>37     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(__linux__) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(__powerpc__) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(__powerpc64__)</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72651">PLAT_ppc64_linux</a> </span><span class="number">1</span>
+<a name="39"><font size=-1>39     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(__linux__) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(__arm__)</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72652">PLAT_arm_linux</a> </span><span class="number">1</span>
+<a name="41"><font size=-1>41     </font></a><span class="number"></span><span class="preproc">#elif defined</span><span class="default">(__linux__) &amp;&amp; </span><span class="preproc">defined</span><span class="default">(__s390x__)</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72653">PLAT_s390x_linux</a> </span><span class="number">1</span>
+<a name="43"><font size=-1>43     </font></a><span class="number"></span><span class="preproc">#endif</span>
+<a name="44"><font size=-1>44     </font></a><span class="preproc"></span>
+<a name="45"><font size=-1>45     </font></a><span class="preproc"></span>
+<a name="46"><font size=-1>46     </font></a><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_P.html#72649">PLAT_amd64_linux</a>) || </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_P.html#72648">PLAT_x86_linux</a>) </span><span class="preproc">\</span>
+<a name="47"><font size=-1>47     </font></a><span class="preproc">    </span><span class="default">|| </span><span class="preproc">defined</span><span class="default">(PLAT_amd64_darwin) || </span><span class="preproc">defined</span><span class="default">(PLAT_x86_darwin)</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_X.html#72654">XCHG_M_R</a></span><span class="default">(_addr,_lval) </span><span class="preproc">\</span>
+<a name="49"><font size=-1>49     </font></a><span class="preproc">     </span><span class="default">__asm__ __volatile__( </span><span class="preproc">\</span>
+<a name="50"><font size=-1>50     </font></a><span class="preproc">        </span><span class="string">&quot;xchgl %0, %1&quot; </span><span class="preproc">\</span>
+<a name="51"><font size=-1>51     </font></a><span class="preproc">        </span><span class="default">: </span><span class="comment">/*out*/ </span><span class="string">&quot;+r&quot;</span><span class="default">(_lval) </span><span class="preproc">\</span>
+<a name="52"><font size=-1>52     </font></a><span class="preproc">        </span><span class="default">: </span><span class="comment">/*in*/  </span><span class="string">&quot;m&quot;</span><span class="default">(_addr) </span><span class="preproc">\</span>
+<a name="53"><font size=-1>53     </font></a><span class="preproc">        </span><span class="default">: </span><span class="string">&quot;memory&quot;</span><span class="default">, </span><span class="string">&quot;cc&quot; </span><span class="preproc">\</span>
+<a name="54"><font size=-1>54     </font></a><span class="preproc">     </span><span class="default">)</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_X.html#72655">XCHG_M_R_with_redundant_LOCK</a></span><span class="default">(_addr,_lval) </span><span class="preproc">\</span>
+<a name="56"><font size=-1>56     </font></a><span class="preproc">     </span><span class="default">__asm__ __volatile__( </span><span class="preproc">\</span>
+<a name="57"><font size=-1>57     </font></a><span class="preproc">        </span><span class="string">&quot;lock xchgl %0, %1&quot; </span><span class="preproc">\</span>
+<a name="58"><font size=-1>58     </font></a><span class="preproc">        </span><span class="default">: </span><span class="comment">/*out*/ </span><span class="string">&quot;+r&quot;</span><span class="default">(_lval) </span><span class="preproc">\</span>
+<a name="59"><font size=-1>59     </font></a><span class="preproc">        </span><span class="default">: </span><span class="comment">/*in*/  </span><span class="string">&quot;m&quot;</span><span class="default">(_addr) </span><span class="preproc">\</span>
+<a name="60"><font size=-1>60     </font></a><span class="preproc">        </span><span class="default">: </span><span class="string">&quot;memory&quot;</span><span class="default">, </span><span class="string">&quot;cc&quot; </span><span class="preproc">\</span>
+<a name="61"><font size=-1>61     </font></a><span class="preproc">     </span><span class="default">)</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_P.html#72650">PLAT_ppc32_linux</a>) || </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_P.html#72651">PLAT_ppc64_linux</a>) </span><span class="preproc">\</span>
+<a name="64"><font size=-1>64     </font></a><span class="preproc">      </span><span class="default">|| </span><span class="preproc">defined</span><span class="default">(PLAT_ppc32_aix5) || </span><span class="preproc">defined</span><span class="default">(PLAT_ppc64_aix5) </span><span class="preproc">\</span>
+<a name="65"><font size=-1>65     </font></a><span class="preproc">      </span><span class="default">|| </span><span class="preproc">defined</span><span class="default">(PLAT_arm_linux) || </span><span class="preproc">defined</span><span class="default">(PLAT_s390x_linux)</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span><span class="preproc">#  if defined</span><span class="default">(<a href="dictionary_H.html#49956">HAVE_BUILTIN_ATOMIC</a>)</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span><span class="preproc">#    define <a href="dictionary_X.html#72654">XCHG_M_R</a></span><span class="default">(_addr,_lval)                                           </span><span class="preproc">\</span>
+<a name="68"><font size=-1>68     </font></a><span class="preproc">        </span><span class="default">do {                                                                </span><span class="preproc">\</span>
+<a name="69"><font size=-1>69     </font></a><span class="preproc">          </span><span class="default">int tmp;                                                          </span><span class="preproc">\</span>
+<a name="70"><font size=-1>70     </font></a><span class="preproc">          </span><span class="default">while ((tmp = *(int*)(&amp; _addr)),                                  </span><span class="preproc">\</span>
+<a name="71"><font size=-1>71     </font></a><span class="preproc">                 </span><span class="default">! __sync_bool_compare_and_swap((int*)&amp;_addr, tmp, _lval))  </span><span class="preproc">\</span>
+<a name="72"><font size=-1>72     </font></a><span class="preproc">            </span><span class="default">;                                                               </span><span class="preproc">\</span>
+<a name="73"><font size=-1>73     </font></a><span class="preproc">          </span><span class="default">_lval = tmp;                                                      </span><span class="preproc">\</span>
+<a name="74"><font size=-1>74     </font></a><span class="preproc">        </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span><span class="preproc">#  else</span>
+<a name="76"><font size=-1>76     </font></a><span class="preproc">#    </span><span class="default">warning </span><span class="string">&quot;XCHG_M_R() implementation is missing. Either&quot; </span><span class="preproc">\</span>
+<a name="77"><font size=-1>77     </font></a><span class="preproc">             </span><span class="string">&quot;provide one or use a newer gcc version.&quot;</span>
+<a name="78"><font size=-1>78     </font></a><span class="string"></span><span class="preproc">#    define <a href="dictionary_X.html#72654">XCHG_M_R</a></span><span class="default">(_addr,_lval) </span><span class="preproc">\</span>
+<a name="79"><font size=-1>79     </font></a><span class="preproc">        </span><span class="default">do { int tmp = *(int*)(&amp; _addr); </span><span class="preproc">\</span>
+<a name="80"><font size=-1>80     </font></a><span class="preproc">             </span><span class="default">*(int*)(&amp; _addr) = (_lval); </span><span class="preproc">\</span>
+<a name="81"><font size=-1>81     </font></a><span class="preproc">             </span><span class="default">_lval = tmp; </span><span class="preproc">\</span>
+<a name="82"><font size=-1>82     </font></a><span class="preproc">        </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span><span class="preproc">#  endif</span>
+<a name="84"><font size=-1>84     </font></a><span class="preproc">#  define <a href="dictionary_X.html#72655">XCHG_M_R_with_redundant_LOCK</a></span><span class="default">(_addr,_lval) </span><span class="preproc">\</span>
+<a name="85"><font size=-1>85     </font></a><span class="preproc">      <a href="dictionary_X.html#72654">XCHG_M_R</a></span><span class="default">(_addr,_lval)</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="88"><font size=-1>88     </font></a><span class="preproc">#  error </span><span class="string">&quot;Unsupported architecture&quot;</span>
+<a name="89"><font size=-1>89     </font></a><span class="string"></span>
+<a name="90"><font size=-1>90     </font></a><span class="string"></span><span class="preproc">#endif</span>
+<a name="91"><font size=-1>91     </font></a><span class="preproc"></span>
+<a name="92"><font size=-1>92     </font></a><span class="preproc"></span><span class="keyword">int <a href="dictionary_X.html#72660">x</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span><span class="keyword">void</span><span class="default">* <a href="dictionary_C.html#72243">child_fn</a> ( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_A.html#72662">arg</a> )</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">{</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">   </span><span class="keyword">int <a href="dictionary_V.html#72663">v</a> </span><span class="default">= </span><span class="number">12345</span><span class="default">;</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">   <a href="dictionary_X.html#72655">XCHG_M_R_with_redundant_LOCK</a>(<a href="dictionary_X.html#72660">x</a>, <a href="dictionary_V.html#72663">v</a>);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">   <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_V.html#72663">v</a> == </span><span class="number">0 </span><span class="default">|| v == </span><span class="number">6789</span><span class="default">);</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_N.html#320">NULL</a></span><span class="default">;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">}</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#171168">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">{</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">   </span><span class="keyword">int <a href="dictionary_V.html#72665">v</a> </span><span class="default">= </span><span class="number">6789</span><span class="default">;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">   <a href="dictionary_P.html#323">pthread_t</a> <a href="dictionary_C.html#72666">child</a>;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#324">pthread_create</a>(&amp;<a href="dictionary_C.html#72666">child</a>, <a href="dictionary_N.html#320">NULL</a>, <a href="dictionary_C.html#72243">child_fn</a>, <a href="dictionary_N.html#320">NULL</a>)) {</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">      <a href="dictionary_P.html#325">perror</a>(</span><span class="string">&quot;pthread_create&quot;</span><span class="default">);</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">      <a href="dictionary_E.html#326">exit</a>(</span><span class="number">1</span><span class="default">);</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">   }</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default">   <a href="dictionary_X.html#72654">XCHG_M_R</a>(<a href="dictionary_X.html#72660">x</a>, <a href="dictionary_V.html#72665">v</a>);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">   <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_V.html#72665">v</a> == </span><span class="number">0 </span><span class="default">|| v == </span><span class="number">12345</span><span class="default">);</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span>
+<a name="115"><font size=-1>115     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#327">pthread_join</a>(<a href="dictionary_C.html#72666">child</a>, <a href="dictionary_N.html#320">NULL</a>)) {</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">      <a href="dictionary_P.html#325">perror</a>(</span><span class="string">&quot;pthread join&quot;</span><span class="default">);</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">      <a href="dictionary_E.html#326">exit</a>(</span><span class="number">1</span><span class="default">);</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">   }</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span>
+<a name="120"><font size=-1>120     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(<a href="dictionary_V.html#72665">v</a> == </span><span class="number">0 </span><span class="default">|| <a href="dictionary_V.html#72665">v</a> == </span><span class="number">12345</span><span class="default">)</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">      <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;success\n&quot;</span><span class="default">);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">   </span><span class="keyword">else</span>
+<a name="123"><font size=-1>123     </font></a><span class="keyword">      <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;failure\n&quot;</span><span class="default">);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default"></span>
+<a name="125"><font size=-1>125     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_V.html#72665">v</a></span><span class="default">;</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">}</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+</pre></body></html>

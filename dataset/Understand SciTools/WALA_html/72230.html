@@ -1,0 +1,53 @@
+<html><head><title>JSSourceExtractor.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.js/source/com/ibm/wala/cast/js/html/JSSourceExtractor.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.js/source/com/ibm/wala/cast/js/html/JSSourceExtractor.java";
+top.document.title  = "JSSourceExtractor.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2002 - 2011 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *****************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.cast.js.<a href="dictionary_C.html#4927">html</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#607">io</a>.<a href="dictionary_J.html#2184">File</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#607">io</a>.<a href="dictionary_J.html#589">IOException</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#4622">net</a>.<a href="dictionary_J.html#4620">URL</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#9">Set</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.ir.<a href="dictionary_C.html#1994">translator</a>.<a href="dictionary_C.html#4545">TranslatorToCAst</a>.<a href="dictionary_C.html#8331">Error</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * Extracts scripts from a given URL of an HTML. Retrieves also attached js files. </span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * Provides file and line mapping for each extracted SourceFileModule back to the original file and line number.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * </span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * @author yinnonh</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * @author danielk</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> */</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span><span class="keyword">public abstract class <a href="dictionary_C.html#9606">JSSourceExtractor</a> </span><span class="default">{</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  </span><span class="keyword">public static boolean <a href="dictionary_C.html#52226">DELETE_UPON_EXIT</a> </span><span class="default">= </span><span class="keyword">true</span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  </span><span class="keyword">public static boolean <a href="dictionary_C.html#9615">USE_TEMP_NAME</a> </span><span class="default">= </span><span class="keyword">true</span><span class="default">;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="keyword">public abstract <a href="dictionary_J.html#9">Set</a></span><span class="default">&lt;<a href="dictionary_C.html#26604">MappedSourceModule</a>&gt; <a href="dictionary_C.html#40896">extractSources</a>(<a href="dictionary_J.html#4620">URL</a> <a href="dictionary_C.html#72231">entrypointUrl</a>, <a href="dictionary_C.html#9604">IHtmlParser</a> <a href="dictionary_C.html#72232">htmlParser</a>, <a href="dictionary_C.html#10358">IUrlResolver</a> <a href="dictionary_C.html#72233">urlResolver</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a></span><span class="default">, <a href="dictionary_C.html#8331">Error</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  </span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">   * Returns the temporary file created by a call to</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">   * {@link #extractSources(URL, IHtmlParser, IUrlResolver)} which holds all the</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">   * discovered JS source. If no such file exists, returns &lt;code&gt;null&lt;/code&gt;</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   */</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">  </span><span class="keyword">public abstract <a href="dictionary_J.html#2184">File</a> <a href="dictionary_C.html#41566">getTempFile</a></span><span class="default">();</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">  </span>
+<a name="42"><font size=-1>42     </font></a><span class="default">}</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+</pre></body></html>

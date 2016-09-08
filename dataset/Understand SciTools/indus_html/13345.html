@@ -1,0 +1,234 @@
+<html><head><title>IDirectedGraph.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus/indus.indus/src/edu/ksu/cis/indus/common/graph/IDirectedGraph.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus/indus.indus/src/edu/ksu/cis/indus/common/graph/IDirectedGraph.java";
+top.document.title  = "IDirectedGraph.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Indus, a program analysis and transformation toolkit for Java.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (c) 2001, 2007 Venkatesh Prasad Ranganath</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * </span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * All rights reserved.  This program and the accompanying materials are made </span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * available under the terms of the Eclipse Public License v1.0 which accompanies </span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * the distribution containing this program, and is available at </span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * http://www.opensource.org/licenses/eclipse-1.0.php.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * </span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * For questions about the license, copyright, and software, contact </span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * 	Venkatesh Prasad Ranganath at venkateshprasad.ranganath@gmail.com</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *                                 </span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * This software was developed by Venkatesh Prasad Ranganath in SAnToS Laboratory </span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * at Kansas State University.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">edu.ksu.cis.indus.common.<a href="dictionary_E.html#207">graph</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.ksu.cis.indus.<a href="dictionary_E.html#209">annotations</a>.<a href="dictionary_E.html#462">Immutable</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.ksu.cis.indus.<a href="dictionary_E.html#209">annotations</a>.<a href="dictionary_E.html#463">NonNull</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.ksu.cis.indus.<a href="dictionary_E.html#209">annotations</a>.<a href="dictionary_E.html#1114">NonNullContainer</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.ksu.cis.indus.common.<a href="dictionary_E.html#155">datastructures</a>.<a href="dictionary_E.html#149">Pair</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#145">util</a>.<a href="dictionary_J.html#33">Collection</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#145">util</a>.<a href="dictionary_J.html#1110">List</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * This is an interface to a directed graph in which nodes are represented by &lt;code&gt;INode&lt;/code&gt; objects. The nodes in the</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * graph are to be ordered. The concrete implementation can determine the ordering, but it needs to be fixed over the lifetime</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * of the graph.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * &lt;p&gt;</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> * A node &lt;i&gt;a&lt;/i&gt; is reachable from node &lt;i&gt;b&lt;/i&gt; if there is an explicit edge from &lt;i&gt;a&lt;/i&gt; to &lt;i&gt;b&lt;/i&gt;. This also holds</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * when &lt;i&gt;a=b&lt;/i&gt;.</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * &lt;/p&gt;</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * </span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * @author &lt;a href=&quot;http://www.cis.ksu.edu/~rvprasad&quot;&gt;Venkatesh Prasad Ranganath&lt;/a&gt;</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * @author $Author: rvprasad $</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * @version $Revision: 1.23 $ $Date: 2007/10/15 19:09:41 $</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * @param &lt;N&gt; is the type of the node in this graph.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> */</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"></span><span class="keyword">public interface <a href="dictionary_E.html#2437">IDirectedGraph</a></span><span class="default">&lt;<a href="dictionary_E.html#13346">N</a> </span><span class="keyword">extends <a href="dictionary_E.html#210">INode</a></span><span class="default">&lt;<a href="dictionary_E.html#13346">N</a>&gt;&gt; {</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">	 * Retrieves the back edges in this graph.</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">	 * </span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">	 * @return a collection of pairs containing the backedge. The source and the destination nodes of the edge are the first</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">	 *         and the secondelement of the pair, respectively.</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">	 * @post getNodes().contains(result.getFirst()) and getNodes().contains(result.getFirst())</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">	 */</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#149">Pair</a>&lt;<a href="dictionary_E.html#13346">N</a>, <a href="dictionary_E.html#13346">N</a>&gt;&gt; <a href="dictionary_E.html#3266">getBackEdges</a>();</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">	 * Returns the intersection of the nodes reachable from the given nodes in the given direction. This is equivalent to</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">	 * &lt;code&gt;CollectionUtils.intersection(getReachablesFrom(node1, forward1), getReachablesFrom(node2, forward2))&lt;/code&gt;.</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">	 * </span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">	 * @param node1 of interest.</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">	 * @param forward1 direction of reachability from &lt;code&gt;node1&lt;/code&gt;.</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">	 * @param node2 of interest.</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">	 * @param forward2 direction of reachability from &lt;code&gt;node2&lt;/code&gt;.</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">	 * @return a collection of nodes.</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">	 * @post getReachablesFrom(node2, forward2)-&gt;forall(o | getReachablesFrom(node1, forward2).contains(o) implies</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">	 *       result.contains(o))</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">	 * @post result-&gt;forall(o | getReachablesFrom(node2, forward2).contains(o) and getReachableFrom(node1,</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">	 *       forward1).contains(o))</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">	 */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3267">getCommonReachablesFrom</a>(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13349">node1</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13347">forward1</a></span><span class="default">,</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">			@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13350">node2</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13348">forward2</a></span><span class="default">);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">	 * Returns the minimum set of nodes that are needed to ensure that the given nodes remain reachable from or can reach</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">	 * common nodes. The removal of this set of nodes will ensure that there are no common ancestors (descendants) of the</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">	 * given nodes when forward is true (false).</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">	 * </span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">	 * @param node1 is one node of interest.</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">	 * @param node2 is another node of interest.</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">	 * @param forward &lt;code&gt;true&lt;/code&gt; indicates that common nodes that can reach the given nodes are required;</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">	 *            &lt;code&gt;false&lt;/code&gt; indicates that the common nodes that are reachable from the given nodes are required.</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">	 * @return a collection of nodes.</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">	 * @post getNodes().containsAll(result)</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">	 * @post result-&gt;forall(o | isReachable(o, node1, forward) and isReachable(o, node2, forward))</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">	 */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3268">getConnectivityNodesFor</a>(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13352">node1</a>,</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">			@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13353">node2</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13351">forward</a></span><span class="default">);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span>
+<a name="85"><font size=-1>85     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">	 * Returns the cycles that occur in the graph.</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">	 * </span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">	 * @return a collection of list of nodes which form cycles in this graph. The head of the list is the initiator/head of</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">	 *         the cycle.</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">	 * @post result-&gt;forall(o | getNodes().containsAll(o))</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">	 */</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_J.html#1110">List</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt;&gt; <a href="dictionary_E.html#3270">getCycles</a>();</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">	 * Returns the directed-acyclic graph of this graph. The objects in the nodes in the returned graph are nodes in this</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">	 * graph. For each edge in the returned graph, there will be an edges between the nodes corresponding to the source and</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">	 * destination nodes in this graph.</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">	 * </span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">	 * @return a DAG.</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">	 */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> <a href="dictionary_E.html#1226">IObjectDirectedGraph</a>&lt;? </span><span class="keyword">extends <a href="dictionary_E.html#202">IObjectNode</a></span><span class="default">&lt;?, <a href="dictionary_E.html#13346">N</a>&gt;, <a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3271">getDAG</a>();</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">	 * Retrieves the nodes in the graph. The order of the nodes should be the same across calls to this method, if no nodes</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">	 * are added or removed. In case of addition and removal, the relative ordering between the old nodes should not change</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">	 * across calls.</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">	 * </span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">	 * @return the nodes(&lt;code&gt;INode&lt;/code&gt;) in the graph.</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">	 */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#1110">List</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3253">getNodes</a>();</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">	 * Retrieves the nodes that occur on the paths between the given nodes.</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">	 * </span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">	 * @param nodes of interest.</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">	 * @return a collection of nodes that occur on path between the given nodes.</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">	 */</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3278">getNodesOnPathBetween</a>(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#13354">nodes</a>);</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span>
+<a name="120"><font size=-1>120     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">	 * Retrieves the nodes reachable from &lt;code&gt;root&lt;/code&gt; in the requested direction.</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">	 * </span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">	 * @param root is the node from which the reachability needs to be calculated.</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">	 * @param forward &lt;code&gt;true&lt;/code&gt; indicates that nodes reachable by following the edges from &lt;code&gt;root&lt;/code&gt; are</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">	 *            requirested. &lt;code&gt;false&lt;/code&gt; indicates that nodes reachables by following the edges in the reverse</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">	 *            direction from &lt;code&gt;root&lt;/code&gt; are required.</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">	 * @return the collection of reachable nodes.</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">	 */</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3279">getReachablesFrom</a>(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13356">root</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13355">forward</a></span><span class="default">);</span>
+<a name="130"><font size=-1>130     </font></a><span class="default"></span>
+<a name="131"><font size=-1>131     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">	 * Returns a sequence of strongly-connected components in this graph.</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">	 * </span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">	 * @param topDown &lt;code&gt;true&lt;/code&gt; indicates returned sccs should be in the top-down order; &lt;code&gt;false&lt;/code&gt;,</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">	 *            indicates bottom-up.</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">	 * @return a sequence of &lt;code&gt;List&lt;/code&gt; of &lt;code&gt;INode&lt;/code&gt;s that form SCCs in this graph.</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">	 * @post result-&gt;forall(o | getNodes().containsAll(o))</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">	 */</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#1110">List</a>&lt;<a href="dictionary_J.html#1110">List</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt;&gt; <a href="dictionary_E.html#3280">getSCCs</a>(</span><span class="keyword">boolean <a href="dictionary_E.html#13357">topDown</a></span><span class="default">);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span>
+<a name="141"><font size=-1>141     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">	 * Retrieves the sink nodes of this graph.</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">	 * </span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">	 * @return the sink nodes(&lt;code&gt;INode&lt;/code&gt;) of this graph.</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">	 * @post result-&gt;forall(o | o.getSuccsOf()-&gt;size() == 0) and getNodes().containsAll(result)</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">	 */</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3282">getSinks</a>();</span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">	 * Retrieves a spanning tree of this graph.</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">	 * </span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">	 * @return a spanning tree in which each node is associated with a node in this graph.</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">	 */</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> <a href="dictionary_E.html#1226">IObjectDirectedGraph</a>&lt;?, <a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3285">getSpanningForest</a>();</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">	</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">	 * Retrieves the source nodes of this graph.</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">	 * </span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">	 * @return the source nodes(&lt;code&gt;INode&lt;/code&gt;) of this graph.</span>
+<a name="161"><font size=-1>161     </font></a><span class="comment">	 * @post result-&gt;forall(o | o.getPredsOf()-&gt;size() == 0) and getNodes().containsAll(result)</span>
+<a name="162"><font size=-1>162     </font></a><span class="comment">	 */</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3283">getSources</a>();</span>
+<a name="164"><font size=-1>164     </font></a><span class="default"></span>
+<a name="165"><font size=-1>165     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">	 * Retrieves the tails of the given graph. A Tail is a sink node or an arbitrary node in a strongly-connected component</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">	 * that acts as a sink (only the nodes of the SCC are reachable from the nodes in the SCC).</span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">	 * </span>
+<a name="169"><font size=-1>169     </font></a><span class="comment">	 * @return a collection of nodes.</span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">	 * @post result-&gt;forall(o | getNodes().contains(o))</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">	 * @post result.containsAll(getSinks()) and getNodes().containsAll(result)</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">	 */</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#33">Collection</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3286">getTails</a>();</span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span>
+<a name="175"><font size=-1>175     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">	 * Checks if there is any node that can be reached from the give nodes in the given direction.</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">	 * </span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">	 * @param node1 is a node of interest.</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">	 * @param forward1 &lt;code&gt;true&lt;/code&gt; indicates forward direction; &lt;code&gt;false&lt;/code&gt; indicates backward direction.</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">	 * @param node2 is another node of interest.</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">	 * @param forward2 &lt;code&gt;true&lt;/code&gt; indicates forward direction; &lt;code&gt;false&lt;/code&gt; indicates backward direction.</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">	 * @return &lt;code&gt;true&lt;/code&gt; if there is common node that is reachable from &lt;code&gt;node1&lt;/code&gt; in</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">	 *         &lt;code&gt;forward1&lt;/code&gt; direction and is reachable from &lt;code&gt;node2&lt;/code&gt; in &lt;code&gt;forward2&lt;/code&gt;</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">	 *         direction.</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">	 */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">	</span><span class="keyword">boolean <a href="dictionary_E.html#3289">hasCommonReachablesFrom</a></span><span class="default">(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13360">node1</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13358">forward1</a></span><span class="default">, @<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13361">node2</a>,</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">			</span><span class="keyword">boolean <a href="dictionary_E.html#13359">forward2</a></span><span class="default">);</span>
+<a name="188"><font size=-1>188     </font></a><span class="default"></span>
+<a name="189"><font size=-1>189     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="190"><font size=-1>190     </font></a><span class="comment">	 * Checks if the given nodes have ancestral relationship. A node is considered as an ancestor of itself.</span>
+<a name="191"><font size=-1>191     </font></a><span class="comment">	 * </span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">	 * @param ancestor in the relationship.</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">	 * @param descendent in the relationship.</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">	 * @return &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;ancestor&lt;/code&gt; is the ancestor of &lt;code&gt;descendent&lt;/code&gt;;</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment">	 *         &lt;code&gt;false&lt;/code&gt;, otherwise.</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">	 * @pre getNodes().contains(ancestor) and getNodes().contains(descendent)</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">	 */</span>
+<a name="198"><font size=-1>198     </font></a><span class="comment">	</span><span class="keyword">boolean <a href="dictionary_E.html#3290">isAncestorOf</a></span><span class="default">(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13362">ancestor</a>, @<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13363">descendent</a>);</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span>
+<a name="200"><font size=-1>200     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">	 * Checks if the given destination node is reachable from the given source node in the given direction via outgoing edges.</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">	 * </span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">	 * @param src is the source node in the graph.</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">	 * @param dest is the destination node in the graph.</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">	 * @param forward &lt;code&gt;true&lt;/code&gt; indicates by forward traversal; &lt;code&gt;false&lt;/code&gt; indicates backward traversal.</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">	 * @return &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;dest&lt;/code&gt; is reachable from &lt;code&gt;src&lt;/code&gt; in the given direction;</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">	 *         &lt;code&gt;false&lt;/code&gt;, otherwise.</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">	 * @pre getNodes().contains(src) and getNodes().contains(dest)</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">	 */</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment">	</span><span class="keyword">boolean <a href="dictionary_E.html#3291">isReachable</a></span><span class="default">(@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13366">src</a>, @<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#462">Immutable</a> <a href="dictionary_E.html#13346">N</a> <a href="dictionary_E.html#13364">dest</a>, </span><span class="keyword">boolean <a href="dictionary_E.html#13365">forward</a></span><span class="default">);</span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span>
+<a name="212"><font size=-1>212     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">	 * Performs (pseudo-)topological sort of the given nodes in the given direction.</span>
+<a name="214"><font size=-1>214     </font></a><span class="comment">	 * </span>
+<a name="215"><font size=-1>215     </font></a><span class="comment">	 * @param topdown &lt;code&gt;true&lt;/code&gt; indicates follow the forward edges while sorting; &lt;code&gt;false&lt;/code&gt; indicates</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment">	 *            follow the backward edges.</span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">	 * @return a list containing the nodes but in the sorted order.</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">	 * @post getNodes().containsAll(result)</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">	 */</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_E.html#463">NonNull</a> @<a href="dictionary_E.html#1114">NonNullContainer</a> <a href="dictionary_J.html#1110">List</a>&lt;<a href="dictionary_E.html#13346">N</a>&gt; <a href="dictionary_E.html#3281">performTopologicalSort</a>(</span><span class="keyword">boolean <a href="dictionary_E.html#13367">topdown</a></span><span class="default">);</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">}</span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span>
+<a name="223"><font size=-1>223     </font></a><span class="default"></span><span class="comment">// End of File</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment"></span>
+</pre></body></html>

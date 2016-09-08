@@ -1,0 +1,268 @@
+<html><head><title>it_treap.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/inputtracer/it_treap.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/inputtracer/it_treap.c";
+top.document.title  = "it_treap.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">/*--- Treap implementation for storing label sets.      it_treap.c ---*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">/*</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">   This file is part of InputTracer, a prototype taint analysis tool for</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   analyzing x86 executables.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">   Copyright (C) 2011-2012 Ulf Kargén</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"></span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   02111-1307, USA.</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"></span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">*/</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;pub_tool_basics.h&quot;</span>
+<a name="30"><font size=-1>30     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_tool_libcbase.h&quot;</span>
+<a name="31"><font size=-1>31     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_tool_libcassert.h&quot;</span>
+<a name="32"><font size=-1>32     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_tool_mallocfree.h&quot;</span>
+<a name="33"><font size=-1>33     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;it_include.h&quot;</span>
+<a name="34"><font size=-1>34     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;it_treap.h&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;it_treap_randomness.h&quot;</span>
+<a name="36"><font size=-1>36     </font></a><span class="string"></span>
+<a name="37"><font size=-1>37     </font></a><span class="string"></span><span class="preproc">#define <a href="dictionary_T.html#18452">TREAP_INITIAL_CAPACITY</a> </span><span class="number">4</span>
+<a name="38"><font size=-1>38     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_T.html#18453">TREAP_MAX_SIZE</a> </span><span class="number">65536</span>
+<a name="39"><font size=-1>39     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a> </span><span class="number">0</span>
+<a name="40"><font size=-1>40     </font></a><span class="number"></span>
+<a name="41"><font size=-1>41     </font></a><span class="number"></span>
+<a name="42"><font size=-1>42     </font></a><span class="number"></span>
+<a name="43"><font size=-1>43     </font></a><span class="number"></span><span class="comment">// Helper function for balance_treap</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"></span><span class="keyword">static <a href="dictionary_I.html#113">Int</a> <a href="dictionary_T.html#18455">treap_node_comparator</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">* <a href="dictionary_E.html#18456">e1</a>, </span><span class="keyword">void</span><span class="default">* <a href="dictionary_E.html#18457">e2</a>)</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">{</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_P.html#18458">p1</a> = <a href="dictionary_T.html#18460">TREAP_GET_PRIO</a>(*(<a href="dictionary_T.html#438">TreapNodeIndex</a>*)<a href="dictionary_E.html#18456">e1</a>);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_P.html#18461">p2</a> = <a href="dictionary_T.html#18460">TREAP_GET_PRIO</a>(*(<a href="dictionary_T.html#438">TreapNodeIndex</a>*)<a href="dictionary_E.html#18457">e2</a>);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">   </span>
+<a name="49"><font size=-1>49     </font></a><span class="default">   </span><span class="comment">/*</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">   if(p1 &lt; p2) return -1;</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">   else if(p1 &gt; p2) return 1;</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">   else return 0;</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">   */</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">   </span><span class="keyword">return <a href="dictionary_P.html#18458">p1</a> </span><span class="default">- <a href="dictionary_P.html#18461">p2</a>;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">}</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_B.html#18462">balance_treap</a></span><span class="default">(<a href="dictionary_T.html#2433">Treap</a>* <a href="dictionary_T.html#18463">t</a>)</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">{</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">   <a href="dictionary_T.html#438">TreapNodeIndex</a> <a href="dictionary_I.html#18464">i</a>, <a href="dictionary_C.html#18465">current</a>, <a href="dictionary_P.html#18466">parent</a>;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">   <a href="dictionary_T.html#438">TreapNodeIndex</a>* <a href="dictionary_I.html#18467">indices</a>;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">   <a href="dictionary_T.html#388">TreapNode</a>* <a href="dictionary_A.html#18468">array</a> = <a href="dictionary_T.html#18463">t</a>-&gt;<a href="dictionary_A.html#389">array</a>;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_T.html#18470">treap_size</a> = <a href="dictionary_T.html#18463">t</a>-&gt;<a href="dictionary_C.html#385">current_idx</a>;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">      </span>
+<a name="65"><font size=-1>65     </font></a><span class="default">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18470">treap_size</a> == </span><span class="number">0</span><span class="default">)</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">      </span><span class="keyword">return</span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span>
+<a name="68"><font size=-1>68     </font></a><span class="default">   <a href="dictionary_I.html#18467">indices</a> = <a href="dictionary_V.html#111">VG_</a>(malloc)(</span><span class="string">&quot;it_treap.c: balance_treap&quot;</span><span class="default">,</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">                         <a href="dictionary_T.html#18470">treap_size</a> * </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#438">TreapNodeIndex</a>));</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">      </span>
+<a name="71"><font size=-1>71     </font></a><span class="default">   </span><span class="keyword">for</span><span class="default">(<a href="dictionary_I.html#18464">i</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_I.html#18464">i</a> &lt; <a href="dictionary_T.html#18470">treap_size</a>; <a href="dictionary_I.html#18464">i</a>++)</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">      <a href="dictionary_I.html#18467">indices</a>[<a href="dictionary_I.html#18464">i</a>] = <a href="dictionary_I.html#18464">i</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">      </span>
+<a name="74"><font size=-1>74     </font></a><span class="default">   <a href="dictionary_V.html#111">VG_</a>(ssort)(<a href="dictionary_I.html#18467">indices</a>,</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">		      <a href="dictionary_T.html#18470">treap_size</a>,</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">		      </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#438">TreapNodeIndex</a>),</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">		      <a href="dictionary_T.html#18455">treap_node_comparator</a>);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">   </span>
+<a name="79"><font size=-1>79     </font></a><span class="default">   </span><span class="comment">// Re-insert first element as root</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">   <a href="dictionary_T.html#18463">t</a></span><span class="default">-&gt;<a href="dictionary_R.html#387">root</a> = <a href="dictionary_I.html#18467">indices</a>[</span><span class="number">0</span><span class="default">];</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">   <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_I.html#18467">indices</a>[</span><span class="number">0</span><span class="default">]].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_I.html#18467">indices</a>[</span><span class="number">0</span><span class="default">]].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">   </span>
+<a name="83"><font size=-1>83     </font></a><span class="default">   </span><span class="comment">// Re-insert all elements, updating their logical order in the tree</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">   // without re-allocating them in the array.</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">   </span><span class="keyword">for</span><span class="default">(<a href="dictionary_I.html#18464">i</a> = </span><span class="number">1</span><span class="default">; <a href="dictionary_I.html#18464">i</a> &lt; <a href="dictionary_T.html#18470">treap_size</a>; <a href="dictionary_I.html#18464">i</a>++) {</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">      <a href="dictionary_T.html#438">TreapNodeIndex</a> <a href="dictionary_N.html#18472">newIdx</a> = <a href="dictionary_I.html#18467">indices</a>[<a href="dictionary_I.html#18464">i</a>];</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">      <a href="dictionary_C.html#18465">current</a> = <a href="dictionary_T.html#18463">t</a>-&gt;<a href="dictionary_R.html#387">root</a>; </span><span class="comment">// Start from root</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">      </span><span class="keyword">while</span><span class="default">(<a href="dictionary_C.html#18465">current</a> != <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>) {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">         <a href="dictionary_P.html#18466">parent</a> = <a href="dictionary_C.html#18465">current</a>;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">         </span><span class="keyword">if</span><span class="default">(<a href="dictionary_A.html#18468">array</a>[<a href="dictionary_N.html#18472">newIdx</a>].<a href="dictionary_V.html#434">value</a> &gt; <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_C.html#18465">current</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">            <a href="dictionary_C.html#18465">current</a> = <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_C.html#18465">current</a>].<a href="dictionary_R.html#441">right</a>;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">         </span><span class="keyword">else if</span><span class="default">(<a href="dictionary_A.html#18468">array</a>[<a href="dictionary_N.html#18472">newIdx</a>].<a href="dictionary_V.html#434">value</a> &lt; <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_C.html#18465">current</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">            <a href="dictionary_C.html#18465">current</a> = <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_C.html#18465">current</a>].<a href="dictionary_L.html#439">left</a>;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">         </span><span class="keyword">else</span>
+<a name="95"><font size=-1>95     </font></a><span class="keyword">        	 <a href="dictionary_T.html#33">tl_assert</a></span><span class="default">(</span><span class="number">0</span><span class="default">); </span><span class="comment">// Shouldn't happen</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">      </span>
+<a name="98"><font size=-1>98     </font></a><span class="default">      <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_N.html#18472">newIdx</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_N.html#18472">newIdx</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;      </span>
+<a name="99"><font size=-1>99     </font></a><span class="default">      </span>
+<a name="100"><font size=-1>100     </font></a><span class="default">      </span><span class="keyword">if</span><span class="default">(<a href="dictionary_A.html#18468">array</a>[<a href="dictionary_N.html#18472">newIdx</a>].<a href="dictionary_V.html#434">value</a> &gt; <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_P.html#18466">parent</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">         <a href="dictionary_A.html#18468">array</a>[<a href="dictionary_P.html#18466">parent</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_N.html#18472">newIdx</a>;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="103"><font size=-1>103     </font></a><span class="keyword">         <a href="dictionary_A.html#18468">array</a></span><span class="default">[<a href="dictionary_P.html#18466">parent</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_N.html#18472">newIdx</a>;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">   }</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">         </span>
+<a name="106"><font size=-1>106     </font></a><span class="default">   <a href="dictionary_V.html#111">VG_</a>(free)(<a href="dictionary_I.html#18467">indices</a>);</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">}</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_I.html#369">inline</a> <a href="dictionary_T.html#438">TreapNodeIndex</a> <a href="dictionary_T.html#18473">treap_allocate_node</a></span><span class="default">(<a href="dictionary_T.html#2433">Treap</a>* <a href="dictionary_T.html#18474">t</a>)</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">{</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_C.html#386">current_size</a> == <a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_C.html#385">current_idx</a>) {</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">      <a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_A.html#389">array</a> = <a href="dictionary_V.html#111">VG_</a>(realloc)(</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">         </span><span class="string">&quot;it_treap.c: treap_allocate_node&quot;</span><span class="default">,</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">         <a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_A.html#389">array</a>,</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">         </span><span class="number">2 </span><span class="default">* <a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_C.html#386">current_size</a> * </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#388">TreapNode</a>));</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">      <a href="dictionary_T.html#18474">t</a>-&gt;<a href="dictionary_C.html#386">current_size</a> *= </span><span class="number">2</span><span class="default">;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">   }</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span>
+<a name="119"><font size=-1>119     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_T.html#18474">t</a></span><span class="default">-&gt;<a href="dictionary_C.html#385">current_idx</a>++;</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">}</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span><span class="comment">/* External interface */</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment"></span>
+<a name="124"><font size=-1>124     </font></a><span class="comment"></span><span class="default">inline </span><span class="keyword">void <a href="dictionary_I.html#5">IT_</a></span><span class="default">(init_treap)(<a href="dictionary_T.html#2433">Treap</a>* <a href="dictionary_T.html#18476">t</a>)</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">{</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">   <a href="dictionary_T.html#18476">t</a>-&gt;<a href="dictionary_C.html#386">current_size</a> = <a href="dictionary_T.html#18452">TREAP_INITIAL_CAPACITY</a>;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">   <a href="dictionary_T.html#18476">t</a>-&gt;<a href="dictionary_C.html#385">current_idx</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">   <a href="dictionary_T.html#18476">t</a>-&gt;<a href="dictionary_R.html#387">root</a> = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">   <a href="dictionary_T.html#18476">t</a>-&gt;<a href="dictionary_A.html#389">array</a> = <a href="dictionary_V.html#111">VG_</a>(malloc)(</span><span class="string">&quot;it_treap.c: IT_(init_treap)&quot;</span><span class="default">,</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">		                   <a href="dictionary_T.html#18452">TREAP_INITIAL_CAPACITY</a> * </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#388">TreapNode</a>));</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">}</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default">inline </span><span class="keyword">void <a href="dictionary_I.html#5">IT_</a></span><span class="default">(destroy_treap)(<a href="dictionary_T.html#2433">Treap</a>* <a href="dictionary_T.html#18477">t</a>)</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">{</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">   <a href="dictionary_V.html#111">VG_</a>(free)(<a href="dictionary_T.html#18477">t</a>-&gt;<a href="dictionary_A.html#389">array</a>);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">}</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_I.html#5">IT_</a></span><span class="default">(treap_add_node)(<a href="dictionary_T.html#2433">Treap</a>* <a href="dictionary_T.html#18478">treap</a>, <a href="dictionary_T.html#18480">TreapValueType</a> <a href="dictionary_V.html#18479">value</a>)</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">{</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">   <a href="dictionary_T.html#438">TreapNodeIndex</a> <a href="dictionary_C.html#18481">current</a>, <a href="dictionary_P.html#18482">parent</a>;</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_T.html#18483">treap_size</a> = <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_C.html#385">current_idx</a>;</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_P.html#18484">priority</a>;</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">   <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#18485">stack_top</a>;</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">   </span>
+<a name="145"><font size=-1>145     </font></a><span class="default">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18483">treap_size</a> == <a href="dictionary_T.html#18453">TREAP_MAX_SIZE</a>)</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">      </span><span class="keyword">return</span><span class="default">;</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">   </span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span><span class="preproc">#if <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a></span>
+<a name="149"><font size=-1>149     </font></a><span class="preproc">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18483">treap_size</a> == <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a>)</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">      <a href="dictionary_B.html#18462">balance_treap</a>(<a href="dictionary_T.html#18478">treap</a>);</span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="152"><font size=-1>152     </font></a><span class="preproc"></span>
+<a name="153"><font size=-1>153     </font></a><span class="preproc">   </span><span class="comment">// Keep copy of array pointer to avoid unnecessary memory dereferences</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">   <a href="dictionary_T.html#388">TreapNode</a></span><span class="default">* <a href="dictionary_A.html#18486">array</a> = <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_A.html#389">array</a>;</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">   </span>
+<a name="156"><font size=-1>156     </font></a><span class="default">   </span><span class="comment">// Stack to store the chain of nodes during traversal, and if the child was</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">   // a left or right child. Left/right info is stored by masking the MSB</span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">   // of each entry.</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">   </span><span class="keyword">static <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_S.html#18487">stack</a></span><span class="default">[<a href="dictionary_T.html#18453">TREAP_MAX_SIZE</a>];</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">   </span><span class="keyword">int <a href="dictionary_S.html#18488">stackp</a> </span><span class="default">= -</span><span class="number">1</span><span class="default">;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default"></span><span class="comment">// Bitmasks</span>
+<a name="162"><font size=-1>162     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#18489">TREAP_LEFT_REF</a>  </span><span class="number">0x80000000</span>
+<a name="163"><font size=-1>163     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_T.html#18490">TREAP_RIGHT_REF</a> </span><span class="number">0x00000000</span>
+<a name="164"><font size=-1>164     </font></a><span class="number">   </span>
+<a name="165"><font size=-1>165     </font></a><span class="number">   <a href="dictionary_C.html#18481">current</a> </span><span class="default">= <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_R.html#387">root</a>;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">   <a href="dictionary_P.html#18482">parent</a> = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;   </span><span class="comment">// Avoid gcc &quot;unitialized&quot; warnings</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">   </span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">   // Find insertion point. Two cases with code duplication here in order</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment">   // to avoid an 'if(treap_size &lt; TREAP_BALANCE_THRES)' in every loop </span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">   // iteration.</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18483">treap_size</a> &lt; <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a>) {</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">      </span><span class="keyword">while</span><span class="default">(<a href="dictionary_C.html#18481">current</a> != <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>) {</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">         <a href="dictionary_P.html#18482">parent</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">         </span><span class="keyword">if</span><span class="default">(<a href="dictionary_V.html#18479">value</a> &gt; <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">            <a href="dictionary_C.html#18481">current</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_R.html#441">right</a>;</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">         </span><span class="keyword">else if</span><span class="default">(<a href="dictionary_V.html#18479">value</a> &lt; <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">            <a href="dictionary_C.html#18481">current</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_L.html#439">left</a>;</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">         </span><span class="keyword">else</span>
+<a name="179"><font size=-1>179     </font></a><span class="keyword">            return</span><span class="default">; </span><span class="comment">// Nothing to do, no duplicates allowed</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">   } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">      </span><span class="keyword">while</span><span class="default">(<a href="dictionary_C.html#18481">current</a> != <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>) {</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">         </span><span class="keyword">if</span><span class="default">(<a href="dictionary_V.html#18479">value</a> &gt; <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_V.html#434">value</a>) {</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">            <a href="dictionary_S.html#18487">stack</a>[++<a href="dictionary_S.html#18488">stackp</a>] = (<a href="dictionary_U.html#8">UInt</a>)<a href="dictionary_C.html#18481">current</a> </span><span class="comment">/*| TREAP_RIGHT_REF unnecessary*/</span><span class="default">;</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">            <a href="dictionary_C.html#18481">current</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_R.html#441">right</a>;</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">         } </span><span class="keyword">else if</span><span class="default">(<a href="dictionary_V.html#18479">value</a> &lt; <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_V.html#434">value</a>) {</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">            <a href="dictionary_S.html#18487">stack</a>[++<a href="dictionary_S.html#18488">stackp</a>] = (<a href="dictionary_U.html#8">UInt</a>)<a href="dictionary_C.html#18481">current</a> | <a href="dictionary_T.html#18489">TREAP_LEFT_REF</a>;</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">            <a href="dictionary_C.html#18481">current</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_L.html#439">left</a>;</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">         } </span>
+<a name="190"><font size=-1>190     </font></a><span class="default">         </span><span class="keyword">else</span>
+<a name="191"><font size=-1>191     </font></a><span class="keyword">            return</span><span class="default">; </span><span class="comment">// Nothing to do, no duplicates allowed</span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">   }</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">   </span>
+<a name="195"><font size=-1>195     </font></a><span class="default">   </span><span class="comment">// Allocate new node</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">   <a href="dictionary_C.html#18481">current</a> </span><span class="default">= <a href="dictionary_T.html#18473">treap_allocate_node</a>(<a href="dictionary_T.html#18478">treap</a>);</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">   <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_A.html#389">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_V.html#434">value</a> = <a href="dictionary_V.html#18479">value</a>;</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">   <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_A.html#389">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_L.html#439">left</a>  = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">   <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_A.html#389">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_T.html#440">TREAP_INVALID_REF</a>;</span>
+<a name="200"><font size=-1>200     </font></a><span class="default"></span>
+<a name="201"><font size=-1>201     </font></a><span class="default">   </span><span class="comment">// If this is the first added element, set is as root and return</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_C.html#18481">current</a> == </span><span class="number">0</span><span class="default">) {</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">      <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_R.html#387">root</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">      </span><span class="keyword">return</span><span class="default">;</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">   }</span>
+<a name="206"><font size=-1>206     </font></a><span class="default"></span>
+<a name="207"><font size=-1>207     </font></a><span class="default">   </span><span class="comment">// If beyond balancing threshold, get parent node from top of stack, </span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">   // otherwise 'parent' was already set during the traversal phase</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18483">treap_size</a> &gt;= <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a>)</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">      <a href="dictionary_P.html#18482">parent</a> = <a href="dictionary_S.html#18487">stack</a>[<a href="dictionary_S.html#18488">stackp</a>] &amp; </span><span class="number">0x7FFFFFFF</span><span class="default">; </span><span class="comment">// Mask away left/right marker</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">   </span>
+<a name="212"><font size=-1>212     </font></a><span class="comment">   // VERY IMPORTANT: treap_allocate_node could have changed the array address,</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">   // re-fetch array address before proceeding</span>
+<a name="214"><font size=-1>214     </font></a><span class="comment">   <a href="dictionary_A.html#18486">array</a> </span><span class="default">= <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_A.html#389">array</a>;</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    </span>
+<a name="216"><font size=-1>216     </font></a><span class="default">   </span><span class="comment">// Insert node</span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_V.html#18479">value</a> &gt; <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_V.html#434">value</a>)</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">      <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">   </span><span class="keyword">else</span>
+<a name="220"><font size=-1>220     </font></a><span class="keyword">      <a href="dictionary_A.html#18486">array</a></span><span class="default">[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span><span class="preproc">#if <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a></span>
+<a name="223"><font size=-1>223     </font></a><span class="preproc">   </span><span class="comment">// If we're below balancing threshold, we are done now.</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_T.html#18483">treap_size</a> &lt; <a href="dictionary_T.html#18454">TREAP_BALANCE_THRES</a>)</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">      </span><span class="keyword">return</span><span class="default">;</span>
+<a name="226"><font size=-1>226     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="227"><font size=-1>227     </font></a><span class="preproc"></span>
+<a name="228"><font size=-1>228     </font></a><span class="preproc">   </span><span class="comment">// Perform rotations to maintain heap property</span>
+<a name="229"><font size=-1>229     </font></a><span class="comment">   <a href="dictionary_P.html#18484">priority</a> </span><span class="default">= <a href="dictionary_T.html#18459">treap_randomness</a>[<a href="dictionary_C.html#18481">current</a>];</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">   <a href="dictionary_S.html#18485">stack_top</a> = <a href="dictionary_S.html#18487">stack</a>[<a href="dictionary_S.html#18488">stackp</a>--];</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">   </span><span class="keyword">while</span><span class="default">( <a href="dictionary_T.html#18460">TREAP_GET_PRIO</a>(<a href="dictionary_P.html#18482">parent</a>) &gt; <a href="dictionary_T.html#18460">TREAP_GET_PRIO</a>(<a href="dictionary_C.html#18481">current</a>) ) {</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">      </span><span class="keyword">if</span><span class="default">(<a href="dictionary_S.html#18485">stack_top</a> &amp; <a href="dictionary_T.html#18489">TREAP_LEFT_REF</a>) {</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">         </span><span class="comment">// Right rotation</span>
+<a name="234"><font size=-1>234     </font></a><span class="comment">         <a href="dictionary_A.html#18486">array</a></span><span class="default">[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_R.html#441">right</a>;</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">         <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_P.html#18482">parent</a>;</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">      } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">         </span><span class="comment">// Left rotation</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">         <a href="dictionary_A.html#18486">array</a></span><span class="default">[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_L.html#439">left</a>;</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">         <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_C.html#18481">current</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_P.html#18482">parent</a>;</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">      }</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">   </span>
+<a name="242"><font size=-1>242     </font></a><span class="default">      </span><span class="comment">// If stackp is below zero, we have reached the root   </span>
+<a name="243"><font size=-1>243     </font></a><span class="comment">      </span><span class="keyword">if</span><span class="default">(<a href="dictionary_S.html#18488">stackp</a> &lt; </span><span class="number">0</span><span class="default">) {</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">         <a href="dictionary_T.html#18478">treap</a>-&gt;<a href="dictionary_R.html#387">root</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">         </span><span class="keyword">return</span><span class="default">;</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">      }</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">      </span>
+<a name="248"><font size=-1>248     </font></a><span class="default">      <a href="dictionary_S.html#18485">stack_top</a> = <a href="dictionary_S.html#18487">stack</a>[<a href="dictionary_S.html#18488">stackp</a>--];</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">      <a href="dictionary_P.html#18482">parent</a> = <a href="dictionary_S.html#18485">stack_top</a> &amp; </span><span class="number">0x7FFFFFFF</span><span class="default">;</span>
+<a name="250"><font size=-1>250     </font></a><span class="default">   }</span>
+<a name="251"><font size=-1>251     </font></a><span class="default">   </span><span class="comment">// Set last grandparent's reference to point to the last current node to</span>
+<a name="252"><font size=-1>252     </font></a><span class="comment">   // complete the last rotation</span>
+<a name="253"><font size=-1>253     </font></a><span class="comment">   </span><span class="keyword">if</span><span class="default">(<a href="dictionary_S.html#18485">stack_top</a> &amp; <a href="dictionary_T.html#18489">TREAP_LEFT_REF</a>)</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">      <a href="dictionary_A.html#18486">array</a>[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_L.html#439">left</a> = <a href="dictionary_C.html#18481">current</a>;</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">   </span><span class="keyword">else</span>
+<a name="256"><font size=-1>256     </font></a><span class="keyword">      <a href="dictionary_A.html#18486">array</a></span><span class="default">[<a href="dictionary_P.html#18482">parent</a>].<a href="dictionary_R.html#441">right</a> = <a href="dictionary_C.html#18481">current</a>;   </span>
+<a name="257"><font size=-1>257     </font></a><span class="default">}</span>
+<a name="258"><font size=-1>258     </font></a><span class="default"></span>
+</pre></body></html>

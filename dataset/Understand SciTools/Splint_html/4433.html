@@ -1,0 +1,166 @@
+<html><head><title>clause.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/clause.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/clause.c";
+top.document.title  = "clause.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">** Splint - annotation-assisted static program checker</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">** Copyright (C) 1994-2003 University of Virginia,</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">**         Massachusetts Institute of Technology</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">**</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">** This program is free software; you can redistribute it and/or modify it</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">** under the terms of the GNU General Public License as published by the</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">** Free Software Foundation; either version 2 of the License, or (at your</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">** option) any later version.</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">** </span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">** This program is distributed in the hope that it will be useful, but</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">** WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">** General Public License for more details.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">** </span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">** The GNU General Public License is available from http://www.gnu.org/ or</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">** the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">** MA 02111-1307, USA.</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">**</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">** For information on splint: info@splint.org</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">** To report a bug: splint-bug@splint.org</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">** For more information: http://www.splint.org</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">*/</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">/*</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">** clause.c</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">*/</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span><span class="preproc"># include </span><span class="string">&quot;splintMacros.nf&quot;</span>
+<a name="29"><font size=-1>29     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;basic.h&quot;</span>
+<a name="30"><font size=-1>30     </font></a><span class="string"></span>
+<a name="31"><font size=-1>31     </font></a><span class="string"><a href="dictionary_C.html#21">cstring</a></span>
+<a name="32"><font size=-1>32     </font></a><span class="string"><a href="dictionary_C.html#4434">clause_unparse</a> </span><span class="default">(<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4435">cl</a>)</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">{</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#4435">cl</a>)</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    {</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;true&quot;</span><span class="default">));</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;false&quot;</span><span class="default">));</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ANDCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;and&quot;</span><span class="default">));</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ORCLAUSE:     </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;or&quot;</span><span class="default">));</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">DOWHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;do ... while&quot;</span><span class="default">));</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">WHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;while&quot;</span><span class="default">));</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ITERCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;iter&quot;</span><span class="default">));</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FORCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;for&quot;</span><span class="default">));</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CASECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;case&quot;</span><span class="default">));</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">NOCLAUSE:     </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;none&quot;</span><span class="default">));</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">SWITCHCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;switch&quot;</span><span class="default">));</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CONDCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;cond&quot;</span><span class="default">));</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;trueexit&quot;</span><span class="default">));</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;falseexit&quot;</span><span class="default">));</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    }</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  <a href="dictionary_B.html#1570">BADEXIT</a>;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">}</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default"><a href="dictionary_C.html#21">cstring</a></span>
+<a name="56"><font size=-1>56     </font></a><span class="default"><a href="dictionary_C.html#4451">clause_nameTaken</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4452">cl</a>)</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">{</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#4452">cl</a>)</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    {</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in true branch&quot;</span><span class="default">));</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in true branch&quot;</span><span class="default">));</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ANDCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in first and clause&quot;</span><span class="default">));</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ORCLAUSE:     </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in first or clause&quot;</span><span class="default">));</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">DOWHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in do ... while body&quot;</span><span class="default">));</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">WHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in while body&quot;</span><span class="default">));</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ITERCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in iter body&quot;</span><span class="default">));</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FORCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in for body&quot;</span><span class="default">));</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CASECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in one case&quot;</span><span class="default">));</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">NOCLAUSE:     </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in some clause&quot;</span><span class="default">));</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">SWITCHCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in one possible execution&quot;</span><span class="default">));</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CONDCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in true condition&quot;</span><span class="default">));</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in trueexit&quot;</span><span class="default">));</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in falseexit&quot;</span><span class="default">));</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    }</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">  <a href="dictionary_B.html#476">BADBRANCHRET</a> (<a href="dictionary_C.html#388">cstring_undefined</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">}</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default"><a href="dictionary_C.html#21">cstring</a></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"><a href="dictionary_C.html#4453">clause_nameAlternate</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4454">cl</a>)</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">{</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">  </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#4454">cl</a>)</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    {</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in continuation&quot;</span><span class="default">));  </span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in false branch&quot;</span><span class="default">));</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ANDCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in second and clause&quot;</span><span class="default">));</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ORCLAUSE:     </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in second or clause&quot;</span><span class="default">));</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">DOWHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;if loop is not taken&quot;</span><span class="default">));</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">WHILECLAUSE:  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;if loop is not taken&quot;</span><span class="default">));</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">ITERCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;if iter body does not execute&quot;</span><span class="default">));</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FORCLAUSE:    </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;if for loop body does not execute&quot;</span><span class="default">));</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CASECLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in other case&quot;</span><span class="default">));</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">NOCLAUSE:</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">SWITCHCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in other possible execution&quot;</span><span class="default">));</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">CONDCLAUSE:   </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in false condition&quot;</span><span class="default">));</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">TRUEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in trueexit&quot;</span><span class="default">));</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    </span><span class="keyword">case </span><span class="default">FALSEEXITCLAUSE: </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;in falseexit&quot;</span><span class="default">));</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    }</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">  <a href="dictionary_B.html#476">BADBRANCHRET</a> (<a href="dictionary_C.html#388">cstring_undefined</a>);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">}</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default"><a href="dictionary_C.html#21">cstring</a> <a href="dictionary_C.html#4455">clause_nameFlip</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4456">cl</a>, <a href="dictionary_B.html#14">bool</a> <a href="dictionary_F.html#4457">flip</a>)</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">{</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_F.html#4457">flip</a>)</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">    {</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#4453">clause_nameAlternate</a> </span><span class="default">(<a href="dictionary_C.html#4456">cl</a>);</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">    }</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">  </span><span class="keyword">else</span>
+<a name="110"><font size=-1>110     </font></a><span class="keyword">    </span><span class="default">{</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#4451">clause_nameTaken</a> </span><span class="default">(<a href="dictionary_C.html#4456">cl</a>);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">    }</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">}</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span>
+<a name="115"><font size=-1>115     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4458">clause_isBreakable</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4459">cl</a>)</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">{</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#4459">cl</a> == SWITCHCLAUSE</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">	  || <a href="dictionary_C.html#4459">cl</a> == WHILECLAUSE </span>
+<a name="119"><font size=-1>119     </font></a><span class="default">	  || <a href="dictionary_C.html#4459">cl</a> == DOWHILECLAUSE</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">	  || <a href="dictionary_C.html#4459">cl</a> == FORCLAUSE</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">	  || <a href="dictionary_C.html#4459">cl</a> == ITERCLAUSE);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">}</span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span>
+<a name="124"><font size=-1>124     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4460">clause_isLoop</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4461">cl</a>)</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">{</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#4461">cl</a> == WHILECLAUSE </span>
+<a name="127"><font size=-1>127     </font></a><span class="default">	  || <a href="dictionary_C.html#4461">cl</a> == FORCLAUSE</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">	  || <a href="dictionary_C.html#4461">cl</a> == ITERCLAUSE</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">	  || <a href="dictionary_C.html#4461">cl</a> == DOWHILECLAUSE);</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">}</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span>
+<a name="132"><font size=-1>132     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4462">clause_isConditional</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4463">cl</a>)</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">{</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(   <a href="dictionary_C.html#4463">cl</a> == TRUECLAUSE</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">	  || <a href="dictionary_C.html#4463">cl</a> == FALSECLAUSE</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">	  || <a href="dictionary_C.html#4463">cl</a> == WHILECLAUSE</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">	  || <a href="dictionary_C.html#4463">cl</a> == FORCLAUSE</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">	  || <a href="dictionary_C.html#4463">cl</a> == SWITCHCLAUSE</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">	  || <a href="dictionary_C.html#4463">cl</a> == ITERCLAUSE);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">}</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span>
+<a name="142"><font size=-1>142     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4464">clause_isSwitch</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4465">cl</a>)</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">{</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#4465">cl</a> == SWITCHCLAUSE);</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">}</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span>
+<a name="147"><font size=-1>147     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4466">clause_isCase</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4467">cl</a>)</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">{</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#4467">cl</a> == CASECLAUSE);</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">}</span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span>
+<a name="152"><font size=-1>152     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_C.html#4468">clause_isNone</a> (<a href="dictionary_C.html#4436">clause</a> <a href="dictionary_C.html#4469">cl</a>)</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">{</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#4469">cl</a> == NOCLAUSE);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">} </span>
+<a name="156"><font size=-1>156     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,47 @@
+<html><head><title>shorts.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/shorts.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/shorts.c";
+top.document.title  = "shorts.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="keyword">typedef struct </span><span class="default">{ </span><span class="keyword">short <a href="dictionary_O.html#84567">ot</a></span><span class="default">; </span><span class="keyword">short <a href="dictionary_O.html#84568">ob</a></span><span class="default">; </span><span class="keyword">short <a href="dictionary_N.html#84569">nt</a></span><span class="default">; </span><span class="keyword">short <a href="dictionary_N.html#84570">nb</a></span><span class="default">; } <a href="dictionary_S.html#84571">Stuff</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_P.html#84572">PaintThumb</a></span><span class="default">( <a href="dictionary_S.html#84571">Stuff</a>* <a href="dictionary_W.html#84573">w</a> )</span>
+<a name="7"><font size=-1>7     </font></a><span class="default">{</span>
+<a name="8"><font size=-1>8     </font></a><span class="default">    </span><span class="keyword">short <a href="dictionary_O.html#84574">oldtop</a> </span><span class="default">= <a href="dictionary_W.html#84573">w</a>-&gt;<a href="dictionary_O.html#84567">ot</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default">    </span><span class="keyword">short <a href="dictionary_O.html#84575">oldbot</a> </span><span class="default">= <a href="dictionary_W.html#84573">w</a>-&gt;<a href="dictionary_O.html#84568">ob</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default">    </span><span class="keyword">short <a href="dictionary_N.html#84576">newtop</a> </span><span class="default">= <a href="dictionary_W.html#84573">w</a>-&gt;<a href="dictionary_N.html#84569">nt</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">    </span><span class="keyword">short <a href="dictionary_N.html#84577">newbot</a> </span><span class="default">= <a href="dictionary_W.html#84573">w</a>-&gt;<a href="dictionary_N.html#84570">nb</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#84576">newtop</a> &lt; <a href="dictionary_O.html#84574">oldtop</a>) { <a href="dictionary_F.html#2441">fprintf</a>(<a href="dictionary_S.html#2442">stderr</a>,</span><span class="string">&quot;case1\n&quot;</span><span class="default">);</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">	</span><span class="comment">//	    FillArea(w, newtop, XawMin(newbot, oldtop), 1);</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#84576">newtop</a> &gt; <a href="dictionary_O.html#84574">oldtop</a>) { <a href="dictionary_F.html#2441">fprintf</a>(<a href="dictionary_S.html#2442">stderr</a>,</span><span class="string">&quot;case2\n&quot;</span><span class="default">);</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">	</span><span class="comment">//	    FillArea(w, oldtop, XawMin(newtop, oldbot), 0);</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#84577">newbot</a> &lt; <a href="dictionary_O.html#84575">oldbot</a>) { <a href="dictionary_F.html#2441">fprintf</a>(<a href="dictionary_S.html#2442">stderr</a>,</span><span class="string">&quot;case3\n&quot;</span><span class="default">);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">	</span><span class="comment">//	    FillArea(w, XawMax(newbot, oldtop), oldbot, 0);</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#84577">newbot</a> &gt; <a href="dictionary_O.html#84575">oldbot</a>) { <a href="dictionary_F.html#2441">fprintf</a>(<a href="dictionary_S.html#2442">stderr</a>,</span><span class="string">&quot;case4\n&quot;</span><span class="default">);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">	</span><span class="comment">//	    FillArea(w, XawMax(newtop, oldbot), newbot, 1);</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">}</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#171212">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">{</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  <a href="dictionary_S.html#84571">Stuff</a> <a href="dictionary_S.html#84579">st</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  <a href="dictionary_S.html#84579">st</a>.<a href="dictionary_O.html#84567">ot</a> = -</span><span class="number">332</span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  <a href="dictionary_S.html#84579">st</a>.<a href="dictionary_O.html#84568">ob</a> = -</span><span class="number">301</span><span class="default">;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  <a href="dictionary_S.html#84579">st</a>.<a href="dictionary_N.html#84569">nt</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  <a href="dictionary_S.html#84579">st</a>.<a href="dictionary_N.html#84570">nb</a> = </span><span class="number">31</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  <a href="dictionary_P.html#84572">PaintThumb</a>( &amp;<a href="dictionary_S.html#84579">st</a> );</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">}</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,291 @@
+<html><head><title>preprocessor.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cppcheck/cppcheck-1.72/lib/preprocessor.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cppcheck/cppcheck-1.72/lib/preprocessor.h";
+top.document.title  = "preprocessor.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Cppcheck - A tool for static C/C++ code analysis</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (C) 2007-2016 Cppcheck team.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> *</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * This program is free software: you can redistribute it and/or modify</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * it under the terms of the GNU General Public License as published by</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * the Free Software Foundation, either version 3 of the License, or</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * (at your option) any later version.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * This program is distributed in the hope that it will be useful,</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * GNU General Public License for more details.</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * You should have received a copy of the GNU General Public License</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_P.html#1727">preprocessorH</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc">#define <a href="dictionary_P.html#1727">preprocessorH</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc"></span><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;map&gt;</span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;istream&gt;</span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;string&gt;</span>
+<a name="27"><font size=-1>27     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;list&gt;</span>
+<a name="28"><font size=-1>28     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;set&gt;</span>
+<a name="29"><font size=-1>29     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;config.h&quot;</span>
+<a name="30"><font size=-1>30     </font></a><span class="string"></span>
+<a name="31"><font size=-1>31     </font></a><span class="string"></span><span class="keyword">class <a href="dictionary_E.html#31">ErrorLogger</a></span><span class="default">;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">class <a href="dictionary_S.html#506">Settings</a></span><span class="default">;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="comment">/// @addtogroup Core</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">/// @{</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"></span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">/**</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * @brief The cppcheck preprocessor.</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * The preprocessor has special functionality for extracting the various ifdef</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * configurations that exist in a source file.</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#498">CPPCHECKLIB</a> <a href="dictionary_P.html#1730">Preprocessor</a> </span><span class="default">{</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">     * Include file types.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">     */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">    </span><span class="keyword">enum <a href="dictionary_P.html#1731">HeaderTypes</a> </span><span class="default">{</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">        NoHeader = </span><span class="number">0</span><span class="default">,</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">        UserHeader,</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">        SystemHeader</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    };</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    </span><span class="comment">/** character that is inserted in expanded macros */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">    </span><span class="keyword">static char <a href="dictionary_P.html#1735">macroChar</a></span><span class="default">;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    <a href="dictionary_P.html#1736">Preprocessor</a>(<a href="dictionary_S.html#506">Settings</a>&amp; settings, <a href="dictionary_E.html#31">ErrorLogger</a> *errorLogger = <a href="dictionary_N.html#1132">nullptr</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    </span><span class="keyword">static bool <a href="dictionary_P.html#1737">missingIncludeFlag</a></span><span class="default">;</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    </span><span class="keyword">static bool <a href="dictionary_P.html#1738">missingSystemIncludeFlag</a></span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">     * Extract the code for each configuration</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">     * @param istr The (file/string) stream to read from.</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">     * @param result The map that will get the results</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">     * @param filename The name of the file to check e.g. &quot;src/main.cpp&quot;</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">     * @param includePaths List of paths where include files should be searched from,</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">     * single path can be e.g. in format &quot;include/&quot;.</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">     * There must be a path separator at the end. Default parameter is empty list.</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">     * Note that if path from given filename is also extracted and that is used as</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * a last include path if include file was not found from earlier paths.</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">     */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_P.html#1739">preprocess</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1704">istream</a> &amp;istr, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#113">map</a>&lt;std::string, std::string&gt; &amp;result, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;includePaths = <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1344">list</a>&lt;<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a>&gt;());</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">     * Extract the code for each configuration. Use this with getcode() to get the</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">     * file data for each individual configuration.</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">     *</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">     * @param srcCodeStream The (file/string) stream to read from.</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">     * @param processedFile Give reference to empty string as a parameter,</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">     * function will fill processed file here. Use this also as a filedata parameter</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">     * to getcode() if you received more than once configurations.</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">     * @param resultConfigurations List of configurations. Pass these one by one</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">     * to getcode() with processedFile.</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">     * @param filename The name of the file to check e.g. &quot;src/main.cpp&quot;</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">     * @param includePaths List of paths where include files should be searched from,</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">     * single path can be e.g. in format &quot;include/&quot;.</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">     * There must be a path separator at the end. Default parameter is empty list.</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">     * Note that if path from given filename is also extracted and that is used as</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">     * a last include path if include file was not found from earlier paths.</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">     */</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_P.html#1740">preprocess</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1704">istream</a> &amp;srcCodeStream, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;processedFile, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;resultConfigurations, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;includePaths);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="comment">/** Just read the code into a string. Perform simple cleanup of the code */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1741">read</a>(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1704">istream</a> &amp;istr, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    </span><span class="comment">/** read preprocessor statements into a string. */</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1742">readpreprocessor</a>(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1704">istream</a> &amp;istr, </span><span class="keyword">const unsigned int </span><span class="default">bom);</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="comment">/** should __cplusplus be defined? */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">    </span><span class="keyword">static bool <a href="dictionary_P.html#1743">cplusplus</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#506">Settings</a> </span><span class="default">*settings, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">     * Get preprocessed code for a given configuration</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">     * @param filedata file data including preprocessing 'if', 'define', etc</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">     * @param cfg configuration to read out</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">     * @param filename name of source file</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">     */</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1744">getcode</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filedata, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;cfg, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename);</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">     * simplify condition</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">     * @param variables Variable values</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">     * @param condition The condition to simplify</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">     * @param match if true, 'defined(A)' is replaced with 0 if A is not defined</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">     */</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_P.html#1745">simplifyCondition</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#113">map</a>&lt;std::string, std::string&gt; &amp;variables, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;condition, </span><span class="keyword">bool </span><span class="default">match);</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span>
+<a name="119"><font size=-1>119     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">     * preprocess all whitespaces</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">     * @param processedFile The data to be processed</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">     */</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">    </span><span class="keyword">static void <a href="dictionary_P.html#1746">preprocessWhitespaces</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;processedFile);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default"></span>
+<a name="125"><font size=-1>125     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">     * make sure empty configuration macros are not used in code. the given code must be a single configuration</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">     * @param code The input code</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">     * @param cfg configuration</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">     * @return true =&gt; configuration is valid</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">     */</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_P.html#1747">validateCfg</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;code, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;cfg);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_P.html#1748">validateCfgError</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;cfg, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;macro);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_P.html#1749">handleUndef</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;configurations) </span><span class="keyword">const</span><span class="default">;</span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span>
+<a name="136"><font size=-1>136     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">     * report error</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">     * @param fileName name of file that the error was found in</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">     * @param linenr linenr in file</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">     * @param errorLogger Error logger to write error to</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">     * @param errorType id string for error</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">     * @param errorText Plain text</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">     */</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">    </span><span class="keyword">static void <a href="dictionary_P.html#1750">writeError</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;fileName, </span><span class="keyword">const unsigned int </span><span class="default">linenr, <a href="dictionary_E.html#31">ErrorLogger</a> *errorLogger, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;errorType, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;errorText);</span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">     * Replace &quot;#if defined&quot; with &quot;#ifdef&quot; where possible</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">     *</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">     * @param str The string to be converted</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">     */</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_P.html#1751">replaceIfDefined</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;str) </span><span class="keyword">const</span><span class="default">;</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">     * expand macros in code. ifdefs etc are ignored so the code must be a single configuration</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">     * @param code The input code</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">     * @param filename filename of source file</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">     * @param cfg user given -D configuration</span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">     * @param errorLogger Error logger to write errors to (if any)</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">     * @return the expanded string</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">     */</span>
+<a name="161"><font size=-1>161     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1752">expandMacros</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;code, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> filename, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;cfg, <a href="dictionary_E.html#31">ErrorLogger</a> *errorLogger);</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="164"><font size=-1>164     </font></a><span class="comment">     * Remove comments from code. This should only be called from read().</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment">     * If there are inline suppressions, the _settings member is modified</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">     * @param str Code processed by read().</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">     * @param filename filename</span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">     * @return code without comments</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment">     */</span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1753">removeComments</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;str, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename);</span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span>
+<a name="172"><font size=-1>172     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">     * Cleanup 'if 0' from the code</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">     * @param code Code processed by read().</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">     * @return code without 'if 0'</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">     */</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1754">removeIf0</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;code);</span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span>
+<a name="179"><font size=-1>179     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">     * Remove redundant parentheses from preprocessor commands. This should only be called from read().</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">     * @param str Code processed by read().</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">     * @return code with reduced parentheses</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">     */</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1755">removeParentheses</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;str);</span>
+<a name="185"><font size=-1>185     </font></a><span class="default"></span>
+<a name="186"><font size=-1>186     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment">     * clean up #-preprocessor lines (only)</span>
+<a name="188"><font size=-1>188     </font></a><span class="comment">     * @param processedFile The data to be processed</span>
+<a name="189"><font size=-1>189     </font></a><span class="comment">     */</span>
+<a name="190"><font size=-1>190     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1756">preprocessCleanupDirectives</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;processedFile);</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">     * Returns the string between double quote characters or \&lt; \&gt; characters.</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">     * @param str e.g. \code#include &quot;menu.h&quot;\endcode or \code#include &lt;menu.h&gt;\endcode</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment">     * After function call it will contain e.g. &quot;menu.h&quot; without double quotes.</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">     * @return NoHeader empty string if double quotes or \&lt; \&gt; were not found.</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">     *         UserHeader if file surrounded with &quot;&quot; was found</span>
+<a name="198"><font size=-1>198     </font></a><span class="comment">     *         SystemHeader if file surrounded with \&lt;\&gt; was found</span>
+<a name="199"><font size=-1>199     </font></a><span class="comment">     */</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_P.html#1730">Preprocessor</a></span><span class="default">::<a href="dictionary_P.html#1731">HeaderTypes</a> <a href="dictionary_P.html#1757">getHeaderFileName</a>(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;str);</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span><span class="keyword">private</span><span class="default">:</span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span>
+<a name="203"><font size=-1>203     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">     * Remove space that has new line character on left or right side of it.</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">     *</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">     * @param str The string to be converted</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">     * @return The string where space characters have been removed.</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">     */</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1758">removeSpaceNearNL</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;str);</span>
+<a name="210"><font size=-1>210     </font></a><span class="default"></span>
+<a name="211"><font size=-1>211     </font></a><span class="default">    </span><span class="keyword">static <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1759">getdef</a>(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> line, </span><span class="keyword">bool </span><span class="default">def);</span>
+<a name="212"><font size=-1>212     </font></a><span class="default"></span>
+<a name="213"><font size=-1>213     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment">     * Get all possible configurations sorted in alphabetical order.</span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">     * By looking at the ifdefs and ifndefs in filedata</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">     */</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; <a href="dictionary_P.html#1760">getcfgs</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filedata, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#113">map</a>&lt;std::string, std::string&gt; &amp;defs);</span>
+<a name="220"><font size=-1>220     </font></a><span class="default"></span>
+<a name="221"><font size=-1>221     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment">     * Remove asm(...) from a string</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">     * @param str Code</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">     */</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">    </span><span class="keyword">static void <a href="dictionary_P.html#1761">removeAsm</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;str);</span>
+<a name="226"><font size=-1>226     </font></a><span class="default"></span>
+<a name="227"><font size=-1>227     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment">     * Evaluate condition 'numerically'</span>
+<a name="229"><font size=-1>229     </font></a><span class="comment">     * @param cfg configuration</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment">     * @param def condition</span>
+<a name="231"><font size=-1>231     </font></a><span class="comment">     * @return result when evaluating the condition</span>
+<a name="232"><font size=-1>232     </font></a><span class="comment">     */</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment">    </span><span class="keyword">bool <a href="dictionary_P.html#1762">match_cfg_def</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#113">map</a>&lt;std::string, std::string&gt; cfg, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> def);</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+<a name="235"><font size=-1>235     </font></a><span class="default">    </span><span class="keyword">static void <a href="dictionary_P.html#1763">getErrorMessages</a></span><span class="default">(<a href="dictionary_E.html#31">ErrorLogger</a> *errorLogger, </span><span class="keyword">const <a href="dictionary_S.html#506">Settings</a> </span><span class="default">*settings);</span>
+<a name="236"><font size=-1>236     </font></a><span class="default"></span>
+<a name="237"><font size=-1>237     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">     * handle includes for a specific configuration</span>
+<a name="239"><font size=-1>239     </font></a><span class="comment">     * @param code code in string</span>
+<a name="240"><font size=-1>240     </font></a><span class="comment">     * @param filePath filename of code</span>
+<a name="241"><font size=-1>241     </font></a><span class="comment">     * @param includePaths Paths where headers might be</span>
+<a name="242"><font size=-1>242     </font></a><span class="comment">     * @param defs defines (only values)</span>
+<a name="243"><font size=-1>243     </font></a><span class="comment">     * @param pragmaOnce includes that has already been included and contains a \#pragma once statement</span>
+<a name="244"><font size=-1>244     </font></a><span class="comment">     * @param includes provide a empty list. this is just used to prevent recursive inclusions.</span>
+<a name="245"><font size=-1>245     </font></a><span class="comment">     * \return resulting string</span>
+<a name="246"><font size=-1>246     </font></a><span class="comment">     */</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1764">handleIncludes</a>(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;code, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filePath, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;includePaths, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#113">map</a>&lt;std::string,std::string&gt; &amp;defs, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#115">set</a>&lt;std::string&gt; &amp;pragmaOnce, <a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; includes);</span>
+<a name="248"><font size=-1>248     </font></a><span class="default"></span>
+<a name="249"><font size=-1>249     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_P.html#1765">setFile0</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;<a href="dictionary_F.html#1766">f</a>) {</span>
+<a name="250"><font size=-1>250     </font></a><span class="default">        <a href="dictionary_P.html#1772">file0</a> = <a href="dictionary_F.html#1766">f</a>;</span>
+<a name="251"><font size=-1>251     </font></a><span class="default">    }</span>
+<a name="252"><font size=-1>252     </font></a><span class="default"></span>
+<a name="253"><font size=-1>253     </font></a><span class="default"></span><span class="keyword">private</span><span class="default">:</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_P.html#1767">missingInclude</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename, </span><span class="keyword">unsigned int </span><span class="default">linenr, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;header, <a href="dictionary_P.html#1731">HeaderTypes</a> headerType);</span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span>
+<a name="256"><font size=-1>256     </font></a><span class="default">    </span><span class="keyword">void <a href="dictionary_P.html#1768">error</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filename, </span><span class="keyword">unsigned int </span><span class="default">linenr, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;msg);</span>
+<a name="257"><font size=-1>257     </font></a><span class="default"></span>
+<a name="258"><font size=-1>258     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="259"><font size=-1>259     </font></a><span class="comment">     * Search includes from code and append code from the included</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment">     * file</span>
+<a name="261"><font size=-1>261     </font></a><span class="comment">     * @param[in,out] code The source code to modify</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment">     * @param filePath Relative path to file to check e.g. &quot;src/main.cpp&quot;</span>
+<a name="263"><font size=-1>263     </font></a><span class="comment">     * @param includePaths List of paths where include files should be searched from,</span>
+<a name="264"><font size=-1>264     </font></a><span class="comment">     * single path can be e.g. in format &quot;include/&quot;.</span>
+<a name="265"><font size=-1>265     </font></a><span class="comment">     * There must be a path separator at the end. Default parameter is empty list.</span>
+<a name="266"><font size=-1>266     </font></a><span class="comment">     * Note that if path from given filename is also extracted and that is used as</span>
+<a name="267"><font size=-1>267     </font></a><span class="comment">     * a last include path if include file was not found from earlier paths.</span>
+<a name="268"><font size=-1>268     </font></a><span class="comment">     */</span>
+<a name="269"><font size=-1>269     </font></a><span class="comment">    </span><span class="keyword">void <a href="dictionary_P.html#1769">handleIncludes</a></span><span class="default">(<a href="dictionary_S.html#43">std</a>::<a href="dictionary_S.html#44">string</a> &amp;code, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> &amp;filePath, </span><span class="keyword">const <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#1344">list</a>&lt;std::string&gt; &amp;includePaths);</span>
+<a name="270"><font size=-1>270     </font></a><span class="default"></span>
+<a name="271"><font size=-1>271     </font></a><span class="default">    <a href="dictionary_S.html#506">Settings</a>&amp; <a href="dictionary_P.html#1770">_settings</a>;</span>
+<a name="272"><font size=-1>272     </font></a><span class="default">    <a href="dictionary_E.html#31">ErrorLogger</a> *<a href="dictionary_P.html#1771">_errorLogger</a>;</span>
+<a name="273"><font size=-1>273     </font></a><span class="default"></span>
+<a name="274"><font size=-1>274     </font></a><span class="default">    </span><span class="comment">/** filename for cpp/c file - useful when reporting errors */</span>
+<a name="275"><font size=-1>275     </font></a><span class="comment">    <a href="dictionary_S.html#43">std</a></span><span class="default">::<a href="dictionary_S.html#44">string</a> <a href="dictionary_P.html#1772">file0</a>;</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">};</span>
+<a name="277"><font size=-1>277     </font></a><span class="default"></span>
+<a name="278"><font size=-1>278     </font></a><span class="default"></span><span class="comment">/// @}</span>
+<a name="279"><font size=-1>279     </font></a><span class="comment">//---------------------------------------------------------------------------</span>
+<a name="280"><font size=-1>280     </font></a><span class="comment"></span><span class="preproc">#endif </span><span class="comment">// preprocessorH</span>
+<a name="281"><font size=-1>281     </font></a><span class="comment"></span>
+</pre></body></html>

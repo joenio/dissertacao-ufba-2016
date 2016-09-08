@@ -1,0 +1,45 @@
+<html><head><title>boost_thread.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/boost_thread.cpp</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/boost_thread.cpp";
+top.document.title  = "boost_thread.cpp";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">// Test program that allows to verify whether Drd works fine for programs that</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">// use the boost::thread, boost::mutex and boost::condition classes.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread/condition.hpp&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread/mutex.hpp&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread/thread.hpp&gt;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;iostream&gt;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span>
+<a name="10"><font size=-1>10     </font></a><span class="string"></span>
+<a name="11"><font size=-1>11     </font></a><span class="string"></span><span class="keyword">static <a href="dictionary_B.html#34711">boost</a></span><span class="default">::<a href="dictionary_B.html#34712">condition</a> <a href="dictionary_S.html#34710">s_cva</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_B.html#34711">boost</a></span><span class="default">::<a href="dictionary_B.html#34714">mutex</a> <a href="dictionary_S.html#34713">s_m</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_T.html#34715">thread_func</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">)</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">{</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">  <a href="dictionary_S.html#2471">std</a>::<a href="dictionary_S.html#34716">cerr</a> &lt;&lt; </span><span class="string">&quot;Thread 2.\n&quot;</span><span class="default">;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">  <a href="dictionary_B.html#34711">boost</a>::<a href="dictionary_B.html#34714">mutex</a>::<a href="dictionary_S.html#34717">scoped_lock</a> <a href="dictionary_S.html#34718">sl</a>(<a href="dictionary_S.html#34713">s_m</a>);</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">  <a href="dictionary_S.html#34710">s_cva</a>.<a href="dictionary_N.html#34719">notify_all</a>();</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">  <a href="dictionary_S.html#34710">s_cva</a>.<a href="dictionary_W.html#2483">wait</a>(<a href="dictionary_S.html#34718">sl</a>);</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">}</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#59567">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#34721">argc</a></span><span class="default">, </span><span class="keyword">char</span><span class="default">** <a href="dictionary_A.html#34722">argv</a>)</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">{</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">  <a href="dictionary_S.html#2471">std</a>::<a href="dictionary_S.html#34716">cerr</a> &lt;&lt; </span><span class="string">&quot;Thread 1.\n&quot;</span><span class="default">;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">  <a href="dictionary_B.html#34711">boost</a>::<a href="dictionary_B.html#34714">mutex</a>::<a href="dictionary_S.html#34717">scoped_lock</a> <a href="dictionary_S.html#34718">sl</a>(<a href="dictionary_S.html#34713">s_m</a>);</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">  <a href="dictionary_B.html#34711">boost</a>::<a href="dictionary_B.html#34723">thread</a> <a href="dictionary_T.html#34724">t</a>(<a href="dictionary_T.html#34715">thread_func</a>);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  <a href="dictionary_S.html#34710">s_cva</a>.<a href="dictionary_W.html#2483">wait</a>(<a href="dictionary_S.html#34718">sl</a>);</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  <a href="dictionary_S.html#34710">s_cva</a>.<a href="dictionary_N.html#34719">notify_all</a>();</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  <a href="dictionary_S.html#34718">sl</a>.<a href="dictionary_U.html#2465">unlock</a>();</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  <a href="dictionary_T.html#34724">t</a>.<a href="dictionary_J.html#34725">join</a>();</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  <a href="dictionary_S.html#2471">std</a>::<a href="dictionary_S.html#34716">cerr</a> &lt;&lt; </span><span class="string">&quot;Finished.\n&quot;</span><span class="default">;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">}</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+</pre></body></html>

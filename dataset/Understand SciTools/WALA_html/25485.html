@@ -1,0 +1,244 @@
+<html><head><title>BasicRTABuilder.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ipa/callgraph/propagation/rta/BasicRTABuilder.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.core/src/com/ibm/wala/ipa/callgraph/propagation/rta/BasicRTABuilder.java";
+top.document.title  = "BasicRTABuilder.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2002 - 2006 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.ipa.callgraph.propagation.<a href="dictionary_C.html#3589">rta</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#6">Iterator</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.analysis.<a href="dictionary_C.html#2019">reflection</a>.<a href="dictionary_C.html#25540">CloneInterpreter</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#259">CallSiteReference</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#253">IClass</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#252">IMethod</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#258">NewSiteReference</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#1880">fixpoint</a>.<a href="dictionary_C.html#3605">IntSetVariable</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#1880">fixpoint</a>.<a href="dictionary_C.html#3581">UnaryOperator</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#611">AnalysisCache</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#612">AnalysisOptions</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#383">CGNode</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#1991">ContextSelector</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#382">impl</a>.<a href="dictionary_C.html#3583">ExplicitCallGraph</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#382">impl</a>.<a href="dictionary_C.html#3583">ExplicitCallGraph</a>.<a href="dictionary_C.html#20475">ExplicitNode</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#628">propagation</a>.<a href="dictionary_C.html#620">InstanceKey</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#628">propagation</a>.<a href="dictionary_C.html#1816">PointerKey</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#628">propagation</a>.<a href="dictionary_C.html#3603">PointsToSetVariable</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#628">propagation</a>.<a href="dictionary_C.html#3592">SSAContextInterpreter</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#386">cha</a>.<a href="dictionary_C.html#385">IClassHierarchy</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#245">types</a>.<a href="dictionary_C.html#233">Selector</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#408">intset</a>.<a href="dictionary_C.html#407">IntSet</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#408">intset</a>.<a href="dictionary_C.html#3587">IntSetAction</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#408">intset</a>.<a href="dictionary_C.html#2410">IntSetUtil</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#408">intset</a>.<a href="dictionary_C.html#3588">MutableIntSet</a>;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * TODO: refactor to eliminate more redundancy with SSACallGraphBuilder</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_C.html#25486">BasicRTABuilder</a> extends <a href="dictionary_C.html#25541">AbstractRTABuilder</a> </span><span class="default">{</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#25513">BasicRTABuilder</a></span><span class="default">(<a href="dictionary_C.html#385">IClassHierarchy</a> <a href="dictionary_C.html#25515">cha</a>, <a href="dictionary_C.html#612">AnalysisOptions</a> <a href="dictionary_C.html#25518">options</a>, <a href="dictionary_C.html#611">AnalysisCache</a> <a href="dictionary_C.html#25514">cache</a>, <a href="dictionary_C.html#1991">ContextSelector</a> <a href="dictionary_C.html#25517">contextSelector</a>,</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">      <a href="dictionary_C.html#3592">SSAContextInterpreter</a> <a href="dictionary_C.html#25516">contextInterpreter</a>) {</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">(<a href="dictionary_C.html#25515">cha</a>, <a href="dictionary_C.html#25518">options</a>, <a href="dictionary_C.html#25514">cache</a>, <a href="dictionary_C.html#25517">contextSelector</a>, <a href="dictionary_C.html#25516">contextInterpreter</a>);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  }</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">   * Perform needed bookkeeping when a new class is discovered.</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">   */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_O.html#8">Override</a></span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  </span><span class="keyword">protected void <a href="dictionary_C.html#25533">updateSetsForNewClass</a></span><span class="default">(<a href="dictionary_C.html#253">IClass</a> <a href="dictionary_C.html#25537">klass</a>, <a href="dictionary_C.html#620">InstanceKey</a> <a href="dictionary_C.html#25536">iKey</a>, <a href="dictionary_C.html#383">CGNode</a> <a href="dictionary_C.html#25539">node</a>, <a href="dictionary_C.html#258">NewSiteReference</a> <a href="dictionary_C.html#25538">n</a>) {</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">    </span><span class="comment">// set up the selector map to record each method that class implements</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">    <a href="dictionary_C.html#25526">registerImplementedMethods</a></span><span class="default">(<a href="dictionary_C.html#25537">klass</a>, <a href="dictionary_C.html#25536">iKey</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#6">Iterator</a> <a href="dictionary_C.html#25535">ifaces</a> = <a href="dictionary_C.html#25537">klass</a>.<a href="dictionary_C.html#12820">getAllImplementedInterfaces</a>().<a href="dictionary_I.html#96">iterator</a>(); <a href="dictionary_C.html#25535">ifaces</a>.<a href="dictionary_H.html#95">hasNext</a>();) {</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">      <a href="dictionary_C.html#253">IClass</a> <a href="dictionary_C.html#25534">c</a> = (IClass) <a href="dictionary_C.html#25535">ifaces</a>.<a href="dictionary_N.html#97">next</a>();</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">      <a href="dictionary_C.html#25526">registerImplementedMethods</a>(<a href="dictionary_C.html#25534">c</a>, <a href="dictionary_C.html#25536">iKey</a>);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    }</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    <a href="dictionary_C.html#25537">klass</a> = <a href="dictionary_C.html#25537">klass</a>.<a href="dictionary_C.html#1398">getSuperclass</a>();</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    </span><span class="keyword">while </span><span class="default">(<a href="dictionary_C.html#25537">klass</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">      <a href="dictionary_C.html#25526">registerImplementedMethods</a>(<a href="dictionary_C.html#25537">klass</a>, <a href="dictionary_C.html#25536">iKey</a>);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">      <a href="dictionary_C.html#25537">klass</a> = <a href="dictionary_C.html#25537">klass</a>.<a href="dictionary_C.html#1398">getSuperclass</a>();</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  }</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">   * Record state for each method implemented by iKey.</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">   */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">  </span><span class="keyword">private void <a href="dictionary_C.html#25526">registerImplementedMethods</a></span><span class="default">(<a href="dictionary_C.html#253">IClass</a> <a href="dictionary_C.html#25531">declarer</a>, <a href="dictionary_C.html#620">InstanceKey</a> <a href="dictionary_C.html#25532">iKey</a>) {</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;registerImplementedMethods: &quot; </span><span class="default">+ <a href="dictionary_C.html#25531">declarer</a> + </span><span class="string">&quot; &quot; </span><span class="default">+ <a href="dictionary_C.html#25532">iKey</a>));</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    }</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#6">Iterator</a> <a href="dictionary_C.html#25528">it</a> = <a href="dictionary_C.html#25531">declarer</a>.<a href="dictionary_C.html#7024">getDeclaredMethods</a>().<a href="dictionary_I.html#96">iterator</a>(); <a href="dictionary_C.html#25528">it</a>.<a href="dictionary_H.html#95">hasNext</a>();) {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">      <a href="dictionary_C.html#252">IMethod</a> <a href="dictionary_C.html#25527">M</a> = (IMethod) <a href="dictionary_C.html#25528">it</a>.<a href="dictionary_N.html#97">next</a>();</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">      <a href="dictionary_C.html#233">Selector</a> <a href="dictionary_C.html#25530">selector</a> = <a href="dictionary_C.html#25527">M</a>.<a href="dictionary_C.html#323">getReference</a>().<a href="dictionary_C.html#325">getSelector</a>();</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">      <a href="dictionary_C.html#1816">PointerKey</a> <a href="dictionary_C.html#25529">sKey</a> = <a href="dictionary_C.html#25519">getKeyForSelector</a>(<a href="dictionary_C.html#25530">selector</a>);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">        System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;Add constraint: &quot; </span><span class="default">+ <a href="dictionary_C.html#25530">selector</a> + </span><span class="string">&quot; U= &quot; </span><span class="default">+ <a href="dictionary_C.html#25532">iKey</a>.<a href="dictionary_C.html#1408">getConcreteType</a>()));</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">      }</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">      <a href="dictionary_C.html#3578">system</a>.<a href="dictionary_C.html#3644">newConstraint</a>(<a href="dictionary_C.html#25529">sKey</a>, <a href="dictionary_C.html#25532">iKey</a>);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    }</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">  }</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#1816">PointerKey</a> <a href="dictionary_C.html#25521">getKeyForSite</a></span><span class="default">(<a href="dictionary_C.html#259">CallSiteReference</a> <a href="dictionary_C.html#25522">site</a>) {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#25551">RTASelectorKey</a></span><span class="default">(<a href="dictionary_C.html#25522">site</a>.<a href="dictionary_C.html#388">getDeclaredTarget</a>().<a href="dictionary_C.html#325">getSelector</a>());</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">  }</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#25542">RTASelectorKey</a> <a href="dictionary_C.html#25519">getKeyForSelector</a></span><span class="default">(<a href="dictionary_C.html#233">Selector</a> <a href="dictionary_C.html#25520">selector</a>) {</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#25551">RTASelectorKey</a></span><span class="default">(<a href="dictionary_C.html#25520">selector</a>);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">  }</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">   * An operator to fire when we discover a potential new callee for a virtual or interface call site.</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">   * </span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">   * This operator will create a new callee context and constraints if necessary.</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">   * </span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">   * N.B: This implementation assumes that the calling context depends solely on the dataflow information computed for the receiver.</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">   * TODO: generalize this to have other forms of context selection, such as CPA-style algorithms.</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">   */</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">  </span><span class="keyword">private final class <a href="dictionary_C.html#25487">DispatchOperator</a> extends <a href="dictionary_C.html#3581">UnaryOperator</a></span><span class="default">&lt;<a href="dictionary_C.html#3603">PointsToSetVariable</a>&gt; {</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    </span><span class="keyword">private final <a href="dictionary_C.html#259">CallSiteReference</a> <a href="dictionary_C.html#25512">site</a></span><span class="default">;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    </span><span class="keyword">private final <a href="dictionary_C.html#3583">ExplicitCallGraph</a></span><span class="default">.<a href="dictionary_C.html#20475">ExplicitNode</a> <a href="dictionary_C.html#25510">caller</a>;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    <a href="dictionary_C.html#25488">DispatchOperator</a>(<a href="dictionary_C.html#259">CallSiteReference</a> <a href="dictionary_C.html#25490">site</a>, <a href="dictionary_C.html#20475">ExplicitNode</a> <a href="dictionary_C.html#25489">caller</a>) {</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#25512">site</a> = <a href="dictionary_C.html#25490">site</a>;</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#25510">caller</a> = <a href="dictionary_C.html#25489">caller</a>;</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">    }</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">     * The set of classes that have already been processed.</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">     */</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">    </span><span class="keyword">final private <a href="dictionary_C.html#3588">MutableIntSet</a> <a href="dictionary_C.html#25511">previousReceivers</a> </span><span class="default">= <a href="dictionary_C.html#2410">IntSetUtil</a>.<a href="dictionary_C.html#8891">getDefaultIntSetFactory</a>().<a href="dictionary_C.html#8076">make</a>();</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span>
+<a name="119"><font size=-1>119     </font></a><span class="default">    @<a href="dictionary_O.html#8">Override</a></span>
+<a name="120"><font size=-1>120     </font></a><span class="default">    </span><span class="keyword">public byte <a href="dictionary_C.html#25494">evaluate</a></span><span class="default">(<a href="dictionary_C.html#3603">PointsToSetVariable</a> <a href="dictionary_C.html#25503">lhs</a>, <a href="dictionary_C.html#3603">PointsToSetVariable</a> <a href="dictionary_C.html#25506">rhs</a>) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">      <a href="dictionary_C.html#3605">IntSetVariable</a> <a href="dictionary_C.html#25504">receivers</a> = <a href="dictionary_C.html#25506">rhs</a>;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default">      </span><span class="comment">// compute the set of pointers that were not previously handled</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">      <a href="dictionary_C.html#407">IntSet</a> <a href="dictionary_C.html#25507">value</a> </span><span class="default">= <a href="dictionary_C.html#25504">receivers</a>.<a href="dictionary_C.html#3614">getValue</a>();</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25507">value</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">        </span><span class="comment">// this constraint was put on the work list, probably by initialization,</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">        // even though the right-hand-side is empty.</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">        // TODO: be more careful about what goes on the worklist to</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">        // avoid this.</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">          System.err.<a href="dictionary_P.html#80">println</a>(</span><span class="string">&quot;EVAL dispatch with value null&quot;</span><span class="default">);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">        }</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#3613">NOT_CHANGED</a></span><span class="default">;</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">      }</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">        <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#25501">S</a> = </span><span class="string">&quot;EVAL dispatch to &quot; </span><span class="default">+ <a href="dictionary_C.html#25510">caller</a> + </span><span class="string">&quot;:&quot; </span><span class="default">+ <a href="dictionary_C.html#25512">site</a>;</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">        System.err.<a href="dictionary_P.html#80">println</a>(<a href="dictionary_C.html#25501">S</a>);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25545">DEBUG_LEVEL</a> &gt;= </span><span class="number">2</span><span class="default">) {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">          System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;receivers: &quot; </span><span class="default">+ <a href="dictionary_C.html#25507">value</a>));</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">        }</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">      }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">      </span><span class="comment">// TODO: cache this!!!</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">      <a href="dictionary_C.html#253">IClass</a> <a href="dictionary_C.html#25505">recvClass</a> </span><span class="default">= <a href="dictionary_C.html#3446">getClassHierarchy</a>().<a href="dictionary_C.html#391">lookupClass</a>(<a href="dictionary_C.html#25512">site</a>.<a href="dictionary_C.html#388">getDeclaredTarget</a>().<a href="dictionary_C.html#272">getDeclaringClass</a>());</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25505">recvClass</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#3613">NOT_CHANGED</a></span><span class="default">;</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">      }</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">      <a href="dictionary_C.html#25507">value</a> = <a href="dictionary_C.html#3438">filterForClass</a>(<a href="dictionary_C.html#25507">value</a>, <a href="dictionary_C.html#25505">recvClass</a>);</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25545">DEBUG_LEVEL</a> &gt;= </span><span class="number">2</span><span class="default">) {</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">        System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;filtered value: &quot; </span><span class="default">+ <a href="dictionary_C.html#25507">value</a>));</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">      }</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">      <a href="dictionary_C.html#3587">IntSetAction</a> <a href="dictionary_C.html#25502">action</a> = </span><span class="keyword">new <a href="dictionary_C.html#3587">IntSetAction</a></span><span class="default">() {</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">        @<a href="dictionary_O.html#8">Override</a></span>
+<a name="153"><font size=-1>153     </font></a><span class="default">        </span><span class="keyword">public void <a href="dictionary_C.html#25496">act</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#25498">ptr</a></span><span class="default">) {</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">            System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;    dispatch to ptr &quot; </span><span class="default">+ <a href="dictionary_C.html#25498">ptr</a>));</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">          }</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">          <a href="dictionary_C.html#620">InstanceKey</a> <a href="dictionary_C.html#25497">iKey</a> = <a href="dictionary_C.html#3578">system</a>.<a href="dictionary_C.html#3620">getInstanceKey</a>(<a href="dictionary_C.html#25498">ptr</a>);</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default">          <a href="dictionary_C.html#383">CGNode</a> <a href="dictionary_C.html#25499">target</a> = <a href="dictionary_C.html#3502">getTargetForCall</a>(<a href="dictionary_C.html#25510">caller</a>, <a href="dictionary_C.html#25512">site</a>, <a href="dictionary_C.html#25497">iKey</a>.<a href="dictionary_C.html#1408">getConcreteType</a>(), </span><span class="keyword">new <a href="dictionary_C.html#620">InstanceKey</a></span><span class="default">[]{<a href="dictionary_C.html#25497">iKey</a>});</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25499">target</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">            </span><span class="comment">// This indicates an error; I sure hope getTargetForCall</span>
+<a name="162"><font size=-1>162     </font></a><span class="comment">            // raised a warning about this!</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25543">DEBUG</a>) {</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">              System.err.<a href="dictionary_P.html#80">println</a>((</span><span class="string">&quot;Warning: null target for call &quot; </span><span class="default">+ <a href="dictionary_C.html#25512">site</a> + </span><span class="string">&quot; &quot; </span><span class="default">+ <a href="dictionary_C.html#25497">iKey</a>));</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">            }</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">            </span><span class="keyword">return</span><span class="default">;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">          }</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25546">clone2Assign</a>) {</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25499">target</a>.<a href="dictionary_C.html#1119">getMethod</a>().<a href="dictionary_C.html#323">getReference</a>().<a href="dictionary_C.html#303">equals</a>(<a href="dictionary_C.html#25540">CloneInterpreter</a>.<a href="dictionary_C.html#25547">CLONE</a>)) {</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">              </span><span class="comment">// (mostly) ignore a call to clone: it won't affect the</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">              // solution, but we should probably at least have a call</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">              // edge</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">              <a href="dictionary_C.html#25510">caller</a></span><span class="default">.<a href="dictionary_C.html#25548">addTarget</a>(<a href="dictionary_C.html#25512">site</a>, <a href="dictionary_C.html#25499">target</a>);</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">              </span><span class="keyword">return</span><span class="default">;</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">            }</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">          }</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+<a name="178"><font size=-1>178     </font></a><span class="default">          <a href="dictionary_C.html#407">IntSet</a> <a href="dictionary_C.html#25500">targets</a> = <a href="dictionary_C.html#3445">getCallGraph</a>().<a href="dictionary_C.html#22921">getPossibleTargetNumbers</a>(<a href="dictionary_C.html#25510">caller</a>, <a href="dictionary_C.html#25512">site</a>);</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25500">targets</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#25500">targets</a>.<a href="dictionary_C.html#2568">contains</a>(<a href="dictionary_C.html#25499">target</a>.<a href="dictionary_C.html#9123">getGraphNodeId</a>())) {</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">            </span><span class="comment">// do nothing; we've previously discovered and handled this</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">            // receiver for this call site.</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">            </span><span class="keyword">return</span><span class="default">;</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">          }</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span>
+<a name="185"><font size=-1>185     </font></a><span class="default">          </span><span class="comment">// process the newly discovered target for this call</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">          <a href="dictionary_C.html#25549">processResolvedCall</a></span><span class="default">(<a href="dictionary_C.html#25510">caller</a>, <a href="dictionary_C.html#25512">site</a>, <a href="dictionary_C.html#25499">target</a>);</span>
+<a name="187"><font size=-1>187     </font></a><span class="default"></span>
+<a name="188"><font size=-1>188     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#3510">haveAlreadyVisited</a>(<a href="dictionary_C.html#25499">target</a>)) {</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">            <a href="dictionary_C.html#3533">markDiscovered</a>(<a href="dictionary_C.html#25499">target</a>);</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">          }</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">        }</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">      };</span>
+<a name="193"><font size=-1>193     </font></a><span class="default"></span>
+<a name="194"><font size=-1>194     </font></a><span class="default">      <a href="dictionary_C.html#25507">value</a>.<a href="dictionary_C.html#3615">foreachExcluding</a>(<a href="dictionary_C.html#25511">previousReceivers</a>, <a href="dictionary_C.html#25502">action</a>);</span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span>
+<a name="196"><font size=-1>196     </font></a><span class="default">      </span><span class="comment">// update the set of receivers previously considered</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">      <a href="dictionary_C.html#25511">previousReceivers</a></span><span class="default">.<a href="dictionary_C.html#12470">copySet</a>(<a href="dictionary_C.html#25507">value</a>);</span>
+<a name="198"><font size=-1>198     </font></a><span class="default"></span>
+<a name="199"><font size=-1>199     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#3613">NOT_CHANGED</a></span><span class="default">;</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">    }</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span>
+<a name="202"><font size=-1>202     </font></a><span class="default">    @<a href="dictionary_O.html#8">Override</a></span>
+<a name="203"><font size=-1>203     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#25509">toString</a></span><span class="default">() {</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">      </span><span class="keyword">return </span><span class="string">&quot;Dispatch&quot;</span><span class="default">;</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">    }</span>
+<a name="206"><font size=-1>206     </font></a><span class="default"></span>
+<a name="207"><font size=-1>207     </font></a><span class="default">    @<a href="dictionary_O.html#8">Override</a></span>
+<a name="208"><font size=-1>208     </font></a><span class="default">    </span><span class="keyword">public int <a href="dictionary_C.html#25508">hashCode</a></span><span class="default">() {</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#25510">caller</a></span><span class="default">.<a href="dictionary_C.html#20479">hashCode</a>() + </span><span class="number">8707 </span><span class="default">* <a href="dictionary_C.html#25512">site</a>.<a href="dictionary_C.html#4573">hashCode</a>();</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">    }</span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span>
+<a name="212"><font size=-1>212     </font></a><span class="default">    @<a href="dictionary_O.html#8">Override</a></span>
+<a name="213"><font size=-1>213     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#25491">equals</a></span><span class="default">(Object <a href="dictionary_C.html#25492">o</a>) {</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#25492">o</a> </span><span class="keyword">instanceof <a href="dictionary_C.html#25487">DispatchOperator</a></span><span class="default">) {</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">        <a href="dictionary_C.html#25487">DispatchOperator</a> <a href="dictionary_C.html#25493">other</a> = (DispatchOperator) <a href="dictionary_C.html#25492">o</a>;</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#25510">caller</a></span><span class="default">.<a href="dictionary_C.html#20477">equals</a>(<a href="dictionary_C.html#25493">other</a>.<a href="dictionary_C.html#25510">caller</a>) &amp;&amp; <a href="dictionary_C.html#25512">site</a>.<a href="dictionary_C.html#4569">equals</a>(<a href="dictionary_C.html#25493">other</a>.<a href="dictionary_C.html#25512">site</a>);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">      } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">      }</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">    }</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">  }</span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span>
+<a name="223"><font size=-1>223     </font></a><span class="default">  </span><span class="comment">/*</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">   * @see</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">   * com.ibm.wala.ipa.callgraph.propagation.rta.AbstractRTABuilder#makeDispatchOperator(com.ibm.wala.classLoader.CallSiteReference,</span>
+<a name="226"><font size=-1>226     </font></a><span class="comment">   * com.ibm.wala.ipa.callgraph.CGNode)</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment">   */</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_O.html#8">Override</a></span>
+<a name="229"><font size=-1>229     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#3581">UnaryOperator</a></span><span class="default">&lt;<a href="dictionary_C.html#3603">PointsToSetVariable</a>&gt; <a href="dictionary_C.html#25523">makeDispatchOperator</a>(<a href="dictionary_C.html#259">CallSiteReference</a> <a href="dictionary_C.html#25525">site</a>, <a href="dictionary_C.html#383">CGNode</a> <a href="dictionary_C.html#25524">node</a>) {</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#25488">DispatchOperator</a></span><span class="default">(<a href="dictionary_C.html#25525">site</a>, (ExplicitNode) <a href="dictionary_C.html#25524">node</a>);</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">  }</span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span>
+<a name="233"><font size=-1>233     </font></a><span class="default">}</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+</pre></body></html>

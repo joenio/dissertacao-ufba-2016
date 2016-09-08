@@ -1,0 +1,240 @@
+<html><head><title>JaxenXPathRuleQuery.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/rule/xpath/JaxenXPathRuleQuery.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/rule/xpath/JaxenXPathRuleQuery.java";
+top.document.title  = "JaxenXPathRuleQuery.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.rule.<a href="dictionary_N.html#7551">xpath</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#333">ArrayList</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#690">HashMap</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#691">Iterator</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#299">Map</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#7548">Map</a>.<a href="dictionary_J.html#7465">Entry</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#1152">Stack</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#883">logging</a>.<a href="dictionary_J.html#873">Level</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#883">logging</a>.<a href="dictionary_J.html#874">Logger</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.<a href="dictionary_N.html#10">pmd</a>.<a href="dictionary_N.html#378">PropertyDescriptor</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.<a href="dictionary_N.html#10">pmd</a>.<a href="dictionary_N.html#170">RuleContext</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#576">ast</a>.<a href="dictionary_N.html#510">Node</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#575">jaxen</a>.<a href="dictionary_O.html#7463">BaseXPath</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#575">jaxen</a>.<a href="dictionary_O.html#509">JaxenException</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#575">jaxen</a>.<a href="dictionary_O.html#1698">Navigator</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#575">jaxen</a>.<a href="dictionary_O.html#7543">SimpleVariableContext</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#575">jaxen</a>.<a href="dictionary_O.html#7546">XPath</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7461">AllNodeStep</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7464">DefaultXPathFactory</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7466">Expr</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7540">LocationPath</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7541">NameStep</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7542">Predicate</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7544">Step</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7545">UnionExpr</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7549">expr</a>.<a href="dictionary_O.html#7547">XPathFactory</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.jaxen.<a href="dictionary_O.html#7550">saxpath</a>.<a href="dictionary_O.html#7462">Axis</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * This is a Jaxen based XPathRule query.</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#7467">JaxenXPathRuleQuery</a> extends <a href="dictionary_N.html#7552">AbstractXPathRuleQuery</a> </span><span class="default">{</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    </span><span class="keyword">private static final <a href="dictionary_J.html#874">Logger</a> <a href="dictionary_N.html#7537">LOG</a> </span><span class="default">= <a href="dictionary_J.html#874">Logger</a>.<a href="dictionary_G.html#803">getLogger</a>(<a href="dictionary_N.html#7467">JaxenXPathRuleQuery</a>.</span><span class="keyword">class</span><span class="default">.<a href="dictionary_G.html#1095">getName</a>());</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="keyword">private static </span><span class="default">enum <a href="dictionary_N.html#7468">InitializationStatus</a> {</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">	<a href="dictionary_N.html#7473">NONE</a>, <a href="dictionary_N.html#7474">PARTIAL</a>, <a href="dictionary_N.html#7472">FULL</a></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    }</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    </span><span class="comment">// Mapping from Node name to applicable XPath queries</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">    </span><span class="keyword">private <a href="dictionary_N.html#7468">InitializationStatus</a> <a href="dictionary_N.html#7538">initializationStatus</a> </span><span class="default">= <a href="dictionary_N.html#7468">InitializationStatus</a>.<a href="dictionary_N.html#7473">NONE</a>;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_J.html#299">Map</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>, <a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_O.html#7546">XPath</a>&gt;&gt; <a href="dictionary_N.html#7539">nodeNameToXPaths</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    </span><span class="keyword">private static final <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7536">AST_ROOT</a> </span><span class="default">= </span><span class="string">&quot;_AST_ROOT_&quot;</span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span>
+<a name="53"><font size=-1>53     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">     * {@inheritDoc}</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">     */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">    </span><span class="default">@<a href="dictionary_O.html#74">Override</a></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_N.html#7534">isSupportedVersion</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7535">version</a>) {</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_N.html#7558">XPATH_1_0</a></span><span class="default">.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#7535">version</a>);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    }</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">     * {@inheritDoc}</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">     */</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">    </span><span class="default">@<a href="dictionary_O.html#74">Override</a></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    @<a href="dictionary_S.html#692">SuppressWarnings</a>(</span><span class="string">&quot;unchecked&quot;</span><span class="default">)</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#7486">evaluate</a>(<a href="dictionary_N.html#510">Node</a> <a href="dictionary_N.html#7492">node</a>, <a href="dictionary_N.html#170">RuleContext</a> <a href="dictionary_N.html#7491">data</a>) {</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">	<a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#7493">results</a> = </span><span class="keyword">new <a href="dictionary_J.html#333">ArrayList</a></span><span class="default">&lt;&gt;();</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">	</span><span class="keyword">try </span><span class="default">{</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">	    <a href="dictionary_N.html#7501">initializeXPathExpression</a>(<a href="dictionary_N.html#7491">data</a>.<a href="dictionary_N.html#2799">getLanguageVersion</a>().<a href="dictionary_N.html#2800">getLanguageVersionHandler</a>().<a href="dictionary_N.html#2345">getXPathHandler</a>()</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">		    .<a href="dictionary_N.html#1753">getNavigator</a>());</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">	    <a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_O.html#7546">XPath</a>&gt; <a href="dictionary_N.html#7494">xpaths</a> = <a href="dictionary_N.html#7539">nodeNameToXPaths</a>.<a href="dictionary_G.html#258">get</a>(<a href="dictionary_N.html#7492">node</a>.<a href="dictionary_T.html#342">toString</a>());</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">	    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7494">xpaths</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">		<a href="dictionary_N.html#7494">xpaths</a> = <a href="dictionary_N.html#7539">nodeNameToXPaths</a>.<a href="dictionary_G.html#258">get</a>(<a href="dictionary_N.html#7536">AST_ROOT</a>);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">	    }</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">	    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_O.html#7546">XPath</a> <a href="dictionary_N.html#7490">xpath</a> : <a href="dictionary_N.html#7494">xpaths</a>) {</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">		<a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#7489">nodes</a> = <a href="dictionary_N.html#7490">xpath</a>.<a href="dictionary_S.html#7488">selectNodes</a>(<a href="dictionary_N.html#7492">node</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">		<a href="dictionary_N.html#7493">results</a>.<a href="dictionary_A.html#1361">addAll</a>(<a href="dictionary_N.html#7489">nodes</a>);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">	    }</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">	} </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_O.html#509">JaxenException</a> <a href="dictionary_N.html#7487">ex</a>) {</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">	    </span><span class="keyword">throw new <a href="dictionary_R.html#879">RuntimeException</a></span><span class="default">(<a href="dictionary_N.html#7487">ex</a>);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">	}</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_N.html#7493">results</a></span><span class="default">;</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    }</span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">     * {@inheritDoc}</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">     */</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">    </span><span class="default">@<a href="dictionary_O.html#74">Override</a></span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_N.html#7495">getRuleChainVisits</a>() {</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">	</span><span class="keyword">try </span><span class="default">{</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">	    </span><span class="comment">// No Navigator available in this context</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">	    <a href="dictionary_N.html#7501">initializeXPathExpression</a></span><span class="default">(</span><span class="keyword">null</span><span class="default">);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">	    </span><span class="keyword">return super</span><span class="default">.<a href="dictionary_N.html#7555">getRuleChainVisits</a>();</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">	} </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_O.html#509">JaxenException</a> <a href="dictionary_N.html#7496">ex</a>) {</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">	    </span><span class="keyword">throw new <a href="dictionary_R.html#879">RuntimeException</a></span><span class="default">(<a href="dictionary_N.html#7496">ex</a>);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">	}</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    }</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+<a name="99"><font size=-1>99     </font></a><span class="default">    @<a href="dictionary_S.html#692">SuppressWarnings</a>(</span><span class="string">&quot;unchecked&quot;</span><span class="default">)</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="keyword">private void <a href="dictionary_N.html#7501">initializeXPathExpression</a></span><span class="default">(<a href="dictionary_O.html#1698">Navigator</a> <a href="dictionary_N.html#7521">navigator</a>) </span><span class="keyword">throws <a href="dictionary_O.html#509">JaxenException</a> </span><span class="default">{</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7538">initializationStatus</a> == <a href="dictionary_N.html#7468">InitializationStatus</a>.<a href="dictionary_N.html#7472">FULL</a>) {</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">	    </span><span class="keyword">return</span><span class="default">;</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">	} </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_N.html#7538">initializationStatus</a> == <a href="dictionary_N.html#7468">InitializationStatus</a>.<a href="dictionary_N.html#7474">PARTIAL</a> &amp;&amp; <a href="dictionary_N.html#7521">navigator</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">	    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7537">LOG</a>.<a href="dictionary_I.html#781">isLoggable</a>(<a href="dictionary_J.html#873">Level</a>.<a href="dictionary_S.html#3649">SEVERE</a>)) {</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">	    <a href="dictionary_N.html#7537">LOG</a>.<a href="dictionary_S.html#3646">severe</a>(</span><span class="string">&quot;XPathRule is not initialized because no navigator was provided. &quot;</span>
+<a name="106"><font size=-1>106     </font></a><span class="string">	            </span><span class="default">+ </span><span class="string">&quot;Please make sure to implement getXPathHandler in the handler of the language. &quot;</span>
+<a name="107"><font size=-1>107     </font></a><span class="string">	            </span><span class="default">+ </span><span class="string">&quot;See also AbstractLanguageVersionHandler.&quot;</span><span class="default">);</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">	    }</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">	    </span><span class="keyword">return</span><span class="default">;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">	}</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default">	</span><span class="comment">//</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">	// Attempt to use the RuleChain with this XPath query.  To do so, the queries</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">	// should generally look like //TypeA or //TypeA | //TypeB.  We will look at the</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">	// parsed XPath AST using the Jaxen APIs to make this determination.</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">	// If the query is not exactly what we are looking for, do not use the RuleChain.</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">	//</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">	<a href="dictionary_N.html#7539">nodeNameToXPaths</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_J.html#690">HashMap</a></span><span class="default">&lt;&gt;();</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span>
+<a name="120"><font size=-1>120     </font></a><span class="default">	<a href="dictionary_O.html#7463">BaseXPath</a> <a href="dictionary_N.html#7523">originalXPath</a> = <a href="dictionary_N.html#7475">createXPath</a>(<a href="dictionary_N.html#7556">xpath</a>, <a href="dictionary_N.html#7521">navigator</a>);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">	<a href="dictionary_N.html#7497">indexXPath</a>(<a href="dictionary_N.html#7523">originalXPath</a>, <a href="dictionary_N.html#7536">AST_ROOT</a>);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default">	</span><span class="keyword">boolean <a href="dictionary_N.html#7530">useRuleChain</a> </span><span class="default">= </span><span class="keyword">true</span><span class="default">;</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">	<a href="dictionary_J.html#1152">Stack</a>&lt;<a href="dictionary_O.html#7466">Expr</a>&gt; <a href="dictionary_N.html#7524">pending</a> = </span><span class="keyword">new <a href="dictionary_J.html#1152">Stack</a></span><span class="default">&lt;&gt;();</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">	<a href="dictionary_N.html#7524">pending</a>.<a href="dictionary_P.html#1078">push</a>(<a href="dictionary_N.html#7523">originalXPath</a>.<a href="dictionary_G.html#7509">getRootExpr</a>());</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">	</span><span class="keyword">while </span><span class="default">(!<a href="dictionary_N.html#7524">pending</a>.<a href="dictionary_I.html#123">isEmpty</a>()) {</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">	    <a href="dictionary_O.html#7466">Expr</a> <a href="dictionary_N.html#7522">node</a> = <a href="dictionary_N.html#7524">pending</a>.<a href="dictionary_P.html#1082">pop</a>();</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span>
+<a name="129"><font size=-1>129     </font></a><span class="default">	    </span><span class="comment">// Need to prove we can handle this part of the query</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">	    </span><span class="keyword">boolean <a href="dictionary_N.html#7531">valid</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span>
+<a name="132"><font size=-1>132     </font></a><span class="default">	    </span><span class="comment">// Must be a LocationPath... that is something like //Type</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">	    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7522">node</a> </span><span class="keyword">instanceof <a href="dictionary_O.html#7540">LocationPath</a></span><span class="default">) {</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">		<a href="dictionary_O.html#7540">LocationPath</a> <a href="dictionary_N.html#7520">locationPath</a> = (LocationPath) <a href="dictionary_N.html#7522">node</a>;</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7520">locationPath</a>.<a href="dictionary_I.html#7511">isAbsolute</a>()) {</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">		    </span><span class="comment">// Should be at least two steps</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">		    <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_O.html#7544">Step</a>&gt; <a href="dictionary_N.html#7528">steps</a> = <a href="dictionary_N.html#7520">locationPath</a>.<a href="dictionary_G.html#7510">getSteps</a>();</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">		    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7528">steps</a>.<a href="dictionary_S.html#125">size</a>() &gt;= </span><span class="number">2</span><span class="default">) {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">			<a href="dictionary_O.html#7544">Step</a> <a href="dictionary_N.html#7526">step1</a> = <a href="dictionary_N.html#7528">steps</a>.<a href="dictionary_G.html#258">get</a>(</span><span class="number">0</span><span class="default">);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">			<a href="dictionary_O.html#7544">Step</a> <a href="dictionary_N.html#7527">step2</a> = <a href="dictionary_N.html#7528">steps</a>.<a href="dictionary_G.html#258">get</a>(</span><span class="number">1</span><span class="default">);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">			</span><span class="comment">// First step should be an AllNodeStep using the descendant or self axis</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">			</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7526">step1</a> </span><span class="keyword">instanceof <a href="dictionary_O.html#7461">AllNodeStep</a> </span><span class="default">&amp;&amp; ((AllNodeStep) <a href="dictionary_N.html#7526">step1</a>).<a href="dictionary_G.html#7505">getAxis</a>() == <a href="dictionary_O.html#7462">Axis</a>.<a href="dictionary_D.html#7517">DESCENDANT_OR_SELF</a>) {</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">			    </span><span class="comment">// Second step should be a NameStep using the child axis.</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">			    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7527">step2</a> </span><span class="keyword">instanceof <a href="dictionary_O.html#7541">NameStep</a> </span><span class="default">&amp;&amp; ((NameStep) <a href="dictionary_N.html#7527">step2</a>).<a href="dictionary_G.html#7505">getAxis</a>() == <a href="dictionary_O.html#7462">Axis</a>.<a href="dictionary_C.html#7516">CHILD</a>) {</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">				</span><span class="comment">// Construct a new expression that is appropriate for RuleChain use</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">				<a href="dictionary_O.html#7547">XPathFactory</a> <a href="dictionary_N.html#7533">xpathFactory</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_O.html#7464">DefaultXPathFactory</a></span><span class="default">();</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default">				</span><span class="comment">// Instead of an absolute location path, we'll be using a relative path</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">				<a href="dictionary_O.html#7540">LocationPath</a> <a href="dictionary_N.html#7525">relativeLocationPath</a> </span><span class="default">= <a href="dictionary_N.html#7533">xpathFactory</a>.<a href="dictionary_C.html#7504">createRelativeLocationPath</a>();</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">				</span><span class="comment">// The first step will be along the self axis</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">				<a href="dictionary_O.html#7544">Step</a> <a href="dictionary_N.html#7519">allNodeStep</a> </span><span class="default">= <a href="dictionary_N.html#7533">xpathFactory</a>.<a href="dictionary_C.html#7503">createAllNodeStep</a>(<a href="dictionary_O.html#7462">Axis</a>.<a href="dictionary_S.html#7518">SELF</a>);</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">				</span><span class="comment">// Retain all predicates from the original name step</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">				</span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#691">Iterator</a>&lt;<a href="dictionary_O.html#7542">Predicate</a>&gt; <a href="dictionary_N.html#7514">i</a> = <a href="dictionary_N.html#7527">step2</a>.<a href="dictionary_G.html#7513">getPredicates</a>().<a href="dictionary_I.html#730">iterator</a>(); <a href="dictionary_N.html#7514">i</a>.<a href="dictionary_H.html#729">hasNext</a>();) {</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">				    <a href="dictionary_N.html#7519">allNodeStep</a>.<a href="dictionary_A.html#7512">addPredicate</a>(<a href="dictionary_N.html#7514">i</a>.<a href="dictionary_N.html#731">next</a>());</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">				}</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">				<a href="dictionary_N.html#7525">relativeLocationPath</a>.<a href="dictionary_A.html#7502">addStep</a>(<a href="dictionary_N.html#7519">allNodeStep</a>);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default"></span>
+<a name="158"><font size=-1>158     </font></a><span class="default">				</span><span class="comment">// Retain the remaining steps from the original location path</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">				</span><span class="keyword">for </span><span class="default">(</span><span class="keyword">int <a href="dictionary_N.html#7515">i</a> </span><span class="default">= </span><span class="number">2</span><span class="default">; <a href="dictionary_N.html#7515">i</a> &lt; <a href="dictionary_N.html#7528">steps</a>.<a href="dictionary_S.html#125">size</a>(); i++) {</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">				    <a href="dictionary_N.html#7525">relativeLocationPath</a>.<a href="dictionary_A.html#7502">addStep</a>(<a href="dictionary_N.html#7528">steps</a>.<a href="dictionary_G.html#258">get</a>(<a href="dictionary_N.html#7515">i</a>));</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">				}</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default">				<a href="dictionary_O.html#7463">BaseXPath</a> <a href="dictionary_N.html#7532">xpath</a> = <a href="dictionary_N.html#7475">createXPath</a>(<a href="dictionary_N.html#7525">relativeLocationPath</a>.<a href="dictionary_G.html#4496">getText</a>(), <a href="dictionary_N.html#7521">navigator</a>);</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">				<a href="dictionary_N.html#7497">indexXPath</a>(<a href="dictionary_N.html#7532">xpath</a>, ((NameStep) <a href="dictionary_N.html#7527">step2</a>).<a href="dictionary_G.html#7507">getLocalName</a>());</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">				<a href="dictionary_N.html#7531">valid</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">			    }</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">			}</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">		    }</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">		}</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">	    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_N.html#7522">node</a> </span><span class="keyword">instanceof <a href="dictionary_O.html#7545">UnionExpr</a></span><span class="default">) { </span><span class="comment">// Or a UnionExpr, that is something like //TypeA | //TypeB</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">		<a href="dictionary_O.html#7545">UnionExpr</a> <a href="dictionary_N.html#7529">unionExpr</a> </span><span class="default">= (UnionExpr) <a href="dictionary_N.html#7522">node</a>;</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">		<a href="dictionary_N.html#7524">pending</a>.<a href="dictionary_P.html#1078">push</a>(<a href="dictionary_N.html#7529">unionExpr</a>.<a href="dictionary_G.html#7506">getLHS</a>());</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">		<a href="dictionary_N.html#7524">pending</a>.<a href="dictionary_P.html#1078">push</a>(<a href="dictionary_N.html#7529">unionExpr</a>.<a href="dictionary_G.html#7508">getRHS</a>());</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">		<a href="dictionary_N.html#7531">valid</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">	    }</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">	    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_N.html#7531">valid</a>) {</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">		<a href="dictionary_N.html#7530">useRuleChain</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">		</span><span class="keyword">break</span><span class="default">;</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">	    }</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">	}</span>
+<a name="181"><font size=-1>181     </font></a><span class="default"></span>
+<a name="182"><font size=-1>182     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7530">useRuleChain</a>) {</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">	    </span><span class="comment">// Use the RuleChain for all the nodes extracted from the xpath queries</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">	    </span><span class="keyword">super</span><span class="default">.ruleChainVisits.addAll(<a href="dictionary_N.html#7539">nodeNameToXPaths</a>.<a href="dictionary_K.html#6001">keySet</a>());</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">	} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">	    </span><span class="comment">// Use original XPath if we cannot use the RuleChain</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment">	    <a href="dictionary_N.html#7539">nodeNameToXPaths</a></span><span class="default">.<a href="dictionary_C.html#120">clear</a>();</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">	    <a href="dictionary_N.html#7497">indexXPath</a>(<a href="dictionary_N.html#7523">originalXPath</a>, <a href="dictionary_N.html#7536">AST_ROOT</a>);</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">	    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7537">LOG</a>.<a href="dictionary_I.html#781">isLoggable</a>(<a href="dictionary_J.html#873">Level</a>.<a href="dictionary_F.html#783">FINE</a>)) {</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">		<a href="dictionary_N.html#7537">LOG</a>.<a href="dictionary_L.html#825">log</a>(<a href="dictionary_J.html#873">Level</a>.<a href="dictionary_F.html#783">FINE</a>, </span><span class="string">&quot;Unable to use RuleChain for for XPath: &quot; </span><span class="default">+ <a href="dictionary_N.html#7556">xpath</a>);</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">	    }</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">	}</span>
+<a name="193"><font size=-1>193     </font></a><span class="default"></span>
+<a name="194"><font size=-1>194     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7521">navigator</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">	    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#7538">initializationStatus</a> = <a href="dictionary_N.html#7468">InitializationStatus</a>.<a href="dictionary_N.html#7474">PARTIAL</a>;</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">	    </span><span class="comment">// Clear the node data, because we did not have a Navigator</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">	    <a href="dictionary_N.html#7539">nodeNameToXPaths</a> </span><span class="default">= </span><span class="keyword">null</span><span class="default">;</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">	} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">	    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#7538">initializationStatus</a> = <a href="dictionary_N.html#7468">InitializationStatus</a>.<a href="dictionary_N.html#7472">FULL</a>;</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">	}</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span>
+<a name="202"><font size=-1>202     </font></a><span class="default">    }</span>
+<a name="203"><font size=-1>203     </font></a><span class="default"></span>
+<a name="204"><font size=-1>204     </font></a><span class="default">    </span><span class="keyword">private void <a href="dictionary_N.html#7497">indexXPath</a></span><span class="default">(<a href="dictionary_O.html#7546">XPath</a> <a href="dictionary_N.html#7499">xpath</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7498">nodeName</a>) {</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">	<a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_O.html#7546">XPath</a>&gt; <a href="dictionary_N.html#7500">xpaths</a> = <a href="dictionary_N.html#7539">nodeNameToXPaths</a>.<a href="dictionary_G.html#258">get</a>(<a href="dictionary_N.html#7498">nodeName</a>);</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7500">xpaths</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">	    <a href="dictionary_N.html#7500">xpaths</a> = </span><span class="keyword">new <a href="dictionary_J.html#333">ArrayList</a></span><span class="default">&lt;&gt;();</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">	    <a href="dictionary_N.html#7539">nodeNameToXPaths</a>.<a href="dictionary_P.html#214">put</a>(<a href="dictionary_N.html#7498">nodeName</a>, <a href="dictionary_N.html#7500">xpaths</a>);</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">	}</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">	<a href="dictionary_N.html#7500">xpaths</a>.<a href="dictionary_A.html#117">add</a>(<a href="dictionary_N.html#7499">xpath</a>);</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">    }</span>
+<a name="212"><font size=-1>212     </font></a><span class="default"></span>
+<a name="213"><font size=-1>213     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_O.html#7463">BaseXPath</a> <a href="dictionary_N.html#7475">createXPath</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7485">xpathQueryString</a>, <a href="dictionary_O.html#1698">Navigator</a> <a href="dictionary_N.html#7482">navigator</a>) </span><span class="keyword">throws <a href="dictionary_O.html#509">JaxenException</a> </span><span class="default">{</span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    	<a href="dictionary_O.html#7463">BaseXPath</a> <a href="dictionary_N.html#7484">xpath</a> = </span><span class="keyword">new <a href="dictionary_O.html#7463">BaseXPath</a></span><span class="default">(<a href="dictionary_N.html#7485">xpathQueryString</a>, <a href="dictionary_N.html#7482">navigator</a>);</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">    	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#7553">properties</a>.<a href="dictionary_S.html#125">size</a>() &gt; </span><span class="number">1</span><span class="default">) {</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">    		<a href="dictionary_O.html#7543">SimpleVariableContext</a> <a href="dictionary_N.html#7483">vc</a> = </span><span class="keyword">new <a href="dictionary_O.html#7543">SimpleVariableContext</a></span><span class="default">();</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">    		</span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#7465">Entry</a>&lt;<a href="dictionary_N.html#378">PropertyDescriptor</a>&lt;?&gt;, Object&gt; <a href="dictionary_N.html#7479">e</a> : <a href="dictionary_N.html#7553">properties</a>.<a href="dictionary_E.html#264">entrySet</a>()) {</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">    			<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7480">propName</a> = <a href="dictionary_N.html#7479">e</a>.<a href="dictionary_G.html#265">getKey</a>().<a href="dictionary_N.html#7477">name</a>();</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">    			</span><span class="keyword">if </span><span class="default">(!</span><span class="string">&quot;xpath&quot;</span><span class="default">.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#7480">propName</a>)) {</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">    				Object <a href="dictionary_N.html#7481">value</a> = <a href="dictionary_N.html#7479">e</a>.<a href="dictionary_G.html#266">getValue</a>();</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">    				<a href="dictionary_N.html#7483">vc</a>.<a href="dictionary_S.html#7478">setVariableValue</a>(<a href="dictionary_N.html#7480">propName</a>, <a href="dictionary_N.html#7481">value</a> != </span><span class="keyword">null </span><span class="default">? <a href="dictionary_N.html#7481">value</a>.<a href="dictionary_T.html#342">toString</a>() : </span><span class="keyword">null</span><span class="default">);</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">    			}</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">    		}</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">    		<a href="dictionary_N.html#7484">xpath</a>.<a href="dictionary_S.html#7476">setVariableContext</a>(<a href="dictionary_N.html#7483">vc</a>);</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">    	}</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">    	</span><span class="keyword">return <a href="dictionary_N.html#7484">xpath</a></span><span class="default">;</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">    }</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">}</span>
+<a name="230"><font size=-1>230     </font></a><span class="default"></span>
+</pre></body></html>

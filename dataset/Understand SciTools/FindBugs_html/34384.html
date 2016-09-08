@@ -1,0 +1,61 @@
+<html><head><title>AWTEventQueueExecutor.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/findbugs/findbugs-3.0.1/src/java/edu/umd/cs/findbugs/AWTEventQueueExecutor.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/findbugs/findbugs-3.0.1/src/java/edu/umd/cs/findbugs/AWTEventQueueExecutor.java";
+top.document.title  = "AWTEventQueueExecutor.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">package </span><span class="default">edu.umd.cs.<a href="dictionary_E.html#13">findbugs</a>;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.lang.<a href="dictionary_J.html#1784">reflect</a>.<a href="dictionary_J.html#2171">InvocationTargetException</a>;</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#28">util</a>.<a href="dictionary_J.html#1012">Collections</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#28">util</a>.<a href="dictionary_J.html#503">List</a>;</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#2186">concurrent</a>.<a href="dictionary_J.html#15733">AbstractExecutorService</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#2186">concurrent</a>.<a href="dictionary_J.html#5559">TimeUnit</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.<a href="dictionary_J.html#2189">swing</a>.<a href="dictionary_J.html#2185">SwingUtilities</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_E.html#2191">AWTEventQueueExecutor</a> extends <a href="dictionary_J.html#15733">AbstractExecutorService</a> </span><span class="default">{</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="13"><font size=-1>13     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_E.html#34394">shutdown</a></span><span class="default">() {</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">    }</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="17"><font size=-1>17     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_J.html#503">List</a></span><span class="default">&lt;<a href="dictionary_R.html#2183">Runnable</a>&gt; <a href="dictionary_E.html#34395">shutdownNow</a>() {</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_J.html#1012">Collections</a></span><span class="default">.<a href="dictionary_E.html#3819">emptyList</a>();</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    }</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_E.html#34392">isShutdown</a></span><span class="default">() {</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">        </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    }</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_E.html#34393">isTerminated</a></span><span class="default">() {</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">        </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    }</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="32"><font size=-1>32     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_E.html#34385">awaitTermination</a></span><span class="default">(</span><span class="keyword">long <a href="dictionary_E.html#34386">timeout</a></span><span class="default">, <a href="dictionary_J.html#5559">TimeUnit</a> <a href="dictionary_E.html#34387">unit</a>) </span><span class="keyword">throws <a href="dictionary_I.html#2170">InterruptedException</a> </span><span class="default">{</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">        </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    }</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    @<a href="dictionary_O.html#54">Override</a></span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_E.html#34388">execute</a></span><span class="default">(<a href="dictionary_R.html#2183">Runnable</a> <a href="dictionary_E.html#34391">command</a>) {</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_J.html#2185">SwingUtilities</a>.<a href="dictionary_I.html#2128">isEventDispatchThread</a>()) {</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">            <a href="dictionary_E.html#34391">command</a>.<a href="dictionary_R.html#11252">run</a>();</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">            </span><span class="keyword">return</span><span class="default">;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">        }</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">        </span><span class="keyword">try </span><span class="default">{</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">            <a href="dictionary_J.html#2185">SwingUtilities</a>.<a href="dictionary_I.html#2133">invokeAndWait</a>(<a href="dictionary_E.html#34391">command</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_I.html#2170">InterruptedException</a> <a href="dictionary_E.html#34389">e</a>) {</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_I.html#497">IllegalStateException</a></span><span class="default">(<a href="dictionary_E.html#34389">e</a>);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_J.html#2171">InvocationTargetException</a> <a href="dictionary_E.html#34390">e</a>) {</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_I.html#497">IllegalStateException</a></span><span class="default">(<a href="dictionary_E.html#34390">e</a>);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">        }</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    }</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">}</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,520 @@
+<html><head><title>lslparse.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/lslparse.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/lslparse.c";
+top.document.title  = "lslparse.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">** Splint - annotation-assisted static program checker</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">** Copyright (C) 1994-2003 University of Virginia,</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">**         Massachusetts Institute of Technology</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">**</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">** This program is free software; you can redistribute it and/or modify it</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">** under the terms of the GNU General Public License as published by the</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">** Free Software Foundation; either version 2 of the License, or (at your</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">** option) any later version.</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">** </span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">** This program is distributed in the hope that it will be useful, but</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">** WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">** General Public License for more details.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">** </span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">** The GNU General Public License is available from http://www.gnu.org/ or</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">** the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">** MA 02111-1307, USA.</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">**</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">** For information on splint: info@splint.org</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">** To report a bug: splint-bug@splint.org</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">** For more information: http://www.splint.org</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">*/</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">/*</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">** lslparse.c</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">**</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">** Module for calling LSL checker.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">**</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">**  AUTHOR:</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">**	Yang Meng Tan,</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">**         Massachusetts Institute of Technology</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">*/</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span><span class="preproc"># include </span><span class="string">&quot;splintMacros.nf&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;basic.h&quot;</span>
+<a name="36"><font size=-1>36     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;lclscan.h&quot;</span>
+<a name="37"><font size=-1>37     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;signature.h&quot;</span>
+<a name="38"><font size=-1>38     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;signature2.h&quot;</span>
+<a name="39"><font size=-1>39     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;scan.h&quot;</span>
+<a name="40"><font size=-1>40     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;scanline.h&quot;</span>
+<a name="41"><font size=-1>41     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;syntable.h&quot;</span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;tokentable.h&quot;</span>
+<a name="43"><font size=-1>43     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;lslinit.h&quot;</span>
+<a name="44"><font size=-1>44     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;lslparse.h&quot;</span>
+<a name="45"><font size=-1>45     </font></a><span class="string"></span><span class="preproc"># include </span><span class="string">&quot;llmain.h&quot;</span>
+<a name="46"><font size=-1>46     </font></a><span class="string"></span>
+<a name="47"><font size=-1>47     </font></a><span class="string"></span><span class="comment">/*@+ignorequals@*/</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"></span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">/*@dependent@*/ /*@null@*/ <a href="dictionary_L.html#650">lslOp</a> <a href="dictionary_G.html#21495">g_importedlslOp</a> </span><span class="default">= <a href="dictionary_N.html#12">NULL</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"><a href="dictionary_B.html#14">bool</a> <a href="dictionary_G.html#21496">g_lslParsingTraits</a> = <a href="dictionary_F.html#215">FALSE</a>;</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_I.html#34281">invokeLSL</a> </span><span class="default">(<a href="dictionary_C.html#21">cstring</a> p_infile, <a href="dictionary_C.html#21">cstring</a> p_outfile, <a href="dictionary_B.html#14">bool</a> p_deletep);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span><span class="keyword">int</span>
+<a name="55"><font size=-1>55     </font></a><span class="keyword"><a href="dictionary_P.html#21498">parseSignatures</a> </span><span class="default">(<a href="dictionary_C.html#21">cstring</a> <a href="dictionary_I.html#34282">infile</a>)</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">{</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  <a href="dictionary_I.html#1455">inputStream</a> <a href="dictionary_S.html#34283">sourceFile</a>;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  <a href="dictionary_L.html#154">ltoken</a> *<a href="dictionary_I.html#34284">id</a> = (<a href="dictionary_L.html#154">ltoken</a> *) <a href="dictionary_D.html#209">dmalloc</a> (</span><span class="keyword">sizeof </span><span class="default">(*id));</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_S.html#34285">status</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  </span><span class="comment">/* parse traits */</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">  </span><span class="default">*<a href="dictionary_I.html#34284">id</a> = <a href="dictionary_L.html#11117">LSLInsertToken</a> (<a href="dictionary_L.html#11111">LST_SIMPLEID</a>, <a href="dictionary_L.html#64">lsymbol_fromString</a> (<a href="dictionary_I.html#34282">infile</a>), </span><span class="number">0</span><span class="default">, <a href="dictionary_F.html#215">FALSE</a>);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  <a href="dictionary_L.html#6426">ltoken_setFileName</a> (*<a href="dictionary_I.html#34284">id</a>, <a href="dictionary_I.html#34282">infile</a>);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">  <a href="dictionary_L.html#6424">ltoken_setLine</a> (*<a href="dictionary_I.html#34284">id</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  <a href="dictionary_L.html#6422">ltoken_setCol</a> (*<a href="dictionary_I.html#34284">id</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  <a href="dictionary_S.html#34283">sourceFile</a> = <a href="dictionary_I.html#1780">inputStream_create</a> (<a href="dictionary_I.html#34282">infile</a>, <a href="dictionary_C.html#388">cstring_undefined</a>, <a href="dictionary_F.html#215">FALSE</a>);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_I.html#14248">inputStream_getPath</a> (<a href="dictionary_C.html#21318">context_getLarchPath</a> (), <a href="dictionary_S.html#34283">sourceFile</a>))</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    {</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">      <a href="dictionary_L.html#1485">lclplainerror</a> </span>
+<a name="72"><font size=-1>72     </font></a><span class="default">	(<a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;LSL signature parsing: can't find file %s containing trait&quot;</span><span class="default">,</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">		  <a href="dictionary_I.html#1468">inputStream_fileName</a> (<a href="dictionary_S.html#34283">sourceFile</a>)));</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      <a href="dictionary_S.html#34285">status</a> = </span><span class="number">1</span><span class="default">;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">      <a href="dictionary_S.html#167">sfree</a> (<a href="dictionary_I.html#34284">id</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">      <a href="dictionary_I.html#1794">inputStream_free</a> (<a href="dictionary_S.html#34283">sourceFile</a>);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_S.html#34285">status</a></span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    }</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_I.html#1793">inputStream_open</a> (<a href="dictionary_S.html#34283">sourceFile</a>))</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    {</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">      <a href="dictionary_L.html#1485">lclplainerror</a> </span>
+<a name="84"><font size=-1>84     </font></a><span class="default">	(<a href="dictionary_C.html#369">cstring_makeLiteral</a> (</span><span class="string">&quot;LSL parsing: can't open file containing trait&quot;</span><span class="default">));</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">      <a href="dictionary_S.html#34285">status</a> = </span><span class="number">2</span><span class="default">;</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">      <a href="dictionary_S.html#167">sfree</a> (<a href="dictionary_I.html#34284">id</a>);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">      <a href="dictionary_I.html#1794">inputStream_free</a> (<a href="dictionary_S.html#34283">sourceFile</a>);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_S.html#34285">status</a></span><span class="default">;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    }</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">  <a href="dictionary_L.html#13841">lsldebug</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">  <a href="dictionary_G.html#21496">g_lslParsingTraits</a> = <a href="dictionary_T.html#217">TRUE</a>;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">  <a href="dictionary_L.html#4379">LSLScanReset</a> (<a href="dictionary_S.html#34283">sourceFile</a>);</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">  <a href="dictionary_L.html#11124">LSLReportEolTokens</a> (<a href="dictionary_F.html#215">FALSE</a>);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">  <a href="dictionary_S.html#34285">status</a> = <a href="dictionary_L.html#18967">lslparse</a> ();</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+<a name="99"><font size=-1>99     </font></a><span class="default">  </span><span class="comment">/* symtable_dump (symtab, stdout, TRUE); */</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">  <a href="dictionary_G.html#21496">g_lslParsingTraits</a> </span><span class="default">= <a href="dictionary_F.html#215">FALSE</a>;</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default">  (</span><span class="keyword">void</span><span class="default">) <a href="dictionary_I.html#1809">inputStream_close</a> (<a href="dictionary_S.html#34283">sourceFile</a>);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">  <a href="dictionary_I.html#1794">inputStream_free</a> (<a href="dictionary_S.html#34283">sourceFile</a>);</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default">  <a href="dictionary_S.html#167">sfree</a> (<a href="dictionary_I.html#34284">id</a>);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">  </span>
+<a name="108"><font size=-1>108     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34285">status</a></span><span class="default">;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">}</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="comment">/*@only@*/ <a href="dictionary_L.html#650">lslOp</a></span>
+<a name="112"><font size=-1>112     </font></a><span class="comment"><a href="dictionary_P.html#13817">parseOpLine</a> </span><span class="default">(<a href="dictionary_C.html#21">cstring</a> <a href="dictionary_F.html#34286">fname</a>, <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_L.html#34287">line</a>)</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">{</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">  <a href="dictionary_I.html#1455">inputStream</a> <a href="dictionary_S.html#34288">sourceFile</a>;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">  <a href="dictionary_B.html#14">bool</a> <a href="dictionary_S.html#34289">status</a>;</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default">  <a href="dictionary_S.html#34288">sourceFile</a> = <a href="dictionary_I.html#14231">inputStream_fromString</a> (<a href="dictionary_F.html#34286">fname</a>, <a href="dictionary_L.html#34287">line</a>);</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  </span>
+<a name="119"><font size=-1>119     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#269">check</a> (<a href="dictionary_I.html#1793">inputStream_open</a> (<a href="dictionary_S.html#34288">sourceFile</a>)))</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">    {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">      <a href="dictionary_L.html#4379">LSLScanReset</a> (<a href="dictionary_S.html#34288">sourceFile</a>);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">      <a href="dictionary_L.html#11124">LSLReportEolTokens</a> (<a href="dictionary_F.html#215">FALSE</a>); </span><span class="comment">/* 0 by default, lslParsingTraits = 0; */</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">      </span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">      /*</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">      ** lsl parsing and importing .lcs files are expected to be mutually</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">      ** exclusive. </span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">      **</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">      ** lslparse sets importedlslOp</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">      */</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">      </span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">      <a href="dictionary_S.html#34289">status</a> </span><span class="default">= (<a href="dictionary_L.html#18967">lslparse</a> () != </span><span class="number">0</span><span class="default">);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">      </span>
+<a name="133"><font size=-1>133     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#34289">status</a>)</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">	{</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">	  <a href="dictionary_L.html#25513">lclplainfatalerror</a> (<a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;Error in parsing line: %s&quot;</span><span class="default">, <a href="dictionary_L.html#34287">line</a>));</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">	}</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">      </span>
+<a name="138"><font size=-1>138     </font></a><span class="default">      (</span><span class="keyword">void</span><span class="default">) <a href="dictionary_I.html#1809">inputStream_close</a> (<a href="dictionary_S.html#34288">sourceFile</a>);</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">    }</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  <a href="dictionary_I.html#1794">inputStream_free</a> (<a href="dictionary_S.html#34288">sourceFile</a>);</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">  </span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  <a href="dictionary_L.html#185">llassert</a> (<a href="dictionary_G.html#21495">g_importedlslOp</a> != <a href="dictionary_N.html#12">NULL</a>);</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">  </span><span class="keyword">return </span><span class="default">(<a href="dictionary_L.html#4505">lslOp_copy</a> (<a href="dictionary_G.html#21495">g_importedlslOp</a>));</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">}</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span>
+<a name="147"><font size=-1>147     </font></a><span class="default"><a href="dictionary_L.html#58">lsymbol</a></span>
+<a name="148"><font size=-1>148     </font></a><span class="default"><a href="dictionary_P.html#21497">processTraitSortId</a> (<a href="dictionary_L.html#58">lsymbol</a> <a href="dictionary_S.html#34290">sortid</a>)</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">{</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">  <a href="dictionary_L.html#58">lsymbol</a> <a href="dictionary_O.html#34291">out</a> = <a href="dictionary_L.html#13677">lsymbol_sortFromType</a> (<a href="dictionary_G.html#1246">g_symtab</a>, <a href="dictionary_S.html#34290">sortid</a>);</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#34291">out</a> == <a href="dictionary_S.html#34290">sortid</a>)</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">    { </span><span class="comment">/* may be a new sort */</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">      </span><span class="default">(</span><span class="keyword">void</span><span class="default">) <a href="dictionary_S.html#1571">sort_fromLsymbol</a> (<a href="dictionary_S.html#34290">sortid</a>);</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">    }</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_O.html#34291">out</a></span><span class="default">;</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">}</span>
+<a name="157"><font size=-1>157     </font></a><span class="default"></span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span><span class="comment">/* formerly from check.c module */</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment"></span>
+<a name="160"><font size=-1>160     </font></a><span class="comment"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="161"><font size=-1>161     </font></a><span class="comment"><a href="dictionary_P.html#34292">printTypeName2</a> </span><span class="default">(<a href="dictionary_T.html#698">typeNameNode</a> <a href="dictionary_N.html#34293">n</a>)</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">{</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34294">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">  <a href="dictionary_S.html#972">sortNode</a> <a href="dictionary_S.html#34295">sn</a>;</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">  <a href="dictionary_L.html#58">lsymbol</a> <a href="dictionary_L.html#34296">lclSort</a>;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">  <a href="dictionary_L.html#154">ltoken</a> <a href="dictionary_E.html#34297">err</a>;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default"></span>
+<a name="168"><font size=-1>168     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#34293">n</a> != (<a href="dictionary_T.html#698">typeNameNode</a>) </span><span class="number">0</span><span class="default">)</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">    {</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#34293">n</a>-&gt;<a href="dictionary_I.html#20646">isTypeName</a>)</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">	{</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">	  </span><span class="comment">/* does not process opForm renaming, pass on to LSL</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">	     and hope that it works for now. */</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">	  <a href="dictionary_T.html#14742">typeNamePack</a> <a href="dictionary_P.html#34299">p</a> </span><span class="default">= <a href="dictionary_N.html#34293">n</a>-&gt;<a href="dictionary_T.html#20647">typename</a>;</span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span>
+<a name="176"><font size=-1>176     </font></a><span class="default">	  <a href="dictionary_L.html#185">llassert</a> (<a href="dictionary_P.html#34299">p</a> != <a href="dictionary_N.html#12">NULL</a>);</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+<a name="178"><font size=-1>178     </font></a><span class="default">	  </span><span class="comment">/* get the LCL type, assume LCL type has already been mentioned. */</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">	  <a href="dictionary_L.html#34296">lclSort</a> </span><span class="default">= <a href="dictionary_L.html#822">lclTypeSpecNode2sort</a> (<a href="dictionary_P.html#34299">p</a>-&gt;<a href="dictionary_T.html#14740">type</a>);</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">	  <a href="dictionary_L.html#34296">lclSort</a> = <a href="dictionary_S.html#1106">sort_getUnderlying</a> (<a href="dictionary_L.html#34296">lclSort</a>);</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">	  </span><span class="comment">/* lclsource = LCLSLScanSource (); */</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">	  </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_S.html#1434">sort_isValidSort</a> (<a href="dictionary_L.html#34296">lclSort</a>))</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">	    {</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">	      <a href="dictionary_E.html#34297">err</a> = <a href="dictionary_L.html#829">lclTypeSpecNode_errorToken</a> (<a href="dictionary_P.html#34299">p</a>-&gt;<a href="dictionary_T.html#14740">type</a>);</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">	      </span><span class="comment">/* errorShowPoint (inputStream_thisLine (lclsource), ltoken_getCol (err)); */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">	      <a href="dictionary_L.html#1488">lclerror</a> </span><span class="default">(<a href="dictionary_E.html#34297">err</a>, <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;Unrecognized type in uses: %q&quot;</span><span class="default">, </span>
+<a name="187"><font size=-1>187     </font></a><span class="default">				      typeNameNode_unparse (n)));</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">	    }</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">	  </span><span class="keyword">else</span>
+<a name="190"><font size=-1>190     </font></a><span class="keyword">	    </span><span class="default">{</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">	      </span><span class="comment">/* </span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">              ** Below is necessary because this is one place where an LCL mutable</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">	      ** type name is mapped directly into its value sort, not obj sort.</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">	      ** Allows us to support only one qualifying &quot;obj&quot;, rather</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment">	      ** than &quot;val&quot; as well. </span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">	      */</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">	      </span>
+<a name="198"><font size=-1>198     </font></a><span class="comment">	      <a href="dictionary_L.html#34296">lclSort</a> </span><span class="default">= <a href="dictionary_T.html#823">typeExpr2ptrSort</a> (<a href="dictionary_L.html#34296">lclSort</a>, <a href="dictionary_P.html#34299">p</a>-&gt;<a href="dictionary_A.html#14741">abst</a>);</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">	      <a href="dictionary_L.html#34296">lclSort</a> = <a href="dictionary_S.html#1170">sort_makeVal</a> (<a href="dictionary_L.html#34296">lclSort</a>);</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">	      </span>
+<a name="201"><font size=-1>201     </font></a><span class="default">	      </span><span class="comment">/*</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">	      ** Check that lclSort is not a HOFSort ...</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">	      ** Propagation of HOFSort should stop here.  </span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">	      */</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment"></span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">	      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#1574">sort_isHOFSortKind</a> (<a href="dictionary_L.html#34296">lclSort</a>))</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">		{</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">		  <a href="dictionary_E.html#34297">err</a> = <a href="dictionary_L.html#829">lclTypeSpecNode_errorToken</a> (<a href="dictionary_P.html#34299">p</a>-&gt;<a href="dictionary_T.html#14740">type</a>);</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">		  </span>
+<a name="210"><font size=-1>210     </font></a><span class="default">		  <a href="dictionary_L.html#1519">lclfatalerror</a></span>
+<a name="211"><font size=-1>211     </font></a><span class="default">		    (<a href="dictionary_E.html#34297">err</a>, </span>
+<a name="212"><font size=-1>212     </font></a><span class="default">		     <a href="dictionary_C.html#369">cstring_makeLiteral</a> </span>
+<a name="213"><font size=-1>213     </font></a><span class="default">		     (</span><span class="string">&quot;LCL uses cannot handle higher-order types&quot;</span><span class="default">));</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">		}</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">	      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#34299">p</a>-&gt;<a href="dictionary_I.html#14739">isObj</a>)</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">		<a href="dictionary_L.html#34296">lclSort</a> = <a href="dictionary_S.html#1123">sort_makeObj</a> (<a href="dictionary_L.html#34296">lclSort</a>);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">	      </span>
+<a name="218"><font size=-1>218     </font></a><span class="default">	      </span><span class="comment">/*	if (!p-&gt;isObj) {</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">			lclSort = sort_makeVal (lclSort);</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">			} */</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">	      </span>
+<a name="222"><font size=-1>222     </font></a><span class="comment">	      <a href="dictionary_S.html#34295">sn</a> </span><span class="default">= <a href="dictionary_S.html#1107">sort_lookup</a> (<a href="dictionary_L.html#34296">lclSort</a>);</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">	      <a href="dictionary_S.html#34294">s</a> = <a href="dictionary_C.html#182">cstring_copy</a> (<a href="dictionary_C.html#180">cstring_fromChars</a> (<a href="dictionary_L.html#65">lsymbol_toChars</a> (<a href="dictionary_S.html#34295">sn</a>-&gt;<a href="dictionary_N.html#1046">name</a>)));</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">	      </span><span class="comment">/* s = string_paste (s, AbstDeclaratorNode_unparse (p-&gt;abst)); */</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">	    </span><span class="default">}</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">	}</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="228"><font size=-1>228     </font></a><span class="keyword">	</span><span class="default">{</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">	  </span><span class="comment">/* s = OpFormNode_unparse (n-&gt;opform); */</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment">	  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#34293">n</a>-&gt;<a href="dictionary_O.html#20648">opform</a> != </span><span class="number">0</span><span class="default">)</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">	    {</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">	      <a href="dictionary_L.html#1519">lclfatalerror</a> </span>
+<a name="233"><font size=-1>233     </font></a><span class="default">		(<a href="dictionary_N.html#34293">n</a>-&gt;<a href="dictionary_O.html#20648">opform</a>-&gt;<a href="dictionary_T.html#6179">tok</a>,</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">		 <a href="dictionary_C.html#369">cstring_makeLiteral</a> (</span><span class="string">&quot;Attempt to rename operator with uses: &quot;</span>
+<a name="235"><font size=-1>235     </font></a><span class="string">				     &quot;use LSL includes renaming facility&quot;</span><span class="default">));</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">	    }</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">	  </span><span class="keyword">else</span>
+<a name="238"><font size=-1>238     </font></a><span class="keyword">	    </span><span class="default">{		</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">	      <a href="dictionary_B.html#1570">BADEXIT</a>;</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">	    }</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">	}</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">    }</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34294">s</a></span><span class="default">;</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">}</span>
+<a name="245"><font size=-1>245     </font></a><span class="default"></span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="247"><font size=-1>247     </font></a><span class="comment"><a href="dictionary_R.html#34302">replaceNode_unparseAlt</a> </span><span class="default">(<a href="dictionary_R.html#697">replaceNode</a> <a href="dictionary_X.html#34303">x</a>)</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">{</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span>
+<a name="251"><font size=-1>251     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_X.html#34303">x</a> != (<a href="dictionary_R.html#697">replaceNode</a>) </span><span class="number">0</span><span class="default">)</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">    {</span>
+<a name="253"><font size=-1>253     </font></a><span class="default">      <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_P.html#34292">printTypeName2</a> (<a href="dictionary_X.html#34303">x</a>-&gt;<a href="dictionary_T.html#15073">typename</a>);</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">      <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_C.html#1390">cstring_concatChars</a> (<a href="dictionary_S.html#34304">s</a>, </span><span class="string">&quot; for &quot;</span><span class="default">);</span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span>
+<a name="256"><font size=-1>256     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_X.html#34303">x</a>-&gt;<a href="dictionary_I.html#15074">isCType</a>)</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">	{</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">	  <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_C.html#7986">cstring_concatFree1</a> (<a href="dictionary_S.html#34304">s</a>, <a href="dictionary_L.html#1414">ltoken_unparse</a> (<a href="dictionary_X.html#34303">x</a>-&gt;<a href="dictionary_C.html#15081">content</a>.<a href="dictionary_C.html#15080">ctype</a>));</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">	}</span>
+<a name="260"><font size=-1>260     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="261"><font size=-1>261     </font></a><span class="keyword">	</span><span class="default">{</span>
+<a name="262"><font size=-1>262     </font></a><span class="default">	  <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_C.html#2351">cstring_concatFree</a> (<a href="dictionary_S.html#34304">s</a>, <a href="dictionary_N.html#13737">nameNode_unparse</a> (<a href="dictionary_X.html#34303">x</a>-&gt;<a href="dictionary_C.html#15081">content</a>.<a href="dictionary_R.html#15079">renamesortname</a>.<a href="dictionary_N.html#15077">name</a>));</span>
+<a name="263"><font size=-1>263     </font></a><span class="default">	  <a href="dictionary_S.html#34304">s</a> = <a href="dictionary_C.html#2351">cstring_concatFree</a> (<a href="dictionary_S.html#34304">s</a>, </span>
+<a name="264"><font size=-1>264     </font></a><span class="default">				  <a href="dictionary_S.html#2502">sigNode_unparse</a> (<a href="dictionary_X.html#34303">x</a>-&gt;<a href="dictionary_C.html#15081">content</a>.<a href="dictionary_R.html#15079">renamesortname</a>.<a href="dictionary_S.html#15078">signature</a>));</span>
+<a name="265"><font size=-1>265     </font></a><span class="default">	}</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">    }</span>
+<a name="267"><font size=-1>267     </font></a><span class="default"></span>
+<a name="268"><font size=-1>268     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34304">s</a></span><span class="default">;</span>
+<a name="269"><font size=-1>269     </font></a><span class="default">}</span>
+<a name="270"><font size=-1>270     </font></a><span class="default"></span>
+<a name="271"><font size=-1>271     </font></a><span class="default"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="272"><font size=-1>272     </font></a><span class="comment"><a href="dictionary_R.html#34308">replaceNodeList_unparseAlt</a> </span><span class="default">(<a href="dictionary_R.html#695">replaceNodeList</a> <a href="dictionary_X.html#34309">x</a>)</span>
+<a name="273"><font size=-1>273     </font></a><span class="default">{</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34310">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">  <a href="dictionary_B.html#14">bool</a> <a href="dictionary_F.html#34311">first</a> = <a href="dictionary_T.html#217">TRUE</a>;</span>
+<a name="276"><font size=-1>276     </font></a><span class="default"></span>
+<a name="277"><font size=-1>277     </font></a><span class="default">  <a href="dictionary_R.html#5539">replaceNodeList_elements</a> (<a href="dictionary_X.html#34309">x</a>, <a href="dictionary_I.html#34314">i</a>)</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">    {</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_F.html#34311">first</a>)</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">	{</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">	  <a href="dictionary_S.html#34310">s</a> = <a href="dictionary_R.html#34302">replaceNode_unparseAlt</a> (<a href="dictionary_I.html#34314">i</a>);</span>
+<a name="282"><font size=-1>282     </font></a><span class="default">	  <a href="dictionary_F.html#34311">first</a> = <a href="dictionary_F.html#215">FALSE</a>;</span>
+<a name="283"><font size=-1>283     </font></a><span class="default">	}</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="285"><font size=-1>285     </font></a><span class="keyword">	</span><span class="default">{</span>
+<a name="286"><font size=-1>286     </font></a><span class="default">	  <a href="dictionary_S.html#34310">s</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%q, %q&quot;</span><span class="default">, <a href="dictionary_S.html#34310">s</a>, <a href="dictionary_R.html#34302">replaceNode_unparseAlt</a> (<a href="dictionary_I.html#34314">i</a>));</span>
+<a name="287"><font size=-1>287     </font></a><span class="default">	}</span>
+<a name="288"><font size=-1>288     </font></a><span class="default">    } <a href="dictionary_E.html#5540">end_replaceNodeList_elements</a>;</span>
+<a name="289"><font size=-1>289     </font></a><span class="default"></span>
+<a name="290"><font size=-1>290     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34310">s</a></span><span class="default">;</span>
+<a name="291"><font size=-1>291     </font></a><span class="default">}</span>
+<a name="292"><font size=-1>292     </font></a><span class="default"></span>
+<a name="293"><font size=-1>293     </font></a><span class="default"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="294"><font size=-1>294     </font></a><span class="comment"><a href="dictionary_P.html#34315">printNameList2</a> </span><span class="default">(<a href="dictionary_T.html#694">typeNameNodeList</a> <a href="dictionary_X.html#34316">x</a>)</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">{</span>
+<a name="296"><font size=-1>296     </font></a><span class="default">  </span><span class="comment">/* printing a list of typeNameNode's, not nameNode's */</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">  <a href="dictionary_B.html#14">bool</a> <a href="dictionary_F.html#34317">first</a> </span><span class="default">= <a href="dictionary_T.html#217">TRUE</a>;</span>
+<a name="298"><font size=-1>298     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34318">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="299"><font size=-1>299     </font></a><span class="default"></span>
+<a name="300"><font size=-1>300     </font></a><span class="default">  <a href="dictionary_T.html#11546">typeNameNodeList_elements</a> (<a href="dictionary_X.html#34316">x</a>, <a href="dictionary_I.html#34321">i</a>)</span>
+<a name="301"><font size=-1>301     </font></a><span class="default">  {</span>
+<a name="302"><font size=-1>302     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_F.html#34317">first</a>)</span>
+<a name="303"><font size=-1>303     </font></a><span class="default">      {</span>
+<a name="304"><font size=-1>304     </font></a><span class="default">	<a href="dictionary_S.html#34318">s</a> = <a href="dictionary_P.html#34292">printTypeName2</a> (<a href="dictionary_I.html#34321">i</a>);</span>
+<a name="305"><font size=-1>305     </font></a><span class="default">	<a href="dictionary_F.html#34317">first</a> = <a href="dictionary_F.html#215">FALSE</a>;</span>
+<a name="306"><font size=-1>306     </font></a><span class="default">      }</span>
+<a name="307"><font size=-1>307     </font></a><span class="default">    </span><span class="keyword">else</span>
+<a name="308"><font size=-1>308     </font></a><span class="keyword">      </span><span class="default">{</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">	<a href="dictionary_S.html#34318">s</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%q, %q&quot;</span><span class="default">, <a href="dictionary_S.html#34318">s</a>, <a href="dictionary_P.html#34292">printTypeName2</a> (<a href="dictionary_I.html#34321">i</a>));</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">      }</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">    } <a href="dictionary_E.html#11548">end_typeNameNodeList_elements</a>; </span>
+<a name="312"><font size=-1>312     </font></a><span class="default"></span>
+<a name="313"><font size=-1>313     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34318">s</a></span><span class="default">;</span>
+<a name="314"><font size=-1>314     </font></a><span class="default">}</span>
+<a name="315"><font size=-1>315     </font></a><span class="default"></span>
+<a name="316"><font size=-1>316     </font></a><span class="default"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="317"><font size=-1>317     </font></a><span class="comment"><a href="dictionary_P.html#34322">printRenamingNode2</a> </span><span class="default">(<a href="dictionary_R.html#689">renamingNode</a> <a href="dictionary_X.html#34323">x</a>)</span>
+<a name="318"><font size=-1>318     </font></a><span class="default">{</span>
+<a name="319"><font size=-1>319     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34324">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="320"><font size=-1>320     </font></a><span class="default"></span>
+<a name="321"><font size=-1>321     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_X.html#34323">x</a> != (<a href="dictionary_R.html#689">renamingNode</a>) </span><span class="number">0</span><span class="default">)</span>
+<a name="322"><font size=-1>322     </font></a><span class="default">    {</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_X.html#34323">x</a>-&gt;<a href="dictionary_I.html#18674">is_replace</a>)</span>
+<a name="324"><font size=-1>324     </font></a><span class="default">	{</span>
+<a name="325"><font size=-1>325     </font></a><span class="default">	  <a href="dictionary_R.html#695">replaceNodeList</a> <a href="dictionary_R.html#34326">r</a> = <a href="dictionary_X.html#34323">x</a>-&gt;<a href="dictionary_C.html#18678">content</a>.<a href="dictionary_R.html#18676">replace</a>;</span>
+<a name="326"><font size=-1>326     </font></a><span class="default">	  <a href="dictionary_S.html#34324">s</a> = <a href="dictionary_R.html#34308">replaceNodeList_unparseAlt</a> (<a href="dictionary_R.html#34326">r</a>);</span>
+<a name="327"><font size=-1>327     </font></a><span class="default">	}</span>
+<a name="328"><font size=-1>328     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="329"><font size=-1>329     </font></a><span class="keyword">	</span><span class="default">{</span>
+<a name="330"><font size=-1>330     </font></a><span class="default">	  <a href="dictionary_N.html#18672">nameAndReplaceNode</a> <a href="dictionary_N.html#34328">n</a> = <a href="dictionary_X.html#34323">x</a>-&gt;<a href="dictionary_C.html#18678">content</a>.<a href="dictionary_N.html#18677">name</a>;</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">	  <a href="dictionary_B.html#14">bool</a> <a href="dictionary_P.html#34329">printComma</a> = <a href="dictionary_T.html#217">TRUE</a>;</span>
+<a name="332"><font size=-1>332     </font></a><span class="default">	  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_T.html#19064">typeNameNodeList_size</a> (<a href="dictionary_N.html#34328">n</a>-&gt;<a href="dictionary_N.html#18670">namelist</a>) == </span><span class="number">0</span><span class="default">)</span>
+<a name="333"><font size=-1>333     </font></a><span class="default">	    {</span>
+<a name="334"><font size=-1>334     </font></a><span class="default">	      <a href="dictionary_P.html#34329">printComma</a> = <a href="dictionary_F.html#215">FALSE</a>;</span>
+<a name="335"><font size=-1>335     </font></a><span class="default">	    }</span>
+<a name="336"><font size=-1>336     </font></a><span class="default">	  <a href="dictionary_S.html#34324">s</a> = <a href="dictionary_P.html#34315">printNameList2</a> (<a href="dictionary_N.html#34328">n</a>-&gt;<a href="dictionary_N.html#18670">namelist</a>);</span>
+<a name="337"><font size=-1>337     </font></a><span class="default">	  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#34329">printComma</a>)</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">	    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_R.html#5544">replaceNodeList_isDefined</a> (<a href="dictionary_N.html#34328">n</a>-&gt;<a href="dictionary_R.html#18671">replacelist</a>) &amp;&amp;</span>
+<a name="339"><font size=-1>339     </font></a><span class="default">		<a href="dictionary_R.html#5542">replaceNodeList_size</a> (<a href="dictionary_N.html#34328">n</a>-&gt;<a href="dictionary_R.html#18671">replacelist</a>) != </span><span class="number">0</span><span class="default">)</span>
+<a name="340"><font size=-1>340     </font></a><span class="default">	      {</span>
+<a name="341"><font size=-1>341     </font></a><span class="default">		<a href="dictionary_S.html#34324">s</a> = <a href="dictionary_C.html#7988">cstring_appendChar</a> (<a href="dictionary_S.html#34324">s</a>, </span><span class="string">','</span><span class="default">);</span>
+<a name="342"><font size=-1>342     </font></a><span class="default">		<a href="dictionary_S.html#34324">s</a> = <a href="dictionary_C.html#7988">cstring_appendChar</a> (<a href="dictionary_S.html#34324">s</a>, </span><span class="string">' '</span><span class="default">);</span>
+<a name="343"><font size=-1>343     </font></a><span class="default">	      }</span>
+<a name="344"><font size=-1>344     </font></a><span class="default">	  <a href="dictionary_S.html#34324">s</a> = <a href="dictionary_C.html#2351">cstring_concatFree</a> (<a href="dictionary_S.html#34324">s</a>, <a href="dictionary_R.html#34308">replaceNodeList_unparseAlt</a> (<a href="dictionary_N.html#34328">n</a>-&gt;<a href="dictionary_R.html#18671">replacelist</a>));</span>
+<a name="345"><font size=-1>345     </font></a><span class="default">	}</span>
+<a name="346"><font size=-1>346     </font></a><span class="default">    }</span>
+<a name="347"><font size=-1>347     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34324">s</a></span><span class="default">;</span>
+<a name="348"><font size=-1>348     </font></a><span class="default">}</span>
+<a name="349"><font size=-1>349     </font></a><span class="default"></span>
+<a name="350"><font size=-1>350     </font></a><span class="default"></span><span class="keyword">static </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a></span>
+<a name="351"><font size=-1>351     </font></a><span class="comment"><a href="dictionary_P.html#34331">printTraitRefList2</a> </span><span class="default">(<a href="dictionary_T.html#666">traitRefNodeList</a> <a href="dictionary_X.html#34332">x</a>) </span><span class="comment">/*@*/ </span>
+<a name="352"><font size=-1>352     </font></a><span class="comment"></span><span class="default">{</span>
+<a name="353"><font size=-1>353     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34333">s</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="354"><font size=-1>354     </font></a><span class="default"></span>
+<a name="355"><font size=-1>355     </font></a><span class="default">  <a href="dictionary_T.html#13447">traitRefNodeList_elements</a> (<a href="dictionary_X.html#34332">x</a>, <a href="dictionary_I.html#34336">i</a>)</span>
+<a name="356"><font size=-1>356     </font></a><span class="default">  {</span>
+<a name="357"><font size=-1>357     </font></a><span class="default">    <a href="dictionary_S.html#34333">s</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%qincludes (%q)&quot;</span><span class="default">, <a href="dictionary_S.html#34333">s</a>, <a href="dictionary_P.html#691">printRawLeaves2</a> (<a href="dictionary_I.html#34336">i</a>-&gt;<a href="dictionary_T.html#13449">traitid</a>));</span>
+<a name="358"><font size=-1>358     </font></a><span class="default"></span>
+<a name="359"><font size=-1>359     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#34336">i</a>-&gt;<a href="dictionary_R.html#13450">rename</a> != </span><span class="number">0</span><span class="default">)</span>
+<a name="360"><font size=-1>360     </font></a><span class="default">      {</span>
+<a name="361"><font size=-1>361     </font></a><span class="default">	<a href="dictionary_S.html#34333">s</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%q(%q)&quot;</span><span class="default">, <a href="dictionary_S.html#34333">s</a>, <a href="dictionary_P.html#34322">printRenamingNode2</a> (<a href="dictionary_I.html#34336">i</a>-&gt;<a href="dictionary_R.html#13450">rename</a>));</span>
+<a name="362"><font size=-1>362     </font></a><span class="default">      }</span>
+<a name="363"><font size=-1>363     </font></a><span class="default"></span>
+<a name="364"><font size=-1>364     </font></a><span class="default">    <a href="dictionary_S.html#34333">s</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%q\n&quot;</span><span class="default">, <a href="dictionary_S.html#34333">s</a>);</span>
+<a name="365"><font size=-1>365     </font></a><span class="default">  } <a href="dictionary_E.html#13452">end_traitRefNodeList_elements</a>;</span>
+<a name="366"><font size=-1>366     </font></a><span class="default"></span>
+<a name="367"><font size=-1>367     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#34333">s</a></span><span class="default">;</span>
+<a name="368"><font size=-1>368     </font></a><span class="default">}</span>
+<a name="369"><font size=-1>369     </font></a><span class="default"></span>
+<a name="370"><font size=-1>370     </font></a><span class="default"></span><span class="keyword">void</span>
+<a name="371"><font size=-1>371     </font></a><span class="keyword"><a href="dictionary_C.html#21499">callLSL</a> </span><span class="default">(</span><span class="comment">/*@unused@*/ <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34338">specfile</a></span><span class="default">, </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_T.html#34339">text</a></span><span class="default">)</span>
+<a name="372"><font size=-1>372     </font></a><span class="default">{</span>
+<a name="373"><font size=-1>373     </font></a><span class="default">  </span><span class="comment">/* specfile is the name of the LCL file that contains &quot;uses&quot;</span>
+<a name="374"><font size=-1>374     </font></a><span class="comment">     Create an intermediate file named</span>
+<a name="375"><font size=-1>375     </font></a><span class="comment">     specfile_&lt;TEMP_LSL_SUFFIX&gt;.&lt;TEMP_LSL_IN_SUFFIX&gt;.</span>
+<a name="376"><font size=-1>376     </font></a><span class="comment">     put text in the file, run lsl on it and direct</span>
+<a name="377"><font size=-1>377     </font></a><span class="comment">     output to specfile_&lt;TEMP_LSL_SUFFIX&gt;.&lt;TEMP_LSL_OUT_SUFFIX&gt;.</span>
+<a name="378"><font size=-1>378     </font></a><span class="comment">     specfile can be a full pathname.</span>
+<a name="379"><font size=-1>379     </font></a><span class="comment">     Note: LSL does not support traitnames that are pathnames, only</span>
+<a name="380"><font size=-1>380     </font></a><span class="comment">     symbols. </span>
+<a name="381"><font size=-1>381     </font></a><span class="comment">     */</span>
+<a name="382"><font size=-1>382     </font></a><span class="comment"></span>
+<a name="383"><font size=-1>383     </font></a><span class="comment">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_I.html#34340">infile</a></span><span class="default">;</span>
+<a name="384"><font size=-1>384     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_O.html#34341">outfile</a>;</span>
+<a name="385"><font size=-1>385     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_N.html#34342">nopath</a>;</span>
+<a name="386"><font size=-1>386     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_N.html#34343">noext</a>;</span>
+<a name="387"><font size=-1>387     </font></a><span class="default">  <a href="dictionary_F.html#265">FILE</a> *<a href="dictionary_I.html#34344">inptr</a>;</span>
+<a name="388"><font size=-1>388     </font></a><span class="default"></span>
+<a name="389"><font size=-1>389     </font></a><span class="default">  <a href="dictionary_I.html#34340">infile</a> = <a href="dictionary_F.html#1771">fileTable_fileName</a> (<a href="dictionary_F.html#11021">fileTable_addltemp</a> (<a href="dictionary_C.html#1769">context_fileTable</a> ()));</span>
+<a name="390"><font size=-1>390     </font></a><span class="default">  <a href="dictionary_I.html#34344">inptr</a> = <a href="dictionary_F.html#11039">fileTable_createFile</a> (<a href="dictionary_C.html#1769">context_fileTable</a> (), <a href="dictionary_I.html#34340">infile</a>);</span>
+<a name="391"><font size=-1>391     </font></a><span class="default">  </span>
+<a name="392"><font size=-1>392     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_I.html#34344">inptr</a> == <a href="dictionary_N.html#12">NULL</a>)</span>
+<a name="393"><font size=-1>393     </font></a><span class="default">    {</span>
+<a name="394"><font size=-1>394     </font></a><span class="default">      </span><span class="comment">/* fopen fails */</span>
+<a name="395"><font size=-1>395     </font></a><span class="comment">      <a href="dictionary_L.html#367">llfatalerror</a> </span><span class="default">(<a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;Unable to write intermediate file: %s&quot;</span><span class="default">, </span>
+<a name="396"><font size=-1>396     </font></a><span class="default">			     infile));</span>
+<a name="397"><font size=-1>397     </font></a><span class="default">    }</span>
+<a name="398"><font size=-1>398     </font></a><span class="default">  </span>
+<a name="399"><font size=-1>399     </font></a><span class="default">  <a href="dictionary_N.html#34342">nopath</a> = <a href="dictionary_F.html#2315">fileLib_removePath</a> (<a href="dictionary_I.html#34340">infile</a>);</span>
+<a name="400"><font size=-1>400     </font></a><span class="default">  <a href="dictionary_N.html#34343">noext</a> = <a href="dictionary_F.html#2317">fileLib_removeAnyExtension</a> (<a href="dictionary_N.html#34342">nopath</a>);</span>
+<a name="401"><font size=-1>401     </font></a><span class="default"></span>
+<a name="402"><font size=-1>402     </font></a><span class="default">  <a href="dictionary_F.html#1444">fprintf</a> (<a href="dictionary_I.html#34344">inptr</a>, </span><span class="string">&quot;%s : trait\n&quot;</span><span class="default">, <a href="dictionary_C.html#1785">cstring_toCharsSafe</a> (<a href="dictionary_N.html#34343">noext</a>));</span>
+<a name="403"><font size=-1>403     </font></a><span class="default"></span>
+<a name="404"><font size=-1>404     </font></a><span class="default">  <a href="dictionary_C.html#1811">cstring_free</a> (<a href="dictionary_N.html#34343">noext</a>);</span>
+<a name="405"><font size=-1>405     </font></a><span class="default">  <a href="dictionary_C.html#1811">cstring_free</a> (<a href="dictionary_N.html#34342">nopath</a>);</span>
+<a name="406"><font size=-1>406     </font></a><span class="default"></span>
+<a name="407"><font size=-1>407     </font></a><span class="default">  <a href="dictionary_F.html#1444">fprintf</a> (<a href="dictionary_I.html#34344">inptr</a>, </span><span class="string">&quot;%s&quot;</span><span class="default">, <a href="dictionary_C.html#1785">cstring_toCharsSafe</a> (<a href="dictionary_T.html#34339">text</a>));</span>
+<a name="408"><font size=-1>408     </font></a><span class="default">  <a href="dictionary_C.html#269">check</a> (<a href="dictionary_F.html#8956">fileTable_closeFile</a> (<a href="dictionary_C.html#1769">context_fileTable</a> (), <a href="dictionary_I.html#34344">inptr</a>));</span>
+<a name="409"><font size=-1>409     </font></a><span class="default"></span>
+<a name="410"><font size=-1>410     </font></a><span class="default">  </span><span class="comment">/* the default is to delete the input file */</span>
+<a name="411"><font size=-1>411     </font></a><span class="comment"></span>
+<a name="412"><font size=-1>412     </font></a><span class="comment">  <a href="dictionary_O.html#34341">outfile</a> </span><span class="default">= <a href="dictionary_F.html#1771">fileTable_fileName</a> (<a href="dictionary_F.html#11021">fileTable_addltemp</a> (<a href="dictionary_C.html#1769">context_fileTable</a> ()));</span>
+<a name="413"><font size=-1>413     </font></a><span class="default">  <a href="dictionary_I.html#34281">invokeLSL</a> (<a href="dictionary_I.html#34340">infile</a>, <a href="dictionary_O.html#34341">outfile</a>, <a href="dictionary_C.html#175">context_getFlag</a> (<a href="dictionary_F.html#2067">FLG_KEEP</a>));</span>
+<a name="414"><font size=-1>414     </font></a><span class="default">  <a href="dictionary_C.html#1811">cstring_free</a> (<a href="dictionary_T.html#34339">text</a>);</span>
+<a name="415"><font size=-1>415     </font></a><span class="default">}</span>
+<a name="416"><font size=-1>416     </font></a><span class="default"></span>
+<a name="417"><font size=-1>417     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_I.html#34281">invokeLSL</a> </span><span class="default">(<a href="dictionary_C.html#21">cstring</a> <a href="dictionary_I.html#34345">infile</a>, <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_O.html#34346">outfile</a>, <a href="dictionary_B.html#14">bool</a> <a href="dictionary_D.html#34347">deletep</a>)</span>
+<a name="418"><font size=-1>418     </font></a><span class="default">{</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">  </span><span class="comment">/* run lsl on infile and leave result in outfile */</span>
+<a name="420"><font size=-1>420     </font></a><span class="comment">  <a href="dictionary_F.html#265">FILE</a> </span><span class="default">*<a href="dictionary_O.html#34348">outptr</a>;</span>
+<a name="421"><font size=-1>421     </font></a><span class="default">  <a href="dictionary_F.html#14253">filestatus</a> <a href="dictionary_S.html#34349">status</a>;</span>
+<a name="422"><font size=-1>422     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_C.html#34350">callstatus</a></span><span class="default">;</span>
+<a name="423"><font size=-1>423     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_C.html#34351">call</a>;</span>
+<a name="424"><font size=-1>424     </font></a><span class="default">  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_R.html#34352">returnPath</a> = <a href="dictionary_C.html#388">cstring_undefined</a>;</span>
+<a name="425"><font size=-1>425     </font></a><span class="default">  </span>
+<a name="426"><font size=-1>426     </font></a><span class="default">  </span><span class="comment">/*</span>
+<a name="427"><font size=-1>427     </font></a><span class="comment">  ** Ensures that outfile can be written into, should find a better</span>
+<a name="428"><font size=-1>428     </font></a><span class="comment">  ** way to do this. </span>
+<a name="429"><font size=-1>429     </font></a><span class="comment">  */</span>
+<a name="430"><font size=-1>430     </font></a><span class="comment">  </span>
+<a name="431"><font size=-1>431     </font></a><span class="comment">  <a href="dictionary_O.html#34348">outptr</a> </span><span class="default">= <a href="dictionary_F.html#11039">fileTable_createFile</a> (<a href="dictionary_C.html#1769">context_fileTable</a> (), <a href="dictionary_O.html#34346">outfile</a>);</span>
+<a name="432"><font size=-1>432     </font></a><span class="default"></span>
+<a name="433"><font size=-1>433     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#34348">outptr</a> == <a href="dictionary_N.html#12">NULL</a>)</span>
+<a name="434"><font size=-1>434     </font></a><span class="default">    {			</span>
+<a name="435"><font size=-1>435     </font></a><span class="default">      </span><span class="comment">/* fopen fails */</span>
+<a name="436"><font size=-1>436     </font></a><span class="comment">      <a href="dictionary_L.html#367">llfatalerror</a> </span><span class="default">(<a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;Unable to write intermediate file: %s&quot;</span><span class="default">, </span>
+<a name="437"><font size=-1>437     </font></a><span class="default">			     outfile));</span>
+<a name="438"><font size=-1>438     </font></a><span class="default">    }</span>
+<a name="439"><font size=-1>439     </font></a><span class="default">  </span>
+<a name="440"><font size=-1>440     </font></a><span class="default">  <a href="dictionary_C.html#269">check</a> (<a href="dictionary_F.html#8956">fileTable_closeFile</a> (<a href="dictionary_C.html#1769">context_fileTable</a> (), <a href="dictionary_O.html#34348">outptr</a>));</span>
+<a name="441"><font size=-1>441     </font></a><span class="default"></span>
+<a name="442"><font size=-1>442     </font></a><span class="default">  </span><span class="comment">/* set call to the right command */</span>
+<a name="443"><font size=-1>443     </font></a><span class="comment">  <a href="dictionary_S.html#34349">status</a> </span><span class="default">= <a href="dictionary_O.html#24989">osd_getExePath</a> (<a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;PATH&quot;</span><span class="default">), </span>
+<a name="444"><font size=-1>444     </font></a><span class="default">			   <a href="dictionary_C.html#384">cstring_makeLiteralTemp</a> (</span><span class="string">&quot;lsl&quot;</span><span class="default">),</span>
+<a name="445"><font size=-1>445     </font></a><span class="default">			   &amp;<a href="dictionary_R.html#34352">returnPath</a>);</span>
+<a name="446"><font size=-1>446     </font></a><span class="default">    </span>
+<a name="447"><font size=-1>447     </font></a><span class="default"></span>
+<a name="448"><font size=-1>448     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#34349">status</a> == OSD_FILEFOUND)</span>
+<a name="449"><font size=-1>449     </font></a><span class="default">    {</span>
+<a name="450"><font size=-1>450     </font></a><span class="default">      <a href="dictionary_C.html#34351">call</a> = <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%s -syms %s &gt; %s&quot;</span><span class="default">, <a href="dictionary_R.html#34352">returnPath</a>, <a href="dictionary_I.html#34345">infile</a>, <a href="dictionary_O.html#34346">outfile</a>);</span>
+<a name="451"><font size=-1>451     </font></a><span class="default">      </span>
+<a name="452"><font size=-1>452     </font></a><span class="default">      </span><span class="comment">/* before calling, make sure old file is removed */</span>
+<a name="453"><font size=-1>453     </font></a><span class="comment">      </span><span class="default">(</span><span class="keyword">void</span><span class="default">) <a href="dictionary_O.html#18519">osd_unlink</a> (<a href="dictionary_O.html#34346">outfile</a>);</span>
+<a name="454"><font size=-1>454     </font></a><span class="default"></span>
+<a name="455"><font size=-1>455     </font></a><span class="default">      <a href="dictionary_C.html#34350">callstatus</a> = <a href="dictionary_O.html#25011">osd_system</a> (<a href="dictionary_C.html#34351">call</a>);</span>
+<a name="456"><font size=-1>456     </font></a><span class="default">      </span>
+<a name="457"><font size=-1>457     </font></a><span class="default">      <a href="dictionary_C.html#1811">cstring_free</a> (<a href="dictionary_C.html#34351">call</a>);</span>
+<a name="458"><font size=-1>458     </font></a><span class="default"></span>
+<a name="459"><font size=-1>459     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#34350">callstatus</a> != <a href="dictionary_C.html#32672">CALL_SUCCESS</a>)</span>
+<a name="460"><font size=-1>460     </font></a><span class="default">	{</span>
+<a name="461"><font size=-1>461     </font></a><span class="default">	  </span><span class="comment">/*</span>
+<a name="462"><font size=-1>462     </font></a><span class="comment">	  ** lsl errors: call lsl again without -syms, sending output to stdout</span>
+<a name="463"><font size=-1>463     </font></a><span class="comment">          */</span>
+<a name="464"><font size=-1>464     </font></a><span class="comment">	  <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_S.html#34353">syscal</a> </span><span class="default">= <a href="dictionary_M.html#179">message</a> (</span><span class="string">&quot;%s %s&quot;</span><span class="default">, <a href="dictionary_R.html#34352">returnPath</a>, <a href="dictionary_I.html#34345">infile</a>);</span>
+<a name="465"><font size=-1>465     </font></a><span class="default">	  (</span><span class="keyword">void</span><span class="default">) <a href="dictionary_O.html#25011">osd_system</a> (<a href="dictionary_S.html#34353">syscal</a>);</span>
+<a name="466"><font size=-1>466     </font></a><span class="default">	  <a href="dictionary_C.html#1811">cstring_free</a> (<a href="dictionary_S.html#34353">syscal</a>);</span>
+<a name="467"><font size=-1>467     </font></a><span class="default"></span>
+<a name="468"><font size=-1>468     </font></a><span class="default">	  <a href="dictionary_L.html#367">llfatalerror</a> (<a href="dictionary_C.html#369">cstring_makeLiteral</a> (</span><span class="string">&quot;LSL trait used contains errors.&quot;</span><span class="default">)); </span>
+<a name="469"><font size=-1>469     </font></a><span class="default">	}</span>
+<a name="470"><font size=-1>470     </font></a><span class="default">      </span><span class="keyword">else</span>
+<a name="471"><font size=-1>471     </font></a><span class="keyword">	</span><span class="default">{			</span><span class="comment">/* ok, go ahead */</span>
+<a name="472"><font size=-1>472     </font></a><span class="comment">	 /* Now parse the LSL output and store info in symbol table */</span>
+<a name="473"><font size=-1>473     </font></a><span class="comment">	  <a href="dictionary_C.html#34350">callstatus</a> </span><span class="default">= <a href="dictionary_P.html#21498">parseSignatures</a> (<a href="dictionary_C.html#182">cstring_copy</a> (<a href="dictionary_O.html#34346">outfile</a>));</span>
+<a name="474"><font size=-1>474     </font></a><span class="default"></span>
+<a name="475"><font size=-1>475     </font></a><span class="default">	  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#34350">callstatus</a> == </span><span class="number">0</span><span class="default">)</span>
+<a name="476"><font size=-1>476     </font></a><span class="default">	    {	</span>
+<a name="477"><font size=-1>477     </font></a><span class="default">	      </span><span class="comment">/* all went well */</span>
+<a name="478"><font size=-1>478     </font></a><span class="comment">	      </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#175">context_getFlag</a> (<a href="dictionary_F.html#2067">FLG_KEEP</a>))</span>
+<a name="479"><font size=-1>479     </font></a><span class="default">		{</span>
+<a name="480"><font size=-1>480     </font></a><span class="default">		  </span><span class="comment">/* delete temporary files */</span>
+<a name="481"><font size=-1>481     </font></a><span class="comment">		  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_D.html#34347">deletep</a>)</span>
+<a name="482"><font size=-1>482     </font></a><span class="default">		    {</span>
+<a name="483"><font size=-1>483     </font></a><span class="default">		      (</span><span class="keyword">void</span><span class="default">) <a href="dictionary_O.html#18519">osd_unlink</a> (<a href="dictionary_I.html#34345">infile</a>);</span>
+<a name="484"><font size=-1>484     </font></a><span class="default">		    }</span>
+<a name="485"><font size=-1>485     </font></a><span class="default">		  </span>
+<a name="486"><font size=-1>486     </font></a><span class="default">		  (</span><span class="keyword">void</span><span class="default">) <a href="dictionary_O.html#18519">osd_unlink</a> (<a href="dictionary_O.html#34346">outfile</a>);</span>
+<a name="487"><font size=-1>487     </font></a><span class="default">		}</span>
+<a name="488"><font size=-1>488     </font></a><span class="default">	    }</span>
+<a name="489"><font size=-1>489     </font></a><span class="default">	}</span>
+<a name="490"><font size=-1>490     </font></a><span class="default">    }</span>
+<a name="491"><font size=-1>491     </font></a><span class="default">  </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_S.html#34349">status</a> == OSD_FILENOTFOUND)</span>
+<a name="492"><font size=-1>492     </font></a><span class="default">    {</span>
+<a name="493"><font size=-1>493     </font></a><span class="default">      <a href="dictionary_L.html#367">llfatalerror</a> </span>
+<a name="494"><font size=-1>494     </font></a><span class="default">	(cstring_makeLiteral (</span><span class="string">&quot;Cannot find LSL checker: check your command search path.&quot;</span><span class="default">));</span>
+<a name="495"><font size=-1>495     </font></a><span class="default">    }</span>
+<a name="496"><font size=-1>496     </font></a><span class="default">  </span><span class="keyword">else				</span><span class="comment">/* must be (status == OSD_PATHTOOLONG) */</span>
+<a name="497"><font size=-1>497     </font></a><span class="comment">    </span><span class="default">{</span>
+<a name="498"><font size=-1>498     </font></a><span class="default">      <a href="dictionary_L.html#11653">lclfatalbug</a> (</span><span class="string">&quot;invokeLSL: lsl plus directory from search path is too long&quot;</span><span class="default">);</span>
+<a name="499"><font size=-1>499     </font></a><span class="default">    }</span>
+<a name="500"><font size=-1>500     </font></a><span class="default">}</span>
+<a name="501"><font size=-1>501     </font></a><span class="default"></span>
+<a name="502"><font size=-1>502     </font></a><span class="default"></span><span class="comment">/* callLSL (&quot;MySet&quot;, &quot;includes Set (CC for C, EE for E)&quot;);  */</span>
+<a name="503"><font size=-1>503     </font></a><span class="comment"></span>
+<a name="504"><font size=-1>504     </font></a><span class="comment"></span><span class="keyword">void</span>
+<a name="505"><font size=-1>505     </font></a><span class="keyword"><a href="dictionary_R.html#6128">readlsignatures</a> </span><span class="default">(<a href="dictionary_I.html#659">interfaceNode</a> <a href="dictionary_N.html#34354">n</a>)</span>
+<a name="506"><font size=-1>506     </font></a><span class="default">{</span>
+<a name="507"><font size=-1>507     </font></a><span class="default">  </span><span class="comment">/* assume n-&gt;kind = usesKIND */</span>
+<a name="508"><font size=-1>508     </font></a><span class="comment">  <a href="dictionary_C.html#21499">callLSL</a> </span><span class="default">(<a href="dictionary_G.html#1779">g_currentSpec</a>, <a href="dictionary_P.html#34331">printTraitRefList2</a> (<a href="dictionary_N.html#34354">n</a>-&gt;<a href="dictionary_C.html#2494">content</a>.<a href="dictionary_U.html#2489">uses</a>));</span>
+<a name="509"><font size=-1>509     </font></a><span class="default">}</span>
+<a name="510"><font size=-1>510     </font></a><span class="default"></span>
+</pre></body></html>

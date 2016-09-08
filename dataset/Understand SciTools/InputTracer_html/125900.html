@@ -1,0 +1,43 @@
+<html><head><title>fpu_lazy_eflags.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/x86/fpu_lazy_eflags.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/x86/fpu_lazy_eflags.c";
+top.document.title  = "fpu_lazy_eflags.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* This test case is for a FPU bug to do with lazy eflags updating that was</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   fixed by commit 1.42 in coregrind/vg_from_ucode.c in the HEAD.  Thanks to</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">   Dominic Mazzoni &lt;dmazzoni@aig.jpl.nasa.gov for the test case and the</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">   following information:</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">   Anyway, the error only occurs if you compile it with the options:</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">     gcc -O2 -mcpu=pentiumpro -march=pentiumpro</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   However, the exact same error occurs whether I compile the program with</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">   gcc 2.96 (RedHat 7.3's version) or gcc 3.2.</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   The correct output of the program is &quot;0.000000&quot;.  When run under valgrind</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   1.9.4, it outputs &quot;1.000000&quot;.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">*/</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="18"><font size=-1>18     </font></a><span class="string"></span>
+<a name="19"><font size=-1>19     </font></a><span class="string"></span><span class="keyword">int <a href="dictionary_M.html#171294">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#125902">argc</a></span><span class="default">, </span><span class="keyword">char </span><span class="default">**<a href="dictionary_A.html#125903">argv</a>)</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">{</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">   </span><span class="keyword">union </span><span class="default">{</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">      </span><span class="keyword">float <a href="dictionary_A.html#125905">a</a></span><span class="default">[</span><span class="number">2</span><span class="default">];</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_B.html#125906">b</a></span><span class="default">[</span><span class="number">2</span><span class="default">];</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">   } <a href="dictionary_U.html#125907">u</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">   <a href="dictionary_U.html#125907">u</a>.<a href="dictionary_A.html#125905">a</a>[</span><span class="number">0</span><span class="default">] = </span><span class="number">0.0 </span><span class="default">/ </span><span class="number">0.0</span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">   <a href="dictionary_U.html#125907">u</a>.<a href="dictionary_A.html#125905">a</a>[</span><span class="number">1</span><span class="default">] = ((*<a href="dictionary_U.html#125907">u</a>.<a href="dictionary_B.html#125906">b</a> &amp; </span><span class="number">0x7FC00000</span><span class="default">) != </span><span class="number">0x7FC00000</span><span class="default">);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">   <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;%f\n&quot;</span><span class="default">, <a href="dictionary_U.html#125907">u</a>.<a href="dictionary_A.html#125905">a</a>[</span><span class="number">1</span><span class="default">]);</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default">   </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">}</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+</pre></body></html>

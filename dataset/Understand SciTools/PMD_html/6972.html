@@ -1,0 +1,42 @@
+<html><head><title>AbstractStatisticalJavaRule.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/rule/AbstractStatisticalJavaRule.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/rule/AbstractStatisticalJavaRule.java";
+top.document.title  = "AbstractStatisticalJavaRule.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#46">rule</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.<a href="dictionary_N.html#10">pmd</a>.<a href="dictionary_N.html#170">RuleContext</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#576">ast</a>.<a href="dictionary_N.html#510">Node</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.rule.<a href="dictionary_N.html#167">stat</a>.<a href="dictionary_N.html#175">StatisticalRule</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.rule.<a href="dictionary_N.html#167">stat</a>.<a href="dictionary_N.html#113">StatisticalRuleHelper</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#174">stat</a>.<a href="dictionary_N.html#172">DataPoint</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">public abstract class <a href="dictionary_N.html#3091">AbstractStatisticalJavaRule</a> extends <a href="dictionary_N.html#982">AbstractJavaRule</a> implements <a href="dictionary_N.html#175">StatisticalRule</a> </span><span class="default">{</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default">    </span><span class="keyword">private final <a href="dictionary_N.html#113">StatisticalRuleHelper</a> <a href="dictionary_N.html#6978">helper</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_N.html#114">StatisticalRuleHelper</a></span><span class="default">(</span><span class="keyword">this</span><span class="default">);</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span>
+<a name="18"><font size=-1>18     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#3098">addDataPoint</a></span><span class="default">(<a href="dictionary_N.html#172">DataPoint</a> <a href="dictionary_N.html#6973">point</a>) {</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">	<a href="dictionary_N.html#6978">helper</a>.<a href="dictionary_N.html#116">addDataPoint</a>(<a href="dictionary_N.html#6973">point</a>);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">    }</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default">    </span><span class="keyword">public </span><span class="default">Object[] <a href="dictionary_N.html#3093">getViolationParameters</a>(<a href="dictionary_N.html#172">DataPoint</a> <a href="dictionary_N.html#6977">point</a>) {</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">	</span><span class="keyword">return null</span><span class="default">;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    }</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">    @<a href="dictionary_O.html#74">Override</a></span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#6974">apply</a></span><span class="default">(<a href="dictionary_J.html#375">List</a>&lt;? </span><span class="keyword">extends <a href="dictionary_N.html#510">Node</a></span><span class="default">&gt; <a href="dictionary_N.html#6976">nodes</a>, <a href="dictionary_N.html#170">RuleContext</a> <a href="dictionary_N.html#6975">ctx</a>) {</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">	</span><span class="keyword">super</span><span class="default">.<a href="dictionary_N.html#6980">apply</a>(<a href="dictionary_N.html#6976">nodes</a>, <a href="dictionary_N.html#6975">ctx</a>);</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">	<a href="dictionary_N.html#6978">helper</a>.<a href="dictionary_N.html#119">apply</a>(<a href="dictionary_N.html#6975">ctx</a>);</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">    }</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">}</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+</pre></body></html>

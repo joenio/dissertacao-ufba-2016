@@ -1,0 +1,75 @@
+<html><head><title>ScalaTokenizer.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-scala/src/main/java/org/sonar/plugins/scala/cpd/ScalaTokenizer.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-scala/src/main/java/org/sonar/plugins/scala/cpd/ScalaTokenizer.java";
+top.document.title  = "ScalaTokenizer.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Sonar Scala Plugin</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (C) 2011 - 2014 All contributors</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * dev@sonar.codehaus.org</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> *</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * This program is free software; you can redistribute it and/or</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * modify it under the terms of the GNU Lesser General Public</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * License as published by the Free Software Foundation; either</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * version 3 of the License, or (at your option) any later version.</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * This program is distributed in the hope that it will be useful,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * Lesser General Public License for more details.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> *</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * You should have received a copy of the GNU Lesser General Public</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * License along with this program; if not, write to the Free Software</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> */</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">org.sonar.plugins.scala.<a href="dictionary_O.html#16878">cpd</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#494">cpd</a>.<a href="dictionary_N.html#1816">SourceCode</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#494">cpd</a>.<a href="dictionary_N.html#1818">TokenEntry</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#494">cpd</a>.<a href="dictionary_N.html#498">Tokenizer</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#494">cpd</a>.<a href="dictionary_N.html#1817">Tokens</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#576">ast</a>.TokenMgrError;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.sonar.plugins.scala.<a href="dictionary_O.html#20358">compiler</a>.<a href="dictionary_O.html#20341">Lexer</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.sonar.plugins.scala.<a href="dictionary_O.html#20358">compiler</a>.<a href="dictionary_O.html#20357">Token</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * Scala tokenizer for PMD CPD.</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> *</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * @since 0.1</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> */</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span><span class="keyword">public final class <a href="dictionary_O.html#16877">ScalaTokenizer</a> implements <a href="dictionary_N.html#498">Tokenizer</a> </span><span class="default">{</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_O.html#20342">tokenize</a></span><span class="default">(<a href="dictionary_N.html#1816">SourceCode</a> <a href="dictionary_O.html#20355">source</a>, <a href="dictionary_N.html#1817">Tokens</a> <a href="dictionary_O.html#20352">cpdTokens</a>) {</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">        <a href="dictionary_S.html#7">String</a> <a href="dictionary_O.html#20353">filename</a> = <a href="dictionary_O.html#20355">source</a>.<a href="dictionary_N.html#1820">getFileName</a>();</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">        </span><span class="keyword">try </span><span class="default">{</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">            <a href="dictionary_O.html#20341">Lexer</a> <a href="dictionary_O.html#20354">lexer</a> = </span><span class="keyword">new <a href="dictionary_O.html#20341">Lexer</a></span><span class="default">();</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">            <a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_O.html#20357">Token</a>&gt; <a href="dictionary_O.html#20356">tokens</a> =  <a href="dictionary_O.html#20354">lexer</a>.<a href="dictionary_G.html#20343">getTokensOfFile</a>(<a href="dictionary_O.html#20353">filename</a>);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">            </span><span class="keyword">for </span><span class="default">(<a href="dictionary_O.html#20357">Token</a> <a href="dictionary_O.html#20350">token</a> : <a href="dictionary_O.html#20356">tokens</a>) {</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">                <a href="dictionary_S.html#7">String</a> <a href="dictionary_O.html#20351">tokenVal</a> =</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">                    <a href="dictionary_O.html#20350">token</a>.<a href="dictionary_T.html#20348">tokenVal</a>() != </span><span class="keyword">null </span><span class="default">? <a href="dictionary_O.html#20350">token</a>.<a href="dictionary_T.html#20348">tokenVal</a>()  : Integer.<a href="dictionary_T.html#342">toString</a>(<a href="dictionary_O.html#20350">token</a>.<a href="dictionary_T.html#20347">tokenType</a>());</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">                <a href="dictionary_N.html#1818">TokenEntry</a> <a href="dictionary_O.html#20349">cpdToken</a> = </span><span class="keyword">new <a href="dictionary_N.html#1821">TokenEntry</a></span><span class="default">(<a href="dictionary_O.html#20351">tokenVal</a>, <a href="dictionary_O.html#20353">filename</a>, <a href="dictionary_O.html#20350">token</a>.<a href="dictionary_L.html#20346">line</a>());</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">                <a href="dictionary_O.html#20352">cpdTokens</a>.<a href="dictionary_N.html#1822">add</a>(<a href="dictionary_O.html#20349">cpdToken</a>);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">            }</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">            <a href="dictionary_O.html#20352">cpdTokens</a>.<a href="dictionary_N.html#1822">add</a>(<a href="dictionary_N.html#1818">TokenEntry</a>.<a href="dictionary_N.html#1823">getEOF</a>());</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_R.html#879">RuntimeException</a> <a href="dictionary_O.html#20345">e</a>) {</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">            <a href="dictionary_O.html#20345">e</a>.<a href="dictionary_P.html#1787">printStackTrace</a>();</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">            </span><span class="comment">// Wrap exceptions of the Scala tokenizer in a TokenMgrError, so they are correctly handled</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">            // when CPD is executed with the '--skipLexicalErrors' command line option</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">            </span><span class="keyword">throw new </span><span class="default">TokenMgrError(</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">                </span><span class="string">&quot;Lexical error in file &quot; </span><span class="default">+ <a href="dictionary_O.html#20353">filename</a> + </span><span class="string">&quot;. The scala tokenizer exited with error: &quot; </span><span class="default">+ <a href="dictionary_O.html#20345">e</a>.<a href="dictionary_G.html#1125">getMessage</a>(),</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">                TokenMgrError.<a href="dictionary_L.html#20344">LEXICAL_ERROR</a>);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">        }</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    }</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span>
+<a name="64"><font size=-1>64     </font></a><span class="default">}</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span>
+</pre></body></html>

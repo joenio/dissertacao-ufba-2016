@@ -1,0 +1,507 @@
+<html><head><title>ReplaceStrings.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/ReplaceStrings.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/ReplaceStrings.java";
+top.document.title  = "ReplaceStrings.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2010 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Preconditions;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Predicate;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#6732">HashMultimap</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#1411">ImmutableList</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#37">ImmutableMap</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#1412">ImmutableSet</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#4840">Iterables</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#4884">Multimap</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>.<a href="dictionary_C.html#1352">NodeTraversal</a>.<a href="dictionary_C.html#2381">AbstractPostOrderCallback</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#530">IR</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#219">Node</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#2403">TypeI</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#3213">TypeIRegistry</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.ArrayList;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Collection;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.HashMap;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.LinkedHashMap;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.List;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Map;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Set;</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> * Replaces JavaScript strings in the list of supplied methods with shortened</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> * forms. Useful for replacing debug message such as: throw new</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> * Error(&quot;Something bad happened&quot;); with generated codes like: throw new</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> * Error(&quot;a&quot;); This makes the compiled JavaScript smaller and prevents us from</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> * leaking details about the source code.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"> *</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"> * Based in concept on the work by Jared Jacobs.</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"> */</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#44733">ReplaceStrings</a> extends <a href="dictionary_C.html#2381">AbstractPostOrderCallback</a></span>
+<a name="51"><font size=-1>51     </font></a><span class="keyword">    implements <a href="dictionary_C.html#19">CompilerPass</a> </span><span class="default">{</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  </span><span class="keyword">static final <a href="dictionary_C.html#2269">DiagnosticType</a> <a href="dictionary_C.html#44855">BAD_REPLACEMENT_CONFIGURATION</a> </span><span class="default">=</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">      <a href="dictionary_C.html#2269">DiagnosticType</a>.<a href="dictionary_C.html#2274">warning</a>(</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">          </span><span class="string">&quot;JSC_BAD_REPLACEMENT_CONFIGURATION&quot;</span><span class="default">,</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">          </span><span class="string">&quot;Bad replacement configuration.&quot;</span><span class="default">);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  </span><span class="keyword">private static final </span><span class="default">String <a href="dictionary_C.html#44856">DEFAULT_PLACEHOLDER_TOKEN</a> = </span><span class="string">&quot;`&quot;</span><span class="default">;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">String <a href="dictionary_C.html#44864">placeholderToken</a>;</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  </span><span class="keyword">private static final </span><span class="default">String <a href="dictionary_C.html#44858">REPLACE_ONE_MARKER</a> = </span><span class="string">&quot;?&quot;</span><span class="default">;</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">  </span><span class="keyword">private static final </span><span class="default">String <a href="dictionary_C.html#44857">REPLACE_ALL_MARKER</a> = </span><span class="string">&quot;*&quot;</span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#44860">compiler</a></span><span class="default">;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#3213">TypeIRegistry</a> <a href="dictionary_C.html#44865">registry</a></span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  </span><span class="comment">//</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">  </span><span class="keyword">private final </span><span class="default">Map&lt;String, <a href="dictionary_C.html#44737">Config</a>&gt; <a href="dictionary_C.html#44861">functions</a> = </span><span class="keyword">new </span><span class="default">HashMap&lt;&gt;();</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#4884">Multimap</a></span><span class="default">&lt;String, String&gt; <a href="dictionary_C.html#44862">methods</a> = <a href="dictionary_C.html#6732">HashMultimap</a>.<a href="dictionary_C.html#4875">create</a>();</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#15659">DefaultNameGenerator</a> <a href="dictionary_C.html#44863">nameGenerator</a></span><span class="default">;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Map&lt;String, <a href="dictionary_C.html#44745">Result</a>&gt; <a href="dictionary_C.html#44866">results</a> = </span><span class="keyword">new </span><span class="default">LinkedHashMap&lt;&gt;();</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">   * Describes a function to look for a which parameters to replace.</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">   */</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">  </span><span class="keyword">private static class <a href="dictionary_C.html#44737">Config</a> </span><span class="default">{</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): Support name &quot;groups&quot; so that unrelated strings can</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">    // reuse strings.  For example, event-id can reuse the names used for logger</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">    // classes.</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">    </span><span class="keyword">final </span><span class="default">String <a href="dictionary_C.html#44743">name</a>;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    </span><span class="keyword">final </span><span class="default">List&lt;<a href="dictionary_I.html#7014">Integer</a>&gt; <a href="dictionary_C.html#44744">parameters</a>;</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">    </span><span class="keyword">static final int <a href="dictionary_C.html#44742">REPLACE_ALL_VALUE</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    <a href="dictionary_C.html#44738">Config</a>(String <a href="dictionary_C.html#44739">name</a>, List&lt;<a href="dictionary_I.html#7014">Integer</a>&gt; <a href="dictionary_C.html#44740">replacementParameters</a>) {</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44743">name</a> = <a href="dictionary_C.html#44739">name</a>;</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44744">parameters</a> = <a href="dictionary_C.html#44740">replacementParameters</a>;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    }</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#44741">isReplaceAll</a></span><span class="default">() {</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#44744">parameters</a></span><span class="default">.<a href="dictionary_S.html#371">size</a>() == </span><span class="number">1 </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44744">parameters</a>.<a href="dictionary_C.html#667">contains</a>(<a href="dictionary_C.html#44742">REPLACE_ALL_VALUE</a>);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    }</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">  }</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">   * Describes a replacement that occurred.</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">   */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">  </span><span class="keyword">static class <a href="dictionary_C.html#44745">Result</a> </span><span class="default">{</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">    </span><span class="comment">// The original message with non-static content replaced with</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">    // {@code placeholderToken}.</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">    </span><span class="keyword">public final </span><span class="default">String <a href="dictionary_C.html#44750">original</a>;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">    </span><span class="keyword">public final </span><span class="default">String <a href="dictionary_C.html#44751">replacement</a>;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#44749">didReplacement</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    <a href="dictionary_C.html#44746">Result</a>(String <a href="dictionary_C.html#44747">original</a>, String <a href="dictionary_C.html#44748">replacement</a>) {</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44750">original</a> = <a href="dictionary_C.html#44747">original</a>;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44751">replacement</a> = <a href="dictionary_C.html#44748">replacement</a>;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    }</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">  }</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span>
+<a name="108"><font size=-1>108     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">   * @param placeholderToken Separator to use between string parts. Used to replace</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">   *     non-static string content.</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">   * @param functionsToInspect A list of function configurations in the form of</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">   *     function($,,,)</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">   *   or</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">   *     class.prototype.method($,,,)</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">   * @param blacklisted A set of names that should not be used as replacement</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">   *     strings.  Useful to prevent unwanted strings for appearing in the</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">   *     final output.</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">   * where '$' is used to indicate which parameter should be replaced.</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">   */</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">  <a href="dictionary_C.html#44752">ReplaceStrings</a></span><span class="default">(</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">      <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#44754">compiler</a>, String <a href="dictionary_C.html#44756">placeholderToken</a>,</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">      List&lt;String&gt; <a href="dictionary_C.html#44755">functionsToInspect</a>,</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">      Set&lt;String&gt; <a href="dictionary_C.html#44753">blacklisted</a>,</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">      <a href="dictionary_C.html#43">VariableMap</a> <a href="dictionary_C.html#44758">previousMappings</a>) {</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44860">compiler</a> = <a href="dictionary_C.html#44754">compiler</a>;</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44864">placeholderToken</a> = <a href="dictionary_C.html#44756">placeholderToken</a>.<a href="dictionary_I.html#370">isEmpty</a>()</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">        ? <a href="dictionary_C.html#44856">DEFAULT_PLACEHOLDER_TOKEN</a> : <a href="dictionary_C.html#44756">placeholderToken</a>;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44865">registry</a> = <a href="dictionary_C.html#44754">compiler</a>.<a href="dictionary_C.html#3263">getTypeIRegistry</a>();</span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span>
+<a name="130"><font size=-1>130     </font></a><span class="default">    Iterable&lt;String&gt; <a href="dictionary_C.html#44759">reservedNames</a> = <a href="dictionary_C.html#44753">blacklisted</a>;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44758">previousMappings</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">      Set&lt;String&gt; <a href="dictionary_C.html#44757">previous</a> =</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">          <a href="dictionary_C.html#44758">previousMappings</a>.<a href="dictionary_C.html#80">getOriginalNameToNewNameMap</a>().<a href="dictionary_K.html#2046">keySet</a>();</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">      <a href="dictionary_C.html#44759">reservedNames</a> = <a href="dictionary_C.html#4840">Iterables</a>.<a href="dictionary_C.html#8236">concat</a>(<a href="dictionary_C.html#44753">blacklisted</a>, <a href="dictionary_C.html#44757">previous</a>);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">      <a href="dictionary_C.html#44802">initMapping</a>(<a href="dictionary_C.html#44758">previousMappings</a>, <a href="dictionary_C.html#44753">blacklisted</a>);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">    }</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#44863">nameGenerator</a> = <a href="dictionary_C.html#44766">createNameGenerator</a>(<a href="dictionary_C.html#44759">reservedNames</a>);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span>
+<a name="139"><font size=-1>139     </font></a><span class="default">    </span><span class="comment">// Initialize the map of functions to inspect for renaming candidates.</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">    <a href="dictionary_C.html#44809">parseConfiguration</a></span><span class="default">(<a href="dictionary_C.html#44755">functionsToInspect</a>);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  </span><span class="keyword">private void <a href="dictionary_C.html#44802">initMapping</a></span><span class="default">(</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">      <a href="dictionary_C.html#43">VariableMap</a> <a href="dictionary_C.html#44807">previousVarMap</a>, Set&lt;String&gt; <a href="dictionary_C.html#44808">reservedNames</a>) {</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    Map&lt;String, String&gt; <a href="dictionary_C.html#44806">previous</a> = <a href="dictionary_C.html#44807">previousVarMap</a>.<a href="dictionary_C.html#80">getOriginalNameToNewNameMap</a>();</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(Map.Entry&lt;String, String&gt; <a href="dictionary_C.html#44803">entry</a> : <a href="dictionary_C.html#44806">previous</a>.<a href="dictionary_E.html#97">entrySet</a>()) {</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">      String <a href="dictionary_C.html#44804">key</a> = <a href="dictionary_C.html#44803">entry</a>.<a href="dictionary_G.html#47">getKey</a>();</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#44808">reservedNames</a>.<a href="dictionary_C.html#667">contains</a>(<a href="dictionary_C.html#44804">key</a>)) {</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">        String <a href="dictionary_C.html#44805">value</a> = <a href="dictionary_C.html#44803">entry</a>.<a href="dictionary_G.html#98">getValue</a>();</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">        <a href="dictionary_C.html#44866">results</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#44805">value</a>, </span><span class="keyword">new <a href="dictionary_C.html#44746">Result</a></span><span class="default">(<a href="dictionary_C.html#44805">value</a>, <a href="dictionary_C.html#44804">key</a>));</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">      }</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">    }</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">  }</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default">  </span><span class="keyword">static final </span><span class="default">Predicate&lt;<a href="dictionary_C.html#44745">Result</a>&gt; <a href="dictionary_C.html#44859">USED_RESULTS</a> = </span><span class="keyword">new </span><span class="default">Predicate&lt;Result&gt;() {</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">    @Override</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#44735">apply</a></span><span class="default">(<a href="dictionary_C.html#44745">Result</a> <a href="dictionary_C.html#44736">result</a>) {</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">      </span><span class="comment">// The list of locations may be empty if the map</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">      // was pre-populated from a previous map.</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#44736">result</a></span><span class="default">.<a href="dictionary_C.html#44749">didReplacement</a>;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">    }</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">  };</span>
+<a name="163"><font size=-1>163     </font></a><span class="default"></span>
+<a name="164"><font size=-1>164     </font></a><span class="default">  </span><span class="comment">// Get the list of all replacements performed.</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment">  </span><span class="default">List&lt;<a href="dictionary_C.html#44745">Result</a>&gt; <a href="dictionary_C.html#44797">getResult</a>() {</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#1411">ImmutableList</a></span><span class="default">.<a href="dictionary_C.html#51">copyOf</a>(</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">        <a href="dictionary_C.html#4840">Iterables</a>.<a href="dictionary_F.html#9125">filter</a>(<a href="dictionary_C.html#44866">results</a>.<a href="dictionary_V.html#4877">values</a>(), <a href="dictionary_C.html#44859">USED_RESULTS</a>));</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">  }</span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span>
+<a name="170"><font size=-1>170     </font></a><span class="default">  </span><span class="comment">// Get the list of replaces as a VariableMap</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">  <a href="dictionary_C.html#43">VariableMap</a> <a href="dictionary_C.html#44798">getStringMap</a></span><span class="default">() {</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">    <a href="dictionary_I.html#118">ImmutableMap</a>.<a href="dictionary_I.html#33">Builder</a>&lt;String, String&gt; <a href="dictionary_C.html#44800">map</a> = <a href="dictionary_I.html#118">ImmutableMap</a>.<a href="dictionary_B.html#66">builder</a>();</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#44745">Result</a> <a href="dictionary_C.html#44799">result</a> : <a href="dictionary_C.html#4840">Iterables</a>.<a href="dictionary_F.html#9125">filter</a>(<a href="dictionary_C.html#44866">results</a>.<a href="dictionary_V.html#4877">values</a>(), <a href="dictionary_C.html#44859">USED_RESULTS</a>)) {</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">      <a href="dictionary_C.html#44800">map</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#44799">result</a>.<a href="dictionary_C.html#44751">replacement</a>, <a href="dictionary_C.html#44799">result</a>.<a href="dictionary_C.html#44750">original</a>);</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">    }</span>
+<a name="176"><font size=-1>176     </font></a><span class="default"></span>
+<a name="177"><font size=-1>177     </font></a><span class="default">    <a href="dictionary_C.html#43">VariableMap</a> <a href="dictionary_C.html#44801">stringMap</a> = </span><span class="keyword">new <a href="dictionary_C.html#50">VariableMap</a></span><span class="default">(<a href="dictionary_C.html#44800">map</a>.<a href="dictionary_B.html#65">build</a>());</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#44801">stringMap</a></span><span class="default">;</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">  }</span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span>
+<a name="181"><font size=-1>181     </font></a><span class="default">  @Override</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#44824">process</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44825">externs</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44826">root</a>) {</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">    <a href="dictionary_C.html#1352">NodeTraversal</a>.<a href="dictionary_C.html#2388">traverseEs6</a>(<a href="dictionary_C.html#44860">compiler</a>, <a href="dictionary_C.html#44826">root</a>, </span><span class="keyword">this</span><span class="default">);</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">  }</span>
+<a name="185"><font size=-1>185     </font></a><span class="default"></span>
+<a name="186"><font size=-1>186     </font></a><span class="default">  @Override</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#44841">visit</a></span><span class="default">(<a href="dictionary_C.html#1352">NodeTraversal</a> <a href="dictionary_C.html#44853">t</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44848">n</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44851">parent</a>) {</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): Determine if it is necessary to support &quot;.call&quot; or</span>
+<a name="189"><font size=-1>189     </font></a><span class="comment">    // &quot;.apply&quot;.</span>
+<a name="190"><font size=-1>190     </font></a><span class="comment">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#44848">n</a>.<a href="dictionary_C.html#938">getType</a>()) {</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#937">NEW</a></span><span class="default">: </span><span class="comment">// e.g. new Error('msg');</span>
+<a name="192"><font size=-1>192     </font></a><span class="comment">      </span><span class="keyword">case <a href="dictionary_C.html#953">CALL</a></span><span class="default">: </span><span class="comment">// e.g. Error('msg');</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44842">calledFn</a> </span><span class="default">= <a href="dictionary_C.html#44848">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default">        </span><span class="comment">// Look for calls to static functions.</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">        </span><span class="default">String <a href="dictionary_C.html#44849">name</a> = <a href="dictionary_C.html#44842">calledFn</a>.<a href="dictionary_C.html#1403">getOriginalQualifiedName</a>();</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44849">name</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">          <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44844">config</a> = <a href="dictionary_C.html#44778">findMatching</a>(<a href="dictionary_C.html#44849">name</a>);</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44844">config</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">            <a href="dictionary_C.html#44770">doSubstitutions</a>(<a href="dictionary_C.html#44853">t</a>, <a href="dictionary_C.html#44844">config</a>, <a href="dictionary_C.html#44848">n</a>);</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">            </span><span class="keyword">return</span><span class="default">;</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">          }</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">        }</span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span>
+<a name="205"><font size=-1>205     </font></a><span class="default">        </span><span class="comment">// Look for calls to class methods.</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#559">isGet</a>(<a href="dictionary_C.html#44842">calledFn</a>)) {</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">          <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44852">rhs</a> = <a href="dictionary_C.html#44842">calledFn</a>.<a href="dictionary_C.html#350">getLastChild</a>();</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44852">rhs</a>.<a href="dictionary_C.html#561">isName</a>() || <a href="dictionary_C.html#44852">rhs</a>.<a href="dictionary_C.html#544">isString</a>()) {</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">            String <a href="dictionary_C.html#44847">methodName</a> = <a href="dictionary_C.html#44852">rhs</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">            String <a href="dictionary_C.html#44850">originalMethodName</a> = <a href="dictionary_C.html#44852">rhs</a>.<a href="dictionary_C.html#352">getParent</a>().<a href="dictionary_C.html#3534">getOriginalName</a>();</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">            Collection&lt;String&gt; <a href="dictionary_C.html#44843">classes</a>;</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44850">originalMethodName</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">              <a href="dictionary_C.html#44843">classes</a> = <a href="dictionary_C.html#44862">methods</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44850">originalMethodName</a>);</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">            } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">              <a href="dictionary_C.html#44843">classes</a> = <a href="dictionary_C.html#44862">methods</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44847">methodName</a>);</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">            }</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44843">classes</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">              <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44846">lhs</a> = <a href="dictionary_C.html#44842">calledFn</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">              </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44846">lhs</a>.<a href="dictionary_C.html#6152">getTypeI</a>() != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">                <a href="dictionary_C.html#2403">TypeI</a> <a href="dictionary_C.html#44854">type</a> = <a href="dictionary_C.html#44846">lhs</a>.<a href="dictionary_C.html#6152">getTypeI</a>().<a href="dictionary_C.html#38962">restrictByNotNullOrUndefined</a>();</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">                <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44845">config</a> = <a href="dictionary_C.html#44781">findMatchingClass</a>(<a href="dictionary_C.html#44854">type</a>, <a href="dictionary_C.html#44843">classes</a>);</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44845">config</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">                  <a href="dictionary_C.html#44770">doSubstitutions</a>(<a href="dictionary_C.html#44853">t</a>, <a href="dictionary_C.html#44845">config</a>, <a href="dictionary_C.html#44848">n</a>);</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">                  </span><span class="keyword">return</span><span class="default">;</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">                }</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">              }</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">            }</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">          }</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">        }</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">    }</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">  }</span>
+<a name="233"><font size=-1>233     </font></a><span class="default"></span>
+<a name="234"><font size=-1>234     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="235"><font size=-1>235     </font></a><span class="comment">   * @param name The function name to find.</span>
+<a name="236"><font size=-1>236     </font></a><span class="comment">   * @return The Config object for the name or null if no match was found.</span>
+<a name="237"><font size=-1>237     </font></a><span class="comment">   */</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44778">findMatching</a></span><span class="default">(String <a href="dictionary_C.html#44780">name</a>) {</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">    <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44779">config</a> = <a href="dictionary_C.html#44861">functions</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44780">name</a>);</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44779">config</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">      <a href="dictionary_C.html#44780">name</a> = <a href="dictionary_C.html#44780">name</a>.<a href="dictionary_R.html#54">replace</a>(</span><span class="string">'$'</span><span class="default">, </span><span class="string">'.'</span><span class="default">);</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">      <a href="dictionary_C.html#44779">config</a> = <a href="dictionary_C.html#44861">functions</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44780">name</a>);</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">    }</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#44779">config</a></span><span class="default">;</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">  }</span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span>
+<a name="247"><font size=-1>247     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="248"><font size=-1>248     </font></a><span class="comment">   * @return The Config object for the class match the specified type or null</span>
+<a name="249"><font size=-1>249     </font></a><span class="comment">   * if no match was found.</span>
+<a name="250"><font size=-1>250     </font></a><span class="comment">   */</span>
+<a name="251"><font size=-1>251     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44781">findMatchingClass</a></span><span class="default">(</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">      <a href="dictionary_C.html#2403">TypeI</a> <a href="dictionary_C.html#44785">callClassType</a>, Collection&lt;String&gt; <a href="dictionary_C.html#44786">declarationNames</a>) {</span>
+<a name="253"><font size=-1>253     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#44785">callClassType</a>.<a href="dictionary_C.html#38956">isBottom</a>() &amp;&amp; !<a href="dictionary_C.html#44785">callClassType</a>.<a href="dictionary_C.html#18262">isUnknownType</a>()) {</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(String <a href="dictionary_C.html#44783">declarationName</a> : <a href="dictionary_C.html#44786">declarationNames</a>) {</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">        String <a href="dictionary_C.html#44782">className</a> = <a href="dictionary_C.html#44787">getClassFromDeclarationName</a>(<a href="dictionary_C.html#44783">declarationName</a>);</span>
+<a name="256"><font size=-1>256     </font></a><span class="default">        <a href="dictionary_C.html#2403">TypeI</a> <a href="dictionary_C.html#44784">methodClassType</a> = <a href="dictionary_C.html#44865">registry</a>.<a href="dictionary_C.html#3264">getType</a>(<a href="dictionary_C.html#44782">className</a>);</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44784">methodClassType</a> != </span><span class="keyword">null</span>
+<a name="258"><font size=-1>258     </font></a><span class="keyword">            </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44785">callClassType</a>.<a href="dictionary_C.html#38960">isSubtypeOf</a>(<a href="dictionary_C.html#44784">methodClassType</a>)) {</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">          </span><span class="keyword">return <a href="dictionary_C.html#44861">functions</a></span><span class="default">.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44783">declarationName</a>);</span>
+<a name="260"><font size=-1>260     </font></a><span class="default">        }</span>
+<a name="261"><font size=-1>261     </font></a><span class="default">      }</span>
+<a name="262"><font size=-1>262     </font></a><span class="default">    }</span>
+<a name="263"><font size=-1>263     </font></a><span class="default">    </span><span class="keyword">return null</span><span class="default">;</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">  }</span>
+<a name="265"><font size=-1>265     </font></a><span class="default"></span>
+<a name="266"><font size=-1>266     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="267"><font size=-1>267     </font></a><span class="comment">   * Replace the parameters specified in the config, if possible.</span>
+<a name="268"><font size=-1>268     </font></a><span class="comment">   */</span>
+<a name="269"><font size=-1>269     </font></a><span class="comment">  </span><span class="keyword">private void <a href="dictionary_C.html#44770">doSubstitutions</a></span><span class="default">(<a href="dictionary_C.html#1352">NodeTraversal</a> <a href="dictionary_C.html#44777">t</a>, <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44774">config</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44776">n</a>) {</span>
+<a name="270"><font size=-1>270     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(</span>
+<a name="271"><font size=-1>271     </font></a><span class="default">        <a href="dictionary_C.html#44776">n</a>.<a href="dictionary_C.html#1885">isNew</a>() || <a href="dictionary_C.html#44776">n</a>.<a href="dictionary_C.html#539">isCall</a>());</span>
+<a name="272"><font size=-1>272     </font></a><span class="default"></span>
+<a name="273"><font size=-1>273     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#44774">config</a>.<a href="dictionary_C.html#44741">isReplaceAll</a>()) {</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">      </span><span class="comment">// Note: the first child is the function, but the parameter id is 1 based.</span>
+<a name="275"><font size=-1>275     </font></a><span class="comment">      </span><span class="keyword">for </span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#44772">parameter</a> </span><span class="default">: <a href="dictionary_C.html#44774">config</a>.<a href="dictionary_C.html#44744">parameters</a>) {</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44771">arg</a> = <a href="dictionary_C.html#44776">n</a>.<a href="dictionary_C.html#2593">getChildAtIndex</a>(<a href="dictionary_C.html#44772">parameter</a>);</span>
+<a name="277"><font size=-1>277     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44771">arg</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">          <a href="dictionary_C.html#44830">replaceExpression</a>(<a href="dictionary_C.html#44777">t</a>, <a href="dictionary_C.html#44771">arg</a>, <a href="dictionary_C.html#44776">n</a>);</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">        }</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">      }</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="282"><font size=-1>282     </font></a><span class="default">      </span><span class="comment">// Replace all parameters.</span>
+<a name="283"><font size=-1>283     </font></a><span class="comment">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44775">firstParam</a> </span><span class="default">= <a href="dictionary_C.html#44776">n</a>.<a href="dictionary_C.html#1907">getSecondChild</a>();</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44773">arg</a> = <a href="dictionary_C.html#44775">firstParam</a>; <a href="dictionary_C.html#44773">arg</a> != </span><span class="keyword">null</span><span class="default">; <a href="dictionary_C.html#44773">arg</a> = <a href="dictionary_C.html#44773">arg</a>.<a href="dictionary_C.html#541">getNext</a>()) {</span>
+<a name="285"><font size=-1>285     </font></a><span class="default">        <a href="dictionary_C.html#44773">arg</a> = <a href="dictionary_C.html#44830">replaceExpression</a>(<a href="dictionary_C.html#44777">t</a>, <a href="dictionary_C.html#44773">arg</a>, <a href="dictionary_C.html#44776">n</a>);</span>
+<a name="286"><font size=-1>286     </font></a><span class="default">      }</span>
+<a name="287"><font size=-1>287     </font></a><span class="default">    }</span>
+<a name="288"><font size=-1>288     </font></a><span class="default">  }</span>
+<a name="289"><font size=-1>289     </font></a><span class="default"></span>
+<a name="290"><font size=-1>290     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">   * Replaces a string expression with a short encoded string expression.</span>
+<a name="292"><font size=-1>292     </font></a><span class="comment">   *</span>
+<a name="293"><font size=-1>293     </font></a><span class="comment">   * @param t The traversal</span>
+<a name="294"><font size=-1>294     </font></a><span class="comment">   * @param expr The expression node</span>
+<a name="295"><font size=-1>295     </font></a><span class="comment">   * @param parent The expression node's parent</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">   * @return The replacement node (or the original expression if no replacement</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">   *         is made)</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment">   */</span>
+<a name="299"><font size=-1>299     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44830">replaceExpression</a></span><span class="default">(<a href="dictionary_C.html#1352">NodeTraversal</a> <a href="dictionary_C.html#44838">t</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44831">expr</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44835">parent</a>) {</span>
+<a name="300"><font size=-1>300     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44836">replacement</a>;</span>
+<a name="301"><font size=-1>301     </font></a><span class="default">    String <a href="dictionary_C.html#44832">key</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="302"><font size=-1>302     </font></a><span class="default">    String <a href="dictionary_C.html#44837">replacementString</a>;</span>
+<a name="303"><font size=-1>303     </font></a><span class="default">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#44831">expr</a>.<a href="dictionary_C.html#938">getType</a>()) {</span>
+<a name="304"><font size=-1>304     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#2580">STRING</a></span><span class="default">:</span>
+<a name="305"><font size=-1>305     </font></a><span class="default">        <a href="dictionary_C.html#44832">key</a> = <a href="dictionary_C.html#44831">expr</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="306"><font size=-1>306     </font></a><span class="default">        <a href="dictionary_C.html#44837">replacementString</a> = <a href="dictionary_C.html#44793">getReplacement</a>(<a href="dictionary_C.html#44832">key</a>);</span>
+<a name="307"><font size=-1>307     </font></a><span class="default">        <a href="dictionary_C.html#44836">replacement</a> = <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#550">string</a>(<a href="dictionary_C.html#44837">replacementString</a>);</span>
+<a name="308"><font size=-1>308     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6495">ADD</a></span><span class="default">:</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">        <a href="dictionary_S.html#42">StringBuilder</a> <a href="dictionary_C.html#44833">keyBuilder</a> = </span><span class="keyword">new <a href="dictionary_S.html#42">StringBuilder</a></span><span class="default">();</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44834">keyNode</a> = <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#550">string</a>(</span><span class="string">&quot;&quot;</span><span class="default">);</span>
+<a name="312"><font size=-1>312     </font></a><span class="default">        <a href="dictionary_C.html#44836">replacement</a> = <a href="dictionary_C.html#44760">buildReplacement</a>(<a href="dictionary_C.html#44831">expr</a>, <a href="dictionary_C.html#44834">keyNode</a>, <a href="dictionary_C.html#44833">keyBuilder</a>);</span>
+<a name="313"><font size=-1>313     </font></a><span class="default">        <a href="dictionary_C.html#44832">key</a> = <a href="dictionary_C.html#44833">keyBuilder</a>.<a href="dictionary_T.html#105">toString</a>();</span>
+<a name="314"><font size=-1>314     </font></a><span class="default">        <a href="dictionary_C.html#44837">replacementString</a> = <a href="dictionary_C.html#44793">getReplacement</a>(<a href="dictionary_C.html#44832">key</a>);</span>
+<a name="315"><font size=-1>315     </font></a><span class="default">        <a href="dictionary_C.html#44834">keyNode</a>.<a href="dictionary_C.html#6370">setString</a>(<a href="dictionary_C.html#44837">replacementString</a>);</span>
+<a name="316"><font size=-1>316     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="317"><font size=-1>317     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#939">NAME</a></span><span class="default">:</span>
+<a name="318"><font size=-1>318     </font></a><span class="default">        </span><span class="comment">// If the referenced variable is a constant, use its value.</span>
+<a name="319"><font size=-1>319     </font></a><span class="comment">        <a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#44840">var</a> </span><span class="default">= <a href="dictionary_C.html#44838">t</a>.<a href="dictionary_C.html#1370">getScope</a>().<a href="dictionary_C.html#1356">getVar</a>(<a href="dictionary_C.html#44831">expr</a>.<a href="dictionary_C.html#351">getString</a>());</span>
+<a name="320"><font size=-1>320     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44840">var</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44840">var</a>.<a href="dictionary_C.html#1348">isInferredConst</a>()) {</span>
+<a name="321"><font size=-1>321     </font></a><span class="default">          <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44839">value</a> = <a href="dictionary_C.html#44840">var</a>.<a href="dictionary_C.html#1394">getInitialValue</a>();</span>
+<a name="322"><font size=-1>322     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44839">value</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44839">value</a>.<a href="dictionary_C.html#544">isString</a>()) {</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">            <a href="dictionary_C.html#44832">key</a> = <a href="dictionary_C.html#44839">value</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="324"><font size=-1>324     </font></a><span class="default">            <a href="dictionary_C.html#44837">replacementString</a> = <a href="dictionary_C.html#44793">getReplacement</a>(<a href="dictionary_C.html#44832">key</a>);</span>
+<a name="325"><font size=-1>325     </font></a><span class="default">            <a href="dictionary_C.html#44836">replacement</a> = <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#550">string</a>(<a href="dictionary_C.html#44837">replacementString</a>);</span>
+<a name="326"><font size=-1>326     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="327"><font size=-1>327     </font></a><span class="default">          }</span>
+<a name="328"><font size=-1>328     </font></a><span class="default">        }</span>
+<a name="329"><font size=-1>329     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#44831">expr</a></span><span class="default">;</span>
+<a name="330"><font size=-1>330     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">        </span><span class="comment">// This may be a function call or a variable reference. We don't</span>
+<a name="332"><font size=-1>332     </font></a><span class="comment">        // replace these.</span>
+<a name="333"><font size=-1>333     </font></a><span class="comment">        </span><span class="keyword">return <a href="dictionary_C.html#44831">expr</a></span><span class="default">;</span>
+<a name="334"><font size=-1>334     </font></a><span class="default">    }</span>
+<a name="335"><font size=-1>335     </font></a><span class="default"></span>
+<a name="336"><font size=-1>336     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#44832">key</a>);</span>
+<a name="337"><font size=-1>337     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#44837">replacementString</a>);</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">    <a href="dictionary_C.html#44827">recordReplacement</a>(<a href="dictionary_C.html#44832">key</a>);</span>
+<a name="339"><font size=-1>339     </font></a><span class="default"></span>
+<a name="340"><font size=-1>340     </font></a><span class="default">    <a href="dictionary_C.html#44836">replacement</a>.<a href="dictionary_C.html#2111">useSourceInfoIfMissingFromForTree</a>(<a href="dictionary_C.html#44831">expr</a>);</span>
+<a name="341"><font size=-1>341     </font></a><span class="default">    <a href="dictionary_C.html#44835">parent</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#44831">expr</a>, <a href="dictionary_C.html#44836">replacement</a>);</span>
+<a name="342"><font size=-1>342     </font></a><span class="default">    <a href="dictionary_C.html#44860">compiler</a>.<a href="dictionary_C.html#2588">reportCodeChange</a>();</span>
+<a name="343"><font size=-1>343     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#44836">replacement</a></span><span class="default">;</span>
+<a name="344"><font size=-1>344     </font></a><span class="default">  }</span>
+<a name="345"><font size=-1>345     </font></a><span class="default"></span>
+<a name="346"><font size=-1>346     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="347"><font size=-1>347     </font></a><span class="comment">   * Get a replacement string for the provide key text.</span>
+<a name="348"><font size=-1>348     </font></a><span class="comment">   */</span>
+<a name="349"><font size=-1>349     </font></a><span class="comment">  </span><span class="keyword">private </span><span class="default">String <a href="dictionary_C.html#44793">getReplacement</a>(String <a href="dictionary_C.html#44794">key</a>) {</span>
+<a name="350"><font size=-1>350     </font></a><span class="default">    <a href="dictionary_C.html#44745">Result</a> <a href="dictionary_C.html#44796">result</a> = <a href="dictionary_C.html#44866">results</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44794">key</a>);</span>
+<a name="351"><font size=-1>351     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44796">result</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="352"><font size=-1>352     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#44796">result</a></span><span class="default">.<a href="dictionary_C.html#44751">replacement</a>;</span>
+<a name="353"><font size=-1>353     </font></a><span class="default">    }</span>
+<a name="354"><font size=-1>354     </font></a><span class="default"></span>
+<a name="355"><font size=-1>355     </font></a><span class="default">    String <a href="dictionary_C.html#44795">replacement</a> = <a href="dictionary_C.html#44863">nameGenerator</a>.<a href="dictionary_C.html#15724">generateNextName</a>();</span>
+<a name="356"><font size=-1>356     </font></a><span class="default">    <a href="dictionary_C.html#44796">result</a> = </span><span class="keyword">new <a href="dictionary_C.html#44746">Result</a></span><span class="default">(<a href="dictionary_C.html#44794">key</a>, <a href="dictionary_C.html#44795">replacement</a>);</span>
+<a name="357"><font size=-1>357     </font></a><span class="default">    <a href="dictionary_C.html#44866">results</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#44794">key</a>, <a href="dictionary_C.html#44796">result</a>);</span>
+<a name="358"><font size=-1>358     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#44795">replacement</a></span><span class="default">;</span>
+<a name="359"><font size=-1>359     </font></a><span class="default">  }</span>
+<a name="360"><font size=-1>360     </font></a><span class="default"></span>
+<a name="361"><font size=-1>361     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="362"><font size=-1>362     </font></a><span class="comment">   * Record the location the replacement was made.</span>
+<a name="363"><font size=-1>363     </font></a><span class="comment">   */</span>
+<a name="364"><font size=-1>364     </font></a><span class="comment">  </span><span class="keyword">private void <a href="dictionary_C.html#44827">recordReplacement</a></span><span class="default">(String <a href="dictionary_C.html#44828">key</a>) {</span>
+<a name="365"><font size=-1>365     </font></a><span class="default">    <a href="dictionary_C.html#44745">Result</a> <a href="dictionary_C.html#44829">result</a> = <a href="dictionary_C.html#44866">results</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#44828">key</a>);</span>
+<a name="366"><font size=-1>366     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44829">result</a> != </span><span class="keyword">null</span><span class="default">);</span>
+<a name="367"><font size=-1>367     </font></a><span class="default"></span>
+<a name="368"><font size=-1>368     </font></a><span class="default">    <a href="dictionary_C.html#44829">result</a>.<a href="dictionary_C.html#44749">didReplacement</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="369"><font size=-1>369     </font></a><span class="default">  }</span>
+<a name="370"><font size=-1>370     </font></a><span class="default"></span>
+<a name="371"><font size=-1>371     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="372"><font size=-1>372     </font></a><span class="comment">   * Builds a replacement abstract syntax tree for the string expression {@code</span>
+<a name="373"><font size=-1>373     </font></a><span class="comment">   * expr}. Appends any string literal values that are encountered to</span>
+<a name="374"><font size=-1>374     </font></a><span class="comment">   * {@code keyBuilder}, to build the expression's replacement key.</span>
+<a name="375"><font size=-1>375     </font></a><span class="comment">   *</span>
+<a name="376"><font size=-1>376     </font></a><span class="comment">   * @param expr A JS expression that evaluates to a string value</span>
+<a name="377"><font size=-1>377     </font></a><span class="comment">   * @param prefix The JS expression to which {@code expr}'s replacement is</span>
+<a name="378"><font size=-1>378     </font></a><span class="comment">   *        logically being concatenated. It is a partial solution to the</span>
+<a name="379"><font size=-1>379     </font></a><span class="comment">   *        problem at hand and will either be this method's return value or a</span>
+<a name="380"><font size=-1>380     </font></a><span class="comment">   *        descendant of it.</span>
+<a name="381"><font size=-1>381     </font></a><span class="comment">   * @param keyBuilder A builder of the string expression's replacement key</span>
+<a name="382"><font size=-1>382     </font></a><span class="comment">   * @return The abstract syntax tree that should replace {@code expr}</span>
+<a name="383"><font size=-1>383     </font></a><span class="comment">   */</span>
+<a name="384"><font size=-1>384     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44760">buildReplacement</a></span><span class="default">(</span>
+<a name="385"><font size=-1>385     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44761">expr</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44764">prefix</a>, <a href="dictionary_S.html#42">StringBuilder</a> <a href="dictionary_C.html#44762">keyBuilder</a>) {</span>
+<a name="386"><font size=-1>386     </font></a><span class="default">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#44761">expr</a>.<a href="dictionary_C.html#938">getType</a>()) {</span>
+<a name="387"><font size=-1>387     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6495">ADD</a></span><span class="default">:</span>
+<a name="388"><font size=-1>388     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44763">left</a> = <a href="dictionary_C.html#44761">expr</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="389"><font size=-1>389     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#44765">right</a> = <a href="dictionary_C.html#44763">left</a>.<a href="dictionary_C.html#541">getNext</a>();</span>
+<a name="390"><font size=-1>390     </font></a><span class="default">        <a href="dictionary_C.html#44764">prefix</a> = <a href="dictionary_C.html#44760">buildReplacement</a>(<a href="dictionary_C.html#44763">left</a>, <a href="dictionary_C.html#44764">prefix</a>, <a href="dictionary_C.html#44762">keyBuilder</a>);</span>
+<a name="391"><font size=-1>391     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#44760">buildReplacement</a></span><span class="default">(<a href="dictionary_C.html#44765">right</a>, <a href="dictionary_C.html#44764">prefix</a>, <a href="dictionary_C.html#44762">keyBuilder</a>);</span>
+<a name="392"><font size=-1>392     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#2580">STRING</a></span><span class="default">:</span>
+<a name="393"><font size=-1>393     </font></a><span class="default">        <a href="dictionary_C.html#44762">keyBuilder</a>.<a href="dictionary_A.html#106">append</a>(<a href="dictionary_C.html#44761">expr</a>.<a href="dictionary_C.html#351">getString</a>());</span>
+<a name="394"><font size=-1>394     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#44764">prefix</a></span><span class="default">;</span>
+<a name="395"><font size=-1>395     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="396"><font size=-1>396     </font></a><span class="default">        <a href="dictionary_C.html#44762">keyBuilder</a>.<a href="dictionary_A.html#106">append</a>(<a href="dictionary_C.html#44864">placeholderToken</a>);</span>
+<a name="397"><font size=-1>397     </font></a><span class="default">        <a href="dictionary_C.html#44764">prefix</a> = <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#556">add</a>(<a href="dictionary_C.html#44764">prefix</a>, <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#550">string</a>(<a href="dictionary_C.html#44864">placeholderToken</a>));</span>
+<a name="398"><font size=-1>398     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#530">IR</a></span><span class="default">.<a href="dictionary_C.html#556">add</a>(<a href="dictionary_C.html#44764">prefix</a>, <a href="dictionary_C.html#44761">expr</a>.<a href="dictionary_C.html#1384">cloneTree</a>());</span>
+<a name="399"><font size=-1>399     </font></a><span class="default">    }</span>
+<a name="400"><font size=-1>400     </font></a><span class="default">  }</span>
+<a name="401"><font size=-1>401     </font></a><span class="default"></span>
+<a name="402"><font size=-1>402     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="403"><font size=-1>403     </font></a><span class="comment">   * From a provide name extract the method name.</span>
+<a name="404"><font size=-1>404     </font></a><span class="comment">   */</span>
+<a name="405"><font size=-1>405     </font></a><span class="comment">  </span><span class="keyword">private static </span><span class="default">String <a href="dictionary_C.html#44790">getMethodFromDeclarationName</a>(String <a href="dictionary_C.html#44791">fullDeclarationName</a>) {</span>
+<a name="406"><font size=-1>406     </font></a><span class="default">    String[] <a href="dictionary_C.html#44792">parts</a> = <a href="dictionary_C.html#44791">fullDeclarationName</a>.<a href="dictionary_S.html#67">split</a>(</span><span class="string">&quot;\\.prototype\\.&quot;</span><span class="default">);</span>
+<a name="407"><font size=-1>407     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44792">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">1 </span><span class="default">|| <a href="dictionary_C.html#44792">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">2</span><span class="default">);</span>
+<a name="408"><font size=-1>408     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44792">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">2</span><span class="default">) {</span>
+<a name="409"><font size=-1>409     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#44792">parts</a></span><span class="default">[</span><span class="number">1</span><span class="default">];</span>
+<a name="410"><font size=-1>410     </font></a><span class="default">    }</span>
+<a name="411"><font size=-1>411     </font></a><span class="default">    </span><span class="keyword">return null</span><span class="default">;</span>
+<a name="412"><font size=-1>412     </font></a><span class="default">  }</span>
+<a name="413"><font size=-1>413     </font></a><span class="default"></span>
+<a name="414"><font size=-1>414     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="415"><font size=-1>415     </font></a><span class="comment">   * From a provide name extract the class name.</span>
+<a name="416"><font size=-1>416     </font></a><span class="comment">   */</span>
+<a name="417"><font size=-1>417     </font></a><span class="comment">  </span><span class="keyword">private static </span><span class="default">String <a href="dictionary_C.html#44787">getClassFromDeclarationName</a>(String <a href="dictionary_C.html#44788">fullDeclarationName</a>) {</span>
+<a name="418"><font size=-1>418     </font></a><span class="default">    String[] <a href="dictionary_C.html#44789">parts</a> = <a href="dictionary_C.html#44788">fullDeclarationName</a>.<a href="dictionary_S.html#67">split</a>(</span><span class="string">&quot;\\.prototype\\.&quot;</span><span class="default">);</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44789">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">1 </span><span class="default">|| <a href="dictionary_C.html#44789">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">2</span><span class="default">);</span>
+<a name="420"><font size=-1>420     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44789">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">2</span><span class="default">) {</span>
+<a name="421"><font size=-1>421     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#44789">parts</a></span><span class="default">[</span><span class="number">0</span><span class="default">];</span>
+<a name="422"><font size=-1>422     </font></a><span class="default">    }</span>
+<a name="423"><font size=-1>423     </font></a><span class="default">    </span><span class="keyword">return null</span><span class="default">;</span>
+<a name="424"><font size=-1>424     </font></a><span class="default">  }</span>
+<a name="425"><font size=-1>425     </font></a><span class="default"></span>
+<a name="426"><font size=-1>426     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="427"><font size=-1>427     </font></a><span class="comment">   * Build the data structures need by this pass from the provided</span>
+<a name="428"><font size=-1>428     </font></a><span class="comment">   * list of functions and methods.</span>
+<a name="429"><font size=-1>429     </font></a><span class="comment">   */</span>
+<a name="430"><font size=-1>430     </font></a><span class="comment">  </span><span class="keyword">private void <a href="dictionary_C.html#44809">parseConfiguration</a></span><span class="default">(List&lt;String&gt; <a href="dictionary_C.html#44813">functionsToInspect</a>) {</span>
+<a name="431"><font size=-1>431     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(String <a href="dictionary_C.html#44811">function</a> : <a href="dictionary_C.html#44813">functionsToInspect</a>) {</span>
+<a name="432"><font size=-1>432     </font></a><span class="default">      <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44810">config</a> = <a href="dictionary_C.html#44814">parseConfiguration</a>(<a href="dictionary_C.html#44811">function</a>);</span>
+<a name="433"><font size=-1>433     </font></a><span class="default">      <a href="dictionary_C.html#44861">functions</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#44810">config</a>.<a href="dictionary_C.html#44743">name</a>, <a href="dictionary_C.html#44810">config</a>);</span>
+<a name="434"><font size=-1>434     </font></a><span class="default"></span>
+<a name="435"><font size=-1>435     </font></a><span class="default">      String <a href="dictionary_C.html#44812">method</a> = <a href="dictionary_C.html#44790">getMethodFromDeclarationName</a>(<a href="dictionary_C.html#44810">config</a>.<a href="dictionary_C.html#44743">name</a>);</span>
+<a name="436"><font size=-1>436     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44812">method</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="437"><font size=-1>437     </font></a><span class="default">        <a href="dictionary_C.html#44862">methods</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#44812">method</a>, <a href="dictionary_C.html#44810">config</a>.<a href="dictionary_C.html#44743">name</a>);</span>
+<a name="438"><font size=-1>438     </font></a><span class="default">      }</span>
+<a name="439"><font size=-1>439     </font></a><span class="default">    }</span>
+<a name="440"><font size=-1>440     </font></a><span class="default">  }</span>
+<a name="441"><font size=-1>441     </font></a><span class="default"></span>
+<a name="442"><font size=-1>442     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="443"><font size=-1>443     </font></a><span class="comment">   * Convert the provide string into a Config.  The string can be a static function:</span>
+<a name="444"><font size=-1>444     </font></a><span class="comment">   *    foo(,,?)</span>
+<a name="445"><font size=-1>445     </font></a><span class="comment">   *    foo.bar(?)</span>
+<a name="446"><font size=-1>446     </font></a><span class="comment">   * or a class method:</span>
+<a name="447"><font size=-1>447     </font></a><span class="comment">   *    foo.prototype.bar(?)</span>
+<a name="448"><font size=-1>448     </font></a><span class="comment">   * And is allowed to either replace all parameters using &quot;*&quot; or one parameter &quot;?&quot;.</span>
+<a name="449"><font size=-1>449     </font></a><span class="comment">   * &quot;,&quot; is used as a placeholder for ignored parameters.</span>
+<a name="450"><font size=-1>450     </font></a><span class="comment">   */</span>
+<a name="451"><font size=-1>451     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#44737">Config</a> <a href="dictionary_C.html#44814">parseConfiguration</a></span><span class="default">(String <a href="dictionary_C.html#44817">function</a>) {</span>
+<a name="452"><font size=-1>452     </font></a><span class="default">    </span><span class="comment">// Looks like this function_name(,$,)</span>
+<a name="453"><font size=-1>453     </font></a><span class="comment">    </span><span class="keyword">int <a href="dictionary_C.html#44816">first</a> </span><span class="default">= <a href="dictionary_C.html#44817">function</a>.<a href="dictionary_I.html#381">indexOf</a>(</span><span class="string">'('</span><span class="default">);</span>
+<a name="454"><font size=-1>454     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#44818">last</a> </span><span class="default">= <a href="dictionary_C.html#44817">function</a>.<a href="dictionary_I.html#381">indexOf</a>(</span><span class="string">')'</span><span class="default">);</span>
+<a name="455"><font size=-1>455     </font></a><span class="default"></span>
+<a name="456"><font size=-1>456     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): Make parsing precondition checks JSErrors reports.</span>
+<a name="457"><font size=-1>457     </font></a><span class="comment">    </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44816">first</a> != -</span><span class="number">1 </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44818">last</a> != -</span><span class="number">1</span><span class="default">);</span>
+<a name="458"><font size=-1>458     </font></a><span class="default"></span>
+<a name="459"><font size=-1>459     </font></a><span class="default">    String <a href="dictionary_C.html#44819">name</a> = <a href="dictionary_C.html#44817">function</a>.<a href="dictionary_S.html#69">substring</a>(</span><span class="number">0</span><span class="default">, <a href="dictionary_C.html#44816">first</a>);</span>
+<a name="460"><font size=-1>460     </font></a><span class="default">    String <a href="dictionary_C.html#44821">params</a> = <a href="dictionary_C.html#44817">function</a>.<a href="dictionary_S.html#69">substring</a>(<a href="dictionary_C.html#44816">first</a> + </span><span class="number">1</span><span class="default">, <a href="dictionary_C.html#44818">last</a>);</span>
+<a name="461"><font size=-1>461     </font></a><span class="default"></span>
+<a name="462"><font size=-1>462     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#44820">paramCount</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="463"><font size=-1>463     </font></a><span class="default">    List&lt;<a href="dictionary_I.html#7014">Integer</a>&gt; <a href="dictionary_C.html#44823">replacementParameters</a> = </span><span class="keyword">new </span><span class="default">ArrayList&lt;&gt;();</span>
+<a name="464"><font size=-1>464     </font></a><span class="default">    String[] <a href="dictionary_C.html#44822">parts</a> = <a href="dictionary_C.html#44821">params</a>.<a href="dictionary_S.html#67">split</a>(</span><span class="string">&quot;,&quot;</span><span class="default">);</span>
+<a name="465"><font size=-1>465     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(String <a href="dictionary_C.html#44815">param</a> : <a href="dictionary_C.html#44822">parts</a>) {</span>
+<a name="466"><font size=-1>466     </font></a><span class="default">      paramCount++;</span>
+<a name="467"><font size=-1>467     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#44815">param</a>.<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#44857">REPLACE_ALL_MARKER</a>)) {</span>
+<a name="468"><font size=-1>468     </font></a><span class="default">        Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44820">paramCount</a> == </span><span class="number">1 </span><span class="default">&amp;&amp; <a href="dictionary_C.html#44822">parts</a>.<a href="dictionary_L.html#232">length</a> == </span><span class="number">1</span><span class="default">);</span>
+<a name="469"><font size=-1>469     </font></a><span class="default">        <a href="dictionary_C.html#44823">replacementParameters</a>.<a href="dictionary_A.html#368">add</a>(<a href="dictionary_C.html#44737">Config</a>.<a href="dictionary_C.html#44742">REPLACE_ALL_VALUE</a>);</span>
+<a name="470"><font size=-1>470     </font></a><span class="default">      } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#44815">param</a>.<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#44858">REPLACE_ONE_MARKER</a>)) {</span>
+<a name="471"><font size=-1>471     </font></a><span class="default">        </span><span class="comment">// TODO(johnlenz): Support multiple.</span>
+<a name="472"><font size=-1>472     </font></a><span class="comment">        </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(!<a href="dictionary_C.html#44823">replacementParameters</a>.<a href="dictionary_C.html#667">contains</a>(</span>
+<a name="473"><font size=-1>473     </font></a><span class="default">            <a href="dictionary_C.html#44737">Config</a>.<a href="dictionary_C.html#44742">REPLACE_ALL_VALUE</a>));</span>
+<a name="474"><font size=-1>474     </font></a><span class="default">        <a href="dictionary_C.html#44823">replacementParameters</a>.<a href="dictionary_A.html#368">add</a>(<a href="dictionary_C.html#44820">paramCount</a>);</span>
+<a name="475"><font size=-1>475     </font></a><span class="default">      } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="476"><font size=-1>476     </font></a><span class="default">        </span><span class="comment">// TODO(johnlenz): report an error.</span>
+<a name="477"><font size=-1>477     </font></a><span class="comment">        </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#44815">param</a>.<a href="dictionary_I.html#370">isEmpty</a>(), </span><span class="string">&quot;Unknown marker&quot;</span><span class="default">, <a href="dictionary_C.html#44815">param</a>);</span>
+<a name="478"><font size=-1>478     </font></a><span class="default">      }</span>
+<a name="479"><font size=-1>479     </font></a><span class="default">    }</span>
+<a name="480"><font size=-1>480     </font></a><span class="default"></span>
+<a name="481"><font size=-1>481     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(!<a href="dictionary_C.html#44823">replacementParameters</a>.<a href="dictionary_I.html#370">isEmpty</a>());</span>
+<a name="482"><font size=-1>482     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#44738">Config</a></span><span class="default">(<a href="dictionary_C.html#44819">name</a>, <a href="dictionary_C.html#44823">replacementParameters</a>);</span>
+<a name="483"><font size=-1>483     </font></a><span class="default">  }</span>
+<a name="484"><font size=-1>484     </font></a><span class="default"></span>
+<a name="485"><font size=-1>485     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="486"><font size=-1>486     </font></a><span class="comment">   * Use a name generate to create names so the names overlap with the names</span>
+<a name="487"><font size=-1>487     </font></a><span class="comment">   * used for variable and properties.</span>
+<a name="488"><font size=-1>488     </font></a><span class="comment">   */</span>
+<a name="489"><font size=-1>489     </font></a><span class="comment">  </span><span class="keyword">private static <a href="dictionary_C.html#15659">DefaultNameGenerator</a> <a href="dictionary_C.html#44766">createNameGenerator</a></span><span class="default">(</span>
+<a name="490"><font size=-1>490     </font></a><span class="default">        Iterable&lt;String&gt; <a href="dictionary_C.html#44768">reserved</a>) {</span>
+<a name="491"><font size=-1>491     </font></a><span class="default">    </span><span class="keyword">final </span><span class="default">String <a href="dictionary_C.html#44767">namePrefix</a> = </span><span class="string">&quot;&quot;</span><span class="default">;</span>
+<a name="492"><font size=-1>492     </font></a><span class="default">    </span><span class="keyword">final char</span><span class="default">[] <a href="dictionary_C.html#44769">reservedChars</a> = </span><span class="keyword">new char</span><span class="default">[</span><span class="number">0</span><span class="default">];</span>
+<a name="493"><font size=-1>493     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#15690">DefaultNameGenerator</a></span><span class="default">(</span>
+<a name="494"><font size=-1>494     </font></a><span class="default">        <a href="dictionary_C.html#1412">ImmutableSet</a>.<a href="dictionary_C.html#51">copyOf</a>(<a href="dictionary_C.html#44768">reserved</a>), <a href="dictionary_C.html#44767">namePrefix</a>, <a href="dictionary_C.html#44769">reservedChars</a>);</span>
+<a name="495"><font size=-1>495     </font></a><span class="default">  }</span>
+<a name="496"><font size=-1>496     </font></a><span class="default">}</span>
+<a name="497"><font size=-1>497     </font></a><span class="default"></span>
+</pre></body></html>

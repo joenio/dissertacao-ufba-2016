@@ -1,0 +1,37 @@
+<html><head><title>PrototypeFieldVertex.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.js/source/com/ibm/wala/cast/js/callgraph/fieldbased/flowgraph/vertices/PrototypeFieldVertex.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.js/source/com/ibm/wala/cast/js/callgraph/fieldbased/flowgraph/vertices/PrototypeFieldVertex.java";
+top.document.title  = "PrototypeFieldVertex.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">package </span><span class="default">com.ibm.wala.cast.js.callgraph.fieldbased.flowgraph.<a href="dictionary_C.html#4926">vertices</a>;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#628">propagation</a>.<a href="dictionary_C.html#1816">PointerKey</a>;</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_C.html#19408">PrototypeFieldVertex</a> extends <a href="dictionary_C.html#19412">Vertex</a> implements <a href="dictionary_C.html#1816">PointerKey</a> </span><span class="default">{</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span>
+<a name="7"><font size=-1>7     </font></a><span class="default">  </span><span class="keyword">public </span><span class="default">enum <a href="dictionary_C.html#32066">PrototypeField</a> { <a href="dictionary_C.html#32068">__proto__</a>, <a href="dictionary_C.html#35059">prototype</a> };</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span>
+<a name="9"><font size=-1>9     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#32066">PrototypeField</a> <a href="dictionary_C.html#43943">field</a></span><span class="default">;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#4917">ObjectVertex</a> <a href="dictionary_C.html#43944">type</a></span><span class="default">;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">  </span>
+<a name="12"><font size=-1>12     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#32069">PrototypeFieldVertex</a></span><span class="default">(<a href="dictionary_C.html#32066">PrototypeField</a> <a href="dictionary_C.html#43938">field</a>, <a href="dictionary_C.html#4917">ObjectVertex</a> <a href="dictionary_C.html#43939">type</a>) {</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#43943">field</a> = <a href="dictionary_C.html#43938">field</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#43944">type</a> = <a href="dictionary_C.html#43939">type</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default">  }</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="18"><font size=-1>18     </font></a><span class="default">  </span><span class="keyword">public </span><span class="default">&lt;<a href="dictionary_C.html#43941">T</a>&gt; <a href="dictionary_C.html#43941">T</a> <a href="dictionary_C.html#43940">accept</a>(<a href="dictionary_C.html#19400">VertexVisitor</a>&lt;<a href="dictionary_C.html#43941">T</a>&gt; <a href="dictionary_C.html#43942">visitor</a>) {</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#43942">visitor</a></span><span class="default">.<a href="dictionary_C.html#19421">visitPrototypeVertex</a>(</span><span class="keyword">this</span><span class="default">);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">  }</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">  </span>
+<a name="22"><font size=-1>22     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="23"><font size=-1>23     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#35062">toString</a></span><span class="default">() {</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#43943">field</a> </span><span class="default">+ </span><span class="string">&quot;:&quot; </span><span class="default">+ <a href="dictionary_C.html#43944">type</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">  }</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">}</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+</pre></body></html>

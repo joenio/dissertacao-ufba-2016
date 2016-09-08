@@ -1,0 +1,151 @@
+<html><head><title>tc23_bogus_condwait.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/tests/tc23_bogus_condwait.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/tests/tc23_bogus_condwait.c";
+top.document.title  = "tc23_bogus_condwait.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* Expect 5 errors total (4 re cvs, 1 re exiting w/lock.).</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   Tests passing bogus mutexes to pthread_cond_wait. */</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_Non-Alpha.html#166736">_GNU_SOURCE</a> </span><span class="number">1 </span><span class="comment">/* needed by glibc &lt;= 2.3 for pthread_rwlock_* */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;pthread.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;unistd.h&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;semaphore.h&gt;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="10"><font size=-1>10     </font></a><span class="string"><a href="dictionary_P.html#4999">pthread_mutex_t</a> <a href="dictionary_M.html#166737">mx</a></span><span class="default">[</span><span class="number">4</span><span class="default">]; </span>
+<a name="11"><font size=-1>11     </font></a><span class="default"><a href="dictionary_P.html#5001">pthread_cond_t</a> <a href="dictionary_C.html#166738">cv</a>; <a href="dictionary_P.html#6653">pthread_rwlock_t</a> <a href="dictionary_R.html#166739">rwl</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"><a href="dictionary_S.html#6455">sem_t</a>* <a href="dictionary_Q.html#166740">quit_now</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_S.html#6455">sem_t</a></span><span class="default">* <a href="dictionary_M.html#69776">my_sem_init</a>(</span><span class="keyword">char</span><span class="default">*, </span><span class="keyword">int</span><span class="default">, </span><span class="keyword">unsigned</span><span class="default">);</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#69773">my_sem_destroy</a></span><span class="default">(<a href="dictionary_S.html#6455">sem_t</a>*);</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#3603">my_sem_wait</a></span><span class="default">(<a href="dictionary_S.html#6455">sem_t</a>*); </span><span class="keyword">static int <a href="dictionary_M.html#69775">my_sem_post</a></span><span class="default">(<a href="dictionary_S.html#6455">sem_t</a>*);</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">void</span><span class="default">* <a href="dictionary_R.html#166745">rescue_me</a> ( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_U.html#166746">uu</a> )</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">{</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">  </span><span class="comment">/* wait for, and unblock, the first wait */</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">  <a href="dictionary_S.html#3489">sleep</a></span><span class="default">(</span><span class="number">1</span><span class="default">);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">  <a href="dictionary_P.html#19454">pthread_cond_signal</a>( &amp;<a href="dictionary_C.html#166738">cv</a> );</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default">  </span><span class="comment">/* wait for, and unblock, the second wait */</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">  <a href="dictionary_S.html#3489">sleep</a></span><span class="default">(</span><span class="number">1</span><span class="default">);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">  <a href="dictionary_P.html#19454">pthread_cond_signal</a>( &amp;<a href="dictionary_C.html#166738">cv</a> );</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">  </span><span class="comment">/* wait for, and unblock, the third wait */</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">  <a href="dictionary_S.html#3489">sleep</a></span><span class="default">(</span><span class="number">1</span><span class="default">);</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  <a href="dictionary_P.html#19454">pthread_cond_signal</a>( &amp;<a href="dictionary_C.html#166738">cv</a> );</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  </span><span class="comment">/* wait for, and unblock, the fourth wait */</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">  <a href="dictionary_S.html#3489">sleep</a></span><span class="default">(</span><span class="number">1</span><span class="default">);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  <a href="dictionary_P.html#19454">pthread_cond_signal</a>( &amp;<a href="dictionary_C.html#166738">cv</a> );</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  <a href="dictionary_M.html#3603">my_sem_wait</a>( <a href="dictionary_Q.html#166740">quit_now</a> );</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_N.html#320">NULL</a></span><span class="default">;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">}</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">void</span><span class="default">* <a href="dictionary_G.html#166747">grab_the_lock</a> ( </span><span class="keyword">void</span><span class="default">* <a href="dictionary_U.html#166748">uu</a> )</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">{</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">   </span><span class="keyword">int <a href="dictionary_R.html#166749">r</a></span><span class="default">= <a href="dictionary_P.html#5007">pthread_mutex_lock</a>( &amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">2</span><span class="default">] ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166749">r</a>);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">   <a href="dictionary_M.html#3603">my_sem_wait</a>( <a href="dictionary_Q.html#166740">quit_now</a> );</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">   <a href="dictionary_R.html#166749">r</a>= <a href="dictionary_P.html#5009">pthread_mutex_unlock</a>( &amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">2</span><span class="default">] ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166749">r</a>);</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_N.html#320">NULL</a></span><span class="default">;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">}</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#157144">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_R.html#166751">r</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">  <a href="dictionary_P.html#323">pthread_t</a> <a href="dictionary_M.html#166752">my_rescuer</a>, <a href="dictionary_G.html#166753">grabber</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#5015">pthread_mutex_init</a>(&amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">0</span><span class="default">], <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#5015">pthread_mutex_init</a>(&amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">1</span><span class="default">], <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#5015">pthread_mutex_init</a>(&amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">2</span><span class="default">], <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#5015">pthread_mutex_init</a>(&amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">3</span><span class="default">], <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#5016">pthread_cond_init</a>(&amp;<a href="dictionary_C.html#166738">cv</a>, <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#22887">pthread_rwlock_init</a>(&amp;<a href="dictionary_R.html#166739">rwl</a>, <a href="dictionary_N.html#320">NULL</a>); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  <a href="dictionary_Q.html#166740">quit_now</a> = <a href="dictionary_M.html#69776">my_sem_init</a>( </span><span class="string">&quot;quit_now&quot;</span><span class="default">, </span><span class="number">0</span><span class="default">,</span><span class="number">0 </span><span class="default">); <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_Q.html#166740">quit_now</a>);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#324">pthread_create</a>( &amp;<a href="dictionary_G.html#166753">grabber</a>, <a href="dictionary_N.html#320">NULL</a>, <a href="dictionary_G.html#166747">grab_the_lock</a>, <a href="dictionary_N.html#320">NULL</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">  <a href="dictionary_S.html#3489">sleep</a>(</span><span class="number">1</span><span class="default">); </span><span class="comment">/* let the grabber get there first */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"></span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">  <a href="dictionary_R.html#166751">r</a></span><span class="default">= <a href="dictionary_P.html#324">pthread_create</a>( &amp;<a href="dictionary_M.html#166752">my_rescuer</a>, <a href="dictionary_N.html#320">NULL</a>, <a href="dictionary_R.html#166745">rescue_me</a>, <a href="dictionary_N.html#320">NULL</a> );  <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  </span><span class="comment">/* Do stupid things and hope that rescue_me gets us out of</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">     trouble */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"></span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">  /* mx is bogus */</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">  <a href="dictionary_R.html#166751">r</a></span><span class="default">= <a href="dictionary_P.html#5008">pthread_cond_wait</a>(&amp;<a href="dictionary_C.html#166738">cv</a>, (<a href="dictionary_P.html#4999">pthread_mutex_t</a>*)(</span><span class="number">1 </span><span class="default">+ (</span><span class="keyword">char</span><span class="default">*)&amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">0</span><span class="default">]) );</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  </span><span class="comment">/* mx is not locked */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">  <a href="dictionary_R.html#166751">r</a></span><span class="default">= <a href="dictionary_P.html#5008">pthread_cond_wait</a>(&amp;<a href="dictionary_C.html#166738">cv</a>, &amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">0</span><span class="default">]);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  </span><span class="comment">/* wrong flavour of lock */</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">  <a href="dictionary_R.html#166751">r</a></span><span class="default">= <a href="dictionary_P.html#5008">pthread_cond_wait</a>(&amp;<a href="dictionary_C.html#166738">cv</a>, (<a href="dictionary_P.html#4999">pthread_mutex_t</a>*)&amp;<a href="dictionary_R.html#166739">rwl</a> );</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span>
+<a name="77"><font size=-1>77     </font></a><span class="default">  </span><span class="comment">/* mx is held by someone else. */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">  <a href="dictionary_R.html#166751">r</a></span><span class="default">= <a href="dictionary_P.html#5008">pthread_cond_wait</a>(&amp;<a href="dictionary_C.html#166738">cv</a>, &amp;<a href="dictionary_M.html#166737">mx</a>[</span><span class="number">2</span><span class="default">] );</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_M.html#69775">my_sem_post</a>( <a href="dictionary_Q.html#166740">quit_now</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_M.html#69775">my_sem_post</a>( <a href="dictionary_Q.html#166740">quit_now</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#327">pthread_join</a>( <a href="dictionary_M.html#166752">my_rescuer</a>, <a href="dictionary_N.html#320">NULL</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_P.html#327">pthread_join</a>( <a href="dictionary_G.html#166753">grabber</a>, <a href="dictionary_N.html#320">NULL</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">  <a href="dictionary_R.html#166751">r</a>= <a href="dictionary_M.html#69773">my_sem_destroy</a>( <a href="dictionary_Q.html#166740">quit_now</a> ); <a href="dictionary_A.html#3541">assert</a>(!<a href="dictionary_R.html#166751">r</a>);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">}</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_S.html#6455">sem_t</a></span><span class="default">* <a href="dictionary_M.html#69776">my_sem_init</a> (</span><span class="keyword">char</span><span class="default">* <a href="dictionary_I.html#166754">identity</a>, </span><span class="keyword">int <a href="dictionary_P.html#166755">pshared</a></span><span class="default">, </span><span class="keyword">unsigned <a href="dictionary_C.html#166756">count</a></span><span class="default">)</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">{</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">   <a href="dictionary_S.html#6455">sem_t</a>* <a href="dictionary_S.html#166757">s</a>;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#166758">VGO_linux</a>)</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">   <a href="dictionary_S.html#166757">s</a> = malloc(</span><span class="keyword">sizeof</span><span class="default">(*<a href="dictionary_S.html#166757">s</a>));</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#166757">s</a>) {</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#40921">sem_init</a>(<a href="dictionary_S.html#166757">s</a>, <a href="dictionary_P.html#166755">pshared</a>, <a href="dictionary_C.html#166756">count</a>) &lt; </span><span class="number">0</span><span class="default">) {</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">	 perror(</span><span class="string">&quot;sem_init&quot;</span><span class="default">);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">	 free(<a href="dictionary_S.html#166757">s</a>);</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">	 <a href="dictionary_S.html#166757">s</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">      }</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">   }</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#166759">VGO_darwin</a>)</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">   </span><span class="keyword">char </span><span class="default">name[</span><span class="number">100</span><span class="default">];</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">   sprintf(name, </span><span class="string">&quot;anonsem_%s_pid%d&quot;</span><span class="default">, <a href="dictionary_I.html#166754">identity</a>, (</span><span class="keyword">int</span><span class="default">)getpid());</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">   name[ </span><span class="keyword">sizeof</span><span class="default">(name)-</span><span class="number">1 </span><span class="default">] = </span><span class="number">0</span><span class="default">;</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(</span><span class="number">0</span><span class="default">) printf(</span><span class="string">&quot;name = %s\n&quot;</span><span class="default">, name);</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">   <a href="dictionary_S.html#166757">s</a> = <a href="dictionary_S.html#13179">sem_open</a>(name, O_CREAT | O_EXCL, </span><span class="number">0600</span><span class="default">, <a href="dictionary_C.html#166756">count</a>);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">   </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#166757">s</a> == SEM_FAILED) {</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">      perror(</span><span class="string">&quot;sem_open&quot;</span><span class="default">);</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">      <a href="dictionary_S.html#166757">s</a> = <a href="dictionary_N.html#320">NULL</a>;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">   }</span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="121"><font size=-1>121     </font></a><span class="preproc">#  error </span><span class="string">&quot;Unsupported OS&quot;</span>
+<a name="122"><font size=-1>122     </font></a><span class="string"></span><span class="preproc">#endif</span>
+<a name="123"><font size=-1>123     </font></a><span class="preproc"></span>
+<a name="124"><font size=-1>124     </font></a><span class="preproc">   </span><span class="keyword">return <a href="dictionary_S.html#166757">s</a></span><span class="default">;</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">}</span>
+<a name="126"><font size=-1>126     </font></a><span class="default"></span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#69773">my_sem_destroy</a> </span><span class="default">( <a href="dictionary_S.html#6455">sem_t</a>* <a href="dictionary_S.html#166760">s</a> )</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">{</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_S.html#40924">sem_destroy</a></span><span class="default">(<a href="dictionary_S.html#166760">s</a>);</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">}</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#3603">my_sem_wait</a></span><span class="default">(<a href="dictionary_S.html#6455">sem_t</a>* <a href="dictionary_S.html#166761">s</a>)</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">{</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#13183">sem_wait</a></span><span class="default">(<a href="dictionary_S.html#166761">s</a>);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">}</span>
+<a name="136"><font size=-1>136     </font></a><span class="default"></span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#69775">my_sem_post</a></span><span class="default">(<a href="dictionary_S.html#6455">sem_t</a>* <a href="dictionary_S.html#166762">s</a>)</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">{</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">  </span><span class="keyword">return <a href="dictionary_S.html#13184">sem_post</a></span><span class="default">(<a href="dictionary_S.html#166762">s</a>);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">}</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span>
+</pre></body></html>

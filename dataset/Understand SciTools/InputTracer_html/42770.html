@@ -1,0 +1,59 @@
+<html><head><title>annotate_static.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/annotate_static.cpp</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/annotate_static.cpp";
+top.document.title  = "annotate_static.cpp";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">// Test for ANNOTATE_BENIGN_RACE_STATIC() and ANNOTATE_UNPROTECTED_READ().</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"></span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;pthread.h&gt; </span><span class="comment">/* pthread_create() */</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;   </span><span class="comment">/* fprintf() */</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;../../drd/drd.h&quot;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span><span class="comment">/* Local variables. */</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">static int <a href="dictionary_S.html#42771">s_i</a></span><span class="default">;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">static volatile int <a href="dictionary_S.html#42772">s_j</a></span><span class="default">;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"><a href="dictionary_A.html#42773">ANNOTATE_BENIGN_RACE_STATIC</a>(s_i, </span><span class="string">&quot;Benign because duplicate assignment.&quot;</span><span class="default">);</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="comment">/* Local functions. */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span><span class="keyword">static inline void <a href="dictionary_A.html#42774">AnnotateIgnoreReadsBegin</a></span><span class="default">() { <a href="dictionary_A.html#22828">ANNOTATE_IGNORE_READS_BEGIN</a>(); }</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_A.html#42778">AnnotateIgnoreReadsEnd</a></span><span class="default">() { <a href="dictionary_A.html#22829">ANNOTATE_IGNORE_READS_END</a>(); }</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">static void</span><span class="default">* <a href="dictionary_T.html#42782">thread_func</a>(</span><span class="keyword">void</span><span class="default">*)</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">{</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_Non-Alpha.html#42784">__powerpc__</a>) &amp;&amp; <a href="dictionary_Non-Alpha.html#5769">__GNUC__</a> -</span><span class="number">0 </span><span class="default">== </span><span class="number">4 </span><span class="default">&amp;&amp; <a href="dictionary_Non-Alpha.html#5770">__GNUC_MINOR__</a> -</span><span class="number">0 </span><span class="default">== </span><span class="number">3 </span><span class="preproc">\</span>
+<a name="25"><font size=-1>25     </font></a><span class="preproc">    </span><span class="default">&amp;&amp; __GNUC_PATCHLEVEL__ -</span><span class="number">0 </span><span class="default">== </span><span class="number">0</span>
+<a name="26"><font size=-1>26     </font></a><span class="number">  <a href="dictionary_A.html#42774">AnnotateIgnoreReadsBegin</a></span><span class="default">();</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">  </span><span class="keyword">int </span><span class="default">i = <a href="dictionary_S.html#42772">s_j</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  <a href="dictionary_A.html#42778">AnnotateIgnoreReadsEnd</a>();</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  <a href="dictionary_S.html#42771">s_i</a> = i;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="31"><font size=-1>31     </font></a><span class="preproc">  <a href="dictionary_S.html#42771">s_i</a> </span><span class="default">= <a href="dictionary_A.html#42786">ANNOTATE_UNPROTECTED_READ</a>(<a href="dictionary_S.html#42772">s_j</a>);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="33"><font size=-1>33     </font></a><span class="preproc">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">}</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#53720">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#42788">argc</a></span><span class="default">, </span><span class="keyword">char</span><span class="default">** <a href="dictionary_A.html#42789">argv</a>)</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  <a href="dictionary_P.html#323">pthread_t</a> <a href="dictionary_T.html#42790">tid</a>;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">  <a href="dictionary_P.html#324">pthread_create</a>(&amp;<a href="dictionary_T.html#42790">tid</a>, </span><span class="number">0</span><span class="default">, <a href="dictionary_T.html#42782">thread_func</a>, <a href="dictionary_N.html#320">NULL</a>);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">  <a href="dictionary_S.html#42772">s_j</a>++;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  <a href="dictionary_S.html#42771">s_i</a> = <a href="dictionary_S.html#42772">s_j</a>;</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  <a href="dictionary_P.html#327">pthread_join</a>(<a href="dictionary_T.html#42790">tid</a>, <a href="dictionary_N.html#320">NULL</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  <a href="dictionary_F.html#2441">fprintf</a>(<a href="dictionary_S.html#2442">stderr</a>, </span><span class="string">&quot;Done.\n&quot;</span><span class="default">);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">}</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+</pre></body></html>

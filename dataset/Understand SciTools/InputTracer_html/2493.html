@@ -1,0 +1,113 @@
+<html><head><title>vg_libciface.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_demangle/vg_libciface.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_demangle/vg_libciface.h";
+top.document.title  = "vg_libciface.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- Demangling of C++ mangled names.              vg_libciface.h ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   framework.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   Copyright (C) 2000-2010 Julian Seward </span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">      jseward@acm.org</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02111-1307, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">*/</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">/* This file contains a bunch of macro definitions etc which are</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">   really &quot;impedance matchers&quot;.  They make it possible for</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">   cp-demangle.c, cplus-dem.c, dyn-string.c and safe-ctype.c (taken</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">   from GNU libiberty) to be compiled in the Valgrind framework with a</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">   minimum of changes.</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"></span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">   This file should only be included in files which contain libiberty</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">   code. */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;pub_core_basics.h&quot;</span>
+<a name="41"><font size=-1>41     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_core_libcbase.h&quot;</span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_core_libcassert.h&quot;</span>
+<a name="43"><font size=-1>43     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_core_libcprint.h&quot;</span>
+<a name="44"><font size=-1>44     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;pub_core_mallocfree.h&quot;</span>
+<a name="45"><font size=-1>45     </font></a><span class="string"></span>
+<a name="46"><font size=-1>46     </font></a><span class="string"></span>
+<a name="47"><font size=-1>47     </font></a><span class="string"></span><span class="preproc">#define <a href="dictionary_A.html#2652">abort</a></span><span class="default">()              <a href="dictionary_V.html#5396">vg_assert</a>(</span><span class="number">0</span><span class="default">)</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#2938">atoi</a></span><span class="default">(_str)           <a href="dictionary_V.html#111">VG_</a>(strtoll10)((_str), <a href="dictionary_N.html#82">NULL</a>)</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_F.html#2753">free</a></span><span class="default">(_pt)            <a href="dictionary_V.html#111">VG_</a>(arena_free)   (<a href="dictionary_V.html#15946">VG_AR_DEMANGLE</a>,(_pt))</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_M.html#2676">memcmp</a></span><span class="default">(_s1,_s2,_sz)  <a href="dictionary_V.html#111">VG_</a>(memcmp)((_s1),(_s2),(_sz))</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_M.html#2757">memcpy</a></span><span class="default">(_dd,_ss,_sz)  <a href="dictionary_V.html#111">VG_</a>(memcpy)((_dd),(_ss),(_sz))</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_M.html#2666">memset</a></span><span class="default">(_ss,_cc,_sz)  <a href="dictionary_V.html#111">VG_</a>(memset)((_ss),(_cc),(_sz))</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_R.html#50929">realloc</a></span><span class="default">(_cc,_pt,_sz) <a href="dictionary_V.html#111">VG_</a>(arena_realloc)(<a href="dictionary_V.html#15946">VG_AR_DEMANGLE</a>,(_cc),(_pt),(_sz))</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2740">sprintf</a></span><span class="default">(_buf,_fmt,_args...)  <a href="dictionary_V.html#111">VG_</a>(sprintf)((_buf),(_fmt),(_args))</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2668">strcat</a></span><span class="default">(_dd,_ss)      <a href="dictionary_V.html#111">VG_</a>(strcat)((_dd),(_ss))</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2679">strchr</a></span><span class="default">(_ss,_cc)      <a href="dictionary_V.html#111">VG_</a>(strchr)((_ss),(_cc))</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2695">strcmp</a></span><span class="default">(_s1,_s2)      <a href="dictionary_V.html#111">VG_</a>(strcmp)((_s1),(_s2))</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2737">strcpy</a></span><span class="default">(_dd,_ss)      <a href="dictionary_V.html#111">VG_</a>(strcpy)((_dd),(_ss))</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2908">strcspn</a></span><span class="default">(_ss,_rr)     <a href="dictionary_V.html#111">VG_</a>(strcspn)((_ss),(_rr))</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2665">strlen</a></span><span class="default">(_str)         <a href="dictionary_V.html#111">VG_</a>(strlen)(_str)</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2670">strncat</a></span><span class="default">(_dd,_ss,_nn) <a href="dictionary_V.html#111">VG_</a>(strncat)((_dd),(_ss),(_nn))</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2728">strncmp</a></span><span class="default">(_s1,_s2,_sz) <a href="dictionary_V.html#111">VG_</a>(strncmp)((_s1),(_s2),(_sz))</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2829">strncpy</a></span><span class="default">(_dd,_ss,_sz) <a href="dictionary_V.html#111">VG_</a>(strncpy)((_dd),(_ss),(_sz))</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2910">strpbrk</a></span><span class="default">(_ss,_aa)     <a href="dictionary_V.html#111">VG_</a>(strpbrk)((_ss),(_aa))</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2900">strspn</a></span><span class="default">(_ss,_aa)      <a href="dictionary_V.html#111">VG_</a>(strspn)((_ss),(_aa))</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2731">strstr</a></span><span class="default">(_hh,_nn)      <a href="dictionary_V.html#111">VG_</a>(strstr)((_hh),(_nn))</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#2643">size_t</a> <a href="dictionary_S.html#83">SizeT</a></span>
+<a name="69"><font size=-1>69     </font></a><span class="preproc"></span>
+<a name="70"><font size=-1>70     </font></a><span class="preproc">#define <a href="dictionary_X.html#75621">xmalloc</a></span><span class="default">(_nn)      </span><span class="preproc">\</span>
+<a name="71"><font size=-1>71     </font></a><span class="preproc">   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(arena_malloc)(<a href="dictionary_V.html#15946">VG_AR_DEMANGLE</a>, </span><span class="string">&quot;m_demangle.xmalloc&quot;</span><span class="default">, (_nn))</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#75622">xrealloc</a></span><span class="default">(_pt,_sz) </span><span class="preproc">\</span>
+<a name="73"><font size=-1>73     </font></a><span class="preproc">   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(arena_realloc)(<a href="dictionary_V.html#15946">VG_AR_DEMANGLE</a>,</span><span class="string">&quot;m_demangle.xrealloc&quot;</span><span class="default">,(_pt),(_sz))</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#2703">xstrdup</a></span><span class="default">(_str) </span><span class="preproc">\</span>
+<a name="75"><font size=-1>75     </font></a><span class="preproc">   <a href="dictionary_V.html#111">VG_</a></span><span class="default">(arena_strdup)(<a href="dictionary_V.html#15946">VG_AR_DEMANGLE</a>,</span><span class="string">&quot;m_demangle.xstrdup&quot;</span><span class="default">,(_str))</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span><span class="comment">/* Required by safe-ctype.h */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment"></span>
+<a name="79"><font size=-1>79     </font></a><span class="comment"></span><span class="preproc">#undef <a href="dictionary_E.html#75623">EOF</a></span>
+<a name="80"><font size=-1>80     </font></a><span class="preproc">#define <a href="dictionary_E.html#75623">EOF</a> </span><span class="default">-</span><span class="number">1</span>
+<a name="81"><font size=-1>81     </font></a><span class="number"></span>
+<a name="82"><font size=-1>82     </font></a><span class="number"></span><span class="comment">/* Taken from libiberty.h: */</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment"></span>
+<a name="84"><font size=-1>84     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#2674">ARRAY_SIZE</a></span><span class="default">(_arr) </span><span class="preproc">\</span>
+<a name="85"><font size=-1>85     </font></a><span class="preproc">        </span><span class="default">(sizeof (_arr) / sizeof ((_arr)[</span><span class="number">0</span><span class="default">]))</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#2759">XNEWVEC</a></span><span class="default">(_Ty, _Nn)    </span><span class="preproc">\</span>
+<a name="88"><font size=-1>88     </font></a><span class="preproc">        </span><span class="default">((_Ty *) <a href="dictionary_X.html#75621">xmalloc</a>(sizeof (_Ty) * (_Nn)))</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#2991">XRESIZEVEC</a></span><span class="default">(_Ty, _Pt, _Nn) </span><span class="preproc">\</span>
+<a name="91"><font size=-1>91     </font></a><span class="preproc">        </span><span class="default">((_Ty *) <a href="dictionary_X.html#75622">xrealloc</a>((void *) (_Pt), sizeof (_Ty) * (_Nn)))</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#2716">XRESIZEVAR</a></span><span class="default">(_Ty, _Pt, _Sz) </span><span class="preproc">\</span>
+<a name="94"><font size=-1>94     </font></a><span class="preproc">        </span><span class="default">((_Ty *) <a href="dictionary_X.html#75622">xrealloc</a>((_Pt), (_Sz)))</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#2764">XNEW</a></span><span class="default">(_Ty) </span><span class="preproc">\</span>
+<a name="97"><font size=-1>97     </font></a><span class="preproc">        </span><span class="default">((_Ty *) <a href="dictionary_X.html#75621">xmalloc</a>(sizeof (_Ty)))</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">/*--- end                                           vg_libciface.h ---*/</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment"></span>
+</pre></body></html>

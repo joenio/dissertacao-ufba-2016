@@ -1,0 +1,137 @@
+<html><head><title>JavaScriptEclipseProjectPath.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.ide.jsdt/source/com/ibm/wala/ide/util/JavaScriptEclipseProjectPath.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.ide.jsdt/source/com/ibm/wala/ide/util/JavaScriptEclipseProjectPath.java";
+top.document.title  = "JavaScriptEclipseProjectPath.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2013 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.ide.<a href="dictionary_C.html#4930">util</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#607">io</a>.<a href="dictionary_J.html#589">IOException</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#4622">net</a>.<a href="dictionary_J.html#4620">URL</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#2">Arrays</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#3">Collection</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#9">Set</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.core.<a href="dictionary_O.html#6255">resources</a>.<a href="dictionary_O.html#6416">IProject</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.core.<a href="dictionary_O.html#4914">runtime</a>.<a href="dictionary_O.html#4894">CoreException</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.core.<a href="dictionary_O.html#4914">runtime</a>.<a href="dictionary_O.html#4912">Plugin</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.wst.jsdt.<a href="dictionary_O.html#4913">core</a>.<a href="dictionary_O.html#8684">IIncludePathEntry</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.wst.jsdt.<a href="dictionary_O.html#4913">core</a>.<a href="dictionary_O.html#4911">IJavaScriptProject</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.wst.jsdt.<a href="dictionary_O.html#4913">core</a>.<a href="dictionary_O.html#8685">JavaScriptCore</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.wst.jsdt.<a href="dictionary_O.html#4913">core</a>.<a href="dictionary_O.html#8733">JavaScriptModelException</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.js.<a href="dictionary_C.html#8735">types</a>.<a href="dictionary_C.html#8734">JavaScriptTypes</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#6148">Module</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#214">classLoader</a>.<a href="dictionary_C.html#8338">SourceURLModule</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ide.<a href="dictionary_C.html#4929">jsdt</a>.<a href="dictionary_C.html#4922">Activator</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.<a href="dictionary_C.html#245">types</a>.<a href="dictionary_C.html#229">ClassLoaderReference</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#247">collections</a>.<a href="dictionary_C.html#238">HashSetFactory</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.util.<a href="dictionary_C.html#247">collections</a>.<a href="dictionary_C.html#1363">Pair</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_C.html#4924">JavaScriptEclipseProjectPath</a> extends <a href="dictionary_C.html#8736">EclipseProjectPath</a></span><span class="default">&lt;<a href="dictionary_O.html#8684">IIncludePathEntry</a>, <a href="dictionary_O.html#4911">IJavaScriptProject</a>&gt; {</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default">	</span><span class="keyword">public </span><span class="default">enum <a href="dictionary_C.html#8686">JSLoader</a> </span><span class="keyword">implements <a href="dictionary_C.html#8737">ILoader</a> </span><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">		<a href="dictionary_C.html#8693">JAVASCRIPT</a>(<a href="dictionary_C.html#8734">JavaScriptTypes</a>.<a href="dictionary_C.html#8739">jsLoader</a>);</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">		</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">	    </span><span class="keyword">private <a href="dictionary_C.html#229">ClassLoaderReference</a> <a href="dictionary_C.html#8694">ref</a></span><span class="default">;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span>
+<a name="42"><font size=-1>42     </font></a><span class="default">	    <a href="dictionary_C.html#8687">JSLoader</a>(<a href="dictionary_C.html#229">ClassLoaderReference</a> <a href="dictionary_C.html#8688">ref</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">	      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#8694">ref</a> = <a href="dictionary_C.html#8688">ref</a>;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">	    }</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default">		@<a href="dictionary_O.html#8">Override</a></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">		</span><span class="keyword">public <a href="dictionary_C.html#229">ClassLoaderReference</a> <a href="dictionary_C.html#8689">ref</a></span><span class="default">() {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">			</span><span class="keyword">return <a href="dictionary_C.html#8694">ref</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">		}</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">	}</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_J.html#9">Set</a></span><span class="default">&lt;<a href="dictionary_C.html#1363">Pair</a>&lt;<a href="dictionary_S.html#208">String</a>, <a href="dictionary_O.html#4912">Plugin</a>&gt;&gt; <a href="dictionary_C.html#8732">models</a> = <a href="dictionary_C.html#238">HashSetFactory</a>.<a href="dictionary_C.html#1631">make</a>();</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">	</span><span class="keyword">protected <a href="dictionary_C.html#8695">JavaScriptEclipseProjectPath</a></span><span class="default">(<a href="dictionary_J.html#9">Set</a>&lt;<a href="dictionary_C.html#1363">Pair</a>&lt;<a href="dictionary_S.html#208">String</a>, <a href="dictionary_O.html#4912">Plugin</a>&gt;&gt; <a href="dictionary_C.html#8696">models</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a></span><span class="default">,</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">			<a href="dictionary_O.html#4894">CoreException</a> {</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">		</span><span class="keyword">super</span><span class="default">(AnalysisScopeType.SOURCE_FOR_PROJ_AND_LINKED_PROJS);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">		</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#8732">models</a>.<a href="dictionary_A.html#192">addAll</a>(<a href="dictionary_C.html#8696">models</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">		</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#8732">models</a>.<a href="dictionary_A.html#35">add</a>(<a href="dictionary_C.html#1363">Pair</a>.<a href="dictionary_C.html#4842">make</a>(</span><span class="string">&quot;prologue.js&quot;</span><span class="default">, (Plugin)<a href="dictionary_C.html#4922">Activator</a>.<a href="dictionary_C.html#4935">getDefault</a>()));</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">	}</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">	</span><span class="keyword">public static <a href="dictionary_C.html#4924">JavaScriptEclipseProjectPath</a> <a href="dictionary_C.html#8705">make</a></span><span class="default">(<a href="dictionary_O.html#4911">IJavaScriptProject</a> <a href="dictionary_C.html#8707">p</a>, <a href="dictionary_J.html#9">Set</a>&lt;<a href="dictionary_C.html#1363">Pair</a>&lt;<a href="dictionary_S.html#208">String</a>, <a href="dictionary_O.html#4912">Plugin</a>&gt;&gt; <a href="dictionary_C.html#8706">models</a>) </span><span class="keyword">throws <a href="dictionary_J.html#589">IOException</a></span><span class="default">, <a href="dictionary_O.html#4894">CoreException</a> {</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">	  <a href="dictionary_C.html#4924">JavaScriptEclipseProjectPath</a> <a href="dictionary_C.html#8708">path</a> = </span><span class="keyword">new <a href="dictionary_C.html#8695">JavaScriptEclipseProjectPath</a></span><span class="default">(<a href="dictionary_C.html#8706">models</a>);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">	  <a href="dictionary_C.html#8708">path</a>.<a href="dictionary_C.html#6336">create</a>(<a href="dictionary_C.html#8707">p</a>.<a href="dictionary_G.html#6337">getProject</a>());  </span>
+<a name="64"><font size=-1>64     </font></a><span class="default">	  </span><span class="keyword">return <a href="dictionary_C.html#8708">path</a></span><span class="default">;</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">	}</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">	</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">	@<a href="dictionary_O.html#8">Override</a></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#8736">EclipseProjectPath</a> <a href="dictionary_C.html#8697">create</a></span><span class="default">(<a href="dictionary_O.html#6416">IProject</a> <a href="dictionary_C.html#8703">project</a>) </span><span class="keyword">throws <a href="dictionary_O.html#4894">CoreException</a></span><span class="default">, <a href="dictionary_J.html#589">IOException</a> {</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    <a href="dictionary_C.html#8736">EclipseProjectPath</a> <a href="dictionary_C.html#8702">path</a> = </span><span class="keyword">super</span><span class="default">.<a href="dictionary_C.html#8742">create</a>(<a href="dictionary_C.html#8703">project</a>);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  </span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_C.html#6148">Module</a>&gt; <a href="dictionary_C.html#8704">s</a> = <a href="dictionary_C.html#8743">modules</a>.<a href="dictionary_G.html#119">get</a>(<a href="dictionary_C.html#8686">JSLoader</a>.<a href="dictionary_C.html#8693">JAVASCRIPT</a>);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    </span><span class="keyword">for</span><span class="default">(<a href="dictionary_C.html#1363">Pair</a>&lt;<a href="dictionary_S.html#208">String</a>,<a href="dictionary_O.html#4912">Plugin</a>&gt; <a href="dictionary_C.html#8700">model</a> : <a href="dictionary_C.html#8732">models</a>) {</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      <a href="dictionary_J.html#4620">URL</a> <a href="dictionary_C.html#8701">modelFile</a> = <a href="dictionary_C.html#8738">JsdtUtil</a>.<a href="dictionary_C.html#8744">getPrologueFile</a>(<a href="dictionary_C.html#8700">model</a>.<a href="dictionary_C.html#1403">fst</a>, <a href="dictionary_C.html#8700">model</a>.<a href="dictionary_C.html#1404">snd</a>);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">      assert <a href="dictionary_C.html#8701">modelFile</a> != </span><span class="keyword">null </span><span class="default">: </span><span class="string">&quot;cannot find file for &quot; </span><span class="default">+ <a href="dictionary_C.html#8700">model</a>;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">      <a href="dictionary_C.html#8704">s</a>.<a href="dictionary_A.html#35">add</a>(</span><span class="keyword">new <a href="dictionary_C.html#8338">SourceURLModule</a></span><span class="default">(<a href="dictionary_C.html#8701">modelFile</a>) {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">        @<a href="dictionary_O.html#8">Override</a></span>
+<a name="78"><font size=-1>78     </font></a><span class="default">        </span><span class="keyword">public <a href="dictionary_S.html#208">String</a> <a href="dictionary_C.html#8699">getName</a></span><span class="default">() {</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">          </span><span class="keyword">return super</span><span class="default">.<a href="dictionary_G.html#453">getName</a>().<a href="dictionary_S.html#1692">substring</a>(</span><span class="number">1</span><span class="default">);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">        }</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">      });</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    }</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#8702">path</a></span><span class="default">;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">}</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">	</span><span class="keyword">protected <a href="dictionary_O.html#4911">IJavaScriptProject</a> <a href="dictionary_C.html#8709">makeProject</a></span><span class="default">(<a href="dictionary_O.html#6416">IProject</a> <a href="dictionary_C.html#8713">p</a>) {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">		</span><span class="keyword">try </span><span class="default">{</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#8713">p</a>.<a href="dictionary_H.html#8710">hasNature</a>(<a href="dictionary_O.html#8685">JavaScriptCore</a>.<a href="dictionary_N.html#8712">NATURE_ID</a>)) {</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">				</span><span class="keyword">return <a href="dictionary_O.html#8685">JavaScriptCore</a></span><span class="default">.<a href="dictionary_C.html#6336">create</a>(<a href="dictionary_C.html#8713">p</a>);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">			} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">				</span><span class="keyword">return null</span><span class="default">;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">			}</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">		} </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_O.html#4894">CoreException</a> <a href="dictionary_C.html#8711">e</a>) {</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">			</span><span class="keyword">return null</span><span class="default">;</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">		}</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">	}</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">	@<a href="dictionary_O.html#8">Override</a></span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	</span><span class="keyword">protected <a href="dictionary_O.html#8684">IIncludePathEntry</a> <a href="dictionary_C.html#8714">resolve</a></span><span class="default">(<a href="dictionary_O.html#8684">IIncludePathEntry</a> <a href="dictionary_C.html#8716">entry</a>) {</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_O.html#8685">JavaScriptCore</a></span><span class="default">.<a href="dictionary_G.html#8715">getResolvedIncludepathEntry</a>(<a href="dictionary_C.html#8716">entry</a>);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">	}</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default">	@<a href="dictionary_O.html#8">Override</a></span>
+<a name="106"><font size=-1>106     </font></a><span class="default">	</span><span class="keyword">protected void <a href="dictionary_C.html#8717">resolveClasspathEntry</a></span><span class="default">(<a href="dictionary_O.html#4911">IJavaScriptProject</a> <a href="dictionary_C.html#8726">project</a>,</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">			<a href="dictionary_O.html#8684">IIncludePathEntry</a> <a href="dictionary_C.html#8723">entry</a>,</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">			<a href="dictionary_C.html#8737">ILoader</a> <a href="dictionary_C.html#8725">loader</a>,</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">			</span><span class="keyword">boolean <a href="dictionary_C.html#8724">includeSource</a></span><span class="default">, </span><span class="keyword">boolean <a href="dictionary_C.html#8721">cpeFromMainProject</a></span><span class="default">) {</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">		<a href="dictionary_O.html#8684">IIncludePathEntry</a> <a href="dictionary_C.html#8722">e</a> = <a href="dictionary_O.html#8685">JavaScriptCore</a>.<a href="dictionary_G.html#8715">getResolvedIncludepathEntry</a>(<a href="dictionary_C.html#8723">entry</a>);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">		</span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#8722">e</a>.<a href="dictionary_G.html#8718">getEntryKind</a>()) {</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">		</span><span class="keyword">case <a href="dictionary_O.html#8684">IIncludePathEntry</a></span><span class="default">.<a href="dictionary_C.html#8720">CPE_SOURCE</a>:</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">			<a href="dictionary_C.html#8750">resolveSourcePathEntry</a>(<a href="dictionary_C.html#8686">JSLoader</a>.<a href="dictionary_C.html#8693">JAVASCRIPT</a>, </span><span class="keyword">true</span><span class="default">, <a href="dictionary_C.html#8721">cpeFromMainProject</a>, <a href="dictionary_C.html#8722">e</a>.<a href="dictionary_G.html#6351">getPath</a>(), </span><span class="keyword">null</span><span class="default">, <a href="dictionary_C.html#8722">e</a>.<a href="dictionary_G.html#8719">getExclusionPatterns</a>(), </span><span class="string">&quot;js&quot;</span><span class="default">);</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">		}</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">	}</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default">	@<a href="dictionary_O.html#8">Override</a></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">	</span><span class="keyword">protected void <a href="dictionary_C.html#8727">resolveProjectClasspathEntries</a></span><span class="default">(<a href="dictionary_O.html#4911">IJavaScriptProject</a> <a href="dictionary_C.html#8731">project</a>, </span><span class="keyword">boolean <a href="dictionary_C.html#8730">includeSource</a></span><span class="default">) {</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">	  </span><span class="keyword">try </span><span class="default">{</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">			<a href="dictionary_C.html#8752">resolveClasspathEntries</a>(<a href="dictionary_C.html#8731">project</a>, <a href="dictionary_J.html#2">Arrays</a>.<a href="dictionary_A.html#115">asList</a>(<a href="dictionary_C.html#8731">project</a>.<a href="dictionary_G.html#8728">getRawIncludepath</a>()), Loader.EXTENSION, <a href="dictionary_C.html#8730">includeSource</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">		} </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_O.html#8733">JavaScriptModelException</a> <a href="dictionary_C.html#8729">e</a>) {</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">			</span><span class="comment">// TODO Auto-generated catch block</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">			<a href="dictionary_C.html#8729">e</a></span><span class="default">.<a href="dictionary_P.html#47">printStackTrace</a>();</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">		}</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">	}	</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">}</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+</pre></body></html>

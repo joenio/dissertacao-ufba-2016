@@ -1,0 +1,92 @@
+<html><head><title>cqual.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/cqual.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/cqual.h";
+top.document.title  = "cqual.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* This file is part of cqual.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   Copyright (C) 2000-2002 The Regents of the University of California.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">cqual is free software; you can redistribute it and/or modify</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">it under the terms of the GNU General Public License as published by</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">the Free Software Foundation; either version 2, or (at your option)</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">any later version.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">cqual is distributed in the hope that it will be useful,</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">GNU General Public License for more details.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">You should have received a copy of the GNU General Public License</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">along with cqual; see the file COPYING.  If not, write to</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">the Free Software Foundation, 59 Temple Place - Suite 330,</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">Boston, MA 02111-1307, USA. */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_C.html#10143">CQUAL_H</a></span>
+<a name="20"><font size=-1>20     </font></a><span class="preproc">#define <a href="dictionary_C.html#10143">CQUAL_H</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc"></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc">#include </span><span class="string">&quot;bitset.h&quot;</span>
+<a name="23"><font size=-1>23     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;bool.h&quot;</span>
+<a name="24"><font size=-1>24     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;buffer.h&quot;</span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;regions.h&quot;</span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;linkage.h&quot;</span>
+<a name="27"><font size=-1>27     </font></a><span class="string"></span>
+<a name="28"><font size=-1>28     </font></a><span class="string"><a href="dictionary_E.html#7">EXTERN_C_BEGIN</a></span>
+<a name="29"><font size=-1>29     </font></a><span class="string"></span>
+<a name="30"><font size=-1>30     </font></a><span class="string"></span><span class="comment">/* Qualifiers and qualified types */</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_T.html#3223">Ty</a> </span><span class="default">*<a href="dictionary_T.html#3266">ty</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_Q.html#3308">Qtype</a> </span><span class="default">*<a href="dictionary_Q.html#75">qtype</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_T.html#7852">type_qualifier</a> </span><span class="default">*<a href="dictionary_Q.html#83">qual</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_Q.html#3963">Qual_edge</a> </span><span class="default">*<a href="dictionary_Q.html#3956">qual_edge</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_C.html#7897">Condition</a> </span><span class="default">*<a href="dictionary_C.html#5926">cond</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_B.html#7851">Bounds</a> </span><span class="default">*<a href="dictionary_B.html#6078">bounds</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="comment">/* Stores and effects */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_A.html#8359">Abstract_loc</a> </span><span class="default">*<a href="dictionary_A.html#161">aloc</a>;</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_E.html#8414">Effect</a> </span><span class="default">*<a href="dictionary_E.html#72">effect</a>;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_S.html#8589">Store</a> </span><span class="default">*<a href="dictionary_S.html#114">store</a>;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_S.html#8581">Store_edge</a> </span><span class="default">*<a href="dictionary_S.html#5814">store_edge</a>;</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_C.html#8585">Cell</a> </span><span class="default">*<a href="dictionary_C.html#6027">cell</a>;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span><span class="comment">/* Aloctypes */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_A.html#10144">Aloctype</a> </span><span class="default">*<a href="dictionary_A.html#5619">aloctype</a>;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_A.html#10145">Alocreftype</a> </span><span class="default">*<a href="dictionary_A.html#5659">alocreftype</a>;</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_A.html#10146">Alocfntype</a> </span><span class="default">*<a href="dictionary_A.html#5698">alocfntype</a>;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_E.html#10147">Effecttype</a> </span><span class="default">*<a href="dictionary_E.html#5737">effecttype</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_R.html#10149">Rinf_const</a> </span><span class="default">*<a href="dictionary_R.html#10148">rinf_const</a>;</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="comment">/* PAM */</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_P.html#7889">po_info</a> </span><span class="default">*<a href="dictionary_P.html#5853">po_info</a>;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_F.html#162">File</a> </span><span class="default">*<a href="dictionary_P.html#546">pam_file</a>;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_C.html#146">Click</a> </span><span class="default">*<a href="dictionary_P.html#360">pam_click</a>;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_O.html#154">Overlay</a> </span><span class="default">*<a href="dictionary_P.html#486">pam_overlay</a>;</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="comment">/* Other */</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_R.html#69">Rinfo</a> </span><span class="default">*<a href="dictionary_R.html#10150">rinfo</a>; </span><span class="comment">/* Info for restrict */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"></span><span class="keyword">typedef struct <a href="dictionary_D.html#84">Drinfo</a> </span><span class="default">*<a href="dictionary_D.html#10151">drinfo</a>; </span><span class="comment">/* Info for deep restrict */</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">(*<a href="dictionary_P.html#477">printf_func</a>)(</span><span class="keyword">const char </span><span class="default">*fmt, ...);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="comment">/* Possible effect constructors */</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  eff_any = </span><span class="number">0</span><span class="default">,</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">  eff_rwr,</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  eff_r,</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  eff_wr,</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  eff_alloc,</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">  eff_last = eff_alloc } <a href="dictionary_E.html#3622">eff_kind</a>;</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"></span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span><span class="comment">/* Load in a lattice configuration file */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_L.html#1162">load_config_file_quals</a></span><span class="default">(</span><span class="keyword">const char </span><span class="default">*);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span><span class="comment">/* If you use fail_loc, you must give a 3rd argument!  Pass 0 if you</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">   don't need anything there. */</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_F.html#4843">fail_loc</a></span><span class="default">(l, s, args...) <a href="dictionary_F.html#251">fail</a>(</span><span class="string">&quot;(at %s:%ld) &quot; </span><span class="default">s, ((l)-&gt;filename), ((l)-&gt;lineno), args)</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default"><a href="dictionary_E.html#29">EXTERN_C_END</a></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="82"><font size=-1>82     </font></a><span class="preproc"></span>
+</pre></body></html>

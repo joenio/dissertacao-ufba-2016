@@ -1,0 +1,205 @@
+<html><head><title>lslinit.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/lslinit.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/lslinit.h";
+top.document.title  = "lslinit.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">** Copyright (C) University of Virginia, Massachusetts Institue of Technology 1994-2003.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">** See ../LICENSE for license information.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">**</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">*/</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">** lslinit.h</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">*/</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span><span class="keyword">enum <a href="dictionary_E.html#28114">e_LSLInitRuleCode</a> </span><span class="default">{</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">  </span><span class="comment">/* initFile:				    */</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">  </span><span class="default">INITFILE1,		</span><span class="comment">/*    initLines EOF */</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">  /* initLines: */</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">  </span><span class="default">INITLINES1,         </span><span class="comment">/*		*/</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">  </span><span class="default">INITLINES2,         </span><span class="comment">/*     initLine  */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">  </span><span class="default">INITLINES3,         </span><span class="comment">/*     initLines initLine */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">  </span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">  /* initLine: */</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">  </span><span class="default">INITLINE1,		</span><span class="comment">/*     EOL   */</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">  </span><span class="default">INITLINE2,          </span><span class="comment">/*     classification EOL */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">  </span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">  /* classification: */</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">  </span><span class="default">CLASSIFICATION1,    </span><span class="comment">/*     charClass */</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">  </span><span class="default">CLASSIFICATION2,    </span><span class="comment">/*     tokenClass */</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">  </span><span class="default">CLASSIFICATION3,    </span><span class="comment">/*     synClass */</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">  </span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">  /* charClass: */</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">  </span><span class="default">CHARCLASS1,         </span><span class="comment">/*     ENDCOMMENTCHAR endCommentChars */</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">  </span><span class="default">CHARCLASS2,         </span><span class="comment">/*     IDCHAR idChars */</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">  </span><span class="default">CHARCLASS3,         </span><span class="comment">/*     OPCHAR opChars */</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">  </span><span class="default">CHARCLASS4,         </span><span class="comment">/*     CHC_EXTENSION extensionChar */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">  </span><span class="default">CHARCLASS5,         </span><span class="comment">/*     SINGLECHAR singChars */</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">  </span><span class="default">CHARCLASS6,         </span><span class="comment">/*     WHITECHAR whiteChars */</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">  /* endCommentChars: */</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">  </span><span class="default">LRC_ENDCOMMENT1,	</span><span class="comment">/*     endCommentChar */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">  </span><span class="default">LRC_ENDCOMMENT2,	</span><span class="comment">/*     endCommentChars endCommentChar */</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">  </span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">  /* idChars: */</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">  </span><span class="default">IDCHARS1,		</span><span class="comment">/*     idChar */</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">  </span><span class="default">IDCHARS2,		</span><span class="comment">/*     idChars idChar */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">  </span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">  /* opChars */</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">  </span><span class="default">OPCHARS1,		</span><span class="comment">/*    opChar */</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">  </span><span class="default">OPCHARS2,		</span><span class="comment">/*    opChars opChar */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">  </span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">  /* ExtensionChar */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">  </span><span class="default">LRC_EXTENSIONCHAR1,	</span><span class="comment">/*     singleChar */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">  </span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">  /* singChars */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">  </span><span class="default">SINGCHARS1,		</span><span class="comment">/*     singChar */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">  </span><span class="default">SINGCHARS2,		</span><span class="comment">/*     singChars singChar */</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">  </span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">  /* whiteChars */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">  </span><span class="default">WHITECHARS1,	</span><span class="comment">/*     whiteChar */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">  </span><span class="default">WHITECHARS2,	</span><span class="comment">/*     whiteChars whiteChar */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">  </span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">  /* endCommentChar */</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">  </span><span class="default">LRC_ENDCOMMENTCHAR1,	</span><span class="comment">/*     commentChar */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">  </span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">  /* idChar */</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">  </span><span class="default">IDCHAR1,		</span><span class="comment">/*     singleChar */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">  </span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">  /* opChar */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">  </span><span class="default">OPCHAR1,		</span><span class="comment">/*     singleChar */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">  </span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">  /* singChar */</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">  </span><span class="default">SINGCHAR1,		</span><span class="comment">/*     singleChar */</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">  </span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">  /* whiteChar */</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">  </span><span class="default">WHITECHAR1,		</span><span class="comment">/*     singleChar */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">  </span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">  /* tokenClass: */</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">  </span><span class="default">TOKENCLASS1,        </span><span class="comment">/*     QUANTIFIERSYM quantifierSymToks */</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">  </span><span class="default">TOKENCLASS2,        </span><span class="comment">/*     LOGICALOP logicalOpToks */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">  </span><span class="default">TOKENCLASS3,        </span><span class="comment">/*     EQOP eqOpToks */</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">  </span><span class="default">TOKENCLASS4,        </span><span class="comment">/*     EQUATIONSYM equationSymToks */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">  </span><span class="default">TOKENCLASS5,        </span><span class="comment">/*     EQSEPSYM eqSepSymToks */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">  </span><span class="default">TOKENCLASS6,        </span><span class="comment">/*     SELECTSYM selectSymToks */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">  </span><span class="default">TOKENCLASS7,        </span><span class="comment">/*     OPENSYM openSymToks */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">  </span><span class="default">TOKENCLASS8,        </span><span class="comment">/*     SEPSYM sepSymToks */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">  </span><span class="default">TOKENCLASS9,        </span><span class="comment">/*     CLOSESYM closeSymToks */</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">  </span><span class="default">TOKENCLASS10,       </span><span class="comment">/*     SIMPLEID simpleIdToks */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">  </span><span class="default">TOKENCLASS11,       </span><span class="comment">/*     MAPSYM mapSymToks */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">  </span><span class="default">TOKENCLASS12,       </span><span class="comment">/*     MARKERSYM markerSymToks */</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">  </span><span class="default">TOKENCLASS13,       </span><span class="comment">/*     COMMENTSYM commentSymToks */</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">  </span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">  /* quantifierSymToks */</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">  </span><span class="default">QUANTIFIERSYMTOKS1,</span><span class="comment">/*     quantifierSymTok */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">  </span><span class="default">QUANTIFIERSYMTOKS2,</span><span class="comment">/*     quantifierSymToks quantifierSymTok */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">  </span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">  /* logicalOpToks */</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">  </span><span class="default">LOGICALOPTOKS1,	</span><span class="comment">/*     logicalOpTok */</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">  </span><span class="default">LOGICALOPTOKS2,	</span><span class="comment">/*     logicalOpToks logicalOpTok */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">  </span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">  /* eqOpToks */</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">  </span><span class="default">LRC_EQOPTOKS1,		</span><span class="comment">/*     eqOpTok */</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">  </span><span class="default">LRC_EQOPTOKS2,		</span><span class="comment">/*     eqOpToks eqOpTok */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">  </span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">  /* equationSymToks */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">  </span><span class="default">LRC_EQUATIONSYMTOKS1, </span><span class="comment">/*     equationSymTok */</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">  </span><span class="default">LRC_EQUATIONSYMTOKS2,	</span><span class="comment">/*     equationSymToks equationSymTok */</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">  </span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">  /* eqSepSymToks */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">  </span><span class="default">LRC_EQSEPSYMTOKS1,	</span><span class="comment">/*     eqSepSymTok */</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">  </span><span class="default">LRC_EQSEPSYMTOKS2,	</span><span class="comment">/*     eqSepSymToks eqSepSymTok */</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">  </span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">  /* selectSymToks */</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">  </span><span class="default">SELECTSYMTOKS1,	</span><span class="comment">/*     selectSymTok */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">  </span><span class="default">SELECTSYMTOKS2,	</span><span class="comment">/*     selectSymToks selectSymTok */</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">  </span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">  /* openSymToks */</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">  </span><span class="default">OPENSYMTOKS1,	</span><span class="comment">/*     openSymTok */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">  </span><span class="default">OPENSYMTOKS2,	</span><span class="comment">/*     openSymToks openSymTok */</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">  </span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">  /* sepSymToks */</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">  </span><span class="default">SEPSYMTOKS1,	</span><span class="comment">/*     sepSymTok */</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">  </span><span class="default">SEPSYMTOKS2,	</span><span class="comment">/*     sepSymToks sepSymTok */</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">  </span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">  /* closeSymToks */</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">  </span><span class="default">CLOSESYMTOKS1,	</span><span class="comment">/*     closeSymTok */</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">  </span><span class="default">CLOSESYMTOKS2,	</span><span class="comment">/*     closeSymToks closeSymTok */</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">  </span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">  /* simpleIdToks */</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">  </span><span class="default">SIMPLEIDTOKS1,	</span><span class="comment">/*     simpleIdTok */</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">  </span><span class="default">SIMPLEIDTOKS2,	</span><span class="comment">/*     simpleIdToks simpleIdTok */</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">  </span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">  /* mapSymToks */</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">  </span><span class="default">MAPSYMTOKS1,		</span><span class="comment">/*     mapSymTok */</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">  </span><span class="default">MAPSYMTOKS2,		</span><span class="comment">/*     mapSymToks mapSymTok */</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">  </span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">  /* markerSymToks */</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">  </span><span class="default">MARKERSYMTOKS1,	</span><span class="comment">/*     markerSymTok */</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">  </span><span class="default">MARKERSYMTOKS2,	</span><span class="comment">/*     markerSymToks markerSymTok */</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">  </span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">  /* commentSymToks */</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">  </span><span class="default">COMMENTSYMTOKS1,	</span><span class="comment">/*     commentSymTok */</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">  </span><span class="default">COMMENTSYMTOKS2,	</span><span class="comment">/*     commentSymToks commentSymTok */</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">  </span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">  /* quantifierSymTok */</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">  </span><span class="default">QUANTIFIERSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">  </span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">  /* logicalOpTok */</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">  </span><span class="default">LOGICALOPTOK1,	</span><span class="comment">/*     token */</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">  </span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">  /* eqOpTok */</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">  </span><span class="default">LRC_EQOPTOK1,		</span><span class="comment">/*     token */</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">  </span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">  /* equationSymTok */</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">  </span><span class="default">LRC_EQUATIONSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">  </span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">  /* eqSepSymTok */</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">  </span><span class="default">LRC_EQSEPSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">  </span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">  /* selectSymTok */</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">  </span><span class="default">SELECTSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">  </span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">  /* openSymTok */</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">  </span><span class="default">OPENSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">  </span>
+<a name="161"><font size=-1>161     </font></a><span class="comment">  /* sepSymTok */</span>
+<a name="162"><font size=-1>162     </font></a><span class="comment">  </span><span class="default">SEPSYMTOK1,		</span><span class="comment">/*     token */</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">  </span>
+<a name="164"><font size=-1>164     </font></a><span class="comment">  /* closeSymTok */</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment">  </span><span class="default">CLOSESYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">  </span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">  /* simpleIdTok */</span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">  </span><span class="default">SIMPLEIDTOK1,	</span><span class="comment">/*     token */</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment">  </span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">  /* mapSymTok */</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">  </span><span class="default">MAPSYMTOK1,		</span><span class="comment">/*     token */</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">  </span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">  /* markerSymTok */</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">  </span><span class="default">MARKERSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">  </span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">  /* commentSymTok */</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">  </span><span class="default">COMMENTSYMTOK1,	</span><span class="comment">/*     token */</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">  </span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">  /* synClass: */</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">  </span><span class="default">SYNCLASS1,          </span><span class="comment">/*     SYNONYM oldToken newToken */</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">  </span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">  /* oldToken: */</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">  </span><span class="default">OLDTOKEN1,          </span><span class="comment">/*     token */</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">  </span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">  /* newToken: */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">  </span><span class="default">NEWTOKEN1           </span><span class="comment">/*     token */</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment"></span><span class="default">} ;</span>
+<a name="188"><font size=-1>188     </font></a><span class="default"></span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_L.html#21288">lslinit_setInitFile</a> </span><span class="default">(</span><span class="comment">/*@only@*/ <a href="dictionary_I.html#1455">inputStream</a> </span><span class="default">p_s)</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">     </span><span class="comment">/*@modifies internalState@*/ </span><span class="default">;</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_L.html#1757">lslinit_process</a> </span><span class="default">(</span><span class="keyword">void</span><span class="default">)     </span>
+<a name="193"><font size=-1>193     </font></a><span class="default">     </span><span class="comment">/*@globals undef g_symtab; @*/</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">     /*@modifies g_symtab, internalState, fileSystem; @*/ </span><span class="default">;</span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span>
+</pre></body></html>

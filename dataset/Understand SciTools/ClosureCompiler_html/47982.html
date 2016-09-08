@@ -1,0 +1,102 @@
+<html><head><title>FileInstrumentationData.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/FileInstrumentationData.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/FileInstrumentationData.java";
+top.document.title  = "FileInstrumentationData.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2009 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#119">annotations</a>.<a href="dictionary_C.html#35">GwtIncompatible</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Preconditions;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Strings;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#15752">primitives</a>.<a href="dictionary_C.html#47998">UnsignedBytes</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.<a href="dictionary_J.html#21927">BitSet</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * Holds instrumentation details related to a file, namely, the filename,</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * the array name used in instrumentation, and the lines which were</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * instrumented (in encoded form).</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * @author praveenk@google.com (Praveen Kumashi)</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span><span class="default">@<a href="dictionary_C.html#35">GwtIncompatible</a>(</span><span class="string">&quot;com.google.common.primitives.UnsignedBytes&quot;</span><span class="default">)</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">class <a href="dictionary_C.html#46295">FileInstrumentationData</a> </span><span class="default">{</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#47997">instrumentedBits</a></span><span class="default">;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">String <a href="dictionary_C.html#47995">arrayName</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">String <a href="dictionary_C.html#47996">fileName</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  <a href="dictionary_C.html#46298">FileInstrumentationData</a>(String <a href="dictionary_C.html#47984">fileName</a>, String <a href="dictionary_C.html#47983">arrayName</a>) {</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#47996">fileName</a> = <a href="dictionary_C.html#47984">fileName</a>;</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#47995">arrayName</a> = <a href="dictionary_C.html#47983">arrayName</a>;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    <a href="dictionary_C.html#47997">instrumentedBits</a> = </span><span class="keyword">new <a href="dictionary_J.html#23014">BitSet</a></span><span class="default">();</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  }</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  String <a href="dictionary_C.html#47985">getArrayName</a>() {</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#47995">arrayName</a></span><span class="default">;</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  }</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  String <a href="dictionary_C.html#47986">getFileName</a>() {</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#47996">fileName</a></span><span class="default">;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  }</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">   * Returns a byte-wise hex string representation of the BitField from</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">   * MSB (Most Significant Byte) to LSB (Least Significant Byte).</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">   * Eg. Single byte: a setting of &quot;0001 1111&quot;, returns &quot;1f&quot;</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">   * Eg. Multiple bytes: a setting of &quot;0000 0010 0001 1111&quot;, returns &quot;1f02&quot;</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">   *</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">   * @return string representation of bits set</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">   */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">  </span><span class="default">String <a href="dictionary_C.html#46297">getInstrumentedLinesAsHexString</a>() {</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    <a href="dictionary_S.html#42">StringBuilder</a> <a href="dictionary_C.html#47992">builder</a> = </span><span class="keyword">new <a href="dictionary_S.html#42">StringBuilder</a></span><span class="default">();</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    </span><span class="comment">// Build the hex string.</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">    </span><span class="keyword">for </span><span class="default">(</span><span class="keyword">byte <a href="dictionary_C.html#47989">byteEntry</a> </span><span class="default">: <a href="dictionary_C.html#47997">instrumentedBits</a>.<a href="dictionary_T.html#82">toByteArray</a>()) {</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">      </span><span class="comment">// Java bytes are signed, but we want the value as if it were unsigned.</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">      </span><span class="keyword">int <a href="dictionary_C.html#47991">value</a> </span><span class="default">= <a href="dictionary_C.html#47998">UnsignedBytes</a>.<a href="dictionary_T.html#47988">toInt</a>(<a href="dictionary_C.html#47989">byteEntry</a>);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">      String <a href="dictionary_C.html#47990">hexString</a> = Integer.<a href="dictionary_T.html#7053">toHexString</a>(<a href="dictionary_C.html#47991">value</a>);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">      </span><span class="comment">// Pad string to be two characters (if it isn't already).</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">      <a href="dictionary_C.html#47990">hexString</a> </span><span class="default">= Strings.<a href="dictionary_P.html#47987">padStart</a>(<a href="dictionary_C.html#47990">hexString</a>, </span><span class="number">2</span><span class="default">, </span><span class="string">'0'</span><span class="default">);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"></span>
+<a name="72"><font size=-1>72     </font></a><span class="default">      <a href="dictionary_C.html#47992">builder</a>.<a href="dictionary_A.html#106">append</a>(<a href="dictionary_C.html#47990">hexString</a>);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    }</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#47992">builder</a></span><span class="default">.<a href="dictionary_T.html#105">toString</a>();</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">  }</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">   * Mark given 1-based line number as instrumented. Zero, Negative numbers</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">   * are not allowed.</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">   * @param lineNumber the line number which was instrumented</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">   */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">  </span><span class="keyword">void <a href="dictionary_C.html#47993">setLineAsInstrumented</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#47994">lineNumber</a></span><span class="default">) {</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#369">checkArgument</a>(</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">        <a href="dictionary_C.html#47994">lineNumber</a> &gt; </span><span class="number">0</span><span class="default">, </span><span class="string">&quot;Expected non-zero positive integer as line number: %s&quot;</span><span class="default">, <a href="dictionary_C.html#47994">lineNumber</a>);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">    </span><span class="comment">// Map the 1-based line number to 0-based bit position</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">    <a href="dictionary_C.html#47997">instrumentedBits</a></span><span class="default">.<a href="dictionary_J.html#21937">set</a>(<a href="dictionary_C.html#47994">lineNumber</a> - </span><span class="number">1</span><span class="default">);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">  }</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">}</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,242 @@
+<html><head><title>ScannerSupplier.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/main/java/com/google/errorprone/scanner/ScannerSupplier.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/main/java/com/google/errorprone/scanner/ScannerSupplier.java";
+top.document.title  = "ScannerSupplier.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2014 Google Inc. All Rights Reserved.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#248">scanner</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#576">base</a>.<a href="dictionary_C.html#571">Predicate</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#576">base</a>.<a href="dictionary_C.html#18099">Supplier</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#49">collect</a>.<a href="dictionary_C.html#14257">ArrayListMultimap</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#49">collect</a>.<a href="dictionary_C.html#2397">ImmutableBiMap</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#49">collect</a>.<a href="dictionary_C.html#5">ImmutableList</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#49">collect</a>.<a href="dictionary_C.html#1607">ImmutableSet</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#49">collect</a>.<a href="dictionary_C.html#730">Multimap</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#1188">BugCheckerInfo</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#407">SeverityLevel</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#588">ErrorProneOptions</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#588">ErrorProneOptions</a>.<a href="dictionary_C.html#2129">Severity</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#6575">InvalidCommandLineOptionException</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#149">bugpatterns</a>.<a href="dictionary_C.html#163">BugChecker</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#1621">pcollections</a>.<a href="dictionary_O.html#18062">HashTreePMap</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.<a href="dictionary_O.html#1621">pcollections</a>.<a href="dictionary_O.html#13663">PMap</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#249">util</a>.Arrays;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#249">util</a>.<a href="dictionary_J.html#1676">Collection</a>;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#249">util</a>.Map;</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#249">util</a>.<a href="dictionary_J.html#785">Map</a>.<a href="dictionary_J.html#728">Entry</a>;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.<a href="dictionary_J.html#1187">annotation</a>.<a href="dictionary_J.html#1154">CheckReturnValue</a>;</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> * Supplies {@link Scanner}s and provides access to the backing sets of all {@link</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> * BugChecker}s and enabled {@link BugChecker}s.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"> */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"></span><span class="keyword">public abstract class <a href="dictionary_C.html#2936">ScannerSupplier</a> implements <a href="dictionary_C.html#18099">Supplier</a></span><span class="default">&lt;<a href="dictionary_C.html#245">Scanner</a>&gt; {</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  </span><span class="comment">/* Static factory methods and helpers */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"></span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">  /**</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">   * Returns a {@link ScannerSupplier} with a specific list of {@link BugChecker} classes.</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">   */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_S.html#459">SafeVarargs</a></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  </span><span class="keyword">public static <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#18083">fromBugCheckerClasses</a></span><span class="default">(</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">      <a href="dictionary_C.html#441">Class</a>&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#163">BugChecker</a></span><span class="default">&gt;... <a href="dictionary_C.html#18084">checkerClasses</a>) {</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_F.html#5641">fromBugCheckerClasses</a></span><span class="default">(Arrays.<a href="dictionary_A.html#278">asList</a>(<a href="dictionary_C.html#18084">checkerClasses</a>));</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  }</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  </span><span class="keyword">private static <a href="dictionary_O.html#13663">PMap</a></span><span class="default">&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18076">defaultSeverities</a>(</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">      <a href="dictionary_I.html#6">Iterable</a>&lt;<a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18078">checkers</a>) {</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    <a href="dictionary_O.html#13663">PMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18079">severities</a> = <a href="dictionary_O.html#18062">HashTreePMap</a>.<a href="dictionary_E.html#1471">empty</a>();</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#1188">BugCheckerInfo</a> <a href="dictionary_C.html#18077">check</a> : <a href="dictionary_C.html#18078">checkers</a>) {</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">      <a href="dictionary_C.html#18079">severities</a> = <a href="dictionary_C.html#18079">severities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18077">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#18077">check</a>.<a href="dictionary_C.html#1199">defaultSeverity</a>());</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#18079">severities</a></span><span class="default">;</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  }</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span>
+<a name="70"><font size=-1>70     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">   * Returns a {@link ScannerSupplier} with a specific list of {@link BugChecker} classes.</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">   */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">  </span><span class="keyword">public static <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#18085">fromBugCheckerClasses</a></span><span class="default">(</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      <a href="dictionary_I.html#6">Iterable</a>&lt;<a href="dictionary_C.html#441">Class</a>&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#163">BugChecker</a></span><span class="default">&gt;&gt; <a href="dictionary_C.html#18088">checkers</a>) {</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    <a href="dictionary_I.html#5152">ImmutableList</a>.<a href="dictionary_I.html#5092">Builder</a>&lt;<a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18087">builder</a> = <a href="dictionary_I.html#5152">ImmutableList</a>.<a href="dictionary_B.html#1570">builder</a>();</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#441">Class</a>&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#163">BugChecker</a></span><span class="default">&gt; <a href="dictionary_C.html#18086">checker</a> : <a href="dictionary_C.html#18088">checkers</a>) {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">      <a href="dictionary_C.html#18087">builder</a>.<a href="dictionary_A.html#214">add</a>(<a href="dictionary_C.html#1188">BugCheckerInfo</a>.<a href="dictionary_C.html#1191">create</a>(<a href="dictionary_C.html#18086">checker</a>));</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    }</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#11633">fromBugCheckerInfos</a></span><span class="default">(<a href="dictionary_C.html#18087">builder</a>.<a href="dictionary_B.html#1522">build</a>());</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">  }</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">   * Returns a {@link ScannerSupplier} built from a list of {@link BugCheckerInfo}s.</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">   */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">  </span><span class="keyword">public static <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#11633">fromBugCheckerInfos</a></span><span class="default">(<a href="dictionary_I.html#6">Iterable</a>&lt;<a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18092">checkers</a>) {</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    <a href="dictionary_C.html#2397">ImmutableBiMap</a>.<a href="dictionary_I.html#5092">Builder</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18091">builder</a> = <a href="dictionary_C.html#2397">ImmutableBiMap</a>.<a href="dictionary_B.html#1570">builder</a>();</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#1188">BugCheckerInfo</a> <a href="dictionary_C.html#18089">checker</a> : <a href="dictionary_C.html#18092">checkers</a>) {</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">      <a href="dictionary_C.html#18091">builder</a>.<a href="dictionary_P.html#501">put</a>(<a href="dictionary_C.html#18089">checker</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#18089">checker</a>);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    }</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    <a href="dictionary_C.html#2397">ImmutableBiMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18090">allChecks</a> = <a href="dictionary_C.html#18091">builder</a>.<a href="dictionary_B.html#1522">build</a>();</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#13672">ScannerSupplierImpl</a></span><span class="default">(<a href="dictionary_C.html#18090">allChecks</a>, <a href="dictionary_C.html#18076">defaultSeverities</a>(<a href="dictionary_C.html#18090">allChecks</a>.<a href="dictionary_V.html#3117">values</a>()));</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">  }</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">   * Returns a {@link ScannerSupplier} that just returns the {@link Scanner} that was passed in.</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">   * Used mostly for testing.  Does not implement any method other than</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">   * {@link ScannerSupplier#get()}.</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">   */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">  </span><span class="keyword">public static <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#2939">fromScanner</a></span><span class="default">(<a href="dictionary_C.html#245">Scanner</a> <a href="dictionary_C.html#18093">scanner</a>) {</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#15658">InstanceReturningScannerSupplierImpl</a></span><span class="default">(<a href="dictionary_C.html#18093">scanner</a>);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">  }</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default">  </span><span class="comment">/* Instance methods */</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment"></span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">  /**</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">   * Returns a map of check name to {@link BugCheckerInfo} for all {@link BugCheckerInfo}s in this</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">   * {@link ScannerSupplier}, including disabled ones.</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">   */</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">  </span><span class="keyword">protected abstract <a href="dictionary_C.html#2397">ImmutableBiMap</a></span><span class="default">&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#13686">getAllChecks</a>();</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">   * Returns the set of {@link BugCheckerInfo}s that are enabled in this {@link ScannerSupplier}.</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">   */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">  </span><span class="keyword">protected abstract <a href="dictionary_C.html#1607">ImmutableSet</a></span><span class="default">&lt;<a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#13687">getEnabledChecks</a>();</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default">  </span><span class="keyword">protected abstract <a href="dictionary_O.html#13663">PMap</a></span><span class="default">&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#13688">severities</a>();</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">   * Applies options to this {@link ScannerSupplier}.</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">   *</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">   * &lt;p&gt;Command-line options to override check severities may do any of the following:</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">   * &lt;ul&gt;</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">   * &lt;li&gt;Enable a check that is currently off&lt;/li&gt;</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">   * &lt;li&gt;Disable a check that is currently on&lt;/li&gt;</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">   * &lt;li&gt;Change the severity of a check that is on, promoting a warning to an error or demoting</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">   * an error to a warning&lt;/li&gt;</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">   * &lt;/ul&gt;</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">   *</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">   * @param errorProneOptions an {@link ErrorProneOptions} object that encapsulates the overrides</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">   * for this compilation</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">   * @throws InvalidCommandLineOptionException if the override map attempts to disable a check</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">   * that may not be disabled</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">   */</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_J.html#1154">CheckReturnValue</a></span>
+<a name="135"><font size=-1>135     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#12100">applyOverrides</a></span><span class="default">(<a href="dictionary_C.html#588">ErrorProneOptions</a> <a href="dictionary_C.html#18073">errorProneOptions</a>)</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">      </span><span class="keyword">throws <a href="dictionary_C.html#6575">InvalidCommandLineOptionException</a> </span><span class="default">{</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">    Map&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#2129">Severity</a>&gt; <a href="dictionary_C.html#18075">severityOverrides</a> = <a href="dictionary_C.html#18073">errorProneOptions</a>.<a href="dictionary_C.html#2134">getSeverityMap</a>();</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#18075">severityOverrides</a>.<a href="dictionary_I.html#1234">isEmpty</a>()) {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">      </span><span class="keyword">return this</span><span class="default">;</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">    }</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span>
+<a name="142"><font size=-1>142     </font></a><span class="default">    </span><span class="comment">// Initialize result allChecks map and enabledChecks set with current state of this Supplier.</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">    <a href="dictionary_C.html#2397">ImmutableBiMap</a></span><span class="default">&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18071">checks</a> = <a href="dictionary_C.html#13686">getAllChecks</a>();</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">    <a href="dictionary_O.html#13663">PMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18074">severities</a> = <a href="dictionary_C.html#13688">severities</a>();</span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="comment">// Create a map from names (canonical and alternate) to checks. We could do this when the</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">    // supplier is created, but applyOverrides() is unlikely to be called more than once per</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">    // scanner instance.</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">    <a href="dictionary_C.html#730">Multimap</a></span><span class="default">&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18072">checksByAllNames</a> = <a href="dictionary_C.html#14257">ArrayListMultimap</a>.<a href="dictionary_C.html#354">create</a>();</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#1188">BugCheckerInfo</a> <a href="dictionary_C.html#18064">checker</a> : <a href="dictionary_C.html#13686">getAllChecks</a>().<a href="dictionary_V.html#3117">values</a>()) {</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(<a href="dictionary_S.html#260">String</a> <a href="dictionary_C.html#18063">name</a> : <a href="dictionary_C.html#18064">checker</a>.<a href="dictionary_C.html#1193">allNames</a>()) {</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">        <a href="dictionary_C.html#18072">checksByAllNames</a>.<a href="dictionary_P.html#501">put</a>(<a href="dictionary_C.html#18063">name</a>, <a href="dictionary_C.html#18064">checker</a>);</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">      }</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">    }</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">    </span>
+<a name="156"><font size=-1>156     </font></a><span class="default">    </span><span class="comment">// Process overrides</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#728">Entry</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#2129">Severity</a>&gt; <a href="dictionary_C.html#18070">entry</a> : <a href="dictionary_C.html#18075">severityOverrides</a>.<a href="dictionary_E.html#531">entrySet</a>()) {</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">      <a href="dictionary_J.html#1676">Collection</a>&lt;<a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18069">checksWithName</a> = <a href="dictionary_C.html#18072">checksByAllNames</a>.<a href="dictionary_G.html#313">get</a>(<a href="dictionary_C.html#18070">entry</a>.<a href="dictionary_G.html#532">getKey</a>());</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#18069">checksWithName</a>.<a href="dictionary_I.html#1234">isEmpty</a>()) {</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#18073">errorProneOptions</a>.<a href="dictionary_C.html#18100">ignoreUnknownChecks</a>()) {</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">          </span><span class="keyword">continue</span><span class="default">;</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">        }</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_C.html#12102">InvalidCommandLineOptionException</a></span><span class="default">(</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">            <a href="dictionary_C.html#18070">entry</a>.<a href="dictionary_G.html#532">getKey</a>() + </span><span class="string">&quot; is not a valid checker name&quot;</span><span class="default">);</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">      }</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#1188">BugCheckerInfo</a> <a href="dictionary_C.html#18068">check</a> : <a href="dictionary_C.html#18069">checksWithName</a>) {</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">        </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#18070">entry</a>.<a href="dictionary_G.html#533">getValue</a>()) {</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_O.html#18066">OFF</a></span><span class="default">:</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1205">suppressibility</a>().<a href="dictionary_C.html#10181">disableable</a>()) {</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">              </span><span class="keyword">throw new <a href="dictionary_C.html#12102">InvalidCommandLineOptionException</a></span><span class="default">(</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">                  <a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>() + </span><span class="string">&quot; may not be disabled&quot;</span><span class="default">);</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">            }</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">            <a href="dictionary_C.html#18074">severities</a> = <a href="dictionary_C.html#18074">severities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#2136">NOT_A_PROBLEM</a>);</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_D.html#18065">DEFAULT</a></span><span class="default">:</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">            <a href="dictionary_C.html#18074">severities</a> = <a href="dictionary_C.html#18074">severities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1199">defaultSeverity</a>());</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_W.html#18067">WARN</a></span><span class="default">:</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">            </span><span class="comment">// Demoting an enabled check from an error to a warning is a form of disabling</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#13685">severity</a>(<a href="dictionary_C.html#18074">severities</a>).<a href="dictionary_C.html#2140">enabled</a>()</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">                &amp;&amp; !<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1205">suppressibility</a>().<a href="dictionary_C.html#10181">disableable</a>()</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">                &amp;&amp; <a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1199">defaultSeverity</a>() == <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#396">ERROR</a>) {</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">              </span><span class="keyword">throw new <a href="dictionary_C.html#12102">InvalidCommandLineOptionException</a></span><span class="default">(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>()</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">                  + </span><span class="string">&quot; is not disableable and may not be demoted to a warning&quot;</span><span class="default">);</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">            }</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">            <a href="dictionary_C.html#18074">severities</a> = <a href="dictionary_C.html#18074">severities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#787">WARNING</a>);</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_E.html#1829">ERROR</a></span><span class="default">:</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">            <a href="dictionary_C.html#18074">severities</a> = <a href="dictionary_C.html#18074">severities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18068">check</a>.<a href="dictionary_C.html#1196">canonicalName</a>(), <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#396">ERROR</a>);</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">          </span><span class="keyword">default</span><span class="default">:</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_I.html#1998">IllegalStateException</a></span><span class="default">(</span><span class="string">&quot;Unexpected severity level: &quot; </span><span class="default">+ <a href="dictionary_C.html#18070">entry</a>.<a href="dictionary_G.html#533">getValue</a>());</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">        }</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">      }</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">    }</span>
+<a name="196"><font size=-1>196     </font></a><span class="default"></span>
+<a name="197"><font size=-1>197     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#13672">ScannerSupplierImpl</a></span><span class="default">(<a href="dictionary_C.html#18071">checks</a>, <a href="dictionary_C.html#18074">severities</a>);</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">  }</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span>
+<a name="200"><font size=-1>200     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">   * Composes this {@link ScannerSupplier} with the {@code other} {@link ScannerSupplier}. The set</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">   * of checks that are turned on is the union of the set of checks on in {@code this} and</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">   * {@code other}.</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">   */</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_J.html#1154">CheckReturnValue</a></span>
+<a name="206"><font size=-1>206     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#18094">plus</a></span><span class="default">(<a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#18098">other</a>) {</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">    <a href="dictionary_C.html#2397">ImmutableBiMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt; <a href="dictionary_C.html#18096">combinedAllChecks</a> =</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">        <a href="dictionary_C.html#2397">ImmutableBiMap</a>.&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#1188">BugCheckerInfo</a>&gt;<a href="dictionary_B.html#1570">builder</a>()</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">            .<a href="dictionary_P.html#18095">putAll</a>(</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#13686">getAllChecks</a>())</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">            .<a href="dictionary_P.html#18095">putAll</a>(<a href="dictionary_C.html#18098">other</a>.<a href="dictionary_C.html#13686">getAllChecks</a>())</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">            .<a href="dictionary_B.html#1522">build</a>();</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">    <a href="dictionary_O.html#13663">PMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18097">combinedSeverities</a> =</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#13688">severities</a>().<a href="dictionary_P.html#14841">plusAll</a>(<a href="dictionary_C.html#18098">other</a>.<a href="dictionary_C.html#13688">severities</a>());</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#13672">ScannerSupplierImpl</a></span><span class="default">(<a href="dictionary_C.html#18096">combinedAllChecks</a>, <a href="dictionary_C.html#18097">combinedSeverities</a>);</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">  }</span>
+<a name="216"><font size=-1>216     </font></a><span class="default"></span>
+<a name="217"><font size=-1>217     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">   * Filters this {@link ScannerSupplier} based on the provided predicate. Returns a</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">   * {@link ScannerSupplier} with only the checks enabled that satisfy the predicate.</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">   */</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">  </span><span class="default">@<a href="dictionary_J.html#1154">CheckReturnValue</a></span>
+<a name="222"><font size=-1>222     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#2936">ScannerSupplier</a> <a href="dictionary_C.html#11634">filter</a></span><span class="default">(<a href="dictionary_C.html#571">Predicate</a>&lt;? </span><span class="keyword">super <a href="dictionary_C.html#1188">BugCheckerInfo</a></span><span class="default">&gt; <a href="dictionary_C.html#18082">predicate</a>) {</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">    <a href="dictionary_O.html#13663">PMap</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18081">filteredSeverities</a> = <a href="dictionary_C.html#13688">severities</a>();</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_J.html#728">Entry</a>&lt;<a href="dictionary_S.html#260">String</a>, <a href="dictionary_C.html#407">SeverityLevel</a>&gt; <a href="dictionary_C.html#18080">entry</a> : <a href="dictionary_C.html#13688">severities</a>().<a href="dictionary_E.html#531">entrySet</a>()) {</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#18082">predicate</a>.<a href="dictionary_A.html#508">apply</a>(<a href="dictionary_C.html#13686">getAllChecks</a>().<a href="dictionary_G.html#313">get</a>(<a href="dictionary_C.html#18080">entry</a>.<a href="dictionary_G.html#532">getKey</a>()))) {</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">        <a href="dictionary_C.html#18081">filteredSeverities</a> = <a href="dictionary_C.html#18081">filteredSeverities</a>.<a href="dictionary_P.html#1481">plus</a>(<a href="dictionary_C.html#18080">entry</a>.<a href="dictionary_G.html#532">getKey</a>(), <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#2136">NOT_A_PROBLEM</a>);</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">      }</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">    }</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#13672">ScannerSupplierImpl</a></span><span class="default">(<a href="dictionary_C.html#13686">getAllChecks</a>(), <a href="dictionary_C.html#18081">filteredSeverities</a>);</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">  }</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">}</span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span>
+</pre></body></html>

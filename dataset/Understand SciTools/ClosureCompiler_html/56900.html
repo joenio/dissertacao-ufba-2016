@@ -1,0 +1,347 @@
+<html><head><title>RemoveUnusedClassPropertiesTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/RemoveUnusedClassPropertiesTest.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/RemoveUnusedClassPropertiesTest.java";
+top.document.title  = "RemoveUnusedClassPropertiesTest.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2011 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * @author johnlenz@google.com (John Lenz)</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> */</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span><span class="keyword">public final class <a href="dictionary_C.html#56901">RemoveUnusedClassPropertiesTest</a> extends <a href="dictionary_C.html#20">CompilerTestCase</a> </span><span class="default">{</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span>
+<a name="24"><font size=-1>24     </font></a><span class="default">  </span><span class="keyword">private static final </span><span class="default">String <a href="dictionary_C.html#56936">EXTERNS</a> = <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">      </span><span class="string">&quot;var window;&quot;</span><span class="default">,</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">      </span><span class="string">&quot;function alert(a) {}&quot;</span><span class="default">,</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">      </span><span class="string">&quot;var EXT = {};&quot;</span><span class="default">,</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">      </span><span class="string">&quot;EXT.ext;&quot;</span><span class="default">,</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">      </span><span class="string">&quot;var Object;&quot;</span><span class="default">,</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">      </span><span class="string">&quot;Object.defineProperties;&quot;</span><span class="default">,</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">      </span><span class="string">&quot;var foo&quot;</span><span class="default">);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#56902">RemoveUnusedClassPropertiesTest</a></span><span class="default">() {</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">(<a href="dictionary_C.html#56936">EXTERNS</a>);</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    <a href="dictionary_C.html#8081">enableGatherExternProperties</a>();</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">  }</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  @Override</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#19">CompilerPass</a> <a href="dictionary_C.html#56903">getProcessor</a></span><span class="default">(<a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#56904">compiler</a>) {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#28534">RemoveUnusedClassProperties</a></span><span class="default">(<a href="dictionary_C.html#56904">compiler</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">  }</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56933">testSimple1</a></span><span class="default">() {</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">    </span><span class="comment">// A property defined on &quot;this&quot; can be removed</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.a = 2&quot;</span><span class="default">, </span><span class="string">&quot;2&quot;</span><span class="default">);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (this.a = 2)&quot;</span><span class="default">, </span><span class="string">&quot;x = 2&quot;</span><span class="default">);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this.a = 2; x = this.a;&quot;</span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  }</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56934">testSimple2</a></span><span class="default">() {</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    </span><span class="comment">// A property defined on &quot;this&quot; can be removed, even when defined</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">    // as part of an expression</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.a = 2, f()&quot;</span><span class="default">, </span><span class="string">&quot;2, f()&quot;</span><span class="default">);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (this.a = 2, f())&quot;</span><span class="default">, </span><span class="string">&quot;x = (2, f())&quot;</span><span class="default">);</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (f(), this.a = 2)&quot;</span><span class="default">, </span><span class="string">&quot;x = (f(), 2)&quot;</span><span class="default">);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  }</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56935">testSimple3</a></span><span class="default">() {</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    </span><span class="comment">// A property defined on an object other than &quot;this&quot; can not be removed.</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;y.a = 2&quot;</span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    </span><span class="comment">// and prevents the removal of the definition on 'this'.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;y.a = 2; this.a = 2&quot;</span><span class="default">);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    </span><span class="comment">// Some use of the property &quot;a&quot; prevents the removal.</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;y.a = 2; this.a = 1; alert(x.a)&quot;</span><span class="default">);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  }</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56918">testObjLit</a></span><span class="default">() {</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="comment">// A property defined on an object other than &quot;this&quot; can not be removed.</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;({a:2})&quot;</span><span class="default">);</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span><span class="comment">// and prevent the removal of the definition on 'this'.</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;({a:0}); this.a = 1;&quot;</span><span class="default">);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    </span><span class="comment">// Some use of the property &quot;a&quot; prevents the removal.</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;x = ({a:0}); this.a = 1; alert(x.a)&quot;</span><span class="default">);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  }</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56910">testExtern</a></span><span class="default">() {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">    </span><span class="comment">// A property defined in the externs is can not be removed.</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;this.ext = 2&quot;</span><span class="default">);</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">  }</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56909">testExport</a></span><span class="default">() {</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    </span><span class="comment">// An exported property can not be removed.</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;this.ext = 2; window['export'] = this.ext;&quot;</span><span class="default">);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;function f() { this.ext = 2; } window['export'] = this.ext;&quot;</span><span class="default">);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">  }</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56905">testAssignOp1</a></span><span class="default">() {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    </span><span class="comment">// Properties defined using a compound assignment can be removed if the</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">    // result of the assignment expression is not immediately used.</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.x += 2&quot;</span><span class="default">, </span><span class="string">&quot;2&quot;</span><span class="default">);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (this.x += 2)&quot;</span><span class="default">);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this.x += 2; x = this.x;&quot;</span><span class="default">);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="comment">// But, of course, a later use prevents its removal.</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;this.x += 2; x.x;&quot;</span><span class="default">);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">  }</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span>
+<a name="98"><font size=-1>98     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56906">testAssignOp2</a></span><span class="default">() {</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">    </span><span class="comment">// Properties defined using a compound assignment can be removed if the</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">    // result of the assignment expression is not immediately used.</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.a += 2, f()&quot;</span><span class="default">, </span><span class="string">&quot;2, f()&quot;</span><span class="default">);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (this.a += 2, f())&quot;</span><span class="default">, </span><span class="string">&quot;x = (2, f())&quot;</span><span class="default">);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (f(), this.a += 2)&quot;</span><span class="default">);</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">  }</span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span>
+<a name="106"><font size=-1>106     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56912">testInc1</a></span><span class="default">() {</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    </span><span class="comment">// Increments and Decrements are handled similarly to compound assignments</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">    // but need a placeholder value when replaced.</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.x++&quot;</span><span class="default">, </span><span class="string">&quot;0&quot;</span><span class="default">);</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (this.x++)&quot;</span><span class="default">);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this.x++; x = this.x;&quot;</span><span class="default">);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span>
+<a name="113"><font size=-1>113     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;--this.x&quot;</span><span class="default">, </span><span class="string">&quot;0&quot;</span><span class="default">);</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (--this.x)&quot;</span><span class="default">);</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;--this.x; x = this.x;&quot;</span><span class="default">);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">  }</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56913">testInc2</a></span><span class="default">() {</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">    </span><span class="comment">// Increments and Decrements are handled similarly to compound assignments</span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">    // but need a placeholder value when replaced.</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.a++, f()&quot;</span><span class="default">, </span><span class="string">&quot;0, f()&quot;</span><span class="default">);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (this.a++, f())&quot;</span><span class="default">, </span><span class="string">&quot;x = (0, f())&quot;</span><span class="default">);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (f(), this.a++)&quot;</span><span class="default">);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default"></span>
+<a name="125"><font size=-1>125     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;--this.a, f()&quot;</span><span class="default">, </span><span class="string">&quot;0, f()&quot;</span><span class="default">);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;x = (--this.a, f())&quot;</span><span class="default">, </span><span class="string">&quot;x = (0, f())&quot;</span><span class="default">);</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = (f(), --this.a)&quot;</span><span class="default">);</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">  }</span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span>
+<a name="130"><font size=-1>130     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56915">testJSCompiler_renameProperty</a></span><span class="default">() {</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">    </span><span class="comment">// JSCompiler_renameProperty introduces a use of the property</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;this.a = 2; x[JSCompiler_renameProperty('a')]&quot;</span><span class="default">);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this.a = 2; JSCompiler_renameProperty('a')&quot;</span><span class="default">);</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">  }</span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span>
+<a name="136"><font size=-1>136     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56911">testForIn</a></span><span class="default">() {</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">    </span><span class="comment">// This is the basic assumption that this pass makes:</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">    // it can remove properties even when the object is used in a FOR-IN loop</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.y = 1;for (var a in x) { alert(x[a]) }&quot;</span><span class="default">,</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">         </span><span class="string">&quot;1;for (var a in x) { alert(x[a]) }&quot;</span><span class="default">);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56928">testObjectKeys</a></span><span class="default">() {</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">    </span><span class="comment">// This is the basic assumption that this pass makes:</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">    // it can remove properties even when the object are referenced</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;this.y = 1;alert(Object.keys(this))&quot;</span><span class="default">,</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">         </span><span class="string">&quot;1;alert(Object.keys(this))&quot;</span><span class="default">);</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">  }</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56929">testObjectReflection1</a></span><span class="default">() {</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">    </span><span class="comment">// Verify reflection prevents removal.</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">        </span><span class="string">&quot;/** @constructor */ function A() {this.foo = 1;}\n&quot; </span><span class="default">+</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">        </span><span class="string">&quot;use(goog.reflect.object(A, {foo: 'foo'}));\n&quot;</span><span class="default">);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">  }</span>
+<a name="156"><font size=-1>156     </font></a><span class="default"></span>
+<a name="157"><font size=-1>157     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56930">testObjectReflection2</a></span><span class="default">() {</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">    </span><span class="comment">// Any object literal definition prevents removal.</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">    // Type based removal would allow this to be removed.</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">        </span><span class="string">&quot;/** @constructor */ function A() {this.foo = 1;}\n&quot; </span><span class="default">+</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">        </span><span class="string">&quot;use({foo: 'foo'});\n&quot;</span><span class="default">);</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">  }</span>
+<a name="164"><font size=-1>164     </font></a><span class="default"></span>
+<a name="165"><font size=-1>165     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56914">testIssue730</a></span><span class="default">() {</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">    </span><span class="comment">// Partial removal of properties can causes problems if the object is</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">    // sealed.</span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">        </span><span class="string">&quot;function A() {this.foo = 0;}\n&quot; </span><span class="default">+</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">        </span><span class="string">&quot;function B() {this.a = new A();}\n&quot; </span><span class="default">+</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">        </span><span class="string">&quot;B.prototype.dostuff = function() {this.a.foo++;alert('hi');}\n&quot; </span><span class="default">+</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">        </span><span class="string">&quot;new B().dostuff();\n&quot;</span><span class="default">);</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">  }</span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span>
+<a name="175"><font size=-1>175     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56916">testNoRemoveSideEffect1</a></span><span class="default">() {</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">        </span><span class="string">&quot;function A() {alert('me'); return function(){}}\n&quot; </span><span class="default">+</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">        </span><span class="string">&quot;A().prototype.foo = function() {};\n&quot;</span><span class="default">,</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">        </span><span class="string">&quot;function A() {alert('me'); return function(){}}\n&quot; </span><span class="default">+</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">        </span><span class="string">&quot;A(),function(){};\n&quot;</span><span class="default">);</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">  }</span>
+<a name="182"><font size=-1>182     </font></a><span class="default"></span>
+<a name="183"><font size=-1>183     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56917">testNoRemoveSideEffect2</a></span><span class="default">() {</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">        </span><span class="string">&quot;function A() {alert('me'); return function(){}}\n&quot; </span><span class="default">+</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">        </span><span class="string">&quot;A().prototype.foo++;\n&quot;</span><span class="default">,</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">        </span><span class="string">&quot;function A() {alert('me'); return function(){}}\n&quot; </span><span class="default">+</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">        </span><span class="string">&quot;A(),0;\n&quot;</span><span class="default">);</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">  }</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span>
+<a name="191"><font size=-1>191     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56931">testPrototypeProps1</a></span><span class="default">() {</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">        </span><span class="string">&quot;function A() {this.foo = 1;}\n&quot; </span><span class="default">+</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">        </span><span class="string">&quot;A.prototype.foo = 0;\n&quot; </span><span class="default">+</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">        </span><span class="string">&quot;A.prototype.method = function() {this.foo++};\n&quot; </span><span class="default">+</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">        </span><span class="string">&quot;new A().method()\n&quot;</span><span class="default">,</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">        </span><span class="string">&quot;function A() {1;}\n&quot; </span><span class="default">+</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">        </span><span class="string">&quot;0;\n&quot; </span><span class="default">+</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">        </span><span class="string">&quot;A.prototype.method = function() {0;};\n&quot; </span><span class="default">+</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">        </span><span class="string">&quot;new A().method()\n&quot;</span><span class="default">);</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">  }</span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span>
+<a name="203"><font size=-1>203     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56932">testPrototypeProps2</a></span><span class="default">() {</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">    </span><span class="comment">// don't remove properties that are exported by convention</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">        </span><span class="string">&quot;function A() {this._foo = 1;}\n&quot; </span><span class="default">+</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">        </span><span class="string">&quot;A.prototype._foo = 0;\n&quot; </span><span class="default">+</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">        </span><span class="string">&quot;A.prototype.method = function() {this._foo++};\n&quot; </span><span class="default">+</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">        </span><span class="string">&quot;new A().method()\n&quot;</span><span class="default">);</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">  }</span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span>
+<a name="212"><font size=-1>212     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56907">testConstructorProperty1</a></span><span class="default">() {</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">        </span><span class="string">&quot;/** @constructor */ function C() {} C.prop = 1;&quot;</span><span class="default">,</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">        </span><span class="string">&quot;/** @constructor */ function C() {} 1&quot;</span><span class="default">);</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">  }</span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span>
+<a name="220"><font size=-1>220     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56908">testConstructorProperty2</a></span><span class="default">() {</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span>
+<a name="223"><font size=-1>223     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">        </span><span class="string">&quot;/** @constructor */ function C() {} &quot;</span>
+<a name="225"><font size=-1>225     </font></a><span class="string">        </span><span class="default">+ </span><span class="string">&quot;C.prop = 1; &quot;</span>
+<a name="226"><font size=-1>226     </font></a><span class="string">        </span><span class="default">+ </span><span class="string">&quot;function use(a) { alert(a.prop) }; &quot;</span>
+<a name="227"><font size=-1>227     </font></a><span class="string">        </span><span class="default">+ </span><span class="string">&quot;use(C)&quot;</span><span class="default">);</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">  }</span>
+<a name="229"><font size=-1>229     </font></a><span class="default"></span>
+<a name="230"><font size=-1>230     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56919">testObjectDefineProperties1</a></span><span class="default">() {</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span>
+<a name="233"><font size=-1>233     </font></a><span class="default">    <a href="dictionary_T.html#12587">testSame</a>(</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:{value:1}});&quot;</span><span class="default">,</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">            </span><span class="string">&quot;function use(a) { alert(a.prop) };&quot;</span><span class="default">,</span>
+<a name="238"><font size=-1>238     </font></a><span class="default">            </span><span class="string">&quot;use(C)&quot;</span><span class="default">));</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">  }</span>
+<a name="240"><font size=-1>240     </font></a><span class="default"></span>
+<a name="241"><font size=-1>241     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56920">testObjectDefineProperties2</a></span><span class="default">() {</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span>
+<a name="244"><font size=-1>244     </font></a><span class="default">    <a href="dictionary_T.html#1950">test</a>(</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:{value:1}});&quot;</span><span class="default">),</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="250"><font size=-1>250     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {});&quot;</span><span class="default">));</span>
+<a name="251"><font size=-1>251     </font></a><span class="default">  }</span>
+<a name="252"><font size=-1>252     </font></a><span class="default"></span>
+<a name="253"><font size=-1>253     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56921">testObjectDefineProperties3</a></span><span class="default">() {</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span>
+<a name="256"><font size=-1>256     </font></a><span class="default">    <a href="dictionary_T.html#1950">test</a>(</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, &quot;</span><span class="default">,</span>
+<a name="260"><font size=-1>260     </font></a><span class="default">            </span><span class="string">&quot;  {prop:{&quot;</span><span class="default">,</span>
+<a name="261"><font size=-1>261     </font></a><span class="default">            </span><span class="string">&quot;    get:function(){},&quot;</span><span class="default">,</span>
+<a name="262"><font size=-1>262     </font></a><span class="default">            </span><span class="string">&quot;    set:function(a){},&quot;</span><span class="default">,</span>
+<a name="263"><font size=-1>263     </font></a><span class="default">            </span><span class="string">&quot;}});&quot;</span><span class="default">),</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="265"><font size=-1>265     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {});&quot;</span><span class="default">));</span>
+<a name="267"><font size=-1>267     </font></a><span class="default">  }</span>
+<a name="268"><font size=-1>268     </font></a><span class="default"></span>
+<a name="269"><font size=-1>269     </font></a><span class="default">  </span><span class="comment">// side-effect in definition retains property</span>
+<a name="270"><font size=-1>270     </font></a><span class="comment">  </span><span class="keyword">public void <a href="dictionary_C.html#56922">testObjectDefineProperties4</a></span><span class="default">() {</span>
+<a name="271"><font size=-1>271     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="272"><font size=-1>272     </font></a><span class="default"></span>
+<a name="273"><font size=-1>273     </font></a><span class="default">    <a href="dictionary_T.html#12587">testSame</a>(</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:alert('')});&quot;</span><span class="default">));</span>
+<a name="277"><font size=-1>277     </font></a><span class="default">  }</span>
+<a name="278"><font size=-1>278     </font></a><span class="default"></span>
+<a name="279"><font size=-1>279     </font></a><span class="default">  </span><span class="comment">// quoted properties retains property</span>
+<a name="280"><font size=-1>280     </font></a><span class="comment">  </span><span class="keyword">public void <a href="dictionary_C.html#56923">testObjectDefineProperties5</a></span><span class="default">() {</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="282"><font size=-1>282     </font></a><span class="default"></span>
+<a name="283"><font size=-1>283     </font></a><span class="default">    <a href="dictionary_T.html#12587">testSame</a>(</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="285"><font size=-1>285     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="286"><font size=-1>286     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {'prop': {value: 1}});&quot;</span><span class="default">));</span>
+<a name="287"><font size=-1>287     </font></a><span class="default">  }</span>
+<a name="288"><font size=-1>288     </font></a><span class="default"></span>
+<a name="289"><font size=-1>289     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56924">testObjectDefineProperties6</a></span><span class="default">() {</span>
+<a name="290"><font size=-1>290     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="291"><font size=-1>291     </font></a><span class="default"></span>
+<a name="292"><font size=-1>292     </font></a><span class="default">    </span><span class="comment">// an unknown destination object doesn't prevent removal.</span>
+<a name="293"><font size=-1>293     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">        </span><span class="string">&quot;Object.defineProperties(foo(), {prop:{value:1}});&quot;</span><span class="default">,</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">        </span><span class="string">&quot;Object.defineProperties(foo(), {});&quot;</span><span class="default">);</span>
+<a name="296"><font size=-1>296     </font></a><span class="default">  }</span>
+<a name="297"><font size=-1>297     </font></a><span class="default"></span>
+<a name="298"><font size=-1>298     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56925">testObjectDefineProperties7</a></span><span class="default">() {</span>
+<a name="299"><font size=-1>299     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="300"><font size=-1>300     </font></a><span class="default"></span>
+<a name="301"><font size=-1>301     </font></a><span class="default">    <a href="dictionary_T.html#1950">test</a>(</span>
+<a name="302"><font size=-1>302     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="303"><font size=-1>303     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="304"><font size=-1>304     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:{get:function () {return new C}}});&quot;</span><span class="default">),</span>
+<a name="305"><font size=-1>305     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="306"><font size=-1>306     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="307"><font size=-1>307     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {});&quot;</span><span class="default">));</span>
+<a name="308"><font size=-1>308     </font></a><span class="default">  }</span>
+<a name="309"><font size=-1>309     </font></a><span class="default"></span>
+<a name="310"><font size=-1>310     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56926">testObjectDefineProperties8</a></span><span class="default">() {</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">    <a href="dictionary_C.html#8083">enableTypeCheck</a>();</span>
+<a name="312"><font size=-1>312     </font></a><span class="default"></span>
+<a name="313"><font size=-1>313     </font></a><span class="default">    <a href="dictionary_T.html#1950">test</a>(</span>
+<a name="314"><font size=-1>314     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="315"><font size=-1>315     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="316"><font size=-1>316     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:{set:function (a) {return alert(a)}}});&quot;</span><span class="default">),</span>
+<a name="317"><font size=-1>317     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="318"><font size=-1>318     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="319"><font size=-1>319     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {});&quot;</span><span class="default">));</span>
+<a name="320"><font size=-1>320     </font></a><span class="default">  }</span>
+<a name="321"><font size=-1>321     </font></a><span class="default"></span>
+<a name="322"><font size=-1>322     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#56927">testObjectDefineProperties_used_setter_removed</a></span><span class="default">() {</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">    </span><span class="comment">// TODO: Either remove fix this or document it as a limitation of advanced mode optimizations.</span>
+<a name="324"><font size=-1>324     </font></a><span class="comment">    <a href="dictionary_C.html#8083">enableTypeCheck</a></span><span class="default">();</span>
+<a name="325"><font size=-1>325     </font></a><span class="default"></span>
+<a name="326"><font size=-1>326     </font></a><span class="default">    <a href="dictionary_T.html#1950">test</a>(</span>
+<a name="327"><font size=-1>327     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="328"><font size=-1>328     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="329"><font size=-1>329     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {prop:{set:function (a) {alert(2)}}});&quot;</span><span class="default">,</span>
+<a name="330"><font size=-1>330     </font></a><span class="default">            </span><span class="string">&quot;C.prop = 2;&quot;</span><span class="default">),</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">        <a href="dictionary_C.html#1122">LINE_JOINER</a>.<a href="dictionary_J.html#1065">join</a>(</span>
+<a name="332"><font size=-1>332     </font></a><span class="default">            </span><span class="string">&quot;/** @constructor */ function C() {}&quot;</span><span class="default">,</span>
+<a name="333"><font size=-1>333     </font></a><span class="default">            </span><span class="string">&quot;Object.defineProperties(C, {});2&quot;</span><span class="default">));</span>
+<a name="334"><font size=-1>334     </font></a><span class="default">  }</span>
+<a name="335"><font size=-1>335     </font></a><span class="default"></span>
+<a name="336"><font size=-1>336     </font></a><span class="default">}</span>
+<a name="337"><font size=-1>337     </font></a><span class="default"></span>
+</pre></body></html>

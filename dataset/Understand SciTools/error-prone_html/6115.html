@@ -1,0 +1,141 @@
+<html><head><title>ReturnValueIgnoredPositiveCases.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/test/java/com/google/errorprone/bugpatterns/testdata/ReturnValueIgnoredPositiveCases.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/test/java/com/google/errorprone/bugpatterns/testdata/ReturnValueIgnoredPositiveCases.java";
+top.document.title  = "ReturnValueIgnoredPositiveCases.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2012 Google Inc. All Rights Reserved.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#149">bugpatterns</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#343">io</a>.<a href="dictionary_J.html#336">IOException</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#856">math</a>.<a href="dictionary_J.html#6116">BigDecimal</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#856">math</a>.<a href="dictionary_J.html#850">BigInteger</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.nio.<a href="dictionary_J.html#3913">file</a>.<a href="dictionary_J.html#3907">Path</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.nio.<a href="dictionary_J.html#3913">file</a>.<a href="dictionary_J.html#3908">Paths</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#249">util</a>.Locale;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * @author alexeagle@google.com (Alex Eagle)</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> */</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_C.html#6117">ReturnValueIgnoredPositiveCases</a> </span><span class="default">{</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  <a href="dictionary_S.html#260">String</a> <a href="dictionary_C.html#6135">a</a> = </span><span class="string">&quot;thing&quot;</span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  { </span><span class="comment">// String methods</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">    // BUG: Diagnostic contains: remove this line</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">    <a href="dictionary_S.html#260">String</a></span><span class="default">.<a href="dictionary_F.html#772">format</a>(</span><span class="string">&quot;%d&quot;</span><span class="default">, </span><span class="number">10</span><span class="default">);</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: remove this line</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">    <a href="dictionary_S.html#260">String</a></span><span class="default">.<a href="dictionary_F.html#772">format</a>(</span><span class="string">&quot;%d&quot;</span><span class="default">, </span><span class="number">10</span><span class="default">).<a href="dictionary_T.html#3826">trim</a>();</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: remove this line</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">    </span><span class="default">java.lang.String.<a href="dictionary_F.html#772">format</a>(</span><span class="string">&quot;%d&quot;</span><span class="default">, </span><span class="number">10</span><span class="default">).<a href="dictionary_T.html#3826">trim</a>();</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.intern()</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_I.html#6121">intern</a>();</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.trim()</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#3826">trim</a>();</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.trim().concat(&quot;b&quot;)</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#3826">trim</a>().<a href="dictionary_C.html#6119">concat</a>(</span><span class="string">&quot;b&quot;</span><span class="default">);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.concat(&quot;append this&quot;)</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_C.html#6119">concat</a>(</span><span class="string">&quot;append this&quot;</span><span class="default">);</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.replace('t', 'b')</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_R.html#1922">replace</a>(</span><span class="string">'t'</span><span class="default">, </span><span class="string">'b'</span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.replace(&quot;thi&quot;, &quot;fli&quot;)</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_R.html#1922">replace</a>(</span><span class="string">&quot;thi&quot;</span><span class="default">, </span><span class="string">&quot;fli&quot;</span><span class="default">);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.replaceAll(&quot;i&quot;, &quot;b&quot;)</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_R.html#6124">replaceAll</a>(</span><span class="string">&quot;i&quot;</span><span class="default">, </span><span class="string">&quot;b&quot;</span><span class="default">);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.replaceFirst(&quot;a&quot;, &quot;b&quot;)</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_R.html#1876">replaceFirst</a>(</span><span class="string">&quot;a&quot;</span><span class="default">, </span><span class="string">&quot;b&quot;</span><span class="default">);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.toLowerCase()</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#6130">toLowerCase</a>();</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.toLowerCase(Locale.ENGLISH)</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#6130">toLowerCase</a>(Locale.<a href="dictionary_E.html#6133">ENGLISH</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.toUpperCase()</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#4899">toUpperCase</a>();</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.toUpperCase(Locale.ENGLISH)</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_T.html#4899">toUpperCase</a>(Locale.<a href="dictionary_E.html#6133">ENGLISH</a>);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.substring(0)</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_S.html#1701">substring</a>(</span><span class="number">0</span><span class="default">);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: a = a.substring(0, 1)</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">    <a href="dictionary_C.html#6135">a</a></span><span class="default">.<a href="dictionary_S.html#1701">substring</a>(</span><span class="number">0</span><span class="default">, </span><span class="number">1</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">  }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  </span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  <a href="dictionary_S.html#6140">StringBuffer</a> <a href="dictionary_C.html#6139">sb</a> = </span><span class="keyword">new <a href="dictionary_S.html#6140">StringBuffer</a></span><span class="default">(</span><span class="string">&quot;hello&quot;</span><span class="default">);</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  {</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: remove this line</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">    <a href="dictionary_C.html#6139">sb</a></span><span class="default">.<a href="dictionary_T.html#116">toString</a>().<a href="dictionary_T.html#3826">trim</a>();</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  }</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  <a href="dictionary_J.html#850">BigInteger</a> <a href="dictionary_C.html#6136">b</a> = </span><span class="keyword">new <a href="dictionary_J.html#850">BigInteger</a></span><span class="default">(</span><span class="string">&quot;123456789&quot;</span><span class="default">);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  { </span><span class="comment">// BigInteger methods</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">    // BUG: Diagnostic contains: b = b.add(new BigInteger(&quot;3&quot;))</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">    <a href="dictionary_C.html#6136">b</a></span><span class="default">.<a href="dictionary_A.html#214">add</a>(</span><span class="keyword">new <a href="dictionary_J.html#850">BigInteger</a></span><span class="default">(</span><span class="string">&quot;3&quot;</span><span class="default">));</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: b = b.abs()</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">    <a href="dictionary_C.html#6136">b</a></span><span class="default">.<a href="dictionary_A.html#6118">abs</a>();</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: b = b.shiftLeft(3)</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">    <a href="dictionary_C.html#6136">b</a></span><span class="default">.<a href="dictionary_S.html#6126">shiftLeft</a>(</span><span class="number">3</span><span class="default">);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: b = b.subtract(BigInteger.TEN)</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">    <a href="dictionary_C.html#6136">b</a></span><span class="default">.<a href="dictionary_S.html#6128">subtract</a>(<a href="dictionary_J.html#850">BigInteger</a>.<a href="dictionary_T.html#6134">TEN</a>);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  }</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">  <a href="dictionary_J.html#6116">BigDecimal</a> <a href="dictionary_C.html#6137">c</a> = </span><span class="keyword">new <a href="dictionary_J.html#6116">BigDecimal</a></span><span class="default">(</span><span class="string">&quot;1234.5678&quot;</span><span class="default">);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  { </span><span class="comment">// BigDecimal methods</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">    // BUG: Diagnostic contains: c = c.add(new BigDecimal(&quot;1.3&quot;))</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">    <a href="dictionary_C.html#6137">c</a></span><span class="default">.<a href="dictionary_A.html#214">add</a>(</span><span class="keyword">new <a href="dictionary_J.html#6116">BigDecimal</a></span><span class="default">(</span><span class="string">&quot;1.3&quot;</span><span class="default">));</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: c = c.abs()</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">    <a href="dictionary_C.html#6137">c</a></span><span class="default">.<a href="dictionary_A.html#6118">abs</a>();</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: c = c.divide(new BigDecimal(&quot;4.5&quot;))</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">    <a href="dictionary_C.html#6137">c</a></span><span class="default">.<a href="dictionary_D.html#6120">divide</a>(</span><span class="keyword">new <a href="dictionary_J.html#6116">BigDecimal</a></span><span class="default">(</span><span class="string">&quot;4.5&quot;</span><span class="default">));</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: remove this line</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">    </span><span class="keyword">new <a href="dictionary_J.html#6116">BigDecimal</a></span><span class="default">(</span><span class="string">&quot;10&quot;</span><span class="default">).<a href="dictionary_A.html#214">add</a>(<a href="dictionary_C.html#6137">c</a>);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">  }</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">  </span>
+<a name="98"><font size=-1>98     </font></a><span class="default">  <a href="dictionary_J.html#3907">Path</a> <a href="dictionary_C.html#6138">p</a> = <a href="dictionary_J.html#3908">Paths</a>.<a href="dictionary_G.html#313">get</a>(</span><span class="string">&quot;foo/bar/baz&quot;</span><span class="default">);</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">  { </span><span class="comment">// Path methods</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">    // BUG: Diagnostic contains: p = p.getFileName();</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_G.html#3816">getFileName</a>();</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.getName(0);</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_G.html#129">getName</a>(</span><span class="number">0</span><span class="default">);</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.getParent();</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_G.html#2920">getParent</a>();</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.getRoot();</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_G.html#2909">getRoot</a>();</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.normalize();</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_N.html#6122">normalize</a>();</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.relativize(p);</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_R.html#6123">relativize</a>(<a href="dictionary_C.html#6138">p</a>);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.resolve(p);</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_R.html#3860">resolve</a>(<a href="dictionary_C.html#6138">p</a>);</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.resolve(&quot;string&quot;);</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_R.html#3860">resolve</a>(</span><span class="string">&quot;string&quot;</span><span class="default">);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.resolveSibling(p);</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_R.html#6125">resolveSibling</a>(<a href="dictionary_C.html#6138">p</a>);</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.resolveSibling(&quot;string&quot;);</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_R.html#6125">resolveSibling</a>(</span><span class="string">&quot;string&quot;</span><span class="default">);</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.subpath(0, 1);</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_S.html#6127">subpath</a>(</span><span class="number">0</span><span class="default">, </span><span class="number">1</span><span class="default">);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">    </span><span class="comment">// BUG: Diagnostic contains: p = p.toAbsolutePath();</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">    <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_T.html#6129">toAbsolutePath</a>();</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">    </span><span class="keyword">try </span><span class="default">{</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">      </span><span class="comment">// BUG: Diagnostic contains: p = p.toRealPath();</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">      <a href="dictionary_C.html#6138">p</a></span><span class="default">.<a href="dictionary_T.html#6131">toRealPath</a>();</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">    } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_J.html#336">IOException</a> <a href="dictionary_C.html#6132">e</a>) {</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">    }</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">  }</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">}</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span>
+</pre></body></html>

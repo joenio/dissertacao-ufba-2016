@@ -1,0 +1,66 @@
+<html><head><title>PolyglotSyncDuplicatorTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.java.polyglot.test/source/com/ibm/wala/cast/java/test/PolyglotSyncDuplicatorTest.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.java.polyglot.test/source/com/ibm/wala/cast/java/test/PolyglotSyncDuplicatorTest.java";
+top.document.title  = "PolyglotSyncDuplicatorTest.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.ibm.wala.cast.java.<a href="dictionary_C.html#1350">test</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#3">Collection</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#213">util</a>.<a href="dictionary_J.html#7">List</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.<a href="dictionary_C.html#23421">client</a>.<a href="dictionary_C.html#23419">JavaSourceAnalysisEngine</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.examples.<a href="dictionary_C.html#54071">ast</a>.<a href="dictionary_C.html#54008">SynchronizedBlockDuplicator</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.ipa.<a href="dictionary_C.html#1364">callgraph</a>.<a href="dictionary_C.html#1351">JavaSourceAnalysisScope</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.translator.<a href="dictionary_C.html#13253">polyglot</a>.<a href="dictionary_C.html#13258">IRTranslatorExtension</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.translator.<a href="dictionary_C.html#13253">polyglot</a>.<a href="dictionary_C.html#19288">JavaIRTranslatorExtension</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.java.translator.<a href="dictionary_C.html#13253">polyglot</a>.<a href="dictionary_C.html#23420">PolyglotJavaSourceAnalysisEngine</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.<a href="dictionary_C.html#1968">tree</a>.<a href="dictionary_C.html#4547">CAst</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.tree.<a href="dictionary_C.html#14566">rewrite</a>.<a href="dictionary_C.html#15280">CAstRewriter</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.cast.tree.<a href="dictionary_C.html#14566">rewrite</a>.<a href="dictionary_C.html#14565">CAstRewriterFactory</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.core.tests.<a href="dictionary_C.html#626">callGraph</a>.<a href="dictionary_C.html#609">CallGraphTestUtil</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#613">AnalysisScope</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#380">callgraph</a>.<a href="dictionary_C.html#616">Entrypoint</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.callgraph.<a href="dictionary_C.html#382">impl</a>.<a href="dictionary_C.html#618">Util</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.ibm.wala.ipa.<a href="dictionary_C.html#386">cha</a>.<a href="dictionary_C.html#385">IClassHierarchy</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_C.html#67089">PolyglotSyncDuplicatorTest</a> extends <a href="dictionary_C.html#28262">SyncDuplicatorTest</a> </span><span class="default">{</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default">  @<a href="dictionary_O.html#8">Override</a></span>
+<a name="30"><font size=-1>30     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#23419">JavaSourceAnalysisEngine</a> <a href="dictionary_C.html#67090">getAnalysisEngine</a></span><span class="default">(</span><span class="keyword">final <a href="dictionary_S.html#208">String</a></span><span class="default">[] <a href="dictionary_C.html#67102">mainClassDescriptors</a>, <a href="dictionary_J.html#3">Collection</a>&lt;<a href="dictionary_S.html#208">String</a>&gt; <a href="dictionary_C.html#67103">sources</a>, <a href="dictionary_J.html#7">List</a>&lt;<a href="dictionary_S.html#208">String</a>&gt; <a href="dictionary_C.html#67101">libs</a>) {</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">    <a href="dictionary_C.html#23419">JavaSourceAnalysisEngine</a> <a href="dictionary_C.html#67100">engine</a> = </span><span class="keyword">new <a href="dictionary_C.html#23420">PolyglotJavaSourceAnalysisEngine</a></span><span class="default">() {</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">      @<a href="dictionary_O.html#8">Override</a></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">      </span><span class="keyword">protected <a href="dictionary_I.html#590">Iterable</a></span><span class="default">&lt;<a href="dictionary_C.html#616">Entrypoint</a>&gt; <a href="dictionary_C.html#67097">makeDefaultEntrypoints</a>(<a href="dictionary_C.html#613">AnalysisScope</a> <a href="dictionary_C.html#67099">scope</a>, <a href="dictionary_C.html#385">IClassHierarchy</a> <a href="dictionary_C.html#67098">cha</a>) {</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#618">Util</a></span><span class="default">.<a href="dictionary_C.html#23426">makeMainEntrypoints</a>(<a href="dictionary_C.html#1351">JavaSourceAnalysisScope</a>.<a href="dictionary_C.html#1376">SOURCE</a>, <a href="dictionary_C.html#67098">cha</a>, <a href="dictionary_C.html#67102">mainClassDescriptors</a>);</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">      }</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default">      @<a href="dictionary_O.html#8">Override</a></span>
+<a name="38"><font size=-1>38     </font></a><span class="default">      </span><span class="keyword">public <a href="dictionary_C.html#13258">IRTranslatorExtension</a> <a href="dictionary_C.html#67092">getTranslatorExtension</a></span><span class="default">() {</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">        <a href="dictionary_C.html#19288">JavaIRTranslatorExtension</a> <a href="dictionary_C.html#67096">ext</a> = </span><span class="keyword">new <a href="dictionary_C.html#19288">JavaIRTranslatorExtension</a></span><span class="default">();</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">        <a href="dictionary_C.html#67096">ext</a>.<a href="dictionary_C.html#19300">setCAstRewriterFactory</a>(</span><span class="keyword">new <a href="dictionary_C.html#14565">CAstRewriterFactory</a></span><span class="default">() {</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">          @<a href="dictionary_O.html#8">Override</a></span>
+<a name="42"><font size=-1>42     </font></a><span class="default">          </span><span class="keyword">public <a href="dictionary_C.html#15280">CAstRewriter</a> <a href="dictionary_C.html#67094">createCAstRewriter</a></span><span class="default">(<a href="dictionary_C.html#4547">CAst</a> <a href="dictionary_C.html#67095">ast</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">            </span><span class="keyword">return new <a href="dictionary_C.html#54035">SynchronizedBlockDuplicator</a></span><span class="default">(<a href="dictionary_C.html#67095">ast</a>, </span><span class="keyword">true</span><span class="default">, <a href="dictionary_C.html#28265">testMethod</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">          }</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">        });</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#67096">ext</a></span><span class="default">;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">      }</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    };</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    <a href="dictionary_C.html#67100">engine</a>.<a href="dictionary_C.html#23423">setExclusionsFile</a>(<a href="dictionary_C.html#609">CallGraphTestUtil</a>.<a href="dictionary_C.html#632">REGRESSION_EXCLUSIONS</a>);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    <a href="dictionary_C.html#23424">populateScope</a>(<a href="dictionary_C.html#67100">engine</a>, <a href="dictionary_C.html#67103">sources</a>, <a href="dictionary_C.html#67101">libs</a>);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#67100">engine</a></span><span class="default">;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  }</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">}</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,955 @@
+<html><head><title>FunctionInjector.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/FunctionInjector.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/FunctionInjector.java";
+top.document.title  = "FunctionInjector.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2008 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Preconditions;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Predicate;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Predicates;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Supplier;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>.<a href="dictionary_C.html#7925">ExpressionDecomposer</a>.<a href="dictionary_C.html#7924">DecompositionType</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#219">Node</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#220">Token</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Collection;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.HashSet;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Map;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Set;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> * A set of utility functions that replaces CALL with a specified</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * FUNCTION body, replacing and aliasing function parameters as</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * necessary.</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> *</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * @author johnlenz@google.com (John Lenz)</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> */</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#9748">FunctionInjector</a> </span><span class="default">{</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#20623">compiler</a></span><span class="default">;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">  </span><span class="keyword">private final boolean <a href="dictionary_C.html#20620">allowDecomposition</a></span><span class="default">;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  </span><span class="keyword">private </span><span class="default">Set&lt;String&gt; <a href="dictionary_C.html#20624">knownConstants</a> = </span><span class="keyword">new </span><span class="default">HashSet&lt;&gt;();</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  </span><span class="keyword">private final boolean <a href="dictionary_C.html#20622">assumeStrictThis</a></span><span class="default">;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  </span><span class="keyword">private final boolean <a href="dictionary_C.html#20621">assumeMinimumCapture</a></span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Supplier&lt;String&gt; <a href="dictionary_C.html#20625">safeNameIdSupplier</a>;</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Supplier&lt;String&gt; <a href="dictionary_C.html#20626">throwawayNameSupplier</a> =</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">      </span><span class="keyword">new </span><span class="default">Supplier&lt;String&gt;() {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    </span><span class="keyword">private int <a href="dictionary_C.html#20408">nextId</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    @Override</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    </span><span class="keyword">public </span><span class="default">String <a href="dictionary_C.html#20407">get</a>() {</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">      </span><span class="keyword">return </span><span class="default">String.<a href="dictionary_V.html#434">valueOf</a>(<a href="dictionary_C.html#20408">nextId</a>++);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    }</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  };</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">   * @param allowDecomposition Whether an effort should be made to break down</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">   * expressions into simpler expressions to allow functions to be injected</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">   * where they would otherwise be disallowed.</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">   */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">  </span><span class="keyword">public <a href="dictionary_C.html#9751">FunctionInjector</a></span><span class="default">(</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">      <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#20467">compiler</a>,</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">      Supplier&lt;String&gt; <a href="dictionary_C.html#20468">safeNameIdSupplier</a>,</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20464">allowDecomposition</a></span><span class="default">,</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20466">assumeStrictThis</a></span><span class="default">,</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20465">assumeMinimumCapture</a></span><span class="default">) {</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#20467">compiler</a>);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#20468">safeNameIdSupplier</a>);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20623">compiler</a> = <a href="dictionary_C.html#20467">compiler</a>;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20625">safeNameIdSupplier</a> = <a href="dictionary_C.html#20468">safeNameIdSupplier</a>;</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20620">allowDecomposition</a> = <a href="dictionary_C.html#20464">allowDecomposition</a>;</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20622">assumeStrictThis</a> = <a href="dictionary_C.html#20466">assumeStrictThis</a>;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20621">assumeMinimumCapture</a> = <a href="dictionary_C.html#20465">assumeMinimumCapture</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  }</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  </span><span class="comment">/** The type of inlining to perform. */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment">  </span><span class="default">enum <a href="dictionary_C.html#9746">InliningMode</a> {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">     * Directly replace the call expression. Only functions of meeting</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">     * strict preconditions can be inlined.</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">     */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">    <a href="dictionary_C.html#9753">DIRECT</a></span><span class="default">,</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">     * Replaces the call expression with a block of statements. Conditions</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">     * on the function are looser in mode, but stricter on the call site.</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">     */</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">    <a href="dictionary_C.html#9757">BLOCK</a></span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">  </span><span class="default">}</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span>
+<a name="90"><font size=-1>90     </font></a><span class="default">  </span><span class="comment">/** Holds a reference to the call node of a function call */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">  </span><span class="keyword">static class <a href="dictionary_C.html#9747">Reference</a> </span><span class="default">{</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20460">callNode</a></span><span class="default">;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#20463">scope</a></span><span class="default">;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#20462">module</a></span><span class="default">;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_C.html#9746">InliningMode</a> <a href="dictionary_C.html#20461">mode</a></span><span class="default">;</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    <a href="dictionary_C.html#9754">Reference</a>(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20456">callNode</a>, <a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#20459">scope</a>, <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#20458">module</a>, <a href="dictionary_C.html#9746">InliningMode</a> <a href="dictionary_C.html#20457">mode</a>) {</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20460">callNode</a> = <a href="dictionary_C.html#20456">callNode</a>;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20463">scope</a> = <a href="dictionary_C.html#20459">scope</a>;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20462">module</a> = <a href="dictionary_C.html#20458">module</a>;</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20461">mode</a> = <a href="dictionary_C.html#20457">mode</a>;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    }</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">  }</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">   * In order to estimate the cost of lining, we make the assumption that</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">   * Identifiers are reduced 2 characters. For the call arguments, the important</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">   * thing is that the cost is assumed to be the same in the call and the</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">   * function, so the actual length doesn't matter in most cases.</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">   */</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">  </span><span class="keyword">private static final int <a href="dictionary_C.html#20618">NAME_COST_ESTIMATE</a> </span><span class="default">=</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">      <a href="dictionary_C.html#537">InlineCostEstimator</a>.<a href="dictionary_C.html#20628">ESTIMATED_IDENTIFIER_COST</a>;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">  </span><span class="comment">/** The cost of a argument separator (a comma). */</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">  </span><span class="keyword">private static final int <a href="dictionary_C.html#20617">COMMA_COST</a> </span><span class="default">= </span><span class="number">1</span><span class="default">;</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default">  </span><span class="comment">/** The cost of the parentheses needed to make a call.*/</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">  </span><span class="keyword">private static final int <a href="dictionary_C.html#20619">PAREN_COST</a> </span><span class="default">= </span><span class="number">2</span><span class="default">;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span>
+<a name="121"><font size=-1>121     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">   * @param fnName The name of this function. This either the name of the</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">   *  variable to which the function is assigned or the name from the FUNCTION</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">   *  node.</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">   * @param fnNode The FUNCTION node of the function to inspect.</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">   * @return Whether the function node meets the minimum requirements for</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">   * inlining.</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">   */</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">  </span><span class="keyword">boolean <a href="dictionary_C.html#20512">doesFunctionMeetMinimumRequirements</a></span><span class="default">(</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">      </span><span class="keyword">final </span><span class="default">String <a href="dictionary_C.html#20517">fnName</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20518">fnNode</a>) {</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20516">block</a> = <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#945">getFunctionBody</a>(<a href="dictionary_C.html#20518">fnNode</a>);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default">    </span><span class="comment">// Basic restrictions on functions that can be inlined:</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">    // 0) The function is inlinable by convention</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">    // 1) It contains a reference to itself.</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">    // 2) It uses its parameters indirectly using &quot;arguments&quot; (it isn't</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">    //    handled yet.</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">    // 3) It references &quot;eval&quot;. Inline a function containing eval can have</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">    //    large performance implications.</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment"></span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20623">compiler</a>.<a href="dictionary_C.html#1363">getCodingConvention</a>().<a href="dictionary_C.html#1397">isInlinableFunction</a>(<a href="dictionary_C.html#20518">fnNode</a>)) {</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">      </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">    }</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    </span><span class="keyword">final </span><span class="default">String <a href="dictionary_C.html#20519">fnRecursionName</a> = <a href="dictionary_C.html#20518">fnNode</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20519">fnRecursionName</a> != </span><span class="keyword">null</span><span class="default">);</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default">    </span><span class="comment">// If the function references &quot;arguments&quot; directly in the function</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">    </span><span class="keyword">boolean <a href="dictionary_C.html#20521">referencesArguments</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20637">isNameReferenced</a>(</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">        <a href="dictionary_C.html#20516">block</a>, </span><span class="string">&quot;arguments&quot;</span><span class="default">, <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#2093">MATCH_NOT_FUNCTION</a>);</span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span>
+<a name="152"><font size=-1>152     </font></a><span class="default">    </span><span class="comment">// or it references &quot;eval&quot; or one of its names anywhere.</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">    </span><span class="default">Predicate&lt;<a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#20520">p</a> = </span><span class="keyword">new </span><span class="default">Predicate&lt;Node&gt;(){</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">      @Override</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">      </span><span class="keyword">public boolean <a href="dictionary_C.html#20514">apply</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20515">n</a>) {</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20515">n</a>.<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">          </span><span class="keyword">return <a href="dictionary_C.html#20515">n</a></span><span class="default">.<a href="dictionary_C.html#351">getString</a>().<a href="dictionary_E.html#395">equals</a>(</span><span class="string">&quot;eval&quot;</span><span class="default">)</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">            || (!<a href="dictionary_C.html#20517">fnName</a>.<a href="dictionary_I.html#370">isEmpty</a>()</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">                &amp;&amp; <a href="dictionary_C.html#20515">n</a>.<a href="dictionary_C.html#351">getString</a>().<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#20517">fnName</a>))</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">            || (!<a href="dictionary_C.html#20519">fnRecursionName</a>.<a href="dictionary_I.html#370">isEmpty</a>()</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">                &amp;&amp; <a href="dictionary_C.html#20515">n</a>.<a href="dictionary_C.html#351">getString</a>().<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#20519">fnRecursionName</a>));</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">        }</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">      }</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">    };</span>
+<a name="166"><font size=-1>166     </font></a><span class="default"></span>
+<a name="167"><font size=-1>167     </font></a><span class="default">    </span><span class="keyword">return </span><span class="default">!<a href="dictionary_C.html#20521">referencesArguments</a></span>
+<a name="168"><font size=-1>168     </font></a><span class="default">        &amp;&amp; !<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20631">has</a>(<a href="dictionary_C.html#20516">block</a>, <a href="dictionary_C.html#20520">p</a>, Predicates.&lt;<a href="dictionary_C.html#219">Node</a>&gt;<a href="dictionary_A.html#1329">alwaysTrue</a>());</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">  }</span>
+<a name="170"><font size=-1>170     </font></a><span class="default"></span>
+<a name="171"><font size=-1>171     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">   * @param fnNode The function to evaluate for inlining.</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">   * @param needAliases A set of function parameter names that can not be</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">   *     used without aliasing. Returned by getUnsafeParameterNames().</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">   * @param referencesThis Whether fnNode contains references to its this</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">   *     object.</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">   * @param containsFunctions Whether fnNode contains inner functions.</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">   * @return Whether the inlining can occur.</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">   */</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">  <a href="dictionary_C.html#16865">CanInlineResult</a> <a href="dictionary_C.html#16870">canInlineReferenceToFunction</a></span><span class="default">(</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">      <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20502">ref</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20500">fnNode</a>, Set&lt;String&gt; <a href="dictionary_C.html#20501">needAliases</a>,</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20503">referencesThis</a></span><span class="default">, </span><span class="keyword">boolean <a href="dictionary_C.html#20499">containsFunctions</a></span><span class="default">) {</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): This function takes too many parameter, without</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">    // context.  Modify the API to take a structure describing the function.</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment"></span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">    // Allow direct function calls or &quot;fn.call&quot; style calls.</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20498">callNode</a> </span><span class="default">= <a href="dictionary_C.html#20502">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20606">isSupportedCallType</a>(<a href="dictionary_C.html#20498">callNode</a>)) {</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">    }</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default">    </span><span class="comment">// Limit where functions that contain functions can be inline.  Introducing</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment">    // an inner function into another function can capture a variable and cause</span>
+<a name="194"><font size=-1>194     </font></a><span class="comment">    // a memory leak.  This isn't a problem in the global scope as those values</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment">    // last until explicitly cleared.</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20499">containsFunctions</a>) {</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20621">assumeMinimumCapture</a> &amp;&amp; !<a href="dictionary_C.html#20502">ref</a>.<a href="dictionary_C.html#20463">scope</a>.<a href="dictionary_C.html#6792">isGlobal</a>()) {</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">        </span><span class="comment">// TODO(johnlenz): Allow inlining into any scope without local names or</span>
+<a name="199"><font size=-1>199     </font></a><span class="comment">        // inner functions.</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">        </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">      } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20634">isWithinLoop</a>(<a href="dictionary_C.html#20498">callNode</a>)) {</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">        </span><span class="comment">// An inner closure maybe relying on a local value holding a value for a</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">        // single iteration through a loop.</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">        </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">      }</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">    }</span>
+<a name="207"><font size=-1>207     </font></a><span class="default"></span>
+<a name="208"><font size=-1>208     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): Add support for 'apply'</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20503">referencesThis</a> &amp;&amp; !<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#10729">isFunctionObjectCall</a>(<a href="dictionary_C.html#20498">callNode</a>)) {</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">      </span><span class="comment">// TODO(johnlenz): Allow 'this' references to be replaced with a</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">      // global 'this' object.</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">    }</span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20502">ref</a>.<a href="dictionary_C.html#20461">mode</a> == <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9753">DIRECT</a>) {</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#20489">canInlineReferenceDirectly</a></span><span class="default">(<a href="dictionary_C.html#20502">ref</a>, <a href="dictionary_C.html#20500">fnNode</a>, <a href="dictionary_C.html#20501">needAliases</a>);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#20484">canInlineReferenceAsStatementBlock</a></span><span class="default">(</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">          <a href="dictionary_C.html#20502">ref</a>, <a href="dictionary_C.html#20500">fnNode</a>, <a href="dictionary_C.html#20501">needAliases</a>);</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">    }</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">  }</span>
+<a name="222"><font size=-1>222     </font></a><span class="default"></span>
+<a name="223"><font size=-1>223     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">   * Only &quot;.call&quot; calls and direct calls to functions are supported.</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">   * @param callNode The call evaluate.</span>
+<a name="226"><font size=-1>226     </font></a><span class="comment">   * @return Whether the call is of a type that is supported.</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment">   */</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment">  </span><span class="keyword">private boolean <a href="dictionary_C.html#20606">isSupportedCallType</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20607">callNode</a>) {</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20607">callNode</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#10729">isFunctionObjectCall</a>(<a href="dictionary_C.html#20607">callNode</a>)) {</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20622">assumeStrictThis</a>) {</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">          <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20608">thisValue</a> = <a href="dictionary_C.html#20607">callNode</a>.<a href="dictionary_C.html#1907">getSecondChild</a>();</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20608">thisValue</a> == </span><span class="keyword">null </span><span class="default">|| !<a href="dictionary_C.html#20608">thisValue</a>.<a href="dictionary_C.html#1388">isThis</a>()) {</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">            </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">          }</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">        }</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">      } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#10730">isFunctionObjectApply</a>(<a href="dictionary_C.html#20607">callNode</a>)) {</span>
+<a name="238"><font size=-1>238     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">      }</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">    }</span>
+<a name="241"><font size=-1>241     </font></a><span class="default"></span>
+<a name="242"><font size=-1>242     </font></a><span class="default">    </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">  }</span>
+<a name="244"><font size=-1>244     </font></a><span class="default"></span>
+<a name="245"><font size=-1>245     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="246"><font size=-1>246     </font></a><span class="comment">   * Inline a function into the call site.</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment">   */</span>
+<a name="248"><font size=-1>248     </font></a><span class="comment">  <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#9755">inline</a></span><span class="default">(<a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20543">ref</a>, String <a href="dictionary_C.html#20541">fnName</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20542">fnNode</a>) {</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20623">compiler</a>.<a href="dictionary_C.html#17753">getLifeCycleStage</a>().<a href="dictionary_C.html#17754">isNormalized</a>());</span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span>
+<a name="251"><font size=-1>251     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20543">ref</a>.<a href="dictionary_C.html#20461">mode</a> == <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9753">DIRECT</a>) {</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#20575">inlineReturnValue</a></span><span class="default">(<a href="dictionary_C.html#20543">ref</a>, <a href="dictionary_C.html#20542">fnNode</a>);</span>
+<a name="253"><font size=-1>253     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#20561">inlineFunction</a></span><span class="default">(<a href="dictionary_C.html#20543">ref</a>, <a href="dictionary_C.html#20542">fnNode</a>, <a href="dictionary_C.html#20541">fnName</a>);</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">    }</span>
+<a name="256"><font size=-1>256     </font></a><span class="default">  }</span>
+<a name="257"><font size=-1>257     </font></a><span class="default"></span>
+<a name="258"><font size=-1>258     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="259"><font size=-1>259     </font></a><span class="comment">   * Inline a function that fulfills the requirements of</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment">   * canInlineReferenceDirectly into the call site, replacing only the CALL</span>
+<a name="261"><font size=-1>261     </font></a><span class="comment">   * node.</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment">   */</span>
+<a name="263"><font size=-1>263     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20575">inlineReturnValue</a></span><span class="default">(<a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20583">ref</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20580">fnNode</a>) {</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20578">callNode</a> = <a href="dictionary_C.html#20583">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="265"><font size=-1>265     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20577">block</a> = <a href="dictionary_C.html#20580">fnNode</a>.<a href="dictionary_C.html#350">getLastChild</a>();</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20579">callParentNode</a> = <a href="dictionary_C.html#20578">callNode</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="267"><font size=-1>267     </font></a><span class="default"></span>
+<a name="268"><font size=-1>268     </font></a><span class="default">    </span><span class="comment">// NOTE: As the normalize pass guarantees globals aren't being</span>
+<a name="269"><font size=-1>269     </font></a><span class="comment">    // shadowed and an expression can't introduce new names, there is</span>
+<a name="270"><font size=-1>270     </font></a><span class="comment">    // no need to check for conflicts.</span>
+<a name="271"><font size=-1>271     </font></a><span class="comment"></span>
+<a name="272"><font size=-1>272     </font></a><span class="comment">    // Create an argName -&gt; expression map, checking for side effects.</span>
+<a name="273"><font size=-1>273     </font></a><span class="comment">    </span><span class="default">Map&lt;String, <a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#20576">argMap</a> =</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">        <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20632">getFunctionCallParameterMap</a>(</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">            <a href="dictionary_C.html#20580">fnNode</a>, <a href="dictionary_C.html#20578">callNode</a>, </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20625">safeNameIdSupplier</a>);</span>
+<a name="276"><font size=-1>276     </font></a><span class="default"></span>
+<a name="277"><font size=-1>277     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20582">newExpression</a>;</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20577">block</a>.<a href="dictionary_C.html#1406">hasChildren</a>()) {</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20586">srcLocation</a> = <a href="dictionary_C.html#20577">block</a>;</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">      <a href="dictionary_C.html#20582">newExpression</a> = <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#1385">newUndefinedNode</a>(<a href="dictionary_C.html#20586">srcLocation</a>);</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="282"><font size=-1>282     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20584">returnNode</a> = <a href="dictionary_C.html#20577">block</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="283"><font size=-1>283     </font></a><span class="default">      Preconditions.<a href="dictionary_C.html#369">checkArgument</a>(<a href="dictionary_C.html#20584">returnNode</a>.<a href="dictionary_C.html#6230">isReturn</a>());</span>
+<a name="284"><font size=-1>284     </font></a><span class="default"></span>
+<a name="285"><font size=-1>285     </font></a><span class="default">      </span><span class="comment">// Clone the return node first.</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20585">safeReturnNode</a> </span><span class="default">= <a href="dictionary_C.html#20584">returnNode</a>.<a href="dictionary_C.html#1384">cloneTree</a>();</span>
+<a name="287"><font size=-1>287     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20581">inlineResult</a> = <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20641">inject</a>(</span>
+<a name="288"><font size=-1>288     </font></a><span class="default">          </span><span class="keyword">null</span><span class="default">, <a href="dictionary_C.html#20585">safeReturnNode</a>, </span><span class="keyword">null</span><span class="default">, <a href="dictionary_C.html#20576">argMap</a>);</span>
+<a name="289"><font size=-1>289     </font></a><span class="default">      Preconditions.<a href="dictionary_C.html#369">checkArgument</a>(<a href="dictionary_C.html#20585">safeReturnNode</a> == <a href="dictionary_C.html#20581">inlineResult</a>);</span>
+<a name="290"><font size=-1>290     </font></a><span class="default">      <a href="dictionary_C.html#20582">newExpression</a> = <a href="dictionary_C.html#20585">safeReturnNode</a>.<a href="dictionary_C.html#2099">removeFirstChild</a>();</span>
+<a name="291"><font size=-1>291     </font></a><span class="default">    }</span>
+<a name="292"><font size=-1>292     </font></a><span class="default"></span>
+<a name="293"><font size=-1>293     </font></a><span class="default">    <a href="dictionary_C.html#20579">callParentNode</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#20578">callNode</a>, <a href="dictionary_C.html#20582">newExpression</a>);</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#20582">newExpression</a></span><span class="default">;</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">  }</span>
+<a name="296"><font size=-1>296     </font></a><span class="default"></span>
+<a name="297"><font size=-1>297     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment">   * Supported call site types.</span>
+<a name="299"><font size=-1>299     </font></a><span class="comment">   */</span>
+<a name="300"><font size=-1>300     </font></a><span class="comment">  </span><span class="keyword">private static </span><span class="default">enum <a href="dictionary_C.html#20409">CallSiteType</a> {</span>
+<a name="301"><font size=-1>301     </font></a><span class="default"></span>
+<a name="302"><font size=-1>302     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="303"><font size=-1>303     </font></a><span class="comment">     * Used for a call site for which there does not exist a method</span>
+<a name="304"><font size=-1>304     </font></a><span class="comment">     * to inline it.</span>
+<a name="305"><font size=-1>305     </font></a><span class="comment">     */</span>
+<a name="306"><font size=-1>306     </font></a><span class="comment">    <a href="dictionary_C.html#20448">UNSUPPORTED</a></span><span class="default">() {</span>
+<a name="307"><font size=-1>307     </font></a><span class="default">      @Override</span>
+<a name="308"><font size=-1>308     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20411">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20412">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20413">ref</a>) {</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span><span class="string">&quot;unexpected&quot;</span><span class="default">);</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">      }</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">    },</span>
+<a name="312"><font size=-1>312     </font></a><span class="default"></span>
+<a name="313"><font size=-1>313     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="314"><font size=-1>314     </font></a><span class="comment">     * A call as a statement. For example: &quot;foo();&quot;.</span>
+<a name="315"><font size=-1>315     </font></a><span class="comment">     *   EXPR_RESULT</span>
+<a name="316"><font size=-1>316     </font></a><span class="comment">     *     CALL</span>
+<a name="317"><font size=-1>317     </font></a><span class="comment">     */</span>
+<a name="318"><font size=-1>318     </font></a><span class="comment">    <a href="dictionary_C.html#20447">SIMPLE_CALL</a></span><span class="default">() {</span>
+<a name="319"><font size=-1>319     </font></a><span class="default">      @Override</span>
+<a name="320"><font size=-1>320     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20415">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20416">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20417">ref</a>) {</span>
+<a name="321"><font size=-1>321     </font></a><span class="default">        </span><span class="comment">// Nothing to do.</span>
+<a name="322"><font size=-1>322     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">    },</span>
+<a name="324"><font size=-1>324     </font></a><span class="default"></span>
+<a name="325"><font size=-1>325     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="326"><font size=-1>326     </font></a><span class="comment">     * An assignment, where the result of the call is assigned to a simple</span>
+<a name="327"><font size=-1>327     </font></a><span class="comment">     * name. For example: &quot;a = foo();&quot;.</span>
+<a name="328"><font size=-1>328     </font></a><span class="comment">     *   EXPR_RESULT</span>
+<a name="329"><font size=-1>329     </font></a><span class="comment">     *     NAME A</span>
+<a name="330"><font size=-1>330     </font></a><span class="comment">     *     CALL</span>
+<a name="331"><font size=-1>331     </font></a><span class="comment">     *       FOO</span>
+<a name="332"><font size=-1>332     </font></a><span class="comment">     */</span>
+<a name="333"><font size=-1>333     </font></a><span class="comment">    <a href="dictionary_C.html#20446">SIMPLE_ASSIGNMENT</a></span><span class="default">() {</span>
+<a name="334"><font size=-1>334     </font></a><span class="default">      @Override</span>
+<a name="335"><font size=-1>335     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20419">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20420">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20421">ref</a>) {</span>
+<a name="336"><font size=-1>336     </font></a><span class="default">        </span><span class="comment">// Nothing to do.</span>
+<a name="337"><font size=-1>337     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">    },</span>
+<a name="339"><font size=-1>339     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="340"><font size=-1>340     </font></a><span class="comment">     * An var declaration and initialization, where the result of the call is</span>
+<a name="341"><font size=-1>341     </font></a><span class="comment">     * assigned to the declared name</span>
+<a name="342"><font size=-1>342     </font></a><span class="comment">     * name. For example: &quot;a = foo();&quot;.</span>
+<a name="343"><font size=-1>343     </font></a><span class="comment">     *   VAR</span>
+<a name="344"><font size=-1>344     </font></a><span class="comment">     *     NAME A</span>
+<a name="345"><font size=-1>345     </font></a><span class="comment">     *       CALL</span>
+<a name="346"><font size=-1>346     </font></a><span class="comment">     *         FOO</span>
+<a name="347"><font size=-1>347     </font></a><span class="comment">     */</span>
+<a name="348"><font size=-1>348     </font></a><span class="comment">    <a href="dictionary_C.html#20449">VAR_DECL_SIMPLE_ASSIGNMENT</a></span><span class="default">() {</span>
+<a name="349"><font size=-1>349     </font></a><span class="default">      @Override</span>
+<a name="350"><font size=-1>350     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20423">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20424">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20425">ref</a>) {</span>
+<a name="351"><font size=-1>351     </font></a><span class="default">        </span><span class="comment">// Nothing to do.</span>
+<a name="352"><font size=-1>352     </font></a><span class="comment">      </span><span class="default">}</span>
+<a name="353"><font size=-1>353     </font></a><span class="default">    },</span>
+<a name="354"><font size=-1>354     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="355"><font size=-1>355     </font></a><span class="comment">     * An arbitrary expression, the root of which is a EXPR_RESULT, IF,</span>
+<a name="356"><font size=-1>356     </font></a><span class="comment">     * RETURN, SWITCH or VAR.  The call must be the first side-effect in</span>
+<a name="357"><font size=-1>357     </font></a><span class="comment">     * the expression.</span>
+<a name="358"><font size=-1>358     </font></a><span class="comment">     *</span>
+<a name="359"><font size=-1>359     </font></a><span class="comment">     * Examples include:</span>
+<a name="360"><font size=-1>360     </font></a><span class="comment">     *   &quot;if (foo()) {...&quot;</span>
+<a name="361"><font size=-1>361     </font></a><span class="comment">     *   &quot;return foo();&quot;</span>
+<a name="362"><font size=-1>362     </font></a><span class="comment">     *   &quot;var a = 1 + foo();&quot;</span>
+<a name="363"><font size=-1>363     </font></a><span class="comment">     *   &quot;a = 1 + foo()&quot;</span>
+<a name="364"><font size=-1>364     </font></a><span class="comment">     *   &quot;foo() ? 1:0&quot;</span>
+<a name="365"><font size=-1>365     </font></a><span class="comment">     *   &quot;foo() &amp;&amp; x&quot;</span>
+<a name="366"><font size=-1>366     </font></a><span class="comment">     */</span>
+<a name="367"><font size=-1>367     </font></a><span class="comment">    <a href="dictionary_C.html#20445">EXPRESSION</a></span><span class="default">() {</span>
+<a name="368"><font size=-1>368     </font></a><span class="default">      @Override</span>
+<a name="369"><font size=-1>369     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20427">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20430">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20431">ref</a>) {</span>
+<a name="370"><font size=-1>370     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20428">callNode</a> = <a href="dictionary_C.html#20431">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="371"><font size=-1>371     </font></a><span class="default">        <a href="dictionary_C.html#20430">injector</a>.<a href="dictionary_C.html#20539">getDecomposer</a>(<a href="dictionary_C.html#20431">ref</a>.<a href="dictionary_C.html#20463">scope</a>).<a href="dictionary_C.html#16605">moveExpression</a>(<a href="dictionary_C.html#20428">callNode</a>);</span>
+<a name="372"><font size=-1>372     </font></a><span class="default"></span>
+<a name="373"><font size=-1>373     </font></a><span class="default">        </span><span class="comment">// Reclassify after move</span>
+<a name="374"><font size=-1>374     </font></a><span class="comment">        <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20429">callSiteType</a> </span><span class="default">= <a href="dictionary_C.html#20430">injector</a>.<a href="dictionary_C.html#20504">classifyCallSite</a>(<a href="dictionary_C.html#20431">ref</a>);</span>
+<a name="375"><font size=-1>375     </font></a><span class="default">        Preconditions.<a href="dictionary_C.html#591">checkState</a>(</span><span class="keyword">this </span><span class="default">!= <a href="dictionary_C.html#20429">callSiteType</a>);</span>
+<a name="376"><font size=-1>376     </font></a><span class="default">        <a href="dictionary_C.html#20429">callSiteType</a>.<a href="dictionary_C.html#20438">prepare</a>(<a href="dictionary_C.html#20430">injector</a>, <a href="dictionary_C.html#20431">ref</a>);</span>
+<a name="377"><font size=-1>377     </font></a><span class="default">      }</span>
+<a name="378"><font size=-1>378     </font></a><span class="default">    },</span>
+<a name="379"><font size=-1>379     </font></a><span class="default"></span>
+<a name="380"><font size=-1>380     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="381"><font size=-1>381     </font></a><span class="comment">     * An arbitrary expression, the root of which is a EXPR_RESULT, IF,</span>
+<a name="382"><font size=-1>382     </font></a><span class="comment">     * RETURN, SWITCH or VAR.  Where the call is not the first side-effect in</span>
+<a name="383"><font size=-1>383     </font></a><span class="comment">     * the expression.</span>
+<a name="384"><font size=-1>384     </font></a><span class="comment">     */</span>
+<a name="385"><font size=-1>385     </font></a><span class="comment">    <a href="dictionary_C.html#20444">DECOMPOSABLE_EXPRESSION</a></span><span class="default">() {</span>
+<a name="386"><font size=-1>386     </font></a><span class="default">      @Override</span>
+<a name="387"><font size=-1>387     </font></a><span class="default">      </span><span class="keyword">public void <a href="dictionary_C.html#20433">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20436">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20437">ref</a>) {</span>
+<a name="388"><font size=-1>388     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20434">callNode</a> = <a href="dictionary_C.html#20437">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="389"><font size=-1>389     </font></a><span class="default">        <a href="dictionary_C.html#20436">injector</a>.<a href="dictionary_C.html#20539">getDecomposer</a>(<a href="dictionary_C.html#20437">ref</a>.<a href="dictionary_C.html#20463">scope</a>).<a href="dictionary_C.html#20630">maybeExposeExpression</a>(<a href="dictionary_C.html#20434">callNode</a>);</span>
+<a name="390"><font size=-1>390     </font></a><span class="default"></span>
+<a name="391"><font size=-1>391     </font></a><span class="default">        </span><span class="comment">// Reclassify after decomposition</span>
+<a name="392"><font size=-1>392     </font></a><span class="comment">        <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20435">callSiteType</a> </span><span class="default">= <a href="dictionary_C.html#20436">injector</a>.<a href="dictionary_C.html#20504">classifyCallSite</a>(<a href="dictionary_C.html#20437">ref</a>);</span>
+<a name="393"><font size=-1>393     </font></a><span class="default">        Preconditions.<a href="dictionary_C.html#591">checkState</a>(</span><span class="keyword">this </span><span class="default">!= <a href="dictionary_C.html#20435">callSiteType</a>);</span>
+<a name="394"><font size=-1>394     </font></a><span class="default">        <a href="dictionary_C.html#20435">callSiteType</a>.<a href="dictionary_C.html#20438">prepare</a>(<a href="dictionary_C.html#20436">injector</a>, <a href="dictionary_C.html#20437">ref</a>);</span>
+<a name="395"><font size=-1>395     </font></a><span class="default">      }</span>
+<a name="396"><font size=-1>396     </font></a><span class="default">    };</span>
+<a name="397"><font size=-1>397     </font></a><span class="default"></span>
+<a name="398"><font size=-1>398     </font></a><span class="default">    </span><span class="keyword">public abstract void <a href="dictionary_C.html#20438">prepare</a></span><span class="default">(<a href="dictionary_C.html#9748">FunctionInjector</a> <a href="dictionary_C.html#20439">injector</a>, <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20440">ref</a>);</span>
+<a name="399"><font size=-1>399     </font></a><span class="default">  }</span>
+<a name="400"><font size=-1>400     </font></a><span class="default"></span>
+<a name="401"><font size=-1>401     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="402"><font size=-1>402     </font></a><span class="comment">   * Determine which, if any, of the supported types the call site is.</span>
+<a name="403"><font size=-1>403     </font></a><span class="comment">   *</span>
+<a name="404"><font size=-1>404     </font></a><span class="comment">   * Constant vars are treated differently so that we don't break their</span>
+<a name="405"><font size=-1>405     </font></a><span class="comment">   * const-ness when we decompose the expression. Once the CONSTANT_VAR</span>
+<a name="406"><font size=-1>406     </font></a><span class="comment">   * annotation is used everywhere instead of coding conventions, we should just</span>
+<a name="407"><font size=-1>407     </font></a><span class="comment">   * teach this pass how to remove the annotation.</span>
+<a name="408"><font size=-1>408     </font></a><span class="comment">   */</span>
+<a name="409"><font size=-1>409     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20504">classifyCallSite</a></span><span class="default">(<a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20510">ref</a>) {</span>
+<a name="410"><font size=-1>410     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20505">callNode</a> = <a href="dictionary_C.html#20510">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="411"><font size=-1>411     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20509">parent</a> = <a href="dictionary_C.html#20505">callNode</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="412"><font size=-1>412     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20508">grandParent</a> = <a href="dictionary_C.html#20509">parent</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="413"><font size=-1>413     </font></a><span class="default"></span>
+<a name="414"><font size=-1>414     </font></a><span class="default">    </span><span class="comment">// Verify the call site:</span>
+<a name="415"><font size=-1>415     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#2316">isExprCall</a>(<a href="dictionary_C.html#20509">parent</a>)) {</span>
+<a name="416"><font size=-1>416     </font></a><span class="default">      </span><span class="comment">// This is a simple call?  Example: &quot;foo();&quot;.</span>
+<a name="417"><font size=-1>417     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20447">SIMPLE_CALL</a>;</span>
+<a name="418"><font size=-1>418     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#12530">isExprAssign</a>(<a href="dictionary_C.html#20508">grandParent</a>)</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">        &amp;&amp; !<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#2101">isVarOrSimpleAssignLhs</a>(<a href="dictionary_C.html#20505">callNode</a>, <a href="dictionary_C.html#20509">parent</a>)</span>
+<a name="420"><font size=-1>420     </font></a><span class="default">        &amp;&amp; <a href="dictionary_C.html#20509">parent</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#561">isName</a>()</span>
+<a name="421"><font size=-1>421     </font></a><span class="default">        </span><span class="comment">// TODO(nicksantos): Remove this once everyone is using</span>
+<a name="422"><font size=-1>422     </font></a><span class="comment">        // the CONSTANT_VAR annotation. We know how to remove that.</span>
+<a name="423"><font size=-1>423     </font></a><span class="comment">        </span><span class="default">&amp;&amp; !<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20635">isConstantName</a>(<a href="dictionary_C.html#20509">parent</a>.<a href="dictionary_C.html#355">getFirstChild</a>())) {</span>
+<a name="424"><font size=-1>424     </font></a><span class="default">      </span><span class="comment">// This is a simple assignment.  Example: &quot;x = foo();&quot;</span>
+<a name="425"><font size=-1>425     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20446">SIMPLE_ASSIGNMENT</a>;</span>
+<a name="426"><font size=-1>426     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#20509">parent</a>.<a href="dictionary_C.html#561">isName</a>()</span>
+<a name="427"><font size=-1>427     </font></a><span class="default">        </span><span class="comment">// TODO(nicksantos): Remove this once everyone is using</span>
+<a name="428"><font size=-1>428     </font></a><span class="comment">        // the CONSTANT_VAR annotation.</span>
+<a name="429"><font size=-1>429     </font></a><span class="comment">        </span><span class="default">&amp;&amp; !<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20635">isConstantName</a>(<a href="dictionary_C.html#20509">parent</a>)</span>
+<a name="430"><font size=-1>430     </font></a><span class="default">        &amp;&amp; <a href="dictionary_C.html#20508">grandParent</a>.<a href="dictionary_C.html#1039">isVar</a>()</span>
+<a name="431"><font size=-1>431     </font></a><span class="default">        &amp;&amp; <a href="dictionary_C.html#20508">grandParent</a>.<a href="dictionary_C.html#3293">hasOneChild</a>()) {</span>
+<a name="432"><font size=-1>432     </font></a><span class="default">      </span><span class="comment">// This is a var declaration.  Example: &quot;var x = foo();&quot;</span>
+<a name="433"><font size=-1>433     </font></a><span class="comment">      // TODO(johnlenz): Should we be checking for constants on the</span>
+<a name="434"><font size=-1>434     </font></a><span class="comment">      // left-hand-side of the assignments and handling them as EXPRESSION?</span>
+<a name="435"><font size=-1>435     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20449">VAR_DECL_SIMPLE_ASSIGNMENT</a>;</span>
+<a name="436"><font size=-1>436     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="437"><font size=-1>437     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20507">expressionRoot</a> = <a href="dictionary_C.html#7925">ExpressionDecomposer</a>.<a href="dictionary_C.html#20636">findExpressionRoot</a>(<a href="dictionary_C.html#20505">callNode</a>);</span>
+<a name="438"><font size=-1>438     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20507">expressionRoot</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="439"><font size=-1>439     </font></a><span class="default">        <a href="dictionary_C.html#7925">ExpressionDecomposer</a> <a href="dictionary_C.html#20506">decomposer</a> = </span><span class="keyword">new <a href="dictionary_C.html#7927">ExpressionDecomposer</a></span><span class="default">(</span>
+<a name="440"><font size=-1>440     </font></a><span class="default">            <a href="dictionary_C.html#20623">compiler</a>, <a href="dictionary_C.html#20625">safeNameIdSupplier</a>, <a href="dictionary_C.html#20624">knownConstants</a>, <a href="dictionary_C.html#20510">ref</a>.<a href="dictionary_C.html#20463">scope</a>);</span>
+<a name="441"><font size=-1>441     </font></a><span class="default">        <a href="dictionary_C.html#7924">DecompositionType</a> <a href="dictionary_C.html#20511">type</a> = <a href="dictionary_C.html#20506">decomposer</a>.<a href="dictionary_C.html#7933">canExposeExpression</a>(</span>
+<a name="442"><font size=-1>442     </font></a><span class="default">            <a href="dictionary_C.html#20505">callNode</a>);</span>
+<a name="443"><font size=-1>443     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20511">type</a> == <a href="dictionary_C.html#7924">DecompositionType</a>.<a href="dictionary_C.html#7934">MOVABLE</a>) {</span>
+<a name="444"><font size=-1>444     </font></a><span class="default">          </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20445">EXPRESSION</a>;</span>
+<a name="445"><font size=-1>445     </font></a><span class="default">        } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#20511">type</a> == <a href="dictionary_C.html#7924">DecompositionType</a>.<a href="dictionary_C.html#16603">DECOMPOSABLE</a>) {</span>
+<a name="446"><font size=-1>446     </font></a><span class="default">          </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20444">DECOMPOSABLE_EXPRESSION</a>;</span>
+<a name="447"><font size=-1>447     </font></a><span class="default">        } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="448"><font size=-1>448     </font></a><span class="default">          Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20511">type</a> == <a href="dictionary_C.html#7924">DecompositionType</a>.<a href="dictionary_C.html#16607">UNDECOMPOSABLE</a>);</span>
+<a name="449"><font size=-1>449     </font></a><span class="default">        }</span>
+<a name="450"><font size=-1>450     </font></a><span class="default">      }</span>
+<a name="451"><font size=-1>451     </font></a><span class="default">    }</span>
+<a name="452"><font size=-1>452     </font></a><span class="default"></span>
+<a name="453"><font size=-1>453     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#20409">CallSiteType</a></span><span class="default">.<a href="dictionary_C.html#20448">UNSUPPORTED</a>;</span>
+<a name="454"><font size=-1>454     </font></a><span class="default">  }</span>
+<a name="455"><font size=-1>455     </font></a><span class="default"></span>
+<a name="456"><font size=-1>456     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#7925">ExpressionDecomposer</a> <a href="dictionary_C.html#20539">getDecomposer</a></span><span class="default">(<a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#20540">scope</a>) {</span>
+<a name="457"><font size=-1>457     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#7927">ExpressionDecomposer</a></span><span class="default">(</span>
+<a name="458"><font size=-1>458     </font></a><span class="default">        <a href="dictionary_C.html#20623">compiler</a>, <a href="dictionary_C.html#20625">safeNameIdSupplier</a>, <a href="dictionary_C.html#20624">knownConstants</a>, <a href="dictionary_C.html#20540">scope</a>);</span>
+<a name="459"><font size=-1>459     </font></a><span class="default">  }</span>
+<a name="460"><font size=-1>460     </font></a><span class="default"></span>
+<a name="461"><font size=-1>461     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="462"><font size=-1>462     </font></a><span class="comment">   * If required, rewrite the statement containing the call expression.</span>
+<a name="463"><font size=-1>463     </font></a><span class="comment">   * @see ExpressionDecomposer#canExposeExpression</span>
+<a name="464"><font size=-1>464     </font></a><span class="comment">   */</span>
+<a name="465"><font size=-1>465     </font></a><span class="comment">  </span><span class="keyword">void <a href="dictionary_C.html#9758">maybePrepareCall</a></span><span class="default">(<a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20610">ref</a>) {</span>
+<a name="466"><font size=-1>466     </font></a><span class="default">    <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20609">callSiteType</a> = <a href="dictionary_C.html#20504">classifyCallSite</a>(<a href="dictionary_C.html#20610">ref</a>);</span>
+<a name="467"><font size=-1>467     </font></a><span class="default">    <a href="dictionary_C.html#20609">callSiteType</a>.<a href="dictionary_C.html#20438">prepare</a>(</span><span class="keyword">this</span><span class="default">, <a href="dictionary_C.html#20610">ref</a>);</span>
+<a name="468"><font size=-1>468     </font></a><span class="default">  }</span>
+<a name="469"><font size=-1>469     </font></a><span class="default"></span>
+<a name="470"><font size=-1>470     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="471"><font size=-1>471     </font></a><span class="comment">   * Inline a function which fulfills the requirements of</span>
+<a name="472"><font size=-1>472     </font></a><span class="comment">   * canInlineReferenceAsStatementBlock into the call site, replacing the</span>
+<a name="473"><font size=-1>473     </font></a><span class="comment">   * parent expression.</span>
+<a name="474"><font size=-1>474     </font></a><span class="comment">   */</span>
+<a name="475"><font size=-1>475     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20561">inlineFunction</a></span><span class="default">(</span>
+<a name="476"><font size=-1>476     </font></a><span class="default">      <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20573">ref</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20565">fnNode</a>, String <a href="dictionary_C.html#20564">fnName</a>) {</span>
+<a name="477"><font size=-1>477     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20562">callNode</a> = <a href="dictionary_C.html#20573">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="478"><font size=-1>478     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20572">parent</a> = <a href="dictionary_C.html#20562">callNode</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="479"><font size=-1>479     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20566">grandParent</a> = <a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="480"><font size=-1>480     </font></a><span class="default"></span>
+<a name="481"><font size=-1>481     </font></a><span class="default">    </span><span class="comment">// TODO(johnlenz): Consider storing the callSite classification in the</span>
+<a name="482"><font size=-1>482     </font></a><span class="comment">    // reference object and passing it in here.</span>
+<a name="483"><font size=-1>483     </font></a><span class="comment">    <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20563">callSiteType</a> </span><span class="default">= <a href="dictionary_C.html#20504">classifyCallSite</a>(<a href="dictionary_C.html#20573">ref</a>);</span>
+<a name="484"><font size=-1>484     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#369">checkArgument</a>(<a href="dictionary_C.html#20563">callSiteType</a> != <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20448">UNSUPPORTED</a>);</span>
+<a name="485"><font size=-1>485     </font></a><span class="default"></span>
+<a name="486"><font size=-1>486     </font></a><span class="default">    </span><span class="comment">// Store the name for the result. This will be used to</span>
+<a name="487"><font size=-1>487     </font></a><span class="comment">    // replace &quot;return expr&quot; statements with &quot;resultName = expr&quot;</span>
+<a name="488"><font size=-1>488     </font></a><span class="comment">    // to replace</span>
+<a name="489"><font size=-1>489     </font></a><span class="comment">    </span><span class="default">String <a href="dictionary_C.html#20574">resultName</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="490"><font size=-1>490     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#20570">needsDefaultReturnResult</a> </span><span class="default">= </span><span class="keyword">true</span><span class="default">;</span>
+<a name="491"><font size=-1>491     </font></a><span class="default">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#20563">callSiteType</a>) {</span>
+<a name="492"><font size=-1>492     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20446">SIMPLE_ASSIGNMENT</a></span><span class="default">:</span>
+<a name="493"><font size=-1>493     </font></a><span class="default">        <a href="dictionary_C.html#20574">resultName</a> = <a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="494"><font size=-1>494     </font></a><span class="default">        <a href="dictionary_C.html#20611">removeConstantVarAnnotation</a>(<a href="dictionary_C.html#20573">ref</a>.<a href="dictionary_C.html#20463">scope</a>, <a href="dictionary_C.html#20574">resultName</a>);</span>
+<a name="495"><font size=-1>495     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="496"><font size=-1>496     </font></a><span class="default"></span>
+<a name="497"><font size=-1>497     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20449">VAR_DECL_SIMPLE_ASSIGNMENT</a></span><span class="default">:</span>
+<a name="498"><font size=-1>498     </font></a><span class="default">        <a href="dictionary_C.html#20574">resultName</a> = <a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="499"><font size=-1>499     </font></a><span class="default">        <a href="dictionary_C.html#20611">removeConstantVarAnnotation</a>(<a href="dictionary_C.html#20573">ref</a>.<a href="dictionary_C.html#20463">scope</a>, <a href="dictionary_C.html#20574">resultName</a>);</span>
+<a name="500"><font size=-1>500     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="501"><font size=-1>501     </font></a><span class="default"></span>
+<a name="502"><font size=-1>502     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20447">SIMPLE_CALL</a></span><span class="default">:</span>
+<a name="503"><font size=-1>503     </font></a><span class="default">        <a href="dictionary_C.html#20574">resultName</a> = </span><span class="keyword">null</span><span class="default">;  </span><span class="comment">// &quot;foo()&quot; doesn't need a result.</span>
+<a name="504"><font size=-1>504     </font></a><span class="comment">        <a href="dictionary_C.html#20570">needsDefaultReturnResult</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="505"><font size=-1>505     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="506"><font size=-1>506     </font></a><span class="default"></span>
+<a name="507"><font size=-1>507     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20445">EXPRESSION</a></span><span class="default">:</span>
+<a name="508"><font size=-1>508     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span>
+<a name="509"><font size=-1>509     </font></a><span class="default">            </span><span class="string">&quot;Movable expressions must be moved before inlining.&quot;</span><span class="default">);</span>
+<a name="510"><font size=-1>510     </font></a><span class="default"></span>
+<a name="511"><font size=-1>511     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20444">DECOMPOSABLE_EXPRESSION</a></span><span class="default">:</span>
+<a name="512"><font size=-1>512     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span>
+<a name="513"><font size=-1>513     </font></a><span class="default">            </span><span class="string">&quot;Decomposable expressions must be decomposed before inlining.&quot;</span><span class="default">);</span>
+<a name="514"><font size=-1>514     </font></a><span class="default"></span>
+<a name="515"><font size=-1>515     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="516"><font size=-1>516     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span><span class="string">&quot;Unexpected call site type.&quot;</span><span class="default">);</span>
+<a name="517"><font size=-1>517     </font></a><span class="default">    }</span>
+<a name="518"><font size=-1>518     </font></a><span class="default"></span>
+<a name="519"><font size=-1>519     </font></a><span class="default">    <a href="dictionary_C.html#20627">FunctionToBlockMutator</a> <a href="dictionary_C.html#20569">mutator</a> = </span><span class="keyword">new <a href="dictionary_C.html#20639">FunctionToBlockMutator</a></span><span class="default">(</span>
+<a name="520"><font size=-1>520     </font></a><span class="default">        <a href="dictionary_C.html#20623">compiler</a>, </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20625">safeNameIdSupplier</a>);</span>
+<a name="521"><font size=-1>521     </font></a><span class="default"></span>
+<a name="522"><font size=-1>522     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#20568">isCallInLoop</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20634">isWithinLoop</a>(<a href="dictionary_C.html#20562">callNode</a>);</span>
+<a name="523"><font size=-1>523     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20571">newBlock</a> = <a href="dictionary_C.html#20569">mutator</a>.<a href="dictionary_C.html#20640">mutate</a>(</span>
+<a name="524"><font size=-1>524     </font></a><span class="default">        <a href="dictionary_C.html#20564">fnName</a>, <a href="dictionary_C.html#20565">fnNode</a>, <a href="dictionary_C.html#20562">callNode</a>, <a href="dictionary_C.html#20574">resultName</a>,</span>
+<a name="525"><font size=-1>525     </font></a><span class="default">        <a href="dictionary_C.html#20570">needsDefaultReturnResult</a>, <a href="dictionary_C.html#20568">isCallInLoop</a>);</span>
+<a name="526"><font size=-1>526     </font></a><span class="default"></span>
+<a name="527"><font size=-1>527     </font></a><span class="default">    </span><span class="comment">// TODO(nicksantos): Create a common mutation function that</span>
+<a name="528"><font size=-1>528     </font></a><span class="comment">    // can replace either a VAR name assignment, assignment expression or</span>
+<a name="529"><font size=-1>529     </font></a><span class="comment">    // a EXPR_RESULT.</span>
+<a name="530"><font size=-1>530     </font></a><span class="comment">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20567">greatGrandParent</a> </span><span class="default">= <a href="dictionary_C.html#20566">grandParent</a>.<a href="dictionary_C.html#352">getParent</a>();</span>
+<a name="531"><font size=-1>531     </font></a><span class="default">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#20563">callSiteType</a>) {</span>
+<a name="532"><font size=-1>532     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20449">VAR_DECL_SIMPLE_ASSIGNMENT</a></span><span class="default">:</span>
+<a name="533"><font size=-1>533     </font></a><span class="default">        </span><span class="comment">// Remove the call from the name node.</span>
+<a name="534"><font size=-1>534     </font></a><span class="comment">        <a href="dictionary_C.html#20572">parent</a></span><span class="default">.<a href="dictionary_C.html#545">removeChild</a>(<a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#355">getFirstChild</a>());</span>
+<a name="535"><font size=-1>535     </font></a><span class="default">        Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#355">getFirstChild</a>() == </span><span class="keyword">null</span><span class="default">);</span>
+<a name="536"><font size=-1>536     </font></a><span class="default">        </span><span class="comment">// Add the call, after the VAR.</span>
+<a name="537"><font size=-1>537     </font></a><span class="comment">        <a href="dictionary_C.html#20567">greatGrandParent</a></span><span class="default">.<a href="dictionary_C.html#2591">addChildAfter</a>(<a href="dictionary_C.html#20571">newBlock</a>, <a href="dictionary_C.html#20566">grandParent</a>);</span>
+<a name="538"><font size=-1>538     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="539"><font size=-1>539     </font></a><span class="default"></span>
+<a name="540"><font size=-1>540     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20446">SIMPLE_ASSIGNMENT</a></span><span class="default">:</span>
+<a name="541"><font size=-1>541     </font></a><span class="default">        </span><span class="comment">// The assignment is now part of the inline function so</span>
+<a name="542"><font size=-1>542     </font></a><span class="comment">        // replace it completely.</span>
+<a name="543"><font size=-1>543     </font></a><span class="comment">        </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20566">grandParent</a>.<a href="dictionary_C.html#1358">isExprResult</a>());</span>
+<a name="544"><font size=-1>544     </font></a><span class="default">        <a href="dictionary_C.html#20567">greatGrandParent</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#20566">grandParent</a>, <a href="dictionary_C.html#20571">newBlock</a>);</span>
+<a name="545"><font size=-1>545     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="546"><font size=-1>546     </font></a><span class="default"></span>
+<a name="547"><font size=-1>547     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#20447">SIMPLE_CALL</a></span><span class="default">:</span>
+<a name="548"><font size=-1>548     </font></a><span class="default">        </span><span class="comment">// If nothing is looking at the result just replace the call.</span>
+<a name="549"><font size=-1>549     </font></a><span class="comment">        </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#20572">parent</a>.<a href="dictionary_C.html#1358">isExprResult</a>());</span>
+<a name="550"><font size=-1>550     </font></a><span class="default">        <a href="dictionary_C.html#20566">grandParent</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#20572">parent</a>, <a href="dictionary_C.html#20571">newBlock</a>);</span>
+<a name="551"><font size=-1>551     </font></a><span class="default">        </span><span class="keyword">break</span><span class="default">;</span>
+<a name="552"><font size=-1>552     </font></a><span class="default"></span>
+<a name="553"><font size=-1>553     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="554"><font size=-1>554     </font></a><span class="default">        </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span><span class="string">&quot;Unexpected call site type.&quot;</span><span class="default">);</span>
+<a name="555"><font size=-1>555     </font></a><span class="default">    }</span>
+<a name="556"><font size=-1>556     </font></a><span class="default"></span>
+<a name="557"><font size=-1>557     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#20571">newBlock</a></span><span class="default">;</span>
+<a name="558"><font size=-1>558     </font></a><span class="default">  }</span>
+<a name="559"><font size=-1>559     </font></a><span class="default"></span>
+<a name="560"><font size=-1>560     </font></a><span class="default">  </span><span class="keyword">private static void <a href="dictionary_C.html#20611">removeConstantVarAnnotation</a></span><span class="default">(<a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#20614">scope</a>, String <a href="dictionary_C.html#20612">name</a>) {</span>
+<a name="561"><font size=-1>561     </font></a><span class="default">    <a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#20615">var</a> = <a href="dictionary_C.html#20614">scope</a>.<a href="dictionary_C.html#1356">getVar</a>(<a href="dictionary_C.html#20612">name</a>);</span>
+<a name="562"><font size=-1>562     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20613">nameNode</a> = <a href="dictionary_C.html#20615">var</a> == </span><span class="keyword">null </span><span class="default">? </span><span class="keyword">null </span><span class="default">: <a href="dictionary_C.html#20615">var</a>.<a href="dictionary_C.html#1383">getNameNode</a>();</span>
+<a name="563"><font size=-1>563     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20613">nameNode</a> == </span><span class="keyword">null</span><span class="default">) </span><span class="keyword">return</span><span class="default">;</span>
+<a name="564"><font size=-1>564     </font></a><span class="default"></span>
+<a name="565"><font size=-1>565     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20613">nameNode</a>.<a href="dictionary_C.html#3251">getBooleanProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>)) {</span>
+<a name="566"><font size=-1>566     </font></a><span class="default">      <a href="dictionary_C.html#20613">nameNode</a>.<a href="dictionary_C.html#6305">removeProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>);</span>
+<a name="567"><font size=-1>567     </font></a><span class="default">    }</span>
+<a name="568"><font size=-1>568     </font></a><span class="default">  }</span>
+<a name="569"><font size=-1>569     </font></a><span class="default"></span>
+<a name="570"><font size=-1>570     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="571"><font size=-1>571     </font></a><span class="comment">   * Checks if the given function matches the criteria for an inlinable</span>
+<a name="572"><font size=-1>572     </font></a><span class="comment">   * function, and if so, adds it to our set of inlinable functions.</span>
+<a name="573"><font size=-1>573     </font></a><span class="comment">   */</span>
+<a name="574"><font size=-1>574     </font></a><span class="comment">  </span><span class="keyword">static boolean <a href="dictionary_C.html#16880">isDirectCallNodeReplacementPossible</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20605">fnNode</a>) {</span>
+<a name="575"><font size=-1>575     </font></a><span class="default">    </span><span class="comment">// Only inline single-statement functions</span>
+<a name="576"><font size=-1>576     </font></a><span class="comment">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20604">block</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#945">getFunctionBody</a>(<a href="dictionary_C.html#20605">fnNode</a>);</span>
+<a name="577"><font size=-1>577     </font></a><span class="default"></span>
+<a name="578"><font size=-1>578     </font></a><span class="default">    </span><span class="comment">// Check if this function is suitable for direct replacement of a CALL node:</span>
+<a name="579"><font size=-1>579     </font></a><span class="comment">    // a function that consists of single return that returns an expression.</span>
+<a name="580"><font size=-1>580     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20604">block</a>.<a href="dictionary_C.html#1406">hasChildren</a>()) {</span>
+<a name="581"><font size=-1>581     </font></a><span class="default">      </span><span class="comment">// special case empty functions.</span>
+<a name="582"><font size=-1>582     </font></a><span class="comment">      </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="583"><font size=-1>583     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#20604">block</a>.<a href="dictionary_C.html#3293">hasOneChild</a>()) {</span>
+<a name="584"><font size=-1>584     </font></a><span class="default">      </span><span class="comment">// Only inline functions that return something.</span>
+<a name="585"><font size=-1>585     </font></a><span class="comment">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20604">block</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#6230">isReturn</a>()</span>
+<a name="586"><font size=-1>586     </font></a><span class="default">          &amp;&amp; <a href="dictionary_C.html#20604">block</a>.<a href="dictionary_C.html#1882">getFirstFirstChild</a>() != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="587"><font size=-1>587     </font></a><span class="default">        </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="588"><font size=-1>588     </font></a><span class="default">      }</span>
+<a name="589"><font size=-1>589     </font></a><span class="default">    }</span>
+<a name="590"><font size=-1>590     </font></a><span class="default"></span>
+<a name="591"><font size=-1>591     </font></a><span class="default">    </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="592"><font size=-1>592     </font></a><span class="default">  }</span>
+<a name="593"><font size=-1>593     </font></a><span class="default"></span>
+<a name="594"><font size=-1>594     </font></a><span class="default">  enum <a href="dictionary_C.html#16865">CanInlineResult</a> {</span>
+<a name="595"><font size=-1>595     </font></a><span class="default">    <a href="dictionary_C.html#16867">YES</a>,</span>
+<a name="596"><font size=-1>596     </font></a><span class="default">    <a href="dictionary_C.html#16878">AFTER_PREPARATION</a>,</span>
+<a name="597"><font size=-1>597     </font></a><span class="default">    <a href="dictionary_C.html#16877">NO</a></span>
+<a name="598"><font size=-1>598     </font></a><span class="default">  }</span>
+<a name="599"><font size=-1>599     </font></a><span class="default"></span>
+<a name="600"><font size=-1>600     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="601"><font size=-1>601     </font></a><span class="comment">   * Determines whether a function can be inlined at a particular call site.</span>
+<a name="602"><font size=-1>602     </font></a><span class="comment">   * There are several criteria that the function and reference must hold in</span>
+<a name="603"><font size=-1>603     </font></a><span class="comment">   * order for the functions to be inlined:</span>
+<a name="604"><font size=-1>604     </font></a><span class="comment">   * - It must be a simple call, or assignment, or var initialization.</span>
+<a name="605"><font size=-1>605     </font></a><span class="comment">   * &lt;pre&gt;</span>
+<a name="606"><font size=-1>606     </font></a><span class="comment">   *    f();</span>
+<a name="607"><font size=-1>607     </font></a><span class="comment">   *    a = foo();</span>
+<a name="608"><font size=-1>608     </font></a><span class="comment">   *    var a = foo();</span>
+<a name="609"><font size=-1>609     </font></a><span class="comment">   * &lt;/pre&gt;</span>
+<a name="610"><font size=-1>610     </font></a><span class="comment">   */</span>
+<a name="611"><font size=-1>611     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#16865">CanInlineResult</a> <a href="dictionary_C.html#20484">canInlineReferenceAsStatementBlock</a></span><span class="default">(</span>
+<a name="612"><font size=-1>612     </font></a><span class="default">      <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20488">ref</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20486">fnNode</a>, Set&lt;String&gt; <a href="dictionary_C.html#20487">namesToAlias</a>) {</span>
+<a name="613"><font size=-1>613     </font></a><span class="default">    <a href="dictionary_C.html#20409">CallSiteType</a> <a href="dictionary_C.html#20485">callSiteType</a> = <a href="dictionary_C.html#20504">classifyCallSite</a>(<a href="dictionary_C.html#20488">ref</a>);</span>
+<a name="614"><font size=-1>614     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20485">callSiteType</a> == <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20448">UNSUPPORTED</a>) {</span>
+<a name="615"><font size=-1>615     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="616"><font size=-1>616     </font></a><span class="default">    }</span>
+<a name="617"><font size=-1>617     </font></a><span class="default"></span>
+<a name="618"><font size=-1>618     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20620">allowDecomposition</a></span>
+<a name="619"><font size=-1>619     </font></a><span class="default">        &amp;&amp; (<a href="dictionary_C.html#20485">callSiteType</a> == <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20444">DECOMPOSABLE_EXPRESSION</a></span>
+<a name="620"><font size=-1>620     </font></a><span class="default">            || <a href="dictionary_C.html#20485">callSiteType</a> == <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20445">EXPRESSION</a>)) {</span>
+<a name="621"><font size=-1>621     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="622"><font size=-1>622     </font></a><span class="default">    }</span>
+<a name="623"><font size=-1>623     </font></a><span class="default"></span>
+<a name="624"><font size=-1>624     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20469">callMeetsBlockInliningRequirements</a>(</span>
+<a name="625"><font size=-1>625     </font></a><span class="default">            <a href="dictionary_C.html#20488">ref</a>, <a href="dictionary_C.html#20486">fnNode</a>, <a href="dictionary_C.html#20487">namesToAlias</a>)) {</span>
+<a name="626"><font size=-1>626     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="627"><font size=-1>627     </font></a><span class="default">    }</span>
+<a name="628"><font size=-1>628     </font></a><span class="default"></span>
+<a name="629"><font size=-1>629     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20485">callSiteType</a> == <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20444">DECOMPOSABLE_EXPRESSION</a></span>
+<a name="630"><font size=-1>630     </font></a><span class="default">        || <a href="dictionary_C.html#20485">callSiteType</a> == <a href="dictionary_C.html#20409">CallSiteType</a>.<a href="dictionary_C.html#20445">EXPRESSION</a>) {</span>
+<a name="631"><font size=-1>631     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16878">AFTER_PREPARATION</a>;</span>
+<a name="632"><font size=-1>632     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="633"><font size=-1>633     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16867">YES</a>;</span>
+<a name="634"><font size=-1>634     </font></a><span class="default">    }</span>
+<a name="635"><font size=-1>635     </font></a><span class="default">  }</span>
+<a name="636"><font size=-1>636     </font></a><span class="default"></span>
+<a name="637"><font size=-1>637     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="638"><font size=-1>638     </font></a><span class="comment">   * Determines whether a function can be inlined at a particular call site.</span>
+<a name="639"><font size=-1>639     </font></a><span class="comment">   * - Don't inline if the calling function contains an inner function and</span>
+<a name="640"><font size=-1>640     </font></a><span class="comment">   * inlining would introduce new globals.</span>
+<a name="641"><font size=-1>641     </font></a><span class="comment">   */</span>
+<a name="642"><font size=-1>642     </font></a><span class="comment">  </span><span class="keyword">private boolean <a href="dictionary_C.html#20469">callMeetsBlockInliningRequirements</a></span><span class="default">(</span>
+<a name="643"><font size=-1>643     </font></a><span class="default">      <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20483">ref</a>, </span><span class="keyword">final <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20478">fnNode</a></span><span class="default">,</span>
+<a name="644"><font size=-1>644     </font></a><span class="default">      Set&lt;String&gt; <a href="dictionary_C.html#20482">namesToAlias</a>) {</span>
+<a name="645"><font size=-1>645     </font></a><span class="default">    </span><span class="keyword">final boolean <a href="dictionary_C.html#20475">assumeMinimumCapture</a> </span><span class="default">= </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20621">assumeMinimumCapture</a>;</span>
+<a name="646"><font size=-1>646     </font></a><span class="default">    </span><span class="comment">// Note: functions that contain function definitions are filtered out</span>
+<a name="647"><font size=-1>647     </font></a><span class="comment">    // in isCandidateFunction.</span>
+<a name="648"><font size=-1>648     </font></a><span class="comment"></span>
+<a name="649"><font size=-1>649     </font></a><span class="comment">    // TODO(johnlenz): Determining if the called function contains VARs</span>
+<a name="650"><font size=-1>650     </font></a><span class="comment">    // or if the caller contains inner functions accounts for 20% of the</span>
+<a name="651"><font size=-1>651     </font></a><span class="comment">    // run-time cost of this pass.</span>
+<a name="652"><font size=-1>652     </font></a><span class="comment"></span>
+<a name="653"><font size=-1>653     </font></a><span class="comment">    // Don't inline functions with var declarations into a scope with inner</span>
+<a name="654"><font size=-1>654     </font></a><span class="comment">    // functions as the new vars would leak into the inner function and</span>
+<a name="655"><font size=-1>655     </font></a><span class="comment">    // cause memory leaks.</span>
+<a name="656"><font size=-1>656     </font></a><span class="comment">    </span><span class="keyword">boolean <a href="dictionary_C.html#20477">fnContainsVars</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20631">has</a>(</span>
+<a name="657"><font size=-1>657     </font></a><span class="default">        <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#945">getFunctionBody</a>(<a href="dictionary_C.html#20478">fnNode</a>),</span>
+<a name="658"><font size=-1>658     </font></a><span class="default">        </span><span class="keyword">new <a href="dictionary_C.html#536">NodeUtil</a></span><span class="default">.<a href="dictionary_C.html#20629">MatchDeclaration</a>(),</span>
+<a name="659"><font size=-1>659     </font></a><span class="default">        </span><span class="keyword">new <a href="dictionary_C.html#536">NodeUtil</a></span><span class="default">.<a href="dictionary_C.html#17545">MatchShallowStatement</a>());</span>
+<a name="660"><font size=-1>660     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#20479">forbidTemps</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="661"><font size=-1>661     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20483">ref</a>.<a href="dictionary_C.html#20463">scope</a>.<a href="dictionary_C.html#2114">getClosestHoistScope</a>().<a href="dictionary_C.html#6792">isGlobal</a>()) {</span>
+<a name="662"><font size=-1>662     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20476">fnCallerBody</a> = <a href="dictionary_C.html#20483">ref</a>.<a href="dictionary_C.html#20463">scope</a>.<a href="dictionary_C.html#2114">getClosestHoistScope</a>().<a href="dictionary_C.html#2115">getRootNode</a>();</span>
+<a name="663"><font size=-1>663     </font></a><span class="default"></span>
+<a name="664"><font size=-1>664     </font></a><span class="default">      </span><span class="comment">// Don't allow any new vars into a scope that contains eval or one</span>
+<a name="665"><font size=-1>665     </font></a><span class="comment">      // that contains functions (excluding the function being inlined).</span>
+<a name="666"><font size=-1>666     </font></a><span class="comment">      </span><span class="default">Predicate&lt;<a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#20481">match</a> = </span><span class="keyword">new </span><span class="default">Predicate&lt;Node&gt;(){</span>
+<a name="667"><font size=-1>667     </font></a><span class="default">        @Override</span>
+<a name="668"><font size=-1>668     </font></a><span class="default">        </span><span class="keyword">public boolean <a href="dictionary_C.html#20471">apply</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20472">n</a>) {</span>
+<a name="669"><font size=-1>669     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20472">n</a>.<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="670"><font size=-1>670     </font></a><span class="default">            </span><span class="keyword">return <a href="dictionary_C.html#20472">n</a></span><span class="default">.<a href="dictionary_C.html#351">getString</a>().<a href="dictionary_E.html#395">equals</a>(</span><span class="string">&quot;eval&quot;</span><span class="default">);</span>
+<a name="671"><font size=-1>671     </font></a><span class="default">          }</span>
+<a name="672"><font size=-1>672     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20475">assumeMinimumCapture</a> &amp;&amp; <a href="dictionary_C.html#20472">n</a>.<a href="dictionary_C.html#942">isFunction</a>()) {</span>
+<a name="673"><font size=-1>673     </font></a><span class="default">            </span><span class="keyword">return <a href="dictionary_C.html#20472">n</a> </span><span class="default">!= <a href="dictionary_C.html#20478">fnNode</a>;</span>
+<a name="674"><font size=-1>674     </font></a><span class="default">          }</span>
+<a name="675"><font size=-1>675     </font></a><span class="default">          </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="676"><font size=-1>676     </font></a><span class="default">        }</span>
+<a name="677"><font size=-1>677     </font></a><span class="default">      };</span>
+<a name="678"><font size=-1>678     </font></a><span class="default">      <a href="dictionary_C.html#20479">forbidTemps</a> = <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#20631">has</a>(<a href="dictionary_C.html#20476">fnCallerBody</a>, <a href="dictionary_C.html#20481">match</a>, <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#2093">MATCH_NOT_FUNCTION</a>);</span>
+<a name="679"><font size=-1>679     </font></a><span class="default">    }</span>
+<a name="680"><font size=-1>680     </font></a><span class="default"></span>
+<a name="681"><font size=-1>681     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20477">fnContainsVars</a> &amp;&amp; <a href="dictionary_C.html#20479">forbidTemps</a>) {</span>
+<a name="682"><font size=-1>682     </font></a><span class="default">      </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="683"><font size=-1>683     </font></a><span class="default">    }</span>
+<a name="684"><font size=-1>684     </font></a><span class="default"></span>
+<a name="685"><font size=-1>685     </font></a><span class="default">    </span><span class="comment">// If the caller contains functions or evals, verify we aren't adding any</span>
+<a name="686"><font size=-1>686     </font></a><span class="comment">    // additional VAR declarations because aliasing is needed.</span>
+<a name="687"><font size=-1>687     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20479">forbidTemps</a>) {</span>
+<a name="688"><font size=-1>688     </font></a><span class="default">      Map&lt;String, <a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#20474">args</a> =</span>
+<a name="689"><font size=-1>689     </font></a><span class="default">          <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20632">getFunctionCallParameterMap</a>(</span>
+<a name="690"><font size=-1>690     </font></a><span class="default">              <a href="dictionary_C.html#20478">fnNode</a>, <a href="dictionary_C.html#20483">ref</a>.<a href="dictionary_C.html#20460">callNode</a>, </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20625">safeNameIdSupplier</a>);</span>
+<a name="691"><font size=-1>691     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20480">hasArgs</a> </span><span class="default">= !<a href="dictionary_C.html#20474">args</a>.<a href="dictionary_I.html#370">isEmpty</a>();</span>
+<a name="692"><font size=-1>692     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20480">hasArgs</a>) {</span>
+<a name="693"><font size=-1>693     </font></a><span class="default">        </span><span class="comment">// Limit the inlining</span>
+<a name="694"><font size=-1>694     </font></a><span class="comment">        </span><span class="default">Set&lt;String&gt; <a href="dictionary_C.html#20473">allNamesToAlias</a> = </span><span class="keyword">new </span><span class="default">HashSet&lt;&gt;(<a href="dictionary_C.html#20482">namesToAlias</a>);</span>
+<a name="695"><font size=-1>695     </font></a><span class="default">        <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20633">maybeAddTempsForCallArguments</a>(</span>
+<a name="696"><font size=-1>696     </font></a><span class="default">            <a href="dictionary_C.html#20478">fnNode</a>, <a href="dictionary_C.html#20474">args</a>, <a href="dictionary_C.html#20473">allNamesToAlias</a>, <a href="dictionary_C.html#20623">compiler</a>.<a href="dictionary_C.html#1363">getCodingConvention</a>());</span>
+<a name="697"><font size=-1>697     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20473">allNamesToAlias</a>.<a href="dictionary_I.html#370">isEmpty</a>()) {</span>
+<a name="698"><font size=-1>698     </font></a><span class="default">          </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="699"><font size=-1>699     </font></a><span class="default">        }</span>
+<a name="700"><font size=-1>700     </font></a><span class="default">      }</span>
+<a name="701"><font size=-1>701     </font></a><span class="default">    }</span>
+<a name="702"><font size=-1>702     </font></a><span class="default"></span>
+<a name="703"><font size=-1>703     </font></a><span class="default">    </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="704"><font size=-1>704     </font></a><span class="default">  }</span>
+<a name="705"><font size=-1>705     </font></a><span class="default"></span>
+<a name="706"><font size=-1>706     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="707"><font size=-1>707     </font></a><span class="comment">   * Determines whether a function can be inlined at a particular call site.</span>
+<a name="708"><font size=-1>708     </font></a><span class="comment">   * There are several criteria that the function and reference must hold in</span>
+<a name="709"><font size=-1>709     </font></a><span class="comment">   * order for the functions to be inlined:</span>
+<a name="710"><font size=-1>710     </font></a><span class="comment">   * 1) If a call's arguments have side effects,</span>
+<a name="711"><font size=-1>711     </font></a><span class="comment">   * the corresponding argument in the function must only be referenced once.</span>
+<a name="712"><font size=-1>712     </font></a><span class="comment">   * For instance, this will not be inlined:</span>
+<a name="713"><font size=-1>713     </font></a><span class="comment">   * &lt;pre&gt;</span>
+<a name="714"><font size=-1>714     </font></a><span class="comment">   *     function foo(a) { return a + a }</span>
+<a name="715"><font size=-1>715     </font></a><span class="comment">   *     x = foo(i++);</span>
+<a name="716"><font size=-1>716     </font></a><span class="comment">   * &lt;/pre&gt;</span>
+<a name="717"><font size=-1>717     </font></a><span class="comment">   */</span>
+<a name="718"><font size=-1>718     </font></a><span class="comment">  </span><span class="keyword">private <a href="dictionary_C.html#16865">CanInlineResult</a> <a href="dictionary_C.html#20489">canInlineReferenceDirectly</a></span><span class="default">(</span>
+<a name="719"><font size=-1>719     </font></a><span class="default">      <a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20497">ref</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20494">fnNode</a>, Set&lt;String&gt; <a href="dictionary_C.html#20496">namesToAlias</a>) {</span>
+<a name="720"><font size=-1>720     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#16880">isDirectCallNodeReplacementPossible</a>(<a href="dictionary_C.html#20494">fnNode</a>)) {</span>
+<a name="721"><font size=-1>721     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="722"><font size=-1>722     </font></a><span class="default">    }</span>
+<a name="723"><font size=-1>723     </font></a><span class="default"></span>
+<a name="724"><font size=-1>724     </font></a><span class="default">    </span><span class="comment">// CALL NODE: [ NAME, ARG1, ARG2, ... ]</span>
+<a name="725"><font size=-1>725     </font></a><span class="comment">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20493">callNode</a> </span><span class="default">= <a href="dictionary_C.html#20497">ref</a>.<a href="dictionary_C.html#20460">callNode</a>;</span>
+<a name="726"><font size=-1>726     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20492">cArg</a> = <a href="dictionary_C.html#20493">callNode</a>.<a href="dictionary_C.html#1907">getSecondChild</a>();</span>
+<a name="727"><font size=-1>727     </font></a><span class="default"></span>
+<a name="728"><font size=-1>728     </font></a><span class="default">    </span><span class="comment">// Functions called via 'call' and 'apply' have a this-object as</span>
+<a name="729"><font size=-1>729     </font></a><span class="comment">    // the first parameter, but this is not part of the called function's</span>
+<a name="730"><font size=-1>730     </font></a><span class="comment">    // parameter list.</span>
+<a name="731"><font size=-1>731     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20493">callNode</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="732"><font size=-1>732     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#10729">isFunctionObjectCall</a>(<a href="dictionary_C.html#20493">callNode</a>)) {</span>
+<a name="733"><font size=-1>733     </font></a><span class="default">        </span><span class="comment">// TODO(johnlenz): Support replace this with a value.</span>
+<a name="734"><font size=-1>734     </font></a><span class="comment">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20492">cArg</a> == </span><span class="keyword">null </span><span class="default">|| !<a href="dictionary_C.html#20492">cArg</a>.<a href="dictionary_C.html#1388">isThis</a>()) {</span>
+<a name="735"><font size=-1>735     </font></a><span class="default">          </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="736"><font size=-1>736     </font></a><span class="default">        }</span>
+<a name="737"><font size=-1>737     </font></a><span class="default">        <a href="dictionary_C.html#20492">cArg</a> = <a href="dictionary_C.html#20492">cArg</a>.<a href="dictionary_C.html#541">getNext</a>();</span>
+<a name="738"><font size=-1>738     </font></a><span class="default">      } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="739"><font size=-1>739     </font></a><span class="default">        </span><span class="comment">// &quot;.apply&quot; call should be filtered before this.</span>
+<a name="740"><font size=-1>740     </font></a><span class="comment">        </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(!<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#10730">isFunctionObjectApply</a>(<a href="dictionary_C.html#20493">callNode</a>));</span>
+<a name="741"><font size=-1>741     </font></a><span class="default">      }</span>
+<a name="742"><font size=-1>742     </font></a><span class="default">    }</span>
+<a name="743"><font size=-1>743     </font></a><span class="default"></span>
+<a name="744"><font size=-1>744     </font></a><span class="default">    Map&lt;String, <a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#20491">args</a> =</span>
+<a name="745"><font size=-1>745     </font></a><span class="default">        <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20632">getFunctionCallParameterMap</a>(</span>
+<a name="746"><font size=-1>746     </font></a><span class="default">            <a href="dictionary_C.html#20494">fnNode</a>, <a href="dictionary_C.html#20493">callNode</a>, </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20626">throwawayNameSupplier</a>);</span>
+<a name="747"><font size=-1>747     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#20495">hasArgs</a> </span><span class="default">= !<a href="dictionary_C.html#20491">args</a>.<a href="dictionary_I.html#370">isEmpty</a>();</span>
+<a name="748"><font size=-1>748     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20495">hasArgs</a>) {</span>
+<a name="749"><font size=-1>749     </font></a><span class="default">      </span><span class="comment">// Limit the inlining</span>
+<a name="750"><font size=-1>750     </font></a><span class="comment">      </span><span class="default">Set&lt;String&gt; <a href="dictionary_C.html#20490">allNamesToAlias</a> = </span><span class="keyword">new </span><span class="default">HashSet&lt;&gt;(<a href="dictionary_C.html#20496">namesToAlias</a>);</span>
+<a name="751"><font size=-1>751     </font></a><span class="default">      <a href="dictionary_C.html#16868">FunctionArgumentInjector</a>.<a href="dictionary_C.html#20633">maybeAddTempsForCallArguments</a>(</span>
+<a name="752"><font size=-1>752     </font></a><span class="default">          <a href="dictionary_C.html#20494">fnNode</a>, <a href="dictionary_C.html#20491">args</a>, <a href="dictionary_C.html#20490">allNamesToAlias</a>, <a href="dictionary_C.html#20623">compiler</a>.<a href="dictionary_C.html#1363">getCodingConvention</a>());</span>
+<a name="753"><font size=-1>753     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20490">allNamesToAlias</a>.<a href="dictionary_I.html#370">isEmpty</a>()) {</span>
+<a name="754"><font size=-1>754     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16877">NO</a>;</span>
+<a name="755"><font size=-1>755     </font></a><span class="default">      }</span>
+<a name="756"><font size=-1>756     </font></a><span class="default">    }</span>
+<a name="757"><font size=-1>757     </font></a><span class="default"></span>
+<a name="758"><font size=-1>758     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#16865">CanInlineResult</a></span><span class="default">.<a href="dictionary_C.html#16867">YES</a>;</span>
+<a name="759"><font size=-1>759     </font></a><span class="default">  }</span>
+<a name="760"><font size=-1>760     </font></a><span class="default"></span>
+<a name="761"><font size=-1>761     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="762"><font size=-1>762     </font></a><span class="comment">   * Determine if inlining the function is likely to reduce the code size.</span>
+<a name="763"><font size=-1>763     </font></a><span class="comment">   * @param namesToAlias</span>
+<a name="764"><font size=-1>764     </font></a><span class="comment">   */</span>
+<a name="765"><font size=-1>765     </font></a><span class="comment">  </span><span class="keyword">boolean <a href="dictionary_C.html#20587">inliningLowersCost</a></span><span class="default">(</span>
+<a name="766"><font size=-1>766     </font></a><span class="default">      <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#20593">fnModule</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20594">fnNode</a>, Collection&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#9747">Reference</a></span><span class="default">&gt; <a href="dictionary_C.html#20603">refs</a>,</span>
+<a name="767"><font size=-1>767     </font></a><span class="default">      Set&lt;String&gt; <a href="dictionary_C.html#20597">namesToAlias</a>, </span><span class="keyword">boolean <a href="dictionary_C.html#20595">isRemovable</a></span><span class="default">, </span><span class="keyword">boolean <a href="dictionary_C.html#20600">referencesThis</a></span><span class="default">) {</span>
+<a name="768"><font size=-1>768     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20599">referenceCount</a> </span><span class="default">= <a href="dictionary_C.html#20603">refs</a>.<a href="dictionary_S.html#371">size</a>();</span>
+<a name="769"><font size=-1>769     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20599">referenceCount</a> == </span><span class="number">0</span><span class="default">) {</span>
+<a name="770"><font size=-1>770     </font></a><span class="default">      </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="771"><font size=-1>771     </font></a><span class="default">    }</span>
+<a name="772"><font size=-1>772     </font></a><span class="default"></span>
+<a name="773"><font size=-1>773     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20601">referencesUsingBlockInlining</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="774"><font size=-1>774     </font></a><span class="default"></span>
+<a name="775"><font size=-1>775     </font></a><span class="default">    </span><span class="keyword">boolean <a href="dictionary_C.html#20590">checkModules</a> </span><span class="default">= <a href="dictionary_C.html#20595">isRemovable</a> &amp;&amp; <a href="dictionary_C.html#20593">fnModule</a> != </span><span class="keyword">null</span><span class="default">;</span>
+<a name="776"><font size=-1>776     </font></a><span class="default">    <a href="dictionary_C.html#6850">JSModuleGraph</a> <a href="dictionary_C.html#20596">moduleGraph</a> = <a href="dictionary_C.html#20623">compiler</a>.<a href="dictionary_C.html#6852">getModuleGraph</a>();</span>
+<a name="777"><font size=-1>777     </font></a><span class="default"></span>
+<a name="778"><font size=-1>778     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#9747">Reference</a> <a href="dictionary_C.html#20588">ref</a> : <a href="dictionary_C.html#20603">refs</a>) {</span>
+<a name="779"><font size=-1>779     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20588">ref</a>.<a href="dictionary_C.html#20461">mode</a> == <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9757">BLOCK</a>) {</span>
+<a name="780"><font size=-1>780     </font></a><span class="default">        referencesUsingBlockInlining++;</span>
+<a name="781"><font size=-1>781     </font></a><span class="default">      }</span>
+<a name="782"><font size=-1>782     </font></a><span class="default"></span>
+<a name="783"><font size=-1>783     </font></a><span class="default">      </span><span class="comment">// Check if any of the references cross the module boundaries.</span>
+<a name="784"><font size=-1>784     </font></a><span class="comment">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20590">checkModules</a> &amp;&amp; <a href="dictionary_C.html#20588">ref</a>.<a href="dictionary_C.html#20462">module</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="785"><font size=-1>785     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20588">ref</a>.<a href="dictionary_C.html#20462">module</a> != <a href="dictionary_C.html#20593">fnModule</a> &amp;&amp;</span>
+<a name="786"><font size=-1>786     </font></a><span class="default">            !<a href="dictionary_C.html#20596">moduleGraph</a>.<a href="dictionary_C.html#6862">dependsOn</a>(<a href="dictionary_C.html#20588">ref</a>.<a href="dictionary_C.html#20462">module</a>, <a href="dictionary_C.html#20593">fnModule</a>)) {</span>
+<a name="787"><font size=-1>787     </font></a><span class="default">          </span><span class="comment">// Calculate the cost as if the function were non-removable,</span>
+<a name="788"><font size=-1>788     </font></a><span class="comment">          // if it still lowers the cost inline it.</span>
+<a name="789"><font size=-1>789     </font></a><span class="comment">          <a href="dictionary_C.html#20595">isRemovable</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="790"><font size=-1>790     </font></a><span class="default">          <a href="dictionary_C.html#20590">checkModules</a> = </span><span class="keyword">false</span><span class="default">;  </span><span class="comment">// no need to check additional modules.</span>
+<a name="791"><font size=-1>791     </font></a><span class="comment">        </span><span class="default">}</span>
+<a name="792"><font size=-1>792     </font></a><span class="default">      }</span>
+<a name="793"><font size=-1>793     </font></a><span class="default">    }</span>
+<a name="794"><font size=-1>794     </font></a><span class="default"></span>
+<a name="795"><font size=-1>795     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20602">referencesUsingDirectInlining</a> </span><span class="default">= <a href="dictionary_C.html#20599">referenceCount</a> -</span>
+<a name="796"><font size=-1>796     </font></a><span class="default">        <a href="dictionary_C.html#20601">referencesUsingBlockInlining</a>;</span>
+<a name="797"><font size=-1>797     </font></a><span class="default"></span>
+<a name="798"><font size=-1>798     </font></a><span class="default">    </span><span class="comment">// Don't bother calculating the cost of function for simple functions where</span>
+<a name="799"><font size=-1>799     </font></a><span class="comment">    // possible.</span>
+<a name="800"><font size=-1>800     </font></a><span class="comment">    // However, when inlining a complex function, even a single reference may be</span>
+<a name="801"><font size=-1>801     </font></a><span class="comment">    // larger than the original function if there are many returns (resulting</span>
+<a name="802"><font size=-1>802     </font></a><span class="comment">    // in additional assignments) or many parameters that need to be aliased</span>
+<a name="803"><font size=-1>803     </font></a><span class="comment">    // so use the cost estimating.</span>
+<a name="804"><font size=-1>804     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20599">referenceCount</a> == </span><span class="number">1 </span><span class="default">&amp;&amp; <a href="dictionary_C.html#20595">isRemovable</a> &amp;&amp;</span>
+<a name="805"><font size=-1>805     </font></a><span class="default">        <a href="dictionary_C.html#20602">referencesUsingDirectInlining</a> == </span><span class="number">1</span><span class="default">) {</span>
+<a name="806"><font size=-1>806     </font></a><span class="default">      </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="807"><font size=-1>807     </font></a><span class="default">    }</span>
+<a name="808"><font size=-1>808     </font></a><span class="default"></span>
+<a name="809"><font size=-1>809     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20589">callCost</a> </span><span class="default">= <a href="dictionary_C.html#20533">estimateCallCost</a>(<a href="dictionary_C.html#20594">fnNode</a>, <a href="dictionary_C.html#20600">referencesThis</a>);</span>
+<a name="810"><font size=-1>810     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20598">overallCallCost</a> </span><span class="default">= <a href="dictionary_C.html#20589">callCost</a> * <a href="dictionary_C.html#20599">referenceCount</a>;</span>
+<a name="811"><font size=-1>811     </font></a><span class="default"></span>
+<a name="812"><font size=-1>812     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20592">costDeltaDirect</a> </span><span class="default">= <a href="dictionary_C.html#20544">inlineCostDelta</a>(</span>
+<a name="813"><font size=-1>813     </font></a><span class="default">        <a href="dictionary_C.html#20594">fnNode</a>, <a href="dictionary_C.html#20597">namesToAlias</a>, <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9753">DIRECT</a>);</span>
+<a name="814"><font size=-1>814     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20591">costDeltaBlock</a> </span><span class="default">= <a href="dictionary_C.html#20544">inlineCostDelta</a>(</span>
+<a name="815"><font size=-1>815     </font></a><span class="default">        <a href="dictionary_C.html#20594">fnNode</a>, <a href="dictionary_C.html#20597">namesToAlias</a>, <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9757">BLOCK</a>);</span>
+<a name="816"><font size=-1>816     </font></a><span class="default"></span>
+<a name="817"><font size=-1>817     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#20522">doesLowerCost</a></span><span class="default">(<a href="dictionary_C.html#20594">fnNode</a>, <a href="dictionary_C.html#20598">overallCallCost</a>,</span>
+<a name="818"><font size=-1>818     </font></a><span class="default">        <a href="dictionary_C.html#20602">referencesUsingDirectInlining</a>, <a href="dictionary_C.html#20592">costDeltaDirect</a>,</span>
+<a name="819"><font size=-1>819     </font></a><span class="default">        <a href="dictionary_C.html#20601">referencesUsingBlockInlining</a>, <a href="dictionary_C.html#20591">costDeltaBlock</a>,</span>
+<a name="820"><font size=-1>820     </font></a><span class="default">        <a href="dictionary_C.html#20595">isRemovable</a>);</span>
+<a name="821"><font size=-1>821     </font></a><span class="default">  }</span>
+<a name="822"><font size=-1>822     </font></a><span class="default"></span>
+<a name="823"><font size=-1>823     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="824"><font size=-1>824     </font></a><span class="comment">   * @return Whether inlining will lower cost.</span>
+<a name="825"><font size=-1>825     </font></a><span class="comment">   */</span>
+<a name="826"><font size=-1>826     </font></a><span class="comment">  </span><span class="keyword">private static boolean <a href="dictionary_C.html#20522">doesLowerCost</a></span><span class="default">(</span>
+<a name="827"><font size=-1>827     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20530">fnNode</a>, </span><span class="keyword">int <a href="dictionary_C.html#20524">callCost</a></span><span class="default">,</span>
+<a name="828"><font size=-1>828     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20528">directInlines</a></span><span class="default">, </span><span class="keyword">int <a href="dictionary_C.html#20527">costDeltaDirect</a></span><span class="default">,</span>
+<a name="829"><font size=-1>829     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20523">blockInlines</a></span><span class="default">, </span><span class="keyword">int <a href="dictionary_C.html#20526">costDeltaBlock</a></span><span class="default">,</span>
+<a name="830"><font size=-1>830     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#20531">removable</a></span><span class="default">) {</span>
+<a name="831"><font size=-1>831     </font></a><span class="default"></span>
+<a name="832"><font size=-1>832     </font></a><span class="default">    </span><span class="comment">// Determine the threshold value for this inequality:</span>
+<a name="833"><font size=-1>833     </font></a><span class="comment">    //     inline_cost &lt; call_cost</span>
+<a name="834"><font size=-1>834     </font></a><span class="comment">    // But solve it for the function declaration size so the size of it</span>
+<a name="835"><font size=-1>835     </font></a><span class="comment">    // is only calculated once and terminated early if possible.</span>
+<a name="836"><font size=-1>836     </font></a><span class="comment"></span>
+<a name="837"><font size=-1>837     </font></a><span class="comment">    </span><span class="keyword">int <a href="dictionary_C.html#20529">fnInstanceCount</a> </span><span class="default">= <a href="dictionary_C.html#20528">directInlines</a> + <a href="dictionary_C.html#20523">blockInlines</a> - (<a href="dictionary_C.html#20531">removable</a> ? </span><span class="number">1 </span><span class="default">: </span><span class="number">0</span><span class="default">);</span>
+<a name="838"><font size=-1>838     </font></a><span class="default">    </span><span class="comment">// Prevent division by zero.</span>
+<a name="839"><font size=-1>839     </font></a><span class="comment">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20529">fnInstanceCount</a> == </span><span class="number">0</span><span class="default">) {</span>
+<a name="840"><font size=-1>840     </font></a><span class="default">      </span><span class="comment">// Special case single reference function that are being block inlined:</span>
+<a name="841"><font size=-1>841     </font></a><span class="comment">      // If the cost of the inline is greater than the function definition size,</span>
+<a name="842"><font size=-1>842     </font></a><span class="comment">      // don't inline.</span>
+<a name="843"><font size=-1>843     </font></a><span class="comment">      </span><span class="keyword">return <a href="dictionary_C.html#20523">blockInlines</a> </span><span class="default">&lt;= </span><span class="number">0 </span><span class="default">|| <a href="dictionary_C.html#20526">costDeltaBlock</a> &lt;= </span><span class="number">0</span><span class="default">;</span>
+<a name="844"><font size=-1>844     </font></a><span class="default">    }</span>
+<a name="845"><font size=-1>845     </font></a><span class="default"></span>
+<a name="846"><font size=-1>846     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20525">costDelta</a> </span><span class="default">= (<a href="dictionary_C.html#20528">directInlines</a> * -<a href="dictionary_C.html#20527">costDeltaDirect</a>) + (<a href="dictionary_C.html#20523">blockInlines</a> * -<a href="dictionary_C.html#20526">costDeltaBlock</a>);</span>
+<a name="847"><font size=-1>847     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20532">threshold</a> </span><span class="default">= (<a href="dictionary_C.html#20524">callCost</a> + <a href="dictionary_C.html#20525">costDelta</a>) / <a href="dictionary_C.html#20529">fnInstanceCount</a>;</span>
+<a name="848"><font size=-1>848     </font></a><span class="default"></span>
+<a name="849"><font size=-1>849     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#537">InlineCostEstimator</a></span><span class="default">.<a href="dictionary_C.html#20638">getCost</a>(<a href="dictionary_C.html#20530">fnNode</a>, <a href="dictionary_C.html#20532">threshold</a> + </span><span class="number">1</span><span class="default">) &lt;= <a href="dictionary_C.html#20532">threshold</a>;</span>
+<a name="850"><font size=-1>850     </font></a><span class="default">  }</span>
+<a name="851"><font size=-1>851     </font></a><span class="default"></span>
+<a name="852"><font size=-1>852     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="853"><font size=-1>853     </font></a><span class="comment">   * Gets an estimate of the cost in characters of making the function call:</span>
+<a name="854"><font size=-1>854     </font></a><span class="comment">   * the sum of the identifiers and the separators.</span>
+<a name="855"><font size=-1>855     </font></a><span class="comment">   * @param referencesThis</span>
+<a name="856"><font size=-1>856     </font></a><span class="comment">   */</span>
+<a name="857"><font size=-1>857     </font></a><span class="comment">  </span><span class="keyword">private static int <a href="dictionary_C.html#20533">estimateCallCost</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20536">fnNode</a>, </span><span class="keyword">boolean <a href="dictionary_C.html#20538">referencesThis</a></span><span class="default">) {</span>
+<a name="858"><font size=-1>858     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20534">argsNode</a> = <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#1910">getFunctionParameters</a>(<a href="dictionary_C.html#20536">fnNode</a>);</span>
+<a name="859"><font size=-1>859     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20537">numArgs</a> </span><span class="default">= <a href="dictionary_C.html#20534">argsNode</a>.<a href="dictionary_C.html#557">getChildCount</a>();</span>
+<a name="860"><font size=-1>860     </font></a><span class="default"></span>
+<a name="861"><font size=-1>861     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20535">callCost</a> </span><span class="default">= <a href="dictionary_C.html#20618">NAME_COST_ESTIMATE</a> + <a href="dictionary_C.html#20619">PAREN_COST</a>;</span>
+<a name="862"><font size=-1>862     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20537">numArgs</a> &gt; </span><span class="number">0</span><span class="default">) {</span>
+<a name="863"><font size=-1>863     </font></a><span class="default">      callCost += (<a href="dictionary_C.html#20537">numArgs</a> * <a href="dictionary_C.html#20618">NAME_COST_ESTIMATE</a>) + ((<a href="dictionary_C.html#20537">numArgs</a> - </span><span class="number">1</span><span class="default">) * <a href="dictionary_C.html#20617">COMMA_COST</a>);</span>
+<a name="864"><font size=-1>864     </font></a><span class="default">    }</span>
+<a name="865"><font size=-1>865     </font></a><span class="default"></span>
+<a name="866"><font size=-1>866     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20538">referencesThis</a>) {</span>
+<a name="867"><font size=-1>867     </font></a><span class="default">      </span><span class="comment">// TODO(johnlenz): Update this if we start supporting inlining</span>
+<a name="868"><font size=-1>868     </font></a><span class="comment">      // other functions that reference this.</span>
+<a name="869"><font size=-1>869     </font></a><span class="comment">      // The only functions that reference this that are currently inlined</span>
+<a name="870"><font size=-1>870     </font></a><span class="comment">      // are those that are called via &quot;.call&quot; with an explicit &quot;this&quot;.</span>
+<a name="871"><font size=-1>871     </font></a><span class="comment">      </span><span class="default">callCost += </span><span class="number">5 </span><span class="default">+ </span><span class="number">5</span><span class="default">;  </span><span class="comment">// &quot;.call&quot; + &quot;this,&quot;</span>
+<a name="872"><font size=-1>872     </font></a><span class="comment">    </span><span class="default">}</span>
+<a name="873"><font size=-1>873     </font></a><span class="default"></span>
+<a name="874"><font size=-1>874     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#20535">callCost</a></span><span class="default">;</span>
+<a name="875"><font size=-1>875     </font></a><span class="default">  }</span>
+<a name="876"><font size=-1>876     </font></a><span class="default"></span>
+<a name="877"><font size=-1>877     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="878"><font size=-1>878     </font></a><span class="comment">   * @return The difference between the function definition cost and</span>
+<a name="879"><font size=-1>879     </font></a><span class="comment">   *     inline cost.</span>
+<a name="880"><font size=-1>880     </font></a><span class="comment">   */</span>
+<a name="881"><font size=-1>881     </font></a><span class="comment">  </span><span class="keyword">private static int <a href="dictionary_C.html#20544">inlineCostDelta</a></span><span class="default">(</span>
+<a name="882"><font size=-1>882     </font></a><span class="default">      <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20550">fnNode</a>, Set&lt;String&gt; <a href="dictionary_C.html#20553">namesToAlias</a>, <a href="dictionary_C.html#9746">InliningMode</a> <a href="dictionary_C.html#20552">mode</a>) {</span>
+<a name="883"><font size=-1>883     </font></a><span class="default">    </span><span class="comment">// The part of the function that is never inlined:</span>
+<a name="884"><font size=-1>884     </font></a><span class="comment">    //    &quot;function xx(xx,xx){}&quot; (15 + (param count * 3) -1;</span>
+<a name="885"><font size=-1>885     </font></a><span class="comment">    </span><span class="keyword">int <a href="dictionary_C.html#20555">paramCount</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#1910">getFunctionParameters</a>(<a href="dictionary_C.html#20550">fnNode</a>).<a href="dictionary_C.html#557">getChildCount</a>();</span>
+<a name="886"><font size=-1>886     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20548">commaCount</a> </span><span class="default">= (<a href="dictionary_C.html#20555">paramCount</a> &gt; </span><span class="number">1</span><span class="default">) ? <a href="dictionary_C.html#20555">paramCount</a> - </span><span class="number">1 </span><span class="default">: </span><span class="number">0</span><span class="default">;</span>
+<a name="887"><font size=-1>887     </font></a><span class="default">    </span><span class="keyword">int <a href="dictionary_C.html#20549">costDeltaFunctionOverhead</a> </span><span class="default">= </span><span class="number">15 </span><span class="default">+ <a href="dictionary_C.html#20548">commaCount</a> +</span>
+<a name="888"><font size=-1>888     </font></a><span class="default">        (<a href="dictionary_C.html#20555">paramCount</a> * <a href="dictionary_C.html#537">InlineCostEstimator</a>.<a href="dictionary_C.html#20628">ESTIMATED_IDENTIFIER_COST</a>);</span>
+<a name="889"><font size=-1>889     </font></a><span class="default"></span>
+<a name="890"><font size=-1>890     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#20547">block</a> = <a href="dictionary_C.html#20550">fnNode</a>.<a href="dictionary_C.html#350">getLastChild</a>();</span>
+<a name="891"><font size=-1>891     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#20547">block</a>.<a href="dictionary_C.html#1406">hasChildren</a>()) {</span>
+<a name="892"><font size=-1>892     </font></a><span class="default">      </span><span class="comment">// Assume the inline cost is zero for empty functions.</span>
+<a name="893"><font size=-1>893     </font></a><span class="comment">      </span><span class="keyword">return </span><span class="default">-<a href="dictionary_C.html#20549">costDeltaFunctionOverhead</a>;</span>
+<a name="894"><font size=-1>894     </font></a><span class="default">    }</span>
+<a name="895"><font size=-1>895     </font></a><span class="default"></span>
+<a name="896"><font size=-1>896     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#20552">mode</a> == <a href="dictionary_C.html#9746">InliningMode</a>.<a href="dictionary_C.html#9753">DIRECT</a>) {</span>
+<a name="897"><font size=-1>897     </font></a><span class="default">      </span><span class="comment">// The part of the function that is inlined using direct inlining:</span>
+<a name="898"><font size=-1>898     </font></a><span class="comment">      //    &quot;return &quot; (7)</span>
+<a name="899"><font size=-1>899     </font></a><span class="comment">      </span><span class="keyword">return </span><span class="default">-(<a href="dictionary_C.html#20549">costDeltaFunctionOverhead</a> + </span><span class="number">7</span><span class="default">);</span>
+<a name="900"><font size=-1>900     </font></a><span class="default">    } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="901"><font size=-1>901     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20545">aliasCount</a> </span><span class="default">= <a href="dictionary_C.html#20553">namesToAlias</a>.<a href="dictionary_S.html#371">size</a>();</span>
+<a name="902"><font size=-1>902     </font></a><span class="default"></span>
+<a name="903"><font size=-1>903     </font></a><span class="default">      </span><span class="comment">// Originally, we estimated purely base on the function code size, relying</span>
+<a name="904"><font size=-1>904     </font></a><span class="comment">      // on later optimizations. But that did not produce good results, so here</span>
+<a name="905"><font size=-1>905     </font></a><span class="comment">      // we try to estimate the something closer to the actual inlined coded.</span>
+<a name="906"><font size=-1>906     </font></a><span class="comment"></span>
+<a name="907"><font size=-1>907     </font></a><span class="comment">      // NOTE 1: Result overhead is only if there is an assignment, but</span>
+<a name="908"><font size=-1>908     </font></a><span class="comment">      // getting that information would require some refactoring.</span>
+<a name="909"><font size=-1>909     </font></a><span class="comment">      // NOTE 2: The aliasing overhead is currently an under-estimate,</span>
+<a name="910"><font size=-1>910     </font></a><span class="comment">      // as some parameters are aliased because of the parameters used.</span>
+<a name="911"><font size=-1>911     </font></a><span class="comment">      // Perhaps we should just assume all parameters will be aliased?</span>
+<a name="912"><font size=-1>912     </font></a><span class="comment">      </span><span class="keyword">final int <a href="dictionary_C.html#20551">inlineBlockOverhead</a> </span><span class="default">= </span><span class="number">4</span><span class="default">; </span><span class="comment">// &quot;X:{}&quot;</span>
+<a name="913"><font size=-1>913     </font></a><span class="comment">      </span><span class="keyword">final int <a href="dictionary_C.html#20557">perReturnOverhead</a> </span><span class="default">= </span><span class="number">2</span><span class="default">;   </span><span class="comment">// &quot;return&quot; --&gt; &quot;break X&quot;</span>
+<a name="914"><font size=-1>914     </font></a><span class="comment">      </span><span class="keyword">final int <a href="dictionary_C.html#20558">perReturnResultOverhead</a> </span><span class="default">= </span><span class="number">3</span><span class="default">; </span><span class="comment">// &quot;XX=&quot;</span>
+<a name="915"><font size=-1>915     </font></a><span class="comment">      </span><span class="keyword">final int <a href="dictionary_C.html#20556">perAliasOverhead</a> </span><span class="default">= </span><span class="number">3</span><span class="default">; </span><span class="comment">// &quot;XX=&quot;</span>
+<a name="916"><font size=-1>916     </font></a><span class="comment"></span>
+<a name="917"><font size=-1>917     </font></a><span class="comment">      // TODO(johnlenz): Counting the number of returns is relatively expensive</span>
+<a name="918"><font size=-1>918     </font></a><span class="comment">      //   this information should be determined during the traversal and</span>
+<a name="919"><font size=-1>919     </font></a><span class="comment">      //   cached.</span>
+<a name="920"><font size=-1>920     </font></a><span class="comment">      </span><span class="keyword">int <a href="dictionary_C.html#20560">returnCount</a> </span><span class="default">= <a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#1900">getNodeTypeReferenceCount</a>(</span>
+<a name="921"><font size=-1>921     </font></a><span class="default">          <a href="dictionary_C.html#20547">block</a>, <a href="dictionary_C.html#220">Token</a>.<a href="dictionary_C.html#6548">RETURN</a>, </span><span class="keyword">new <a href="dictionary_C.html#536">NodeUtil</a></span><span class="default">.<a href="dictionary_C.html#17545">MatchShallowStatement</a>());</span>
+<a name="922"><font size=-1>922     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20559">resultCount</a> </span><span class="default">= (<a href="dictionary_C.html#20560">returnCount</a> &gt; </span><span class="number">0</span><span class="default">) ? <a href="dictionary_C.html#20560">returnCount</a> - </span><span class="number">1 </span><span class="default">: </span><span class="number">0</span><span class="default">;</span>
+<a name="923"><font size=-1>923     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20546">baseOverhead</a> </span><span class="default">= (<a href="dictionary_C.html#20560">returnCount</a> &gt; </span><span class="number">0</span><span class="default">) ? <a href="dictionary_C.html#20551">inlineBlockOverhead</a> : </span><span class="number">0</span><span class="default">;</span>
+<a name="924"><font size=-1>924     </font></a><span class="default"></span>
+<a name="925"><font size=-1>925     </font></a><span class="default">      </span><span class="keyword">int <a href="dictionary_C.html#20554">overhead</a> </span><span class="default">= <a href="dictionary_C.html#20546">baseOverhead</a></span>
+<a name="926"><font size=-1>926     </font></a><span class="default">          + <a href="dictionary_C.html#20560">returnCount</a> * <a href="dictionary_C.html#20557">perReturnOverhead</a></span>
+<a name="927"><font size=-1>927     </font></a><span class="default">          + <a href="dictionary_C.html#20559">resultCount</a> * <a href="dictionary_C.html#20558">perReturnResultOverhead</a></span>
+<a name="928"><font size=-1>928     </font></a><span class="default">          + <a href="dictionary_C.html#20545">aliasCount</a> * <a href="dictionary_C.html#20556">perAliasOverhead</a>;</span>
+<a name="929"><font size=-1>929     </font></a><span class="default"></span>
+<a name="930"><font size=-1>930     </font></a><span class="default">      </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#20554">overhead</a> - <a href="dictionary_C.html#20549">costDeltaFunctionOverhead</a>);</span>
+<a name="931"><font size=-1>931     </font></a><span class="default">    }</span>
+<a name="932"><font size=-1>932     </font></a><span class="default">  }</span>
+<a name="933"><font size=-1>933     </font></a><span class="default"></span>
+<a name="934"><font size=-1>934     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="935"><font size=-1>935     </font></a><span class="comment">   * Store the names of known constants to be used when classifying call-sites</span>
+<a name="936"><font size=-1>936     </font></a><span class="comment">   * in expressions.</span>
+<a name="937"><font size=-1>937     </font></a><span class="comment">   */</span>
+<a name="938"><font size=-1>938     </font></a><span class="comment">  </span><span class="keyword">public void <a href="dictionary_C.html#16879">setKnownConstants</a></span><span class="default">(Set&lt;String&gt; <a href="dictionary_C.html#20616">knownConstants</a>) {</span>
+<a name="939"><font size=-1>939     </font></a><span class="default">    </span><span class="comment">// This is only expected to be set once. The same set should be used</span>
+<a name="940"><font size=-1>940     </font></a><span class="comment">    // when evaluating call-sites and inlining calls.</span>
+<a name="941"><font size=-1>941     </font></a><span class="comment">    </span><span class="default">Preconditions.<a href="dictionary_C.html#591">checkState</a>(</span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20624">knownConstants</a>.<a href="dictionary_I.html#370">isEmpty</a>());</span>
+<a name="942"><font size=-1>942     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#20624">knownConstants</a> = <a href="dictionary_C.html#20616">knownConstants</a>;</span>
+<a name="943"><font size=-1>943     </font></a><span class="default">  }</span>
+<a name="944"><font size=-1>944     </font></a><span class="default">}</span>
+<a name="945"><font size=-1>945     </font></a><span class="default"></span>
+</pre></body></html>

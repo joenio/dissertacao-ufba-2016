@@ -1,0 +1,97 @@
+<html><head><title>Include.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-vm/src/main/java/net/sourceforge/pmd/lang/vm/directive/Include.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-vm/src/main/java/net/sourceforge/pmd/lang/vm/directive/Include.java";
+top.document.title  = "Include.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.vm.<a href="dictionary_N.html#87">directive</a>;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * or more contributor license agreements.  See the NOTICE file</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * distributed with this work for additional information</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * regarding copyright ownership.  The ASF licenses this file</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * to you under the Apache License, Version 2.0 (the</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * &quot;License&quot;); you may not use this file except in compliance</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * with the License.  You may obtain a copy of the License at</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> *</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *   http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing,</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * software distributed under the License is distributed on an</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * KIND, either express or implied.  See the License for the</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * specific language governing permissions and limitations</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * under the License.    </span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">/**</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * &lt;p&gt;Pluggable directive that handles the #include() statement in VTL.</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * This #include() can take multiple arguments of either</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * StringLiteral or Reference.&lt;/p&gt;</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> *</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * &lt;p&gt;Notes:&lt;/p&gt;</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * &lt;ol&gt;</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * &lt;li&gt;For security reasons, the included source material can only come</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> *    from somewhere within the template root tree.  If you want to include</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> *    content from elsewhere on your disk, add extra template roots, or use</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> *    a link from somwhere under template root to that content.&lt;/li&gt;</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> *</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> *  &lt;li&gt;By default, there is no output to the render stream in the event of</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> *    a problem.  You can override this behavior with two property values :</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> *       include.output.errormsg.start</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> *       include.output.errormsg.end</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> *     If both are defined in velocity.properties, they will be used to</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> *     in the render output to bracket the arg string that caused the</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> *     problem.</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> *     Ex. : if you are working in html then</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> *       include.output.errormsg.start=&amp;lt;!-- #include error :</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> *       include.output.errormsg.end= --&amp;gt;</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> *     might be an excellent way to start...&lt;/li&gt;</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> *</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> *  &lt;li&gt;As noted above, #include() can take multiple arguments.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"> *    Ex : #include('foo.vm' 'bar.vm' $foo)</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"> *    will include all three if valid to output without any</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"> *    special separator.&lt;/li&gt;</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"> *  &lt;/ol&gt;</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"> *</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"> * @author &lt;a href=&quot;mailto:geirm@optonline.net&quot;&gt;Geir Magnusson Jr.&lt;/a&gt;</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"> * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"> * @author &lt;a href=&quot;mailto:kav@kav.dk&quot;&gt;Kasper Nielsen&lt;/a&gt;</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment"> * @version $Id: Include.java 746438 2009-02-21 05:41:24Z nbubna $</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"> */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#9137">Include</a> extends <a href="dictionary_N.html#8607">InputBase</a></span>
+<a name="58"><font size=-1>58     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">     * Return name of this directive.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">     * @return The name of this directive.</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">     */</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9138">getName</a></span><span class="default">()</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    {</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">        </span><span class="keyword">return </span><span class="string">&quot;include&quot;</span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    }</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">     * Return type of this directive.</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * @return The type of this directive.</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">     */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">    </span><span class="keyword">public int <a href="dictionary_N.html#9139">getType</a></span><span class="default">()</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    {</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#3549">LINE</a></span><span class="default">;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    }</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">     * Since there is no processing of content,</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">     * there is never a need for an internal scope.</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">     */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">    </span><span class="keyword">public boolean <a href="dictionary_N.html#9140">isScopeProvided</a></span><span class="default">()</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    {</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    }</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">}</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,43 @@
+<html><head><title>ResourceResolver.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/util/database/ResourceResolver.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/util/database/ResourceResolver.java";
+top.document.title  = "ResourceResolver.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.util.<a href="dictionary_N.html#882">database</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.xml.<a href="dictionary_J.html#5015">transform</a>.<a href="dictionary_J.html#16901">URIResolver</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.xml.<a href="dictionary_J.html#5015">transform</a>.<a href="dictionary_J.html#16899">Source</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.xml.<a href="dictionary_J.html#5015">transform</a>.<a href="dictionary_J.html#4957">TransformerException</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.xml.transform.<a href="dictionary_J.html#5014">stream</a>.<a href="dictionary_J.html#16900">StreamSource</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_N.html#16892">ResourceResolver</a> implements <a href="dictionary_J.html#16901">URIResolver</a></span>
+<a name="12"><font size=-1>12     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">  @<a href="dictionary_O.html#74">Override</a></span>
+<a name="14"><font size=-1>14     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_J.html#16899">Source</a> <a href="dictionary_N.html#16893">resolve</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#16896">href</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#16895">base</a>) </span>
+<a name="15"><font size=-1>15     </font></a><span class="default">                              </span><span class="keyword">throws <a href="dictionary_J.html#4957">TransformerException</a></span>
+<a name="16"><font size=-1>16     </font></a><span class="keyword">  </span><span class="default">{</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">    </span><span class="keyword">if</span><span class="default">(</span><span class="keyword">null</span><span class="default">==<a href="dictionary_N.html#16896">href</a> || <a href="dictionary_N.html#16896">href</a>.<a href="dictionary_L.html#229">length</a>() == </span><span class="number">0 </span><span class="default">) {</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">      </span><span class="keyword">return null</span><span class="default">; </span><span class="comment">// will make Oracle XSLT processor explode, </span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">                   // even though it's correct</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">    </span><span class="default">}</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">    </span><span class="keyword">try    </span><span class="default">{</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">      <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#16898">resource</a> = <a href="dictionary_N.html#16896">href</a>; </span>
+<a name="23"><font size=-1>23     </font></a><span class="default">      <a href="dictionary_N.html#11060">ResourceLoader</a> <a href="dictionary_N.html#16897">loader</a> = </span><span class="keyword">new <a href="dictionary_N.html#11060">ResourceLoader</a></span><span class="default">();</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">      </span><span class="keyword">return new <a href="dictionary_J.html#16900">StreamSource</a></span><span class="default">(<a href="dictionary_N.html#16897">loader</a>.<a href="dictionary_N.html#11061">getResourceStream</a>(<a href="dictionary_N.html#16898">resource</a>), <a href="dictionary_N.html#16898">resource</a>);</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">    } </span><span class="comment">// try</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">    </span><span class="keyword">catch</span><span class="default">(<a href="dictionary_E.html#1075">Exception</a> <a href="dictionary_N.html#16894">ex</a>)</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    {</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">      </span><span class="keyword">throw new <a href="dictionary_J.html#4957">TransformerException</a></span><span class="default">(<a href="dictionary_N.html#16894">ex</a>);</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    } </span><span class="comment">// catch</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">  </span><span class="default">} </span><span class="comment">// resolve</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span><span class="default">} </span><span class="comment">// ResourceResolver</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span>
+</pre></body></html>

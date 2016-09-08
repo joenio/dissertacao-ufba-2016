@@ -1,0 +1,626 @@
+<html><head><title>priv_types_n_macros.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_syswrap/priv_types_n_macros.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/coregrind/m_syswrap/priv_types_n_macros.h";
+top.document.title  = "priv_types_n_macros.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- Types and macros for writing syscall wrappers.               ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*---                                        priv_types_n_macros.h ---*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"></span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">/*</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">   framework.</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">   Copyright (C) 2000-2010 Julian Seward</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">      jseward@acm.org</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">   02111-1307, USA.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">*/</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#72564">__PRIV_TYPES_N_MACROS_H</a></span>
+<a name="33"><font size=-1>33     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#72564">__PRIV_TYPES_N_MACROS_H</a></span>
+<a name="34"><font size=-1>34     </font></a><span class="preproc"></span>
+<a name="35"><font size=-1>35     </font></a><span class="preproc"></span><span class="comment">/* requires #include &quot;pub_core_options.h&quot; */</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">/* requires #include &quot;pub_core_signals.h&quot; */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">/* This header defines types and macros which are useful for writing</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   syscall wrappers.  It does not give prototypes for any such</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">   headers, though: that is the job of the priv_syswrap-*.h headers.</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">   This header gets included in any file which defines or declares</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">   wrappers, and as such should only contain stuff which is relevant</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">   to all such files.</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">*/</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"></span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">/* ---------------------------------------------------------------------</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">   Types that are used in syscall wrappers.</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">   ------------------------------------------------------------------ */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"></span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">/* Arguments for a syscall. */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="52"><font size=-1>52     </font></a><span class="keyword">   struct <a href="dictionary_S.html#4926">SyscallArgs</a> </span><span class="default">{</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">      <a href="dictionary_W.html#36">Word</a> <a href="dictionary_S.html#19212">sysno</a>;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19213">arg1</a>;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19214">arg2</a>;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19215">arg3</a>;</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19216">arg4</a>;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19217">arg5</a>;</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19218">arg6</a>;</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19219">arg7</a>;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">      <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_S.html#19220">arg8</a>;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">   }</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">   <a href="dictionary_S.html#19210">SyscallArgs</a>;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span><span class="comment">/* Current status of a syscall being done on behalf of the client. */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="67"><font size=-1>67     </font></a><span class="keyword">   struct <a href="dictionary_S.html#4925">SyscallStatus</a> </span><span class="default">{</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">      </span><span class="keyword">enum </span><span class="default">{ </span>
+<a name="69"><font size=-1>69     </font></a><span class="default">         </span><span class="comment">/* call is complete, result is in 'res' */</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">         </span><span class="default">SsComplete=</span><span class="number">1</span><span class="default">,</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">         </span><span class="comment">/* syscall not yet completed; must be handed to the kernel */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">         </span><span class="default">SsHandToKernel, </span>
+<a name="73"><font size=-1>73     </font></a><span class="default">         </span><span class="comment">/* not currently handling a syscall for this thread */</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">         </span><span class="default">SsIdle </span>
+<a name="75"><font size=-1>75     </font></a><span class="default">      } <a href="dictionary_S.html#19225">what</a>;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">      <a href="dictionary_S.html#10">SysRes</a> <a href="dictionary_S.html#19227">sres</a>; </span><span class="comment">/* only meaningful for .what == SsComplete */</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">   <a href="dictionary_S.html#19223">SyscallStatus</a>;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span><span class="comment">/* Guest state layout info for syscall args. */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="82"><font size=-1>82     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">      </span><span class="comment">// Note that, depending on the platform, arguments may be found in</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">      // registers or on the stack.  (See the comment at the top of</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">      // syswrap-main.c for per-platform details.)  For register arguments</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">      // (which have o_arg field names) the o_arg value is the offset into</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">      // the vex register state.  For stack arguments (which have s_arg</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">      // field names), the s_arg value is the offset from the stack pointer.</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">      <a href="dictionary_I.html#113">Int</a> <a href="dictionary_O.html#19277">o_sysno</a></span><span class="default">;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="preproc">#     if defined</span><span class="default">(<a href="dictionary_V.html#19236">VGP_x86_linux</a>) || </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_V.html#19237">VGP_amd64_linux</a>) </span><span class="preproc">\</span>
+<a name="91"><font size=-1>91     </font></a><span class="preproc">         </span><span class="default">|| </span><span class="preproc">defined</span><span class="default">(VGP_ppc32_linux) || </span><span class="preproc">defined</span><span class="default">(VGP_ppc64_linux) </span><span class="preproc">\</span>
+<a name="92"><font size=-1>92     </font></a><span class="preproc">         </span><span class="default">|| </span><span class="preproc">defined</span><span class="default">(VGP_arm_linux) || </span><span class="preproc">defined</span><span class="default">(VGP_s390x_linux)</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg1;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg2;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg3;</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg4;</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg5;</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg6;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> uu_arg7;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> uu_arg8;</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span><span class="preproc">#     elif defined</span><span class="default">(<a href="dictionary_V.html#5269">VGP_ppc32_aix5</a>) || </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_V.html#5271">VGP_ppc64_aix5</a>)</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg1;</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg2;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg3;</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg4;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg5;</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg6;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg7;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg8;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span><span class="preproc">#     elif defined</span><span class="default">(<a href="dictionary_V.html#19240">VGP_x86_darwin</a>)</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg1;</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg2;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg3;</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg4;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg5;</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg6;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg7;</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg8;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span><span class="preproc">#     elif defined</span><span class="default">(<a href="dictionary_V.html#19247">VGP_amd64_darwin</a>)</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg1;</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg2;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg3;</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg4;</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg5;</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> o_arg6;</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg7;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">      <a href="dictionary_I.html#113">Int</a> s_arg8;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span><span class="preproc">#     else</span>
+<a name="129"><font size=-1>129     </font></a><span class="preproc">#       error </span><span class="string">&quot;Unknown platform&quot;</span>
+<a name="130"><font size=-1>130     </font></a><span class="string"></span><span class="preproc">#     endif</span>
+<a name="131"><font size=-1>131     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">   <a href="dictionary_S.html#19275">SyscallArgLayout</a>;</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span><span class="comment">/* Flags describing syscall wrappers */</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#19377">SfMayBlock</a>      </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; </span><span class="number">1</span><span class="default">) </span><span class="comment">/* may block                         */</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#19378">SfPostOnFail</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; </span><span class="number">2</span><span class="default">) </span><span class="comment">/* call POST() function on failure   */</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#19375">SfPollAfter</a>     </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; </span><span class="number">3</span><span class="default">) </span><span class="comment">/* poll for signals on completion    */</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#19376">SfYieldAfter</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; </span><span class="number">4</span><span class="default">) </span><span class="comment">/* yield on completion               */</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#19373">SfNoWriteResult</a> </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; </span><span class="number">5</span><span class="default">) </span><span class="comment">/* don't write result to guest state */</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment"></span>
+<a name="141"><font size=-1>141     </font></a><span class="comment"></span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">/* ---------------------------------------------------------------------</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">   The syscall table.</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">   ------------------------------------------------------------------ */</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment"></span>
+<a name="146"><font size=-1>146     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="147"><font size=-1>147     </font></a><span class="keyword">   struct </span><span class="default">{</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">      </span><span class="keyword">void </span><span class="default">(*<a href="dictionary_B.html#19372">before</a>) ( ThreadId,</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">                       SyscallArgLayout*,</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">                       </span><span class="comment">/*MOD*/</span><span class="default">SyscallArgs*,</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">                       </span><span class="comment">/*OUT*/</span><span class="default">SyscallStatus*,</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">                       </span><span class="comment">/*OUT*/</span><span class="default">UWord*</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">                     );</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default">      </span><span class="keyword">void </span><span class="default">(*<a href="dictionary_A.html#19392">after</a>)  ( ThreadId, </span>
+<a name="156"><font size=-1>156     </font></a><span class="default">                       SyscallArgs*,</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">                       SyscallStatus*</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">                     );</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">   }</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">   <a href="dictionary_S.html#19333">SyscallTableEntry</a>;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default"></span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span><span class="comment">/* Syscall table entries bind __NR_xxx syscall numbers to the PRE/POST</span>
+<a name="163"><font size=-1>163     </font></a><span class="comment">   wrappers for the relevant syscall used in the OS kernel for that</span>
+<a name="164"><font size=-1>164     </font></a><span class="comment">   number.  Note that the constant names don't always match the</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment">   wrapper names in a straightforward way.  For example, on x86/Linux:</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">      </span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">      __NR_lchown       --&gt; sys_lchown16()</span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">      __NR_lchown32     --&gt; sys_lchown()</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment">      __NR_select       --&gt; old_select()</span>
+<a name="170"><font size=-1>170     </font></a><span class="comment">      __NR__newselect   --&gt; sys_select()</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">*/</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment"></span>
+<a name="173"><font size=-1>173     </font></a><span class="comment"></span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">/* A function to find the syscall table entry for a given sysno.  If</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">   none is found, return NULL.  This used to be done with a single</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">   fixed sized table exposed to the caller, but that's too inflexible;</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">   hence now use a function which can do arbitrary messing around to</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">   find the required entry. */</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#5267">VGO_linux</a>)</span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span><span class="keyword">extern</span>
+<a name="181"><font size=-1>181     </font></a><span class="keyword"><a href="dictionary_S.html#19333">SyscallTableEntry</a></span><span class="default">* <a href="dictionary_M.html#2697">ML_</a>(get_linux_syscall_entry)( <a href="dictionary_U.html#8">UInt</a> sysno );</span>
+<a name="182"><font size=-1>182     </font></a><span class="default"></span>
+<a name="183"><font size=-1>183     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#5269">VGP_ppc32_aix5</a>)</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span><span class="comment">/* Same scheme on AIX5.  This is more complex than the simple fixed</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">   table lookup typical for Linux, since the syscalls don't have fixed</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">   numbers. */</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment"></span><span class="keyword">extern</span>
+<a name="188"><font size=-1>188     </font></a><span class="keyword"><a href="dictionary_S.html#19333">SyscallTableEntry</a></span><span class="default">* <a href="dictionary_M.html#2697">ML_</a>(get_ppc32_aix5_syscall_entry) ( <a href="dictionary_U.html#8">UInt</a> sysno );</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#5271">VGP_ppc64_aix5</a>)</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span><span class="keyword">extern</span>
+<a name="192"><font size=-1>192     </font></a><span class="keyword"><a href="dictionary_S.html#19333">SyscallTableEntry</a></span><span class="default">* <a href="dictionary_M.html#2697">ML_</a>(get_ppc64_aix5_syscall_entry) ( <a href="dictionary_U.html#8">UInt</a> sysno );</span>
+<a name="193"><font size=-1>193     </font></a><span class="default"></span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#4944">VGO_darwin</a>)</span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span><span class="comment">/* XXX: Darwin still uses the old scheme of exposing the table</span>
+<a name="196"><font size=-1>196     </font></a><span class="comment">   array(s) and size(s) directly to syswrap-main.c.  This should be</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">   fixed. */</span>
+<a name="198"><font size=-1>198     </font></a><span class="comment"></span>
+<a name="199"><font size=-1>199     </font></a><span class="comment"></span><span class="keyword">extern const <a href="dictionary_S.html#19333">SyscallTableEntry</a> <a href="dictionary_M.html#2697">ML_</a></span><span class="default">(syscall_table)[];</span>
+<a name="200"><font size=-1>200     </font></a><span class="default"></span><span class="keyword">extern const <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_M.html#2697">ML_</a></span><span class="default">(syscall_table_size);</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="203"><font size=-1>203     </font></a><span class="preproc">#  error </span><span class="default">Unknown OS</span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span><span class="preproc">#endif   </span>
+<a name="205"><font size=-1>205     </font></a><span class="preproc"></span>
+<a name="206"><font size=-1>206     </font></a><span class="preproc"></span><span class="comment">/* ---------------------------------------------------------------------</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">   Declaring and defining wrappers.</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">   ------------------------------------------------------------------ */</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment"></span>
+<a name="210"><font size=-1>210     </font></a><span class="comment">/* Templates for generating the PRE and POST macros -- that is, the</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">   formal parameter lists for the definitions of wrapper functions.</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment"></span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">   Since these names exist in the global namespace, 'auxstr' should</span>
+<a name="214"><font size=-1>214     </font></a><span class="comment">   give an auxiliary string, eg, &quot;generic&quot;, &quot;x86_linux&quot;, &quot;linux&quot;, etc,</span>
+<a name="215"><font size=-1>215     </font></a><span class="comment">   that ensures the names won't clash with other wrappers.</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment"></span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">   You should create corresponding global declarations using</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">   DECL_TEMPLATE (indirectly) below.  </span>
+<a name="219"><font size=-1>219     </font></a><span class="comment"></span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">   Note.  The silly name &quot;arrghs&quot; is used rather than just &quot;args&quot;</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">   because a few wrappers declare the name &quot;args&quot; themselves, and</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment">   renaming those decls can change the name that comes out in error</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">   messages (on scalar arg checks).  Hence rename this instead.</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">*/</span>
+<a name="225"><font size=-1>225     </font></a><span class="comment"></span>
+<a name="226"><font size=-1>226     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_D.html#72571">DEFN_PRE_TEMPLATE</a></span><span class="default">(auxstr, name)                          </span><span class="preproc">\</span>
+<a name="227"><font size=-1>227     </font></a><span class="preproc">   </span><span class="default">void vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_before                     </span><span class="preproc">\</span>
+<a name="228"><font size=-1>228     </font></a><span class="preproc">                                 </span><span class="default">( <a href="dictionary_T.html#7">ThreadId</a> tid,                 </span><span class="preproc">\</span>
+<a name="229"><font size=-1>229     </font></a><span class="preproc">                                   <a href="dictionary_S.html#19275">SyscallArgLayout</a></span><span class="default">* layout,     </span><span class="preproc">\</span>
+<a name="230"><font size=-1>230     </font></a><span class="preproc">                                   </span><span class="comment">/*MOD*/<a href="dictionary_S.html#4926">SyscallArgs</a></span><span class="default">* arrghs,   </span><span class="preproc">\</span>
+<a name="231"><font size=-1>231     </font></a><span class="preproc">                                   </span><span class="comment">/*OUT*/<a href="dictionary_S.html#4925">SyscallStatus</a></span><span class="default">* status, </span><span class="preproc">\</span>
+<a name="232"><font size=-1>232     </font></a><span class="preproc">                                   </span><span class="comment">/*OUT*/<a href="dictionary_U.html#9">UWord</a></span><span class="default">* flags           </span><span class="preproc">\</span>
+<a name="233"><font size=-1>233     </font></a><span class="preproc">                                 </span><span class="default">)</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_D.html#72572">DEFN_POST_TEMPLATE</a></span><span class="default">(auxstr, name)                         </span><span class="preproc">\</span>
+<a name="236"><font size=-1>236     </font></a><span class="preproc">   </span><span class="default">void vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_after                      </span><span class="preproc">\</span>
+<a name="237"><font size=-1>237     </font></a><span class="preproc">                                 </span><span class="default">( <a href="dictionary_T.html#7">ThreadId</a> tid,                 </span><span class="preproc">\</span>
+<a name="238"><font size=-1>238     </font></a><span class="preproc">                                   <a href="dictionary_S.html#4926">SyscallArgs</a></span><span class="default">* arrghs,          </span><span class="preproc">\</span>
+<a name="239"><font size=-1>239     </font></a><span class="preproc">                                   <a href="dictionary_S.html#4925">SyscallStatus</a></span><span class="default">* status         </span><span class="preproc">\</span>
+<a name="240"><font size=-1>240     </font></a><span class="preproc">                                 </span><span class="default">)</span>
+<a name="241"><font size=-1>241     </font></a><span class="default"></span>
+<a name="242"><font size=-1>242     </font></a><span class="default"></span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span><span class="comment">/* This macro generates declarations (prototypes) for wrappers.  It</span>
+<a name="244"><font size=-1>244     </font></a><span class="comment">   declares both the pre-wrapper and the post-wrapper, even though the</span>
+<a name="245"><font size=-1>245     </font></a><span class="comment">   post-wrapper may not actually exist.</span>
+<a name="246"><font size=-1>246     </font></a><span class="comment">*/</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_D.html#72573">DECL_TEMPLATE</a></span><span class="default">(auxstr, name)                              </span><span class="preproc">\</span>
+<a name="248"><font size=-1>248     </font></a><span class="preproc">   </span><span class="default">extern                                                        </span><span class="preproc">\</span>
+<a name="249"><font size=-1>249     </font></a><span class="preproc">   </span><span class="default">void vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_before                     </span><span class="preproc">\</span>
+<a name="250"><font size=-1>250     </font></a><span class="preproc">                                 </span><span class="default">( <a href="dictionary_T.html#7">ThreadId</a> tid,                 </span><span class="preproc">\</span>
+<a name="251"><font size=-1>251     </font></a><span class="preproc">                                   <a href="dictionary_S.html#19275">SyscallArgLayout</a></span><span class="default">* layout,     </span><span class="preproc">\</span>
+<a name="252"><font size=-1>252     </font></a><span class="preproc">                                   </span><span class="comment">/*MOD*/<a href="dictionary_S.html#4926">SyscallArgs</a></span><span class="default">* arrghs,   </span><span class="preproc">\</span>
+<a name="253"><font size=-1>253     </font></a><span class="preproc">                                   </span><span class="comment">/*OUT*/<a href="dictionary_S.html#4925">SyscallStatus</a></span><span class="default">* status, </span><span class="preproc">\</span>
+<a name="254"><font size=-1>254     </font></a><span class="preproc">                                   </span><span class="comment">/*OUT*/<a href="dictionary_U.html#9">UWord</a></span><span class="default">* flags           </span><span class="preproc">\</span>
+<a name="255"><font size=-1>255     </font></a><span class="preproc">                                 </span><span class="default">);                              </span><span class="preproc">\</span>
+<a name="256"><font size=-1>256     </font></a><span class="preproc">   </span><span class="default">extern                                                        </span><span class="preproc">\</span>
+<a name="257"><font size=-1>257     </font></a><span class="preproc">   </span><span class="default">void vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_after                      </span><span class="preproc">\</span>
+<a name="258"><font size=-1>258     </font></a><span class="preproc">                                 </span><span class="default">( <a href="dictionary_T.html#7">ThreadId</a> tid,                 </span><span class="preproc">\</span>
+<a name="259"><font size=-1>259     </font></a><span class="preproc">                                   <a href="dictionary_S.html#4926">SyscallArgs</a></span><span class="default">* arrghs,          </span><span class="preproc">\</span>
+<a name="260"><font size=-1>260     </font></a><span class="preproc">                                   <a href="dictionary_S.html#4925">SyscallStatus</a></span><span class="default">* status         </span><span class="preproc">\</span>
+<a name="261"><font size=-1>261     </font></a><span class="preproc">                                 </span><span class="default">);</span>
+<a name="262"><font size=-1>262     </font></a><span class="default"></span>
+<a name="263"><font size=-1>263     </font></a><span class="default"></span>
+<a name="264"><font size=-1>264     </font></a><span class="default"></span>
+<a name="265"><font size=-1>265     </font></a><span class="default"></span><span class="comment">/* Macros for conveniently generating entries in the syscall</span>
+<a name="266"><font size=-1>266     </font></a><span class="comment">   tables.  This first pair are not used directly. */</span>
+<a name="267"><font size=-1>267     </font></a><span class="comment"></span>
+<a name="268"><font size=-1>268     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_W.html#72574">WRAPPER_ENTRY_X_</a></span><span class="default">(auxstr, sysno, name) </span><span class="preproc">\</span>
+<a name="269"><font size=-1>269     </font></a><span class="preproc">   </span><span class="default">[sysno] = { vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_before, <a href="dictionary_N.html#82">NULL</a> }</span>
+<a name="270"><font size=-1>270     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_W.html#72575">WRAPPER_ENTRY_XY</a></span><span class="default">(auxstr, sysno, name) </span><span class="preproc">\</span>
+<a name="271"><font size=-1>271     </font></a><span class="preproc">   </span><span class="default">[sysno] = { vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_before, </span><span class="preproc">\</span>
+<a name="272"><font size=-1>272     </font></a><span class="preproc">               </span><span class="default">vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_after }</span>
+<a name="273"><font size=-1>273     </font></a><span class="default"></span>
+<a name="274"><font size=-1>274     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_W.html#72576">WRAPPER_PRE_NAME</a></span><span class="default">(auxstr, name) </span><span class="preproc">\</span>
+<a name="275"><font size=-1>275     </font></a><span class="preproc">    </span><span class="default">vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_before</span>
+<a name="276"><font size=-1>276     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_W.html#72577">WRAPPER_POST_NAME</a></span><span class="default">(auxstr, name) </span><span class="preproc">\</span>
+<a name="277"><font size=-1>277     </font></a><span class="preproc">    </span><span class="default">vgSysWrap_</span><span class="preproc">##</span><span class="default">auxstr</span><span class="preproc">##</span><span class="default">_</span><span class="preproc">##</span><span class="default">name</span><span class="preproc">##</span><span class="default">_after</span>
+<a name="278"><font size=-1>278     </font></a><span class="default"></span>
+<a name="279"><font size=-1>279     </font></a><span class="default"></span><span class="comment">/* Add a generic wrapper to a syscall table. */</span>
+<a name="280"><font size=-1>280     </font></a><span class="comment"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#5267">VGO_linux</a>) || </span><span class="preproc">defined</span><span class="default">(<a href="dictionary_V.html#4943">VGO_aix5</a>)</span>
+<a name="281"><font size=-1>281     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_G.html#72578">GENX_</a></span><span class="default">(sysno, name)  <a href="dictionary_W.html#72574">WRAPPER_ENTRY_X_</a>(generic, sysno, name)</span>
+<a name="282"><font size=-1>282     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_G.html#72579">GENXY</a></span><span class="default">(sysno, name)  <a href="dictionary_W.html#72575">WRAPPER_ENTRY_XY</a>(generic, sysno, name)</span>
+<a name="283"><font size=-1>283     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#4944">VGO_darwin</a>)</span>
+<a name="284"><font size=-1>284     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_G.html#72578">GENX_</a></span><span class="default">(sysno, name)  <a href="dictionary_W.html#72574">WRAPPER_ENTRY_X_</a>(generic, VG_DARWIN_SYSNO_INDEX(sysno), name)</span>
+<a name="285"><font size=-1>285     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_G.html#72579">GENXY</a></span><span class="default">(sysno, name)  <a href="dictionary_W.html#72575">WRAPPER_ENTRY_XY</a>(generic, VG_DARWIN_SYSNO_INDEX(sysno), name)</span>
+<a name="286"><font size=-1>286     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="287"><font size=-1>287     </font></a><span class="preproc">#  error </span><span class="default">Unknown OS</span>
+<a name="288"><font size=-1>288     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="289"><font size=-1>289     </font></a><span class="preproc"></span>
+<a name="290"><font size=-1>290     </font></a><span class="preproc"></span><span class="comment">/* Add a Linux-specific, arch-independent wrapper to a syscall</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">   table. */</span>
+<a name="292"><font size=-1>292     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_L.html#72580">LINX_</a></span><span class="default">(sysno, name)    <a href="dictionary_W.html#72574">WRAPPER_ENTRY_X_</a>(linux, sysno, name) </span>
+<a name="293"><font size=-1>293     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_L.html#72581">LINXY</a></span><span class="default">(sysno, name)    <a href="dictionary_W.html#72575">WRAPPER_ENTRY_XY</a>(linux, sysno, name)</span>
+<a name="294"><font size=-1>294     </font></a><span class="default"></span>
+<a name="295"><font size=-1>295     </font></a><span class="default"></span><span class="comment">/* Add an AIX5-specific, arch-independent wrapper to a syscall</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">   table. */</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#72582">AIXXY</a></span><span class="default">(sysno, name)                     </span><span class="preproc">\</span>
+<a name="298"><font size=-1>298     </font></a><span class="preproc">   </span><span class="default">{ &amp; sysno,                                  </span><span class="preproc">\</span>
+<a name="299"><font size=-1>299     </font></a><span class="preproc">     </span><span class="default">{ &amp; <a href="dictionary_W.html#72576">WRAPPER_PRE_NAME</a>(aix5, name),         </span><span class="preproc">\</span>
+<a name="300"><font size=-1>300     </font></a><span class="preproc">       </span><span class="default">&amp; <a href="dictionary_W.html#72577">WRAPPER_POST_NAME</a>(aix5, name) }} </span>
+<a name="301"><font size=-1>301     </font></a><span class="default"></span>
+<a name="302"><font size=-1>302     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72583">AIXX_</a></span><span class="default">(sysno, name)                     </span><span class="preproc">\</span>
+<a name="303"><font size=-1>303     </font></a><span class="preproc">   </span><span class="default">{ &amp; sysno,                                  </span><span class="preproc">\</span>
+<a name="304"><font size=-1>304     </font></a><span class="preproc">     </span><span class="default">{ &amp; <a href="dictionary_W.html#72576">WRAPPER_PRE_NAME</a>(aix5, name),         </span><span class="preproc">\</span>
+<a name="305"><font size=-1>305     </font></a><span class="preproc">       <a href="dictionary_N.html#82">NULL</a> </span><span class="default">}} </span>
+<a name="306"><font size=-1>306     </font></a><span class="default"></span>
+<a name="307"><font size=-1>307     </font></a><span class="default"></span>
+<a name="308"><font size=-1>308     </font></a><span class="default"></span><span class="comment">/* ---------------------------------------------------------------------</span>
+<a name="309"><font size=-1>309     </font></a><span class="comment">   Macros useful for writing wrappers concisely.  These refer to the</span>
+<a name="310"><font size=-1>310     </font></a><span class="comment">   parameters declared by DEFN_{PRE,POST}_TEMPLATE and so in a way do</span>
+<a name="311"><font size=-1>311     </font></a><span class="comment">   not help clarity of understanding.  But they are just too useful to</span>
+<a name="312"><font size=-1>312     </font></a><span class="comment">   omit.</span>
+<a name="313"><font size=-1>313     </font></a><span class="comment">   ------------------------------------------------------------------ */</span>
+<a name="314"><font size=-1>314     </font></a><span class="comment"></span>
+<a name="315"><font size=-1>315     </font></a><span class="comment">/* Reference to the syscall's arguments -- the ones which the</span>
+<a name="316"><font size=-1>316     </font></a><span class="comment">   pre-wrapper may have modified, not the original copy. */</span>
+<a name="317"><font size=-1>317     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#72584">SYSNO</a>  </span><span class="default">(arrghs-&gt;sysno)</span>
+<a name="318"><font size=-1>318     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72585">ARG1</a>   </span><span class="default">(arrghs-&gt;arg1)</span>
+<a name="319"><font size=-1>319     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72586">ARG2</a>   </span><span class="default">(arrghs-&gt;arg2)</span>
+<a name="320"><font size=-1>320     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72587">ARG3</a>   </span><span class="default">(arrghs-&gt;arg3)</span>
+<a name="321"><font size=-1>321     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72588">ARG4</a>   </span><span class="default">(arrghs-&gt;arg4)</span>
+<a name="322"><font size=-1>322     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72589">ARG5</a>   </span><span class="default">(arrghs-&gt;arg5)</span>
+<a name="323"><font size=-1>323     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72590">ARG6</a>   </span><span class="default">(arrghs-&gt;arg6)</span>
+<a name="324"><font size=-1>324     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72591">ARG7</a>   </span><span class="default">(arrghs-&gt;arg7)</span>
+<a name="325"><font size=-1>325     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#72592">ARG8</a>   </span><span class="default">(arrghs-&gt;arg8)</span>
+<a name="326"><font size=-1>326     </font></a><span class="default"></span>
+<a name="327"><font size=-1>327     </font></a><span class="default"></span><span class="comment">/* Reference to the syscall's current result status/value.  General</span>
+<a name="328"><font size=-1>328     </font></a><span class="comment">   paranoia all round. */</span>
+<a name="329"><font size=-1>329     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#72593">SUCCESS</a>       </span><span class="default">(status-&gt;what == SsComplete &amp;&amp; !sr_isError(status-&gt;sres))</span>
+<a name="330"><font size=-1>330     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_F.html#72594">FAILURE</a>       </span><span class="default">(status-&gt;what == SsComplete &amp;&amp;  sr_isError(status-&gt;sres))</span>
+<a name="331"><font size=-1>331     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#72595">SWHAT</a>         </span><span class="default">(status-&gt;what)</span>
+<a name="332"><font size=-1>332     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_R.html#72596">RES</a>           </span><span class="default">(getRES(status))</span>
+<a name="333"><font size=-1>333     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_R.html#72597">RESHI</a>         </span><span class="default">(getRESHI(status))</span>
+<a name="334"><font size=-1>334     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_E.html#72598">ERR</a>           </span><span class="default">(getERR(status))</span>
+<a name="335"><font size=-1>335     </font></a><span class="default"></span>
+<a name="336"><font size=-1>336     </font></a><span class="default"></span><span class="keyword">static inline <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_G.html#72599">getRES</a> </span><span class="default">( <a href="dictionary_S.html#19223">SyscallStatus</a>* <a href="dictionary_S.html#72600">st</a> ) {</span>
+<a name="337"><font size=-1>337     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(<a href="dictionary_S.html#72600">st</a>-&gt;<a href="dictionary_S.html#19225">what</a> == <a href="dictionary_S.html#19231">SsComplete</a>);</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(!<a href="dictionary_S.html#5492">sr_isError</a>(<a href="dictionary_S.html#72600">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>));</span>
+<a name="339"><font size=-1>339     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_S.html#5495">sr_Res</a></span><span class="default">(<a href="dictionary_S.html#72600">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>);</span>
+<a name="340"><font size=-1>340     </font></a><span class="default">}</span>
+<a name="341"><font size=-1>341     </font></a><span class="default"></span>
+<a name="342"><font size=-1>342     </font></a><span class="default"></span><span class="keyword">static inline <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_G.html#72601">getRESHI</a> </span><span class="default">( <a href="dictionary_S.html#19223">SyscallStatus</a>* <a href="dictionary_S.html#72602">st</a> ) {</span>
+<a name="343"><font size=-1>343     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(<a href="dictionary_S.html#72602">st</a>-&gt;<a href="dictionary_S.html#19225">what</a> == <a href="dictionary_S.html#19231">SsComplete</a>);</span>
+<a name="344"><font size=-1>344     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(!<a href="dictionary_S.html#5492">sr_isError</a>(<a href="dictionary_S.html#72602">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>));</span>
+<a name="345"><font size=-1>345     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_S.html#19374">sr_ResHI</a></span><span class="default">(<a href="dictionary_S.html#72602">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>);</span>
+<a name="346"><font size=-1>346     </font></a><span class="default">}</span>
+<a name="347"><font size=-1>347     </font></a><span class="default"></span>
+<a name="348"><font size=-1>348     </font></a><span class="default"></span><span class="keyword">static inline <a href="dictionary_U.html#9">UWord</a> <a href="dictionary_G.html#72603">getERR</a> </span><span class="default">( <a href="dictionary_S.html#19223">SyscallStatus</a>* <a href="dictionary_S.html#72604">st</a> ) {</span>
+<a name="349"><font size=-1>349     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(<a href="dictionary_S.html#72604">st</a>-&gt;<a href="dictionary_S.html#19225">what</a> == <a href="dictionary_S.html#19231">SsComplete</a>);</span>
+<a name="350"><font size=-1>350     </font></a><span class="default">   <a href="dictionary_V.html#5396">vg_assert</a>(<a href="dictionary_S.html#5492">sr_isError</a>(<a href="dictionary_S.html#72604">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>));</span>
+<a name="351"><font size=-1>351     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_S.html#19260">sr_Err</a></span><span class="default">(<a href="dictionary_S.html#72604">st</a>-&gt;<a href="dictionary_S.html#19227">sres</a>);</span>
+<a name="352"><font size=-1>352     </font></a><span class="default">}</span>
+<a name="353"><font size=-1>353     </font></a><span class="default"></span>
+<a name="354"><font size=-1>354     </font></a><span class="default"></span>
+<a name="355"><font size=-1>355     </font></a><span class="default"></span><span class="comment">/* Set the current result status/value in various ways. */</span>
+<a name="356"><font size=-1>356     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#72605">SET_STATUS_Success</a></span><span class="default">(zzz)                      </span><span class="preproc">\</span>
+<a name="357"><font size=-1>357     </font></a><span class="preproc">   </span><span class="default">do { status-&gt;what = <a href="dictionary_S.html#19231">SsComplete</a>;                   </span><span class="preproc">\</span>
+<a name="358"><font size=-1>358     </font></a><span class="preproc">        </span><span class="default">status-&gt;sres = <a href="dictionary_V.html#111">VG_</a>(mk_SysRes_Success)(zzz);  </span><span class="preproc">\</span>
+<a name="359"><font size=-1>359     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="360"><font size=-1>360     </font></a><span class="default"></span>
+<a name="361"><font size=-1>361     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#19331">SET_STATUS_Failure</a></span><span class="default">(zzz)                      </span><span class="preproc">\</span>
+<a name="362"><font size=-1>362     </font></a><span class="preproc">   </span><span class="default">do { <a href="dictionary_W.html#36">Word</a> wzz = (Word)(zzz);                      </span><span class="preproc">\</span>
+<a name="363"><font size=-1>363     </font></a><span class="preproc">        </span><span class="comment">/* Catch out wildly bogus error values. */   </span><span class="preproc">\</span>
+<a name="364"><font size=-1>364     </font></a><span class="preproc">        <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(wzz &gt;= </span><span class="number">0 </span><span class="default">&amp;&amp; wzz &lt; </span><span class="number">10000</span><span class="default">);          </span><span class="preproc">\</span>
+<a name="365"><font size=-1>365     </font></a><span class="preproc">        </span><span class="default">status-&gt;what = <a href="dictionary_S.html#19231">SsComplete</a>;                   </span><span class="preproc">\</span>
+<a name="366"><font size=-1>366     </font></a><span class="preproc">        </span><span class="default">status-&gt;sres = <a href="dictionary_V.html#111">VG_</a>(mk_SysRes_Error)(wzz);    </span><span class="preproc">\</span>
+<a name="367"><font size=-1>367     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="368"><font size=-1>368     </font></a><span class="default"></span>
+<a name="369"><font size=-1>369     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#72606">SET_STATUS_from_SysRes</a></span><span class="default">(zzz)                  </span><span class="preproc">\</span>
+<a name="370"><font size=-1>370     </font></a><span class="preproc">   </span><span class="default">do {                                              </span><span class="preproc">\</span>
+<a name="371"><font size=-1>371     </font></a><span class="preproc">     </span><span class="default">status-&gt;what = <a href="dictionary_S.html#19231">SsComplete</a>;                      </span><span class="preproc">\</span>
+<a name="372"><font size=-1>372     </font></a><span class="preproc">     </span><span class="default">status-&gt;sres = (zzz);                           </span><span class="preproc">\</span>
+<a name="373"><font size=-1>373     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="374"><font size=-1>374     </font></a><span class="default"></span>
+<a name="375"><font size=-1>375     </font></a><span class="default"></span>
+<a name="376"><font size=-1>376     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#19241">PRINT</a></span><span class="default">(format, args...)                       </span><span class="preproc">\</span>
+<a name="377"><font size=-1>377     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(clo_trace_syscalls))                      </span><span class="preproc">\</span>
+<a name="378"><font size=-1>378     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(printf)(format, </span><span class="preproc">## </span><span class="default">args)</span>
+<a name="379"><font size=-1>379     </font></a><span class="default"></span>
+<a name="380"><font size=-1>380     </font></a><span class="default"></span>
+<a name="381"><font size=-1>381     </font></a><span class="default"></span>
+<a name="382"><font size=-1>382     </font></a><span class="default"></span><span class="comment">/* Macros used to tell tools about uses of scalar arguments.  Note,</span>
+<a name="383"><font size=-1>383     </font></a><span class="comment">   these assume little-endianness.  These can only be used in</span>
+<a name="384"><font size=-1>384     </font></a><span class="comment">   pre-wrappers, and they refer to the layout parameter passed in. */</span>
+<a name="385"><font size=-1>385     </font></a><span class="comment">/* PRRSN == &quot;pre-register-read-sysno&quot;</span>
+<a name="386"><font size=-1>386     </font></a><span class="comment">   PRRAn == &quot;pre-register-read-argument&quot;</span>
+<a name="387"><font size=-1>387     </font></a><span class="comment">   PSRAn == &quot;pre-stack-read-argument&quot;</span>
+<a name="388"><font size=-1>388     </font></a><span class="comment">   PRAn  == &quot;pre-read-argument&quot;</span>
+<a name="389"><font size=-1>389     </font></a><span class="comment">*/</span>
+<a name="390"><font size=-1>390     </font></a><span class="comment"></span>
+<a name="391"><font size=-1>391     </font></a><span class="comment"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#5267">VGO_linux</a>)</span>
+<a name="392"><font size=-1>392     </font></a><span class="default">   </span><span class="comment">/* Up to 6 parameters, all in registers. */</span>
+<a name="393"><font size=-1>393     </font></a><span class="comment"></span><span class="preproc">#  define <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">1</span><span class="default">,s,t,a)</span>
+<a name="394"><font size=-1>394     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72608">PRA2</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">2</span><span class="default">,s,t,a)</span>
+<a name="395"><font size=-1>395     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72609">PRA3</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">3</span><span class="default">,s,t,a)</span>
+<a name="396"><font size=-1>396     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">4</span><span class="default">,s,t,a)</span>
+<a name="397"><font size=-1>397     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72611">PRA5</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">5</span><span class="default">,s,t,a)</span>
+<a name="398"><font size=-1>398     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72612">PRA6</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">6</span><span class="default">,s,t,a)</span>
+<a name="399"><font size=-1>399     </font></a><span class="default"></span>
+<a name="400"><font size=-1>400     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#4943">VGO_aix5</a>)</span>
+<a name="401"><font size=-1>401     </font></a><span class="default"></span><span class="preproc">#  error </span><span class="default">Need to fill this in for AIX5</span>
+<a name="402"><font size=-1>402     </font></a><span class="default"></span>
+<a name="403"><font size=-1>403     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#19240">VGP_x86_darwin</a>)</span>
+<a name="404"><font size=-1>404     </font></a><span class="default">   </span><span class="comment">/* Up to 8 parameters, all on the stack. */</span>
+<a name="405"><font size=-1>405     </font></a><span class="comment"></span><span class="preproc">#  define <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">1</span><span class="default">,s,t,a)</span>
+<a name="406"><font size=-1>406     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72608">PRA2</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">2</span><span class="default">,s,t,a)</span>
+<a name="407"><font size=-1>407     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72609">PRA3</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">3</span><span class="default">,s,t,a)</span>
+<a name="408"><font size=-1>408     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">4</span><span class="default">,s,t,a)</span>
+<a name="409"><font size=-1>409     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72611">PRA5</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">5</span><span class="default">,s,t,a)</span>
+<a name="410"><font size=-1>410     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72612">PRA6</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">6</span><span class="default">,s,t,a)</span>
+<a name="411"><font size=-1>411     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72613">PRA7</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">7</span><span class="default">,s,t,a)</span>
+<a name="412"><font size=-1>412     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72614">PRA8</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">8</span><span class="default">,s,t,a)</span>
+<a name="413"><font size=-1>413     </font></a><span class="default"></span>
+<a name="414"><font size=-1>414     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#19247">VGP_amd64_darwin</a>)</span>
+<a name="415"><font size=-1>415     </font></a><span class="default">   </span><span class="comment">/* Up to 8 parameters, 6 in registers, 2 on the stack. */</span>
+<a name="416"><font size=-1>416     </font></a><span class="comment"></span><span class="preproc">#  define <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">1</span><span class="default">,s,t,a)</span>
+<a name="417"><font size=-1>417     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72608">PRA2</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">2</span><span class="default">,s,t,a)</span>
+<a name="418"><font size=-1>418     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72609">PRA3</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">3</span><span class="default">,s,t,a)</span>
+<a name="419"><font size=-1>419     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">4</span><span class="default">,s,t,a)</span>
+<a name="420"><font size=-1>420     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72611">PRA5</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">5</span><span class="default">,s,t,a)</span>
+<a name="421"><font size=-1>421     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72612">PRA6</a></span><span class="default">(s,t,a) PRRAn(</span><span class="number">6</span><span class="default">,s,t,a)</span>
+<a name="422"><font size=-1>422     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72613">PRA7</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">7</span><span class="default">,s,t,a)</span>
+<a name="423"><font size=-1>423     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72614">PRA8</a></span><span class="default">(s,t,a) PSRAn(</span><span class="number">8</span><span class="default">,s,t,a)</span>
+<a name="424"><font size=-1>424     </font></a><span class="default"></span>
+<a name="425"><font size=-1>425     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="426"><font size=-1>426     </font></a><span class="preproc">#  error </span><span class="default">Unknown platform</span>
+<a name="427"><font size=-1>427     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="428"><font size=-1>428     </font></a><span class="preproc"></span>
+<a name="429"><font size=-1>429     </font></a><span class="preproc"></span>
+<a name="430"><font size=-1>430     </font></a><span class="preproc"></span><span class="comment">/* Tell the tool that the syscall number is being read. */</span>
+<a name="431"><font size=-1>431     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_P.html#72615">PRRSN</a> \</span>
+<a name="432"><font size=-1>432     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(tdict).track_pre_reg_read(Vg_CoreSysCall, tid, </span><span class="string">&quot;(syscallno)&quot;</span><span class="default">, </span><span class="preproc">\</span>
+<a name="433"><font size=-1>433     </font></a><span class="preproc">                                    </span><span class="default">layout-&gt;o_sysno, sizeof(<a href="dictionary_U.html#9">UWord</a>));</span>
+<a name="434"><font size=-1>434     </font></a><span class="default"></span>
+<a name="435"><font size=-1>435     </font></a><span class="default"></span><span class="comment">/* REGISTER PARAMETERS */</span>
+<a name="436"><font size=-1>436     </font></a><span class="comment"></span>
+<a name="437"><font size=-1>437     </font></a><span class="comment">/* PRRAn: Tell the tool that the register holding the n-th syscall</span>
+<a name="438"><font size=-1>438     </font></a><span class="comment">   argument is being read, at type 't' which must be at most the size</span>
+<a name="439"><font size=-1>439     </font></a><span class="comment">   of a register but can be smaller.  In the latter case we need to be</span>
+<a name="440"><font size=-1>440     </font></a><span class="comment">   careful about endianness. */</span>
+<a name="441"><font size=-1>441     </font></a><span class="comment"></span>
+<a name="442"><font size=-1>442     </font></a><span class="comment">/* little-endian: the part of the guest state being read is</span>
+<a name="443"><font size=-1>443     </font></a><span class="comment">      let here = offset_of_reg</span>
+<a name="444"><font size=-1>444     </font></a><span class="comment">      in  [here .. here + sizeof(t) - 1]</span>
+<a name="445"><font size=-1>445     </font></a><span class="comment">   since the least significant parts of the guest register are stored</span>
+<a name="446"><font size=-1>446     </font></a><span class="comment">   in memory at the lowest address.</span>
+<a name="447"><font size=-1>447     </font></a><span class="comment">*/</span>
+<a name="448"><font size=-1>448     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_P.html#72616">PRRAn_LE</a></span><span class="default">(n,s,t,a)                          </span><span class="preproc">\</span>
+<a name="449"><font size=-1>449     </font></a><span class="preproc">   </span><span class="default">do {                                            </span><span class="preproc">\</span>
+<a name="450"><font size=-1>450     </font></a><span class="preproc">      <a href="dictionary_I.html#113">Int</a> </span><span class="default">here = layout-&gt;o_arg</span><span class="preproc">##</span><span class="default">n;                 </span><span class="preproc">\</span>
+<a name="451"><font size=-1>451     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(sizeof(t) &lt;= sizeof(<a href="dictionary_U.html#9">UWord</a>));       </span><span class="preproc">\</span>
+<a name="452"><font size=-1>452     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(here &gt;= </span><span class="number">0</span><span class="default">);                        </span><span class="preproc">\</span>
+<a name="453"><font size=-1>453     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(tdict).track_pre_reg_read(               </span><span class="preproc">\</span>
+<a name="454"><font size=-1>454     </font></a><span class="preproc">         </span><span class="default">Vg_CoreSysCall, tid, s</span><span class="string">&quot;(&quot;</span><span class="preproc">#</span><span class="default">a</span><span class="string">&quot;)&quot;</span><span class="default">,           </span><span class="preproc">\</span>
+<a name="455"><font size=-1>455     </font></a><span class="preproc">         </span><span class="default">here, sizeof(t)                           </span><span class="preproc">\</span>
+<a name="456"><font size=-1>456     </font></a><span class="preproc">      </span><span class="default">);                                           </span><span class="preproc">\</span>
+<a name="457"><font size=-1>457     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="458"><font size=-1>458     </font></a><span class="default"></span>
+<a name="459"><font size=-1>459     </font></a><span class="default"></span><span class="comment">/* big-endian: the part of the guest state being read is</span>
+<a name="460"><font size=-1>460     </font></a><span class="comment">      let next = offset_of_reg + sizeof(reg) </span>
+<a name="461"><font size=-1>461     </font></a><span class="comment">      in  [next - sizeof(t) .. next - 1]</span>
+<a name="462"><font size=-1>462     </font></a><span class="comment">   since the least significant parts of the guest register are stored</span>
+<a name="463"><font size=-1>463     </font></a><span class="comment">   in memory at the highest address.</span>
+<a name="464"><font size=-1>464     </font></a><span class="comment">*/</span>
+<a name="465"><font size=-1>465     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_P.html#72617">PRRAn_BE</a></span><span class="default">(n,s,t,a)                          </span><span class="preproc">\</span>
+<a name="466"><font size=-1>466     </font></a><span class="preproc">   </span><span class="default">do {                                            </span><span class="preproc">\</span>
+<a name="467"><font size=-1>467     </font></a><span class="preproc">      <a href="dictionary_I.html#113">Int</a> </span><span class="default">here = layout-&gt;o_arg</span><span class="preproc">##</span><span class="default">n;                 </span><span class="preproc">\</span>
+<a name="468"><font size=-1>468     </font></a><span class="preproc">      <a href="dictionary_I.html#113">Int</a> </span><span class="default">next = layout-&gt;o_arg</span><span class="preproc">##</span><span class="default">n + sizeof(<a href="dictionary_U.html#9">UWord</a>); </span><span class="preproc">\</span>
+<a name="469"><font size=-1>469     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(sizeof(t) &lt;= sizeof(<a href="dictionary_U.html#9">UWord</a>));       </span><span class="preproc">\</span>
+<a name="470"><font size=-1>470     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(here &gt;= </span><span class="number">0</span><span class="default">);                        </span><span class="preproc">\</span>
+<a name="471"><font size=-1>471     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(tdict).track_pre_reg_read(               </span><span class="preproc">\</span>
+<a name="472"><font size=-1>472     </font></a><span class="preproc">         </span><span class="default">Vg_CoreSysCall, tid, s</span><span class="string">&quot;(&quot;</span><span class="preproc">#</span><span class="default">a</span><span class="string">&quot;)&quot;</span><span class="default">,           </span><span class="preproc">\</span>
+<a name="473"><font size=-1>473     </font></a><span class="preproc">         </span><span class="default">next-sizeof(t), sizeof(t)                 </span><span class="preproc">\</span>
+<a name="474"><font size=-1>474     </font></a><span class="preproc">      </span><span class="default">);                                           </span><span class="preproc">\</span>
+<a name="475"><font size=-1>475     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="476"><font size=-1>476     </font></a><span class="default"></span>
+<a name="477"><font size=-1>477     </font></a><span class="default"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#35994">VG_BIGENDIAN</a>)</span>
+<a name="478"><font size=-1>478     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72618">PRRAn</a></span><span class="default">(n,s,t,a) <a href="dictionary_P.html#72617">PRRAn_BE</a>(n,s,t,a)</span>
+<a name="479"><font size=-1>479     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#35995">VG_LITTLEENDIAN</a>)</span>
+<a name="480"><font size=-1>480     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72618">PRRAn</a></span><span class="default">(n,s,t,a) <a href="dictionary_P.html#72616">PRRAn_LE</a>(n,s,t,a)</span>
+<a name="481"><font size=-1>481     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="482"><font size=-1>482     </font></a><span class="preproc">#  error </span><span class="string">&quot;Unknown endianness&quot;</span>
+<a name="483"><font size=-1>483     </font></a><span class="string"></span><span class="preproc">#endif</span>
+<a name="484"><font size=-1>484     </font></a><span class="preproc"></span>
+<a name="485"><font size=-1>485     </font></a><span class="preproc"></span>
+<a name="486"><font size=-1>486     </font></a><span class="preproc"></span><span class="comment">/* STACK PARAMETERS */</span>
+<a name="487"><font size=-1>487     </font></a><span class="comment"></span>
+<a name="488"><font size=-1>488     </font></a><span class="comment">/* PSRAn: Tell the tool that the memory holding the n-th syscall</span>
+<a name="489"><font size=-1>489     </font></a><span class="comment">   argument is being read, at type 't' which must be at most the size</span>
+<a name="490"><font size=-1>490     </font></a><span class="comment">   of a register but can be smaller.  In the latter case we need to be</span>
+<a name="491"><font size=-1>491     </font></a><span class="comment">   careful about endianness. */</span>
+<a name="492"><font size=-1>492     </font></a><span class="comment"></span>
+<a name="493"><font size=-1>493     </font></a><span class="comment">/* little-endian: the part of the guest state being read is</span>
+<a name="494"><font size=-1>494     </font></a><span class="comment">      let here = offset_of_reg</span>
+<a name="495"><font size=-1>495     </font></a><span class="comment">      in  [here .. here + sizeof(t) - 1]</span>
+<a name="496"><font size=-1>496     </font></a><span class="comment">   since the least significant parts of the guest register are stored</span>
+<a name="497"><font size=-1>497     </font></a><span class="comment">   in memory at the lowest address.</span>
+<a name="498"><font size=-1>498     </font></a><span class="comment">*/</span>
+<a name="499"><font size=-1>499     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_P.html#72619">PSRAn_LE</a></span><span class="default">(n,s,t,a)                          </span><span class="preproc">\</span>
+<a name="500"><font size=-1>500     </font></a><span class="preproc">   </span><span class="default">do {                                            </span><span class="preproc">\</span>
+<a name="501"><font size=-1>501     </font></a><span class="preproc">      <a href="dictionary_A.html#401">Addr</a> </span><span class="default">here = layout-&gt;s_arg</span><span class="preproc">##</span><span class="default">n + <a href="dictionary_V.html#111">VG_</a>(get_SP)(tid); </span><span class="preproc">\</span>
+<a name="502"><font size=-1>502     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(sizeof(t) &lt;= sizeof(<a href="dictionary_U.html#9">UWord</a>));       </span><span class="preproc">\</span>
+<a name="503"><font size=-1>503     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(tdict).track_pre_mem_read(               </span><span class="preproc">\</span>
+<a name="504"><font size=-1>504     </font></a><span class="preproc">         </span><span class="default">Vg_CoreSysCallArgInMem, tid, s</span><span class="string">&quot;(&quot;</span><span class="preproc">#</span><span class="default">a</span><span class="string">&quot;)&quot;</span><span class="default">,   </span><span class="preproc">\</span>
+<a name="505"><font size=-1>505     </font></a><span class="preproc">         </span><span class="default">here, sizeof(t)                           </span><span class="preproc">\</span>
+<a name="506"><font size=-1>506     </font></a><span class="preproc">      </span><span class="default">);                                           </span><span class="preproc">\</span>
+<a name="507"><font size=-1>507     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="508"><font size=-1>508     </font></a><span class="default"></span>
+<a name="509"><font size=-1>509     </font></a><span class="default"></span><span class="comment">/* big-endian: the part of the guest state being read is</span>
+<a name="510"><font size=-1>510     </font></a><span class="comment">      let next = offset_of_reg + sizeof(reg) </span>
+<a name="511"><font size=-1>511     </font></a><span class="comment">      in  [next - sizeof(t) .. next - 1]</span>
+<a name="512"><font size=-1>512     </font></a><span class="comment">   since the least significant parts of the guest register are stored</span>
+<a name="513"><font size=-1>513     </font></a><span class="comment">   in memory at the highest address.</span>
+<a name="514"><font size=-1>514     </font></a><span class="comment">*/</span>
+<a name="515"><font size=-1>515     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_P.html#72620">PSRAn_BE</a></span><span class="default">(n,s,t,a)                                         </span><span class="preproc">\</span>
+<a name="516"><font size=-1>516     </font></a><span class="preproc">   </span><span class="default">do {                                                           </span><span class="preproc">\</span>
+<a name="517"><font size=-1>517     </font></a><span class="preproc">      <a href="dictionary_A.html#401">Addr</a> </span><span class="default">next = layout-&gt;o_arg</span><span class="preproc">##</span><span class="default">n + sizeof(<a href="dictionary_U.html#9">UWord</a>) +              </span><span class="preproc">\</span>
+<a name="518"><font size=-1>518     </font></a><span class="preproc">                  <a href="dictionary_V.html#111">VG_</a></span><span class="default">(threads)[tid].arch.vex.<a href="dictionary_V.html#38763">VG_STACK_PTR</a>;        </span><span class="preproc">\</span>
+<a name="519"><font size=-1>519     </font></a><span class="preproc">      <a href="dictionary_V.html#5396">vg_assert</a></span><span class="default">(sizeof(t) &lt;= sizeof(<a href="dictionary_U.html#9">UWord</a>));                      </span><span class="preproc">\</span>
+<a name="520"><font size=-1>520     </font></a><span class="preproc">      <a href="dictionary_V.html#111">VG_</a></span><span class="default">(tdict).track_pre_mem_read(                              </span><span class="preproc">\</span>
+<a name="521"><font size=-1>521     </font></a><span class="preproc">         </span><span class="default">Vg_CoreSysCallArgInMem, tid, s</span><span class="string">&quot;(&quot;</span><span class="preproc">#</span><span class="default">a</span><span class="string">&quot;)&quot;</span><span class="default">,                  </span><span class="preproc">\</span>
+<a name="522"><font size=-1>522     </font></a><span class="preproc">         </span><span class="default">next-sizeof(t), sizeof(t)                                </span><span class="preproc">\</span>
+<a name="523"><font size=-1>523     </font></a><span class="preproc">      </span><span class="default">);                                                          </span><span class="preproc">\</span>
+<a name="524"><font size=-1>524     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="525"><font size=-1>525     </font></a><span class="default"></span>
+<a name="526"><font size=-1>526     </font></a><span class="default"></span><span class="preproc">#if defined</span><span class="default">(<a href="dictionary_V.html#35994">VG_BIGENDIAN</a>)</span>
+<a name="527"><font size=-1>527     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72621">PSRAn</a></span><span class="default">(n,s,t,a) <a href="dictionary_P.html#72620">PSRAn_BE</a>(n,s,t,a)</span>
+<a name="528"><font size=-1>528     </font></a><span class="default"></span><span class="preproc">#elif defined</span><span class="default">(<a href="dictionary_V.html#35995">VG_LITTLEENDIAN</a>)</span>
+<a name="529"><font size=-1>529     </font></a><span class="default"></span><span class="preproc">#  define <a href="dictionary_P.html#72621">PSRAn</a></span><span class="default">(n,s,t,a) <a href="dictionary_P.html#72619">PSRAn_LE</a>(n,s,t,a)</span>
+<a name="530"><font size=-1>530     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="531"><font size=-1>531     </font></a><span class="preproc">#  error </span><span class="string">&quot;Unknown endianness&quot;</span>
+<a name="532"><font size=-1>532     </font></a><span class="string"></span><span class="preproc">#endif</span>
+<a name="533"><font size=-1>533     </font></a><span class="preproc"></span>
+<a name="534"><font size=-1>534     </font></a><span class="preproc"></span>
+<a name="535"><font size=-1>535     </font></a><span class="preproc">#define <a href="dictionary_P.html#72622">PRE_REG_READ0</a></span><span class="default">(tr, s) </span><span class="preproc">\</span>
+<a name="536"><font size=-1>536     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="537"><font size=-1>537     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="538"><font size=-1>538     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="539"><font size=-1>539     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72623">PRE_REG_READ1</a></span><span class="default">(tr, s, t1, a1) </span><span class="preproc">\</span>
+<a name="540"><font size=-1>540     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="541"><font size=-1>541     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="542"><font size=-1>542     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1);                            </span><span class="preproc">\</span>
+<a name="543"><font size=-1>543     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="544"><font size=-1>544     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72624">PRE_REG_READ2</a></span><span class="default">(tr, s, t1, a1, t2, a2) </span><span class="preproc">\</span>
+<a name="545"><font size=-1>545     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="546"><font size=-1>546     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="547"><font size=-1>547     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2);           </span><span class="preproc">\</span>
+<a name="548"><font size=-1>548     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="549"><font size=-1>549     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72625">PRE_REG_READ3</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3) </span><span class="preproc">\</span>
+<a name="550"><font size=-1>550     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="551"><font size=-1>551     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="552"><font size=-1>552     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);  </span><span class="preproc">\</span>
+<a name="553"><font size=-1>553     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="554"><font size=-1>554     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72626">PRE_REG_READ4</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3, t4, a4) </span><span class="preproc">\</span>
+<a name="555"><font size=-1>555     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="556"><font size=-1>556     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="557"><font size=-1>557     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);  </span><span class="preproc">\</span>
+<a name="558"><font size=-1>558     </font></a><span class="preproc">      <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t4,a4);                                    </span><span class="preproc">\</span>
+<a name="559"><font size=-1>559     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="560"><font size=-1>560     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72627">PRE_REG_READ5</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3, t4, a4, t5, a5) </span><span class="preproc">\</span>
+<a name="561"><font size=-1>561     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="562"><font size=-1>562     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="563"><font size=-1>563     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);  </span><span class="preproc">\</span>
+<a name="564"><font size=-1>564     </font></a><span class="preproc">      <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t4,a4); <a href="dictionary_P.html#72611">PRA5</a>(s,t5,a5);                   </span><span class="preproc">\</span>
+<a name="565"><font size=-1>565     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="566"><font size=-1>566     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72628">PRE_REG_READ6</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3, t4, a4, t5, a5, t6, a6) </span><span class="preproc">\</span>
+<a name="567"><font size=-1>567     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="568"><font size=-1>568     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="569"><font size=-1>569     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);   </span><span class="preproc">\</span>
+<a name="570"><font size=-1>570     </font></a><span class="preproc">      <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t4,a4); <a href="dictionary_P.html#72611">PRA5</a>(s,t5,a5); <a href="dictionary_P.html#72612">PRA6</a>(s,t6,a6);   </span><span class="preproc">\</span>
+<a name="571"><font size=-1>571     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="572"><font size=-1>572     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72629">PRE_REG_READ7</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3, t4, a4, t5, a5, t6, a6, t7, a7) </span><span class="preproc">\</span>
+<a name="573"><font size=-1>573     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="574"><font size=-1>574     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="575"><font size=-1>575     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);   </span><span class="preproc">\</span>
+<a name="576"><font size=-1>576     </font></a><span class="preproc">      <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t4,a4); <a href="dictionary_P.html#72611">PRA5</a>(s,t5,a5); <a href="dictionary_P.html#72612">PRA6</a>(s,t6,a6);   </span><span class="preproc">\</span>
+<a name="577"><font size=-1>577     </font></a><span class="preproc">      <a href="dictionary_P.html#72613">PRA7</a></span><span class="default">(s,t7,a7);                                     </span><span class="preproc">\</span>
+<a name="578"><font size=-1>578     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="579"><font size=-1>579     </font></a><span class="default"></span>
+<a name="580"><font size=-1>580     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72630">PRE_REG_READ8</a></span><span class="default">(tr, s, t1, a1, t2, a2, t3, a3, t4, a4, t5, a5, t6, a6, t7, a7, t8, a8) </span><span class="preproc">\</span>
+<a name="581"><font size=-1>581     </font></a><span class="preproc">   </span><span class="default">if (<a href="dictionary_V.html#111">VG_</a>(tdict).track_pre_reg_read) { </span><span class="preproc">\</span>
+<a name="582"><font size=-1>582     </font></a><span class="preproc">      <a href="dictionary_P.html#72615">PRRSN</a></span><span class="default">; </span><span class="preproc">\</span>
+<a name="583"><font size=-1>583     </font></a><span class="preproc">      <a href="dictionary_P.html#72607">PRA1</a></span><span class="default">(s,t1,a1); <a href="dictionary_P.html#72608">PRA2</a>(s,t2,a2); <a href="dictionary_P.html#72609">PRA3</a>(s,t3,a3);   </span><span class="preproc">\</span>
+<a name="584"><font size=-1>584     </font></a><span class="preproc">      <a href="dictionary_P.html#72610">PRA4</a></span><span class="default">(s,t4,a4); <a href="dictionary_P.html#72611">PRA5</a>(s,t5,a5); <a href="dictionary_P.html#72612">PRA6</a>(s,t6,a6);   </span><span class="preproc">\</span>
+<a name="585"><font size=-1>585     </font></a><span class="preproc">      <a href="dictionary_P.html#72613">PRA7</a></span><span class="default">(s,t7,a7); <a href="dictionary_P.html#72614">PRA8</a>(s,t8,a8);                    </span><span class="preproc">\</span>
+<a name="586"><font size=-1>586     </font></a><span class="preproc">   </span><span class="default">}</span>
+<a name="587"><font size=-1>587     </font></a><span class="default"></span>
+<a name="588"><font size=-1>588     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72631">PRE_MEM_READ</a></span><span class="default">(zzname, zzaddr, zzlen) </span><span class="preproc">\</span>
+<a name="589"><font size=-1>589     </font></a><span class="preproc">   <a href="dictionary_V.html#19261">VG_TRACK</a></span><span class="default">( pre_mem_read, Vg_CoreSysCall, tid, zzname, zzaddr, zzlen)</span>
+<a name="590"><font size=-1>590     </font></a><span class="default"></span>
+<a name="591"><font size=-1>591     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72632">PRE_MEM_RASCIIZ</a></span><span class="default">(zzname, zzaddr) </span><span class="preproc">\</span>
+<a name="592"><font size=-1>592     </font></a><span class="preproc">   <a href="dictionary_V.html#19261">VG_TRACK</a></span><span class="default">( pre_mem_read_asciiz, Vg_CoreSysCall, tid, zzname, zzaddr)</span>
+<a name="593"><font size=-1>593     </font></a><span class="default"></span>
+<a name="594"><font size=-1>594     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72633">PRE_MEM_WRITE</a></span><span class="default">(zzname, zzaddr, zzlen) </span><span class="preproc">\</span>
+<a name="595"><font size=-1>595     </font></a><span class="preproc">   <a href="dictionary_V.html#19261">VG_TRACK</a></span><span class="default">( pre_mem_write, Vg_CoreSysCall, tid, zzname, zzaddr, zzlen)</span>
+<a name="596"><font size=-1>596     </font></a><span class="default"></span>
+<a name="597"><font size=-1>597     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72634">POST_MEM_WRITE</a></span><span class="default">(zzaddr, zzlen) </span><span class="preproc">\</span>
+<a name="598"><font size=-1>598     </font></a><span class="preproc">   <a href="dictionary_V.html#19261">VG_TRACK</a></span><span class="default">( post_mem_write, Vg_CoreSysCall, tid, zzaddr, zzlen)</span>
+<a name="599"><font size=-1>599     </font></a><span class="default"></span>
+<a name="600"><font size=-1>600     </font></a><span class="default"></span>
+<a name="601"><font size=-1>601     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72635">PRE_FIELD_READ</a></span><span class="default">(zzname, zzfield) </span><span class="preproc">\</span>
+<a name="602"><font size=-1>602     </font></a><span class="preproc">    <a href="dictionary_P.html#72631">PRE_MEM_READ</a></span><span class="default">(zzname, (<a href="dictionary_U.html#9">UWord</a>)&amp;zzfield, sizeof(zzfield))</span>
+<a name="603"><font size=-1>603     </font></a><span class="default"></span>
+<a name="604"><font size=-1>604     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72636">PRE_FIELD_WRITE</a></span><span class="default">(zzname, zzfield) </span><span class="preproc">\</span>
+<a name="605"><font size=-1>605     </font></a><span class="preproc">    <a href="dictionary_P.html#72633">PRE_MEM_WRITE</a></span><span class="default">(zzname, (<a href="dictionary_U.html#9">UWord</a>)&amp;zzfield, sizeof(zzfield))</span>
+<a name="606"><font size=-1>606     </font></a><span class="default"></span>
+<a name="607"><font size=-1>607     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_P.html#72637">POST_FIELD_WRITE</a></span><span class="default">(zzfield) </span><span class="preproc">\</span>
+<a name="608"><font size=-1>608     </font></a><span class="preproc">    <a href="dictionary_P.html#72634">POST_MEM_WRITE</a></span><span class="default">((<a href="dictionary_U.html#9">UWord</a>)&amp;zzfield, sizeof(zzfield))</span>
+<a name="609"><font size=-1>609     </font></a><span class="default"></span>
+<a name="610"><font size=-1>610     </font></a><span class="default"></span>
+<a name="611"><font size=-1>611     </font></a><span class="default"></span><span class="preproc">#endif   </span><span class="comment">// __PRIV_TYPES_N_MACROS_H</span>
+<a name="612"><font size=-1>612     </font></a><span class="comment"></span>
+<a name="613"><font size=-1>613     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="614"><font size=-1>614     </font></a><span class="comment">/*--- end                                                          ---*/</span>
+<a name="615"><font size=-1>615     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="616"><font size=-1>616     </font></a><span class="comment"></span>
+</pre></body></html>

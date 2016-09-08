@@ -1,0 +1,144 @@
+<html><head><title>UsageGraph.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/dcd/graph/UsageGraph.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/dcd/graph/UsageGraph.java";
+top.document.title  = "UsageGraph.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.dcd.<a href="dictionary_N.html#1972">graph</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#333">ArrayList</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#334">Collections</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#1971">dcd</a>.<a href="dictionary_N.html#2284">ClassLoaderUtil</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.util.<a href="dictionary_N.html#496">filter</a>.<a href="dictionary_N.html#913">Filter</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * A UsageGraph tracks usage references between Java classes, based upon</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * a parsing of the class files.  Once the UsageGraph is built, it may be</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * visited to perform additional post-processing, or usage relationship</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * analysis.</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * &lt;p&gt;</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * The UsageGraph is composed of ClassNodes.  Each ClassNode has various</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * MemberNodes, specifically ConstructorNodes, FieldNodes, and MethodNodes.</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * Each of these MemberNodes keeps track of other MemberNodes which it</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * &lt;em&gt;uses&lt;/em&gt; and other MemberNodes which are &lt;em&gt;users&lt;/em&gt; of it.  In</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * this sense, the graph can navigated bi-directionally across the &lt;em&gt;use&lt;/em&gt;</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * relationship between MemberNodes.</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * &lt;p&gt;</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * Great effort is taken to keep the bookkeeping of the UsageGraph as tight</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * as possible, so that rather large code bases can be analyzed.  While nodes</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * can grant access to the underlying Java Reflection APIs (e.g. Class,</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * Constructor, Field, Member), the results are stored using WeakReferences</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * to assist with memory usage.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * &lt;p&gt;</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> * A class Filter can be specified to limit the set of classes on which</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * usage references will be tracked.  This is often done to limit memory</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * usage to interesting classes.  For example, the &lt;code&gt;java.util&lt;/code&gt;</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * package is very often used, and tracking usages would require a massive</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * bookkeeping effort which has little value.</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> *</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * @see UsageGraphBuilder</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * @see ClassNode</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * @see MemberNode</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> * @see ConstructorNode</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> * @see FieldNode</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> * @see MethodNode</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> * @see NodeVisitor</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> * @see NodeVisitorAcceptor</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> */</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#1973">UsageGraph</a> implements <a href="dictionary_N.html#12927">NodeVisitorAcceptor</a> </span><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default">	</span><span class="keyword">private final <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_N.html#1974">ClassNode</a>&gt; <a href="dictionary_N.html#24500">classNodes</a> = </span><span class="keyword">new <a href="dictionary_J.html#333">ArrayList</a></span><span class="default">&lt;&gt;();</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	</span><span class="keyword">protected final <a href="dictionary_N.html#913">Filter</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_N.html#24499">classFilter</a>;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span>
+<a name="53"><font size=-1>53     </font></a><span class="default">	</span><span class="keyword">public <a href="dictionary_N.html#12825">UsageGraph</a></span><span class="default">(<a href="dictionary_N.html#913">Filter</a>&lt;<a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_N.html#24462">classFilter</a>) {</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">		</span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#24499">classFilter</a> = <a href="dictionary_N.html#24462">classFilter</a>;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">	}</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">	</span><span class="keyword">public </span><span class="default">Object <a href="dictionary_N.html#24463">accept</a>(<a href="dictionary_N.html#1934">NodeVisitor</a> <a href="dictionary_N.html#24466">visitor</a>, Object <a href="dictionary_N.html#24465">data</a>) {</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">		</span><span class="keyword">for </span><span class="default">(<a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#24464">classNode</a> : <a href="dictionary_N.html#24500">classNodes</a>) {</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">			<a href="dictionary_N.html#24466">visitor</a>.<a href="dictionary_N.html#1938">visit</a>(<a href="dictionary_N.html#24464">classNode</a>, <a href="dictionary_N.html#24465">data</a>);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">		}</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_N.html#24465">data</a></span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">	}</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span>
+<a name="64"><font size=-1>64     </font></a><span class="default">	</span><span class="keyword">public boolean <a href="dictionary_N.html#12826">isClass</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24485">className</a>) {</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">		<a href="dictionary_N.html#24467">checkClassName</a>(<a href="dictionary_N.html#24485">className</a>);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_J.html#334">Collections</a></span><span class="default">.<a href="dictionary_B.html#8737">binarySearch</a>(<a href="dictionary_N.html#24500">classNodes</a>, <a href="dictionary_N.html#24485">className</a>, <a href="dictionary_N.html#23272">ClassNodeComparator</a>.<a href="dictionary_N.html#23277">INSTANCE</a>) &gt;= </span><span class="number">0</span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">	}</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">	</span><span class="keyword">public <a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#12827">defineClass</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24469">className</a>) {</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">		<a href="dictionary_N.html#24467">checkClassName</a>(<a href="dictionary_N.html#24469">className</a>);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">		</span><span class="keyword">int <a href="dictionary_N.html#24471">index</a> </span><span class="default">= <a href="dictionary_J.html#334">Collections</a>.<a href="dictionary_B.html#8737">binarySearch</a>(<a href="dictionary_N.html#24500">classNodes</a>, <a href="dictionary_N.html#24469">className</a>, <a href="dictionary_N.html#23272">ClassNodeComparator</a>.<a href="dictionary_N.html#23277">INSTANCE</a>);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">		<a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#24470">classNode</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#24471">index</a> &gt;= </span><span class="number">0</span><span class="default">) {</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">			<a href="dictionary_N.html#24470">classNode</a> = <a href="dictionary_N.html#24500">classNodes</a>.<a href="dictionary_G.html#258">get</a>(<a href="dictionary_N.html#24471">index</a>);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">		} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">			<a href="dictionary_N.html#24470">classNode</a> = </span><span class="keyword">new <a href="dictionary_N.html#12890">ClassNode</a></span><span class="default">(<a href="dictionary_N.html#24469">className</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">			<a href="dictionary_N.html#24500">classNodes</a>.<a href="dictionary_A.html#117">add</a>(-(<a href="dictionary_N.html#24471">index</a> + </span><span class="number">1</span><span class="default">), <a href="dictionary_N.html#24470">classNode</a>);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">		}</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_N.html#24470">classNode</a></span><span class="default">;</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">	}</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">	</span><span class="keyword">public <a href="dictionary_N.html#1975">FieldNode</a> <a href="dictionary_N.html#12821">defineField</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24477">className</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24480">name</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24479">desc</a>) {</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">		<a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#24478">classNode</a> = <a href="dictionary_N.html#12827">defineClass</a>(<a href="dictionary_N.html#24477">className</a>);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_N.html#24478">classNode</a></span><span class="default">.<a href="dictionary_N.html#12902">defineField</a>(<a href="dictionary_N.html#24480">name</a>, <a href="dictionary_N.html#24479">desc</a>);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">	}</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default">	</span><span class="keyword">public <a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24472">defineConstructor</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24473">className</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24476">name</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24475">desc</a>) {</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">		<a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#24474">classNode</a> = <a href="dictionary_N.html#12827">defineClass</a>(<a href="dictionary_N.html#24473">className</a>);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">		</span><span class="keyword">return <a href="dictionary_N.html#24474">classNode</a></span><span class="default">.<a href="dictionary_N.html#12897">defineConstructor</a>(<a href="dictionary_N.html#24476">name</a>, <a href="dictionary_N.html#24475">desc</a>);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">	}</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span>
+<a name="92"><font size=-1>92     </font></a><span class="default">	</span><span class="keyword">public <a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#12822">defineMethod</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24481">className</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24484">name</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24483">desc</a>) {</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">		<a href="dictionary_N.html#1974">ClassNode</a> <a href="dictionary_N.html#24482">classNode</a> = <a href="dictionary_N.html#12827">defineClass</a>(<a href="dictionary_N.html#24481">className</a>);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#2284">ClassLoaderUtil</a>.<a href="dictionary_N.html#18673">CLINIT</a>.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#24484">name</a>) || <a href="dictionary_N.html#2284">ClassLoaderUtil</a>.<a href="dictionary_N.html#18674">INIT</a>.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#24484">name</a>)) {</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">			</span><span class="keyword">return <a href="dictionary_N.html#24482">classNode</a></span><span class="default">.<a href="dictionary_N.html#12897">defineConstructor</a>(<a href="dictionary_N.html#24484">name</a>, <a href="dictionary_N.html#24483">desc</a>);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">		} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">			</span><span class="keyword">return <a href="dictionary_N.html#24482">classNode</a></span><span class="default">.<a href="dictionary_N.html#12907">defineMethod</a>(<a href="dictionary_N.html#24484">name</a>, <a href="dictionary_N.html#24483">desc</a>);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">		}</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">	}</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	</span><span class="keyword">public void <a href="dictionary_N.html#12823">usageField</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24489">className</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24492">name</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24490">desc</a>, <a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24493">usingMemberNode</a>) {</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">		<a href="dictionary_N.html#24467">checkClassName</a>(<a href="dictionary_N.html#24489">className</a>);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#24499">classFilter</a>.<a href="dictionary_N.html#914">filter</a>(<a href="dictionary_N.html#24489">className</a>)) {</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">			<a href="dictionary_N.html#1975">FieldNode</a> <a href="dictionary_N.html#24491">fieldNode</a> = <a href="dictionary_N.html#12821">defineField</a>(<a href="dictionary_N.html#24489">className</a>, <a href="dictionary_N.html#24492">name</a>, <a href="dictionary_N.html#24490">desc</a>);</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">			<a href="dictionary_N.html#24486">usage</a>(<a href="dictionary_N.html#24491">fieldNode</a>, <a href="dictionary_N.html#24493">usingMemberNode</a>);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">		}</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">	}</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">	</span><span class="keyword">public void <a href="dictionary_N.html#12824">usageMethod</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24494">className</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24497">name</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24495">desc</a>, <a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24498">usingMemberNode</a>) {</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">		<a href="dictionary_N.html#24467">checkClassName</a>(<a href="dictionary_N.html#24494">className</a>);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#24499">classFilter</a>.<a href="dictionary_N.html#914">filter</a>(<a href="dictionary_N.html#24494">className</a>)) {</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">			<a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24496">memberNode</a>;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#2284">ClassLoaderUtil</a>.<a href="dictionary_N.html#18673">CLINIT</a>.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#24497">name</a>) || <a href="dictionary_N.html#2284">ClassLoaderUtil</a>.<a href="dictionary_N.html#18674">INIT</a>.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#24497">name</a>)) {</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">				<a href="dictionary_N.html#24496">memberNode</a> = <a href="dictionary_N.html#24472">defineConstructor</a>(<a href="dictionary_N.html#24494">className</a>, <a href="dictionary_N.html#24497">name</a>, <a href="dictionary_N.html#24495">desc</a>);</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">			} </span><span class="keyword">else </span><span class="default">{</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">				<a href="dictionary_N.html#24496">memberNode</a> = <a href="dictionary_N.html#12822">defineMethod</a>(<a href="dictionary_N.html#24494">className</a>, <a href="dictionary_N.html#24497">name</a>, <a href="dictionary_N.html#24495">desc</a>);</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">			}</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">			<a href="dictionary_N.html#24486">usage</a>(<a href="dictionary_N.html#24496">memberNode</a>, <a href="dictionary_N.html#24498">usingMemberNode</a>);</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">		}</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">	}</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default">	</span><span class="keyword">private void <a href="dictionary_N.html#24486">usage</a></span><span class="default">(<a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24487">use</a>, <a href="dictionary_N.html#1978">MemberNode</a> <a href="dictionary_N.html#24488">user</a>) {</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">		<a href="dictionary_N.html#24487">use</a>.<a href="dictionary_N.html#24501">addUser</a>(<a href="dictionary_N.html#24488">user</a>);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">		<a href="dictionary_N.html#24488">user</a>.<a href="dictionary_N.html#24502">addUse</a>(<a href="dictionary_N.html#24487">use</a>);</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">	}</span>
+<a name="126"><font size=-1>126     </font></a><span class="default"></span>
+<a name="127"><font size=-1>127     </font></a><span class="default">	</span><span class="keyword">private final void <a href="dictionary_N.html#24467">checkClassName</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24468">className</a>) {</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">		</span><span class="comment">// Make sure it's not in byte code internal format, or file system path.</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#24468">className</a>.<a href="dictionary_I.html#215">indexOf</a>(</span><span class="string">'/'</span><span class="default">) &gt;= </span><span class="number">0 </span><span class="default">|| <a href="dictionary_N.html#24468">className</a>.<a href="dictionary_I.html#215">indexOf</a>(</span><span class="string">'\\'</span><span class="default">) &gt;= </span><span class="number">0</span><span class="default">) {</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">			</span><span class="keyword">throw new <a href="dictionary_I.html#2057">IllegalArgumentException</a></span><span class="default">(</span><span class="string">&quot;Invalid class name: &quot; </span><span class="default">+ <a href="dictionary_N.html#24468">className</a>);</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">		}</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">	}</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">}</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span>
+</pre></body></html>

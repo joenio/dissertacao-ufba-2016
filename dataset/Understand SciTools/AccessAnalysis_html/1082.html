@@ -1,0 +1,88 @@
+<html><head><title>ActualAccessLabelProvider.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src/de.uni_hamburg.informatik.swt.accessanalysis.resultsview/src/de/uni_hamburg/informatik/swt/accessanalysis/resultsview/ActualAccessLabelProvider.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src/de.uni_hamburg.informatik.swt.accessanalysis.resultsview/src/de/uni_hamburg/informatik/swt/accessanalysis/resultsview/ActualAccessLabelProvider.java";
+top.document.title  = "ActualAccessLabelProvider.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * </span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">de.uni_hamburg.informatik.swt.accessanalysis.<a href="dictionary_D.html#757">resultsview</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.jface.<a href="dictionary_O.html#411">resource</a>.<a href="dictionary_O.html#1098">ColorRegistry</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.jface.<a href="dictionary_O.html#512">viewers</a>.<a href="dictionary_O.html#1102">StyledCellLabelProvider</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.jface.<a href="dictionary_O.html#512">viewers</a>.<a href="dictionary_O.html#1103">ViewerCell</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.swt.<a href="dictionary_O.html#1104">custom</a>.<a href="dictionary_O.html#1101">StyleRange</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.swt.<a href="dictionary_O.html#508">graphics</a>.<a href="dictionary_O.html#1100">RGB</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">org.eclipse.swt.<a href="dictionary_O.html#483">widgets</a>.<a href="dictionary_O.html#1099">Event</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">de.uni_hamburg.informatik.swt.accessanalysis.<a href="dictionary_D.html#174">results</a>.<a href="dictionary_D.html#171">Result</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">de.uni_hamburg.informatik.swt.accessanalysis.<a href="dictionary_D.html#174">results</a>.<a href="dictionary_D.html#177">ResultFormatter</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * Provides the labels for the &quot;Actual Access&quot;-column </span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * in the AccessAnalysisView-TreeTable.</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_D.html#765">ActualAccessLabelProvider</a> extends <a href="dictionary_O.html#1102">StyledCellLabelProvider</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">    </span><span class="keyword">private final <a href="dictionary_O.html#1098">ColorRegistry</a> <a href="dictionary_D.html#1097">_colorRegistry</a></span><span class="default">;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    </span>
+<a name="25"><font size=-1>25     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">     * Initializes an object of MinimalAccessLabelProvider. </span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">     */</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">    <a href="dictionary_D.html#766">ActualAccessLabelProvider</a></span><span class="default">()</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    {</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">(<a href="dictionary_O.html#1102">StyledCellLabelProvider</a>.<a href="dictionary_C.html#1083">COLORS_ON_SELECTION</a>);</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">        <a href="dictionary_D.html#1097">_colorRegistry</a> = </span><span class="keyword">new <a href="dictionary_O.html#1098">ColorRegistry</a></span><span class="default">();</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">        <a href="dictionary_D.html#1097">_colorRegistry</a>.<a href="dictionary_P.html#23">put</a>(</span><span class="string">&quot;red&quot;</span><span class="default">, </span><span class="keyword">new <a href="dictionary_O.html#1100">RGB</a></span><span class="default">(</span><span class="number">255</span><span class="default">, </span><span class="number">0</span><span class="default">, </span><span class="number">0</span><span class="default">));</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    }</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    </span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    </span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    </span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    @<a href="dictionary_O.html#52">Override</a></span>
+<a name="38"><font size=-1>38     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_D.html#1092">update</a></span><span class="default">(<a href="dictionary_O.html#1103">ViewerCell</a> <a href="dictionary_D.html#1095">cell</a>)</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">        <a href="dictionary_D.html#177">ResultFormatter</a> <a href="dictionary_D.html#1096">formatter</a> = ((Result) <a href="dictionary_D.html#1095">cell</a>.<a href="dictionary_G.html#847">getElement</a>()).<a href="dictionary_D.html#191">getFormatter</a>();</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">        <a href="dictionary_D.html#1095">cell</a>.<a href="dictionary_S.html#599">setText</a>(<a href="dictionary_D.html#1096">formatter</a>.<a href="dictionary_D.html#889">actualAccess</a>());</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">        <a href="dictionary_D.html#1095">cell</a>.<a href="dictionary_S.html#1093">setStyleRanges</a>(<a href="dictionary_D.html#1084">createStyle</a>(<a href="dictionary_D.html#1096">formatter</a>));</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">.<a href="dictionary_U.html#1094">update</a>(<a href="dictionary_D.html#1095">cell</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">    }</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    </span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    @<a href="dictionary_O.html#52">Override</a></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    </span><span class="keyword">protected void <a href="dictionary_D.html#1088">paint</a></span><span class="default">(<a href="dictionary_O.html#1099">Event</a> <a href="dictionary_D.html#1091">event</a>, Object <a href="dictionary_D.html#1090">element</a>)</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    {</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">.<a href="dictionary_P.html#1089">paint</a>(<a href="dictionary_D.html#1091">event</a>, <a href="dictionary_D.html#1090">element</a>);</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    }</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    </span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">     * Returns the style for the label. </span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">     *  </span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">     * @param ResultFormatter formatter The result formatter</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">     * @return StyleRange[] The style</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">     */</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">    </span><span class="keyword">private <a href="dictionary_O.html#1101">StyleRange</a></span><span class="default">[] <a href="dictionary_D.html#1084">createStyle</a>(<a href="dictionary_D.html#177">ResultFormatter</a> <a href="dictionary_D.html#1086">formatter</a>)</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    {</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">        <a href="dictionary_O.html#1101">StyleRange</a>[] <a href="dictionary_D.html#1087">styleRanges</a> = </span><span class="keyword">new <a href="dictionary_O.html#1101">StyleRange</a></span><span class="default">[</span><span class="number">1</span><span class="default">];</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">        <a href="dictionary_D.html#1087">styleRanges</a>[</span><span class="number">0</span><span class="default">] = </span><span class="keyword">new <a href="dictionary_O.html#1101">StyleRange</a></span><span class="default">();</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_D.html#1086">formatter</a>.<a href="dictionary_D.html#888">accessAlert</a>())</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">        {</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">            <a href="dictionary_D.html#1087">styleRanges</a>[</span><span class="number">0</span><span class="default">].foreground = <a href="dictionary_D.html#1097">_colorRegistry</a>.<a href="dictionary_G.html#6">get</a>(</span><span class="string">&quot;red&quot;</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">        }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">        </span><span class="keyword">else</span>
+<a name="68"><font size=-1>68     </font></a><span class="keyword">        </span><span class="default">{</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">            <a href="dictionary_D.html#1087">styleRanges</a>[</span><span class="number">0</span><span class="default">].foreground = <a href="dictionary_D.html#1097">_colorRegistry</a>.<a href="dictionary_G.html#6">get</a>(</span><span class="string">&quot;black&quot;</span><span class="default">);</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">        }</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">        </span>
+<a name="72"><font size=-1>72     </font></a><span class="default">        <a href="dictionary_D.html#1087">styleRanges</a>[</span><span class="number">0</span><span class="default">].start = </span><span class="number">0</span><span class="default">;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">        <a href="dictionary_D.html#1087">styleRanges</a>[</span><span class="number">0</span><span class="default">].length = <a href="dictionary_D.html#1086">formatter</a>.<a href="dictionary_D.html#889">actualAccess</a>().<a href="dictionary_L.html#1085">length</a>();</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">        </span>
+<a name="75"><font size=-1>75     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_D.html#1087">styleRanges</a></span><span class="default">;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    }</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">}</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+</pre></body></html>

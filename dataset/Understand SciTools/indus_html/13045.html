@@ -1,0 +1,68 @@
+<html><head><title>ValuedVariantManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus/indus.staticanalyses/src-flow/edu/ksu/cis/indus/staticanalyses/flow/ValuedVariantManager.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/indus/indus/indus.staticanalyses/src-flow/edu/ksu/cis/indus/staticanalyses/flow/ValuedVariantManager.java";
+top.document.title  = "ValuedVariantManager.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Indus, a program analysis and transformation toolkit for Java.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (c) 2001, 2007 Venkatesh Prasad Ranganath</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * </span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * All rights reserved.  This program and the accompanying materials are made </span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * available under the terms of the Eclipse Public License v1.0 which accompanies </span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * the distribution containing this program, and is available at </span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * http://www.opensource.org/licenses/eclipse-1.0.php.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * </span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * For questions about the license, copyright, and software, contact </span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * 	Venkatesh Prasad Ranganath at venkateshprasad.ranganath@gmail.com</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *                                 </span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * This software was developed by Venkatesh Prasad Ranganath in SAnToS Laboratory </span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * at Kansas State University.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> *******************************************************************************/</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">edu.ksu.cis.indus.staticanalyses.<a href="dictionary_E.html#288">flow</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.ksu.cis.indus.staticanalyses.<a href="dictionary_E.html#295">tokens</a>.<a href="dictionary_E.html#294">ITokens</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * This class manages variants corresponding to entities that have values.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * </span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * @author &lt;a href=&quot;http://www.cis.ksu.edu/~rvprasad&quot;&gt;Venkatesh Prasad Ranganath&lt;/a&gt;</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * @version $Revision: 1.7 $</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * @param &lt;E&gt; is the type of the entity whose variance is being tracked.!</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * @param &lt;SYM&gt; is the type of symbol whose flow is being analyzed.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * @param &lt;T&gt; is the type of the token set object.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * @param &lt;N&gt; is the type of the summary node in the flow analysis.</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * @param &lt;R&gt; is the type of the symbol types.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_E.html#13046">ValuedVariantManager</a></span><span class="default">&lt;<a href="dictionary_E.html#13047">E</a>, <a href="dictionary_E.html#13050">SYM</a>, <a href="dictionary_E.html#13051">T</a> </span><span class="keyword">extends <a href="dictionary_E.html#294">ITokens</a></span><span class="default">&lt;<a href="dictionary_E.html#13051">T</a>, <a href="dictionary_E.html#13050">SYM</a>&gt;, <a href="dictionary_E.html#13048">N</a> </span><span class="keyword">extends <a href="dictionary_E.html#296">IFGNode</a></span><span class="default">&lt;<a href="dictionary_E.html#13050">SYM</a>, <a href="dictionary_E.html#13051">T</a>, <a href="dictionary_E.html#13048">N</a>&gt;, <a href="dictionary_E.html#13049">R</a>&gt;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">		</span><span class="keyword">extends <a href="dictionary_E.html#13057">AbstractVariantManager</a></span><span class="default">&lt;<a href="dictionary_E.html#4428">ValuedVariant</a>&lt;<a href="dictionary_E.html#13048">N</a>&gt;, <a href="dictionary_E.html#13047">E</a>, <a href="dictionary_E.html#13050">SYM</a>, <a href="dictionary_E.html#13051">T</a>, <a href="dictionary_E.html#13048">N</a>, <a href="dictionary_E.html#13049">R</a>&gt; {</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">	 * Creates a new &lt;code&gt;ValuedVariantManager&lt;/code&gt; instance.</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">	 * </span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">	 * @param theAnalysis the instance of the framework in which this object is used.</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">	 * @param indexManager the manager of indices which map array variants to arrays.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">	 * @pre theAnalysis != null and indexManager != null</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">	 */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">	<a href="dictionary_E.html#13052">ValuedVariantManager</a></span><span class="default">(</span><span class="keyword">final <a href="dictionary_E.html#434">FA</a></span><span class="default">&lt;<a href="dictionary_E.html#13050">SYM</a>, <a href="dictionary_E.html#13051">T</a>, <a href="dictionary_E.html#13048">N</a>, <a href="dictionary_E.html#13049">R</a>&gt; <a href="dictionary_E.html#13054">theAnalysis</a>, </span><span class="keyword">final <a href="dictionary_E.html#7726">IIndexManager</a></span><span class="default">&lt;? </span><span class="keyword">extends <a href="dictionary_E.html#6295">IIndex</a></span><span class="default">&lt;?&gt;, <a href="dictionary_E.html#13047">E</a>&gt; <a href="dictionary_E.html#13053">indexManager</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">		</span><span class="keyword">super</span><span class="default">(<a href="dictionary_E.html#13054">theAnalysis</a>, <a href="dictionary_E.html#13053">indexManager</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">	}</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default">	</span><span class="comment">/**</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">	 * Returns a new valued variant corresponding to the given ast object.</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">	 * </span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">	 * @param o the ast object whose variant is to be returned.</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">	 * @return a new variant corresponding to &lt;code&gt;o&lt;/code&gt;.</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">	 */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">	</span><span class="default">@<a href="dictionary_O.html#287">Override</a> </span><span class="keyword">protected <a href="dictionary_E.html#4428">ValuedVariant</a></span><span class="default">&lt;<a href="dictionary_E.html#13048">N</a>&gt; <a href="dictionary_E.html#13055">getNewVariant</a>(@<a href="dictionary_S.html#823">SuppressWarnings</a>(</span><span class="string">&quot;unused&quot;</span><span class="default">) </span><span class="keyword">final <a href="dictionary_E.html#13047">E</a> <a href="dictionary_E.html#13056">o</a></span><span class="default">) {</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">		</span><span class="keyword">return new <a href="dictionary_E.html#4430">ValuedVariant</a></span><span class="default">&lt;<a href="dictionary_E.html#13048">N</a>&gt;(<a href="dictionary_E.html#13060">fa</a>.<a href="dictionary_E.html#13061">getNewFGNode</a>());</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">	}</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">}</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="comment">// End of File</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span>
+</pre></body></html>

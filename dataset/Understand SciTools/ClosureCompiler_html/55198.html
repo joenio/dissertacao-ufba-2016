@@ -1,0 +1,178 @@
+<html><head><title>ExploitAssignsTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/ExploitAssignsTest.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/ExploitAssignsTest.java";
+top.document.title  = "ExploitAssignsTest.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2006 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * Unit tests for {@link ExploitAssigns}</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> *</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * @author nicksantos@google.com (Nick Santos)</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> */</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="keyword">public final class <a href="dictionary_C.html#55199">ExploitAssignsTest</a> extends <a href="dictionary_C.html#20">CompilerTestCase</a> </span><span class="default">{</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55207">testExprExploitationTypes</a></span><span class="default">() {</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = true; b = true&quot;</span><span class="default">,</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">         </span><span class="string">&quot;b = a = true&quot;</span><span class="default">);</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !0; b = !0&quot;</span><span class="default">,</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">         </span><span class="string">&quot;b = a = !0&quot;</span><span class="default">);</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !1; b = !1&quot;</span><span class="default">,</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">         </span><span class="string">&quot;b = a = !1&quot;</span><span class="default">);</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = void 0; b = void 0&quot;</span><span class="default">,</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">         </span><span class="string">&quot;b = a = void 0&quot;</span><span class="default">);</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = -Infinity; b = -Infinity&quot;</span><span class="default">,</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">         </span><span class="string">&quot;b = a = -Infinity&quot;</span><span class="default">);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">  }</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55208">testExprExploitationTypes2</a></span><span class="default">() {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !0; b = !0&quot;</span><span class="default">,</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">         </span><span class="string">&quot;b = a = !0&quot;</span><span class="default">);</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  }</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55206">testExprExploitation</a></span><span class="default">() {</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; b = null; var c = b&quot;</span><span class="default">,</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">         </span><span class="string">&quot;var c = b = a = null&quot;</span><span class="default">);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; b = null&quot;</span><span class="default">,</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">         </span><span class="string">&quot;b = a = null&quot;</span><span class="default">);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = undefined; b = undefined&quot;</span><span class="default">,</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">         </span><span class="string">&quot;b = a = undefined&quot;</span><span class="default">);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 0; b = 0&quot;</span><span class="default">, </span><span class="string">&quot;b=a=0&quot;</span><span class="default">);</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 'foo'; b = 'foo'&quot;</span><span class="default">,</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">         </span><span class="string">&quot;b = a = \&quot;foo\&quot;&quot;</span><span class="default">);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = c; b = c&quot;</span><span class="default">, </span><span class="string">&quot;b=a=c&quot;</span><span class="default">);</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = 0; b = 1&quot;</span><span class="default">);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = \&quot;foo\&quot;; b = \&quot;foox\&quot;&quot;</span><span class="default">);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; a &amp;&amp; b;&quot;</span><span class="default">, </span><span class="string">&quot;(a = null)&amp;&amp;b&quot;</span><span class="default">);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; a || b;&quot;</span><span class="default">, </span><span class="string">&quot;(a = null)||b&quot;</span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; a ? b : c;&quot;</span><span class="default">, </span><span class="string">&quot;(a = null) ? b : c&quot;</span><span class="default">);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = null; this.foo = null;&quot;</span><span class="default">,</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">         </span><span class="string">&quot;this.foo = a = null&quot;</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function f(){ a = null; return null; }&quot;</span><span class="default">,</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">         </span><span class="string">&quot;function f(){return a = null}&quot;</span><span class="default">);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = true; if (a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">         </span><span class="string">&quot;if (a = true) { foo() }&quot;</span><span class="default">);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = true; if (a &amp;&amp; a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">         </span><span class="string">&quot;if ((a = true) &amp;&amp; a) { foo() }&quot;</span><span class="default">);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = false; if (a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">         </span><span class="string">&quot;if (a = false) { foo() }&quot;</span><span class="default">);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !0; if (a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">        </span><span class="string">&quot;if (a = !0) { foo() }&quot;</span><span class="default">);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !0; if (a &amp;&amp; a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">        </span><span class="string">&quot;if ((a = !0) &amp;&amp; a) { foo() }&quot;</span><span class="default">);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = !1; if (a) { foo(); }&quot;</span><span class="default">,</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">        </span><span class="string">&quot;if (a = !1) { foo() }&quot;</span><span class="default">);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = this.foo; a();&quot;</span><span class="default">);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = b; b = a;&quot;</span><span class="default">,</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">         </span><span class="string">&quot;b = a = b&quot;</span><span class="default">);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = b; a.c = a&quot;</span><span class="default">);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.foo = null; this.bar = null;&quot;</span><span class="default">,</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">         </span><span class="string">&quot;this.bar = this.foo = null&quot;</span><span class="default">);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.foo = null; this.bar = null; this.baz = this.bar&quot;</span><span class="default">,</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">         </span><span class="string">&quot;this.baz = this.bar = this.foo = null&quot;</span><span class="default">);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.foo = null; a = null;&quot;</span><span class="default">,</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">         </span><span class="string">&quot;a = this.foo = null&quot;</span><span class="default">);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.foo = null; a = this.foo;&quot;</span><span class="default">,</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">         </span><span class="string">&quot;a = this.foo = null&quot;</span><span class="default">);</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a.b.c=null; a=null;&quot;</span><span class="default">,</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">         </span><span class="string">&quot;a = a.b.c = null&quot;</span><span class="default">);</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = null; a.b.c = null&quot;</span><span class="default">);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;(a=b).c = null; this.b = null;&quot;</span><span class="default">,</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">         </span><span class="string">&quot;this.b = (a=b).c = null&quot;</span><span class="default">);</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;if(x) a = null; else b = a&quot;</span><span class="default">);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">  }</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55210">testNestedExprExploitation</a></span><span class="default">() {</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.foo = null; this.bar = null; this.baz = null;&quot;</span><span class="default">,</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">         </span><span class="string">&quot;this.baz = this.bar = this.foo = null&quot;</span><span class="default">);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; this.bar = a; this.baz = 3;&quot;</span><span class="default">,</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">         </span><span class="string">&quot;this.baz = this.bar = this.foo = a = 3&quot;</span><span class="default">);</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; this.bar = this.foo; this.baz = a;&quot;</span><span class="default">,</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">         </span><span class="string">&quot;this.baz = this.bar = this.foo = a = 3&quot;</span><span class="default">);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; this.bar = 3; this.baz = this.foo;&quot;</span><span class="default">,</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">         </span><span class="string">&quot;this.baz = this.bar = this.foo = a = 3&quot;</span><span class="default">);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; a = 3; this.bar = 3; &quot; </span><span class="default">+</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">         </span><span class="string">&quot;a = 3; this.baz = this.foo;&quot;</span><span class="default">,</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">         </span><span class="string">&quot;this.baz = a = this.bar = a = this.foo = a = 3&quot;</span><span class="default">);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 4; this.foo = a; a = 3; this.bar = 3; &quot; </span><span class="default">+</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">         </span><span class="string">&quot;a = 3; this.baz = this.foo;&quot;</span><span class="default">,</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">         </span><span class="string">&quot;this.foo = a = 4; a = this.bar = a = 3; this.baz = this.foo&quot;</span><span class="default">);</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; a = 4; this.bar = 3; &quot; </span><span class="default">+</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">         </span><span class="string">&quot;a = 3; this.baz = this.foo;&quot;</span><span class="default">,</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">         </span><span class="string">&quot;this.foo = a = 3; a = 4; a = this.bar = 3; this.baz = this.foo&quot;</span><span class="default">);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = 3; this.foo = a; a = 3; this.bar = 3; &quot; </span><span class="default">+</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">         </span><span class="string">&quot;a = 4; this.baz = this.foo;&quot;</span><span class="default">,</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">         </span><span class="string">&quot;this.bar = a = this.foo = a = 3; a = 4; this.baz = this.foo&quot;</span><span class="default">);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">  }</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+<a name="128"><font size=-1>128     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55204">testBug1840071</a></span><span class="default">() {</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">    </span><span class="comment">// Some external properties are implemented as setters. Let's</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">    // make sure that we don't collapse them inappropriately.</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;a.b = a.x; if (a.x) {}&quot;</span><span class="default">, </span><span class="string">&quot;if (a.b = a.x) {}&quot;</span><span class="default">);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.b = a.x; if (a.b) {}&quot;</span><span class="default">);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a.b = a.c = a.x; if (a.x) {}&quot;</span><span class="default">, </span><span class="string">&quot;if (a.b = a.c = a.x) {}&quot;</span><span class="default">);</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.b = a.c = a.x; if (a.c) {}&quot;</span><span class="default">);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.b = a.c = a.x; if (a.b) {}&quot;</span><span class="default">);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">  }</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55205">testBug2072343</a></span><span class="default">() {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = a.x;a = a.x&quot;</span><span class="default">);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a = a.x;b = a.x&quot;</span><span class="default">);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;b = a.x;a = a.x&quot;</span><span class="default">, </span><span class="string">&quot;a = b = a.x&quot;</span><span class="default">);</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.x = a;a = a.x&quot;</span><span class="default">);</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.b = a.b.x;a.b = a.b.x&quot;</span><span class="default">);</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;a.y = a.y.x;b = a.y;c = a.y.x&quot;</span><span class="default">);</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;a = a.x;b = a;c = a.x&quot;</span><span class="default">, </span><span class="string">&quot;b = a = a.x;c = a.x&quot;</span><span class="default">);</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;b = a.x;a = b;c = a.x&quot;</span><span class="default">, </span><span class="string">&quot;a = b = a.x;c = a.x&quot;</span><span class="default">);</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"> }</span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span>
+<a name="149"><font size=-1>149     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55203">testBadCollapseIntoCall</a></span><span class="default">() {</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">    </span><span class="comment">// Can't collapse this, because if we did, 'foo' would be called</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">    // in the wrong 'this' context.</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">    <a href="dictionary_C.html#30">testSame</a></span><span class="default">(</span><span class="string">&quot;this.foo = function() {}; this.foo();&quot;</span><span class="default">);</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">  }</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55202">testBadCollapse</a></span><span class="default">() {</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this.$e$ = []; this.$b$ = null;&quot;</span><span class="default">);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">  }</span>
+<a name="158"><font size=-1>158     </font></a><span class="default"></span>
+<a name="159"><font size=-1>159     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#55209">testIssue1017</a></span><span class="default">() {</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;x = x.parentNode.parentNode; x = x.parentNode.parentNode;&quot;</span><span class="default">);</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">  }</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default">  @Override</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#19">CompilerPass</a> <a href="dictionary_C.html#55200">getProcessor</a></span><span class="default">(<a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#55201">compiler</a>) {</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#1002">PeepholeOptimizationsPass</a></span><span class="default">(<a href="dictionary_C.html#55201">compiler</a>,</span><span class="keyword">new <a href="dictionary_C.html#12500">ExploitAssigns</a></span><span class="default">());</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">  }</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">}</span>
+<a name="168"><font size=-1>168     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,433 @@
+<html><head><title>RenamePropertiesTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/RenamePropertiesTest.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/test/com/google/javascript/jscomp/RenamePropertiesTest.java";
+top.document.title  = "RenamePropertiesTest.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2005 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#120">collect</a>.<a href="dictionary_C.html#1411">ImmutableList</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * {@link RenameProperties} tests.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> *</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> */</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"></span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"></span><span class="keyword">public final class <a href="dictionary_C.html#68919">RenamePropertiesTest</a> extends <a href="dictionary_C.html#20">CompilerTestCase</a> </span><span class="default">{</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  </span><span class="keyword">private static final </span><span class="default">String <a href="dictionary_C.html#68991">EXTERNS</a> =</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">      </span><span class="string">&quot;var window;&quot; </span><span class="default">+</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">      </span><span class="string">&quot;prop.toString;&quot; </span><span class="default">+</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">      </span><span class="string">&quot;var google = { gears: { factory: {}, workerPool: {} } };&quot;</span><span class="default">;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#39629">RenameProperties</a> <a href="dictionary_C.html#68994">renameProperties</a></span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default">  </span><span class="keyword">private static boolean <a href="dictionary_C.html#68992">generatePseudoNames</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#43">VariableMap</a> <a href="dictionary_C.html#68993">prevUsedPropertyMap</a> </span><span class="default">= </span><span class="keyword">null</span><span class="default">;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#68920">RenamePropertiesTest</a></span><span class="default">() {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">(<a href="dictionary_C.html#68991">EXTERNS</a>);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    <a href="dictionary_C.html#1003">enableNormalize</a>();</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">    <a href="dictionary_C.html#8081">enableGatherExternProperties</a>();</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  }</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  @Override</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  </span><span class="keyword">protected void <a href="dictionary_C.html#68934">tearDown</a></span><span class="default">() </span><span class="keyword">throws <a href="dictionary_E.html#609">Exception</a> </span><span class="default">{</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">.<a href="dictionary_C.html#38251">tearDown</a>();</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    <a href="dictionary_C.html#68993">prevUsedPropertyMap</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  }</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default">  @Override </span><span class="keyword">protected int <a href="dictionary_C.html#68931">getNumRepetitions</a></span><span class="default">() {</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">    </span><span class="comment">// The RenameProperties pass should only be run once over a parse tree.</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">    </span><span class="keyword">return </span><span class="number">1</span><span class="default">;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">  }</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span>
+<a name="57"><font size=-1>57     </font></a><span class="default">  @Override </span><span class="keyword">protected <a href="dictionary_C.html#341">CodingConvention</a> <a href="dictionary_C.html#68927">getCodingConvention</a></span><span class="default">() {</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#2268">CodingConventions</a></span><span class="default">.<a href="dictionary_C.html#2267">Proxy</a>(</span><span class="keyword">super</span><span class="default">.<a href="dictionary_C.html#39772">getCodingConvention</a>()) {</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">      @Override </span><span class="keyword">public boolean <a href="dictionary_C.html#68929">blockRenamingForProperty</a></span><span class="default">(String <a href="dictionary_C.html#68930">name</a>) {</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_C.html#68930">name</a></span><span class="default">.<a href="dictionary_E.html#4858">endsWith</a>(</span><span class="string">&quot;Exported&quot;</span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">      }</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    };</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  }</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68965">testPrototypeProperties</a></span><span class="default">() {</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype.getA = function(){}; bar.getA();&quot; </span><span class="default">+</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.getB = function(){};&quot; </span><span class="default">+</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.getC = function(){};&quot;</span><span class="default">,</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.a = function(){}; bar.a();&quot; </span><span class="default">+</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.b = function(){};&quot; </span><span class="default">+</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.c = function(){}&quot;</span><span class="default">);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  }</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68937">testExportedByConventionPrototypeProperties</a></span><span class="default">() {</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype.getA = function(){}; bar.getA();&quot; </span><span class="default">+</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.getBExported = function(){}; bar.getBExported()&quot;</span><span class="default">,</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.a = function(){}; bar.a();&quot; </span><span class="default">+</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.getBExported = function(){}; bar.getBExported()&quot;</span><span class="default">);</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">  }</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68966">testPrototypePropertiesAsObjLitKeys1</a></span><span class="default">() {</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {2: function(){}, getA: function(){}}; bar[2]();&quot;</span><span class="default">,</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {2: function(){}, a: function(){}}; bar[2]();&quot;</span><span class="default">);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  }</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68967">testPrototypePropertiesAsObjLitKeys2</a></span><span class="default">() {</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;Bar.prototype = {get 2(){}}; bar[2];&quot;</span><span class="default">);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;Bar.prototype = {get 'a'(){}}; bar['a'];&quot;</span><span class="default">);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {get getA(){}}; bar.getA;&quot;</span><span class="default">,</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {get a(){}}; bar.a;&quot;</span><span class="default">);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">  }</span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span>
+<a name="95"><font size=-1>95     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68968">testPrototypePropertiesAsObjLitKeys3</a></span><span class="default">() {</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;Bar.prototype = {set 2(x){}}; bar[2];&quot;</span><span class="default">);</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;Bar.prototype = {set 'a'(x){}}; bar['a'];&quot;</span><span class="default">);</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {set getA(x){}}; bar.getA;&quot;</span><span class="default">,</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {set a(x){}}; bar.a;&quot;</span><span class="default">);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">  }</span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span>
+<a name="104"><font size=-1>104     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68944">testMixedQuotedAndUnquotedObjLitKeys1</a></span><span class="default">() {</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar = {getA: function(){}, 'getB': function(){}}; bar.getA();&quot;</span><span class="default">,</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">         </span><span class="string">&quot;Bar = {a: function(){}, 'getB': function(){}}; bar.a();&quot;</span><span class="default">);</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">  }</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68945">testMixedQuotedAndUnquotedObjLitKeys2</a></span><span class="default">() {</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar = {getA: function(){}, 'getB': function(){}}; bar.getA();&quot;</span><span class="default">,</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">         </span><span class="string">&quot;Bar = {a: function(){}, 'getB': function(){}}; bar.a();&quot;</span><span class="default">);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">  }</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68971">testQuotedPrototypeProperty</a></span><span class="default">() {</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;Bar.prototype['getA'] = function(){}; bar['getA']();&quot;</span><span class="default">);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">  }</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68958">testOverlappingOriginalAndGeneratedNames</a></span><span class="default">() {</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {b: function(){}, a: function(){}}; bar.b();&quot;</span><span class="default">,</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {a: function(){}, b: function(){}}; bar.a();&quot;</span><span class="default">);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">  }</span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68978">testRenamePropertiesWithLeadingUnderscores</a></span><span class="default">() {</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {_getA: function(){}, _b: 0}; bar._getA();&quot;</span><span class="default">,</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {a: function(){}, b: 0}; bar.a();&quot;</span><span class="default">);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">  }</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+<a name="128"><font size=-1>128     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68961">testPropertyAddedToObject</a></span><span class="default">() {</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo = {}; foo.prop = '';&quot;</span><span class="default">,</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">         </span><span class="string">&quot;var foo = {}; foo.a = '';&quot;</span><span class="default">);</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">  }</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68960">testPropertyAddedToFunction</a></span><span class="default">() {</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo = function(){}; foo.prop = '';&quot;</span><span class="default">,</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">         </span><span class="string">&quot;var foo = function(){}; foo.a = '';&quot;</span><span class="default">);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">  }</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68964">testPropertyOfObjectOfUnknownType</a></span><span class="default">() {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo = x(); foo.prop = '';&quot;</span><span class="default">,</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">         </span><span class="string">&quot;var foo = x(); foo.a = '';&quot;</span><span class="default">);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68981">testSetPropertyOfThis</a></span><span class="default">() {</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.prop = 'bar'&quot;</span><span class="default">,</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">         </span><span class="string">&quot;this.a = 'bar'&quot;</span><span class="default">);</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">  }</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68939">testExportedSetPropertyOfThis</a></span><span class="default">() {</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;this.propExported = 'bar'&quot;</span><span class="default">,</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">         </span><span class="string">&quot;this.propExported = 'bar'&quot;</span><span class="default">);</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">  }</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68972">testReadPropertyOfThis</a></span><span class="default">() {</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;f(this.prop);&quot;</span><span class="default">,</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">         </span><span class="string">&quot;f(this.a);&quot;</span><span class="default">);</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">  }</span>
+<a name="157"><font size=-1>157     </font></a><span class="default"></span>
+<a name="158"><font size=-1>158     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68957">testObjectLiteralInLocalScope</a></span><span class="default">() {</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function x() { var foo = {prop1: 'bar', prop2: 'baz'}; }&quot;</span><span class="default">,</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">         </span><span class="string">&quot;function x() { var foo = {a: 'bar', b: 'baz'}; }&quot;</span><span class="default">);</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">  }</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68938">testExportedObjectLiteralInLocalScope</a></span><span class="default">() {</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function x() { var foo = {prop1: 'bar', prop2Exported: 'baz'};&quot; </span><span class="default">+</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">         </span><span class="string">&quot; foo.prop2Exported; }&quot;</span><span class="default">,</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">         </span><span class="string">&quot;function x() { var foo = {a: 'bar', prop2Exported: 'baz'};&quot; </span><span class="default">+</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">         </span><span class="string">&quot; foo.prop2Exported; }&quot;</span><span class="default">);</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">  }</span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span>
+<a name="170"><font size=-1>170     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68943">testIncorrectAttemptToAccessQuotedProperty</a></span><span class="default">() {</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">    </span><span class="comment">// The correct way to call the quoted 'getFoo' method is: bar['getFoo']().</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">    <a href="dictionary_C.html#1000">test</a></span><span class="default">(</span><span class="string">&quot;Bar.prototype = {'B': 0, 'getFoo': function(){}}; bar.getFoo();&quot;</span><span class="default">,</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {'B': 0, 'getFoo': function(){}}; bar.a();&quot;</span><span class="default">);</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">  }</span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span>
+<a name="176"><font size=-1>176     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68982">testSetQuotedPropertyOfThis</a></span><span class="default">() {</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">    <a href="dictionary_C.html#30">testSame</a>(</span><span class="string">&quot;this['prop'] = 'bar';&quot;</span><span class="default">);</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">  }</span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span>
+<a name="180"><font size=-1>180     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68940">testExternedPropertyName</a></span><span class="default">() {</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {toString: function(){}, foo: 0}; bar.toString();&quot;</span><span class="default">,</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {toString: function(){}, a: 0}; bar.toString();&quot;</span><span class="default">);</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">  }</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span>
+<a name="185"><font size=-1>185     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68941">testExternedPropertyNameDefinedByObjectLiteral</a></span><span class="default">() {</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function x() { var foo = google.gears.factory; }&quot;</span><span class="default">,</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">         </span><span class="string">&quot;function x() { var foo = google.gears.factory; }&quot;</span><span class="default">);</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">  }</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span>
+<a name="190"><font size=-1>190     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68936">testAvoidingConflictsBetweenQuotedAndUnquotedPropertyNames</a></span><span class="default">() {</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype.foo = function(){}; Bar.prototype['a'] = 0; bar.foo();&quot;</span><span class="default">,</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.b = function(){}; Bar.prototype['a'] = 0; bar.b();&quot;</span><span class="default">);</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">  }</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68980">testSamePropertyNameQuotedAndUnquoted</a></span><span class="default">() {</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype.prop = function(){}; y = {'prop': 0};&quot;</span><span class="default">,</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.a = function(){}; y = {'prop': 0};&quot;</span><span class="default">);</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">  }</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span>
+<a name="200"><font size=-1>200     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68990">testStaticAndInstanceMethodWithSameName</a></span><span class="default">() {</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar = function(){}; Bar.getA = function(){}; &quot; </span><span class="default">+</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.getA = function(){}; Bar.getA(); bar.getA();&quot;</span><span class="default">,</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">         </span><span class="string">&quot;Bar = function(){}; Bar.a = function(){}; &quot; </span><span class="default">+</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype.a = function(){}; Bar.a(); bar.a();&quot;</span><span class="default">);</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">  }</span>
+<a name="206"><font size=-1>206     </font></a><span class="default"></span>
+<a name="207"><font size=-1>207     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68975">testRenamePropertiesFunctionCall1</a></span><span class="default">() {</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo = {myProp: 0}; f(foo[JSCompiler_renameProperty('myProp')]);&quot;</span><span class="default">,</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">         </span><span class="string">&quot;var foo = {a: 0}; f(foo['a']);&quot;</span><span class="default">);</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">  }</span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span>
+<a name="212"><font size=-1>212     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68976">testRenamePropertiesFunctionCall2</a></span><span class="default">() {</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo = {myProp: 0}; &quot; </span><span class="default">+</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">         </span><span class="string">&quot;f(JSCompiler_renameProperty('otherProp.myProp.someProp')); &quot; </span><span class="default">+</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">         </span><span class="string">&quot;foo.myProp = 1; foo.theirProp = 2; foo.yourProp = 3;&quot;</span><span class="default">,</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">         </span><span class="string">&quot;var foo = {a: 0}; f('b.a.c'); &quot; </span><span class="default">+</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">         </span><span class="string">&quot;foo.a = 1; foo.d = 2; foo.e = 3;&quot;</span><span class="default">);</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">  }</span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span>
+<a name="220"><font size=-1>220     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68973">testRemoveRenameFunctionStubs1</a></span><span class="default">() {</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function JSCompiler_renameProperty(x) { return x; }&quot;</span><span class="default">,</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">         </span><span class="string">&quot;&quot;</span><span class="default">);</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">  }</span>
+<a name="224"><font size=-1>224     </font></a><span class="default"></span>
+<a name="225"><font size=-1>225     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68974">testRemoveRenameFunctionStubs2</a></span><span class="default">() {</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;function JSCompiler_renameProperty(x) { return x; }&quot; </span><span class="default">+</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">         </span><span class="string">&quot;var foo = {myProp: 0}; f(foo[JSCompiler_renameProperty('myProp')]);&quot;</span><span class="default">,</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">         </span><span class="string">&quot;var foo = {a: 0}; f(foo['a']);&quot;</span><span class="default">);</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">  }</span>
+<a name="230"><font size=-1>230     </font></a><span class="default"></span>
+<a name="231"><font size=-1>231     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68942">testGeneratePseudoNames</a></span><span class="default">() {</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">    <a href="dictionary_C.html#68992">generatePseudoNames</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo={}; foo.bar=1; foo['abc']=2&quot;</span><span class="default">,</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">         </span><span class="string">&quot;var foo={}; foo.$bar$=1; foo['abc']=2&quot;</span><span class="default">);</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">    <a href="dictionary_C.html#68992">generatePseudoNames</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">  }</span>
+<a name="237"><font size=-1>237     </font></a><span class="default"></span>
+<a name="238"><font size=-1>238     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68947">testModules</a></span><span class="default">() {</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">    String <a href="dictionary_C.html#68950">module1Js</a> = </span><span class="string">&quot;function Bar(){} Bar.prototype.getA=function(x){};&quot; </span><span class="default">+</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">                       </span><span class="string">&quot;var foo;foo.getA(foo);foo.doo=foo;foo.bloo=foo;&quot;</span><span class="default">;</span>
+<a name="241"><font size=-1>241     </font></a><span class="default"></span>
+<a name="242"><font size=-1>242     </font></a><span class="default">    String <a href="dictionary_C.html#68952">module2Js</a> = </span><span class="string">&quot;function Far(){} Far.prototype.getB=function(x){};&quot; </span><span class="default">+</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">                       </span><span class="string">&quot;var too;too.getB(too);too.woo=too;too.bloo=too;&quot;</span><span class="default">;</span>
+<a name="244"><font size=-1>244     </font></a><span class="default"></span>
+<a name="245"><font size=-1>245     </font></a><span class="default">    String <a href="dictionary_C.html#68954">module3Js</a> = </span><span class="string">&quot;function Car(){} Car.prototype.getC=function(x){};&quot; </span><span class="default">+</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">                       </span><span class="string">&quot;var noo;noo.getC(noo);noo.zoo=noo;noo.cloo=noo;&quot;</span><span class="default">;</span>
+<a name="247"><font size=-1>247     </font></a><span class="default"></span>
+<a name="248"><font size=-1>248     </font></a><span class="default">    <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#68949">module1</a> = </span><span class="keyword">new <a href="dictionary_C.html#9938">JSModule</a></span><span class="default">(</span><span class="string">&quot;m1&quot;</span><span class="default">);</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">    <a href="dictionary_C.html#68949">module1</a>.<a href="dictionary_C.html#13837">add</a>(<a href="dictionary_C.html#1858">SourceFile</a>.<a href="dictionary_C.html#3290">fromCode</a>(</span><span class="string">&quot;input1&quot;</span><span class="default">, <a href="dictionary_C.html#68950">module1Js</a>));</span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span>
+<a name="251"><font size=-1>251     </font></a><span class="default">    <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#68951">module2</a> = </span><span class="keyword">new <a href="dictionary_C.html#9938">JSModule</a></span><span class="default">(</span><span class="string">&quot;m2&quot;</span><span class="default">);</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">    <a href="dictionary_C.html#68951">module2</a>.<a href="dictionary_C.html#13837">add</a>(<a href="dictionary_C.html#1858">SourceFile</a>.<a href="dictionary_C.html#3290">fromCode</a>(</span><span class="string">&quot;input2&quot;</span><span class="default">, <a href="dictionary_C.html#68952">module2Js</a>));</span>
+<a name="253"><font size=-1>253     </font></a><span class="default"></span>
+<a name="254"><font size=-1>254     </font></a><span class="default">    <a href="dictionary_C.html#6851">JSModule</a> <a href="dictionary_C.html#68953">module3</a> = </span><span class="keyword">new <a href="dictionary_C.html#9938">JSModule</a></span><span class="default">(</span><span class="string">&quot;m3&quot;</span><span class="default">);</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">    <a href="dictionary_C.html#68953">module3</a>.<a href="dictionary_C.html#13837">add</a>(<a href="dictionary_C.html#1858">SourceFile</a>.<a href="dictionary_C.html#3290">fromCode</a>(</span><span class="string">&quot;input3&quot;</span><span class="default">, <a href="dictionary_C.html#68954">module3Js</a>));</span>
+<a name="256"><font size=-1>256     </font></a><span class="default"></span>
+<a name="257"><font size=-1>257     </font></a><span class="default">    <a href="dictionary_C.html#6851">JSModule</a>[] <a href="dictionary_C.html#68955">modules</a> = </span><span class="keyword">new <a href="dictionary_C.html#6851">JSModule</a></span><span class="default">[] { <a href="dictionary_C.html#68949">module1</a>, <a href="dictionary_C.html#68951">module2</a>, <a href="dictionary_C.html#68953">module3</a> };</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">    <a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#68948">compiler</a> = <a href="dictionary_C.html#68921">compileModules</a>(</span><span class="string">&quot;&quot;</span><span class="default">, <a href="dictionary_C.html#68955">modules</a>);</span>
+<a name="259"><font size=-1>259     </font></a><span class="default"></span>
+<a name="260"><font size=-1>260     </font></a><span class="default">    <a href="dictionary_C.html#7839">Result</a> <a href="dictionary_C.html#68956">result</a> = <a href="dictionary_C.html#68948">compiler</a>.<a href="dictionary_C.html#7856">getResult</a>();</span>
+<a name="261"><font size=-1>261     </font></a><span class="default">    <a href="dictionary_A.html#651">assertTrue</a>(<a href="dictionary_C.html#68956">result</a>.<a href="dictionary_C.html#7873">success</a>);</span>
+<a name="262"><font size=-1>262     </font></a><span class="default"></span>
+<a name="263"><font size=-1>263     </font></a><span class="default">    <a href="dictionary_A.html#172">assertEquals</a>(</span><span class="string">&quot;function Bar(){}Bar.prototype.b=function(x){};&quot; </span><span class="default">+</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">                 </span><span class="string">&quot;var foo;foo.b(foo);foo.f=foo;foo.a=foo;&quot;</span><span class="default">,</span>
+<a name="265"><font size=-1>265     </font></a><span class="default">                 <a href="dictionary_C.html#68948">compiler</a>.<a href="dictionary_C.html#32615">toSource</a>(<a href="dictionary_C.html#68949">module1</a>));</span>
+<a name="266"><font size=-1>266     </font></a><span class="default"></span>
+<a name="267"><font size=-1>267     </font></a><span class="default">    <a href="dictionary_A.html#172">assertEquals</a>(</span><span class="string">&quot;function Far(){}Far.prototype.c=function(x){};&quot; </span><span class="default">+</span>
+<a name="268"><font size=-1>268     </font></a><span class="default">                 </span><span class="string">&quot;var too;too.c(too);too.g=too;too.a=too;&quot;</span><span class="default">,</span>
+<a name="269"><font size=-1>269     </font></a><span class="default">                 <a href="dictionary_C.html#68948">compiler</a>.<a href="dictionary_C.html#32615">toSource</a>(<a href="dictionary_C.html#68951">module2</a>));</span>
+<a name="270"><font size=-1>270     </font></a><span class="default"></span>
+<a name="271"><font size=-1>271     </font></a><span class="default">    </span><span class="comment">// Note that properties that occur most often globally get the earliest</span>
+<a name="272"><font size=-1>272     </font></a><span class="comment">    // names. The &quot;getC&quot; property, which doesn't occur until module 3, is</span>
+<a name="273"><font size=-1>273     </font></a><span class="comment">    // renamed to an earlier name in the alphabet than &quot;woo&quot;, which appears</span>
+<a name="274"><font size=-1>274     </font></a><span class="comment">    // in module 2, because &quot;getC&quot; occurs more total times across all modules.</span>
+<a name="275"><font size=-1>275     </font></a><span class="comment">    // Might be better to give early modules the shortest names, but this is</span>
+<a name="276"><font size=-1>276     </font></a><span class="comment">    // how the pass currently works.</span>
+<a name="277"><font size=-1>277     </font></a><span class="comment">    <a href="dictionary_A.html#172">assertEquals</a></span><span class="default">(</span><span class="string">&quot;function Car(){}Car.prototype.d=function(x){};&quot; </span><span class="default">+</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">                 </span><span class="string">&quot;var noo;noo.d(noo);noo.h=noo;noo.e=noo;&quot;</span><span class="default">,</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">                 <a href="dictionary_C.html#68948">compiler</a>.<a href="dictionary_C.html#32615">toSource</a>(<a href="dictionary_C.html#68953">module3</a>));</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">  }</span>
+<a name="281"><font size=-1>281     </font></a><span class="default"></span>
+<a name="282"><font size=-1>282     </font></a><span class="default"></span>
+<a name="283"><font size=-1>283     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68963">testPropertyAffinityOff</a></span><span class="default">() {</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo={};foo.x=1;foo.y=2;foo.z=3;&quot; </span><span class="default">+</span>
+<a name="285"><font size=-1>285     </font></a><span class="default">         </span><span class="string">&quot;function f1() { foo.z; foo.z; foo.z; foo.y}&quot; </span><span class="default">+</span>
+<a name="286"><font size=-1>286     </font></a><span class="default">         </span><span class="string">&quot;function f2() {                      foo.x}&quot;</span><span class="default">,</span>
+<a name="287"><font size=-1>287     </font></a><span class="default"></span>
+<a name="288"><font size=-1>288     </font></a><span class="default"></span>
+<a name="289"><font size=-1>289     </font></a><span class="default">         </span><span class="string">&quot;var foo={};foo.b=1;foo.c=2;foo.a=3;&quot; </span><span class="default">+</span>
+<a name="290"><font size=-1>290     </font></a><span class="default">         </span><span class="string">&quot;function f1() { foo.a; foo.a; foo.a; foo.c}&quot; </span><span class="default">+</span>
+<a name="291"><font size=-1>291     </font></a><span class="default">         </span><span class="string">&quot;function f2() {                      foo.b}&quot;</span><span class="default">);</span>
+<a name="292"><font size=-1>292     </font></a><span class="default"></span>
+<a name="293"><font size=-1>293     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;var foo={};foo.x=1;foo.y=2;foo.z=3;&quot; </span><span class="default">+</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">        </span><span class="string">&quot;function f1() { foo.z; foo.z; foo.z; foo.y}&quot; </span><span class="default">+</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">        </span><span class="string">&quot;function f2() { foo.z; foo.z; foo.z; foo.x}&quot;</span><span class="default">,</span>
+<a name="296"><font size=-1>296     </font></a><span class="default"></span>
+<a name="297"><font size=-1>297     </font></a><span class="default"></span>
+<a name="298"><font size=-1>298     </font></a><span class="default">        </span><span class="string">&quot;var foo={};foo.b=1;foo.c=2;foo.a=3;&quot; </span><span class="default">+</span>
+<a name="299"><font size=-1>299     </font></a><span class="default">        </span><span class="string">&quot;function f1() { foo.a; foo.a; foo.a; foo.c}&quot; </span><span class="default">+</span>
+<a name="300"><font size=-1>300     </font></a><span class="default">        </span><span class="string">&quot;function f2() { foo.a; foo.a; foo.a; foo.b}&quot;</span><span class="default">);</span>
+<a name="301"><font size=-1>301     </font></a><span class="default">  }</span>
+<a name="302"><font size=-1>302     </font></a><span class="default"></span>
+<a name="303"><font size=-1>303     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68970">testPrototypePropertiesStable</a></span><span class="default">() {</span>
+<a name="304"><font size=-1>304     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="305"><font size=-1>305     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.getA = function(){}; bar.getA();&quot; </span><span class="default">+</span>
+<a name="306"><font size=-1>306     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.getB = function(){};&quot;</span><span class="default">,</span>
+<a name="307"><font size=-1>307     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.a = function(){}; bar.a();&quot; </span><span class="default">+</span>
+<a name="308"><font size=-1>308     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.b = function(){}&quot;</span><span class="default">,</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.get = function(){}; bar.get();&quot; </span><span class="default">+</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.getA = function(){}; bar.getA();&quot; </span><span class="default">+</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.getB = function(){};&quot;</span><span class="default">,</span>
+<a name="312"><font size=-1>312     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.c = function(){}; bar.c();&quot; </span><span class="default">+</span>
+<a name="313"><font size=-1>313     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.a = function(){}; bar.a();&quot; </span><span class="default">+</span>
+<a name="314"><font size=-1>314     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.b = function(){}&quot;</span><span class="default">);</span>
+<a name="315"><font size=-1>315     </font></a><span class="default">  }</span>
+<a name="316"><font size=-1>316     </font></a><span class="default"></span>
+<a name="317"><font size=-1>317     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68969">testPrototypePropertiesAsObjLitKeysStable</a></span><span class="default">() {</span>
+<a name="318"><font size=-1>318     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="319"><font size=-1>319     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {2: function(){}, getA: function(){}}; bar[2]();&quot;</span><span class="default">,</span>
+<a name="320"><font size=-1>320     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {2: function(){}, a: function(){}}; bar[2]();&quot;</span><span class="default">,</span>
+<a name="321"><font size=-1>321     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {getB: function(){},getA: function(){}}; bar.getB();&quot;</span><span class="default">,</span>
+<a name="322"><font size=-1>322     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {b: function(){},a: function(){}}; bar.b();&quot;</span><span class="default">);</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">  }</span>
+<a name="324"><font size=-1>324     </font></a><span class="default"></span>
+<a name="325"><font size=-1>325     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68946">testMixedQuotedAndUnquotedObjLitKeysStable</a></span><span class="default">() {</span>
+<a name="326"><font size=-1>326     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="327"><font size=-1>327     </font></a><span class="default">        </span><span class="string">&quot;Bar = {getA: function(){}, 'getB': function(){}}; bar.getA();&quot;</span><span class="default">,</span>
+<a name="328"><font size=-1>328     </font></a><span class="default">        </span><span class="string">&quot;Bar = {a: function(){}, 'getB': function(){}}; bar.a();&quot;</span><span class="default">,</span>
+<a name="329"><font size=-1>329     </font></a><span class="default">        </span><span class="string">&quot;Bar = {get: function(){}, getA: function(){}, 'getB': function(){}};&quot; </span><span class="default">+</span>
+<a name="330"><font size=-1>330     </font></a><span class="default">        </span><span class="string">&quot;bar.getA();bar.get();&quot;</span><span class="default">,</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">        </span><span class="string">&quot;Bar = {b: function(){}, a: function(){}, 'getB': function(){}};&quot; </span><span class="default">+</span>
+<a name="332"><font size=-1>332     </font></a><span class="default">        </span><span class="string">&quot;bar.a();bar.b();&quot;</span><span class="default">);</span>
+<a name="333"><font size=-1>333     </font></a><span class="default">  }</span>
+<a name="334"><font size=-1>334     </font></a><span class="default"></span>
+<a name="335"><font size=-1>335     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68959">testOverlappingOriginalAndGeneratedNamesStable</a></span><span class="default">() {</span>
+<a name="336"><font size=-1>336     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="337"><font size=-1>337     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {b: function(){}, a: function(){}}; bar.b();&quot;</span><span class="default">,</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {a: function(){}, b: function(){}}; bar.a();&quot;</span><span class="default">,</span>
+<a name="339"><font size=-1>339     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {c: function(){}, b: function(){}, a: function(){}};&quot; </span><span class="default">+</span>
+<a name="340"><font size=-1>340     </font></a><span class="default">        </span><span class="string">&quot;bar.b();&quot;</span><span class="default">,</span>
+<a name="341"><font size=-1>341     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {c: function(){}, a: function(){}, b: function(){}};&quot; </span><span class="default">+</span>
+<a name="342"><font size=-1>342     </font></a><span class="default">        </span><span class="string">&quot;bar.a();&quot;</span><span class="default">);</span>
+<a name="343"><font size=-1>343     </font></a><span class="default">  }</span>
+<a name="344"><font size=-1>344     </font></a><span class="default"></span>
+<a name="345"><font size=-1>345     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68988">testStableWithTrickyExternsChanges</a></span><span class="default">() {</span>
+<a name="346"><font size=-1>346     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(</span><span class="string">&quot;Bar.prototype = {b: function(){}, a: function(){}}; bar.b();&quot;</span><span class="default">,</span>
+<a name="347"><font size=-1>347     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {a: function(){}, b: function(){}}; bar.a();&quot;</span><span class="default">);</span>
+<a name="348"><font size=-1>348     </font></a><span class="default">    <a href="dictionary_C.html#68993">prevUsedPropertyMap</a> = <a href="dictionary_C.html#68994">renameProperties</a>.<a href="dictionary_C.html#39683">getPropertyMap</a>();</span>
+<a name="349"><font size=-1>349     </font></a><span class="default">    String <a href="dictionary_C.html#68989">externs</a> = <a href="dictionary_C.html#68991">EXTERNS</a> + </span><span class="string">&quot;prop.b;&quot;</span><span class="default">;</span>
+<a name="350"><font size=-1>350     </font></a><span class="default">    <a href="dictionary_C.html#13697">test</a>(<a href="dictionary_C.html#68989">externs</a>,</span>
+<a name="351"><font size=-1>351     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {new_f: function(){}, b: function(){}, &quot; </span><span class="default">+</span>
+<a name="352"><font size=-1>352     </font></a><span class="default">         </span><span class="string">&quot;a: function(){}};bar.b();&quot;</span><span class="default">,</span>
+<a name="353"><font size=-1>353     </font></a><span class="default">         </span><span class="string">&quot;Bar.prototype = {c:function(){}, b:function(){}, a:function(){}};&quot; </span><span class="default">+</span>
+<a name="354"><font size=-1>354     </font></a><span class="default">         </span><span class="string">&quot;bar.b();&quot;</span><span class="default">, </span><span class="keyword">null</span><span class="default">, </span><span class="keyword">null</span><span class="default">);</span>
+<a name="355"><font size=-1>355     </font></a><span class="default">  }</span>
+<a name="356"><font size=-1>356     </font></a><span class="default"></span>
+<a name="357"><font size=-1>357     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68979">testRenamePropertiesWithLeadingUnderscoresStable</a></span><span class="default">() {</span>
+<a name="358"><font size=-1>358     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="359"><font size=-1>359     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {_getA: function(){}, _b: 0}; bar._getA();&quot;</span><span class="default">,</span>
+<a name="360"><font size=-1>360     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {a: function(){}, b: 0}; bar.a();&quot;</span><span class="default">,</span>
+<a name="361"><font size=-1>361     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {_getA: function(){}, _c: 1, _b: 0}; bar._getA();&quot;</span><span class="default">,</span>
+<a name="362"><font size=-1>362     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype = {a: function(){}, c: 1, b: 0}; bar.a();&quot;</span><span class="default">);</span>
+<a name="363"><font size=-1>363     </font></a><span class="default">  }</span>
+<a name="364"><font size=-1>364     </font></a><span class="default"></span>
+<a name="365"><font size=-1>365     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68962">testPropertyAddedToObjectStable</a></span><span class="default">() {</span>
+<a name="366"><font size=-1>366     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span><span class="string">&quot;var foo = {}; foo.prop = '';&quot;</span><span class="default">,</span>
+<a name="367"><font size=-1>367     </font></a><span class="default">                       </span><span class="string">&quot;var foo = {}; foo.a = '';&quot;</span><span class="default">,</span>
+<a name="368"><font size=-1>368     </font></a><span class="default">                       </span><span class="string">&quot;var foo = {}; foo.prop = ''; foo.a='';&quot;</span><span class="default">,</span>
+<a name="369"><font size=-1>369     </font></a><span class="default">                       </span><span class="string">&quot;var foo = {}; foo.a = ''; foo.b='';&quot;</span><span class="default">);</span>
+<a name="370"><font size=-1>370     </font></a><span class="default">  }</span>
+<a name="371"><font size=-1>371     </font></a><span class="default"></span>
+<a name="372"><font size=-1>372     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68935">testAvoidingConflictsBetQuotedAndUnquotedPropertyNamesStable</a></span><span class="default">() {</span>
+<a name="373"><font size=-1>373     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="374"><font size=-1>374     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.foo = function(){}; Bar.prototype['b'] = 0; bar.foo();&quot;</span><span class="default">,</span>
+<a name="375"><font size=-1>375     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.a = function(){}; Bar.prototype['b'] = 0; bar.a();&quot;</span><span class="default">,</span>
+<a name="376"><font size=-1>376     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.foo = function(){}; Bar.prototype['a'] = 0; bar.foo();&quot;</span><span class="default">,</span>
+<a name="377"><font size=-1>377     </font></a><span class="default">        </span><span class="string">&quot;Bar.prototype.b = function(){}; Bar.prototype['a'] = 0; bar.b();&quot;</span><span class="default">);</span>
+<a name="378"><font size=-1>378     </font></a><span class="default">  }</span>
+<a name="379"><font size=-1>379     </font></a><span class="default"></span>
+<a name="380"><font size=-1>380     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#68977">testRenamePropertiesFunctionCallStable</a></span><span class="default">() {</span>
+<a name="381"><font size=-1>381     </font></a><span class="default">    <a href="dictionary_C.html#68983">testStableRenaming</a>(</span>
+<a name="382"><font size=-1>382     </font></a><span class="default">        </span><span class="string">&quot;var foo = {myProp: 0}; &quot; </span><span class="default">+</span>
+<a name="383"><font size=-1>383     </font></a><span class="default">        </span><span class="string">&quot;f(JSCompiler_renameProperty('otherProp.myProp.someProp')); &quot; </span><span class="default">+</span>
+<a name="384"><font size=-1>384     </font></a><span class="default">        </span><span class="string">&quot;foo.myProp = 1; foo.theirProp = 2; foo.yourProp = 3;&quot;</span><span class="default">,</span>
+<a name="385"><font size=-1>385     </font></a><span class="default">        </span><span class="string">&quot;var foo = {a: 0}; f('b.a.c'); &quot; </span><span class="default">+</span>
+<a name="386"><font size=-1>386     </font></a><span class="default">        </span><span class="string">&quot;foo.a = 1; foo.d = 2; foo.e = 3;&quot;</span><span class="default">,</span>
+<a name="387"><font size=-1>387     </font></a><span class="default">        </span><span class="string">&quot;var bar = {newProp: 0}; var foo = {myProp: 0}; &quot; </span><span class="default">+</span>
+<a name="388"><font size=-1>388     </font></a><span class="default">        </span><span class="string">&quot;f(JSCompiler_renameProperty('otherProp.myProp.someProp')); &quot; </span><span class="default">+</span>
+<a name="389"><font size=-1>389     </font></a><span class="default">        </span><span class="string">&quot;foo.myProp = 1; foo.theirProp = 2; foo.yourProp = 3;&quot;</span><span class="default">,</span>
+<a name="390"><font size=-1>390     </font></a><span class="default">        </span><span class="string">&quot;var bar = {f: 0}; var foo = {a: 0}; f('b.a.c'); &quot; </span><span class="default">+</span>
+<a name="391"><font size=-1>391     </font></a><span class="default">        </span><span class="string">&quot;foo.a = 1; foo.d = 2; foo.e = 3;&quot;</span><span class="default">);</span>
+<a name="392"><font size=-1>392     </font></a><span class="default">  }</span>
+<a name="393"><font size=-1>393     </font></a><span class="default"></span>
+<a name="394"><font size=-1>394     </font></a><span class="default">  </span><span class="keyword">private void <a href="dictionary_C.html#68983">testStableRenaming</a></span><span class="default">(String <a href="dictionary_C.html#68986">input1</a>, String <a href="dictionary_C.html#68984">expected1</a>,</span>
+<a name="395"><font size=-1>395     </font></a><span class="default">                                  String <a href="dictionary_C.html#68987">input2</a>, String <a href="dictionary_C.html#68985">expected2</a>) {</span>
+<a name="396"><font size=-1>396     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(<a href="dictionary_C.html#68986">input1</a>, <a href="dictionary_C.html#68984">expected1</a>);</span>
+<a name="397"><font size=-1>397     </font></a><span class="default">    <a href="dictionary_C.html#68993">prevUsedPropertyMap</a> = <a href="dictionary_C.html#68994">renameProperties</a>.<a href="dictionary_C.html#39683">getPropertyMap</a>();</span>
+<a name="398"><font size=-1>398     </font></a><span class="default">    <a href="dictionary_C.html#1000">test</a>(<a href="dictionary_C.html#68987">input2</a>, <a href="dictionary_C.html#68985">expected2</a>);</span>
+<a name="399"><font size=-1>399     </font></a><span class="default">  }</span>
+<a name="400"><font size=-1>400     </font></a><span class="default"></span>
+<a name="401"><font size=-1>401     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#68921">compileModules</a></span><span class="default">(String <a href="dictionary_C.html#68923">externs</a>, <a href="dictionary_C.html#6851">JSModule</a>[] <a href="dictionary_C.html#68925">modules</a>) {</span>
+<a name="402"><font size=-1>402     </font></a><span class="default">    <a href="dictionary_C.html#1858">SourceFile</a> <a href="dictionary_C.html#68924">externsInput</a> = <a href="dictionary_C.html#1858">SourceFile</a>.<a href="dictionary_C.html#3290">fromCode</a>(</span><span class="string">&quot;externs&quot;</span><span class="default">, <a href="dictionary_C.html#68923">externs</a>);</span>
+<a name="403"><font size=-1>403     </font></a><span class="default"></span>
+<a name="404"><font size=-1>404     </font></a><span class="default">    <a href="dictionary_C.html#18">CompilerOptions</a> <a href="dictionary_C.html#68926">options</a> = </span><span class="keyword">new <a href="dictionary_C.html#235">CompilerOptions</a></span><span class="default">();</span>
+<a name="405"><font size=-1>405     </font></a><span class="default">    <a href="dictionary_C.html#68926">options</a>.<a href="dictionary_C.html#5711">setPropertyRenaming</a>(<a href="dictionary_C.html#5654">PropertyRenamingPolicy</a>.<a href="dictionary_C.html#5709">ALL_UNQUOTED</a>);</span>
+<a name="406"><font size=-1>406     </font></a><span class="default"></span>
+<a name="407"><font size=-1>407     </font></a><span class="default">    <a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#68922">compiler</a> = </span><span class="keyword">new <a href="dictionary_C.html#239">Compiler</a></span><span class="default">();</span>
+<a name="408"><font size=-1>408     </font></a><span class="default">    <a href="dictionary_C.html#68922">compiler</a>.<a href="dictionary_C.html#9941">compileModules</a>(</span>
+<a name="409"><font size=-1>409     </font></a><span class="default">        <a href="dictionary_C.html#1411">ImmutableList</a>.<a href="dictionary_O.html#1051">of</a>(<a href="dictionary_C.html#68924">externsInput</a>), <a href="dictionary_C.html#1411">ImmutableList</a>.<a href="dictionary_C.html#51">copyOf</a>(<a href="dictionary_C.html#68925">modules</a>), <a href="dictionary_C.html#68926">options</a>);</span>
+<a name="410"><font size=-1>410     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#68922">compiler</a></span><span class="default">;</span>
+<a name="411"><font size=-1>411     </font></a><span class="default">  }</span>
+<a name="412"><font size=-1>412     </font></a><span class="default"></span>
+<a name="413"><font size=-1>413     </font></a><span class="default">  @Override</span>
+<a name="414"><font size=-1>414     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#19">CompilerPass</a> <a href="dictionary_C.html#68932">getProcessor</a></span><span class="default">(<a href="dictionary_C.html#17">Compiler</a> <a href="dictionary_C.html#68933">compiler</a>) {</span>
+<a name="415"><font size=-1>415     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#68994">renameProperties</a> </span><span class="default">=</span>
+<a name="416"><font size=-1>416     </font></a><span class="default">        </span><span class="keyword">new <a href="dictionary_C.html#39668">RenameProperties</a></span><span class="default">(</span>
+<a name="417"><font size=-1>417     </font></a><span class="default">            <a href="dictionary_C.html#68933">compiler</a>,</span>
+<a name="418"><font size=-1>418     </font></a><span class="default">            <a href="dictionary_C.html#68992">generatePseudoNames</a>,</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">            <a href="dictionary_C.html#68993">prevUsedPropertyMap</a>,</span>
+<a name="420"><font size=-1>420     </font></a><span class="default">            </span><span class="keyword">new <a href="dictionary_C.html#15661">DefaultNameGenerator</a></span><span class="default">());</span>
+<a name="421"><font size=-1>421     </font></a><span class="default">  }</span>
+<a name="422"><font size=-1>422     </font></a><span class="default">}</span>
+<a name="423"><font size=-1>423     </font></a><span class="default"></span>
+</pre></body></html>

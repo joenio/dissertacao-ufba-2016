@@ -1,0 +1,90 @@
+<html><head><title>InferConsts.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/InferConsts.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/InferConsts.java";
+top.document.title  = "InferConsts.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2014 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>.<a href="dictionary_C.html#1346">ReferenceCollectingCallback</a>.<a href="dictionary_C.html#1341">ReferenceCollection</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#333">JSDocInfo</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#219">Node</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * Attaches the CONST_VAR annotation to any variable that's</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * 1) Provably well-defined and assigned once in its lifetime.</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * 2) Annotated 'const'</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * 3) Declared with the 'const' keyword.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * 4) Is constant by naming convention.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> *</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * These 3 are considered semantically equivalent. Notice that a variable</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * in a loop is never considered const.</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> *</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * Note that criteria (1) is only used for normal code, not externs.</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> *</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * @author nicholas.j.santos@gmail.com (Nick Santos)</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#19831">InferConsts</a> implements <a href="dictionary_C.html#19">CompilerPass</a> </span><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#19846">compiler</a></span><span class="default">;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">  <a href="dictionary_C.html#19832">InferConsts</a>(<a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#19833">compiler</a>) {</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#19846">compiler</a> = <a href="dictionary_C.html#19833">compiler</a>;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">  }</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  @Override</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#19839">process</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#19843">externs</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#19845">js</a>) {</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    <a href="dictionary_C.html#1346">ReferenceCollectingCallback</a> <a href="dictionary_C.html#19842">collector</a> = </span><span class="keyword">new <a href="dictionary_C.html#2118">ReferenceCollectingCallback</a></span><span class="default">(</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">        <a href="dictionary_C.html#19846">compiler</a>, <a href="dictionary_C.html#1346">ReferenceCollectingCallback</a>.<a href="dictionary_C.html#10381">DO_NOTHING_BEHAVIOR</a>);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    <a href="dictionary_C.html#1352">NodeTraversal</a>.<a href="dictionary_C.html#2388">traverseEs6</a>(<a href="dictionary_C.html#19846">compiler</a>, <a href="dictionary_C.html#19845">js</a>, <a href="dictionary_C.html#19842">collector</a>);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#19840">v</a> : <a href="dictionary_C.html#19842">collector</a>.<a href="dictionary_C.html#10340">getAllSymbols</a>()) {</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">      <a href="dictionary_C.html#19834">considerVar</a>(<a href="dictionary_C.html#19840">v</a>, <a href="dictionary_C.html#19842">collector</a>.<a href="dictionary_C.html#10341">getReferences</a>(<a href="dictionary_C.html#19840">v</a>));</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    }</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    <a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#19844">globalExternsScope</a> =</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">        <a href="dictionary_C.html#8173">SyntacticScopeCreator</a>.<a href="dictionary_C.html#19847">makeUntyped</a>(<a href="dictionary_C.html#19846">compiler</a>).<a href="dictionary_C.html#8177">createScope</a>(<a href="dictionary_C.html#19843">externs</a>, </span><span class="keyword">null</span><span class="default">);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#19841">v</a> : <a href="dictionary_C.html#19844">globalExternsScope</a>.<a href="dictionary_C.html#9161">getAllSymbols</a>()) {</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">      <a href="dictionary_C.html#19834">considerVar</a>(<a href="dictionary_C.html#19841">v</a>, </span><span class="keyword">null</span><span class="default">);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    }</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  }</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  </span><span class="keyword">private void <a href="dictionary_C.html#19834">considerVar</a></span><span class="default">(<a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#19838">v</a>, <a href="dictionary_C.html#1341">ReferenceCollection</a> <a href="dictionary_C.html#19837">refCollection</a>) {</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#19836">nameNode</a> = <a href="dictionary_C.html#19838">v</a>.<a href="dictionary_C.html#1383">getNameNode</a>();</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    <a href="dictionary_C.html#333">JSDocInfo</a> <a href="dictionary_C.html#19835">docInfo</a> = <a href="dictionary_C.html#19838">v</a>.<a href="dictionary_C.html#344">getJSDocInfo</a>();</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#19835">docInfo</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#19835">docInfo</a>.<a href="dictionary_C.html#3318">isConstant</a>()) {</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">      <a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#2586">putBooleanProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#19836">nameNode</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#352">getParent</a>().<a href="dictionary_C.html#6170">isConst</a>()) {</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">      <a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#2586">putBooleanProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#19836">nameNode</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">        <a href="dictionary_C.html#19846">compiler</a>.<a href="dictionary_C.html#1363">getCodingConvention</a>().<a href="dictionary_C.html#11708">isConstant</a>(<a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#351">getString</a>())) {</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">      <a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#2586">putBooleanProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">    } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#19836">nameNode</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">               <a href="dictionary_C.html#19837">refCollection</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">               <a href="dictionary_C.html#19837">refCollection</a>.<a href="dictionary_C.html#1374">isWellDefined</a>() &amp;&amp;</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">               <a href="dictionary_C.html#19837">refCollection</a>.<a href="dictionary_C.html#1375">isAssignedOnceInLifetime</a>() &amp;&amp;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">               <a href="dictionary_C.html#19837">refCollection</a>.<a href="dictionary_C.html#10287">firstReferenceIsAssigningDeclaration</a>()) {</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">      <a href="dictionary_C.html#19836">nameNode</a>.<a href="dictionary_C.html#2586">putBooleanProp</a>(<a href="dictionary_C.html#219">Node</a>.<a href="dictionary_C.html#4885">IS_CONSTANT_VAR</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">    }</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">  }</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">}</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+</pre></body></html>

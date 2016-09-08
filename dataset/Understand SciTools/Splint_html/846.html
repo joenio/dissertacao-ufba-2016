@@ -1,0 +1,91 @@
+<html><head><title>funcpointer.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/test/funcpointer.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/test/funcpointer.c";
+top.document.title  = "funcpointer.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc"># include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="2"><font size=-1>2     </font></a><span class="string"></span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="keyword">typedef int </span><span class="default">***(**<a href="dictionary_F.html#847">f1</a>)(</span><span class="keyword">void</span><span class="default">);       </span><span class="comment">/* f1 is a pointer to a function taking no args, returning int ***  */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">(*<a href="dictionary_F.html#848">f2</a>)(</span><span class="keyword">void</span><span class="default">);           </span><span class="comment">/* f2 is a function taking no args, returning an int */</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">**(*<a href="dictionary_F.html#849">f3</a>)(</span><span class="keyword">void</span><span class="default">);         </span><span class="comment">/* f3 is a function taking no args, returning a pointer to a pointer to an int */</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">*(*<a href="dictionary_F.html#850">f4</a>[])(</span><span class="keyword">void</span><span class="default">);        </span><span class="comment">/* f4 is an array of functions taking no args, returning pointers to ints */</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">*(<a href="dictionary_F.html#851">f5</a>)(</span><span class="keyword">int</span><span class="default">);            </span><span class="comment">/* f5 is a function taking an int, returning a pointer to an int */ </span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span><span class="keyword">typedef int </span><span class="default">*(*<a href="dictionary_F.html#852">f6</a>(</span><span class="keyword">int</span><span class="default">,</span><span class="keyword">int</span><span class="default">))(</span><span class="keyword">int</span><span class="default">);  </span><span class="comment">/* f6 is a function taking 2 int args, returns a function taking an int and</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">				     returning a pointer to an int */</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">             /* gcc complains if the pointer before f6 is omitted.  why? */</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">/*@-paramuse*/</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_F.html#853">func1</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">) { </span><span class="keyword">return </span><span class="number">3</span><span class="default">;}</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">int </span><span class="default">*<a href="dictionary_F.html#854">func2</a>(</span><span class="keyword">void</span><span class="default">) { </span><span class="keyword">return </span><span class="default">(</span><span class="keyword">int </span><span class="default">*)<a href="dictionary_M.html#134">malloc</a>(</span><span class="keyword">sizeof</span><span class="default">(</span><span class="keyword">int</span><span class="default">));} </span>
+<a name="14"><font size=-1>14     </font></a><span class="default">     </span><span class="comment">/* 1. Possibly null storage returned as non-null</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">     ** 2. Returned storage not completely defined (allocated only)</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">     */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">/*@null@*/ </span><span class="keyword">int </span><span class="default">**<a href="dictionary_F.html#855">func3</a>(</span><span class="keyword">void</span><span class="default">) { </span><span class="keyword">return </span><span class="default">(</span><span class="keyword">int </span><span class="default">**)</span><span class="number">0</span><span class="default">;}</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="comment">/*@null@*/ </span><span class="keyword">int </span><span class="default">***<a href="dictionary_F.html#856">func4</a>(</span><span class="keyword">void</span><span class="default">) { </span><span class="keyword">return </span><span class="default">(</span><span class="keyword">int </span><span class="default">***)</span><span class="number">0</span><span class="default">;}</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">int </span><span class="default">*<a href="dictionary_F.html#857">func5</a>(</span><span class="keyword">int <a href="dictionary_I.html#858">i</a></span><span class="default">) { </span><span class="keyword">return </span><span class="default">&amp;<a href="dictionary_I.html#858">i</a>; } </span><span class="comment">/* 3. Immediate address &amp;i returned as only: &amp;i */</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">     /* 4. Return value references stack-allocated storage i: &amp;i */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span><span class="keyword">int </span><span class="default">*(*<a href="dictionary_F.html#859">func6</a>(</span><span class="keyword">int <a href="dictionary_X.html#860">x</a></span><span class="default">, </span><span class="keyword">int <a href="dictionary_Y.html#861">y</a></span><span class="default">))(</span><span class="keyword">int</span><span class="default">) { </span><span class="keyword">return <a href="dictionary_F.html#857">func5</a></span><span class="default">; }</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#35486">main</a> </span><span class="default">(</span><span class="keyword">void</span><span class="default">)</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">{</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">  <a href="dictionary_F.html#847">f1</a> <a href="dictionary_T.html#863">t1</a>; <a href="dictionary_F.html#848">f2</a> <a href="dictionary_T.html#864">t2</a>; <a href="dictionary_F.html#849">f3</a> <a href="dictionary_T.html#865">t3</a>; <a href="dictionary_F.html#849">f3</a> *<a href="dictionary_T.html#866">t3p</a>; <a href="dictionary_F.html#850">f4</a> *<a href="dictionary_T.html#867">t4</a>; <a href="dictionary_F.html#852">f6</a> <a href="dictionary_T.html#868">t6</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_X.html#869">x</a></span><span class="default">, *<a href="dictionary_X.html#870">xp</a>, ***<a href="dictionary_X.html#871">xppp</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+<a name="28"><font size=-1>28     </font></a><span class="default">  <a href="dictionary_T.html#863">t1</a> = <a href="dictionary_F.html#853">func1</a>; </span><span class="comment">/* 5. Assignment of int () * to f1 */        </span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">  <a href="dictionary_T.html#863">t1</a> </span><span class="default">= <a href="dictionary_F.html#856">func4</a>; </span><span class="comment">/* 6. Assignment of int * * * () * to f1 */</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">  </span><span class="default">*<a href="dictionary_T.html#863">t1</a> = <a href="dictionary_F.html#856">func4</a>; </span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  <a href="dictionary_T.html#864">t2</a> = <a href="dictionary_F.html#853">func1</a>; </span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  <a href="dictionary_T.html#864">t2</a> = <a href="dictionary_F.html#854">func2</a>; </span><span class="comment">/* 7. Assignment of int * () * to f2 */</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"></span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">  <a href="dictionary_T.html#865">t3</a> </span><span class="default">= <a href="dictionary_F.html#855">func3</a>;  </span>
+<a name="36"><font size=-1>36     </font></a><span class="default">  <a href="dictionary_T.html#866">t3p</a> = <a href="dictionary_F.html#855">func3</a>; </span><span class="comment">/* 8. Assignment of int * * () * to f3 *: t3p = func3 */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">  <a href="dictionary_T.html#867">t4</a> </span><span class="default">= <a href="dictionary_F.html#854">func2</a>; </span><span class="comment">/* 9. Assignment of int * () * to f4 *: t4 = func2 */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">  <a href="dictionary_X.html#871">xppp</a> </span><span class="default">= (*<a href="dictionary_T.html#863">t1</a>)(); </span>
+<a name="41"><font size=-1>41     </font></a><span class="default">  <a href="dictionary_X.html#869">x</a> = (<a href="dictionary_T.html#863">t1</a>)(); </span><span class="comment">/* 10. Call to non-function (type f1): (t1) */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">  <a href="dictionary_X.html#869">x</a> </span><span class="default">= (<a href="dictionary_T.html#864">t2</a>)(); </span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  <a href="dictionary_X.html#870">xp</a> = (*<a href="dictionary_T.html#863">t1</a>)(); </span><span class="comment">/* 11. Assignment of int * * * to int *: xp = (*t1)() */</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">  <a href="dictionary_X.html#870">xp</a> </span><span class="default">= (<a href="dictionary_T.html#867">t4</a>)(); </span><span class="comment">/* 12. Call to non-function (type f4 *): (t4) */</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"></span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">  <a href="dictionary_T.html#868">t6</a> </span><span class="default">= <a href="dictionary_F.html#853">func1</a>; </span><span class="comment">/* 13. Assignment of int () * to f6: t6 = func1 */</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">  <a href="dictionary_T.html#868">t6</a> </span><span class="default">= <a href="dictionary_F.html#859">func6</a>; </span><span class="comment">/* funcpointer.c:43: invalid lvalue in assignment */ </span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">  </span><span class="default">(</span><span class="keyword">void</span><span class="default">) (<a href="dictionary_T.html#868">t6</a>)(); </span><span class="comment">/* 14. Function (t6) called with 0 args, expects 2 */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">  </span><span class="default">(</span><span class="keyword">void</span><span class="default">) (<a href="dictionary_T.html#868">t6</a>)(</span><span class="number">3</span><span class="default">); </span><span class="comment">/* 15. Function (t6) called with 1 args, expects 2 */</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">  </span><span class="default">(</span><span class="keyword">void</span><span class="default">) ((<a href="dictionary_T.html#868">t6</a>)(</span><span class="number">3</span><span class="default">))(); </span><span class="comment">/* 16. Function (t6) called with 1 args, expects 2 */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">                      /* 17. Function ((t6)(3)) called with 0 args, expects 1 */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">  </span><span class="default">(</span><span class="keyword">void</span><span class="default">) ((<a href="dictionary_T.html#868">t6</a>)(</span><span class="number">5</span><span class="default">, </span><span class="number">3</span><span class="default">))(</span><span class="number">7</span><span class="default">); </span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">3</span><span class="default">;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">}</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">  </span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="comment">/* function pointer bug, provided by Marc Espie */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span><span class="keyword">typedef void </span><span class="default">(*<a href="dictionary_F.html#872">func</a>)(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span><span class="keyword">void </span><span class="default">(*<a href="dictionary_F.html#873">f</a>[</span><span class="number">10</span><span class="default">])(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"><a href="dictionary_F.html#872">func</a> <a href="dictionary_G.html#874">g</a>[</span><span class="number">10</span><span class="default">];</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_A.html#875">a</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">)</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">{</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">}</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_B.html#876">b</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">)</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">{</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  <a href="dictionary_F.html#872">func</a> *<a href="dictionary_H.html#877">h</a>;</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">  </span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  <a href="dictionary_H.html#877">h</a> = <a href="dictionary_F.html#873">f</a>;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  <a href="dictionary_F.html#873">f</a>[</span><span class="number">0</span><span class="default">] = <a href="dictionary_A.html#875">a</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  <a href="dictionary_G.html#874">g</a>[</span><span class="number">0</span><span class="default">] = <a href="dictionary_A.html#875">a</a>;</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">  <a href="dictionary_F.html#873">f</a>[</span><span class="number">1</span><span class="default">] = <a href="dictionary_G.html#874">g</a>[</span><span class="number">0</span><span class="default">];</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  <a href="dictionary_H.html#877">h</a>[</span><span class="number">2</span><span class="default">] = <a href="dictionary_A.html#875">a</a>;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">}</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+</pre></body></html>

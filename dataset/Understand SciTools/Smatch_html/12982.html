@@ -1,0 +1,54 @@
+<html><head><title>test-inspect.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/test-inspect.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/test-inspect.c";
+top.document.title  = "test-inspect.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&lt;stdarg.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;string.h&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;ctype.h&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;unistd.h&gt;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;fcntl.h&gt;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span>
+<a name="10"><font size=-1>10     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;lib.h&quot;</span>
+<a name="11"><font size=-1>11     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;allocate.h&quot;</span>
+<a name="12"><font size=-1>12     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;token.h&quot;</span>
+<a name="13"><font size=-1>13     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;parse.h&quot;</span>
+<a name="14"><font size=-1>14     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;symbol.h&quot;</span>
+<a name="15"><font size=-1>15     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;expression.h&quot;</span>
+<a name="16"><font size=-1>16     </font></a><span class="string"></span>
+<a name="17"><font size=-1>17     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;ast-view.h&quot;</span>
+<a name="18"><font size=-1>18     </font></a><span class="string"></span>
+<a name="19"><font size=-1>19     </font></a><span class="string"></span><span class="keyword">static void <a href="dictionary_E.html#12984">expand_symbols</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_L.html#12985">list</a>)</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">{</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#12986">sym</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">	<a href="dictionary_F.html#373">FOR_EACH_PTR</a>(<a href="dictionary_P.html#372">list</a>, <a href="dictionary_S.html#12986">sym</a>) {</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">		<a href="dictionary_E.html#746">expand_symbol</a>(<a href="dictionary_S.html#12986">sym</a>);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">	} <a href="dictionary_E.html#377">END_FOR_EACH_PTR</a>(<a href="dictionary_S.html#12986">sym</a>);</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">}</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#23556">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#12991">argc</a></span><span class="default">, </span><span class="keyword">char </span><span class="default">**<a href="dictionary_A.html#12992">argv</a>)</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">{</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#582">string_list</a> </span><span class="default">*<a href="dictionary_F.html#12993">filelist</a> = <a href="dictionary_N.html#113">NULL</a>;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">	</span><span class="keyword">char </span><span class="default">*<a href="dictionary_F.html#12994">file</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_V.html#12995">view_syms</a> = <a href="dictionary_N.html#113">NULL</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">	<a href="dictionary_G.html#12996">gtk_init</a>(&amp;<a href="dictionary_A.html#12991">argc</a>,&amp;<a href="dictionary_A.html#12992">argv</a>);</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">	<a href="dictionary_E.html#12984">expand_symbols</a>(<a href="dictionary_S.html#735">sparse_initialize</a>(<a href="dictionary_A.html#12991">argc</a>, <a href="dictionary_A.html#12992">argv</a>, &amp;<a href="dictionary_F.html#12993">filelist</a>));</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	<a href="dictionary_F.html#740">FOR_EACH_PTR_NOTAG</a>(<a href="dictionary_F.html#12993">filelist</a>, <a href="dictionary_F.html#12994">file</a>) {</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">		</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_S.html#13000">syms</a> = <a href="dictionary_S.html#741">sparse</a>(<a href="dictionary_F.html#12994">file</a>);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">		<a href="dictionary_E.html#12984">expand_symbols</a>(<a href="dictionary_S.html#13000">syms</a>);</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">		<a href="dictionary_C.html#736">concat_symbol_list</a>(<a href="dictionary_S.html#13000">syms</a>, &amp;<a href="dictionary_V.html#12995">view_syms</a>);</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">	} <a href="dictionary_E.html#751">END_FOR_EACH_PTR_NOTAG</a>(<a href="dictionary_F.html#12994">file</a>);</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">	<a href="dictionary_T.html#13001">treeview_main</a>(<a href="dictionary_V.html#12995">view_syms</a>);</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">	</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">}</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"> </span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+</pre></body></html>

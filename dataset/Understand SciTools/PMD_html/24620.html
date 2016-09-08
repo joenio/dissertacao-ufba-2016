@@ -1,0 +1,49 @@
+<html><head><title>JavaDFAGraphRule.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/dfa/JavaDFAGraphRule.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/dfa/JavaDFAGraphRule.java";
+top.document.title  = "JavaDFAGraphRule.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#4152">dfa</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#333">ArrayList</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#578">dfa</a>.<a href="dictionary_N.html#2394">DFAGraphMethod</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#578">dfa</a>.<a href="dictionary_N.html#1731">DFAGraphRule</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#54">ast</a>.<a href="dictionary_N.html#48">ASTCompilationUnit</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#54">ast</a>.<a href="dictionary_N.html#740">ASTMethodDeclaration</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#46">rule</a>.<a href="dictionary_N.html#982">AbstractJavaRule</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_N.html#4269">JavaDFAGraphRule</a> extends <a href="dictionary_N.html#982">AbstractJavaRule</a> implements <a href="dictionary_N.html#1731">DFAGraphRule</a> </span><span class="default">{</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_N.html#2394">DFAGraphMethod</a>&gt; <a href="dictionary_N.html#24628">methods</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_N.html#4278">JavaDFAGraphRule</a></span><span class="default">() {</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">	</span><span class="keyword">super</span><span class="default">.<a href="dictionary_N.html#2771">setUsesDFA</a>();</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">    }</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_J.html#375">List</a></span><span class="default">&lt;<a href="dictionary_N.html#2394">DFAGraphMethod</a>&gt; <a href="dictionary_N.html#24621">getMethods</a>() {</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">	</span><span class="keyword">return this</span><span class="default">.<a href="dictionary_N.html#24628">methods</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">    }</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    @<a href="dictionary_O.html#74">Override</a></span>
+<a name="28"><font size=-1>28     </font></a><span class="default">    </span><span class="keyword">public </span><span class="default">Object <a href="dictionary_N.html#24622">visit</a>(<a href="dictionary_N.html#740">ASTMethodDeclaration</a> <a href="dictionary_N.html#24624">node</a>, Object <a href="dictionary_N.html#24623">data</a>) {</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">	<a href="dictionary_N.html#24628">methods</a>.<a href="dictionary_A.html#117">add</a>(<a href="dictionary_N.html#24624">node</a>);</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">	</span><span class="keyword">return super</span><span class="default">.<a href="dictionary_N.html#967">visit</a>(<a href="dictionary_N.html#24624">node</a>, <a href="dictionary_N.html#24623">data</a>);</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">    }</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    @<a href="dictionary_O.html#74">Override</a></span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    </span><span class="keyword">public </span><span class="default">Object <a href="dictionary_N.html#24625">visit</a>(<a href="dictionary_N.html#48">ASTCompilationUnit</a> <a href="dictionary_N.html#24626">acu</a>, Object <a href="dictionary_N.html#24627">data</a>) {</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	<a href="dictionary_N.html#24628">methods</a> = </span><span class="keyword">new <a href="dictionary_J.html#333">ArrayList</a></span><span class="default">&lt;&gt;();</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">	</span><span class="keyword">return super</span><span class="default">.<a href="dictionary_N.html#398">visit</a>(<a href="dictionary_N.html#24626">acu</a>, <a href="dictionary_N.html#24627">data</a>);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    }</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">}</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+</pre></body></html>

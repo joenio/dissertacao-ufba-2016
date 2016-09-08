@@ -1,0 +1,96 @@
+<html><head><title>sigalrm.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/sigalrm.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/drd/tests/sigalrm.c";
+top.document.title  = "sigalrm.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;../../config.h&quot;</span>
+<a name="2"><font size=-1>2     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;errno.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;pthread.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;signal.h&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="8"><font size=-1>8     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;string.h&gt;</span>
+<a name="9"><font size=-1>9     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;time.h&gt;</span>
+<a name="10"><font size=-1>10     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;unistd.h&gt;</span>
+<a name="11"><font size=-1>11     </font></a><span class="string"></span><span class="preproc">#ifdef <a href="dictionary_H.html#50015">HAVE_ASM_UNISTD_H</a></span>
+<a name="12"><font size=-1>12     </font></a><span class="preproc">#include </span><span class="string">&lt;asm/unistd.h&gt; </span><span class="comment">// __NR_gettid</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span><span class="preproc">#endif</span>
+<a name="14"><font size=-1>14     </font></a><span class="preproc">#include </span><span class="string">&quot;../drd.h&quot;</span>
+<a name="15"><font size=-1>15     </font></a><span class="string"></span>
+<a name="16"><font size=-1>16     </font></a><span class="string"></span>
+<a name="17"><font size=-1>17     </font></a><span class="string"></span><span class="keyword">static int <a href="dictionary_S.html#125246">s_debug</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_G.html#125247">getktid</a></span><span class="default">()</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">{</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="preproc">#ifdef <a href="dictionary_Non-Alpha.html#125248">__NR_gettid</a></span>
+<a name="23"><font size=-1>23     </font></a><span class="preproc">  </span><span class="keyword">return </span><span class="default">syscall(<a href="dictionary_Non-Alpha.html#125248">__NR_gettid</a>);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="25"><font size=-1>25     </font></a><span class="preproc">  </span><span class="keyword">return </span><span class="default">-</span><span class="number">1</span><span class="default">;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="27"><font size=-1>27     </font></a><span class="preproc"></span><span class="default">}</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_P.html#125249">print_thread_id</a></span><span class="default">(</span><span class="keyword">const char</span><span class="default">* </span><span class="keyword">const <a href="dictionary_L.html#125250">label</a></span><span class="default">)</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">{</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#125246">s_debug</a>)</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">  {</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    </span><span class="keyword">char <a href="dictionary_M.html#125251">msg</a></span><span class="default">[</span><span class="number">256</span><span class="default">];</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    <a href="dictionary_S.html#10777">snprintf</a>(<a href="dictionary_M.html#125251">msg</a>, </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_M.html#125251">msg</a>),</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">             </span><span class="string">&quot;%spid %d / kernel thread ID %d / Valgrind thread ID %d\n&quot;</span><span class="default">,</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">             <a href="dictionary_L.html#125250">label</a>, <a href="dictionary_G.html#3504">getpid</a>(), <a href="dictionary_G.html#125247">getktid</a>(), <a href="dictionary_D.html#22795">DRD_GET_VALGRIND_THREADID</a>);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    <a href="dictionary_W.html#3495">write</a>(<a href="dictionary_S.html#46323">STDOUT_FILENO</a>, <a href="dictionary_M.html#125251">msg</a>, <a href="dictionary_S.html#10281">strlen</a>(<a href="dictionary_M.html#125251">msg</a>));</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">  }</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">}</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_S.html#125255">SignalHandler</a></span><span class="default">(</span><span class="keyword">const int <a href="dictionary_I.html#125256">iSignal</a></span><span class="default">)</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">{</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">  <a href="dictionary_P.html#125249">print_thread_id</a>(</span><span class="string">&quot;Signal was delivered to &quot;</span><span class="default">);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">}</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="keyword">void</span><span class="default">* <a href="dictionary_T.html#46321">thread_func</a>(</span><span class="keyword">void</span><span class="default">* <a href="dictionary_T.html#125258">thread_arg</a>)</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  <a href="dictionary_P.html#125249">print_thread_id</a>(</span><span class="string">&quot;thread: &quot;</span><span class="default">);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">  <a href="dictionary_S.html#3489">sleep</a>(</span><span class="number">10</span><span class="default">);</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">  </span><span class="comment">//assert(result &lt; 0 &amp;&amp; errno == EINTR);</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"></span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">}</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#171289">main</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_A.html#125260">argc</a></span><span class="default">, </span><span class="keyword">char</span><span class="default">** <a href="dictionary_A.html#125261">argv</a>)</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">{</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">  <a href="dictionary_P.html#323">pthread_t</a> <a href="dictionary_T.html#125262">threadid</a>;</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">  </span><span class="keyword">struct <a href="dictionary_T.html#6074">timespec</a> <a href="dictionary_T.html#125263">tsDelay</a></span><span class="default">;</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  </span><span class="comment">// Primitive argument parsing.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">  </span><span class="keyword">if </span><span class="default">(<a href="dictionary_A.html#125260">argc</a> &gt; </span><span class="number">1</span><span class="default">)</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">    <a href="dictionary_S.html#125246">s_debug</a> = </span><span class="number">1</span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  <a href="dictionary_P.html#125249">print_thread_id</a>(</span><span class="string">&quot;main: &quot;</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  {</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="keyword">struct <a href="dictionary_S.html#3518">sigaction</a> <a href="dictionary_S.html#125264">sa</a></span><span class="default">;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    <a href="dictionary_M.html#3432">memset</a>(&amp;<a href="dictionary_S.html#125264">sa</a>, </span><span class="number">0</span><span class="default">, </span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_S.html#125264">sa</a>));</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    <a href="dictionary_S.html#125264">sa</a>.<a href="dictionary_S.html#3534">sa_handler</a> = &amp;<a href="dictionary_S.html#125255">SignalHandler</a>;</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">    <a href="dictionary_S.html#3537">sigemptyset</a>(&amp;<a href="dictionary_S.html#125264">sa</a>.<a href="dictionary_S.html#3538">sa_mask</a>);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    <a href="dictionary_S.html#3542">sigaction</a>(<a href="dictionary_S.html#6853">SIGALRM</a>, &amp;<a href="dictionary_S.html#125264">sa</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">  }</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  <a href="dictionary_P.html#324">pthread_create</a>(&amp;<a href="dictionary_T.html#125262">threadid</a>, </span><span class="number">0</span><span class="default">, <a href="dictionary_T.html#46321">thread_func</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">  </span><span class="comment">// Wait until the thread is inside clock_nanosleep().</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">  <a href="dictionary_T.html#125263">tsDelay</a></span><span class="default">.<a href="dictionary_T.html#6850">tv_sec</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">  <a href="dictionary_T.html#125263">tsDelay</a>.<a href="dictionary_T.html#6851">tv_nsec</a> = </span><span class="number">20 </span><span class="default">* </span><span class="number">1000 </span><span class="default">* </span><span class="number">1000</span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">  <a href="dictionary_N.html#6855">nanosleep</a>(&amp;<a href="dictionary_T.html#125263">tsDelay</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">  </span><span class="comment">// And send SIGALRM to the thread.</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">  <a href="dictionary_P.html#7294">pthread_kill</a></span><span class="default">(<a href="dictionary_T.html#125262">threadid</a>, <a href="dictionary_S.html#6853">SIGALRM</a>);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">  <a href="dictionary_P.html#327">pthread_join</a>(<a href="dictionary_T.html#125262">threadid</a>, </span><span class="number">0</span><span class="default">);</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">}</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,37 @@
+<html><head><title>PLSQLLanguageModule.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-plsql/src/main/java/net/sourceforge/pmd/lang/plsql/PLSQLLanguageModule.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-plsql/src/main/java/net/sourceforge/pmd/lang/plsql/PLSQLLanguageModule.java";
+top.document.title  = "PLSQLLanguageModule.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#23">plsql</a>;</span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span>
+<a name="3"><font size=-1>3     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>.<a href="dictionary_N.html#13">BaseLanguageModule</a>;</span>
+<a name="4"><font size=-1>4     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.plsql.<a href="dictionary_N.html#24">rule</a>.<a href="dictionary_N.html#6442">PLSQLRuleChainVisitor</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * Created by christoferdutz on 20.09.14.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> */</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#7742">PLSQLLanguageModule</a> extends <a href="dictionary_N.html#13">BaseLanguageModule</a> </span><span class="default">{</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default">    </span><span class="keyword">public static final <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#7743">NAME</a> </span><span class="default">= </span><span class="string">&quot;PLSQL&quot;</span><span class="default">;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">    </span><span class="keyword">public static final <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#8486">TERSE_NAME</a> </span><span class="default">= </span><span class="string">&quot;plsql&quot;</span><span class="default">;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_N.html#8485">PLSQLLanguageModule</a></span><span class="default">() {</span>
+<a name="15"><font size=-1>15     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">(<a href="dictionary_N.html#7743">NAME</a>, </span><span class="keyword">null</span><span class="default">, <a href="dictionary_N.html#8486">TERSE_NAME</a>, <a href="dictionary_N.html#6442">PLSQLRuleChainVisitor</a>.</span><span class="keyword">class</span><span class="default">,</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">                </span><span class="string">&quot;sql&quot;</span><span class="default">, </span><span class="string">&quot;trg&quot;</span><span class="default">,</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">                </span><span class="string">&quot;prc&quot;</span><span class="default">, </span><span class="string">&quot;fnc&quot;</span><span class="default">,</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">                </span><span class="string">&quot;pld&quot;</span><span class="default">, </span><span class="comment">// Oracle*Forms</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">                </span><span class="string">&quot;pls&quot; </span><span class="default">,</span><span class="string">&quot;plh&quot; </span><span class="default">,</span><span class="string">&quot;plb&quot;</span><span class="default">, </span><span class="comment">// Packages</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">                </span><span class="string">&quot;pck&quot; </span><span class="default">,</span><span class="string">&quot;pks&quot; </span><span class="default">,</span><span class="string">&quot;pkh&quot; </span><span class="default">,</span><span class="string">&quot;pkb&quot;</span><span class="default">, </span><span class="comment">// Packages</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">                </span><span class="string">&quot;typ&quot; </span><span class="default">,</span><span class="string">&quot;tyb&quot;</span><span class="default">, </span><span class="comment">// Object Types</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">                </span><span class="string">&quot;tps&quot; </span><span class="default">,</span><span class="string">&quot;tpb&quot; </span><span class="comment">/* Object Types*/</span><span class="default">);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">        <a href="dictionary_N.html#18">addVersion</a>(</span><span class="string">&quot;&quot;</span><span class="default">, </span><span class="keyword">new <a href="dictionary_N.html#1699">PLSQLHandler</a></span><span class="default">(), </span><span class="keyword">true</span><span class="default">);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    }</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">}</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,273 @@
+<html><head><title>ReplaceCssNames.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/ReplaceCssNames.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/ReplaceCssNames.java";
+top.document.title  = "ReplaceCssNames.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2009 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.javascript.rhino.<a href="dictionary_C.html#339">jstype</a>.JSTypeNative.<a href="dictionary_C.html#2326">STRING_TYPE</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#119">annotations</a>.<a href="dictionary_C.html#116">VisibleForTesting</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Joiner;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>.<a href="dictionary_C.html#1352">NodeTraversal</a>.<a href="dictionary_C.html#2381">AbstractPostOrderCallback</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#530">IR</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#219">Node</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#220">Token</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#2403">TypeI</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Map;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Set;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.<a href="dictionary_J.html#154">annotation</a>.<a href="dictionary_J.html#151">Nullable</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * ReplaceCssNames replaces occurrences of goog.getCssName('foo') with</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * a shorter version from the passed in renaming map. There are two</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * styles of operation: for 'BY_WHOLE' we look up the whole string in the</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * renaming map. For 'BY_PART', all the class name's components,</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * separated by '-', are renamed individually and then recombined.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> *</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> * Given the renaming map:</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> *   {</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> *     once:  'a',</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> *     upon:  'b',</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> *     atime: 'c',</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"> *     long:  'd',</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"> *     time:  'e',</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"> *     ago:   'f'</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"> *   }</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"> *</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"> * The following outputs are expected with the 'BY_PART' renaming style:</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"> *</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"> * goog.getCssName('once') -&gt; 'a'</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"> * goog.getCssName('once-upon-atime') -&gt; 'a-b-c'</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment"> *</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"> * var baseClass = goog.getCssName('long-time');</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"> * el.className = goog.getCssName(baseClass, 'ago');</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"> * -&gt;</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment"> * var baseClass = 'd-e';</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"> * el.className = baseClass + '-f';</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment"> *</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment"> * However if we have the following renaming map with the 'BY_WHOLE' renaming style:</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"> *   {</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment"> *     once: 'a',</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment"> *     upon-atime: 'b',</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment"> *     long-time: 'c',</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"> *     ago: 'd'</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment"> *   }</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment"> *</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment"> * Then we would expect:</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment"> *</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment"> * goog.getCssName('once') -&gt; 'a'</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment"> *</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment"> * var baseClass = goog.getCssName('long-time');</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment"> * el.className = goog.getCssName(baseClass, 'ago');</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment"> * -&gt;</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment"> * var baseClass = 'c';</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment"> * el.className = baseClass + '-d';</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment"> *</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment"> * In addition, the CSS names before replacement can optionally be gathered.</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment"> *</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment"> */</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#14898">ReplaceCssNames</a> implements <a href="dictionary_C.html#19">CompilerPass</a> </span><span class="default">{</span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span>
+<a name="85"><font size=-1>85     </font></a><span class="default">  </span><span class="keyword">static final </span><span class="default">String <a href="dictionary_C.html#14927">GET_CSS_NAME_FUNCTION</a> = </span><span class="string">&quot;goog.getCssName&quot;</span><span class="default">;</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  </span><span class="keyword">static final <a href="dictionary_C.html#2269">DiagnosticType</a> <a href="dictionary_C.html#14928">INVALID_NUM_ARGUMENTS_ERROR</a> </span><span class="default">=</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">      <a href="dictionary_C.html#2269">DiagnosticType</a>.<a href="dictionary_C.html#2556">error</a>(</span><span class="string">&quot;JSC_GETCSSNAME_NUM_ARGS&quot;</span><span class="default">,</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">          </span><span class="string">&quot;goog.getCssName called with \&quot;{0}\&quot; arguments, expected 1 or 2.&quot;</span><span class="default">);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default">  </span><span class="keyword">static final <a href="dictionary_C.html#2269">DiagnosticType</a> <a href="dictionary_C.html#14929">STRING_LITERAL_EXPECTED_ERROR</a> </span><span class="default">=</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">      <a href="dictionary_C.html#2269">DiagnosticType</a>.<a href="dictionary_C.html#2556">error</a>(</span><span class="string">&quot;JSC_GETCSSNAME_STRING_LITERAL_EXPECTED&quot;</span><span class="default">,</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">          </span><span class="string">&quot;goog.getCssName called with invalid argument, string literal &quot; </span><span class="default">+</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">          </span><span class="string">&quot;expected.  Was \&quot;{0}\&quot;.&quot;</span><span class="default">);</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default">  </span><span class="keyword">static final <a href="dictionary_C.html#2269">DiagnosticType</a> <a href="dictionary_C.html#14930">UNEXPECTED_STRING_LITERAL_ERROR</a> </span><span class="default">=</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">    <a href="dictionary_C.html#2269">DiagnosticType</a>.<a href="dictionary_C.html#2556">error</a>(</span><span class="string">&quot;JSC_GETCSSNAME_UNEXPECTED_STRING_LITERAL&quot;</span><span class="default">,</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">        </span><span class="string">&quot;goog.getCssName called with invalid arguments, string literal &quot; </span><span class="default">+</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">        </span><span class="string">&quot;passed as first of two arguments.  Did you mean &quot; </span><span class="default">+</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">        </span><span class="string">&quot;goog.getCssName(\&quot;{0}-{1}\&quot;)?&quot;</span><span class="default">);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default">  </span><span class="keyword">static final <a href="dictionary_C.html#2269">DiagnosticType</a> <a href="dictionary_C.html#14931">UNKNOWN_SYMBOL_WARNING</a> </span><span class="default">=</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">      <a href="dictionary_C.html#2269">DiagnosticType</a>.<a href="dictionary_C.html#2274">warning</a>(</span><span class="string">&quot;JSC_GETCSSNAME_UNKNOWN_CSS_SYMBOL&quot;</span><span class="default">,</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">         </span><span class="string">&quot;goog.getCssName called with unrecognized symbol \&quot;{0}\&quot; in class &quot; </span><span class="default">+</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">         </span><span class="string">&quot;\&quot;{1}\&quot;.&quot;</span><span class="default">);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span>
+<a name="108"><font size=-1>108     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#14932">compiler</a></span><span class="default">;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span>
+<a name="110"><font size=-1>110     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Map&lt;String, <a href="dictionary_I.html#7014">Integer</a>&gt; <a href="dictionary_C.html#14933">cssNames</a>;</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default">  </span><span class="keyword">private <a href="dictionary_C.html#14937">CssRenamingMap</a> <a href="dictionary_C.html#14935">symbolMap</a></span><span class="default">;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Set&lt;String&gt; <a href="dictionary_C.html#14936">whitelist</a>;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default">  </span><span class="keyword">private final <a href="dictionary_C.html#2403">TypeI</a> <a href="dictionary_C.html#14934">nativeStringType</a></span><span class="default">;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">  <a href="dictionary_C.html#14919">ReplaceCssNames</a>(<a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#14920">compiler</a>,</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">      @<a href="dictionary_J.html#151">Nullable</a> Map&lt;String, <a href="dictionary_I.html#7014">Integer</a>&gt; <a href="dictionary_C.html#14921">cssNames</a>,</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">      @<a href="dictionary_J.html#151">Nullable</a> Set&lt;String&gt; <a href="dictionary_C.html#14922">whitelist</a>) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#14932">compiler</a> = <a href="dictionary_C.html#14920">compiler</a>;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#14933">cssNames</a> = <a href="dictionary_C.html#14921">cssNames</a>;</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#14936">whitelist</a> = <a href="dictionary_C.html#14922">whitelist</a>;</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#14934">nativeStringType</a> =</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">        <a href="dictionary_C.html#14920">compiler</a>.<a href="dictionary_C.html#3263">getTypeIRegistry</a>().<a href="dictionary_C.html#3306">getNativeType</a>(<a href="dictionary_C.html#2326">STRING_TYPE</a>);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">  }</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span>
+<a name="128"><font size=-1>128     </font></a><span class="default">  @Override</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">  </span><span class="keyword">public void <a href="dictionary_C.html#14924">process</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14925">externs</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14926">root</a>) {</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">    </span><span class="comment">// The CssRenamingMap may not have been available from the compiler when</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">    // this ReplaceCssNames pass was constructed, so getCssRenamingMap() should</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">    // only be called before this pass is actually run.</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">    <a href="dictionary_C.html#14935">symbolMap</a> </span><span class="default">= <a href="dictionary_C.html#14923">getCssRenamingMap</a>();</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span>
+<a name="135"><font size=-1>135     </font></a><span class="default">    <a href="dictionary_C.html#1352">NodeTraversal</a>.<a href="dictionary_C.html#2388">traverseEs6</a>(<a href="dictionary_C.html#14932">compiler</a>, <a href="dictionary_C.html#14926">root</a>, </span><span class="keyword">new <a href="dictionary_C.html#14899">Traversal</a></span><span class="default">());</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">  }</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default">  @<a href="dictionary_C.html#116">VisibleForTesting</a></span>
+<a name="139"><font size=-1>139     </font></a><span class="default">  </span><span class="keyword">protected <a href="dictionary_C.html#14937">CssRenamingMap</a> <a href="dictionary_C.html#14923">getCssRenamingMap</a></span><span class="default">() {</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#14932">compiler</a></span><span class="default">.<a href="dictionary_C.html#14943">getCssRenamingMap</a>();</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  </span><span class="keyword">private class <a href="dictionary_C.html#14899">Traversal</a> extends <a href="dictionary_C.html#2381">AbstractPostOrderCallback</a> </span><span class="default">{</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    @Override</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_C.html#14911">visit</a></span><span class="default">(<a href="dictionary_C.html#1352">NodeTraversal</a> <a href="dictionary_C.html#14918">t</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14915">parent</a>) {</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#539">isCall</a>() &amp;&amp; <a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#2312">matchesQualifiedName</a>(<a href="dictionary_C.html#14927">GET_CSS_NAME_FUNCTION</a>)) {</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_C.html#14912">count</a> </span><span class="default">= <a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#557">getChildCount</a>();</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">        <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14913">first</a> = <a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#1907">getSecondChild</a>();</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">        </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#14912">count</a>) {</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">          </span><span class="keyword">case </span><span class="number">2</span><span class="default">:</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">            </span><span class="comment">// Replace the function call with the processed argument.</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14913">first</a>.<a href="dictionary_C.html#544">isString</a>()) {</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">              <a href="dictionary_C.html#14900">processStringNode</a>(<a href="dictionary_C.html#14918">t</a>, <a href="dictionary_C.html#14913">first</a>);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">              <a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#545">removeChild</a>(<a href="dictionary_C.html#14913">first</a>);</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">              <a href="dictionary_C.html#14915">parent</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14913">first</a>);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#2588">reportCodeChange</a>();</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">            } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#3511">report</a>(<a href="dictionary_C.html#14918">t</a>.<a href="dictionary_C.html#7551">makeError</a>(<a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14929">STRING_LITERAL_EXPECTED_ERROR</a>,</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">                  <a href="dictionary_C.html#220">Token</a>.<a href="dictionary_C.html#9617">name</a>(<a href="dictionary_C.html#14913">first</a>.<a href="dictionary_C.html#938">getType</a>())));</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">            }</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="163"><font size=-1>163     </font></a><span class="default"></span>
+<a name="164"><font size=-1>164     </font></a><span class="default">          </span><span class="keyword">case </span><span class="number">3</span><span class="default">:</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">            </span><span class="comment">// Replace function call with concatenation of two args.  It's</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">            // assumed the first arg has already been processed.</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment"></span>
+<a name="168"><font size=-1>168     </font></a><span class="comment">            <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14917">second</a> </span><span class="default">= <a href="dictionary_C.html#14913">first</a>.<a href="dictionary_C.html#541">getNext</a>();</span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span>
+<a name="170"><font size=-1>170     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#14917">second</a>.<a href="dictionary_C.html#544">isString</a>()) {</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#3511">report</a>(<a href="dictionary_C.html#14918">t</a>.<a href="dictionary_C.html#7551">makeError</a>(<a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14929">STRING_LITERAL_EXPECTED_ERROR</a>,</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">                  <a href="dictionary_C.html#220">Token</a>.<a href="dictionary_C.html#9617">name</a>(<a href="dictionary_C.html#14917">second</a>.<a href="dictionary_C.html#938">getType</a>())));</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">            } </span><span class="keyword">else if </span><span class="default">(<a href="dictionary_C.html#14913">first</a>.<a href="dictionary_C.html#544">isString</a>()) {</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#3511">report</a>(<a href="dictionary_C.html#14918">t</a>.<a href="dictionary_C.html#7551">makeError</a>(</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">                  <a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14930">UNEXPECTED_STRING_LITERAL_ERROR</a>,</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">                  <a href="dictionary_C.html#14913">first</a>.<a href="dictionary_C.html#351">getString</a>(), <a href="dictionary_C.html#14917">second</a>.<a href="dictionary_C.html#351">getString</a>()));</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">            } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">              <a href="dictionary_C.html#14900">processStringNode</a>(<a href="dictionary_C.html#14918">t</a>, <a href="dictionary_C.html#14917">second</a>);</span>
+<a name="179"><font size=-1>179     </font></a><span class="default">              <a href="dictionary_C.html#14914">n</a>.<a href="dictionary_C.html#545">removeChild</a>(<a href="dictionary_C.html#14913">first</a>);</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">              <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14916">replacement</a> = <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#556">add</a>(<a href="dictionary_C.html#14913">first</a>,</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">                  <a href="dictionary_C.html#530">IR</a>.<a href="dictionary_C.html#550">string</a>(</span><span class="string">&quot;-&quot; </span><span class="default">+ <a href="dictionary_C.html#14917">second</a>.<a href="dictionary_C.html#351">getString</a>())</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">                      .<a href="dictionary_C.html#551">useSourceInfoIfMissingFrom</a>(<a href="dictionary_C.html#14917">second</a>))</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">                  .<a href="dictionary_C.html#551">useSourceInfoIfMissingFrom</a>(<a href="dictionary_C.html#14914">n</a>);</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">              <a href="dictionary_C.html#14916">replacement</a>.<a href="dictionary_C.html#6375">setTypeI</a>(<a href="dictionary_C.html#14934">nativeStringType</a>);</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">              <a href="dictionary_C.html#14915">parent</a>.<a href="dictionary_C.html#553">replaceChild</a>(<a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14916">replacement</a>);</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#2588">reportCodeChange</a>();</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">            }</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span>
+<a name="190"><font size=-1>190     </font></a><span class="default">          </span><span class="keyword">default</span><span class="default">:</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">            <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#3511">report</a>(<a href="dictionary_C.html#14918">t</a>.<a href="dictionary_M.html#11494">makeError</a>(</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">                <a href="dictionary_C.html#14914">n</a>, <a href="dictionary_C.html#14928">INVALID_NUM_ARGUMENTS_ERROR</a>, String.<a href="dictionary_V.html#434">valueOf</a>(<a href="dictionary_C.html#14912">count</a>)));</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">        }</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">      }</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">    }</span>
+<a name="196"><font size=-1>196     </font></a><span class="default"></span>
+<a name="197"><font size=-1>197     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="198"><font size=-1>198     </font></a><span class="comment">     * Processes a string argument to goog.getCssName().  The string will be</span>
+<a name="199"><font size=-1>199     </font></a><span class="comment">     * renamed based off the symbol map.  If there is no map or any part of the</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">     * name can't be renamed, a warning is reported to the compiler and the node</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">     * is left unchanged.</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">     *</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">     * If the type is unexpected then an error is reported to the compiler.</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">     *</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">     * @param t The node traversal.</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">     * @param n The string node to process.</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">     */</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">    </span><span class="keyword">private void <a href="dictionary_C.html#14900">processStringNode</a></span><span class="default">(<a href="dictionary_C.html#1352">NodeTraversal</a> <a href="dictionary_C.html#14910">t</a>, <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#14905">n</a>) {</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">      String <a href="dictionary_C.html#14906">name</a> = <a href="dictionary_C.html#14905">n</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14936">whitelist</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_C.html#14936">whitelist</a>.<a href="dictionary_C.html#667">contains</a>(<a href="dictionary_C.html#14906">name</a>)) {</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">        </span><span class="comment">// We apply the whitelist before splitting on dashes, and not after.</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment">        // External substitution maps should do the same.</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">      }</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">      String[] <a href="dictionary_C.html#14907">parts</a> = <a href="dictionary_C.html#14906">name</a>.<a href="dictionary_S.html#67">split</a>(</span><span class="string">&quot;-&quot;</span><span class="default">);</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14935">symbolMap</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">        String <a href="dictionary_C.html#14909">replacement</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">        </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#14935">symbolMap</a>.<a href="dictionary_C.html#14939">getStyle</a>()) {</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_C.html#14940">BY_WHOLE</a></span><span class="default">:</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">            <a href="dictionary_C.html#14909">replacement</a> = <a href="dictionary_C.html#14935">symbolMap</a>.<a href="dictionary_C.html#14941">get</a>(<a href="dictionary_C.html#14906">name</a>);</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14909">replacement</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">              <a href="dictionary_C.html#14932">compiler</a>.<a href="dictionary_C.html#3511">report</a>(</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">                  <a href="dictionary_C.html#14910">t</a>.<a href="dictionary_C.html#7551">makeError</a>(<a href="dictionary_C.html#14905">n</a>, <a href="dictionary_C.html#14931">UNKNOWN_SYMBOL_WARNING</a>, <a href="dictionary_C.html#14906">name</a>, <a href="dictionary_C.html#14906">name</a>));</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">              </span><span class="keyword">return</span><span class="default">;</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">            }</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">          </span><span class="keyword">case <a href="dictionary_C.html#14942">BY_PART</a></span><span class="default">:</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">            String[] <a href="dictionary_C.html#14908">replaced</a> = </span><span class="keyword">new </span><span class="default">String[<a href="dictionary_C.html#14907">parts</a>.<a href="dictionary_L.html#232">length</a>];</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">            </span><span class="keyword">for </span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#14901">i</a> </span><span class="default">= </span><span class="number">0</span><span class="default">; <a href="dictionary_C.html#14901">i</a> &lt; <a href="dictionary_C.html#14907">parts</a>.<a href="dictionary_L.html#232">length</a>; i++) {</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">              String <a href="dictionary_C.html#14902">part</a> = <a href="dictionary_C.html#14935">symbolMap</a>.<a href="dictionary_C.html#14941">get</a>(<a href="dictionary_C.html#14907">parts</a>[<a href="dictionary_C.html#14901">i</a>]);</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">              </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14902">part</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">                </span><span class="comment">// If we can't encode all parts, don't encode any of it.</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment">                <a href="dictionary_C.html#14932">compiler</a></span><span class="default">.<a href="dictionary_C.html#3511">report</a>(</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">                    <a href="dictionary_C.html#14910">t</a>.<a href="dictionary_C.html#7551">makeError</a>(<a href="dictionary_C.html#14905">n</a>, <a href="dictionary_C.html#14931">UNKNOWN_SYMBOL_WARNING</a>, <a href="dictionary_C.html#14907">parts</a>[<a href="dictionary_C.html#14901">i</a>], <a href="dictionary_C.html#14906">name</a>));</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">                </span><span class="keyword">return</span><span class="default">;</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">              }</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">              <a href="dictionary_C.html#14908">replaced</a>[<a href="dictionary_C.html#14901">i</a>] = <a href="dictionary_C.html#14902">part</a>;</span>
+<a name="238"><font size=-1>238     </font></a><span class="default">            }</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">            <a href="dictionary_C.html#14909">replacement</a> = Joiner.<a href="dictionary_O.html#2694">on</a>(</span><span class="string">&quot;-&quot;</span><span class="default">).<a href="dictionary_J.html#1065">join</a>(<a href="dictionary_C.html#14908">replaced</a>);</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">            </span><span class="keyword">break</span><span class="default">;</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">          </span><span class="keyword">default</span><span class="default">:</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_I.html#914">IllegalStateException</a></span><span class="default">(</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">              </span><span class="string">&quot;Unknown replacement style: &quot; </span><span class="default">+ <a href="dictionary_C.html#14935">symbolMap</a>.<a href="dictionary_C.html#14939">getStyle</a>());</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">        }</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">        <a href="dictionary_C.html#14905">n</a>.<a href="dictionary_C.html#6370">setString</a>(<a href="dictionary_C.html#14909">replacement</a>);</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">      }</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14933">cssNames</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">        </span><span class="comment">// We still want to collect statistics even if we've already</span>
+<a name="249"><font size=-1>249     </font></a><span class="comment">        // done the full replace. The statistics are collected on a</span>
+<a name="250"><font size=-1>250     </font></a><span class="comment">        // per-part basis.</span>
+<a name="251"><font size=-1>251     </font></a><span class="comment">        </span><span class="keyword">for </span><span class="default">(String <a href="dictionary_C.html#14904">element</a> : <a href="dictionary_C.html#14907">parts</a>) {</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">          <a href="dictionary_I.html#7014">Integer</a> <a href="dictionary_C.html#14903">count</a> = <a href="dictionary_C.html#14933">cssNames</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#14904">element</a>);</span>
+<a name="253"><font size=-1>253     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#14903">count</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="254"><font size=-1>254     </font></a><span class="default">            <a href="dictionary_C.html#14903">count</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">          }</span>
+<a name="256"><font size=-1>256     </font></a><span class="default">          <a href="dictionary_C.html#14933">cssNames</a>.<a href="dictionary_P.html#68">put</a>(<a href="dictionary_C.html#14904">element</a>, <a href="dictionary_C.html#14903">count</a>.<a href="dictionary_I.html#431">intValue</a>() + </span><span class="number">1</span><span class="default">);</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">        }</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">      }</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">    }</span>
+<a name="260"><font size=-1>260     </font></a><span class="default">  }</span>
+<a name="261"><font size=-1>261     </font></a><span class="default"></span>
+<a name="262"><font size=-1>262     </font></a><span class="default">}</span>
+<a name="263"><font size=-1>263     </font></a><span class="default"></span>
+</pre></body></html>

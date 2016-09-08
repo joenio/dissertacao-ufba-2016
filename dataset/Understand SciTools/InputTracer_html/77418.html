@@ -1,0 +1,90 @@
+<html><head><title>std_reg_imm.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/ppc64/std_reg_imm.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/ppc64/std_reg_imm.c";
+top.document.title  = "std_reg_imm.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">This is a regression test for the following problem, noticed by</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">Greg Parker:</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">vex ppc64 generates bad code for instruction sequences like this:</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">    li    r0, 2</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">    stdx  r3, r1, r0</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">gcc emits code like this when manipulating packed structures </span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">with 8-byte fields on 2-byte boundaries.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">First, vex's optimizer substitutes a constant 0x2 for r0:</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"></span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">    ------ IMark(0x100000F34, 4) ------</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">    PUT(1024) = 0x100000F34:I64</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">    t3 = GET:I64(24)</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">    t14 = GET:I64(8)</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">    t13 = Add64(t14,0x2:I64)</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">    STbe(t13) = t3</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">Then instruction selection chooses `std` with an index not divisible by 4:</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">    -- STbe(Add64(GET:I64(8),0x2:I64)) = GET:I64(24)</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">    ldz %vR22,8(%r31)</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">    ldz %vR23,24(%r31)</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">    std %vR23,2(%vR22)</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">Finally, the assembler silently strips the index&amp;3 part, </span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">because `std` can't encode that:</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">    std %r6,2(%r5)</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">    F8 C5 00 00 </span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"></span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">...but 0xF8C50000 is `std r6, 0(r5)`, which writes to the wrong address.</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">*/</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="40"><font size=-1>40     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="41"><font size=-1>41     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;assert.h&gt;</span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span>
+<a name="43"><font size=-1>43     </font></a><span class="string"></span><span class="keyword">typedef </span>
+<a name="44"><font size=-1>44     </font></a><span class="keyword">struct </span><span class="default">__attribute__ ((__packed__)) {</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">  </span><span class="keyword">char <a href="dictionary_B.html#77420">before</a></span><span class="default">[</span><span class="number">2</span><span class="default">];</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  </span><span class="keyword">unsigned long long int <a href="dictionary_W.html#77421">w64</a></span><span class="default">;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  </span><span class="keyword">char <a href="dictionary_A.html#77422">after</a></span><span class="default">[</span><span class="number">6</span><span class="default">];</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">}</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"><a href="dictionary_T.html#77423">T</a>;</span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_F.html#72335">foo</a> </span><span class="default">(<a href="dictionary_T.html#77423">T</a>* <a href="dictionary_T.html#77425">t</a>, </span><span class="keyword">unsigned long long int <a href="dictionary_W.html#77426">w</a></span><span class="default">)</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">{</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">  </span><span class="keyword">__asm__ </span><span class="default">__volatile__(</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">     </span><span class="string">&quot;stdx %0,%1,%2&quot;</span>
+<a name="55"><font size=-1>55     </font></a><span class="string">     </span><span class="default">: : </span><span class="string">&quot;b&quot;</span><span class="default">(<a href="dictionary_W.html#77426">w</a>), </span><span class="string">&quot;b&quot;</span><span class="default">(<a href="dictionary_T.html#77425">t</a>), </span><span class="string">&quot;b&quot;</span><span class="default">(</span><span class="number">2</span><span class="default">) : </span><span class="string">&quot;memory&quot;</span>
+<a name="56"><font size=-1>56     </font></a><span class="string">  </span><span class="default">);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">}</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_M.html#171186">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">{</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">  <a href="dictionary_T.html#77423">T</a>* <a href="dictionary_T.html#77428">t</a>;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">  </span><span class="keyword">unsigned char</span><span class="default">* <a href="dictionary_P.html#77429">p</a>;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_I.html#77430">i</a></span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(</span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#77423">T</a>) == </span><span class="number">16</span><span class="default">);</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">  <a href="dictionary_T.html#77428">t</a> = <a href="dictionary_C.html#14707">calloc</a>(</span><span class="keyword">sizeof</span><span class="default">(<a href="dictionary_T.html#77423">T</a>),</span><span class="number">1</span><span class="default">);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">  <a href="dictionary_A.html#3541">assert</a>(<a href="dictionary_T.html#77428">t</a>);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">  </span><span class="comment">/* check t is 8-aligned.  This causes the write done by 'foo' to be</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">     misaligned by 2 as desired, triggering the bug. */</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">  <a href="dictionary_A.html#3541">assert</a></span><span class="default">(</span><span class="number">0 </span><span class="default">== (((</span><span class="keyword">unsigned long</span><span class="default">)<a href="dictionary_T.html#77428">t</a>) &amp; </span><span class="number">7</span><span class="default">));</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">  <a href="dictionary_F.html#72335">foo</a>(<a href="dictionary_T.html#77428">t</a>, </span><span class="number">0x1122334455667788</span><span class="default">);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">  <a href="dictionary_P.html#77429">p</a> = (</span><span class="keyword">unsigned char</span><span class="default">*)<a href="dictionary_T.html#77428">t</a>;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  </span><span class="keyword">for </span><span class="default">(<a href="dictionary_I.html#77430">i</a> = </span><span class="number">0</span><span class="default">; <a href="dictionary_I.html#77430">i</a> &lt; </span><span class="number">16</span><span class="default">; <a href="dictionary_I.html#77430">i</a>++)</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#77429">p</a>[<a href="dictionary_I.html#77430">i</a>] == </span><span class="number">0</span><span class="default">)</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;..&quot;</span><span class="default">); </span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    </span><span class="keyword">else</span>
+<a name="76"><font size=-1>76     </font></a><span class="keyword">      <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;%02x&quot;</span><span class="default">, (</span><span class="keyword">int</span><span class="default">)<a href="dictionary_P.html#77429">p</a>[<a href="dictionary_I.html#77430">i</a>]);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">  <a href="dictionary_P.html#328">printf</a>(</span><span class="string">&quot;\n&quot;</span><span class="default">);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">  </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">}</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+</pre></body></html>

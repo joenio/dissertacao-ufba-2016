@@ -1,0 +1,261 @@
+<html><head><title>smatch_modification_hooks.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/smatch_modification_hooks.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/smatch_modification_hooks.c";
+top.document.title  = "smatch_modification_hooks.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (C) 2009 Dan Carpenter.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * This program is free software; you can redistribute it and/or</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * modify it under the terms of the GNU General Public License</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * as published by the Free Software Foundation; either version 2</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * of the License, or (at your option) any later version.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * This program is distributed in the hope that it will be useful,</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * GNU General Public License for more details.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * You should have received a copy of the GNU General Public License</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * along with this program; if not, see http://www.gnu.org/copyleft/gpl.txt</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">/*</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * There are a number of ways that variables are modified:</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> * 1) assignment</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * 2) increment/decrement</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * 3) assembly</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> * 4) inside functions.</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> *</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * For setting stuff inside a function then, of course, it's more accurate if</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * you have the cross function database built.  Otherwise we are super</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * aggressive about marking things as modified and if you have &quot;frob(foo);&quot; then</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * we assume &quot;foo-&gt;bar&quot; is modified.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> */</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="32"><font size=-1>32     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="33"><font size=-1>33     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;smatch.h&quot;</span>
+<a name="34"><font size=-1>34     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;smatch_extra.h&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;smatch_slist.h&quot;</span>
+<a name="36"><font size=-1>36     </font></a><span class="string"></span>
+<a name="37"><font size=-1>37     </font></a><span class="string"></span><span class="keyword">enum </span><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">	match_none = </span><span class="number">0</span><span class="default">,</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">	match_exact,</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">	match_indirect</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">};</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_M.html#6765">modification_hook</a> </span><span class="default">**<a href="dictionary_H.html#6764">hooks</a>;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span><span class="keyword">static <a href="dictionary_M.html#6765">modification_hook</a> </span><span class="default">**<a href="dictionary_I.html#6766">indirect_hooks</a>;  </span><span class="comment">/* parent struct modified etc */</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"></span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"><a href="dictionary_A.html#6010">ALLOCATOR</a></span><span class="default">(<a href="dictionary_M.html#6768">modification_data</a>, </span><span class="string">&quot;modification data&quot;</span><span class="default">);</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#6776">my_id</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="keyword">static struct <a href="dictionary_S.html#239">smatch_state</a> </span><span class="default">*<a href="dictionary_A.html#10543">alloc_my_state</a>(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6778">expr</a>, </span><span class="keyword">struct <a href="dictionary_S.html#239">smatch_state</a> </span><span class="default">*<a href="dictionary_P.html#6779">prev</a>)</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">{</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#239">smatch_state</a> </span><span class="default">*<a href="dictionary_S.html#6780">state</a>;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_M.html#6768">modification_data</a> </span><span class="default">*<a href="dictionary_D.html#6781">data</a>;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">	</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#6782">name</a>;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default">	<a href="dictionary_S.html#6780">state</a> = <a href="dictionary_Non-Alpha.html#588">__alloc_smatch_state</a>(</span><span class="number">0</span><span class="default">);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">	<a href="dictionary_E.html#6778">expr</a> = <a href="dictionary_S.html#43">strip_expr</a>(<a href="dictionary_E.html#6778">expr</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">	<a href="dictionary_N.html#6782">name</a> = <a href="dictionary_E.html#298">expr_to_str</a>(<a href="dictionary_E.html#6778">expr</a>);</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">	<a href="dictionary_S.html#6780">state</a>-&gt;<a href="dictionary_S.html#590">name</a> = <a href="dictionary_A.html#589">alloc_sname</a>(<a href="dictionary_N.html#6782">name</a>);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">	<a href="dictionary_F.html#212">free_string</a>(<a href="dictionary_N.html#6782">name</a>);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default">	<a href="dictionary_D.html#6781">data</a> = <a href="dictionary_Non-Alpha.html#6769">__alloc_modification_data</a>(</span><span class="number">0</span><span class="default">);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">	<a href="dictionary_D.html#6781">data</a>-&gt;<a href="dictionary_M.html#6783">prev</a> = <a href="dictionary_P.html#6779">prev</a>;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">	<a href="dictionary_D.html#6781">data</a>-&gt;<a href="dictionary_M.html#6784">cur</a> = <a href="dictionary_E.html#6778">expr</a>;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">	<a href="dictionary_S.html#6780">state</a>-&gt;<a href="dictionary_S.html#591">data</a> = <a href="dictionary_D.html#6781">data</a>;</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span>
+<a name="66"><font size=-1>66     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_S.html#6780">state</a></span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">}</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_A.html#1766">add_modification_hook</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_O.html#6785">owner</a></span><span class="default">, <a href="dictionary_M.html#6765">modification_hook</a> *<a href="dictionary_C.html#6786">call_back</a>)</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">{</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">	<a href="dictionary_H.html#6764">hooks</a>[<a href="dictionary_O.html#6785">owner</a>] = <a href="dictionary_C.html#6786">call_back</a>;</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">}</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_A.html#6787">add_indirect_modification_hook</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_O.html#6788">owner</a></span><span class="default">, <a href="dictionary_M.html#6765">modification_hook</a> *<a href="dictionary_C.html#6789">call_back</a>)</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">{</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">	<a href="dictionary_I.html#6766">indirect_hooks</a>[<a href="dictionary_O.html#6788">owner</a>] = <a href="dictionary_C.html#6789">call_back</a>;</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">}</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span><span class="keyword">static int <a href="dictionary_M.html#6790">matches</a></span><span class="default">(</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#6791">name</a>, </span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6792">sym</a>, </span><span class="keyword">struct <a href="dictionary_S.html#301">sm_state</a> </span><span class="default">*<a href="dictionary_S.html#6793">sm</a>)</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">{</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_L.html#6794">len</a></span><span class="default">;</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6792">sym</a> != <a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#305">sym</a>)</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">		</span><span class="keyword">return </span><span class="default">match_none;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">	<a href="dictionary_L.html#6794">len</a> = <a href="dictionary_S.html#898">strlen</a>(<a href="dictionary_N.html#6791">name</a>);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#2037">strncmp</a>(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>, <a href="dictionary_N.html#6791">name</a>, <a href="dictionary_L.html#6794">len</a>) == </span><span class="number">0</span><span class="default">) {</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a>] == </span><span class="string">'\0'</span><span class="default">)</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">			</span><span class="keyword">return </span><span class="default">match_exact;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a>] == </span><span class="string">'-' </span><span class="default">|| <a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a>] == </span><span class="string">'.'</span><span class="default">)</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">			</span><span class="keyword">return </span><span class="default">match_indirect;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">	}</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[</span><span class="number">0</span><span class="default">] != </span><span class="string">'*'</span><span class="default">)</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">		</span><span class="keyword">return </span><span class="default">match_none;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#2037">strncmp</a>(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a> + </span><span class="number">1</span><span class="default">, <a href="dictionary_N.html#6791">name</a>, <a href="dictionary_L.html#6794">len</a>) == </span><span class="number">0</span><span class="default">) {</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a> + </span><span class="number">1</span><span class="default">] == </span><span class="string">'\0'</span><span class="default">)</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">			</span><span class="keyword">return </span><span class="default">match_indirect;</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a> + </span><span class="number">1</span><span class="default">] == </span><span class="string">'-' </span><span class="default">|| <a href="dictionary_S.html#6793">sm</a>-&gt;<a href="dictionary_S.html#304">name</a>[<a href="dictionary_L.html#6794">len</a> + </span><span class="number">1</span><span class="default">] == </span><span class="string">'.'</span><span class="default">)</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">			</span><span class="keyword">return </span><span class="default">match_indirect;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">	}</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	</span><span class="keyword">return </span><span class="default">match_none;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">}</span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_C.html#6795">call_modification_hooks_name_sym</a></span><span class="default">(</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#6796">name</a>, </span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6797">sym</a>, </span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_M.html#6798">mod_expr</a>)</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">{</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#385">stree</a> </span><span class="default">*<a href="dictionary_S.html#6799">stree</a>;</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#301">sm_state</a> </span><span class="default">*<a href="dictionary_S.html#6800">sm</a>;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#239">smatch_state</a> </span><span class="default">*<a href="dictionary_P.html#6801">prev</a>;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_M.html#6802">match</a></span><span class="default">;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default">	<a href="dictionary_P.html#6801">prev</a> = <a href="dictionary_G.html#2086">get_state</a>(<a href="dictionary_M.html#6776">my_id</a>, <a href="dictionary_N.html#6796">name</a>, <a href="dictionary_S.html#6797">sym</a>);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">	<a href="dictionary_S.html#316">set_state</a>(<a href="dictionary_M.html#6776">my_id</a>, <a href="dictionary_N.html#6796">name</a>, <a href="dictionary_S.html#6797">sym</a>, <a href="dictionary_A.html#10543">alloc_my_state</a>(<a href="dictionary_M.html#6798">mod_expr</a>, <a href="dictionary_P.html#6801">prev</a>));</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">	<a href="dictionary_S.html#6799">stree</a> = <a href="dictionary_Non-Alpha.html#388">__get_cur_stree</a>();</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span>
+<a name="116"><font size=-1>116     </font></a><span class="default">	<a href="dictionary_F.html#6190">FOR_EACH_SM</a>(<a href="dictionary_S.html#6799">stree</a>, <a href="dictionary_A.html#396">sm</a>) {</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#6800">sm</a>-&gt;<a href="dictionary_S.html#397">owner</a> &gt; <a href="dictionary_N.html#6179">num_checks</a>)</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">			</span><span class="keyword">continue</span><span class="default">;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">		<a href="dictionary_M.html#6802">match</a> = <a href="dictionary_M.html#6790">matches</a>(<a href="dictionary_N.html#6796">name</a>, <a href="dictionary_S.html#6797">sym</a>, <a href="dictionary_S.html#6800">sm</a>);</span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span>
+<a name="121"><font size=-1>121     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_M.html#6802">match</a> &amp;&amp; <a href="dictionary_H.html#6764">hooks</a>[<a href="dictionary_S.html#6800">sm</a>-&gt;<a href="dictionary_S.html#397">owner</a>])</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">			(<a href="dictionary_H.html#6764">hooks</a>[<a href="dictionary_S.html#6800">sm</a>-&gt;<a href="dictionary_S.html#397">owner</a>])(<a href="dictionary_S.html#6800">sm</a>, <a href="dictionary_M.html#6798">mod_expr</a>);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span>
+<a name="124"><font size=-1>124     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_M.html#6802">match</a> == match_indirect &amp;&amp; <a href="dictionary_I.html#6766">indirect_hooks</a>[<a href="dictionary_S.html#6800">sm</a>-&gt;<a href="dictionary_S.html#397">owner</a>])</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">			(<a href="dictionary_I.html#6766">indirect_hooks</a>[<a href="dictionary_S.html#6800">sm</a>-&gt;<a href="dictionary_S.html#397">owner</a>])(<a href="dictionary_S.html#6800">sm</a>, <a href="dictionary_M.html#6798">mod_expr</a>);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">	} <a href="dictionary_E.html#401">END_FOR_EACH_SM</a>(<a href="dictionary_S.html#6800">sm</a>);</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">}</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_C.html#6804">call_modification_hooks</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6805">expr</a>, </span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_M.html#6806">mod_expr</a>)</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">{</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">	</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#6807">name</a>;</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6808">sym</a>;</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span>
+<a name="134"><font size=-1>134     </font></a><span class="default">	<a href="dictionary_N.html#6807">name</a> = <a href="dictionary_E.html#1035">expr_to_known_chunk_sym</a>(<a href="dictionary_E.html#6805">expr</a>, &amp;<a href="dictionary_S.html#6808">sym</a>);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_N.html#6807">name</a>)</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">		</span><span class="keyword">goto </span><span class="default">free;</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">	<a href="dictionary_C.html#6795">call_modification_hooks_name_sym</a>(<a href="dictionary_N.html#6807">name</a>, <a href="dictionary_S.html#6808">sym</a>, <a href="dictionary_M.html#6806">mod_expr</a>);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">free:</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">	<a href="dictionary_F.html#212">free_string</a>(<a href="dictionary_N.html#6807">name</a>);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">}</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_D.html#16459">db_param_add</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6811">expr</a>, </span><span class="keyword">int <a href="dictionary_P.html#6812">param</a></span><span class="default">, </span><span class="keyword">char </span><span class="default">*<a href="dictionary_K.html#6813">key</a>, </span><span class="keyword">char </span><span class="default">*<a href="dictionary_V.html#6814">value</a>)</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">{</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_A.html#6815">arg</a>;</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">	</span><span class="keyword">char </span><span class="default">*<a href="dictionary_N.html#6816">name</a>;</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6817">sym</a>;</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default">	</span><span class="keyword">while </span><span class="default">(<a href="dictionary_E.html#6811">expr</a>-&gt;<a href="dictionary_E.html#20">type</a> == EXPR_ASSIGNMENT)</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">		<a href="dictionary_E.html#6811">expr</a> = <a href="dictionary_S.html#43">strip_expr</a>(<a href="dictionary_E.html#6811">expr</a>-&gt;<a href="dictionary_E.html#38">right</a>);</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#6811">expr</a>-&gt;<a href="dictionary_E.html#20">type</a> != EXPR_CALL)</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default">	<a href="dictionary_A.html#6815">arg</a> = <a href="dictionary_G.html#168">get_argument_from_call_expr</a>(<a href="dictionary_E.html#6811">expr</a>-&gt;<a href="dictionary_E.html#169">args</a>, <a href="dictionary_P.html#6812">param</a>);</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_A.html#6815">arg</a>)</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="156"><font size=-1>156     </font></a><span class="default"></span>
+<a name="157"><font size=-1>157     </font></a><span class="default">	<a href="dictionary_N.html#6816">name</a> = <a href="dictionary_G.html#1759">get_variable_from_key</a>(<a href="dictionary_A.html#6815">arg</a>, <a href="dictionary_K.html#6813">key</a>, &amp;<a href="dictionary_S.html#6817">sym</a>);</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_N.html#6816">name</a> || !<a href="dictionary_S.html#6817">sym</a>)</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">		</span><span class="keyword">goto </span><span class="default">free;</span>
+<a name="160"><font size=-1>160     </font></a><span class="default"></span>
+<a name="161"><font size=-1>161     </font></a><span class="default">	<a href="dictionary_C.html#6795">call_modification_hooks_name_sym</a>(<a href="dictionary_N.html#6816">name</a>, <a href="dictionary_S.html#6817">sym</a>, <a href="dictionary_E.html#6811">expr</a>);</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">free:</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">	<a href="dictionary_F.html#212">free_string</a>(<a href="dictionary_N.html#6816">name</a>);</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">}</span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span>
+<a name="166"><font size=-1>166     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_M.html#14527">match_assign</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6820">expr</a>)</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">{</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">	<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_E.html#6820">expr</a>-&gt;<a href="dictionary_E.html#37">left</a>, <a href="dictionary_E.html#6820">expr</a>);</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">}</span>
+<a name="170"><font size=-1>170     </font></a><span class="default"></span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_U.html#23583">unop_expr</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6822">expr</a>)</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">{</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#6822">expr</a>-&gt;<a href="dictionary_E.html#23">op</a> != SPECIAL_DECREMENT &amp;&amp; <a href="dictionary_E.html#6822">expr</a>-&gt;<a href="dictionary_E.html#23">op</a> != SPECIAL_INCREMENT)</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">		</span><span class="keyword">return</span><span class="default">;</span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span>
+<a name="176"><font size=-1>176     </font></a><span class="default">	<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_E.html#6822">expr</a>-&gt;<a href="dictionary_E.html#26">unop</a>, <a href="dictionary_E.html#6822">expr</a>);</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">}</span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_M.html#6136">match_call</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6824">expr</a>)</span>
+<a name="180"><font size=-1>180     </font></a><span class="default">{</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_A.html#6825">arg</a>, *<a href="dictionary_T.html#6826">tmp</a>;</span>
+<a name="182"><font size=-1>182     </font></a><span class="default"></span>
+<a name="183"><font size=-1>183     </font></a><span class="default">	<a href="dictionary_F.html#373">FOR_EACH_PTR</a>(<a href="dictionary_E.html#6824">expr</a>-&gt;<a href="dictionary_E.html#169">args</a>, <a href="dictionary_A.html#6825">arg</a>) {</span>
+<a name="184"><font size=-1>184     </font></a><span class="default">		<a href="dictionary_T.html#6826">tmp</a> = <a href="dictionary_S.html#43">strip_expr</a>(<a href="dictionary_A.html#6825">arg</a>);</span>
+<a name="185"><font size=-1>185     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_T.html#6826">tmp</a>-&gt;<a href="dictionary_E.html#20">type</a> == EXPR_PREOP &amp;&amp; <a href="dictionary_T.html#6826">tmp</a>-&gt;<a href="dictionary_E.html#23">op</a> == </span><span class="string">'&amp;'</span><span class="default">)</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">			<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_T.html#6826">tmp</a>-&gt;<a href="dictionary_E.html#26">unop</a>, <a href="dictionary_E.html#6824">expr</a>);</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">		</span><span class="keyword">else if </span><span class="default">(<a href="dictionary_O.html#1952">option_no_db</a>)</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">			<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_D.html#6238">deref_expression</a>(<a href="dictionary_T.html#6826">tmp</a>), <a href="dictionary_E.html#6824">expr</a>);</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">	} <a href="dictionary_E.html#377">END_FOR_EACH_PTR</a>(<a href="dictionary_A.html#6825">arg</a>);</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">}</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_A.html#4072">asm_expr</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#626">statement</a> </span><span class="default">*<a href="dictionary_S.html#6831">stmt</a>)</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">{</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6832">expr</a>;</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_S.html#6833">state</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="196"><font size=-1>196     </font></a><span class="default"></span>
+<a name="197"><font size=-1>197     </font></a><span class="default">	<a href="dictionary_F.html#373">FOR_EACH_PTR</a>(<a href="dictionary_S.html#6831">stmt</a>-&gt;<a href="dictionary_S.html#5680">asm_outputs</a>, <a href="dictionary_E.html#6832">expr</a>) {</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">		</span><span class="keyword">switch </span><span class="default">(<a href="dictionary_S.html#6833">state</a>) {</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">		</span><span class="keyword">case </span><span class="number">0</span><span class="default">: </span><span class="comment">/* identifier */</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">		</span><span class="keyword">case </span><span class="number">1</span><span class="default">: </span><span class="comment">/* constraint */</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">			<a href="dictionary_S.html#6833">state</a></span><span class="default">++;</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">			</span><span class="keyword">continue</span><span class="default">;</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">		</span><span class="keyword">case </span><span class="number">2</span><span class="default">: </span><span class="comment">/* expression */</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">			<a href="dictionary_S.html#6833">state</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">			<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_E.html#6832">expr</a>, <a href="dictionary_N.html#113">NULL</a>);</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">			</span><span class="keyword">continue</span><span class="default">;</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">		}</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">	} <a href="dictionary_E.html#377">END_FOR_EACH_PTR</a>(<a href="dictionary_E.html#6832">expr</a>);</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">}</span>
+<a name="210"><font size=-1>210     </font></a><span class="default"></span>
+<a name="211"><font size=-1>211     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_S.html#16065">scope_end</a></span><span class="default">(</span><span class="keyword">void </span><span class="default">*<a href="dictionary_Non-Alpha.html#6838">_sym</a>)</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">{</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6839">sym</a> = <a href="dictionary_Non-Alpha.html#6838">_sym</a>;</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">	</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6840">expr</a> = <a href="dictionary_S.html#2039">symbol_expression</a>(<a href="dictionary_S.html#6839">sym</a>);</span>
+<a name="215"><font size=-1>215     </font></a><span class="default"></span>
+<a name="216"><font size=-1>216     </font></a><span class="default">	<a href="dictionary_C.html#6804">call_modification_hooks</a>(<a href="dictionary_E.html#6840">expr</a>, <a href="dictionary_N.html#113">NULL</a>);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">}</span>
+<a name="218"><font size=-1>218     </font></a><span class="default"></span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span><span class="keyword">static void <a href="dictionary_M.html#6841">match_declaration</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#6842">sym</a>)</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">{</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">	<a href="dictionary_A.html#1083">add_scope_hook</a>(&amp;<a href="dictionary_S.html#16065">scope_end</a>, <a href="dictionary_S.html#6842">sym</a>); </span>
+<a name="222"><font size=-1>222     </font></a><span class="default">}</span>
+<a name="223"><font size=-1>223     </font></a><span class="default"></span>
+<a name="224"><font size=-1>224     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#239">smatch_state</a> </span><span class="default">*<a href="dictionary_G.html#6843">get_modification_state</a>(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#6844">expr</a>)</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">{</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_G.html#1842">get_state_expr</a></span><span class="default">(<a href="dictionary_M.html#6776">my_id</a>, <a href="dictionary_E.html#6844">expr</a>);</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">}</span>
+<a name="228"><font size=-1>228     </font></a><span class="default"></span>
+<a name="229"><font size=-1>229     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_R.html#760">register_modification_hooks</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_I.html#6845">id</a></span><span class="default">)</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">{</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">	<a href="dictionary_M.html#6776">my_id</a> = <a href="dictionary_I.html#6845">id</a>;</span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span>
+<a name="233"><font size=-1>233     </font></a><span class="default">	<a href="dictionary_H.html#6764">hooks</a> = <a href="dictionary_M.html#148">malloc</a>((<a href="dictionary_N.html#6179">num_checks</a> + </span><span class="number">1</span><span class="default">) * </span><span class="keyword">sizeof</span><span class="default">(*<a href="dictionary_H.html#6764">hooks</a>));</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">	<a href="dictionary_M.html#2189">memset</a>(<a href="dictionary_H.html#6764">hooks</a>, </span><span class="number">0</span><span class="default">, (<a href="dictionary_N.html#6179">num_checks</a> + </span><span class="number">1</span><span class="default">) * </span><span class="keyword">sizeof</span><span class="default">(*<a href="dictionary_H.html#6764">hooks</a>));</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">	<a href="dictionary_I.html#6766">indirect_hooks</a> = <a href="dictionary_M.html#148">malloc</a>((<a href="dictionary_N.html#6179">num_checks</a> + </span><span class="number">1</span><span class="default">) * </span><span class="keyword">sizeof</span><span class="default">(*<a href="dictionary_H.html#6764">hooks</a>));</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">	<a href="dictionary_M.html#2189">memset</a>(<a href="dictionary_I.html#6766">indirect_hooks</a>, </span><span class="number">0</span><span class="default">, (<a href="dictionary_N.html#6179">num_checks</a> + </span><span class="number">1</span><span class="default">) * </span><span class="keyword">sizeof</span><span class="default">(*<a href="dictionary_H.html#6764">hooks</a>));</span>
+<a name="237"><font size=-1>237     </font></a><span class="default"></span>
+<a name="238"><font size=-1>238     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_M.html#14527">match_assign</a>, ASSIGNMENT_HOOK);</span>
+<a name="239"><font size=-1>239     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_U.html#23583">unop_expr</a>, OP_HOOK);</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_A.html#4072">asm_expr</a>, ASM_HOOK);</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">}</span>
+<a name="242"><font size=-1>242     </font></a><span class="default"></span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_R.html#888">register_modification_hooks_late</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_I.html#6846">id</a></span><span class="default">)</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">{</span>
+<a name="245"><font size=-1>245     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_M.html#6136">match_call</a>, FUNCTION_CALL_HOOK);</span>
+<a name="246"><font size=-1>246     </font></a><span class="default">	<a href="dictionary_S.html#2745">select_return_states_hook</a>(PARAM_ADD, &amp;<a href="dictionary_D.html#16459">db_param_add</a>);</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">	<a href="dictionary_S.html#2745">select_return_states_hook</a>(PARAM_SET, &amp;<a href="dictionary_D.html#16459">db_param_add</a>);</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">	<a href="dictionary_A.html#88">add_hook</a>(&amp;<a href="dictionary_M.html#6841">match_declaration</a>, DECLARATION_HOOK);</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">}</span>
+<a name="250"><font size=-1>250     </font></a><span class="default"></span>
+<a name="251"><font size=-1>251     </font></a><span class="default"></span>
+</pre></body></html>

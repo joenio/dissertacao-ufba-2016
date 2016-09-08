@@ -1,0 +1,40 @@
+<html><head><title>JSPTokenizer.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-jsp/src/main/java/net/sourceforge/pmd/cpd/JSPTokenizer.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-jsp/src/main/java/net/sourceforge/pmd/cpd/JSPTokenizer.java";
+top.document.title  = "JSPTokenizer.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#494">cpd</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#440">io</a>.<a href="dictionary_J.html#881">StringReader</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>.<a href="dictionary_N.html#759">LanguageRegistry</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>.<a href="dictionary_N.html#2334">LanguageVersionHandler</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>.<a href="dictionary_N.html#3120">TokenManager</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#12">jsp</a>.<a href="dictionary_N.html#2">JspLanguageModule</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.jsp.ast.<a href="dictionary_N.html#28084">Token</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_N.html#7937">JSPTokenizer</a> implements <a href="dictionary_N.html#498">Tokenizer</a> </span><span class="default">{</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span>
+<a name="16"><font size=-1>16     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#28077">tokenize</a></span><span class="default">(<a href="dictionary_N.html#1816">SourceCode</a> <a href="dictionary_N.html#28081">sourceCode</a>, <a href="dictionary_N.html#1817">Tokens</a> <a href="dictionary_N.html#28082">tokenEntries</a>) {</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">	<a href="dictionary_S.html#376">StringBuilder</a> <a href="dictionary_N.html#28078">buffer</a> = <a href="dictionary_N.html#28081">sourceCode</a>.<a href="dictionary_N.html#1819">getCodeBuffer</a>();</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">	<a href="dictionary_N.html#2334">LanguageVersionHandler</a> <a href="dictionary_N.html#28080">languageVersionHandler</a> = <a href="dictionary_N.html#759">LanguageRegistry</a>.<a href="dictionary_N.html#768">getLanguage</a>(<a href="dictionary_N.html#2">JspLanguageModule</a>.<a href="dictionary_N.html#5">NAME</a>).<a href="dictionary_N.html#769">getDefaultVersion</a>().<a href="dictionary_N.html#2800">getLanguageVersionHandler</a>();</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">	<a href="dictionary_N.html#3120">TokenManager</a> <a href="dictionary_N.html#28083">tokenMgr</a> = <a href="dictionary_N.html#28080">languageVersionHandler</a>.<a href="dictionary_N.html#468">getParser</a>(<a href="dictionary_N.html#28080">languageVersionHandler</a>.<a href="dictionary_N.html#2340">getDefaultParserOptions</a>())</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">		.<a href="dictionary_N.html#6137">getTokenManager</a>(<a href="dictionary_N.html#28081">sourceCode</a>.<a href="dictionary_N.html#1820">getFileName</a>(), </span><span class="keyword">new <a href="dictionary_J.html#881">StringReader</a></span><span class="default">(<a href="dictionary_N.html#28078">buffer</a>.<a href="dictionary_T.html#342">toString</a>()));</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">	<a href="dictionary_N.html#28084">Token</a> <a href="dictionary_N.html#28079">currentToken</a> = (Token) <a href="dictionary_N.html#28083">tokenMgr</a>.<a href="dictionary_N.html#3122">getNextToken</a>();</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">	</span><span class="keyword">while </span><span class="default">(<a href="dictionary_N.html#28079">currentToken</a>.image.<a href="dictionary_L.html#229">length</a>() &gt; </span><span class="number">0</span><span class="default">) {</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">	    <a href="dictionary_N.html#28082">tokenEntries</a>.<a href="dictionary_N.html#1822">add</a>(</span><span class="keyword">new <a href="dictionary_N.html#1821">TokenEntry</a></span><span class="default">(String.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#28079">currentToken</a>.<a href="dictionary_K.html#5581">kind</a>), <a href="dictionary_N.html#28081">sourceCode</a>.<a href="dictionary_N.html#1820">getFileName</a>(),</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">		    <a href="dictionary_N.html#28079">currentToken</a>.<a href="dictionary_B.html#5575">beginLine</a>));</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">	    <a href="dictionary_N.html#28079">currentToken</a> = (Token) <a href="dictionary_N.html#28083">tokenMgr</a>.<a href="dictionary_N.html#3122">getNextToken</a>();</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">	}</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">	<a href="dictionary_N.html#28082">tokenEntries</a>.<a href="dictionary_N.html#1822">add</a>(<a href="dictionary_N.html#1818">TokenEntry</a>.<a href="dictionary_N.html#1823">getEOF</a>());</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">    }</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">}</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+</pre></body></html>

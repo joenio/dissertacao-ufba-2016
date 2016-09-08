@@ -1,0 +1,98 @@
+<html><head><title>FloatProperty.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/rule/properties/FloatProperty.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/rule/properties/FloatProperty.java";
+top.document.title  = "FloatProperty.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.rule.<a href="dictionary_N.html#386">properties</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#299">Map</a>;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.<a href="dictionary_N.html#10">pmd</a>.<a href="dictionary_N.html#2058">PropertyDescriptorFactory</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.rule.properties.<a href="dictionary_N.html#2060">factories</a>.<a href="dictionary_N.html#2059">BasicPropertyDescriptorFactory</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * Defines a property type that supports single float property values within an</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * upper and lower boundary.</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * </span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * @author Brian Remedios</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> */</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#9238">FloatProperty</a> extends <a href="dictionary_N.html#2319">AbstractNumericProperty</a></span><span class="default">&lt;<a href="dictionary_F.html#6139">Float</a>&gt; {</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    </span><span class="keyword">public static final <a href="dictionary_N.html#2058">PropertyDescriptorFactory</a> <a href="dictionary_N.html#9262">FACTORY</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_N.html#2059">BasicPropertyDescriptorFactory</a></span><span class="default">&lt;FloatProperty&gt;(</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">            </span><span class="keyword">float</span><span class="default">.</span><span class="keyword">class</span><span class="default">, <a href="dictionary_N.html#2320">NUMBER_FIELD_TYPES_BY_KEY</a>) {</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default">        </span><span class="keyword">public <a href="dictionary_N.html#9238">FloatProperty</a> <a href="dictionary_N.html#9240">createWith</a></span><span class="default">(<a href="dictionary_J.html#299">Map</a>&lt;<a href="dictionary_S.html#7">String</a>, <a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_N.html#9242">valuesById</a>) {</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">            </span><span class="keyword">final <a href="dictionary_S.html#7">String</a></span><span class="default">[] <a href="dictionary_N.html#9241">minMax</a> = <a href="dictionary_N.html#2321">minMaxFrom</a>(<a href="dictionary_N.html#9242">valuesById</a>);</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">            </span><span class="keyword">return new <a href="dictionary_N.html#9238">FloatProperty</a></span><span class="default">(<a href="dictionary_N.html#2063">nameIn</a>(<a href="dictionary_N.html#9242">valuesById</a>), <a href="dictionary_N.html#2064">descriptionIn</a>(<a href="dictionary_N.html#9242">valuesById</a>), <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9241">minMax</a>[</span><span class="number">0</span><span class="default">]),</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">                    <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9241">minMax</a>[</span><span class="number">1</span><span class="default">]), <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#2322">numericDefaultValueIn</a>(<a href="dictionary_N.html#9242">valuesById</a>)), </span><span class="number">0</span><span class="default">f);</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">        }</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    };</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">     * Constructor for FloatProperty that limits itself to a single value within</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">     * the specified limits.</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">     * </span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">     * @param theName String</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">     * @param theDescription String</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">     * @param min float</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">     * @param max float</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">     * @param theDefault float</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">     * @param theUIOrder float</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">     * @throws IllegalArgumentException</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">     */</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_N.html#9243">FloatProperty</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9248">theName</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9247">theDescription</a>, <a href="dictionary_F.html#6139">Float</a> <a href="dictionary_N.html#9245">min</a>, <a href="dictionary_F.html#6139">Float</a> <a href="dictionary_N.html#9244">max</a>, <a href="dictionary_F.html#6139">Float</a> <a href="dictionary_N.html#9246">theDefault</a>, </span><span class="keyword">float <a href="dictionary_N.html#9249">theUIOrder</a></span><span class="default">) {</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">(<a href="dictionary_N.html#9248">theName</a>, <a href="dictionary_N.html#9247">theDescription</a>, <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9245">min</a>), <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9244">max</a>), <a href="dictionary_F.html#6139">Float</a>.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9246">theDefault</a>), <a href="dictionary_N.html#9249">theUIOrder</a>);</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    }</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">     * Constructor for FloatProperty that limits itself to a single value within</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">     * the specified limits. Converts string arguments into the Float values.</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">     * </span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">     * @param theName String</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">     * @param theDescription String</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">     * @param minStr String</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">     * @param maxStr String</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">     * @param defaultStr String</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">     * @param theUIOrder float</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">     * @throws IllegalArgumentException</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">     */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_N.html#9250">FloatProperty</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9255">theName</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9254">theDescription</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9253">minStr</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9252">maxStr</a>, <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9251">defaultStr</a>,</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">            </span><span class="keyword">float <a href="dictionary_N.html#9256">theUIOrder</a></span><span class="default">) {</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">(<a href="dictionary_N.html#9255">theName</a>, <a href="dictionary_N.html#9254">theDescription</a>, <a href="dictionary_N.html#9259">floatFrom</a>(<a href="dictionary_N.html#9253">minStr</a>), <a href="dictionary_N.html#9259">floatFrom</a>(<a href="dictionary_N.html#9252">maxStr</a>), <a href="dictionary_N.html#9259">floatFrom</a>(<a href="dictionary_N.html#9251">defaultStr</a>), <a href="dictionary_N.html#9256">theUIOrder</a>);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">    }</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">     * @param numberString String</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">     * @return Float</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">     */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">    </span><span class="keyword">public static <a href="dictionary_F.html#6139">Float</a> <a href="dictionary_N.html#9259">floatFrom</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9260">numberString</a>) {</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_F.html#6139">Float</a></span><span class="default">.<a href="dictionary_V.html#1786">valueOf</a>(<a href="dictionary_N.html#9260">numberString</a>);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    }</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * @return Class</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">     * @see net.sourceforge.pmd.PropertyDescriptor#type()</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">     */</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_C.html#508">Class</a></span><span class="default">&lt;<a href="dictionary_F.html#6139">Float</a>&gt; <a href="dictionary_N.html#9261">type</a>() {</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_F.html#6139">Float</a></span><span class="default">.</span><span class="keyword">class</span><span class="default">;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    }</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">     * Creates an property value of the right type from a raw string.</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">     * </span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">     * @param value String</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">     * @return Object</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">     */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">    </span><span class="keyword">protected </span><span class="default">Object <a href="dictionary_N.html#9257">createFrom</a>(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#9258">value</a>) {</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#9259">floatFrom</a></span><span class="default">(<a href="dictionary_N.html#9258">value</a>);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">}</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+</pre></body></html>

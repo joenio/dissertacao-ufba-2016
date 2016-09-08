@@ -1,0 +1,159 @@
+<html><head><title>SourceFileScope.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/SourceFileScope.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/SourceFileScope.java";
+top.document.title  = "SourceFileScope.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#1631">symboltable</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#334">Collections</a>;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#690">HashMap</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#374">HashSet</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#375">List</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#299">Map</a>;</span>
+<a name="12"><font size=-1>12     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#166">util</a>.<a href="dictionary_J.html#111">Set</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#576">ast</a>.<a href="dictionary_N.html#510">Node</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.java.<a href="dictionary_N.html#54">ast</a>.<a href="dictionary_N.html#1268">ASTImportDeclaration</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#1163">symboltable</a>.<a href="dictionary_N.html#3538">NameDeclaration</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#1163">symboltable</a>.<a href="dictionary_N.html#1919">NameOccurrence</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">net.sourceforge.pmd.lang.<a href="dictionary_N.html#1163">symboltable</a>.<a href="dictionary_N.html#1161">Scope</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * This scope is the outer most scope of a Java file.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * A Source File can contain one ore more classes.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> */</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#9966">SourceFileScope</a> extends <a href="dictionary_N.html#14942">AbstractJavaScope</a> </span><span class="default">{</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#26012">packageImage</a></span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_N.html#15135">TypeSet</a> <a href="dictionary_N.html#26013">types</a></span><span class="default">;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_N.html#25982">SourceFileScope</a></span><span class="default">() {</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">(</span><span class="string">&quot;&quot;</span><span class="default">);</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">    }</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_N.html#25981">SourceFileScope</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#25985">packageImage</a>) {</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#26012">packageImage</a> = <a href="dictionary_N.html#25985">packageImage</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    }</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">     * Configures the type resolution for the symbol table.</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">     * @param classLoader the class loader to use to find additional classes</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">     * @param imports the import declarations</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">     */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">    </span><span class="keyword">public void <a href="dictionary_N.html#25983">configureImports</a></span><span class="default">(<a href="dictionary_C.html#2098">ClassLoader</a> <a href="dictionary_N.html#25989">classLoader</a>, <a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_N.html#1268">ASTImportDeclaration</a>&gt; <a href="dictionary_N.html#25990">imports</a>) {</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#26013">types</a> = </span><span class="keyword">new <a href="dictionary_N.html#15187">TypeSet</a></span><span class="default">(<a href="dictionary_N.html#25989">classLoader</a>);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">        <a href="dictionary_N.html#26013">types</a>.<a href="dictionary_N.html#15201">setASTCompilationUnitPackage</a>(<a href="dictionary_N.html#26012">packageImage</a>);</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">        </span><span class="keyword">for </span><span class="default">(<a href="dictionary_N.html#1268">ASTImportDeclaration</a> <a href="dictionary_N.html#25988">i</a> : <a href="dictionary_N.html#25990">imports</a>) {</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#25988">i</a>.<a href="dictionary_N.html#11346">isImportOnDemand</a>()) {</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">                <a href="dictionary_N.html#26013">types</a>.<a href="dictionary_N.html#15190">addImport</a>(<a href="dictionary_N.html#25988">i</a>.<a href="dictionary_N.html#1273">getImportedName</a>() + </span><span class="string">&quot;.*&quot;</span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">            } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">                <a href="dictionary_N.html#26013">types</a>.<a href="dictionary_N.html#15190">addImport</a>(<a href="dictionary_N.html#25988">i</a>.<a href="dictionary_N.html#1273">getImportedName</a>());</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">            }</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">        }</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    }</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_J.html#111">Set</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_N.html#25999">getExplicitImports</a>() {</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#26013">types</a> </span><span class="default">!= </span><span class="keyword">null </span><span class="default">? <a href="dictionary_N.html#26013">types</a>.<a href="dictionary_N.html#15198">getExplicitImports</a>() : <a href="dictionary_J.html#334">Collections</a>.&lt;<a href="dictionary_S.html#7">String</a>&gt; <a href="dictionary_E.html#5668">emptySet</a>();</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    }</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">     * Whether an auxclasspath has been configured or not.</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">     * This can be used to enable/disable more detailed symbol table analysis and type resolution</span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">     * can be used - or to fall back to more simple implementation.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">     * @return &lt;code&gt;true&lt;/code&gt; if the auxclasspath is configured and types can be resolved reliably.</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">     * @see #resolveType(String)</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">     */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">    </span><span class="keyword">public boolean <a href="dictionary_N.html#26007">hasAuxclasspath</a></span><span class="default">() {</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#26013">types</a></span><span class="default">.<a href="dictionary_N.html#15200">hasAuxclasspath</a>();</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">    }</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">     * Tries to resolve a class by name.</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * @param name the name of the class</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">     * @return the class or &lt;code&gt;null&lt;/code&gt; if no class could be found</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">     */</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_C.html#508">Class</a></span><span class="default">&lt;?&gt; <a href="dictionary_N.html#26008">resolveType</a>(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#26010">name</a>) {</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">        </span><span class="keyword">try </span><span class="default">{</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">            </span><span class="keyword">return <a href="dictionary_N.html#26013">types</a></span><span class="default">.<a href="dictionary_N.html#15193">findClass</a>(<a href="dictionary_N.html#26010">name</a>);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#772">ClassNotFoundException</a> <a href="dictionary_N.html#26009">e</a>) {</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">            </span><span class="keyword">return null</span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">        }</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">    }</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#24845">getPackageName</a></span><span class="default">() {</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#26012">packageImage</a></span><span class="default">;</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    }</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">     * {@inheritDoc}</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">     * @throws IllegalArgumentException if declaration is not a {@link ClassNameDeclaration}</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">     */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">    </span><span class="default">@<a href="dictionary_O.html#74">Override</a></span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#25986">addDeclaration</a></span><span class="default">(<a href="dictionary_N.html#3538">NameDeclaration</a> <a href="dictionary_N.html#25987">declaration</a>) {</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(!(<a href="dictionary_N.html#25987">declaration</a> </span><span class="keyword">instanceof <a href="dictionary_N.html#1622">ClassNameDeclaration</a></span><span class="default">)) {</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_I.html#2057">IllegalArgumentException</a></span><span class="default">(</span><span class="string">&quot;A SourceFileScope can only contain classes.&quot;</span><span class="default">);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">        }</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">        </span><span class="keyword">super</span><span class="default">.<a href="dictionary_N.html#14947">addDeclaration</a>(<a href="dictionary_N.html#25987">declaration</a>);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">    }</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">     * Convenience method that casts the declarations to {@link ClassNameDeclaration}s.</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">     * @see #getDeclarations()</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">     * @return all class name declarations</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">     */</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_J.html#299">Map</a></span><span class="default">&lt;<a href="dictionary_N.html#1622">ClassNameDeclaration</a>, <a href="dictionary_J.html#375">List</a>&lt;<a href="dictionary_N.html#1919">NameOccurrence</a>&gt;&gt; <a href="dictionary_N.html#25998">getClassDeclarations</a>() {</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_G.html#7996">getDeclarations</a></span><span class="default">(<a href="dictionary_N.html#1622">ClassNameDeclaration</a>.</span><span class="keyword">class</span><span class="default">);</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    }</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#26011">toString</a></span><span class="default">() {</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">        </span><span class="keyword">return </span><span class="string">&quot;SourceFileScope: &quot; </span><span class="default">+ <a href="dictionary_N.html#15421">glomNames</a>(<a href="dictionary_N.html#25998">getClassDeclarations</a>().<a href="dictionary_K.html#6001">keySet</a>());</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    }</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_N.html#1622">ClassNameDeclaration</a> <a href="dictionary_N.html#25991">findClassNameDeclaration</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#25993">name</a>) {</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">        <a href="dictionary_N.html#15414">ImageFinderFunction</a> <a href="dictionary_N.html#25992">finder</a> = </span><span class="keyword">new <a href="dictionary_N.html#15419">ImageFinderFunction</a></span><span class="default">(<a href="dictionary_N.html#25993">name</a>);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">        <a href="dictionary_N.html#10812">Applier</a>.<a href="dictionary_N.html#10814">apply</a>(<a href="dictionary_N.html#25992">finder</a>, <a href="dictionary_N.html#25998">getClassDeclarations</a>().<a href="dictionary_K.html#6001">keySet</a>().<a href="dictionary_I.html#730">iterator</a>());</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">        </span><span class="keyword">return </span><span class="default">(ClassNameDeclaration)<a href="dictionary_N.html#25992">finder</a>.<a href="dictionary_N.html#15420">getDecl</a>();</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">    }</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default">    </span><span class="keyword">protected <a href="dictionary_J.html#111">Set</a></span><span class="default">&lt;<a href="dictionary_N.html#3538">NameDeclaration</a>&gt; <a href="dictionary_N.html#25994">findVariableHere</a>(<a href="dictionary_N.html#6180">JavaNameOccurrence</a> <a href="dictionary_N.html#25996">occ</a>) {</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">        <a href="dictionary_J.html#111">Set</a>&lt;<a href="dictionary_N.html#3538">NameDeclaration</a>&gt; <a href="dictionary_N.html#25997">result</a> = </span><span class="keyword">new <a href="dictionary_J.html#374">HashSet</a></span><span class="default">&lt;&gt;();</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">        <a href="dictionary_N.html#15414">ImageFinderFunction</a> <a href="dictionary_N.html#25995">finder</a> = </span><span class="keyword">new <a href="dictionary_N.html#15419">ImageFinderFunction</a></span><span class="default">(<a href="dictionary_N.html#25996">occ</a>.<a href="dictionary_N.html#8477">getImage</a>());</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">        <a href="dictionary_N.html#10812">Applier</a>.<a href="dictionary_N.html#10814">apply</a>(<a href="dictionary_N.html#25995">finder</a>, <a href="dictionary_N.html#8016">getDeclarations</a>().<a href="dictionary_K.html#6001">keySet</a>().<a href="dictionary_I.html#730">iterator</a>());</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#25995">finder</a>.<a href="dictionary_N.html#15420">getDecl</a>() != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">            <a href="dictionary_N.html#25997">result</a>.<a href="dictionary_A.html#117">add</a>(<a href="dictionary_N.html#25995">finder</a>.<a href="dictionary_N.html#15420">getDecl</a>());</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">        }</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#25997">result</a></span><span class="default">;</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">    }</span>
+<a name="126"><font size=-1>126     </font></a><span class="default"></span>
+<a name="127"><font size=-1>127     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">     * Returns a set of all types defined within this source file.</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">     * This includes all top-level types and nested types.</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">     * @return set of all types in this source file.</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">     */</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_J.html#299">Map</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>, <a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#26000">getQualifiedTypeNames</a>() {</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#26001">getSubTypes</a></span><span class="default">(</span><span class="keyword">null</span><span class="default">, </span><span class="keyword">this</span><span class="default">);</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">    }</span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span>
+<a name="136"><font size=-1>136     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_J.html#299">Map</a></span><span class="default">&lt;<a href="dictionary_S.html#7">String</a>, <a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#26001">getSubTypes</a>(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#26004">qualifyingName</a>, <a href="dictionary_N.html#1161">Scope</a> <a href="dictionary_N.html#26005">subType</a>) {</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">        <a href="dictionary_J.html#299">Map</a>&lt;<a href="dictionary_S.html#7">String</a>, <a href="dictionary_N.html#510">Node</a>&gt; <a href="dictionary_N.html#26006">types</a> = </span><span class="keyword">new <a href="dictionary_J.html#690">HashMap</a></span><span class="default">&lt;&gt;();</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">        </span><span class="keyword">for </span><span class="default">(<a href="dictionary_N.html#1622">ClassNameDeclaration</a> <a href="dictionary_N.html#26002">c</a> : <a href="dictionary_N.html#26005">subType</a>.<a href="dictionary_N.html#7878">getDeclarations</a>(<a href="dictionary_N.html#1622">ClassNameDeclaration</a>.</span><span class="keyword">class</span><span class="default">).<a href="dictionary_K.html#6001">keySet</a>()) {</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">            <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#26003">typeName</a> = <a href="dictionary_N.html#26002">c</a>.<a href="dictionary_N.html#10792">getName</a>();</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#26004">qualifyingName</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">                <a href="dictionary_N.html#26003">typeName</a> = <a href="dictionary_N.html#26004">qualifyingName</a> + </span><span class="string">&quot;.&quot; </span><span class="default">+ <a href="dictionary_N.html#26003">typeName</a>;</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">            }</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">            <a href="dictionary_N.html#26006">types</a>.<a href="dictionary_P.html#214">put</a>(<a href="dictionary_N.html#26003">typeName</a>, <a href="dictionary_N.html#26002">c</a>.<a href="dictionary_N.html#8022">getNode</a>());</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">            <a href="dictionary_N.html#26006">types</a>.<a href="dictionary_P.html#782">putAll</a>(<a href="dictionary_N.html#26001">getSubTypes</a>(<a href="dictionary_N.html#26003">typeName</a>, <a href="dictionary_N.html#26002">c</a>.<a href="dictionary_N.html#10124">getScope</a>()));</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">        }</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#26006">types</a></span><span class="default">;</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">    }</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">}</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+</pre></body></html>

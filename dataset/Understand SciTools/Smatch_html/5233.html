@@ -1,0 +1,48 @@
+<html><head><title>mmap-blob.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/compat/mmap-blob.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/compat/mmap-blob.c";
+top.document.title  = "mmap-blob.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&lt;sys/mman.h&gt;</span>
+<a name="2"><font size=-1>2     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;sys/types.h&gt;</span>
+<a name="3"><font size=-1>3     </font></a><span class="string"></span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="comment">/*</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * Allow old BSD naming too, it would be a pity to have to make a</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * separate file just for this.</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> */</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_M.html#5236">MAP_ANONYMOUS</a></span>
+<a name="9"><font size=-1>9     </font></a><span class="preproc">#define <a href="dictionary_M.html#5236">MAP_ANONYMOUS</a> </span><span class="default">MAP_ANON</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="11"><font size=-1>11     </font></a><span class="preproc"></span>
+<a name="12"><font size=-1>12     </font></a><span class="preproc"></span><span class="comment">/*</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * Our blob allocator enforces the strict CHUNK size</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * requirement, as a portability check.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span><span class="keyword">void </span><span class="default">*<a href="dictionary_B.html#18752">blob_alloc</a>(</span><span class="keyword">unsigned long <a href="dictionary_S.html#5238">size</a></span><span class="default">)</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">{</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">	</span><span class="keyword">void </span><span class="default">*<a href="dictionary_P.html#5239">ptr</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span>
+<a name="20"><font size=-1>20     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_S.html#5238">size</a> &amp; ~<a href="dictionary_C.html#5241">CHUNK</a>)</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">		<a href="dictionary_D.html#4369">die</a>(</span><span class="string">&quot;internal error: bad allocation size (%lu bytes)&quot;</span><span class="default">, <a href="dictionary_S.html#5238">size</a>);</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">	<a href="dictionary_P.html#5239">ptr</a> = <a href="dictionary_M.html#5242">mmap</a>(<a href="dictionary_N.html#1523">NULL</a>, <a href="dictionary_S.html#5238">size</a>, <a href="dictionary_P.html#5243">PROT_READ</a> | <a href="dictionary_P.html#5244">PROT_WRITE</a>, <a href="dictionary_M.html#5245">MAP_PRIVATE</a> | <a href="dictionary_M.html#5236">MAP_ANONYMOUS</a>, -</span><span class="number">1</span><span class="default">, </span><span class="number">0</span><span class="default">);</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#5239">ptr</a> == <a href="dictionary_M.html#5247">MAP_FAILED</a>)</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">		<a href="dictionary_P.html#5239">ptr</a> = <a href="dictionary_N.html#1523">NULL</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#5239">ptr</a></span><span class="default">;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">}</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_B.html#5683">blob_free</a></span><span class="default">(</span><span class="keyword">void </span><span class="default">*<a href="dictionary_A.html#5249">addr</a>, </span><span class="keyword">unsigned long <a href="dictionary_S.html#5250">size</a></span><span class="default">)</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">{</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(!<a href="dictionary_S.html#5250">size</a> || (<a href="dictionary_S.html#5250">size</a> &amp; ~<a href="dictionary_C.html#5241">CHUNK</a>) || ((</span><span class="keyword">unsigned long</span><span class="default">) <a href="dictionary_A.html#5249">addr</a> &amp; </span><span class="number">512</span><span class="default">))</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">		<a href="dictionary_D.html#4369">die</a>(</span><span class="string">&quot;internal error: bad blob free (%lu bytes at %p)&quot;</span><span class="default">, <a href="dictionary_S.html#5250">size</a>, <a href="dictionary_A.html#5249">addr</a>);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_D.html#5251">DEBUG</a></span>
+<a name="33"><font size=-1>33     </font></a><span class="preproc">	<a href="dictionary_M.html#5252">munmap</a></span><span class="default">(<a href="dictionary_A.html#5249">addr</a>, <a href="dictionary_S.html#5250">size</a>);</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="35"><font size=-1>35     </font></a><span class="preproc">	</span><span class="default">mprotect(<a href="dictionary_A.html#5249">addr</a>, <a href="dictionary_S.html#5250">size</a>, PROT_NONE);</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="37"><font size=-1>37     </font></a><span class="preproc"></span><span class="default">}</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+</pre></body></html>

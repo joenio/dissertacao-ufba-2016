@@ -1,0 +1,233 @@
+<html><head><title>ClassSymbol.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/wap/wap-2.1/src/java/org/homeunix/wap/table/symbol/ClassSymbol.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/wap/wap-2.1/src/java/org/homeunix/wap/table/symbol/ClassSymbol.java";
+top.document.title  = "ClassSymbol.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * This class will represent method or user defined function category.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">org.homeunix.wap.table.<a href="dictionary_O.html#343">symbol</a>;</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#322">util</a>.*;</span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#1159">logging</a>.<a href="dictionary_J.html#1075">Level</a>;</span>
+<a name="9"><font size=-1>9     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#1159">logging</a>.<a href="dictionary_J.html#1077">Logger</a>;</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * @author Iberia Medeiros</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> */</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_O.html#332">ClassSymbol</a> implements <a href="dictionary_C.html#1170">Cloneable</a></span><span class="default">{</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">    <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8196">className</a>;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">    <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8198">fileClass</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">    <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8197">extendsNameClass</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8199">fileExtendsClass</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">    <a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#8195">attributes</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">    <a href="dictionary_O.html#341">MethodTable</a> <a href="dictionary_O.html#8200">membersMethods</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">    </span>
+<a name="23"><font size=-1>23     </font></a><span class="default">    </span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    </span><span class="comment">// ****** CONSTRUCTORS ***********</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">     </span><span class="keyword">public <a href="dictionary_O.html#4685">ClassSymbol</a></span><span class="default">(<a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8149">class_name</a>, <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8151">file</a>, <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8150">extendsClass</a>) {</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8196">className</a> = <a href="dictionary_O.html#8149">class_name</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8198">fileClass</a> = <a href="dictionary_O.html#8151">file</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8197">extendsNameClass</a> = <a href="dictionary_O.html#8150">extendsClass</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">        </span><span class="comment">//this.attributes = new ArrayList&lt;CallSymbol&gt;();</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">        //this.membersMethods = new ArrayList&lt;MethodSymbol&gt;();</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">    </span><span class="default">}</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">    </span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    </span>
+<a name="34"><font size=-1>34     </font></a><span class="default">    </span><span class="comment">// *** METHODS ********</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8172">getClassName</a></span><span class="default">() {</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8196">className</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">    }</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#432">getExtendsClassName</a></span><span class="default">() {</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8197">extendsNameClass</a>;</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    }</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#394">getFileClass</a></span><span class="default">() {</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8198">fileClass</a>;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">    }</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#439">getFileExtendsClass</a></span><span class="default">() {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8199">fileExtendsClass</a>;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    }</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    </span>
+<a name="51"><font size=-1>51     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#4696">getAttributes</a></span><span class="default">() {</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8195">attributes</a>;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">    }</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">       </span>
+<a name="55"><font size=-1>55     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_O.html#341">MethodTable</a> <a href="dictionary_O.html#4690">getMembersMethods</a></span><span class="default">() {</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_O.html#8200">membersMethods</a>;</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">    }</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_O.html#337">MethodClass</a> <a href="dictionary_O.html#391">getMethodClass</a></span><span class="default">(<a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8185">methName</a>, <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8186">methType</a>, <a href="dictionary_M.html#314">Map</a> <a href="dictionary_O.html#8184">mct</a>) {</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">        <a href="dictionary_O.html#340">MethodSymbol</a> <a href="dictionary_O.html#8188">mss_final</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">        <a href="dictionary_O.html#332">ClassSymbol</a> <a href="dictionary_O.html#8176">cs</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">        <a href="dictionary_O.html#337">MethodClass</a> <a href="dictionary_O.html#8183">mc</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_O.html#8181">i</a></span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">        <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8178">f</a> = </span><span class="string">&quot;&quot;</span><span class="default">;</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">        <a href="dictionary_I.html#312">Iterator</a> &lt;<a href="dictionary_O.html#340">MethodSymbol</a>&gt; <a href="dictionary_O.html#8182">it</a> = </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#4690">getMembersMethods</a>().<a href="dictionary_O.html#449">getMembers</a>().<a href="dictionary_I.html#83">iterator</a>();</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">        <a href="dictionary_O.html#340">MethodSymbol</a> <a href="dictionary_O.html#8187">ms</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">        <a href="dictionary_B.html#2">Boolean</a> <a href="dictionary_O.html#8174">contConstruct</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">        <a href="dictionary_B.html#2">Boolean</a> <a href="dictionary_O.html#8175">cont_methName</a> = </span><span class="keyword">false</span><span class="default">;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">        </span><span class="keyword">for </span><span class="default">(;<a href="dictionary_O.html#8182">it</a>.<a href="dictionary_H.html#82">hasNext</a>();){</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">            <a href="dictionary_O.html#8187">ms</a> = <a href="dictionary_O.html#8182">it</a>.<a href="dictionary_N.html#84">next</a>();</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8187">ms</a>.<a href="dictionary_O.html#440">getFunctionName</a>().<a href="dictionary_E.html#31">equals</a>(<a href="dictionary_O.html#8185">methName</a>) == </span><span class="keyword">true</span><span class="default">){</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">                <a href="dictionary_O.html#8178">f</a> = <a href="dictionary_O.html#8185">methName</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">                <a href="dictionary_O.html#8175">cont_methName</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">                </span><span class="keyword">break</span><span class="default">;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">            }</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8186">methType</a>.<a href="dictionary_E.html#31">equals</a>(</span><span class="string">&quot;construct&quot;</span><span class="default">) == </span><span class="keyword">true </span><span class="default">&amp;&amp; <a href="dictionary_O.html#8187">ms</a>.<a href="dictionary_O.html#440">getFunctionName</a>().<a href="dictionary_E.html#31">equals</a>(</span><span class="string">&quot;__construct&quot;</span><span class="default">) == </span><span class="keyword">true</span><span class="default">){</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">                <a href="dictionary_O.html#8178">f</a> = </span><span class="string">&quot;__construct&quot;</span><span class="default">;</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">                <a href="dictionary_O.html#8174">contConstruct</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">                </span><span class="keyword">break</span><span class="default">;</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">            }</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">        }</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8175">cont_methName</a> == </span><span class="keyword">true </span><span class="default">|| <a href="dictionary_O.html#8174">contConstruct</a> == </span><span class="keyword">true</span><span class="default">){</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">            <a href="dictionary_O.html#8188">mss_final</a> = <a href="dictionary_O.html#8187">ms</a>;</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">            <a href="dictionary_O.html#8176">cs</a> = </span><span class="keyword">this</span><span class="default">;</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">        }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">        </span><span class="keyword">else</span><span class="default">{</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">            <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8179">ff</a> = </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8199">fileExtendsClass</a>;</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">            <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8180">fff</a> = </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8197">extendsNameClass</a>;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">            </span><span class="keyword">try</span><span class="default">{</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">                <a href="dictionary_O.html#333">ClassTable</a> <a href="dictionary_O.html#8177">ct</a> = (ClassTable) <a href="dictionary_O.html#8184">mct</a>.<a href="dictionary_G.html#9">get</a>(<a href="dictionary_O.html#8179">ff</a>);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">                <a href="dictionary_O.html#8176">cs</a> = <a href="dictionary_O.html#8177">ct</a>.<a href="dictionary_O.html#390">getClassOfListClasses</a>(<a href="dictionary_O.html#8180">fff</a>);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">                <a href="dictionary_O.html#8183">mc</a> = <a href="dictionary_O.html#8176">cs</a>.<a href="dictionary_O.html#391">getMethodClass</a>(<a href="dictionary_O.html#8185">methName</a>, <a href="dictionary_O.html#8186">methType</a>, <a href="dictionary_O.html#8184">mct</a>);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_E.html#3">Exception</a> <a href="dictionary_O.html#8173">e</a>){}</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">        }</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8188">mss_final</a> != </span><span class="keyword">null</span><span class="default">)</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">            <a href="dictionary_O.html#8183">mc</a> = </span><span class="keyword">new <a href="dictionary_O.html#780">MethodClass</a></span><span class="default">(<a href="dictionary_O.html#8188">mss_final</a>, <a href="dictionary_O.html#8176">cs</a>);</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_O.html#8183">mc</a></span><span class="default">;</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    }</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    </span><span class="comment">/*</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">    public void setFunctionName(String name) {</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">        this.setName(name);</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">    }    </span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">    </span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">    public void setHaveSubFunctions() {</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">        this.haveSubFunctions = true;</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">    }</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">    </span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">    public void setProgenitorFunction(String p) {</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">        this.Progenitorfunction = p;</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">    }</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment"></span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">     *</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">     */</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment"></span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">    </span><span class="keyword">public void <a href="dictionary_O.html#4692">setClassName</a></span><span class="default">(<a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8189">n</a>) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8196">className</a> = <a href="dictionary_O.html#8189">n</a>;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8195">attributes</a> = </span><span class="keyword">new <a href="dictionary_O.html#360">SymbolTable</a></span><span class="default">(<a href="dictionary_O.html#8189">n</a>);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8200">membersMethods</a> = </span><span class="keyword">new <a href="dictionary_O.html#2022">MethodTable</a></span><span class="default">(<a href="dictionary_O.html#8189">n</a>);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">    }</span>
+<a name="125"><font size=-1>125     </font></a><span class="default"></span>
+<a name="126"><font size=-1>126     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_O.html#4697">setExtendedNameClass</a></span><span class="default">(<a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8194">n</a>, <a href="dictionary_S.html#316">String</a> <a href="dictionary_O.html#8192">filename</a>, <a href="dictionary_M.html#314">Map</a> <a href="dictionary_O.html#8193">mct</a>) {</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8197">extendsNameClass</a> = <a href="dictionary_O.html#8194">n</a>;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">        <a href="dictionary_O.html#333">ClassTable</a> <a href="dictionary_O.html#8191">ct</a> = (ClassTable) <a href="dictionary_O.html#8193">mct</a>.<a href="dictionary_G.html#9">get</a>(<a href="dictionary_O.html#8192">filename</a>);</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8191">ct</a>.<a href="dictionary_O.html#431">containsClass</a>(<a href="dictionary_O.html#8194">n</a>) == </span><span class="keyword">true</span><span class="default">)</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">            </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8199">fileExtendsClass</a> = <a href="dictionary_O.html#8192">filename</a>;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">        </span><span class="keyword">else</span><span class="default">{</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">            </span><span class="keyword">for </span><span class="default">(Object <a href="dictionary_O.html#8190">key</a> : <a href="dictionary_O.html#8193">mct</a>.<a href="dictionary_K.html#575">keySet</a>()){</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">                </span><span class="comment">//String k = (String) key;</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">                <a href="dictionary_O.html#8191">ct</a> </span><span class="default">= (ClassTable) <a href="dictionary_O.html#8193">mct</a>.<a href="dictionary_G.html#9">get</a>(<a href="dictionary_O.html#8190">key</a>);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8191">ct</a>.<a href="dictionary_O.html#431">containsClass</a>(<a href="dictionary_O.html#8194">n</a>) == </span><span class="keyword">true</span><span class="default">){</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">                    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#8199">fileExtendsClass</a> = (String) <a href="dictionary_O.html#8190">key</a>;</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">                    </span><span class="keyword">break</span><span class="default">;</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">                }</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">            }</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">        }</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">    }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span>
+<a name="143"><font size=-1>143     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">    public void setAttribut(CallSymbol attribute) {</span>
+<a name="145"><font size=-1>145     </font></a><span class="comment">        attributes.define(attribute, attribute, false);</span>
+<a name="146"><font size=-1>146     </font></a><span class="comment">        //attributes.add(attribute);</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">    }</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">    </span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">    public void setMemberMethod(MethodSymbol mth) {</span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">        membersMethods.add(mth);</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment"></span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">    }</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">*/</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment"></span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">    </span><span class="keyword">public <a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#8152">copyListAttributes</a></span><span class="default">(<a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#8159">st_toCopy</a>) {</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">        <a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#8154">att</a> = </span><span class="keyword">new <a href="dictionary_O.html#360">SymbolTable</a></span><span class="default">(</span><span class="keyword">null</span><span class="default">);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">        <a href="dictionary_O.html#330">SymbolTable</a> <a href="dictionary_O.html#8158">st_ori</a>;</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">        </span><span class="comment">//List &lt;CallSymbol&gt; att = new ArrayList&lt;CallSymbol&gt;();</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">        <a href="dictionary_O.html#339">Symbol</a> <a href="dictionary_O.html#8160">sym</a></span><span class="default">;</span>
+<a name="160"><font size=-1>160     </font></a><span class="default"></span>
+<a name="161"><font size=-1>161     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_O.html#8159">st_toCopy</a> == </span><span class="keyword">null</span><span class="default">)</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">            <a href="dictionary_O.html#8158">st_ori</a> = </span><span class="keyword">this</span><span class="default">.<a href="dictionary_O.html#4696">getAttributes</a>();</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">        </span><span class="keyword">else</span>
+<a name="164"><font size=-1>164     </font></a><span class="keyword">            <a href="dictionary_O.html#8158">st_ori</a> </span><span class="default">= <a href="dictionary_O.html#8159">st_toCopy</a>;</span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span>
+<a name="166"><font size=-1>166     </font></a><span class="default">        </span><span class="comment">//copia a lista de atributos da classe</span>
+<a name="167"><font size=-1>167     </font></a><span class="comment">        <a href="dictionary_O.html#331">Scope</a> <a href="dictionary_O.html#8156">scp</a></span><span class="default">, <a href="dictionary_O.html#8157">scpRoot</a>=</span><span class="keyword">null</span><span class="default">;</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">        <a href="dictionary_O.html#1609">CallSymbol</a> <a href="dictionary_O.html#8155">curScope</a>;</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">        </span><span class="keyword">for</span><span class="default">(<a href="dictionary_I.html#312">Iterator</a> &lt;<a href="dictionary_O.html#339">Symbol</a>&gt; <a href="dictionary_O.html#8153">it</a> = <a href="dictionary_O.html#8158">st_ori</a>.<a href="dictionary_O.html#361">getMembers</a>().<a href="dictionary_I.html#83">iterator</a>(); <a href="dictionary_O.html#8153">it</a>.<a href="dictionary_H.html#82">hasNext</a>();){</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">            <a href="dictionary_O.html#8156">scp</a> = (Scope) <a href="dictionary_O.html#8153">it</a>.<a href="dictionary_N.html#84">next</a>();</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">            <a href="dictionary_O.html#8160">sym</a> = <a href="dictionary_O.html#8156">scp</a>.<a href="dictionary_O.html#352">getScopeSymbol</a>();</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">            <a href="dictionary_O.html#8155">curScope</a> = </span><span class="keyword">new <a href="dictionary_O.html#1615">CallSymbol</a> </span><span class="default">(<a href="dictionary_O.html#8160">sym</a>.<a href="dictionary_O.html#353">getName</a>(), <a href="dictionary_O.html#8160">sym</a>.<a href="dictionary_O.html#354">getCodeLine</a>(), </span><span class="keyword">null</span><span class="default">, <a href="dictionary_O.html#8160">sym</a>.<a href="dictionary_O.html#355">getTainted</a>(), <a href="dictionary_O.html#8160">sym</a>.<a href="dictionary_O.html#357">getFileSymbol</a>());</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">            <a href="dictionary_O.html#8155">curScope</a>.<a href="dictionary_O.html#1223">setRootScope</a>(<a href="dictionary_O.html#8155">curScope</a>);</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">            <a href="dictionary_O.html#8155">curScope</a>.<a href="dictionary_O.html#1225">setScope</a>(<a href="dictionary_O.html#8155">curScope</a>);</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">            <a href="dictionary_O.html#8155">curScope</a>.<a href="dictionary_O.html#1214">setIsVariableSymbol</a>(</span><span class="keyword">false</span><span class="default">);</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">            <a href="dictionary_O.html#8161">copyScope</a>(<a href="dictionary_O.html#8156">scp</a>, <a href="dictionary_O.html#8155">curScope</a>);</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">            <a href="dictionary_O.html#8154">att</a>.<a href="dictionary_D.html#1509">define</a>(<a href="dictionary_O.html#8155">curScope</a>, <a href="dictionary_O.html#8155">curScope</a>, </span><span class="keyword">false</span><span class="default">);</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">            </span><span class="comment">//att.add(curScope);</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">         </span><span class="default">}</span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">         System.out.println(&quot;\n\n\t\tPRINT COPY\n&quot;);</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">         for(Iterator &lt;Symbol&gt; it = mt.getMembers().iterator(); it.hasNext();){</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">            scp = (Scope) it.next();</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">            scp.print(scp);</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">         }</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment"> *</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment"> */</span>
+<a name="188"><font size=-1>188     </font></a><span class="comment"></span>
+<a name="189"><font size=-1>189     </font></a><span class="comment">        </span><span class="keyword">return <a href="dictionary_O.html#8154">att</a></span><span class="default">;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">    }</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default">    </span><span class="keyword">private void <a href="dictionary_O.html#8161">copyScope</a></span><span class="default">(<a href="dictionary_O.html#331">Scope</a> <a href="dictionary_O.html#8167">cs</a>, <a href="dictionary_O.html#331">Scope</a> <a href="dictionary_O.html#8168">csClone</a>){</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">        <a href="dictionary_O.html#339">Symbol</a> <a href="dictionary_O.html#8165">aux1</a>, <a href="dictionary_O.html#8166">aux2</a>;</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">        <a href="dictionary_O.html#331">Scope</a> <a href="dictionary_O.html#8170">s</a>, <a href="dictionary_O.html#8171">s1</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">        <a href="dictionary_O.html#1609">CallSymbol</a> <a href="dictionary_O.html#8169">curScope1</a>;</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_O.html#8167">cs</a>.<a href="dictionary_O.html#400">getMembers</a>().<a href="dictionary_I.html#189">isEmpty</a>()){</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">            </span><span class="keyword">for</span><span class="default">(<a href="dictionary_I.html#312">Iterator</a> &lt;<a href="dictionary_O.html#339">Symbol</a>&gt; <a href="dictionary_O.html#8163">it</a> = <a href="dictionary_O.html#8167">cs</a>.<a href="dictionary_O.html#400">getMembers</a>().<a href="dictionary_I.html#83">iterator</a>(); <a href="dictionary_O.html#8163">it</a>.<a href="dictionary_H.html#82">hasNext</a>();){</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">                <a href="dictionary_O.html#8165">aux1</a> = <a href="dictionary_O.html#8163">it</a>.<a href="dictionary_N.html#84">next</a>();</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">( <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#399">getRootScope</a>() != </span><span class="keyword">null </span><span class="default">) { </span><span class="comment">// is a root of a new scope?</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">                        <a href="dictionary_O.html#8170">s</a> </span><span class="default">= <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#399">getRootScope</a>();</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">                        </span><span class="keyword">try </span><span class="default">{</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">                            <a href="dictionary_O.html#8171">s1</a> = (Scope) <a href="dictionary_O.html#8167">cs</a>.<a href="dictionary_O.html#352">getScopeSymbol</a>().<a href="dictionary_O.html#1161">clone</a>();</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">                        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_C.html#1073">CloneNotSupportedException</a> <a href="dictionary_O.html#8162">ex</a>) {</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">                            <a href="dictionary_J.html#1077">Logger</a>.<a href="dictionary_G.html#1101">getLogger</a>(<a href="dictionary_O.html#340">MethodSymbol</a>.</span><span class="keyword">class</span><span class="default">.<a href="dictionary_G.html#727">getName</a>()).<a href="dictionary_L.html#1102">log</a>(<a href="dictionary_J.html#1075">Level</a>.<a href="dictionary_S.html#1103">SEVERE</a>, </span><span class="keyword">null</span><span class="default">, <a href="dictionary_O.html#8162">ex</a>);</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">                        }                        </span>
+<a name="206"><font size=-1>206     </font></a><span class="default">                        <a href="dictionary_O.html#8169">curScope1</a> = </span><span class="keyword">new <a href="dictionary_O.html#1615">CallSymbol</a> </span><span class="default">(<a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#353">getName</a>(), <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#354">getCodeLine</a>(), <a href="dictionary_O.html#8171">s1</a>, <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#355">getTainted</a>(), <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#357">getFileSymbol</a>());</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">                        <a href="dictionary_O.html#8169">curScope1</a>.<a href="dictionary_O.html#452">getScopeSymbol</a>().<a href="dictionary_O.html#1201">setIsFunction</a>(<a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#417">getIsFunction</a>());</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">                        <a href="dictionary_O.html#8169">curScope1</a>.<a href="dictionary_O.html#452">getScopeSymbol</a>().<a href="dictionary_O.html#1206">setIsSecureFunction</a>(<a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#408">getIsSecureFunction</a>());</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">                        <a href="dictionary_O.html#8169">curScope1</a>.<a href="dictionary_O.html#452">getScopeSymbol</a>().<a href="dictionary_O.html#1210">setIsTaintedFunction</a>(<a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#418">getIsTaintedFunction</a>());</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">                        <a href="dictionary_O.html#8168">csClone</a>.<a href="dictionary_O.html#1613">define</a>(<a href="dictionary_O.html#8169">curScope1</a>, <a href="dictionary_O.html#8169">curScope1</a>, </span><span class="keyword">false</span><span class="default">);</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">                        <a href="dictionary_O.html#8161">copyScope</a>(<a href="dictionary_O.html#8170">s</a>, <a href="dictionary_O.html#8169">curScope1</a>);</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">                }</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">                </span><span class="keyword">else</span><span class="default">{</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">                    <a href="dictionary_O.html#1610">VariableSymbol</a> <a href="dictionary_O.html#8164">vs</a> = </span><span class="keyword">new <a href="dictionary_O.html#4681">VariableSymbol</a></span><span class="default">(<a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#353">getName</a>(), <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#355">getTainted</a>(), <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#354">getCodeLine</a>(), <a href="dictionary_O.html#8165">aux1</a>.<a href="dictionary_O.html#357">getFileSymbol</a>());</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">                    <a href="dictionary_O.html#8168">csClone</a>.<a href="dictionary_O.html#1613">define</a>(<a href="dictionary_O.html#8164">vs</a>, </span><span class="keyword">null</span><span class="default">, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">                }</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">                    </span>
+<a name="218"><font size=-1>218     </font></a><span class="default">            }</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">        }       </span>
+<a name="220"><font size=-1>220     </font></a><span class="default">    }</span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span>
+<a name="222"><font size=-1>222     </font></a><span class="default">}</span>
+<a name="223"><font size=-1>223     </font></a><span class="default"></span>
+</pre></body></html>

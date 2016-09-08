@@ -1,0 +1,100 @@
+<html><head><title>metaStateTable.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/metaStateTable.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/metaStateTable.h";
+top.document.title  = "metaStateTable.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">** Copyright (C) University of Virginia, Massachusetts Institue of Technology 1994-2003.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">** See ../LICENSE for license information.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">/*</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">** metaStateTable.h</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">**</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">** A global table that keeps information on the user-defined states.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">**</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">** For each state definition, we need:</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">**</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">**    o A name</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">**    o State Type (what kinds of things have this state value)</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">**    o Number of values, and their mnemonics</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">**    o A combination table (stateCombinationTable) for how different states combine as l/rvalues</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">**    o Annotations (and map between annotation and value)</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">**    o Context information (where can annotations be used)</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">*/</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span><span class="preproc"># ifndef <a href="dictionary_M.html#16879">MSTABLE_H</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc"># define <a href="dictionary_M.html#16879">MSTABLE_H</a></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc"></span>
+<a name="23"><font size=-1>23     </font></a><span class="preproc"></span><span class="comment">/*@constant null metaStateTable metaStateTable_undefined; @*/</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="preproc"># define <a href="dictionary_M.html#16880">metaStateTable_undefined</a> <a href="dictionary_G.html#5436">genericTable_undefined</a></span>
+<a name="25"><font size=-1>25     </font></a><span class="preproc"></span>
+<a name="26"><font size=-1>26     </font></a><span class="preproc"></span><span class="keyword">extern </span><span class="comment">/*@falsewhennull@*/ </span><span class="keyword">bool <a href="dictionary_M.html#16881">metaStateTable_isDefined</a></span><span class="default">(metaStateTable) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16882">metaStateTable_isDefined</a></span><span class="default">(p_h) (<a href="dictionary_G.html#5439">genericTable_isDefined</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h)))</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">extern </span><span class="comment">/*@nullwhentrue@*/ </span><span class="keyword">bool <a href="dictionary_M.html#16883">metaStateTable_isUndefined</a></span><span class="default">(metaStateTable) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16884">metaStateTable_isUndefined</a></span><span class="default">(p_h) (<a href="dictionary_G.html#5439">genericTable_isDefined</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h)))</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="comment">/*@constant int DEFAULT_MSTABLE_SIZE@*/</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span><span class="preproc"># define <a href="dictionary_D.html#16885">DEFAULT_MSTABLE_SIZE</a> </span><span class="number">32</span>
+<a name="34"><font size=-1>34     </font></a><span class="number"></span>
+<a name="35"><font size=-1>35     </font></a><span class="number"></span><span class="keyword">extern </span><span class="comment">/*@only@*/ <a href="dictionary_M.html#16887">metaStateTable</a> <a href="dictionary_M.html#16886">metaStateTable_create</a> </span><span class="default">(</span><span class="keyword">void</span><span class="default">) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16888">metaStateTable_create</a></span><span class="default">() ((<a href="dictionary_M.html#16887">metaStateTable</a>) <a href="dictionary_G.html#5444">genericTable_create</a> (<a href="dictionary_D.html#16885">DEFAULT_MSTABLE_SIZE</a>))</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_M.html#16889">metaStateTable_insert</a> </span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h, </span>
+<a name="39"><font size=-1>39     </font></a><span class="default">				   </span><span class="comment">/*@only@*/ <a href="dictionary_C.html#21">cstring</a> </span><span class="default">p_key, </span>
+<a name="40"><font size=-1>40     </font></a><span class="default">				   </span><span class="comment">/*@only@*/ <a href="dictionary_M.html#2681">metaStateInfo</a> </span><span class="default">p_metaState)</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">     </span><span class="comment">/*@modifies p_h@*/ </span><span class="default">;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span><span class="keyword">extern </span><span class="comment">/*@null@*/ /*@dependent@*/ /*@exposed@*/ <a href="dictionary_M.html#2681">metaStateInfo</a></span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">   <a href="dictionary_M.html#16890">metaStateTable_lookup</a> </span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h, <a href="dictionary_C.html#21">cstring</a> p_key) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="comment">/*@access metaStateInfo@*/ </span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"></span><span class="preproc"># define <a href="dictionary_M.html#16891">metaStateTable_lookup</a></span><span class="default">(p_h,p_key) </span><span class="preproc">\</span>
+<a name="48"><font size=-1>48     </font></a><span class="preproc">  </span><span class="default">((<a href="dictionary_M.html#2681">metaStateInfo</a>) <a href="dictionary_G.html#4294">genericTable_lookup</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h), p_key))</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="comment">/*@noaccess metaStateInfo@*/</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"></span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"></span><span class="keyword">extern bool <a href="dictionary_M.html#16892">metaStateTable_contains</a> </span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h, <a href="dictionary_C.html#21">cstring</a> p_key) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16893">metaStateTable_contains</a></span><span class="default">(p_h,p_key) </span><span class="preproc">\</span>
+<a name="53"><font size=-1>53     </font></a><span class="preproc">  </span><span class="default">(<a href="dictionary_G.html#14558">genericTable_contains</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h), p_key))</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="keyword">extern </span><span class="comment">/*@unused@*/ /*@only@*/ <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_M.html#16894">metaStateTable_stats</a></span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h);</span>
+<a name="56"><font size=-1>56     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16895">metaStateTable_stats</a></span><span class="default">(p_h) <a href="dictionary_G.html#5452">genericTable_stats</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h))</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_M.html#16896">metaStateTable_free</a> </span><span class="default">(</span><span class="comment">/*@only@*/ <a href="dictionary_M.html#16887">metaStateTable</a> </span><span class="default">p_h);</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16897">metaStateTable_free</a></span><span class="default">(p_h) (<a href="dictionary_G.html#5455">genericTable_free</a> ((<a href="dictionary_G.html#2334">genericTable</a>) (p_h)))</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="comment">/*@iter metaStateTable_elements (sef metaStateTable p_g, yield exposed cstring m_key, yield exposed metaStateInfo m_el)@*/</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment"></span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">/*@access genericTable@*/</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment"></span><span class="preproc"># define <a href="dictionary_M.html#16898">metaStateTable_elements</a></span><span class="default">(p_g, m_key, m_el) </span><span class="preproc">\</span>
+<a name="65"><font size=-1>65     </font></a><span class="preproc">   </span><span class="default">{ int m_ind; if (<a href="dictionary_M.html#16881">metaStateTable_isDefined</a> (p_g)) </span><span class="preproc">\</span>
+<a name="66"><font size=-1>66     </font></a><span class="preproc">     </span><span class="default">{ for (m_ind = </span><span class="number">0 </span><span class="default">; m_ind &lt; (p_g)-&gt;size; m_ind++) </span><span class="preproc">\</span>
+<a name="67"><font size=-1>67     </font></a><span class="preproc">       </span><span class="default">{ <a href="dictionary_G.html#2337">ghbucket</a> m_hb; m_hb = (p_g)-&gt;buckets[m_ind]; </span><span class="preproc">\</span>
+<a name="68"><font size=-1>68     </font></a><span class="preproc">         </span><span class="default">if (m_hb != <a href="dictionary_N.html#12">NULL</a>) { </span><span class="preproc">\</span>
+<a name="69"><font size=-1>69     </font></a><span class="preproc">           </span><span class="default">int m_j; </span><span class="preproc">\</span>
+<a name="70"><font size=-1>70     </font></a><span class="preproc">           </span><span class="default">for (m_j = </span><span class="number">0</span><span class="default">; m_j &lt; (m_hb)-&gt;size; m_j++) { </span><span class="preproc">\</span>
+<a name="71"><font size=-1>71     </font></a><span class="preproc">             <a href="dictionary_C.html#21">cstring</a> </span><span class="default">m_key; <a href="dictionary_M.html#2681">metaStateInfo</a> m_el; m_key = (m_hb)-&gt;entries[m_j]-&gt;key; </span><span class="preproc">\</span>
+<a name="72"><font size=-1>72     </font></a><span class="preproc">	      </span><span class="comment">/*@access metaStateInfo@*/ </span><span class="preproc">\</span>
+<a name="73"><font size=-1>73     </font></a><span class="preproc">              </span><span class="default">m_el = (<a href="dictionary_M.html#2681">metaStateInfo</a>) ((m_hb)-&gt;entries[m_j]-&gt;val); </span><span class="preproc">\</span>
+<a name="74"><font size=-1>74     </font></a><span class="preproc">              </span><span class="comment">/*@noaccess metaStateInfo@*/</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment"></span><span class="preproc"># define <a href="dictionary_E.html#16899">end_metaStateTable_elements</a> </span><span class="default">}}}}}</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span><span class="comment">/*@noaccess genericTable@*/ </span>
+<a name="77"><font size=-1>77     </font></a><span class="comment"></span>
+<a name="78"><font size=-1>78     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_M.html#16900">metaStateTable_unparse</a> </span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h) ;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_M.html#16901">metaStateTable_size</a> </span><span class="default">(<a href="dictionary_M.html#16887">metaStateTable</a> p_h);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_M.html#16902">metaStateTable_size</a></span><span class="default">(p_h) (<a href="dictionary_G.html#5463">genericTable_size</a>(p_h))</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span><span class="preproc"># else</span>
+<a name="84"><font size=-1>84     </font></a><span class="preproc"># error </span><span class="string">&quot;Multiple include&quot;</span>
+<a name="85"><font size=-1>85     </font></a><span class="string"></span><span class="preproc"># endif </span>
+<a name="86"><font size=-1>86     </font></a><span class="preproc"></span>
+<a name="87"><font size=-1>87     </font></a><span class="preproc"></span>
+<a name="88"><font size=-1>88     </font></a><span class="preproc"></span>
+<a name="89"><font size=-1>89     </font></a><span class="preproc"></span>
+<a name="90"><font size=-1>90     </font></a><span class="preproc"></span>
+</pre></body></html>

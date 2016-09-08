@@ -1,0 +1,102 @@
+<html><head><title>AST.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/AST.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/cqual/cqual-0.981/src/AST.h";
+top.document.title  = "AST.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* This file is part of cqual.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   Copyright (C) 2000-2001 The Regents of the University of California.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">cqual is free software; you can redistribute it and/or modify</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">it under the terms of the GNU General Public License as published by</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">the Free Software Foundation; either version 2, or (at your option)</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">any later version.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">cqual is distributed in the hope that it will be useful,</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">GNU General Public License for more details.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">You should have received a copy of the GNU General Public License</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">along with cqual; see the file COPYING.  If not, write to</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">the Free Software Foundation, 59 Temple Place - Suite 330,</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">Boston, MA 02111-1307, USA. */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_A.html#6292">AST_H</a></span>
+<a name="20"><font size=-1>20     </font></a><span class="preproc">#define <a href="dictionary_A.html#6292">AST_H</a></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc"></span>
+<a name="22"><font size=-1>22     </font></a><span class="preproc">#include </span><span class="string">&quot;linkage.h&quot;</span>
+<a name="23"><font size=-1>23     </font></a><span class="string"></span>
+<a name="24"><font size=-1>24     </font></a><span class="string"><a href="dictionary_E.html#7">EXTERN_C_BEGIN</a></span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span><span class="keyword">typedef int <a href="dictionary_I.html#6293">id_declaration_list</a></span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_T.html#6294">typelist</a> </span><span class="default">*<a href="dictionary_T.html#3756">typelist</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_T.html#6295">type</a> </span><span class="default">*<a href="dictionary_T.html#930">type</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"><a href="dictionary_E.html#29">EXTERN_C_END</a></span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;AST_types.h&quot;</span>
+<a name="33"><font size=-1>33     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;c-lex.h&quot;</span>
+<a name="34"><font size=-1>34     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;cqual.h&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;decls.h&quot;</span>
+<a name="36"><font size=-1>36     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;types.h&quot;</span>
+<a name="37"><font size=-1>37     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;dd_list.h&quot;</span>
+<a name="38"><font size=-1>38     </font></a><span class="string"></span>
+<a name="39"><font size=-1>39     </font></a><span class="string"><a href="dictionary_E.html#6297">EXTERN_C</a> </span><span class="keyword">enum </span><span class="default">{ struct_type, union_type, enum_type };</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;AST_defs.h&quot;</span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span>
+<a name="43"><font size=-1>43     </font></a><span class="string"><a href="dictionary_E.html#7">EXTERN_C_BEGIN</a></span>
+<a name="44"><font size=-1>44     </font></a><span class="string"></span>
+<a name="45"><font size=-1>45     </font></a><span class="string"></span><span class="keyword">typedef struct <a href="dictionary_A.html#825">AST_ast_generic</a></span>
+<a name="46"><font size=-1>46     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="47"><font size=-1>47     </font></a><span class="default">  <a href="dictionary_A.html#1837">ast_kind</a> <a href="dictionary_A.html#826">kind</a>;</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">} *<a href="dictionary_A.html#823">ast_generic</a>;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="preproc">#ifdef <a href="dictionary_Non-Alpha.html#694">__GNUC__</a></span>
+<a name="51"><font size=-1>51     </font></a><span class="preproc">#define <a href="dictionary_C.html#829">CAST</a></span><span class="default">(type, x) ({<a href="dictionary_A.html#823">ast_generic</a> tEmPcast = (ast_generic)(x); if (tEmPcast) <a href="dictionary_A.html#473">assert</a>(is_ </span><span class="preproc">## </span><span class="default">type(tEmPcast)); (type)(tEmPcast); })</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_C.html#6302">CASTPTR</a></span><span class="default">(type, x) ({<a href="dictionary_A.html#823">ast_generic</a> *tEmPcast = (ast_generic *)(x); if (tEmPcast &amp;&amp; *tEmPcast) <a href="dictionary_A.html#473">assert</a>(is_ </span><span class="preproc">## </span><span class="default">type(*tEmPcast)); (type *)(tEmPcast); })</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_C.html#5402">CASTSRPTR</a></span><span class="default">(type, x) ({<a href="dictionary_A.html#823">ast_generic</a> *tEmPcast = (ast_generic *)(x); if (tEmPcast &amp;&amp; *tEmPcast) <a href="dictionary_A.html#473">assert</a>(is_ </span><span class="preproc">## </span><span class="default">type(*tEmPcast)); (type <a href="dictionary_S.html#5353">sameregion</a> *)(tEmPcast); })</span>
+<a name="54"><font size=-1>54     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="55"><font size=-1>55     </font></a><span class="preproc"></span><span class="comment">/* Could also generate some code to make this safe */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_C.html#829">CAST</a></span><span class="default">(type, x) ((type)(x))</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_C.html#6302">CASTPTR</a></span><span class="default">(type, x) ((type *)(x))</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_C.html#5402">CASTSRPTR</a></span><span class="default">(type, x) ((type <a href="dictionary_S.html#5353">sameregion</a> *)(x))</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="60"><font size=-1>60     </font></a><span class="preproc"></span>
+<a name="61"><font size=-1>61     </font></a><span class="preproc"></span><span class="keyword">extern <a href="dictionary_D.html#95">declaration</a> <a href="dictionary_T.html#1524">the_program</a></span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span>
+<a name="63"><font size=-1>63     </font></a><span class="default"><a href="dictionary_U.html#1659">unary</a> <a href="dictionary_N.html#2928">newkind_unary</a>(<a href="dictionary_R.html#11">region</a> r, <a href="dictionary_A.html#1837">ast_kind</a> kind, <a href="dictionary_L.html#93">location</a> location, <a href="dictionary_E.html#87">expression</a> arg1);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"><a href="dictionary_B.html#1661">binary</a> <a href="dictionary_N.html#3013">newkind_binary</a>(<a href="dictionary_R.html#11">region</a> r, <a href="dictionary_A.html#1837">ast_kind</a> kind, <a href="dictionary_L.html#93">location</a> location,</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">		      <a href="dictionary_E.html#87">expression</a> arg1, <a href="dictionary_E.html#87">expression</a> arg2);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"><a href="dictionary_T.html#99">tag_ref</a> <a href="dictionary_N.html#5371">newkind_tag_ref</a>(<a href="dictionary_R.html#11">region</a> r, <a href="dictionary_A.html#1837">ast_kind</a> kind, <a href="dictionary_L.html#93">location</a> location, <a href="dictionary_W.html#1692">word</a> word1, <a href="dictionary_A.html#1615">attribute</a> attributes, <a href="dictionary_D.html#95">declaration</a> fields, </span><span class="keyword">bool </span><span class="default">defined);</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"><a href="dictionary_N.html#1242">node</a> <a href="dictionary_L.html#1274">last_node</a>(<a href="dictionary_N.html#1242">node</a> n);</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_C.html#5344">chain_length</a></span><span class="default">(<a href="dictionary_N.html#1242">node</a> n);</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"><a href="dictionary_N.html#1242">node</a> <a href="dictionary_A.html#5339">ast_chain</a>(<a href="dictionary_N.html#1242">node</a> l1, <a href="dictionary_N.html#1242">node</a> l2);</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_I.html#5351">insert_before</a></span><span class="default">(<a href="dictionary_N.html#1242">node</a> <a href="dictionary_S.html#5353">sameregion</a> *list, <a href="dictionary_N.html#1242">node</a> before, <a href="dictionary_N.html#1242">node</a> n);</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"><a href="dictionary_N.html#1242">node</a> <a href="dictionary_A.html#5347">ast_reverse</a>(<a href="dictionary_N.html#1242">node</a> l);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_A.html#5403">AST_set_parents</a></span><span class="default">(<a href="dictionary_N.html#1242">node</a> n);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_A.html#5435">AST_print</a></span><span class="default">(<a href="dictionary_N.html#1242">node</a> n);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#6303">AST_SET</a></span><span class="default">(parent, ptr, value) </span><span class="preproc">\</span>
+<a name="78"><font size=-1>78     </font></a><span class="preproc">  </span><span class="default">(*(ptr) = (value), (value) ? (set_parent(<a href="dictionary_C.html#5402">CASTSRPTR</a>(<a href="dictionary_N.html#1242">node</a>, (ptr)), <a href="dictionary_C.html#829">CAST</a>(node, (parent))), </span><span class="number">0</span><span class="default">) : </span><span class="number">0</span><span class="default">)</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#6304">AST_SET_FIELD</a></span><span class="default">(parent, field, value) </span><span class="preproc">\</span>
+<a name="81"><font size=-1>81     </font></a><span class="preproc">  <a href="dictionary_A.html#6303">AST_SET</a></span><span class="default">((parent), &amp;(parent)-&gt;field, (value))</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#6305">AST_SET_NEXT</a></span><span class="default">(previous, value) </span><span class="preproc">\</span>
+<a name="84"><font size=-1>84     </font></a><span class="preproc">  <a href="dictionary_A.html#6303">AST_SET</a></span><span class="default">((previous)-&gt;parent, &amp;(previous)-&gt;next, (value))</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span>
+<a name="86"><font size=-1>86     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#6306">AST_REPLACE</a></span><span class="default">(n, value) </span><span class="preproc">\</span>
+<a name="87"><font size=-1>87     </font></a><span class="preproc">  <a href="dictionary_A.html#6303">AST_SET</a></span><span class="default">((n)-&gt;parent_ptr, (n)-&gt;parent, (value))</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default"><a href="dictionary_E.html#29">EXTERN_C_END</a></span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="92"><font size=-1>92     </font></a><span class="preproc"></span>
+</pre></body></html>

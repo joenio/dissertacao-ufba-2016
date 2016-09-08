@@ -1,0 +1,50 @@
+<html><head><title>ParserOptions.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/ParserOptions.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/pmd/pmd-src-5.4.1/pmd-core/src/main/java/net/sourceforge/pmd/lang/ParserOptions.java";
+top.document.title  = "ParserOptions.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * BSD-style license; for more info see http://pmd.sourceforge.net/license.html</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> */</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">net.sourceforge.pmd.<a href="dictionary_N.html#8">lang</a>;</span>
+<a name="5"><font size=-1>5     </font></a><span class="default"></span>
+<a name="6"><font size=-1>6     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * Represents a set of configuration options for a {@link Parser}. For each</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * unique combination of ParserOptions a Parser will be used to create an AST.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * Therefore, implementations must implement {@link Object#equals(Object)} and</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * {@link Object#hashCode()}.</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> */</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_N.html#465">ParserOptions</a> </span><span class="default">{</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">    </span><span class="keyword">protected <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#13587">suppressMarker</a></span><span class="default">;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#4197">getSuppressMarker</a></span><span class="default">() {</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#13587">suppressMarker</a></span><span class="default">;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">    }</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">    </span><span class="keyword">public void <a href="dictionary_N.html#4196">setSuppressMarker</a></span><span class="default">(<a href="dictionary_S.html#7">String</a> <a href="dictionary_N.html#29076">suppressMarker</a>) {</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">        </span><span class="keyword">this</span><span class="default">.<a href="dictionary_N.html#13587">suppressMarker</a> = <a href="dictionary_N.html#29076">suppressMarker</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">    }</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span>
+<a name="23"><font size=-1>23     </font></a><span class="default">    @<a href="dictionary_O.html#74">Override</a></span>
+<a name="24"><font size=-1>24     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_N.html#13586">equals</a></span><span class="default">(Object <a href="dictionary_N.html#29074">obj</a>) {</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(</span><span class="keyword">this </span><span class="default">== <a href="dictionary_N.html#29074">obj</a>) {</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">            </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">        }</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_N.html#29074">obj</a> == </span><span class="keyword">null </span><span class="default">|| <a href="dictionary_G.html#1831">getClass</a>() != <a href="dictionary_N.html#29074">obj</a>.<a href="dictionary_G.html#1831">getClass</a>()) {</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">            </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">        }</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">        </span><span class="keyword">final <a href="dictionary_N.html#465">ParserOptions</a> <a href="dictionary_N.html#29075">that</a> </span><span class="default">= (ParserOptions) <a href="dictionary_N.html#29074">obj</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">        </span><span class="keyword">return this</span><span class="default">.<a href="dictionary_N.html#13587">suppressMarker</a>.<a href="dictionary_E.html#938">equals</a>(<a href="dictionary_N.html#29075">that</a>.<a href="dictionary_N.html#13587">suppressMarker</a>);</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">    }</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default">    @<a href="dictionary_O.html#74">Override</a></span>
+<a name="36"><font size=-1>36     </font></a><span class="default">    </span><span class="keyword">public int <a href="dictionary_N.html#13589">hashCode</a></span><span class="default">() {</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_N.html#13587">suppressMarker</a> </span><span class="default">!= </span><span class="keyword">null </span><span class="default">? <a href="dictionary_N.html#13587">suppressMarker</a>.<a href="dictionary_H.html#2744">hashCode</a>() : </span><span class="number">0</span><span class="default">;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">    }</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">}</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+</pre></body></html>

@@ -1,0 +1,106 @@
+<html><head><title>CannotMockFinalClass.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/main/java/com/google/errorprone/bugpatterns/CannotMockFinalClass.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/error-prone/error-prone-2.0.9/core/src/main/java/com/google/errorprone/bugpatterns/CannotMockFinalClass.java";
+top.document.title  = "CannotMockFinalClass.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2014 Google Inc. All Rights Reserved.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * in compliance with the License. You may obtain a copy of the License at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> *</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software distributed under the License</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * or implied. See the License for the specific language governing permissions and limitations under</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * the License.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> */</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"></span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#149">bugpatterns</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.<a href="dictionary_C.html#95">ChildMultiMatcher</a>.MatchType.<a href="dictionary_C.html#3092">AT_LEAST_ONE</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#151">allOf</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#6420">argument</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#13968">classLiteral</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#2377">enclosingClass</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#2015">hasAnnotation</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#881">hasArgumentWithValue</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#3592">hasModifier</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#3086">isSameType</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#882">isType</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#1417">staticMethod</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import static </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.Matchers.<a href="dictionary_C.html#5068">variableType</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#406">Category</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#408">MaturityLevel</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#397">BugPattern</a>.<a href="dictionary_C.html#407">SeverityLevel</a>;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.<a href="dictionary_C.html#46">errorprone</a>.<a href="dictionary_C.html#94">VisitorState</a>;</span>
+<a name="35"><font size=-1>35     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#149">bugpatterns</a>.<a href="dictionary_C.html#163">BugChecker</a>.<a href="dictionary_C.html#150">MethodInvocationTreeMatcher</a>;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#149">bugpatterns</a>.<a href="dictionary_C.html#163">BugChecker</a>.<a href="dictionary_C.html#1117">VariableTreeMatcher</a>;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.<a href="dictionary_C.html#158">Description</a>;</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.<a href="dictionary_C.html#98">Matcher</a>;</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.errorprone.<a href="dictionary_C.html#93">matchers</a>.<a href="dictionary_C.html#159">Matchers</a>;</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.sun.source.<a href="dictionary_C.html#50">tree</a>.<a href="dictionary_C.html#85">AnnotationTree</a>;</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.sun.source.<a href="dictionary_C.html#50">tree</a>.<a href="dictionary_C.html#86">ClassTree</a>;</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.sun.source.<a href="dictionary_C.html#50">tree</a>.<a href="dictionary_C.html#145">MethodInvocationTree</a>;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.sun.source.<a href="dictionary_C.html#50">tree</a>.<a href="dictionary_C.html#91">Tree</a>;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.sun.source.<a href="dictionary_C.html#50">tree</a>.<a href="dictionary_C.html#92">VariableTree</a>;</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.lang.model.<a href="dictionary_J.html#1620">element</a>.<a href="dictionary_J.html#1608">Modifier</a>;</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"> * Bug pattern to recognize attempts to mock final types.</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"> *</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"> * @author Louis Wasserman</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"> */</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span><span class="default">@<a href="dictionary_C.html#397">BugPattern</a>(<a href="dictionary_C.html#398">name</a> = </span><span class="string">&quot;CannotMockFinalClass&quot;</span><span class="default">,</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">    <a href="dictionary_C.html#399">summary</a> = </span><span class="string">&quot;Mockito cannot mock final classes&quot;</span><span class="default">,</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    <a href="dictionary_C.html#400">explanation</a> = </span><span class="string">&quot;Mockito cannot mock final classes. See &quot;</span>
+<a name="57"><font size=-1>57     </font></a><span class="string">        </span><span class="default">+ </span><span class="string">&quot;https://github.com/mockito/mockito/wiki/FAQ for details.&quot;</span><span class="default">,</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    <a href="dictionary_C.html#401">category</a> = <a href="dictionary_C.html#406">Category</a>.<a href="dictionary_C.html#4688">MOCKITO</a>, <a href="dictionary_C.html#403">maturity</a> = <a href="dictionary_C.html#408">MaturityLevel</a>.<a href="dictionary_C.html#788">MATURE</a>,</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    <a href="dictionary_C.html#402">severity</a> = <a href="dictionary_C.html#407">SeverityLevel</a>.<a href="dictionary_C.html#787">WARNING</a>)</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_C.html#11594">CannotMockFinalClass</a> extends <a href="dictionary_C.html#163">BugChecker</a> implements <a href="dictionary_C.html#150">MethodInvocationTreeMatcher</a></span><span class="default">,</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    <a href="dictionary_C.html#1117">VariableTreeMatcher</a> {</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">  </span><span class="comment">// TODO(lowasser): consider stopping mocks of primitive types here or in its own checker</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"></span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">  // Runners like GwtMockito allow mocking final types, so we conservatively stick to JUnit4.</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">  </span><span class="keyword">private static final <a href="dictionary_C.html#98">Matcher</a></span><span class="default">&lt;<a href="dictionary_C.html#85">AnnotationTree</a>&gt; <a href="dictionary_C.html#14246">runWithJunit4</a> = <a href="dictionary_C.html#151">allOf</a>(</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">      <a href="dictionary_C.html#882">isType</a>(</span><span class="string">&quot;org.junit.runner.RunWith&quot;</span><span class="default">),</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">      <a href="dictionary_C.html#881">hasArgumentWithValue</a>(</span><span class="string">&quot;value&quot;</span><span class="default">, <a href="dictionary_C.html#13968">classLiteral</a>(<a href="dictionary_C.html#3085">isSameType</a>(</span><span class="string">&quot;org.junit.runners.JUnit4&quot;</span><span class="default">))));</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_C.html#98">Matcher</a></span><span class="default">&lt;<a href="dictionary_C.html#91">Tree</a>&gt; <a href="dictionary_C.html#14245">enclosingClassIsJunit4Test</a> =</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">      <a href="dictionary_C.html#2377">enclosingClass</a>(<a href="dictionary_C.html#159">Matchers</a>.&lt;<a href="dictionary_C.html#86">ClassTree</a>&gt;<a href="dictionary_C.html#5179">annotations</a>(<a href="dictionary_C.html#3092">AT_LEAST_ONE</a>, <a href="dictionary_C.html#14246">runWithJunit4</a>));</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"></span>
+<a name="72"><font size=-1>72     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_C.html#98">Matcher</a></span><span class="default">&lt;<a href="dictionary_C.html#92">VariableTree</a>&gt; <a href="dictionary_C.html#14247">variableOfFinalClassAnnotatedMock</a> = <a href="dictionary_C.html#151">allOf</a>(</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">      <a href="dictionary_C.html#5068">variableType</a>(<a href="dictionary_C.html#3592">hasModifier</a>(<a href="dictionary_J.html#1608">Modifier</a>.<a href="dictionary_F.html#1584">FINAL</a>)),</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">      <a href="dictionary_C.html#2015">hasAnnotation</a>(</span><span class="string">&quot;org.mockito.Mock&quot;</span><span class="default">),</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">      <a href="dictionary_C.html#14245">enclosingClassIsJunit4Test</a>);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span>
+<a name="77"><font size=-1>77     </font></a><span class="default">  </span><span class="keyword">private static final <a href="dictionary_C.html#98">Matcher</a></span><span class="default">&lt;<a href="dictionary_C.html#145">MethodInvocationTree</a>&gt; <a href="dictionary_C.html#14244">creationOfMockForFinalClass</a> = <a href="dictionary_C.html#151">allOf</a>(</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">      <a href="dictionary_C.html#1416">staticMethod</a>().<a href="dictionary_C.html#3524">onClass</a>(</span><span class="string">&quot;org.mockito.Mockito&quot;</span><span class="default">).<a href="dictionary_C.html#2833">named</a>(</span><span class="string">&quot;mock&quot;</span><span class="default">),</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">      <a href="dictionary_C.html#6420">argument</a>(</span><span class="number">0</span><span class="default">, <a href="dictionary_C.html#13968">classLiteral</a>(<a href="dictionary_C.html#3592">hasModifier</a>(<a href="dictionary_J.html#1608">Modifier</a>.<a href="dictionary_F.html#1584">FINAL</a>))),</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">      <a href="dictionary_C.html#14245">enclosingClassIsJunit4Test</a>);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">  @<a href="dictionary_O.html#12">Override</a></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#158">Description</a> <a href="dictionary_C.html#14241">matchVariable</a></span><span class="default">(<a href="dictionary_C.html#92">VariableTree</a> <a href="dictionary_C.html#14243">tree</a>, <a href="dictionary_C.html#94">VisitorState</a> <a href="dictionary_C.html#14242">state</a>) {</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#14247">variableOfFinalClassAnnotatedMock</a></span><span class="default">.<a href="dictionary_C.html#172">matches</a>(<a href="dictionary_C.html#14243">tree</a>, <a href="dictionary_C.html#14242">state</a>)</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">        ? <a href="dictionary_C.html#411">describeMatch</a>(<a href="dictionary_C.html#14243">tree</a>)</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">        : <a href="dictionary_C.html#158">Description</a>.<a href="dictionary_C.html#173">NO_MATCH</a>;</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">  }</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default">  @<a href="dictionary_O.html#12">Override</a></span>
+<a name="90"><font size=-1>90     </font></a><span class="default">  </span><span class="keyword">public <a href="dictionary_C.html#158">Description</a> <a href="dictionary_C.html#14238">matchMethodInvocation</a></span><span class="default">(<a href="dictionary_C.html#145">MethodInvocationTree</a> <a href="dictionary_C.html#14240">tree</a>, <a href="dictionary_C.html#94">VisitorState</a> <a href="dictionary_C.html#14239">state</a>) {</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#14244">creationOfMockForFinalClass</a></span><span class="default">.<a href="dictionary_C.html#172">matches</a>(<a href="dictionary_C.html#14240">tree</a>, <a href="dictionary_C.html#14239">state</a>)</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">        ? <a href="dictionary_C.html#411">describeMatch</a>(<a href="dictionary_C.html#14240">tree</a>)</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">        : <a href="dictionary_C.html#158">Description</a>.<a href="dictionary_C.html#173">NO_MATCH</a>;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">  }</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">}</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+</pre></body></html>

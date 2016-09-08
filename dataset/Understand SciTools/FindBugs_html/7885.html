@@ -1,0 +1,187 @@
+<html><head><title>LaunchBrowser.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/findbugs/findbugs-3.0.1/src/java/edu/umd/cs/findbugs/util/LaunchBrowser.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/findbugs/findbugs-3.0.1/src/java/edu/umd/cs/findbugs/util/LaunchBrowser.java";
+top.document.title  = "LaunchBrowser.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * FindBugs - Find Bugs in Java programs</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Copyright (C) 2006, University of Maryland</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> *</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * This library is free software; you can redistribute it and/or</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * modify it under the terms of the GNU Lesser General Public</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> * License as published by the Free Software Foundation; either</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * This library is distributed in the hope that it will be useful,</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * Lesser General Public License for more details.</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * You should have received a copy of the GNU Lesser General Public</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * License along with this library; if not, write to the Free Software</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * Foundation, Inc., 59 Temple Place, Suite 330, Boston MA 02111-1307, USA</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> */</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"></span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">edu.umd.cs.findbugs.<a href="dictionary_E.html#1343">util</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#76">io</a>.<a href="dictionary_J.html#69">IOException</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.lang.<a href="dictionary_J.html#1784">reflect</a>.<a href="dictionary_J.html#2171">InvocationTargetException</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.lang.<a href="dictionary_J.html#1784">reflect</a>.<a href="dictionary_J.html#3581">Method</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#183">net</a>.<a href="dictionary_J.html#4972">URI</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#183">net</a>.<a href="dictionary_J.html#4973">URISyntaxException</a>;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#183">net</a>.<a href="dictionary_J.html#182">URL</a>;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.util.<a href="dictionary_J.html#184">regex</a>.<a href="dictionary_J.html#87">Pattern</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">javax.<a href="dictionary_J.html#2189">swing</a>.<a href="dictionary_J.html#2175">JOptionPane</a>;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">edu.umd.cs.<a href="dictionary_E.html#13">findbugs</a>.<a href="dictionary_E.html#90">SystemProperties</a>;</span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> *</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span><span class="keyword">public class <a href="dictionary_E.html#2193">LaunchBrowser</a> </span><span class="default">{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default">    </span><span class="keyword">private static <a href="dictionary_J.html#87">Pattern</a> <a href="dictionary_E.html#7923">validExec</a> </span><span class="default">= <a href="dictionary_J.html#87">Pattern</a>.<a href="dictionary_C.html#92">compile</a>(</span><span class="string">&quot;[a-zA-Z0-9-_/]+&quot;</span><span class="default">);</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default">    </span><span class="keyword">public static final <a href="dictionary_S.html#10">String</a> <a href="dictionary_E.html#7919">execCommand</a> </span><span class="default">= <a href="dictionary_E.html#90">SystemProperties</a>.<a href="dictionary_E.html#124">getProperty</a>(</span><span class="string">&quot;findbugs.execCommand&quot;</span><span class="default">);</span>
+<a name="42"><font size=-1>42     </font></a><span class="default"></span>
+<a name="43"><font size=-1>43     </font></a><span class="default">    </span><span class="keyword">public static final boolean <a href="dictionary_E.html#7920">launchViaExec</a> </span><span class="default">= <a href="dictionary_E.html#7919">execCommand</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_E.html#7923">validExec</a>.<a href="dictionary_M.html#149">matcher</a>(<a href="dictionary_E.html#7919">execCommand</a>).<a href="dictionary_M.html#150">matches</a>()</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">            &amp;&amp; </span><span class="string">&quot;Linux&quot;</span><span class="default">.<a href="dictionary_E.html#224">equals</a>(<a href="dictionary_E.html#90">SystemProperties</a>.<a href="dictionary_E.html#124">getProperty</a>(</span><span class="string">&quot;os.name&quot;</span><span class="default">));</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default">    </span><span class="keyword">private static </span><span class="default">Object <a href="dictionary_E.html#7918">desktopObject</a>;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default">    </span><span class="keyword">private static <a href="dictionary_J.html#3581">Method</a> <a href="dictionary_E.html#7915">desktopBrowseMethod</a></span><span class="default">;</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default">    </span><span class="keyword">private static boolean <a href="dictionary_E.html#7921">launchViaExecFailed</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    </span><span class="keyword">static boolean <a href="dictionary_E.html#7914">DEBUG</a> </span><span class="default">= <a href="dictionary_E.html#90">SystemProperties</a>.<a href="dictionary_E.html#98">getBoolean</a>(</span><span class="string">&quot;findbugs.launchBrowser.debug&quot;</span><span class="default">);</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">    </span><span class="keyword">static final <a href="dictionary_E.html#2">Exception</a> <a href="dictionary_E.html#7917">desktopException</a></span><span class="default">;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">    </span><span class="keyword">static </span><span class="default">{</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">        <a href="dictionary_E.html#2">Exception</a> <a href="dictionary_E.html#7922">toStore</a> = </span><span class="keyword">null</span><span class="default">;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">        </span><span class="keyword">try </span><span class="default">{</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">            <a href="dictionary_C.html#1011">Class</a>&lt;?&gt; <a href="dictionary_E.html#7916">desktopClass</a> = <a href="dictionary_C.html#1011">Class</a>.<a href="dictionary_F.html#1765">forName</a>(</span><span class="string">&quot;java.awt.Desktop&quot;</span><span class="default">);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">            <a href="dictionary_E.html#7918">desktopObject</a> = <a href="dictionary_E.html#7916">desktopClass</a>.<a href="dictionary_G.html#3584">getMethod</a>(</span><span class="string">&quot;getDesktop&quot;</span><span class="default">).<a href="dictionary_I.html#3590">invoke</a>(</span><span class="keyword">null</span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">            <a href="dictionary_E.html#7915">desktopBrowseMethod</a> = <a href="dictionary_E.html#7916">desktopClass</a>.<a href="dictionary_G.html#3584">getMethod</a>(</span><span class="string">&quot;browse&quot;</span><span class="default">, <a href="dictionary_J.html#4972">URI</a>.</span><span class="keyword">class</span><span class="default">);</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">        } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_E.html#2">Exception</a> <a href="dictionary_E.html#7913">e</a>) {</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">            <a href="dictionary_E.html#7922">toStore</a> = <a href="dictionary_E.html#7913">e</a>;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">        }</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">        <a href="dictionary_E.html#7917">desktopException</a> = <a href="dictionary_E.html#7922">toStore</a>;</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">    }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span>
+<a name="68"><font size=-1>68     </font></a><span class="default">    </span><span class="keyword">static boolean <a href="dictionary_E.html#7888">desktopFeasible</a></span><span class="default">() {</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_E.html#7918">desktopObject</a> </span><span class="default">!= </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_E.html#7915">desktopBrowseMethod</a> != </span><span class="keyword">null</span><span class="default">;</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">    }</span>
+<a name="71"><font size=-1>71     </font></a><span class="default"></span>
+<a name="72"><font size=-1>72     </font></a><span class="default">    </span><span class="keyword">static boolean <a href="dictionary_E.html#7912">webstartFeasible</a></span><span class="default">() {</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_E.html#7926">JavaWebStart</a></span><span class="default">.<a href="dictionary_E.html#7928">jnlpShowDocumentMethod</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_E.html#7926">JavaWebStart</a>.<a href="dictionary_E.html#7929">jnlpBasicService</a> != </span><span class="keyword">null</span><span class="default">;</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    }</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    </span><span class="keyword">static boolean <a href="dictionary_E.html#7895">showDocumentViaDesktop</a></span><span class="default">(<a href="dictionary_J.html#182">URL</a> <a href="dictionary_E.html#7901">u</a>) {</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7918">desktopObject</a> != </span><span class="keyword">null </span><span class="default">&amp;&amp; <a href="dictionary_E.html#7915">desktopBrowseMethod</a> != </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">            </span><span class="keyword">try </span><span class="default">{</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">                    <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;Trying desktop browse&quot;</span><span class="default">);</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">                }</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">                <a href="dictionary_E.html#7910">viaDesktop</a>(<a href="dictionary_E.html#7901">u</a>.<a href="dictionary_T.html#7896">toURI</a>());</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">                    <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;desktop browse succeeded&quot;</span><span class="default">);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">                }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">                </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_J.html#2171">InvocationTargetException</a> <a href="dictionary_E.html#7897">ite</a>) {</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">                assert </span><span class="keyword">true</span><span class="default">;</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_I.html#7886">IllegalAccessException</a> <a href="dictionary_E.html#7898">iae</a>) {</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">                assert </span><span class="keyword">true</span><span class="default">;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_I.html#70">IllegalArgumentException</a> <a href="dictionary_E.html#7899">e</a>) {</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">                assert </span><span class="keyword">true</span><span class="default">;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_J.html#4973">URISyntaxException</a> <a href="dictionary_E.html#7900">e</a>) {</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">                assert </span><span class="keyword">true</span><span class="default">;</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">            }</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">        }</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">    }</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default">    </span><span class="keyword">static void <a href="dictionary_E.html#7910">viaDesktop</a></span><span class="default">(<a href="dictionary_J.html#4972">URI</a> <a href="dictionary_E.html#7911">u</a>) </span><span class="keyword">throws <a href="dictionary_I.html#7886">IllegalAccessException</a></span><span class="default">, <a href="dictionary_J.html#2171">InvocationTargetException</a> {</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7915">desktopBrowseMethod</a> == </span><span class="keyword">null</span><span class="default">) {</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">            </span><span class="keyword">throw new <a href="dictionary_U.html#3379">UnsupportedOperationException</a></span><span class="default">(</span><span class="string">&quot;Launch via desktop not available&quot;</span><span class="default">);</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">        }</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">        <a href="dictionary_E.html#7915">desktopBrowseMethod</a>.<a href="dictionary_I.html#3590">invoke</a>(<a href="dictionary_E.html#7918">desktopObject</a>, <a href="dictionary_E.html#7911">u</a>);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">    }</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span>
+<a name="108"><font size=-1>108     </font></a><span class="default">    </span><span class="keyword">static boolean <a href="dictionary_E.html#7902">showDocumentViaExec</a></span><span class="default">(<a href="dictionary_J.html#182">URL</a> <a href="dictionary_E.html#7909">url</a>) {</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7920">launchViaExec</a> &amp;&amp; !<a href="dictionary_E.html#7921">launchViaExecFailed</a>) {</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">                <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;Trying exec browse&quot;</span><span class="default">);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">            }</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span>
+<a name="114"><font size=-1>114     </font></a><span class="default">            </span><span class="keyword">try </span><span class="default">{</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">                <a href="dictionary_P.html#7924">Process</a> <a href="dictionary_E.html#7908">p</a> = <a href="dictionary_E.html#7889">launchViaExec</a>(<a href="dictionary_E.html#7909">url</a>);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">                Thread.<a href="dictionary_S.html#7904">sleep</a>(</span><span class="number">90</span><span class="default">);</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">                </span><span class="keyword">int <a href="dictionary_E.html#7907">exitValue</a> </span><span class="default">= <a href="dictionary_E.html#7908">p</a>.<a href="dictionary_E.html#7903">exitValue</a>();</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7907">exitValue</a> != </span><span class="number">0</span><span class="default">) {</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">                    <a href="dictionary_E.html#7921">launchViaExecFailed</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">                    </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">                        <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;exec browse launch failed with exit code &quot; </span><span class="default">+ <a href="dictionary_E.html#7907">exitValue</a>);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">                    }</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">                    </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">                }</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">                    <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;exec browse succeeded&quot;</span><span class="default">);</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">                }</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">                </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_I.html#7887">IllegalThreadStateException</a> <a href="dictionary_E.html#7905">e</a>) {</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">                    <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;exec browse succeeded but not done&quot;</span><span class="default">);</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">                }</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">                </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">            } </span><span class="keyword">catch </span><span class="default">(<a href="dictionary_E.html#2">Exception</a> <a href="dictionary_E.html#7906">e</a>) {</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">                </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7914">DEBUG</a>) {</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">                    <a href="dictionary_J.html#2175">JOptionPane</a>.<a href="dictionary_S.html#2127">showMessageDialog</a>(</span><span class="keyword">null</span><span class="default">, </span><span class="string">&quot;exec browse failed&quot; </span><span class="default">+ <a href="dictionary_E.html#7906">e</a>.<a href="dictionary_G.html#164">getMessage</a>());</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">                }</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">                <a href="dictionary_E.html#7921">launchViaExecFailed</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">            }</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">        }</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="143"><font size=-1>143     </font></a><span class="default"></span>
+<a name="144"><font size=-1>144     </font></a><span class="default">    }</span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="keyword">static <a href="dictionary_P.html#7924">Process</a> <a href="dictionary_E.html#7889">launchViaExec</a></span><span class="default">(<a href="dictionary_J.html#182">URL</a> <a href="dictionary_E.html#7893">url</a>) </span><span class="keyword">throws <a href="dictionary_J.html#69">IOException</a> </span><span class="default">{</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">        <a href="dictionary_P.html#7925">ProcessBuilder</a> <a href="dictionary_E.html#7891">builder</a> = </span><span class="keyword">new <a href="dictionary_P.html#7925">ProcessBuilder</a></span><span class="default">(<a href="dictionary_E.html#7919">execCommand</a>, <a href="dictionary_E.html#7893">url</a>.<a href="dictionary_T.html#60">toString</a>());</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">        <a href="dictionary_P.html#7924">Process</a> <a href="dictionary_E.html#7892">p</a> = <a href="dictionary_E.html#7891">builder</a>.<a href="dictionary_S.html#7890">start</a>();</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">        </span><span class="keyword">return <a href="dictionary_E.html#7892">p</a></span><span class="default">;</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">    }</span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span>
+<a name="152"><font size=-1>152     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">     * attempt to show the given URL. will first attempt via the JNLP api, then</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment">     * will try showViaExec().</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">     *</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">     * @param url</span>
+<a name="157"><font size=-1>157     </font></a><span class="comment">     *            the URL</span>
+<a name="158"><font size=-1>158     </font></a><span class="comment">     * @return true on success</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">     */</span>
+<a name="160"><font size=-1>160     </font></a><span class="comment">    </span><span class="keyword">public static boolean <a href="dictionary_E.html#2208">showDocument</a></span><span class="default">(<a href="dictionary_J.html#182">URL</a> <a href="dictionary_E.html#7894">url</a>) {</span>
+<a name="161"><font size=-1>161     </font></a><span class="default"></span>
+<a name="162"><font size=-1>162     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7895">showDocumentViaDesktop</a>(<a href="dictionary_E.html#7894">url</a>)) {</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">            </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">        }</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7902">showDocumentViaExec</a>(<a href="dictionary_E.html#7894">url</a>)) {</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">            </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">        }</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_E.html#7926">JavaWebStart</a>.<a href="dictionary_E.html#7927">showViaWebStart</a>(<a href="dictionary_E.html#7894">url</a>)) {</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">            </span><span class="keyword">return true</span><span class="default">;</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">        }</span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span>
+<a name="172"><font size=-1>172     </font></a><span class="default">        </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="173"><font size=-1>173     </font></a><span class="default"></span>
+<a name="174"><font size=-1>174     </font></a><span class="default">    }</span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span>
+<a name="176"><font size=-1>176     </font></a><span class="default">}</span>
+<a name="177"><font size=-1>177     </font></a><span class="default"></span>
+</pre></body></html>

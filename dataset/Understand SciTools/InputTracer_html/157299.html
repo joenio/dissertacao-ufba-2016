@@ -1,0 +1,187 @@
+<html><head><title>genoffsets.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/auxprogs/genoffsets.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/auxprogs/genoffsets.c";
+top.document.title  = "genoffsets.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- begin                                           genoffsets.c ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   framework.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   Copyright (C) 2004-2010 OpenWorks LLP</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">      info@open-works.net</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02110-1301, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">   Neither the names of the U.S. Department of Energy nor the</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">   University of California nor the names of its contributors may be</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">   used to endorse or promote products derived from this software</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">   without prior written permission.</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">*/</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"></span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="37"><font size=-1>37     </font></a><span class="string"></span>
+<a name="38"><font size=-1>38     </font></a><span class="string"></span><span class="comment">/* A program which, when compiled to assembly, exposes various guest</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   state offsets.  The program isn't executed, since that breaks</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">   cross-compilation.</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"></span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">   It does rely on the assumption that 'my_offsetof(Ty,Field)' is</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">   folded to a constant at a compile time, which seems a bit dodgy</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">   to me.  On gcc4 it is possible to use __builtin_offsetof, which</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">   sounds safer, but that doesn't exist on older gccs.  Oh Well.</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">*/</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"></span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_basictypes.h&quot;</span>
+<a name="49"><font size=-1>49     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_x86.h&quot;</span>
+<a name="50"><font size=-1>50     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_amd64.h&quot;</span>
+<a name="51"><font size=-1>51     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_ppc32.h&quot;</span>
+<a name="52"><font size=-1>52     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_ppc64.h&quot;</span>
+<a name="53"><font size=-1>53     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_arm.h&quot;</span>
+<a name="54"><font size=-1>54     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;../pub/libvex_guest_s390x.h&quot;</span>
+<a name="55"><font size=-1>55     </font></a><span class="string"></span>
+<a name="56"><font size=-1>56     </font></a><span class="string"></span><span class="preproc">#define <a href="dictionary_V.html#157300">VG_STRINGIFZ</a></span><span class="default">(__str)  </span><span class="preproc">#</span><span class="default">__str</span>
+<a name="57"><font size=-1>57     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_V.html#157301">VG_STRINGIFY</a></span><span class="default">(__str)  <a href="dictionary_V.html#157300">VG_STRINGIFZ</a>(__str)</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_M.html#157302">my_offsetof</a></span><span class="default">(__type,__field) (&amp;((__type*)</span><span class="number">0</span><span class="default">)-&gt;__field)</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="comment">/* This forces gcc to evaluate the my_offsetof call at compile time,</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">   and then emits it in the assembly, along with the nonsense string</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">   &quot;xyzzy&quot;, for easy greppability.  Once this file is compiled to</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">   assembly, the lines containing &quot;xyzzy&quot; are grepped out and sed-ed</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">   to produce the final result.  See the Makefile rule for</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">   pub/libvex_guest_offsets.h. */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(_structUppercase,_structLowercase,_fieldname)  </span><span class="preproc">\</span>
+<a name="68"><font size=-1>68     </font></a><span class="preproc">   </span><span class="default">__asm__ __volatile__ ( </span><span class="preproc">\</span>
+<a name="69"><font size=-1>69     </font></a><span class="preproc">      </span><span class="string">&quot;\n#define OFFSET_&quot; </span><span class="preproc">\</span>
+<a name="70"><font size=-1>70     </font></a><span class="preproc">      <a href="dictionary_V.html#157301">VG_STRINGIFY</a></span><span class="default">(_structLowercase) </span><span class="string">&quot;_&quot; </span><span class="preproc">\</span>
+<a name="71"><font size=-1>71     </font></a><span class="preproc">      <a href="dictionary_V.html#157301">VG_STRINGIFY</a></span><span class="default">(_fieldname) </span><span class="preproc">\</span>
+<a name="72"><font size=-1>72     </font></a><span class="preproc">      </span><span class="string">&quot; xyzzy%0\n&quot; </span><span class="default">: </span><span class="comment">/*out*/ </span><span class="preproc">\</span>
+<a name="73"><font size=-1>73     </font></a><span class="preproc">                   </span><span class="default">: </span><span class="comment">/*in*/ </span><span class="string">&quot;n&quot; </span><span class="preproc">\</span>
+<a name="74"><font size=-1>74     </font></a><span class="preproc">         </span><span class="default">(<a href="dictionary_M.html#157302">my_offsetof</a>(VexGuest</span><span class="preproc">##</span><span class="default">_structUppercase</span><span class="preproc">##</span><span class="default">State, </span><span class="preproc">\</span>
+<a name="75"><font size=-1>75     </font></a><span class="preproc">          </span><span class="default">guest_</span><span class="preproc">##</span><span class="default">_fieldname)) </span><span class="preproc">\</span>
+<a name="76"><font size=-1>76     </font></a><span class="preproc">   </span><span class="default">)</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_F.html#78106">foo</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">__attribute__((noinline))</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_F.html#78106">foo</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">{</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">   </span><span class="comment">// x86</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(X86,x86,EAX);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,EBX);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,ECX);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,EDX);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,ESI);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,EDI);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,EBP);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,ESP);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,EIP);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,CS);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,DS);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,ES);</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,FS);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,GS);</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(X86,x86,SS);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span>
+<a name="99"><font size=-1>99     </font></a><span class="default">   </span><span class="comment">// amd64</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(AMD64,amd64,RAX);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RBX);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RCX);</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RDX);</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RSI);</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RDI);</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RSP);</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RBP);</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R8);</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R9);</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R10);</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R11);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R12);</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R13);</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R14);</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,R15);</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(AMD64,amd64,RIP);</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span>
+<a name="118"><font size=-1>118     </font></a><span class="default">   </span><span class="comment">// ppc32</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(PPC32,ppc32,GPR0);</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR1);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR2);</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR3);</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR4);</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR5);</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR6);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR7);</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR8);</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR9);</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,GPR10);</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,CIA);</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC32,ppc32,CR0_0);</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default">   </span><span class="comment">// ppc64</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(PPC64,ppc64,GPR0);</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR1);</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR2);</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR3);</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR4);</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR5);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR6);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR7);</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR8);</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR9);</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,GPR10);</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,CIA);</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(PPC64,ppc64,CR0_0);</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default">   </span><span class="comment">// arm</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(ARM,arm,R0);</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R1);</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R2);</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R3);</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R4);</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R5);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R7);</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R13);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R14);</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(ARM,arm,R15T);</span>
+<a name="159"><font size=-1>159     </font></a><span class="default"></span>
+<a name="160"><font size=-1>160     </font></a><span class="default">   </span><span class="comment">// s390x</span>
+<a name="161"><font size=-1>161     </font></a><span class="comment">   <a href="dictionary_G.html#157303">GENOFFSET</a></span><span class="default">(S390X,s390x,r2);</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r3);</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r4);</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r5);</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r6);</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r7);</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,r15);</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,IA);</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,SYSNO);</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,IP_AT_SYSCALL);</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">   <a href="dictionary_G.html#157303">GENOFFSET</a>(S390X,s390x,fpc);</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">}</span>
+<a name="173"><font size=-1>173     </font></a><span class="default"></span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">/*--- end                                             genoffsets.c ---*/</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">/*--------------------------------------------------------------------*/</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment"></span>
+</pre></body></html>

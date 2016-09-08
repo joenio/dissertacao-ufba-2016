@@ -1,0 +1,312 @@
+<html><head><title>LiveVariablesAnalysis.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/closure-compiler/closure-compiler-closure-compiler-parent-v20160619/src/com/google/javascript/jscomp/LiveVariablesAnalysis.java";
+top.document.title  = "LiveVariablesAnalysis.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright 2008 The Closure Compiler Authors.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> *</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * you may not use this file except in compliance with the License.</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * You may obtain a copy of the License at</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> * See the License for the specific language governing permissions and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * limitations under the License.</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="keyword">package </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>;</span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.common.<a href="dictionary_C.html#133">base</a>.Preconditions;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#12">jscomp</a>.<a href="dictionary_C.html#7536">ControlFlowGraph</a>.<a href="dictionary_C.html#7534">Branch</a>;</span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.jscomp.<a href="dictionary_C.html#925">graph</a>.<a href="dictionary_C.html#7537">DiGraph</a>.<a href="dictionary_C.html#7535">DiGraphEdge</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.jscomp.<a href="dictionary_C.html#925">graph</a>.<a href="dictionary_C.html#21926">LatticeElement</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">com.google.javascript.<a href="dictionary_C.html#221">rhino</a>.<a href="dictionary_C.html#219">Node</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default"></span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.<a href="dictionary_J.html#21927">BitSet</a>;</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.HashSet;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.List;</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">import </span><span class="default">java.<a href="dictionary_J.html#134">util</a>.Set;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="comment">/**</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * Compute the &quot;liveness&quot; of all local variables. A variable is &quot;live&quot; at a</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> * point of a program if the value it is currently holding might be read later.</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * Otherwise, the variable is considered &quot;dead&quot; if we know for sure that it will</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * no longer be read. Dead variables are candidates for dead assignment</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * elimination and variable name sharing. The worst case safe assumption is to</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * assume that all variables are live. In that case, we will have no opportunity</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * for optimizations. This is especially the case within a TRY block when an</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> * assignment is not guaranteed to take place. We bail out by assuming that</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * all variables are live.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * &lt;p&gt;</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> * Due to the possibility of inner functions and closures, certain &quot;local&quot;</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> * variables can escape the function. These variables will be considered as</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"> * global and they can be retrieved with {@link #getEscapedLocals()}.</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment"> *</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"></span><span class="keyword">class <a href="dictionary_C.html#21864">LiveVariablesAnalysis</a> extends</span>
+<a name="47"><font size=-1>47     </font></a><span class="keyword">    <a href="dictionary_C.html#8727">DataFlowAnalysis</a></span><span class="default">&lt;<a href="dictionary_C.html#219">Node</a>, <a href="dictionary_C.html#21864">LiveVariablesAnalysis</a>.<a href="dictionary_C.html#21870">LiveVariableLattice</a>&gt; {</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default">  </span><span class="comment">// 100 = ((# of original Power Rangers) ^</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">  //        (# years of Warren Harding in office)) *</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">  //       (# of Ninja Turtles)</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">  </span><span class="keyword">static final int <a href="dictionary_C.html#21923">MAX_VARIABLES_TO_ANALYZE</a> </span><span class="default">= </span><span class="number">100</span><span class="default">;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span>
+<a name="54"><font size=-1>54     </font></a><span class="default">  </span><span class="keyword">public static final </span><span class="default">String <a href="dictionary_C.html#21922">ARGUMENT_ARRAY_ALIAS</a> = </span><span class="string">&quot;arguments&quot;</span><span class="default">;</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span>
+<a name="56"><font size=-1>56     </font></a><span class="default">  </span><span class="keyword">private static class <a href="dictionary_C.html#21865">LiveVariableJoinOp</a></span>
+<a name="57"><font size=-1>57     </font></a><span class="keyword">      implements <a href="dictionary_C.html#14024">JoinOp</a></span><span class="default">&lt;<a href="dictionary_C.html#21870">LiveVariableLattice</a>&gt; {</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">    @Override</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">    </span><span class="keyword">public <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21866">apply</a></span><span class="default">(List&lt;<a href="dictionary_C.html#21870">LiveVariableLattice</a>&gt; <a href="dictionary_C.html#21868">in</a>) {</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">      <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21869">result</a> = </span><span class="keyword">new <a href="dictionary_C.html#21870">LiveVariableLattice</a></span><span class="default">(<a href="dictionary_C.html#21868">in</a>.<a href="dictionary_G.html#86">get</a>(</span><span class="number">0</span><span class="default">));</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">      </span><span class="keyword">for </span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#21867">i</a> </span><span class="default">= </span><span class="number">1</span><span class="default">; <a href="dictionary_C.html#21867">i</a> &lt; <a href="dictionary_C.html#21868">in</a>.<a href="dictionary_S.html#371">size</a>(); i++) {</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">        <a href="dictionary_C.html#21869">result</a>.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21928">or</a>(<a href="dictionary_C.html#21868">in</a>.<a href="dictionary_G.html#86">get</a>(<a href="dictionary_C.html#21867">i</a>).liveSet);</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">      }</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#21869">result</a></span><span class="default">;</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">    }</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">  }</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span>
+<a name="68"><font size=-1>68     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">   * The lattice that stores the liveness of all local variables at a given</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">   * point in the program. The whole lattice is the power set of all local</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">   * variables and a variable is live if it is in the set.</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">   */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment">  </span><span class="keyword">static class <a href="dictionary_C.html#21870">LiveVariableLattice</a> implements <a href="dictionary_C.html#21926">LatticeElement</a> </span><span class="default">{</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    </span><span class="keyword">private final <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21883">liveSet</a></span><span class="default">;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default">    </span><span class="comment">/**</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">     * @param numVars Number of all local variables.</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">     */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">    </span><span class="keyword">private <a href="dictionary_C.html#21871">LiveVariableLattice</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#21872">numVars</a></span><span class="default">) {</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#21883">liveSet</a> = </span><span class="keyword">new <a href="dictionary_J.html#21929">BitSet</a></span><span class="default">(<a href="dictionary_C.html#21872">numVars</a>);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">    }</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default">    </span><span class="keyword">private <a href="dictionary_C.html#21873">LiveVariableLattice</a></span><span class="default">(<a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21874">other</a>) {</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">      Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#21874">other</a>);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">      </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#21883">liveSet</a> = (BitSet) <a href="dictionary_C.html#21874">other</a>.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21930">clone</a>();</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">    }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+<a name="88"><font size=-1>88     </font></a><span class="default">    @Override</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#21875">equals</a></span><span class="default">(Object <a href="dictionary_C.html#21876">other</a>) {</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">      Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#21876">other</a>);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">      </span><span class="keyword">return </span><span class="default">(<a href="dictionary_C.html#21876">other</a> </span><span class="keyword">instanceof <a href="dictionary_C.html#21870">LiveVariableLattice</a></span><span class="default">) &amp;&amp;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">          </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21931">equals</a>(((LiveVariableLattice) <a href="dictionary_C.html#21876">other</a>).<a href="dictionary_C.html#21883">liveSet</a>);</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">    }</span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span>
+<a name="95"><font size=-1>95     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#21878">isLive</a></span><span class="default">(<a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#21879">v</a>) {</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">      Preconditions.<a href="dictionary_C.html#394">checkNotNull</a>(<a href="dictionary_C.html#21879">v</a>);</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#21883">liveSet</a></span><span class="default">.<a href="dictionary_J.html#21933">get</a>(<a href="dictionary_C.html#21879">v</a>.<a href="dictionary_C.html#20382">index</a>);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    }</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default">    </span><span class="keyword">public boolean <a href="dictionary_C.html#21880">isLive</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_C.html#21881">index</a></span><span class="default">) {</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#21883">liveSet</a></span><span class="default">.<a href="dictionary_J.html#21933">get</a>(<a href="dictionary_C.html#21881">index</a>);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">    }</span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    @Override</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">    </span><span class="keyword">public </span><span class="default">String <a href="dictionary_C.html#21882">toString</a>() {</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#21883">liveSet</a></span><span class="default">.<a href="dictionary_J.html#21934">toString</a>();</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">    }</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    @Override</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    </span><span class="keyword">public int <a href="dictionary_C.html#21877">hashCode</a></span><span class="default">() {</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">      </span><span class="keyword">return <a href="dictionary_C.html#21883">liveSet</a></span><span class="default">.<a href="dictionary_J.html#21932">hashCode</a>();</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">    }</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">  }</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span>
+<a name="115"><font size=-1>115     </font></a><span class="default">  </span><span class="comment">// The scope of the function that we are analyzing.</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">  </span><span class="keyword">private final <a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#21925">jsScope</a></span><span class="default">;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">  </span><span class="keyword">private final </span><span class="default">Set&lt;<a href="dictionary_C.html#340">Var</a>&gt; <a href="dictionary_C.html#21924">escaped</a>;</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span>
+<a name="119"><font size=-1>119     </font></a><span class="default">  <a href="dictionary_C.html#21884">LiveVariablesAnalysis</a>(<a href="dictionary_C.html#7536">ControlFlowGraph</a>&lt;<a href="dictionary_C.html#219">Node</a>&gt; <a href="dictionary_C.html#21885">cfg</a>, <a href="dictionary_C.html#1349">Scope</a> <a href="dictionary_C.html#21887">jsScope</a>,</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">      <a href="dictionary_C.html#1347">AbstractCompiler</a> <a href="dictionary_C.html#21886">compiler</a>) {</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">    </span><span class="keyword">super</span><span class="default">(<a href="dictionary_C.html#21885">cfg</a>, </span><span class="keyword">new <a href="dictionary_C.html#21865">LiveVariableJoinOp</a></span><span class="default">());</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#21925">jsScope</a> = <a href="dictionary_C.html#21887">jsScope</a>;</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">    </span><span class="keyword">this</span><span class="default">.<a href="dictionary_C.html#21924">escaped</a> = </span><span class="keyword">new </span><span class="default">HashSet&lt;&gt;();</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">    <a href="dictionary_C.html#21936">computeEscaped</a>(<a href="dictionary_C.html#21887">jsScope</a>, <a href="dictionary_C.html#21924">escaped</a>, <a href="dictionary_C.html#21886">compiler</a>);</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">  }</span>
+<a name="126"><font size=-1>126     </font></a><span class="default"></span>
+<a name="127"><font size=-1>127     </font></a><span class="default">  </span><span class="keyword">public </span><span class="default">Set&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#340">Var</a></span><span class="default">&gt; <a href="dictionary_C.html#21913">getEscapedLocals</a>() {</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">    </span><span class="keyword">return </span><span class="default">(Set&lt;? </span><span class="keyword">extends <a href="dictionary_C.html#340">Var</a></span><span class="default">&gt;) <a href="dictionary_C.html#21924">escaped</a>;</span>
+<a name="129"><font size=-1>129     </font></a><span class="default">  }</span>
+<a name="130"><font size=-1>130     </font></a><span class="default"></span>
+<a name="131"><font size=-1>131     </font></a><span class="default">  </span><span class="keyword">public int <a href="dictionary_C.html#21914">getVarIndex</a></span><span class="default">(String <a href="dictionary_C.html#21915">var</a>) {</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#21925">jsScope</a></span><span class="default">.<a href="dictionary_C.html#1356">getVar</a>(<a href="dictionary_C.html#21915">var</a>).<a href="dictionary_C.html#20382">index</a>;</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">  }</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span>
+<a name="135"><font size=-1>135     </font></a><span class="default">  @Override</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">  </span><span class="keyword">boolean <a href="dictionary_C.html#21918">isForward</a></span><span class="default">() {</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">    </span><span class="keyword">return false</span><span class="default">;</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">  }</span>
+<a name="139"><font size=-1>139     </font></a><span class="default"></span>
+<a name="140"><font size=-1>140     </font></a><span class="default">  @Override</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">  <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21902">createEntryLattice</a>() {</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#21871">LiveVariableLattice</a></span><span class="default">(<a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#4886">getVarCount</a>());</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">  }</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default">  @Override</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">  <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21903">createInitialEstimateLattice</a>() {</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">    </span><span class="keyword">return new <a href="dictionary_C.html#21871">LiveVariableLattice</a></span><span class="default">(<a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#4886">getVarCount</a>());</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">  }</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default">  @Override</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">  <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21904">flowThrough</a>(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21911">node</a>, <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21909">input</a>) {</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21908">gen</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_J.html#21929">BitSet</a></span><span class="default">(<a href="dictionary_C.html#21909">input</a>.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21938">size</a>());</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">    </span><span class="keyword">final <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21910">kill</a> </span><span class="default">= </span><span class="keyword">new <a href="dictionary_J.html#21929">BitSet</a></span><span class="default">(<a href="dictionary_C.html#21909">input</a>.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21938">size</a>());</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default">    </span><span class="comment">// Make kills conditional if the node can end abruptly by an exception.</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">    </span><span class="keyword">boolean <a href="dictionary_C.html#21906">conditional</a> </span><span class="default">= </span><span class="keyword">false</span><span class="default">;</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">    List&lt;<a href="dictionary_C.html#7535">DiGraphEdge</a>&lt;<a href="dictionary_C.html#219">Node</a>, <a href="dictionary_C.html#7534">Branch</a>&gt;&gt; <a href="dictionary_C.html#21907">edgeList</a> = <a href="dictionary_C.html#8736">getCfg</a>().<a href="dictionary_C.html#8737">getOutEdges</a>(<a href="dictionary_C.html#21911">node</a>);</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#7535">DiGraphEdge</a>&lt;<a href="dictionary_C.html#219">Node</a>, <a href="dictionary_C.html#7534">Branch</a>&gt; <a href="dictionary_C.html#21905">edge</a> : <a href="dictionary_C.html#21907">edgeList</a>) {</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">      </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#7534">Branch</a>.<a href="dictionary_C.html#7540">ON_EX</a>.<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#21905">edge</a>.<a href="dictionary_C.html#6899">getValue</a>())) {</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">        <a href="dictionary_C.html#21906">conditional</a> = </span><span class="keyword">true</span><span class="default">;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">      }</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">    }</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">    <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21911">node</a>, <a href="dictionary_C.html#21908">gen</a>, <a href="dictionary_C.html#21910">kill</a>, <a href="dictionary_C.html#21906">conditional</a>);</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">    <a href="dictionary_C.html#21870">LiveVariableLattice</a> <a href="dictionary_C.html#21912">result</a> = </span><span class="keyword">new <a href="dictionary_C.html#21873">LiveVariableLattice</a></span><span class="default">(<a href="dictionary_C.html#21909">input</a>);</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">    </span><span class="comment">// L_in = L_out - Kill + Gen</span>
+<a name="166"><font size=-1>166     </font></a><span class="comment">    <a href="dictionary_C.html#21912">result</a></span><span class="default">.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21939">andNot</a>(<a href="dictionary_C.html#21910">kill</a>);</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">    <a href="dictionary_C.html#21912">result</a>.<a href="dictionary_C.html#21883">liveSet</a>.<a href="dictionary_J.html#21928">or</a>(<a href="dictionary_C.html#21908">gen</a>);</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#21912">result</a></span><span class="default">;</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">  }</span>
+<a name="170"><font size=-1>170     </font></a><span class="default"></span>
+<a name="171"><font size=-1>171     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">   * Computes the GEN and KILL set.</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">   *</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">   * @param n Root node.</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">   * @param gen Local variables that are live because of the instruction at</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">   *        {@code n} will be added to this set.</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">   * @param kill Local variables that are killed because of the instruction at</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">   *        {@code n} will be added to this set.</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">   * @param conditional {@code true} if any assignments encountered are</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">   *        conditionally executed. These assignments might not kill a variable.</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">   */</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">  </span><span class="keyword">private void <a href="dictionary_C.html#21893">computeGenKill</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21901">n</a>, <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21898">kill</a>,</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">      </span><span class="keyword">boolean <a href="dictionary_C.html#21896">conditional</a></span><span class="default">) {</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span>
+<a name="185"><font size=-1>185     </font></a><span class="default">    </span><span class="keyword">switch </span><span class="default">(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#938">getType</a>()) {</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#246">SCRIPT</a></span><span class="default">:</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#250">BLOCK</a></span><span class="default">:</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#946">FUNCTION</a></span><span class="default">:</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span>
+<a name="191"><font size=-1>191     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6559">WHILE</a></span><span class="default">:</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6515">DO</a></span><span class="default">:</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6528">IF</a></span><span class="default">:</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">        <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#7543">getConditionExpression</a>(<a href="dictionary_C.html#21901">n</a>), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>,</span>
+<a name="195"><font size=-1>195     </font></a><span class="default">            <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="197"><font size=-1>197     </font></a><span class="default"></span>
+<a name="198"><font size=-1>198     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6523">FOR</a></span><span class="default">:</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#6596">isForIn</a>(<a href="dictionary_C.html#21901">n</a>)) {</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">          <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#7543">getConditionExpression</a>(<a href="dictionary_C.html#21901">n</a>), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>,</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">              <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">        } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">          </span><span class="comment">// for(x in y) {...}</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">          <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21899">lhs</a> </span><span class="default">= <a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#21899">lhs</a>.<a href="dictionary_C.html#1039">isVar</a>()) {</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">            </span><span class="comment">// for(var x in y) {...}</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">            <a href="dictionary_C.html#21899">lhs</a> </span><span class="default">= <a href="dictionary_C.html#21899">lhs</a>.<a href="dictionary_C.html#350">getLastChild</a>();</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">          }</span>
+<a name="209"><font size=-1>209     </font></a><span class="default"></span>
+<a name="210"><font size=-1>210     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#21899">lhs</a>.<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">            <a href="dictionary_C.html#21888">addToSetIfLocal</a>(<a href="dictionary_C.html#21899">lhs</a>, <a href="dictionary_C.html#21898">kill</a>);</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">            <a href="dictionary_C.html#21888">addToSetIfLocal</a>(<a href="dictionary_C.html#21899">lhs</a>, <a href="dictionary_C.html#21897">gen</a>);</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">          } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">            <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21899">lhs</a>, <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">          }</span>
+<a name="216"><font size=-1>216     </font></a><span class="default"></span>
+<a name="217"><font size=-1>217     </font></a><span class="default">          </span><span class="comment">// rhs is executed only once so we don't go into it every loop.</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">        </span><span class="default">}</span>
+<a name="219"><font size=-1>219     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="220"><font size=-1>220     </font></a><span class="default"></span>
+<a name="221"><font size=-1>221     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6558">VAR</a></span><span class="default">:</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">        </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21894">c</a> = <a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>(); <a href="dictionary_C.html#21894">c</a> != </span><span class="keyword">null</span><span class="default">; <a href="dictionary_C.html#21894">c</a> = <a href="dictionary_C.html#21894">c</a>.<a href="dictionary_C.html#541">getNext</a>()) {</span>
+<a name="223"><font size=-1>223     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#21894">c</a>.<a href="dictionary_C.html#1406">hasChildren</a>()) {</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">            <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21894">c</a>.<a href="dictionary_C.html#355">getFirstChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">            </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#21896">conditional</a>) {</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">              <a href="dictionary_C.html#21888">addToSetIfLocal</a>(<a href="dictionary_C.html#21894">c</a>, <a href="dictionary_C.html#21898">kill</a>);</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">            }</span>
+<a name="228"><font size=-1>228     </font></a><span class="default">          }</span>
+<a name="229"><font size=-1>229     </font></a><span class="default">        }</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="231"><font size=-1>231     </font></a><span class="default"></span>
+<a name="232"><font size=-1>232     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6496">AND</a></span><span class="default">:</span>
+<a name="233"><font size=-1>233     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6543">OR</a></span><span class="default">:</span>
+<a name="234"><font size=-1>234     </font></a><span class="default">        <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">        </span><span class="comment">// May short circuit.</span>
+<a name="236"><font size=-1>236     </font></a><span class="comment">        <a href="dictionary_C.html#21893">computeGenKill</a></span><span class="default">(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#350">getLastChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="238"><font size=-1>238     </font></a><span class="default"></span>
+<a name="239"><font size=-1>239     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#6527">HOOK</a></span><span class="default">:</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">        <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">        </span><span class="comment">// Assume both sides are conditional.</span>
+<a name="242"><font size=-1>242     </font></a><span class="comment">        <a href="dictionary_C.html#21893">computeGenKill</a></span><span class="default">(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#1907">getSecondChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">        <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#350">getLastChild</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, </span><span class="keyword">true</span><span class="default">);</span>
+<a name="244"><font size=-1>244     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="245"><font size=-1>245     </font></a><span class="default"></span>
+<a name="246"><font size=-1>246     </font></a><span class="default">      </span><span class="keyword">case <a href="dictionary_C.html#939">NAME</a></span><span class="default">:</span>
+<a name="247"><font size=-1>247     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#21916">isArgumentsName</a>(<a href="dictionary_C.html#21901">n</a>)) {</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">          <a href="dictionary_C.html#21919">markAllParametersEscaped</a>();</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">        } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="250"><font size=-1>250     </font></a><span class="default">          <a href="dictionary_C.html#21888">addToSetIfLocal</a>(<a href="dictionary_C.html#21901">n</a>, <a href="dictionary_C.html#21897">gen</a>);</span>
+<a name="251"><font size=-1>251     </font></a><span class="default">        }</span>
+<a name="252"><font size=-1>252     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="253"><font size=-1>253     </font></a><span class="default"></span>
+<a name="254"><font size=-1>254     </font></a><span class="default">      </span><span class="keyword">default</span><span class="default">:</span>
+<a name="255"><font size=-1>255     </font></a><span class="default">        </span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#536">NodeUtil</a>.<a href="dictionary_C.html#1392">isAssignmentOp</a>(<a href="dictionary_C.html#21901">n</a>) &amp;&amp; <a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>().<a href="dictionary_C.html#561">isName</a>()) {</span>
+<a name="256"><font size=-1>256     </font></a><span class="default">          <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21900">lhs</a> = <a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>();</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#21896">conditional</a>) {</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">            <a href="dictionary_C.html#21888">addToSetIfLocal</a>(<a href="dictionary_C.html#21900">lhs</a>, <a href="dictionary_C.html#21898">kill</a>);</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">          }</span>
+<a name="260"><font size=-1>260     </font></a><span class="default">          </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#354">isAssign</a>()) {</span>
+<a name="261"><font size=-1>261     </font></a><span class="default">            </span><span class="comment">// assignments such as a += 1 reads a.</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment">            <a href="dictionary_C.html#21888">addToSetIfLocal</a></span><span class="default">(<a href="dictionary_C.html#21900">lhs</a>, <a href="dictionary_C.html#21897">gen</a>);</span>
+<a name="263"><font size=-1>263     </font></a><span class="default">          }</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">          <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21900">lhs</a>.<a href="dictionary_C.html#541">getNext</a>(), <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="265"><font size=-1>265     </font></a><span class="default">        } </span><span class="keyword">else </span><span class="default">{</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">          </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21895">c</a> = <a href="dictionary_C.html#21901">n</a>.<a href="dictionary_C.html#355">getFirstChild</a>(); <a href="dictionary_C.html#21895">c</a> != </span><span class="keyword">null</span><span class="default">; <a href="dictionary_C.html#21895">c</a> = <a href="dictionary_C.html#21895">c</a>.<a href="dictionary_C.html#541">getNext</a>()) {</span>
+<a name="267"><font size=-1>267     </font></a><span class="default">            <a href="dictionary_C.html#21893">computeGenKill</a>(<a href="dictionary_C.html#21895">c</a>, <a href="dictionary_C.html#21897">gen</a>, <a href="dictionary_C.html#21898">kill</a>, <a href="dictionary_C.html#21896">conditional</a>);</span>
+<a name="268"><font size=-1>268     </font></a><span class="default">          }</span>
+<a name="269"><font size=-1>269     </font></a><span class="default">        }</span>
+<a name="270"><font size=-1>270     </font></a><span class="default">        </span><span class="keyword">return</span><span class="default">;</span>
+<a name="271"><font size=-1>271     </font></a><span class="default">    }</span>
+<a name="272"><font size=-1>272     </font></a><span class="default">  }</span>
+<a name="273"><font size=-1>273     </font></a><span class="default"></span>
+<a name="274"><font size=-1>274     </font></a><span class="default">  </span><span class="keyword">private void <a href="dictionary_C.html#21888">addToSetIfLocal</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21890">node</a>, <a href="dictionary_J.html#21927">BitSet</a> <a href="dictionary_C.html#21891">set</a>) {</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">    Preconditions.<a href="dictionary_C.html#591">checkState</a>(<a href="dictionary_C.html#21890">node</a>.<a href="dictionary_C.html#561">isName</a>());</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">    String <a href="dictionary_C.html#21889">name</a> = <a href="dictionary_C.html#21890">node</a>.<a href="dictionary_C.html#351">getString</a>();</span>
+<a name="277"><font size=-1>277     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#6796">isDeclared</a>(<a href="dictionary_C.html#21889">name</a>, </span><span class="keyword">false</span><span class="default">)) {</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">      </span><span class="keyword">return</span><span class="default">;</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">    }</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">    <a href="dictionary_C.html#340">Var</a> <a href="dictionary_C.html#21892">var</a> = <a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#1356">getVar</a>(<a href="dictionary_C.html#21889">name</a>);</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">    </span><span class="keyword">if </span><span class="default">(!<a href="dictionary_C.html#21924">escaped</a>.<a href="dictionary_C.html#667">contains</a>(<a href="dictionary_C.html#21892">var</a>)) {</span>
+<a name="282"><font size=-1>282     </font></a><span class="default">      <a href="dictionary_C.html#21891">set</a>.<a href="dictionary_J.html#21937">set</a>(<a href="dictionary_C.html#21892">var</a>.<a href="dictionary_C.html#20382">index</a>);</span>
+<a name="283"><font size=-1>283     </font></a><span class="default">    }</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">  }</span>
+<a name="285"><font size=-1>285     </font></a><span class="default"></span>
+<a name="286"><font size=-1>286     </font></a><span class="default">  </span><span class="comment">/**</span>
+<a name="287"><font size=-1>287     </font></a><span class="comment">   * Give up computing liveness of formal parameter by putting all the parameter</span>
+<a name="288"><font size=-1>288     </font></a><span class="comment">   * names in the escaped set.</span>
+<a name="289"><font size=-1>289     </font></a><span class="comment">   */</span>
+<a name="290"><font size=-1>290     </font></a><span class="comment">  </span><span class="keyword">void <a href="dictionary_C.html#21919">markAllParametersEscaped</a></span><span class="default">() {</span>
+<a name="291"><font size=-1>291     </font></a><span class="default">    <a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21921">lp</a> = <a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#2115">getRootNode</a>().<a href="dictionary_C.html#1907">getSecondChild</a>();</span>
+<a name="292"><font size=-1>292     </font></a><span class="default">    </span><span class="keyword">for </span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21920">arg</a> = <a href="dictionary_C.html#21921">lp</a>.<a href="dictionary_C.html#355">getFirstChild</a>(); <a href="dictionary_C.html#21920">arg</a> != </span><span class="keyword">null</span><span class="default">; <a href="dictionary_C.html#21920">arg</a> = <a href="dictionary_C.html#21920">arg</a>.<a href="dictionary_C.html#541">getNext</a>()) {</span>
+<a name="293"><font size=-1>293     </font></a><span class="default">      <a href="dictionary_C.html#21924">escaped</a>.<a href="dictionary_A.html#368">add</a>(<a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#1356">getVar</a>(<a href="dictionary_C.html#21920">arg</a>.<a href="dictionary_C.html#351">getString</a>()));</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">    }</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">  }</span>
+<a name="296"><font size=-1>296     </font></a><span class="default"></span>
+<a name="297"><font size=-1>297     </font></a><span class="default">  </span><span class="keyword">private boolean <a href="dictionary_C.html#21916">isArgumentsName</a></span><span class="default">(<a href="dictionary_C.html#219">Node</a> <a href="dictionary_C.html#21917">n</a>) {</span>
+<a name="298"><font size=-1>298     </font></a><span class="default">    </span><span class="keyword">return <a href="dictionary_C.html#21917">n</a></span><span class="default">.<a href="dictionary_C.html#561">isName</a>() &amp;&amp; <a href="dictionary_C.html#21917">n</a>.<a href="dictionary_C.html#351">getString</a>().<a href="dictionary_E.html#395">equals</a>(<a href="dictionary_C.html#21922">ARGUMENT_ARRAY_ALIAS</a>)</span>
+<a name="299"><font size=-1>299     </font></a><span class="default">        &amp;&amp; !<a href="dictionary_C.html#21925">jsScope</a>.<a href="dictionary_C.html#6796">isDeclared</a>(<a href="dictionary_C.html#21922">ARGUMENT_ARRAY_ALIAS</a>, </span><span class="keyword">false</span><span class="default">);</span>
+<a name="300"><font size=-1>300     </font></a><span class="default">  }</span>
+<a name="301"><font size=-1>301     </font></a><span class="default">}</span>
+<a name="302"><font size=-1>302     </font></a><span class="default"></span>
+</pre></body></html>

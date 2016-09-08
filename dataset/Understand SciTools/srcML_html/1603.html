@@ -1,0 +1,126 @@
+<html><head><title>worker_thread.hpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/srcml/srcML-src/src/srcml/threadpool/detail/worker_thread.hpp</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/srcml/srcML-src/src/srcml/threadpool/detail/worker_thread.hpp";
+top.document.title  = "worker_thread.hpp";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*! \file</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">* \brief Thread pool worker.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">*</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">* The worker thread instance is attached to a pool </span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">* and executes tasks of this pool. </span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">* Copyright (c) 2005-2007 Philipp Henkel</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">*</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">* Use, modification, and distribution are  subject to the</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">* Boost Software License, Version 1.0. (See accompanying  file</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">* LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">*</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">* http://threadpool.sourceforge.net</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">*</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">*/</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_T.html#1604">THREADPOOL_DETAIL_WORKER_THREAD_HPP_INCLUDED</a></span>
+<a name="18"><font size=-1>18     </font></a><span class="preproc">#define <a href="dictionary_T.html#1604">THREADPOOL_DETAIL_WORKER_THREAD_HPP_INCLUDED</a></span>
+<a name="19"><font size=-1>19     </font></a><span class="preproc"></span>
+<a name="20"><font size=-1>20     </font></a><span class="preproc"></span>
+<a name="21"><font size=-1>21     </font></a><span class="preproc">#include </span><span class="string">&quot;scope_guard.hpp&quot;</span>
+<a name="22"><font size=-1>22     </font></a><span class="string"></span>
+<a name="23"><font size=-1>23     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/smart_ptr.hpp&gt;</span>
+<a name="24"><font size=-1>24     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread.hpp&gt;</span>
+<a name="25"><font size=-1>25     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread/exceptions.hpp&gt;</span>
+<a name="26"><font size=-1>26     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/thread/mutex.hpp&gt;</span>
+<a name="27"><font size=-1>27     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;boost/bind.hpp&gt;</span>
+<a name="28"><font size=-1>28     </font></a><span class="string"></span>
+<a name="29"><font size=-1>29     </font></a><span class="string"></span>
+<a name="30"><font size=-1>30     </font></a><span class="string"></span><span class="keyword">namespace </span><span class="default">boost { </span><span class="keyword">namespace </span><span class="default">threadpool { </span><span class="keyword">namespace </span><span class="default">detail </span>
+<a name="31"><font size=-1>31     </font></a><span class="default">{</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default">  </span><span class="comment">/*! \brief Thread pool worker. </span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">  *</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">  * A worker_thread represents a thread of execution. The worker is attached to a </span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">  * thread pool and processes tasks of that pool. The lifetime of the worker and its </span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">  * internal boost::thread is managed automatically.</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">  *</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">  * This class is a helper class and cannot be constructed or accessed directly.</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">  * </span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">  * \see pool_core</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">  */ </span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">  </span><span class="keyword">template </span><span class="default">&lt;</span><span class="keyword">typename <a href="dictionary_B.html#1612">Pool</a></span><span class="default">&gt;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">  </span><span class="keyword">class <a href="dictionary_B.html#1611">worker_thread</a></span>
+<a name="45"><font size=-1>45     </font></a><span class="keyword">  </span><span class="default">: </span><span class="keyword">public <a href="dictionary_E.html#1613">enable_shared_from_this</a></span><span class="default">&lt; worker_thread&lt;Pool&gt; &gt; </span>
+<a name="46"><font size=-1>46     </font></a><span class="default">  , </span><span class="keyword">private <a href="dictionary_N.html#1614">noncopyable</a></span>
+<a name="47"><font size=-1>47     </font></a><span class="keyword">  </span><span class="default">{</span>
+<a name="48"><font size=-1>48     </font></a><span class="default">  </span><span class="keyword">public</span><span class="default">:</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">    </span><span class="keyword">typedef <a href="dictionary_B.html#1612">Pool</a> <a href="dictionary_B.html#1615">pool_type</a></span><span class="default">;         	   </span><span class="comment">//!&lt; Indicates the pool's type.</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"></span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">  </span><span class="keyword">private</span><span class="default">:</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">    <a href="dictionary_S.html#1617">shared_ptr</a>&lt;pool_type&gt;      <a href="dictionary_B.html#1616">m_pool</a>;     </span><span class="comment">//!&lt; Pointer to the pool which created the worker.</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">    <a href="dictionary_S.html#1617">shared_ptr</a></span><span class="default">&lt;boost::thread&gt;  <a href="dictionary_B.html#1618">m_thread</a>;   </span><span class="comment">//!&lt; Pointer to the thread which executes the run loop.</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">    </span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">    /*! Constructs a new worker. </span>
+<a name="57"><font size=-1>57     </font></a><span class="comment">    * \param pool Pointer to it's parent pool.</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment">    * \see function create_and_attach</span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">    */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">    <a href="dictionary_B.html#1619">worker_thread</a></span><span class="default">(<a href="dictionary_S.html#1617">shared_ptr</a>&lt;pool_type&gt; </span><span class="keyword">const </span><span class="default">&amp; <a href="dictionary_P.html#1620">pool</a>)</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    : <a href="dictionary_B.html#1616">m_pool</a>(<a href="dictionary_P.html#1620">pool</a>)</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">    {</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">      <a href="dictionary_A.html#464">assert</a>(<a href="dictionary_P.html#1620">pool</a>);</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">    }</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span>
+<a name="66"><font size=-1>66     </font></a><span class="default">	</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">	</span><span class="comment">/*! Notifies that an exception occurred in the run loop.</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">	*/</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">	</span><span class="keyword">void <a href="dictionary_B.html#1621">died_unexpectedly</a></span><span class="default">()</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">	{</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">		<a href="dictionary_B.html#1616">m_pool</a>-&gt;<a href="dictionary_W.html#1626">worker_died_unexpectedly</a>(</span><span class="keyword">this</span><span class="default">-&gt;<a href="dictionary_B.html#1627">shared_from_this</a>());</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">	}</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default">  </span><span class="keyword">public</span><span class="default">:</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">	  </span><span class="comment">/*! Executes pool's tasks sequentially.</span>
+<a name="77"><font size=-1>77     </font></a><span class="comment">	  */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">	  </span><span class="keyword">void <a href="dictionary_B.html#1622">run</a></span><span class="default">()</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">	  { </span>
+<a name="80"><font size=-1>80     </font></a><span class="default">		  <a href="dictionary_B.html#1629">scope_guard</a> <a href="dictionary_N.html#1631">notify_exception</a>(<a href="dictionary_B.html#1630">bind</a>(&amp;<a href="dictionary_B.html#1611">worker_thread</a>::<a href="dictionary_B.html#1621">died_unexpectedly</a>, </span><span class="keyword">this</span><span class="default">));</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default">		  </span><span class="keyword">while</span><span class="default">(<a href="dictionary_B.html#1616">m_pool</a>-&gt;<a href="dictionary_E.html#1632">execute_task</a>()) {}</span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default">		  <a href="dictionary_N.html#1631">notify_exception</a>.<a href="dictionary_B.html#1633">disable</a>();</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">		  <a href="dictionary_B.html#1616">m_pool</a>-&gt;<a href="dictionary_W.html#1634">worker_destructed</a>(</span><span class="keyword">this</span><span class="default">-&gt;<a href="dictionary_B.html#1627">shared_from_this</a>());</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">	  }</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default">	  </span><span class="comment">/*! Joins the worker's thread.</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">	  */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">	  </span><span class="keyword">void <a href="dictionary_B.html#1623">join</a></span><span class="default">()</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">	  {</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">		  <a href="dictionary_B.html#1618">m_thread</a>-&gt;<a href="dictionary_J.html#1636">join</a>();</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">	  }</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default">	  </span><span class="comment">/*! Constructs a new worker thread and attaches it to the pool.</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">	  * \param pool Pointer to the pool.</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">	  */</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">	  </span><span class="keyword">static void <a href="dictionary_B.html#1624">create_and_attach</a></span><span class="default">(<a href="dictionary_S.html#1617">shared_ptr</a>&lt;pool_type&gt; </span><span class="keyword">const </span><span class="default">&amp; <a href="dictionary_P.html#1625">pool</a>)</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	  {</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">		  <a href="dictionary_S.html#1617">shared_ptr</a>&lt;worker_thread&gt; <a href="dictionary_W.html#1637">worker</a>(</span><span class="keyword">new <a href="dictionary_B.html#1619">worker_thread</a></span><span class="default">(<a href="dictionary_P.html#1625">pool</a>));</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">		  </span><span class="keyword">if</span><span class="default">(<a href="dictionary_W.html#1637">worker</a>)</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">		  {</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">			  <a href="dictionary_W.html#1637">worker</a>-&gt;<a href="dictionary_M.html#1638">m_thread</a>.<a href="dictionary_R.html#1639">reset</a>(</span><span class="keyword">new </span><span class="default">boost::<a href="dictionary_T.html#1640">thread</a>(<a href="dictionary_B.html#1630">bind</a>(&amp;<a href="dictionary_B.html#1611">worker_thread</a>::<a href="dictionary_B.html#1622">run</a>, <a href="dictionary_W.html#1637">worker</a>)));</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">		  }</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">	  }</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default">  };</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span>
+<a name="112"><font size=-1>112     </font></a><span class="default">} } } </span><span class="comment">// namespace boost::threadpool::detail</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment"></span>
+<a name="114"><font size=-1>114     </font></a><span class="comment"></span><span class="preproc">#endif </span><span class="comment">// THREADPOOL_DETAIL_WORKER_THREAD_HPP_INCLUDED</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment"></span>
+<a name="116"><font size=-1>116     </font></a><span class="comment"></span>
+</pre></body></html>

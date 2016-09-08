@@ -1,0 +1,73 @@
+<html><head><title>cse_fail.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/x86/cse_fail.c</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/none/tests/x86/cse_fail.c";
+top.document.title  = "cse_fail.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/* This isn't really an x86 specific test.  It checks for an</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">   iropt CSE failure that appeared in 3.2.2:</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">ex: the `impossible' happened:</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">   eqIRConst</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">vex storage: T total 68337344 bytes allocated</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">valgrind: the 'impossible' happened:</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   LibVEX called failure_exit().</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">==23986==    at 0x38017803: report_and_quit (m_libcassert.c:136)</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">==23986==    by 0x38017941: panic (m_libcassert.c:210)</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">==23986==    by 0x38017997: vgPlain_core_panic_at (m_libcassert.c:215)</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">==23986==    by 0x380179B5: vgPlain_core_panic (m_libcassert.c:220)</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">==23986==    by 0x3802A650: failure_exit (m_translate.c:487)</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">==23986==    by 0x38071678: vpanic (vex_util.c:225)</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">==23986==    by 0x3806A1B0: eqIRConst (irdefs.c:2576)</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">==23986==    by 0x3810BB84: do_cse_BB (iropt.c:2279)</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">==23986==    by 0x3810CBBD: do_iropt_BB (iropt.c:4208)</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">==23986==    by 0x3807010B: LibVEX_Translate (vex_main.c:478)</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">==23986==    by 0x38029365: vgPlain_translate (m_translate.c:1097)</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">==23986==    by 0x38037610: vgPlain_scheduler (scheduler.c:693)</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">==23986==    by 0x38052FBE: run_a_thread_NORETURN (syswrap-linux.c:87)</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">*/</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"></span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;stdio.h&gt;</span>
+<a name="27"><font size=-1>27     </font></a><span class="string"></span>
+<a name="28"><font size=-1>28     </font></a><span class="string"></span><span class="keyword">int <a href="dictionary_M.html#170950">main</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">{</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">   </span><span class="comment">/* This bombs 3.2.2 w/ V128 non-match in eqIRConst. */</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">   <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;V128 cse:\n&quot;</span><span class="default">);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">   </span><span class="keyword">__asm__ </span><span class="default">__volatile__(</span>
+<a name="33"><font size=-1>33     </font></a><span class="default">      </span><span class="string">&quot;xorps  %%xmm0,%%xmm0\n\t&quot;</span>
+<a name="34"><font size=-1>34     </font></a><span class="string">      &quot;movaps %%xmm1,%%xmm2\n\t&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string">      &quot;addps  %%xmm0,%%xmm1\n\t&quot;</span>
+<a name="36"><font size=-1>36     </font></a><span class="string">      &quot;addps  %%xmm0,%%xmm2\n\t&quot;</span>
+<a name="37"><font size=-1>37     </font></a><span class="string">      &quot;addps  %%xmm1,%%xmm2\n\t&quot;</span>
+<a name="38"><font size=-1>38     </font></a><span class="string">      </span><span class="default">: : : </span><span class="string">&quot;xmm0&quot;</span><span class="default">,</span><span class="string">&quot;xmm1&quot;</span><span class="default">, </span><span class="string">&quot;st&quot;</span>
+<a name="39"><font size=-1>39     </font></a><span class="string">   </span><span class="default">);</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default">   </span><span class="comment">/* This ought to cause it to fail w/ F64i non-match in eqIRConst,</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">      but it doesn't.  I don't understand why not. */</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">   <a href="dictionary_P.html#328">printf</a></span><span class="default">(</span><span class="string">&quot;F64i cse:\n&quot;</span><span class="default">);</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">   </span><span class="keyword">__asm__ </span><span class="default">__volatile__(</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">      </span><span class="string">&quot;fninit\n\t&quot;</span>
+<a name="46"><font size=-1>46     </font></a><span class="string"></span>
+<a name="47"><font size=-1>47     </font></a><span class="string">      &quot;fldz\n\t&quot;</span>
+<a name="48"><font size=-1>48     </font></a><span class="string">      &quot;fldz\n\t&quot;</span>
+<a name="49"><font size=-1>49     </font></a><span class="string">      &quot;fstp %%st(4)\n\t&quot;</span>
+<a name="50"><font size=-1>50     </font></a><span class="string">      &quot;fstp %%st(3)\n\t&quot;</span>
+<a name="51"><font size=-1>51     </font></a><span class="string"></span>
+<a name="52"><font size=-1>52     </font></a><span class="string">      &quot;fldpi\n\t&quot;</span>
+<a name="53"><font size=-1>53     </font></a><span class="string">      &quot;fldpi\n\t&quot;</span>
+<a name="54"><font size=-1>54     </font></a><span class="string">      &quot;fsqrt\n\t&quot;</span>
+<a name="55"><font size=-1>55     </font></a><span class="string">      &quot;fxch %%st(1)\n\t&quot;</span>
+<a name="56"><font size=-1>56     </font></a><span class="string">      &quot;fsqrt\n\t&quot;</span>
+<a name="57"><font size=-1>57     </font></a><span class="string">      &quot;faddp %%st(1)\n\t&quot;</span>
+<a name="58"><font size=-1>58     </font></a><span class="string"></span>
+<a name="59"><font size=-1>59     </font></a><span class="string">      </span><span class="default">: : : </span><span class="string">&quot;st&quot;</span>
+<a name="60"><font size=-1>60     </font></a><span class="string">      </span><span class="default">);</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">   </span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">}</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span>
+</pre></body></html>

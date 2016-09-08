@@ -1,0 +1,508 @@
+<html><head><title>host_s390_defs.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/host_s390_defs.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/host_s390_defs.h";
+top.document.title  = "host_s390_defs.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* -*- mode: C; c-basic-offset: 3; -*- */</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"></span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*--- begin                                  host_s390_defs.h ---*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"></span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">/*</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">   framework.</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">   Copyright IBM Corp. 2010-2011</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02110-1301, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">*/</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"></span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">/* Contributed by Florian Krohm */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#74862">__VEX_HOST_S390_DEFS_H</a></span>
+<a name="34"><font size=-1>34     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#74862">__VEX_HOST_S390_DEFS_H</a></span>
+<a name="35"><font size=-1>35     </font></a><span class="preproc"></span>
+<a name="36"><font size=-1>36     </font></a><span class="preproc">#include </span><span class="string">&quot;libvex_basictypes.h&quot;            </span><span class="comment">/* Bool */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;libvex.h&quot;                       </span><span class="comment">/* VexArchInfo */</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;main_util.h&quot;                    </span><span class="comment">/* needed for host_generic_regs.h */</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;host_generic_regs.h&quot;            </span><span class="comment">/* HReg */</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"></span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">/* --------- Registers --------- */</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span><span class="keyword">const <a href="dictionary_H.html#46">HChar</a> </span><span class="default">*<a href="dictionary_S.html#72670">s390_hreg_as_string</a>(<a href="dictionary_H.html#973">HReg</a>);</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_S.html#72677">s390_hreg_get_allocable</a></span><span class="default">(<a href="dictionary_I.html#113">Int</a> *nregs, <a href="dictionary_H.html#973">HReg</a> **arr);</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="comment">/* Dedicated registers */</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"><a href="dictionary_H.html#973">HReg</a> <a href="dictionary_S.html#72681">s390_hreg_guest_state_pointer</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="comment">/* Given the index of a function argument, return the number of the</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">   general purpose register in which it is being passed. Arguments are</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">   counted 0, 1, 2, ... and they are being passed in r2, r3, r4, ... */</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"></span><span class="keyword">static </span><span class="default">__inline__ </span><span class="keyword">unsigned</span>
+<a name="54"><font size=-1>54     </font></a><span class="keyword"><a href="dictionary_S.html#72874">s390_gprno_from_arg_index</a></span><span class="default">(</span><span class="keyword">unsigned <a href="dictionary_I.html#74863">ix</a></span><span class="default">)</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">{</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">   </span><span class="keyword">return <a href="dictionary_I.html#74863">ix</a> </span><span class="default">+ </span><span class="number">2</span><span class="default">;</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">}</span>
+<a name="58"><font size=-1>58     </font></a><span class="default"></span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span><span class="comment">/* --------- Memory address expressions (amodes). --------- */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"></span>
+<a name="61"><font size=-1>61     </font></a><span class="comment">/* These are the address modes:</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">   (1) b12:  base register + 12-bit unsigned offset   (e.g. RS)</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">   (2) b20:  base register + 20-bit signed offset     (e.g. RSY)</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">   (3) bx12: base register + index register + 12-bit unsigned offset (e.g. RX)</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">   (4) bx20: base register + index register + 20-bit signed offset   (e.g. RXY)</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">   fixs390: There is also pc-relative stuff.. e.g. LARL</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">*/</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment"></span>
+<a name="69"><font size=-1>69     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">   S390_AMODE_B12,</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">   S390_AMODE_B20,</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">   S390_AMODE_BX12,</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">   S390_AMODE_BX20</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">} <a href="dictionary_S.html#74865">s390_amode_t</a>;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span>
+<a name="76"><font size=-1>76     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_S.html#72693">s390_amode</a> </span><span class="default">{</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">   <a href="dictionary_S.html#74865">s390_amode_t</a> <a href="dictionary_S.html#72694">tag</a>;</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">   <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_S.html#72696">b</a>;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">   <a href="dictionary_H.html#973">HReg</a> <a href="dictionary_S.html#72697">x</a>;       </span><span class="comment">/* hregNumber(x) == 0  for S390_AMODE_B12/B20 kinds */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">   <a href="dictionary_I.html#113">Int</a>  <a href="dictionary_S.html#72695">d</a></span><span class="default">;       </span><span class="comment">/* 12 bit unsigned or 20 bit signed */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment"></span><span class="default">} <a href="dictionary_S.html#72688">s390_amode</a>;</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span>
+<a name="84"><font size=-1>84     </font></a><span class="default"><a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72687">s390_amode_b12</a>(<a href="dictionary_I.html#113">Int</a> d, <a href="dictionary_H.html#973">HReg</a> b);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"><a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72698">s390_amode_b20</a>(<a href="dictionary_I.html#113">Int</a> d, <a href="dictionary_H.html#973">HReg</a> b);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default"><a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72703">s390_amode_bx12</a>(<a href="dictionary_I.html#113">Int</a> d, <a href="dictionary_H.html#973">HReg</a> b, <a href="dictionary_H.html#973">HReg</a> x);</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"><a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72709">s390_amode_bx20</a>(<a href="dictionary_I.html#113">Int</a> d, <a href="dictionary_H.html#973">HReg</a> b, <a href="dictionary_H.html#973">HReg</a> x);</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"><a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72715">s390_amode_for_guest_state</a>(<a href="dictionary_I.html#113">Int</a> d);</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"><a href="dictionary_B.html#78">Bool</a>        <a href="dictionary_S.html#72723">s390_amode_is_sane</a>(</span><span class="keyword">const <a href="dictionary_S.html#72688">s390_amode</a> </span><span class="default">*);</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="keyword">void        <a href="dictionary_S.html#72725">s390_amode_get_reg_usage</a></span><span class="default">(<a href="dictionary_H.html#4390">HRegUsage</a> *, </span><span class="keyword">const <a href="dictionary_S.html#72688">s390_amode</a> </span><span class="default">*);</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span><span class="keyword">void        <a href="dictionary_S.html#72728">s390_amode_map_regs</a></span><span class="default">(<a href="dictionary_H.html#4392">HRegRemap</a> *, <a href="dictionary_S.html#72688">s390_amode</a> *);</span>
+<a name="92"><font size=-1>92     </font></a><span class="default"></span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span><span class="keyword">const <a href="dictionary_H.html#46">HChar</a> </span><span class="default">*<a href="dictionary_S.html#72717">s390_amode_as_string</a>(</span><span class="keyword">const <a href="dictionary_S.html#72688">s390_amode</a> </span><span class="default">*);</span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a></span><span class="default">;</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#72693">s390_amode</a></span><span class="default">;</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="comment">/* ------------- 2nd (right) operand of binary operation ---------------- */</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment"></span>
+<a name="99"><font size=-1>99     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="100"><font size=-1>100     </font></a><span class="default">   S390_OPND_REG,</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">   S390_OPND_IMMEDIATE,</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">   S390_OPND_AMODE</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">} <a href="dictionary_S.html#74867">s390_opnd_t</a>;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="comment">/* Naming convention for operand locations:</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">   R    - GPR</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">   I    - immediate value</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">   M    - memory (any Amode may be used)</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">*/</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment"></span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">/* An operand that is either in a GPR or is addressable via a BX20 amode */</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment"></span><span class="keyword">typedef struct </span><span class="default">{</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">   <a href="dictionary_S.html#74867">s390_opnd_t</a> <a href="dictionary_T.html#72772">tag</a>;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">   </span><span class="keyword">union </span><span class="default">{</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">      <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_R.html#72776">reg</a>;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">      <a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_A.html#72778">am</a>;</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">      <a href="dictionary_U.html#1057">ULong</a>       <a href="dictionary_I.html#74445">imm</a>;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">   } <a href="dictionary_V.html#72774">variant</a>;</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">} <a href="dictionary_S.html#72770">s390_opnd_RMI</a>;</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span><span class="comment">/* The kind of instructions */</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">   S390_INSN_LOAD,   </span><span class="comment">/* load register from memory */</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">   </span><span class="default">S390_INSN_STORE,  </span><span class="comment">/* store register to memory */</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">   </span><span class="default">S390_INSN_MOVE,   </span><span class="comment">/* from register to register */</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">   </span><span class="default">S390_INSN_COND_MOVE, </span><span class="comment">/* conditonal &quot;move&quot; to register */</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">   </span><span class="default">S390_INSN_LOAD_IMMEDIATE,</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">   S390_INSN_ALU,</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">   S390_INSN_MUL,    </span><span class="comment">/* n-bit operands; 2n-bit result */</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">   </span><span class="default">S390_INSN_DIV,    </span><span class="comment">/* 2n-bit dividend; n-bit divisor; n-bit quot/rem */</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">   </span><span class="default">S390_INSN_DIVS,   </span><span class="comment">/* n-bit dividend; n-bit divisor; n-bit quot/rem */</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">   </span><span class="default">S390_INSN_CLZ,    </span><span class="comment">/* count left-most zeroes */</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">   </span><span class="default">S390_INSN_UNOP,</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">   S390_INSN_TEST,   </span><span class="comment">/* test operand and set cc */</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">   </span><span class="default">S390_INSN_CC2BOOL,</span><span class="comment">/* convert condition code to 0/1 */</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">   </span><span class="default">S390_INSN_COMPARE,</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">   S390_INSN_BRANCH, </span><span class="comment">/* un/conditional goto */</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">   </span><span class="default">S390_INSN_HELPER_CALL,</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">   S390_INSN_CAS,    </span><span class="comment">/* compare and swap */</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">   </span><span class="default">S390_INSN_BFP_BINOP, </span><span class="comment">/* Binary floating point 32-bit / 64-bit */</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">   </span><span class="default">S390_INSN_BFP_UNOP,</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">   S390_INSN_BFP_TRIOP,</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">   S390_INSN_BFP_COMPARE,</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">   S390_INSN_BFP128_BINOP, </span><span class="comment">/* Binary floating point 128-bit */</span>
+<a name="147"><font size=-1>147     </font></a><span class="comment">   </span><span class="default">S390_INSN_BFP128_UNOP,</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">   S390_INSN_BFP128_COMPARE,</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">   S390_INSN_BFP128_CONVERT_TO,</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">   S390_INSN_BFP128_CONVERT_FROM</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">} <a href="dictionary_S.html#74871">s390_insn_tag</a>;</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span>
+<a name="153"><font size=-1>153     </font></a><span class="default"></span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span><span class="comment">/* The kind of ALU instructions */</span>
+<a name="155"><font size=-1>155     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">   S390_ALU_ADD,</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">   S390_ALU_SUB,</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">   S390_ALU_MUL,   </span><span class="comment">/* n-bit operands; result is lower n-bit of product */</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">   </span><span class="default">S390_ALU_AND,</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">   S390_ALU_OR,</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">   S390_ALU_XOR,</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">   S390_ALU_LSH,</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">   S390_ALU_RSH,</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">   S390_ALU_RSHA   </span><span class="comment">/* arithmetic */</span>
+<a name="165"><font size=-1>165     </font></a><span class="comment"></span><span class="default">} <a href="dictionary_S.html#74252">s390_alu_t</a>;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default"></span>
+<a name="167"><font size=-1>167     </font></a><span class="default"></span>
+<a name="168"><font size=-1>168     </font></a><span class="default"></span><span class="comment">/* The kind of unary integer operations */</span>
+<a name="169"><font size=-1>169     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">   S390_ZERO_EXTEND_8,</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">   S390_ZERO_EXTEND_16,</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">   S390_ZERO_EXTEND_32,</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">   S390_SIGN_EXTEND_8,</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">   S390_SIGN_EXTEND_16,</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">   S390_SIGN_EXTEND_32,</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">   S390_NEGATE</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">} <a href="dictionary_S.html#74288">s390_unop_t</a>;</span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span><span class="comment">/* The kind of ternary BFP operations */</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">   S390_BFP_MADD,</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">   S390_BFP_MSUB,</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">} <a href="dictionary_S.html#74335">s390_bfp_triop_t</a>;</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span>
+<a name="185"><font size=-1>185     </font></a><span class="default"></span><span class="comment">/* The kind of binary BFP operations */</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">   S390_BFP_ADD,</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">   S390_BFP_SUB,</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">   S390_BFP_MUL,</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">   S390_BFP_DIV</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">} <a href="dictionary_S.html#74347">s390_bfp_binop_t</a>;</span>
+<a name="192"><font size=-1>192     </font></a><span class="default"></span>
+<a name="193"><font size=-1>193     </font></a><span class="default"></span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span><span class="comment">/* The kind of unary BFP operations */</span>
+<a name="195"><font size=-1>195     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">   S390_BFP_ABS,</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">   S390_BFP_NABS,</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">   S390_BFP_NEG,</span>
+<a name="199"><font size=-1>199     </font></a><span class="default">   S390_BFP_SQRT,</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">   S390_BFP_I32_TO_F32,</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">   S390_BFP_I32_TO_F64,</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">   S390_BFP_I32_TO_F128,</span>
+<a name="203"><font size=-1>203     </font></a><span class="default">   S390_BFP_I64_TO_F32,</span>
+<a name="204"><font size=-1>204     </font></a><span class="default">   S390_BFP_I64_TO_F64,</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">   S390_BFP_I64_TO_F128,</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">   S390_BFP_F32_TO_I32,</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">   S390_BFP_F32_TO_I64,</span>
+<a name="208"><font size=-1>208     </font></a><span class="default">   S390_BFP_F32_TO_F64,</span>
+<a name="209"><font size=-1>209     </font></a><span class="default">   S390_BFP_F32_TO_F128,</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">   S390_BFP_F64_TO_I32,</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">   S390_BFP_F64_TO_I64,</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">   S390_BFP_F64_TO_F32,</span>
+<a name="213"><font size=-1>213     </font></a><span class="default">   S390_BFP_F64_TO_F128,</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">   S390_BFP_F128_TO_I32,</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">   S390_BFP_F128_TO_I64,</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">   S390_BFP_F128_TO_F32,</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">   S390_BFP_F128_TO_F64</span>
+<a name="218"><font size=-1>218     </font></a><span class="default">} <a href="dictionary_S.html#74357">s390_bfp_unop_t</a>;</span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span>
+<a name="220"><font size=-1>220     </font></a><span class="default"></span>
+<a name="221"><font size=-1>221     </font></a><span class="default"></span><span class="comment">/* Condition code. The encoding of the enumerators matches the value of</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment">   the mask field in the various branch opcodes. */</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="224"><font size=-1>224     </font></a><span class="default">   S390_CC_NEVER=  </span><span class="number">0</span><span class="default">,</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">   S390_CC_OVFL =  </span><span class="number">1</span><span class="default">,   </span><span class="comment">/* overflow */</span>
+<a name="226"><font size=-1>226     </font></a><span class="comment">   </span><span class="default">S390_CC_H    =  </span><span class="number">2</span><span class="default">,   </span><span class="comment">/* A &gt; B ; high */</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment">   </span><span class="default">S390_CC_NLE  =  </span><span class="number">3</span><span class="default">,   </span><span class="comment">/* not low or equal */</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment">   </span><span class="default">S390_CC_L    =  </span><span class="number">4</span><span class="default">,   </span><span class="comment">/* A &lt; B ; low */</span>
+<a name="229"><font size=-1>229     </font></a><span class="comment">   </span><span class="default">S390_CC_NHE  =  </span><span class="number">5</span><span class="default">,   </span><span class="comment">/* not high or equal */</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment">   </span><span class="default">S390_CC_LH   =  </span><span class="number">6</span><span class="default">,   </span><span class="comment">/* low or high */</span>
+<a name="231"><font size=-1>231     </font></a><span class="comment">   </span><span class="default">S390_CC_NE   =  </span><span class="number">7</span><span class="default">,   </span><span class="comment">/* A != B ; not zero */</span>
+<a name="232"><font size=-1>232     </font></a><span class="comment">   </span><span class="default">S390_CC_E    =  </span><span class="number">8</span><span class="default">,   </span><span class="comment">/* A == B ; zero */</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment">   </span><span class="default">S390_CC_NLH  =  </span><span class="number">9</span><span class="default">,   </span><span class="comment">/* not low or high */</span>
+<a name="234"><font size=-1>234     </font></a><span class="comment">   </span><span class="default">S390_CC_HE   = </span><span class="number">10</span><span class="default">,   </span><span class="comment">/* A &gt;= B ; high or equal*/</span>
+<a name="235"><font size=-1>235     </font></a><span class="comment">   </span><span class="default">S390_CC_NL   = </span><span class="number">11</span><span class="default">,   </span><span class="comment">/* not low */</span>
+<a name="236"><font size=-1>236     </font></a><span class="comment">   </span><span class="default">S390_CC_LE   = </span><span class="number">12</span><span class="default">,   </span><span class="comment">/* A &lt;= B ; low or equal */</span>
+<a name="237"><font size=-1>237     </font></a><span class="comment">   </span><span class="default">S390_CC_NH   = </span><span class="number">13</span><span class="default">,   </span><span class="comment">/* not high */</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">   </span><span class="default">S390_CC_NO   = </span><span class="number">14</span><span class="default">,   </span><span class="comment">/* not overflow */</span>
+<a name="239"><font size=-1>239     </font></a><span class="comment">   </span><span class="default">S390_CC_ALWAYS = </span><span class="number">15</span>
+<a name="240"><font size=-1>240     </font></a><span class="number"></span><span class="default">} <a href="dictionary_S.html#74238">s390_cc_t</a>;</span>
+<a name="241"><font size=-1>241     </font></a><span class="default"></span>
+<a name="242"><font size=-1>242     </font></a><span class="default"></span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span><span class="comment">/* Rounding mode as it is encoded in the m3/m4 fields of certain</span>
+<a name="244"><font size=-1>244     </font></a><span class="comment">   instructions (e.g. CFEBR) */</span>
+<a name="245"><font size=-1>245     </font></a><span class="comment"></span><span class="keyword">typedef enum </span><span class="default">{</span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span><span class="comment">/* S390_ROUND_NEAREST_AWAY = 1, not supported */</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment">   </span><span class="default">S390_ROUND_NEAREST_EVEN = </span><span class="number">4</span><span class="default">,</span>
+<a name="248"><font size=-1>248     </font></a><span class="default">   S390_ROUND_ZERO         = </span><span class="number">5</span><span class="default">,</span>
+<a name="249"><font size=-1>249     </font></a><span class="default">   S390_ROUND_POSINF       = </span><span class="number">6</span><span class="default">,</span>
+<a name="250"><font size=-1>250     </font></a><span class="default">   S390_ROUND_NEGINF       = </span><span class="number">7</span>
+<a name="251"><font size=-1>251     </font></a><span class="number"></span><span class="default">} <a href="dictionary_S.html#74340">s390_round_t</a>;</span>
+<a name="252"><font size=-1>252     </font></a><span class="default"></span>
+<a name="253"><font size=-1>253     </font></a><span class="default"></span>
+<a name="254"><font size=-1>254     </font></a><span class="default"></span><span class="comment">/* Invert the condition code */</span>
+<a name="255"><font size=-1>255     </font></a><span class="comment"></span><span class="keyword">static <a href="dictionary_Non-Alpha.html#16961">__inline__</a> <a href="dictionary_S.html#74238">s390_cc_t</a></span>
+<a name="256"><font size=-1>256     </font></a><span class="keyword"><a href="dictionary_S.html#74691">s390_cc_invert</a></span><span class="default">(<a href="dictionary_S.html#74238">s390_cc_t</a> <a href="dictionary_C.html#74879">cond</a>)</span>
+<a name="257"><font size=-1>257     </font></a><span class="default">{</span>
+<a name="258"><font size=-1>258     </font></a><span class="default">   </span><span class="keyword">return </span><span class="default">S390_CC_ALWAYS - <a href="dictionary_C.html#74879">cond</a>;</span>
+<a name="259"><font size=-1>259     </font></a><span class="default">}</span>
+<a name="260"><font size=-1>260     </font></a><span class="default"></span>
+<a name="261"><font size=-1>261     </font></a><span class="default"></span>
+<a name="262"><font size=-1>262     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">{</span>
+<a name="263"><font size=-1>263     </font></a><span class="default">   <a href="dictionary_S.html#74871">s390_insn_tag</a> <a href="dictionary_S.html#72783">tag</a>;</span>
+<a name="264"><font size=-1>264     </font></a><span class="default">   <a href="dictionary_U.html#449">UChar</a> <a href="dictionary_S.html#74225">size</a>;            </span><span class="comment">/* size of the result in bytes */</span>
+<a name="265"><font size=-1>265     </font></a><span class="comment">   </span><span class="keyword">union </span><span class="default">{</span>
+<a name="266"><font size=-1>266     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="267"><font size=-1>267     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#72789">dst</a>;</span>
+<a name="268"><font size=-1>268     </font></a><span class="default">         <a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_S.html#72790">src</a>;</span>
+<a name="269"><font size=-1>269     </font></a><span class="default">      } <a href="dictionary_L.html#72787">load</a>;</span>
+<a name="270"><font size=-1>270     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="271"><font size=-1>271     </font></a><span class="default">         <a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_D.html#72799">dst</a>;</span>
+<a name="272"><font size=-1>272     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_S.html#72798">src</a>;</span>
+<a name="273"><font size=-1>273     </font></a><span class="default">      } <a href="dictionary_S.html#72796">store</a>;</span>
+<a name="274"><font size=-1>274     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="275"><font size=-1>275     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#72804">dst</a>;</span>
+<a name="276"><font size=-1>276     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_S.html#72803">src</a>;</span>
+<a name="277"><font size=-1>277     </font></a><span class="default">      } <a href="dictionary_M.html#72801">move</a>;</span>
+<a name="278"><font size=-1>278     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="279"><font size=-1>279     </font></a><span class="default">         <a href="dictionary_S.html#74238">s390_cc_t</a>     <a href="dictionary_C.html#74242">cond</a>;</span>
+<a name="280"><font size=-1>280     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72809">dst</a>;</span>
+<a name="281"><font size=-1>281     </font></a><span class="default">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_S.html#72808">src</a>;</span>
+<a name="282"><font size=-1>282     </font></a><span class="default">      } <a href="dictionary_C.html#72806">cond_move</a>;</span>
+<a name="283"><font size=-1>283     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="284"><font size=-1>284     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_D.html#72794">dst</a>;</span>
+<a name="285"><font size=-1>285     </font></a><span class="default">         <a href="dictionary_U.html#1057">ULong</a>       <a href="dictionary_V.html#74248">value</a>;  </span><span class="comment">/* not sign extended */</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_L.html#72792">load_immediate</a>;</span>
+<a name="287"><font size=-1>287     </font></a><span class="default">      </span><span class="comment">/* add, and, or, xor */</span>
+<a name="288"><font size=-1>288     </font></a><span class="comment">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="289"><font size=-1>289     </font></a><span class="default">         <a href="dictionary_S.html#74252">s390_alu_t</a>    <a href="dictionary_T.html#74256">tag</a>;</span>
+<a name="290"><font size=-1>290     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72813">dst</a>; </span><span class="comment">/* op1 */</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_O.html#72814">op2</a></span><span class="default">;</span>
+<a name="292"><font size=-1>292     </font></a><span class="default">      } <a href="dictionary_A.html#72811">alu</a>;</span>
+<a name="293"><font size=-1>293     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">         <a href="dictionary_B.html#78">Bool</a>          <a href="dictionary_S.html#74264">signed_multiply</a>;</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72819">dst_hi</a>;  </span><span class="comment">/*           r10 */</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72818">dst_lo</a></span><span class="default">;  </span><span class="comment">/* also op1  r11 */</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_O.html#72820">op2</a></span><span class="default">;</span>
+<a name="298"><font size=-1>298     </font></a><span class="default">      } <a href="dictionary_M.html#72816">mul</a>;</span>
+<a name="299"><font size=-1>299     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="300"><font size=-1>300     </font></a><span class="default">         <a href="dictionary_B.html#78">Bool</a>          <a href="dictionary_S.html#74272">signed_divide</a>;</span>
+<a name="301"><font size=-1>301     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_O.html#72825">op1_hi</a>;  </span><span class="comment">/* also remainder   r10 */</span>
+<a name="302"><font size=-1>302     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_O.html#72824">op1_lo</a></span><span class="default">;  </span><span class="comment">/* also quotient    r11 */</span>
+<a name="303"><font size=-1>303     </font></a><span class="comment">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_O.html#72826">op2</a></span><span class="default">;</span>
+<a name="304"><font size=-1>304     </font></a><span class="default">      } <a href="dictionary_D.html#72822">div</a>;</span>
+<a name="305"><font size=-1>305     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="306"><font size=-1>306     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_R.html#72831">rem</a>; </span><span class="comment">/* remainder      r10 */</span>
+<a name="307"><font size=-1>307     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_O.html#72830">op1</a></span><span class="default">; </span><span class="comment">/* also quotient  r11 */</span>
+<a name="308"><font size=-1>308     </font></a><span class="comment">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_O.html#72832">op2</a></span><span class="default">;</span>
+<a name="309"><font size=-1>309     </font></a><span class="default">      } <a href="dictionary_D.html#72828">divs</a>;</span>
+<a name="310"><font size=-1>310     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="311"><font size=-1>311     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_N.html#72836">num_bits</a>; </span><span class="comment">/* number of leftmost '0' bits  r10 */</span>
+<a name="312"><font size=-1>312     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_C.html#72837">clobber</a></span><span class="default">;  </span><span class="comment">/* unspecified                  r11 */</span>
+<a name="313"><font size=-1>313     </font></a><span class="comment">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_S.html#72838">src</a></span><span class="default">;</span>
+<a name="314"><font size=-1>314     </font></a><span class="default">      } <a href="dictionary_C.html#72834">clz</a>;</span>
+<a name="315"><font size=-1>315     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="316"><font size=-1>316     </font></a><span class="default">         <a href="dictionary_S.html#74288">s390_unop_t</a>   <a href="dictionary_T.html#74292">tag</a>;</span>
+<a name="317"><font size=-1>317     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72842">dst</a>;</span>
+<a name="318"><font size=-1>318     </font></a><span class="default">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_S.html#72843">src</a>;</span>
+<a name="319"><font size=-1>319     </font></a><span class="default">      } <a href="dictionary_U.html#72840">unop</a>;</span>
+<a name="320"><font size=-1>320     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="321"><font size=-1>321     </font></a><span class="default">         <a href="dictionary_B.html#78">Bool</a>          <a href="dictionary_S.html#74315">signed_comparison</a>;</span>
+<a name="322"><font size=-1>322     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_S.html#72862">src1</a>;</span>
+<a name="323"><font size=-1>323     </font></a><span class="default">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_S.html#72863">src2</a>;</span>
+<a name="324"><font size=-1>324     </font></a><span class="default">      } <a href="dictionary_C.html#72860">compare</a>;</span>
+<a name="325"><font size=-1>325     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="326"><font size=-1>326     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_D.html#72894">dst</a>;  </span><span class="comment">/* condition code in s390 encoding */</span>
+<a name="327"><font size=-1>327     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_O.html#72895">op1</a></span><span class="default">;</span>
+<a name="328"><font size=-1>328     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>          <a href="dictionary_O.html#72896">op2</a>;</span>
+<a name="329"><font size=-1>329     </font></a><span class="default">      } <a href="dictionary_B.html#72892">bfp_compare</a>;</span>
+<a name="330"><font size=-1>330     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="331"><font size=-1>331     </font></a><span class="default">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_S.html#72847">src</a>;</span>
+<a name="332"><font size=-1>332     </font></a><span class="default">      } <a href="dictionary_T.html#72845">test</a>;</span>
+<a name="333"><font size=-1>333     </font></a><span class="default">      </span><span class="comment">/* Convert the condition code to a boolean value. */</span>
+<a name="334"><font size=-1>334     </font></a><span class="comment">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="335"><font size=-1>335     </font></a><span class="default">         <a href="dictionary_S.html#74238">s390_cc_t</a> <a href="dictionary_C.html#74301">cond</a>;</span>
+<a name="336"><font size=-1>336     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>      <a href="dictionary_D.html#72851">dst</a>;</span>
+<a name="337"><font size=-1>337     </font></a><span class="default">      } <a href="dictionary_C.html#72849">cc2bool</a>;</span>
+<a name="338"><font size=-1>338     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="339"><font size=-1>339     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_O.html#72855">op1</a>;</span>
+<a name="340"><font size=-1>340     </font></a><span class="default">         <a href="dictionary_S.html#72688">s390_amode</a> *<a href="dictionary_O.html#72856">op2</a>;</span>
+<a name="341"><font size=-1>341     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_O.html#72857">op3</a>;</span>
+<a name="342"><font size=-1>342     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>        <a href="dictionary_O.html#72858">old_mem</a>;</span>
+<a name="343"><font size=-1>343     </font></a><span class="default">      } <a href="dictionary_C.html#72853">cas</a>;</span>
+<a name="344"><font size=-1>344     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="345"><font size=-1>345     </font></a><span class="default">         <a href="dictionary_I.html#2371">IRJumpKind</a>    <a href="dictionary_K.html#74321">kind</a>;</span>
+<a name="346"><font size=-1>346     </font></a><span class="default">         <a href="dictionary_S.html#74238">s390_cc_t</a>     <a href="dictionary_C.html#74322">cond</a>;</span>
+<a name="347"><font size=-1>347     </font></a><span class="default">         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> <a href="dictionary_D.html#72867">dst</a>;</span>
+<a name="348"><font size=-1>348     </font></a><span class="default">      } <a href="dictionary_B.html#72865">branch</a>;</span>
+<a name="349"><font size=-1>349     </font></a><span class="default">      </span><span class="comment">/* Pseudo-insn for representing a helper call.</span>
+<a name="350"><font size=-1>350     </font></a><span class="comment">         TARGET is the absolute address of the helper function</span>
+<a name="351"><font size=-1>351     </font></a><span class="comment">         NUM_ARGS says how many arguments are being passed.</span>
+<a name="352"><font size=-1>352     </font></a><span class="comment">         All arguments have integer type and are being passed according to ABI,</span>
+<a name="353"><font size=-1>353     </font></a><span class="comment">         i.e. in registers r2, r3, r4, r5, and r6, with argument #0 being</span>
+<a name="354"><font size=-1>354     </font></a><span class="comment">         passed in r2 and so forth. */</span>
+<a name="355"><font size=-1>355     </font></a><span class="comment">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="356"><font size=-1>356     </font></a><span class="default">         <a href="dictionary_S.html#74238">s390_cc_t</a> <a href="dictionary_C.html#74329">cond</a>;</span>
+<a name="357"><font size=-1>357     </font></a><span class="default">         <a href="dictionary_A.html#4338">Addr64</a>    <a href="dictionary_T.html#74330">target</a>;</span>
+<a name="358"><font size=-1>358     </font></a><span class="default">         <a href="dictionary_U.html#8">UInt</a>      <a href="dictionary_N.html#72873">num_args</a>;</span>
+<a name="359"><font size=-1>359     </font></a><span class="default">         <a href="dictionary_H.html#46">HChar</a>    *<a href="dictionary_N.html#74331">name</a>;      </span><span class="comment">/* callee's name (for debugging) */</span>
+<a name="360"><font size=-1>360     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_H.html#72871">helper_call</a>;</span>
+<a name="361"><font size=-1>361     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="362"><font size=-1>362     </font></a><span class="default">         <a href="dictionary_S.html#74335">s390_bfp_triop_t</a> <a href="dictionary_T.html#74342">tag</a>;</span>
+<a name="363"><font size=-1>363     </font></a><span class="default">         <a href="dictionary_S.html#74340">s390_round_t</a>     <a href="dictionary_R.html#74343">rounding_mode</a>;</span>
+<a name="364"><font size=-1>364     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72878">dst</a>; </span><span class="comment">/* first operand */</span>
+<a name="365"><font size=-1>365     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72879">op2</a></span><span class="default">; </span><span class="comment">/* second operand */</span>
+<a name="366"><font size=-1>366     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72880">op3</a></span><span class="default">; </span><span class="comment">/* third operand */</span>
+<a name="367"><font size=-1>367     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72876">bfp_triop</a>;</span>
+<a name="368"><font size=-1>368     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="369"><font size=-1>369     </font></a><span class="default">         <a href="dictionary_S.html#74347">s390_bfp_binop_t</a> <a href="dictionary_T.html#74352">tag</a>;</span>
+<a name="370"><font size=-1>370     </font></a><span class="default">         <a href="dictionary_S.html#74340">s390_round_t</a>     <a href="dictionary_R.html#74353">rounding_mode</a>;</span>
+<a name="371"><font size=-1>371     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72884">dst</a>; </span><span class="comment">/* left operand */</span>
+<a name="372"><font size=-1>372     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72885">op2</a></span><span class="default">; </span><span class="comment">/* right operand */</span>
+<a name="373"><font size=-1>373     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72882">bfp_binop</a>;</span>
+<a name="374"><font size=-1>374     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="375"><font size=-1>375     </font></a><span class="default">         <a href="dictionary_S.html#74357">s390_bfp_unop_t</a> <a href="dictionary_T.html#74362">tag</a>;</span>
+<a name="376"><font size=-1>376     </font></a><span class="default">         <a href="dictionary_S.html#74340">s390_round_t</a>    <a href="dictionary_R.html#74363">rounding_mode</a>;</span>
+<a name="377"><font size=-1>377     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>            <a href="dictionary_D.html#72889">dst</a>;  </span><span class="comment">/* result */</span>
+<a name="378"><font size=-1>378     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>            <a href="dictionary_O.html#72890">op</a></span><span class="default">;   </span><span class="comment">/* operand */</span>
+<a name="379"><font size=-1>379     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72887">bfp_unop</a>;</span>
+<a name="380"><font size=-1>380     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="381"><font size=-1>381     </font></a><span class="default">         <a href="dictionary_S.html#74347">s390_bfp_binop_t</a> <a href="dictionary_T.html#74379">tag</a>;</span>
+<a name="382"><font size=-1>382     </font></a><span class="default">         <a href="dictionary_S.html#74340">s390_round_t</a>     <a href="dictionary_R.html#74380">rounding_mode</a>;</span>
+<a name="383"><font size=-1>383     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72900">dst_hi</a>; </span><span class="comment">/* left operand; high part */</span>
+<a name="384"><font size=-1>384     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72901">dst_lo</a></span><span class="default">; </span><span class="comment">/* left operand; low part */</span>
+<a name="385"><font size=-1>385     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72902">op2_hi</a></span><span class="default">; </span><span class="comment">/* right operand; high part */</span>
+<a name="386"><font size=-1>386     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72903">op2_lo</a></span><span class="default">; </span><span class="comment">/* right operand; low part */</span>
+<a name="387"><font size=-1>387     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72898">bfp128_binop</a>;</span>
+<a name="388"><font size=-1>388     </font></a><span class="default">      </span><span class="comment">/* This variant is also used by the BFP128_CONVERT_TO and</span>
+<a name="389"><font size=-1>389     </font></a><span class="comment">         BFP128_CONVERT_FROM insns. */</span>
+<a name="390"><font size=-1>390     </font></a><span class="comment">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="391"><font size=-1>391     </font></a><span class="default">         <a href="dictionary_S.html#74357">s390_bfp_unop_t</a>  <a href="dictionary_T.html#74390">tag</a>;</span>
+<a name="392"><font size=-1>392     </font></a><span class="default">         <a href="dictionary_S.html#74340">s390_round_t</a>     <a href="dictionary_R.html#74391">rounding_mode</a>;</span>
+<a name="393"><font size=-1>393     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72915">dst_hi</a>; </span><span class="comment">/* result; high part */</span>
+<a name="394"><font size=-1>394     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72916">dst_lo</a></span><span class="default">; </span><span class="comment">/* result; low part */</span>
+<a name="395"><font size=-1>395     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72917">op_hi</a></span><span class="default">;  </span><span class="comment">/* operand; high part */</span>
+<a name="396"><font size=-1>396     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72918">op_lo</a></span><span class="default">;  </span><span class="comment">/* operand; low part */</span>
+<a name="397"><font size=-1>397     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72913">bfp128_unop</a>;</span>
+<a name="398"><font size=-1>398     </font></a><span class="default">      </span><span class="keyword">struct </span><span class="default">{</span>
+<a name="399"><font size=-1>399     </font></a><span class="default">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_D.html#72907">dst</a>;    </span><span class="comment">/* condition code in s390 encoding */</span>
+<a name="400"><font size=-1>400     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72908">op1_hi</a></span><span class="default">; </span><span class="comment">/* left operand; high part */</span>
+<a name="401"><font size=-1>401     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72909">op1_lo</a></span><span class="default">; </span><span class="comment">/* left operand; low part */</span>
+<a name="402"><font size=-1>402     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72910">op2_hi</a></span><span class="default">; </span><span class="comment">/* right operand; high part */</span>
+<a name="403"><font size=-1>403     </font></a><span class="comment">         <a href="dictionary_H.html#973">HReg</a>             <a href="dictionary_O.html#72911">op2_lo</a></span><span class="default">; </span><span class="comment">/* right operand; low part */</span>
+<a name="404"><font size=-1>404     </font></a><span class="comment">      </span><span class="default">} <a href="dictionary_B.html#72905">bfp128_compare</a>;</span>
+<a name="405"><font size=-1>405     </font></a><span class="default">   } <a href="dictionary_S.html#72785">variant</a>;</span>
+<a name="406"><font size=-1>406     </font></a><span class="default">} <a href="dictionary_S.html#72782">s390_insn</a>;</span>
+<a name="407"><font size=-1>407     </font></a><span class="default"></span>
+<a name="408"><font size=-1>408     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#72766">s390_insn_load</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_S.html#72688">s390_amode</a> *src);</span>
+<a name="409"><font size=-1>409     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#72759">s390_insn_store</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#72688">s390_amode</a> *dst, <a href="dictionary_H.html#973">HReg</a> src);</span>
+<a name="410"><font size=-1>410     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74230">s390_insn_move</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> src);</span>
+<a name="411"><font size=-1>411     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74235">s390_insn_cond_move</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74238">s390_cc_t</a> cond, <a href="dictionary_H.html#973">HReg</a> dst,</span>
+<a name="412"><font size=-1>412     </font></a><span class="default">                               <a href="dictionary_S.html#72770">s390_opnd_RMI</a> src);</span>
+<a name="413"><font size=-1>413     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74243">s390_insn_load_immediate</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_U.html#1057">ULong</a> val);</span>
+<a name="414"><font size=-1>414     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74249">s390_insn_alu</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74252">s390_alu_t</a>, <a href="dictionary_H.html#973">HReg</a> dst,</span>
+<a name="415"><font size=-1>415     </font></a><span class="default">                         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> op2);</span>
+<a name="416"><font size=-1>416     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74257">s390_insn_mul</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst_hi, <a href="dictionary_H.html#973">HReg</a> dst_lo,</span>
+<a name="417"><font size=-1>417     </font></a><span class="default">                         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> op2, <a href="dictionary_B.html#78">Bool</a> signed_multiply);</span>
+<a name="418"><font size=-1>418     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74265">s390_insn_div</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> op1_hi, <a href="dictionary_H.html#973">HReg</a> op1_lo,</span>
+<a name="419"><font size=-1>419     </font></a><span class="default">                         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> op2, <a href="dictionary_B.html#78">Bool</a> signed_divide);</span>
+<a name="420"><font size=-1>420     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74273">s390_insn_divs</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> rem, <a href="dictionary_H.html#973">HReg</a> op1, <a href="dictionary_S.html#72770">s390_opnd_RMI</a> op2);</span>
+<a name="421"><font size=-1>421     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74279">s390_insn_clz</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> num_bits, <a href="dictionary_H.html#973">HReg</a> clobber,</span>
+<a name="422"><font size=-1>422     </font></a><span class="default">                         <a href="dictionary_S.html#72770">s390_opnd_RMI</a> op);</span>
+<a name="423"><font size=-1>423     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74302">s390_insn_cas</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> op1, <a href="dictionary_S.html#72688">s390_amode</a> *op2, <a href="dictionary_H.html#973">HReg</a> op3,</span>
+<a name="424"><font size=-1>424     </font></a><span class="default">                         <a href="dictionary_H.html#973">HReg</a> old);</span>
+<a name="425"><font size=-1>425     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74285">s390_insn_unop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74288">s390_unop_t</a> tag, <a href="dictionary_H.html#973">HReg</a> dst,</span>
+<a name="426"><font size=-1>426     </font></a><span class="default">                          <a href="dictionary_S.html#72770">s390_opnd_RMI</a> opnd);</span>
+<a name="427"><font size=-1>427     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74297">s390_insn_cc2bool</a>(<a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_S.html#74238">s390_cc_t</a> src);</span>
+<a name="428"><font size=-1>428     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74293">s390_insn_test</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#72770">s390_opnd_RMI</a> src);</span>
+<a name="429"><font size=-1>429     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74309">s390_insn_compare</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_S.html#72770">s390_opnd_RMI</a> opnd,</span>
+<a name="430"><font size=-1>430     </font></a><span class="default">                             <a href="dictionary_B.html#78">Bool</a> signed_comparison);</span>
+<a name="431"><font size=-1>431     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74316">s390_insn_branch</a>(<a href="dictionary_I.html#2371">IRJumpKind</a> jk, <a href="dictionary_S.html#74238">s390_cc_t</a> cond, <a href="dictionary_S.html#72770">s390_opnd_RMI</a> dst);</span>
+<a name="432"><font size=-1>432     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74323">s390_insn_helper_call</a>(<a href="dictionary_S.html#74238">s390_cc_t</a> cond, <a href="dictionary_A.html#4338">Addr64</a> target, <a href="dictionary_U.html#8">UInt</a> num_args,</span>
+<a name="433"><font size=-1>433     </font></a><span class="default">                                 <a href="dictionary_H.html#46">HChar</a> *name);</span>
+<a name="434"><font size=-1>434     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74332">s390_insn_bfp_triop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74335">s390_bfp_triop_t</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> op2,</span>
+<a name="435"><font size=-1>435     </font></a><span class="default">                               <a href="dictionary_H.html#973">HReg</a> op3, <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="436"><font size=-1>436     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74344">s390_insn_bfp_binop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74347">s390_bfp_binop_t</a>, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> op2,</span>
+<a name="437"><font size=-1>437     </font></a><span class="default">                               <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="438"><font size=-1>438     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74354">s390_insn_bfp_unop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74357">s390_bfp_unop_t</a> tag, <a href="dictionary_H.html#973">HReg</a> dst,</span>
+<a name="439"><font size=-1>439     </font></a><span class="default">                              <a href="dictionary_H.html#973">HReg</a> op, <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="440"><font size=-1>440     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74364">s390_insn_bfp_compare</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> op1, <a href="dictionary_H.html#973">HReg</a> op2);</span>
+<a name="441"><font size=-1>441     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74370">s390_insn_bfp128_binop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74347">s390_bfp_binop_t</a>, <a href="dictionary_H.html#973">HReg</a> dst_hi,</span>
+<a name="442"><font size=-1>442     </font></a><span class="default">                                  <a href="dictionary_H.html#973">HReg</a> dst_lo, <a href="dictionary_H.html#973">HReg</a> op2_hi, <a href="dictionary_H.html#973">HReg</a> op2_lo,</span>
+<a name="443"><font size=-1>443     </font></a><span class="default">                                  <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="444"><font size=-1>444     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74381">s390_insn_bfp128_unop</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74347">s390_bfp_binop_t</a>, <a href="dictionary_H.html#973">HReg</a> dst_hi,</span>
+<a name="445"><font size=-1>445     </font></a><span class="default">                                 <a href="dictionary_H.html#973">HReg</a> dst_lo, <a href="dictionary_H.html#973">HReg</a> op_hi, <a href="dictionary_H.html#973">HReg</a> op_lo,</span>
+<a name="446"><font size=-1>446     </font></a><span class="default">                                 <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="447"><font size=-1>447     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74392">s390_insn_bfp128_compare</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> op1_hi,</span>
+<a name="448"><font size=-1>448     </font></a><span class="default">                                    <a href="dictionary_H.html#973">HReg</a> op1_lo, <a href="dictionary_H.html#973">HReg</a> op2_hi, <a href="dictionary_H.html#973">HReg</a> op2_lo);</span>
+<a name="449"><font size=-1>449     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74400">s390_insn_bfp128_convert_to</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74357">s390_bfp_unop_t</a>,</span>
+<a name="450"><font size=-1>450     </font></a><span class="default">                                       <a href="dictionary_H.html#973">HReg</a> dst_hi, <a href="dictionary_H.html#973">HReg</a> dst_lo, <a href="dictionary_H.html#973">HReg</a> op);</span>
+<a name="451"><font size=-1>451     </font></a><span class="default"><a href="dictionary_S.html#72782">s390_insn</a> *<a href="dictionary_S.html#74408">s390_insn_bfp128_convert_from</a>(<a href="dictionary_U.html#449">UChar</a> size, <a href="dictionary_S.html#74357">s390_bfp_unop_t</a>,</span>
+<a name="452"><font size=-1>452     </font></a><span class="default">                                         <a href="dictionary_H.html#973">HReg</a> dst, <a href="dictionary_H.html#973">HReg</a> op_hi, <a href="dictionary_H.html#973">HReg</a> op_lo,</span>
+<a name="453"><font size=-1>453     </font></a><span class="default">                                         <a href="dictionary_S.html#74340">s390_round_t</a>);</span>
+<a name="454"><font size=-1>454     </font></a><span class="default"></span><span class="keyword">void       <a href="dictionary_S.html#72748">s390_insn_map_regs</a></span><span class="default">(<a href="dictionary_H.html#4392">HRegRemap</a> *, <a href="dictionary_S.html#72782">s390_insn</a> *);</span>
+<a name="455"><font size=-1>455     </font></a><span class="default"><a href="dictionary_B.html#78">Bool</a>       <a href="dictionary_S.html#72752">s390_insn_is_reg_reg_move</a>(</span><span class="keyword">const <a href="dictionary_S.html#72782">s390_insn</a> </span><span class="default">*, <a href="dictionary_H.html#973">HReg</a> *, <a href="dictionary_H.html#973">HReg</a> *);</span>
+<a name="456"><font size=-1>456     </font></a><span class="default"></span><span class="keyword">void       <a href="dictionary_S.html#72744">s390_insn_get_reg_usage</a></span><span class="default">(<a href="dictionary_H.html#4390">HRegUsage</a> *u, </span><span class="keyword">const <a href="dictionary_S.html#72782">s390_insn</a> </span><span class="default">*);</span>
+<a name="457"><font size=-1>457     </font></a><span class="default"><a href="dictionary_U.html#8">UInt</a>       <a href="dictionary_S.html#74905">s390_insn_emit</a>(<a href="dictionary_U.html#449">UChar</a> *buf, <a href="dictionary_I.html#113">Int</a> nbuf, </span><span class="keyword">const struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*insn,</span>
+<a name="458"><font size=-1>458     </font></a><span class="default">                          </span><span class="keyword">void </span><span class="default">*dispatch);</span>
+<a name="459"><font size=-1>459     </font></a><span class="default"></span>
+<a name="460"><font size=-1>460     </font></a><span class="default"></span><span class="keyword">const <a href="dictionary_H.html#46">HChar</a> </span><span class="default">*<a href="dictionary_S.html#72736">s390_insn_as_string</a>(</span><span class="keyword">const <a href="dictionary_S.html#72782">s390_insn</a> </span><span class="default">*);</span>
+<a name="461"><font size=-1>461     </font></a><span class="default"></span>
+<a name="462"><font size=-1>462     </font></a><span class="default"></span><span class="comment">/*--------------------------------------------------------*/</span>
+<a name="463"><font size=-1>463     </font></a><span class="comment">/* --- Interface exposed to VEX                       --- */</span>
+<a name="464"><font size=-1>464     </font></a><span class="comment">/*--------------------------------------------------------*/</span>
+<a name="465"><font size=-1>465     </font></a><span class="comment"></span>
+<a name="466"><font size=-1>466     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_P.html#72731">ppS390AMode</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#72693">s390_amode</a> </span><span class="default">*);</span>
+<a name="467"><font size=-1>467     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_P.html#4431">ppS390Instr</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_B.html#78">Bool</a> mode64);</span>
+<a name="468"><font size=-1>468     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_P.html#4432">ppHRegS390</a></span><span class="default">(<a href="dictionary_H.html#973">HReg</a>);</span>
+<a name="469"><font size=-1>469     </font></a><span class="default"></span>
+<a name="470"><font size=-1>470     </font></a><span class="default"></span><span class="comment">/* Some functions that insulate the register allocator from details</span>
+<a name="471"><font size=-1>471     </font></a><span class="comment">   of the underlying instruction set. */</span>
+<a name="472"><font size=-1>472     </font></a><span class="comment"></span><span class="keyword">void  <a href="dictionary_G.html#4427">getRegUsage_S390Instr</a></span><span class="default">( <a href="dictionary_H.html#4390">HRegUsage</a> *, </span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="473"><font size=-1>473     </font></a><span class="default"></span><span class="keyword">void  <a href="dictionary_M.html#4428">mapRegs_S390Instr</a>    </span><span class="default">( <a href="dictionary_H.html#4392">HRegRemap</a> *, </span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="474"><font size=-1>474     </font></a><span class="default"><a href="dictionary_B.html#78">Bool</a>  <a href="dictionary_I.html#4426">isMove_S390Instr</a>     ( </span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_H.html#973">HReg</a> *, <a href="dictionary_H.html#973">HReg</a> * );</span>
+<a name="475"><font size=-1>475     </font></a><span class="default"><a href="dictionary_I.html#113">Int</a>   <a href="dictionary_E.html#4434">emit_S390Instr</a>       ( <a href="dictionary_U.html#449">UChar</a> *, <a href="dictionary_I.html#113">Int</a>, </span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_B.html#78">Bool</a>, </span><span class="keyword">void </span><span class="default">* );</span>
+<a name="476"><font size=-1>476     </font></a><span class="default"></span><span class="keyword">void  <a href="dictionary_G.html#4425">getAllocableRegs_S390</a></span><span class="default">( <a href="dictionary_I.html#113">Int</a> *, <a href="dictionary_H.html#973">HReg</a> **, <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="477"><font size=-1>477     </font></a><span class="default"></span><span class="keyword">void  <a href="dictionary_G.html#4429">genSpill_S390</a>        </span><span class="default">( <a href="dictionary_H.html#4352">HInstr</a> **, <a href="dictionary_H.html#4352">HInstr</a> **, <a href="dictionary_H.html#973">HReg</a> , <a href="dictionary_I.html#113">Int</a> , <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="478"><font size=-1>478     </font></a><span class="default"></span><span class="keyword">void  <a href="dictionary_G.html#4430">genReload_S390</a>       </span><span class="default">( <a href="dictionary_H.html#4352">HInstr</a> **, <a href="dictionary_H.html#4352">HInstr</a> **, <a href="dictionary_H.html#973">HReg</a> , <a href="dictionary_I.html#113">Int</a> , <a href="dictionary_B.html#78">Bool</a> );</span>
+<a name="479"><font size=-1>479     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*<a href="dictionary_D.html#74906">directReload_S390</a> ( </span><span class="keyword">struct <a href="dictionary_S.html#72734">s390_insn</a> </span><span class="default">*, <a href="dictionary_H.html#973">HReg</a>, <a href="dictionary_S.html#4335">Short</a> );</span>
+<a name="480"><font size=-1>480     </font></a><span class="default"><a href="dictionary_H.html#977">HInstrArray</a> *<a href="dictionary_I.html#4433">iselSB_S390</a>   ( <a href="dictionary_I.html#561">IRSB</a> *, <a href="dictionary_V.html#2377">VexArch</a>, <a href="dictionary_V.html#2379">VexArchInfo</a> *, <a href="dictionary_V.html#2381">VexAbiInfo</a> * );</span>
+<a name="481"><font size=-1>481     </font></a><span class="default"></span>
+<a name="482"><font size=-1>482     </font></a><span class="default"></span><span class="comment">/* KLUDGE: See detailled comment in host_s390_defs.c. */</span>
+<a name="483"><font size=-1>483     </font></a><span class="comment"></span><span class="keyword">extern const <a href="dictionary_V.html#2379">VexArchInfo</a> </span><span class="default">*<a href="dictionary_S.html#72669">s390_archinfo_host</a>;</span>
+<a name="484"><font size=-1>484     </font></a><span class="default"></span>
+<a name="485"><font size=-1>485     </font></a><span class="default"></span><span class="comment">/* Convenience macros to test installed facilities */</span>
+<a name="486"><font size=-1>486     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_S.html#74101">s390_host_has_eimm</a> \</span>
+<a name="487"><font size=-1>487     </font></a><span class="preproc">                      </span><span class="default">(<a href="dictionary_S.html#72669">s390_archinfo_host</a>-&gt;hwcaps &amp; (<a href="dictionary_V.html#4621">VEX_HWCAPS_S390X_EIMM</a>))</span>
+<a name="488"><font size=-1>488     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#74113">s390_host_has_gie</a> \</span>
+<a name="489"><font size=-1>489     </font></a><span class="preproc">                      </span><span class="default">(<a href="dictionary_S.html#72669">s390_archinfo_host</a>-&gt;hwcaps &amp; (<a href="dictionary_V.html#4623">VEX_HWCAPS_S390X_GIE</a>))</span>
+<a name="490"><font size=-1>490     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#74907">s390_host_has_dfp</a> \</span>
+<a name="491"><font size=-1>491     </font></a><span class="preproc">                      </span><span class="default">(<a href="dictionary_S.html#72669">s390_archinfo_host</a>-&gt;hwcaps &amp; (<a href="dictionary_V.html#4625">VEX_HWCAPS_S390X_DFP</a>))</span>
+<a name="492"><font size=-1>492     </font></a><span class="default"></span>
+<a name="493"><font size=-1>493     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">/* ndef __VEX_HOST_S390_DEFS_H */</span>
+<a name="494"><font size=-1>494     </font></a><span class="comment"></span>
+<a name="495"><font size=-1>495     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="496"><font size=-1>496     </font></a><span class="comment">/*--- end                                    host_s390_defs.h ---*/</span>
+<a name="497"><font size=-1>497     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="498"><font size=-1>498     </font></a><span class="comment"></span>
+</pre></body></html>

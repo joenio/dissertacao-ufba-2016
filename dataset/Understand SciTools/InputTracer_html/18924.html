@@ -1,0 +1,750 @@
+<html><head><title>helgrind.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/helgrind.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/helgrind/helgrind.h";
+top.document.title  = "helgrind.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"></span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">   Notice that the above BSD-style license applies to this one file</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">   (helgrind.h) only.  The entire rest of Valgrind is licensed under</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">   the terms of the GNU General Public License, version 2.  See the</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   COPYING file in the source distribution for details.</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"></span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"></span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">   This file is part of Helgrind, a Valgrind tool for detecting errors</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">   in threaded programs.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"></span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   Copyright (C) 2007-2010 OpenWorks LLP</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">      info@open-works.co.uk</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"></span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">   Redistribution and use in source and binary forms, with or without</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   modification, are permitted provided that the following conditions</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   are met:</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"></span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   1. Redistributions of source code must retain the above copyright</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">      notice, this list of conditions and the following disclaimer.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   2. The origin of this software must not be misrepresented; you must </span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">      not claim that you wrote the original software.  If you use this </span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">      software in a product, an acknowledgment in the product </span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">      documentation would be appreciated but is not required.</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"></span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">   3. Altered source versions must be plainly marked as such, and must</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">      not be misrepresented as being the original software.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">   4. The name of the author may not be used to endorse or promote </span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">      products derived from this software without specific prior written </span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">      permission.</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"></span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">   THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment">   OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment">   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment">   ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment">   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">   GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment"></span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment"></span>
+<a name="50"><font size=-1>50     </font></a><span class="comment">   Notice that the above BSD-style license applies to this one file</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">   (helgrind.h) only.  The entire rest of Valgrind is licensed under</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment">   the terms of the GNU General Public License, version 2.  See the</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">   COPYING file in the source distribution for details.</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">   ---------------------------------------------------------------- </span>
+<a name="56"><font size=-1>56     </font></a><span class="comment">*/</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#25192">__HELGRIND_H</a></span>
+<a name="59"><font size=-1>59     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#25192">__HELGRIND_H</a></span>
+<a name="60"><font size=-1>60     </font></a><span class="preproc"></span>
+<a name="61"><font size=-1>61     </font></a><span class="preproc">#include </span><span class="string">&quot;valgrind.h&quot;</span>
+<a name="62"><font size=-1>62     </font></a><span class="string"></span>
+<a name="63"><font size=-1>63     </font></a><span class="string"></span><span class="comment">/* !! ABIWARNING !! ABIWARNING !! ABIWARNING !! ABIWARNING !!</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">   This enum comprises an ABI exported by Valgrind to programs</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">   which use client requests.  DO NOT CHANGE THE ORDER OF THESE</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment">   ENTRIES, NOR DELETE ANY -- add new ones at the end. */</span>
+<a name="67"><font size=-1>67     </font></a><span class="comment"></span><span class="keyword">typedef</span>
+<a name="68"><font size=-1>68     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">      VG_USERREQ__HG_CLEAN_MEMORY = <a href="dictionary_V.html#22838">VG_USERREQ_TOOL_BASE</a>(</span><span class="string">'H'</span><span class="default">,</span><span class="string">'G'</span><span class="default">),</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default">      </span><span class="comment">/* The rest are for Helgrind's internal use.  Not for end-user</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">         use.  Do not use them unless you are a Valgrind developer. */</span>
+<a name="73"><font size=-1>73     </font></a><span class="comment"></span>
+<a name="74"><font size=-1>74     </font></a><span class="comment">      /* Notify the tool what this thread's pthread_t is. */</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_SET_MY_PTHREAD_T = <a href="dictionary_V.html#22838">VG_USERREQ_TOOL_BASE</a>(</span><span class="string">'H'</span><span class="default">,</span><span class="string">'G'</span><span class="default">) </span>
+<a name="76"><font size=-1>76     </font></a><span class="default">                                         + </span><span class="number">256</span><span class="default">,</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">      _VG_USERREQ__HG_PTH_API_ERROR,              </span><span class="comment">/* char*, int */</span>
+<a name="78"><font size=-1>78     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_JOIN_POST,          </span><span class="comment">/* pthread_t of quitter */</span>
+<a name="79"><font size=-1>79     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_INIT_POST,    </span><span class="comment">/* pth_mx_t*, long mbRec */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_DESTROY_PRE,  </span><span class="comment">/* pth_mx_t* */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_UNLOCK_PRE,   </span><span class="comment">/* pth_mx_t* */</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_UNLOCK_POST,  </span><span class="comment">/* pth_mx_t* */</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_LOCK_PRE, </span><span class="comment">/* pth_mx_t*, long isTryLock */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_MUTEX_LOCK_POST,    </span><span class="comment">/* pth_mx_t* */</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_COND_SIGNAL_PRE,    </span><span class="comment">/* pth_cond_t* */</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_COND_BROADCAST_PRE, </span><span class="comment">/* pth_cond_t* */</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_COND_WAIT_PRE,     </span><span class="comment">/* pth_cond_t*, pth_mx_t* */</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_COND_WAIT_POST,    </span><span class="comment">/* pth_cond_t*, pth_mx_t* */</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_COND_DESTROY_PRE,   </span><span class="comment">/* pth_cond_t* */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_INIT_POST,   </span><span class="comment">/* pth_rwlk_t* */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_DESTROY_PRE, </span><span class="comment">/* pth_rwlk_t* */</span>
+<a name="92"><font size=-1>92     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_LOCK_PRE,    </span><span class="comment">/* pth_rwlk_t*, long isW */</span>
+<a name="93"><font size=-1>93     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_LOCK_POST,   </span><span class="comment">/* pth_rwlk_t*, long isW */</span>
+<a name="94"><font size=-1>94     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_UNLOCK_PRE,  </span><span class="comment">/* pth_rwlk_t* */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_RWLOCK_UNLOCK_POST, </span><span class="comment">/* pth_rwlk_t* */</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_POSIX_SEM_INIT_POST,        </span><span class="comment">/* sem_t*, ulong value */</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_POSIX_SEM_DESTROY_PRE,      </span><span class="comment">/* sem_t* */</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_POSIX_SEM_POST_PRE,         </span><span class="comment">/* sem_t* */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_POSIX_SEM_WAIT_POST,        </span><span class="comment">/* sem_t* */</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_BARRIER_INIT_PRE,   </span><span class="comment">/* pth_bar_t*, ulong, ulong */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_BARRIER_WAIT_PRE,   </span><span class="comment">/* pth_bar_t* */</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_BARRIER_DESTROY_PRE, </span><span class="comment">/* pth_bar_t* */</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_SPIN_INIT_OR_UNLOCK_PRE,  </span><span class="comment">/* pth_slk_t* */</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_SPIN_INIT_OR_UNLOCK_POST, </span><span class="comment">/* pth_slk_t* */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_SPIN_LOCK_PRE,      </span><span class="comment">/* pth_slk_t* */</span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_SPIN_LOCK_POST,     </span><span class="comment">/* pth_slk_t* */</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_SPIN_DESTROY_PRE,   </span><span class="comment">/* pth_slk_t* */</span>
+<a name="108"><font size=-1>108     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_CLIENTREQ_UNIMP,            </span><span class="comment">/* char* */</span>
+<a name="109"><font size=-1>109     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_USERSO_SEND_PRE,        </span><span class="comment">/* arbitrary UWord SO-tag */</span>
+<a name="110"><font size=-1>110     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_USERSO_RECV_POST,       </span><span class="comment">/* arbitrary UWord SO-tag */</span>
+<a name="111"><font size=-1>111     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_USERSO_FORGET_ALL,      </span><span class="comment">/* arbitrary UWord SO-tag */</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_RESERVED2,              </span><span class="comment">/* Do not use */</span>
+<a name="113"><font size=-1>113     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_RESERVED3,              </span><span class="comment">/* Do not use */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_RESERVED4,              </span><span class="comment">/* Do not use */</span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_ARANGE_MAKE_UNTRACKED, </span><span class="comment">/* Addr a, ulong len */</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_ARANGE_MAKE_TRACKED,   </span><span class="comment">/* Addr a, ulong len */</span>
+<a name="117"><font size=-1>117     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_PTHREAD_BARRIER_RESIZE_PRE, </span><span class="comment">/* pth_bar_t*, ulong */</span>
+<a name="118"><font size=-1>118     </font></a><span class="comment">      </span><span class="default">_VG_USERREQ__HG_CLEAN_MEMORY_HEAPBLOCK  </span><span class="comment">/* Addr start_of_block */</span>
+<a name="119"><font size=-1>119     </font></a><span class="comment"></span>
+<a name="120"><font size=-1>120     </font></a><span class="comment">   </span><span class="default">} <a href="dictionary_V.html#25197">Vg_TCheckClientRequest</a>;</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">/*--- Implementation-only facilities.  Not for end-user use.   ---*/</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">/*--- For end-user facilities see below (the next section in   ---*/</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">/*--- this file.)                                              ---*/</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment"></span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">/* Do a client request.  These are macros rather than a functions so</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">   as to avoid having an extra frame in stack traces.</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment"></span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">   NB: these duplicate definitions in hg_intercepts.c.  But here, we</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">   have to make do with weaker typing (no definition of Word etc) and</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">   no assertions, whereas in helgrind.h we can use those facilities.</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">   Obviously it's important the two sets of definitions are kept in</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">   sync.</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment"></span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">   The commented-out asserts should actually hold, but unfortunately</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">   they can't be allowed to be visible here, because that would</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">   require the end-user code to #include &lt;assert.h&gt;.</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">*/</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment"></span>
+<a name="145"><font size=-1>145     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_creqF, _ty1F,_arg1F)                </span><span class="preproc">\</span>
+<a name="146"><font size=-1>146     </font></a><span class="preproc">   </span><span class="default">do {                                                  </span><span class="preproc">\</span>
+<a name="147"><font size=-1>147     </font></a><span class="preproc">      </span><span class="default">long _unused_res __attribute__((unused)), _arg1;   </span><span class="preproc">\</span>
+<a name="148"><font size=-1>148     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty1F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="149"><font size=-1>149     </font></a><span class="preproc">      </span><span class="default">_arg1 = (long int)(_arg1F);                        </span><span class="preproc">\</span>
+<a name="150"><font size=-1>150     </font></a><span class="preproc">      <a href="dictionary_V.html#5810">VALGRIND_DO_CLIENT_REQUEST</a></span><span class="default">(_unused_res, </span><span class="number">0</span><span class="default">,         </span><span class="preproc">\</span>
+<a name="151"><font size=-1>151     </font></a><span class="preproc">                                 </span><span class="default">(_creqF),               </span><span class="preproc">\</span>
+<a name="152"><font size=-1>152     </font></a><span class="preproc">                                 </span><span class="default">_arg1, </span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">);        </span><span class="preproc">\</span>
+<a name="153"><font size=-1>153     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_D.html#25199">DO_CREQ_W_W</a></span><span class="default">(_resF, _dfltF, _creqF, _ty1F,_arg1F) </span><span class="preproc">\</span>
+<a name="156"><font size=-1>156     </font></a><span class="preproc">   </span><span class="default">do {                                                  </span><span class="preproc">\</span>
+<a name="157"><font size=-1>157     </font></a><span class="preproc">      </span><span class="default">long int _qzz_res, _arg1;                          </span><span class="preproc">\</span>
+<a name="158"><font size=-1>158     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty1F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="159"><font size=-1>159     </font></a><span class="preproc">      </span><span class="default">_arg1 = (long int)(_arg1F);                        </span><span class="preproc">\</span>
+<a name="160"><font size=-1>160     </font></a><span class="preproc">      <a href="dictionary_V.html#5810">VALGRIND_DO_CLIENT_REQUEST</a></span><span class="default">(_qzz_res, (_dfltF),     </span><span class="preproc">\</span>
+<a name="161"><font size=-1>161     </font></a><span class="preproc">                                 </span><span class="default">(_creqF),               </span><span class="preproc">\</span>
+<a name="162"><font size=-1>162     </font></a><span class="preproc">                                 </span><span class="default">_arg1, </span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">);        </span><span class="preproc">\</span>
+<a name="163"><font size=-1>163     </font></a><span class="preproc">      </span><span class="default">_resF = _qzz_res;                                  </span><span class="preproc">\</span>
+<a name="164"><font size=-1>164     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span>
+<a name="166"><font size=-1>166     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_creqF, _ty1F,_arg1F, _ty2F,_arg2F) </span><span class="preproc">\</span>
+<a name="167"><font size=-1>167     </font></a><span class="preproc">   </span><span class="default">do {                                                  </span><span class="preproc">\</span>
+<a name="168"><font size=-1>168     </font></a><span class="preproc">      </span><span class="default">long _unused_res __attribute__((unused));          </span><span class="preproc">\</span>
+<a name="169"><font size=-1>169     </font></a><span class="preproc">      </span><span class="default">long _arg1, _arg2;                                 </span><span class="preproc">\</span>
+<a name="170"><font size=-1>170     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty1F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="171"><font size=-1>171     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty2F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="172"><font size=-1>172     </font></a><span class="preproc">      </span><span class="default">_arg1 = (long int)(_arg1F);                        </span><span class="preproc">\</span>
+<a name="173"><font size=-1>173     </font></a><span class="preproc">      </span><span class="default">_arg2 = (long int)(_arg2F);                        </span><span class="preproc">\</span>
+<a name="174"><font size=-1>174     </font></a><span class="preproc">      <a href="dictionary_V.html#5810">VALGRIND_DO_CLIENT_REQUEST</a></span><span class="default">(_unused_res, </span><span class="number">0</span><span class="default">,         </span><span class="preproc">\</span>
+<a name="175"><font size=-1>175     </font></a><span class="preproc">                                 </span><span class="default">(_creqF),               </span><span class="preproc">\</span>
+<a name="176"><font size=-1>176     </font></a><span class="preproc">                                 </span><span class="default">_arg1,_arg2,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">);     </span><span class="preproc">\</span>
+<a name="177"><font size=-1>177     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_D.html#25201">DO_CREQ_v_WWW</a></span><span class="default">(_creqF, _ty1F,_arg1F,              </span><span class="preproc">\</span>
+<a name="180"><font size=-1>180     </font></a><span class="preproc">                      </span><span class="default">_ty2F,_arg2F, _ty3F, _arg3F)       </span><span class="preproc">\</span>
+<a name="181"><font size=-1>181     </font></a><span class="preproc">   </span><span class="default">do {                                                  </span><span class="preproc">\</span>
+<a name="182"><font size=-1>182     </font></a><span class="preproc">      </span><span class="default">long _unused_res __attribute__((unused));          </span><span class="preproc">\</span>
+<a name="183"><font size=-1>183     </font></a><span class="preproc">      </span><span class="default">long _arg1, _arg2, _arg3;                          </span><span class="preproc">\</span>
+<a name="184"><font size=-1>184     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty1F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="185"><font size=-1>185     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty2F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="186"><font size=-1>186     </font></a><span class="preproc">      </span><span class="comment">/* assert(sizeof(_ty3F) == sizeof(long int)); */   </span><span class="preproc">\</span>
+<a name="187"><font size=-1>187     </font></a><span class="preproc">      </span><span class="default">_arg1 = (long int)(_arg1F);                        </span><span class="preproc">\</span>
+<a name="188"><font size=-1>188     </font></a><span class="preproc">      </span><span class="default">_arg2 = (long int)(_arg2F);                        </span><span class="preproc">\</span>
+<a name="189"><font size=-1>189     </font></a><span class="preproc">      </span><span class="default">_arg3 = (long int)(_arg3F);                        </span><span class="preproc">\</span>
+<a name="190"><font size=-1>190     </font></a><span class="preproc">      </span><span class="default">VALGRIND_DO_CLIENT_REQUEST(_unused_res, </span><span class="number">0</span><span class="default">,         </span><span class="preproc">\</span>
+<a name="191"><font size=-1>191     </font></a><span class="preproc">                                 </span><span class="default">(_creqF),               </span><span class="preproc">\</span>
+<a name="192"><font size=-1>192     </font></a><span class="preproc">                                 </span><span class="default">_arg1,_arg2,_arg3,</span><span class="number">0</span><span class="default">,</span><span class="number">0</span><span class="default">); </span><span class="preproc">\</span>
+<a name="193"><font size=-1>193     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span>
+<a name="196"><font size=-1>196     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(_qzz_str)                    </span><span class="preproc">\</span>
+<a name="197"><font size=-1>197     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_CLIENTREQ_UNIMP,          </span><span class="preproc">\</span>
+<a name="198"><font size=-1>198     </font></a><span class="preproc">               </span><span class="default">(char*),(_qzz_str))</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span>
+<a name="200"><font size=-1>200     </font></a><span class="default"></span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">/*--- Helgrind-native requests.  These allow access to         ---*/</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">/*--- the same set of annotation primitives that are used      ---*/</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">/*--- to build the POSIX pthread wrappers.                     ---*/</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment"></span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">/* ----------------------------------------------------------</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment">   For describing ordinary mutexes (non-rwlocks).  For rwlock</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">   descriptions see ANNOTATE_RWLOCK_* below.</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment">   ---------------------------------------------------------- */</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment"></span>
+<a name="214"><font size=-1>214     </font></a><span class="comment">/* Notify here immediately after mutex creation.  _mbRec == 0 for a</span>
+<a name="215"><font size=-1>215     </font></a><span class="comment">   non-recursive mutex, 1 for a recursive mutex. */</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25203">VALGRIND_HG_MUTEX_INIT_POST</a></span><span class="default">(_mutex, _mbRec)          </span><span class="preproc">\</span>
+<a name="217"><font size=-1>217     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_INIT_POST,     </span><span class="preproc">\</span>
+<a name="218"><font size=-1>218     </font></a><span class="preproc">                </span><span class="default">void*,(_mutex), long,(_mbRec))</span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span>
+<a name="220"><font size=-1>220     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before mutex acquisition.  _isTryLock == 0</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">   for a normal acquisition, 1 for a &quot;try&quot; style acquisition. */</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25204">VALGRIND_HG_MUTEX_LOCK_PRE</a></span><span class="default">(_mutex, _isTryLock)       </span><span class="preproc">\</span>
+<a name="223"><font size=-1>223     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_LOCK_PRE,      </span><span class="preproc">\</span>
+<a name="224"><font size=-1>224     </font></a><span class="preproc">                </span><span class="default">void*,(_mutex), long,(_isTryLock))</span>
+<a name="225"><font size=-1>225     </font></a><span class="default"></span>
+<a name="226"><font size=-1>226     </font></a><span class="default"></span><span class="comment">/* Notify here immediately after a successful mutex acquisition. */</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25205">VALGRIND_HG_MUTEX_LOCK_POST</a></span><span class="default">(_mutex)                  </span><span class="preproc">\</span>
+<a name="228"><font size=-1>228     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_LOCK_POST,      </span><span class="preproc">\</span>
+<a name="229"><font size=-1>229     </font></a><span class="preproc">               </span><span class="default">void*,(_mutex))</span>
+<a name="230"><font size=-1>230     </font></a><span class="default"></span>
+<a name="231"><font size=-1>231     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before a mutex release. */</span>
+<a name="232"><font size=-1>232     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25206">VALGRIND_HG_MUTEX_UNLOCK_PRE</a></span><span class="default">(_mutex)                 </span><span class="preproc">\</span>
+<a name="233"><font size=-1>233     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_UNLOCK_PRE,     </span><span class="preproc">\</span>
+<a name="234"><font size=-1>234     </font></a><span class="preproc">               </span><span class="default">void*,(_mutex))</span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span>
+<a name="236"><font size=-1>236     </font></a><span class="default"></span><span class="comment">/* Notify here immediately after a mutex release. */</span>
+<a name="237"><font size=-1>237     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25207">VALGRIND_HG_MUTEX_UNLOCK_POST</a></span><span class="default">(_mutex)                </span><span class="preproc">\</span>
+<a name="238"><font size=-1>238     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_UNLOCK_POST,    </span><span class="preproc">\</span>
+<a name="239"><font size=-1>239     </font></a><span class="preproc">               </span><span class="default">void*,(_mutex))</span>
+<a name="240"><font size=-1>240     </font></a><span class="default"></span>
+<a name="241"><font size=-1>241     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before mutex destruction. */</span>
+<a name="242"><font size=-1>242     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25208">VALGRIND_HG_MUTEX_DESTROY_PRE</a></span><span class="default">(_mutex)                </span><span class="preproc">\</span>
+<a name="243"><font size=-1>243     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_MUTEX_DESTROY_PRE,    </span><span class="preproc">\</span>
+<a name="244"><font size=-1>244     </font></a><span class="preproc">               </span><span class="default">void*,(_mutex))</span>
+<a name="245"><font size=-1>245     </font></a><span class="default"></span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment">   For describing semaphores.</span>
+<a name="248"><font size=-1>248     </font></a><span class="comment">   ---------------------------------------------------------- */</span>
+<a name="249"><font size=-1>249     </font></a><span class="comment"></span>
+<a name="250"><font size=-1>250     </font></a><span class="comment">/* Notify here immediately after semaphore creation. */</span>
+<a name="251"><font size=-1>251     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25209">VALGRIND_HG_SEM_INIT_POST</a></span><span class="default">(_sem, _value)              </span><span class="preproc">\</span>
+<a name="252"><font size=-1>252     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_POSIX_SEM_INIT_POST,         </span><span class="preproc">\</span>
+<a name="253"><font size=-1>253     </font></a><span class="preproc">                </span><span class="default">void*, (_sem), unsigned long, (_value))</span>
+<a name="254"><font size=-1>254     </font></a><span class="default"></span>
+<a name="255"><font size=-1>255     </font></a><span class="default"></span><span class="comment">/* Notify here immediately after a semaphore wait (an acquire-style</span>
+<a name="256"><font size=-1>256     </font></a><span class="comment">   operation) */</span>
+<a name="257"><font size=-1>257     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25210">VALGRIND_HG_SEM_WAIT_POST</a></span><span class="default">(_sem)                      </span><span class="preproc">\</span>
+<a name="258"><font size=-1>258     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_POSIX_SEM_WAIT_POST,          </span><span class="preproc">\</span>
+<a name="259"><font size=-1>259     </font></a><span class="preproc">               </span><span class="default">void*,(_sem))</span>
+<a name="260"><font size=-1>260     </font></a><span class="default"></span>
+<a name="261"><font size=-1>261     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before semaphore post (a release-style</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment">   operation) */</span>
+<a name="263"><font size=-1>263     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25211">VALGRIND_HG_SEM_POST_PRE</a></span><span class="default">(_sem)                       </span><span class="preproc">\</span>
+<a name="264"><font size=-1>264     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_POSIX_SEM_POST_PRE,           </span><span class="preproc">\</span>
+<a name="265"><font size=-1>265     </font></a><span class="preproc">               </span><span class="default">void*,(_sem))</span>
+<a name="266"><font size=-1>266     </font></a><span class="default"></span>
+<a name="267"><font size=-1>267     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before semaphore destruction. */</span>
+<a name="268"><font size=-1>268     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25212">VALGRIND_HG_SEM_DESTROY_PRE</a></span><span class="default">(_sem)                    </span><span class="preproc">\</span>
+<a name="269"><font size=-1>269     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_POSIX_SEM_DESTROY_PRE,        </span><span class="preproc">\</span>
+<a name="270"><font size=-1>270     </font></a><span class="preproc">               </span><span class="default">void*, (_sem))</span>
+<a name="271"><font size=-1>271     </font></a><span class="default"></span>
+<a name="272"><font size=-1>272     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------</span>
+<a name="273"><font size=-1>273     </font></a><span class="comment">   For describing barriers.</span>
+<a name="274"><font size=-1>274     </font></a><span class="comment">   ---------------------------------------------------------- */</span>
+<a name="275"><font size=-1>275     </font></a><span class="comment"></span>
+<a name="276"><font size=-1>276     </font></a><span class="comment">/* Notify here immediately before barrier creation.  _count is the</span>
+<a name="277"><font size=-1>277     </font></a><span class="comment">   capacity.  _resizable == 0 means the barrier may not be resized, 1</span>
+<a name="278"><font size=-1>278     </font></a><span class="comment">   means it may be. */</span>
+<a name="279"><font size=-1>279     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25213">VALGRIND_HG_BARRIER_INIT_PRE</a></span><span class="default">(_bar, _count, _resizable) </span><span class="preproc">\</span>
+<a name="280"><font size=-1>280     </font></a><span class="preproc">   <a href="dictionary_D.html#25201">DO_CREQ_v_WWW</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_BARRIER_INIT_PRE,   </span><span class="preproc">\</span>
+<a name="281"><font size=-1>281     </font></a><span class="preproc">                 </span><span class="default">void*,(_bar),                               </span><span class="preproc">\</span>
+<a name="282"><font size=-1>282     </font></a><span class="preproc">                 </span><span class="default">unsigned long,(_count),                     </span><span class="preproc">\</span>
+<a name="283"><font size=-1>283     </font></a><span class="preproc">                 </span><span class="default">unsigned long,(_resizable))</span>
+<a name="284"><font size=-1>284     </font></a><span class="default"></span>
+<a name="285"><font size=-1>285     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before arrival at a barrier. */</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25214">VALGRIND_HG_BARRIER_WAIT_PRE</a></span><span class="default">(_bar)                   </span><span class="preproc">\</span>
+<a name="287"><font size=-1>287     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_BARRIER_WAIT_PRE,     </span><span class="preproc">\</span>
+<a name="288"><font size=-1>288     </font></a><span class="preproc">               </span><span class="default">void*,(_bar))</span>
+<a name="289"><font size=-1>289     </font></a><span class="default"></span>
+<a name="290"><font size=-1>290     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before a resize (change of barrier</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">   capacity).  If _newcount &gt;= the existing capacity, then there is no</span>
+<a name="292"><font size=-1>292     </font></a><span class="comment">   change in the state of any threads waiting at the barrier.  If</span>
+<a name="293"><font size=-1>293     </font></a><span class="comment">   _newcount &lt; the existing capacity, and &gt;= _newcount threads are</span>
+<a name="294"><font size=-1>294     </font></a><span class="comment">   currently waiting at the barrier, then this notification is</span>
+<a name="295"><font size=-1>295     </font></a><span class="comment">   considered to also have the effect of telling the checker that all</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">   waiting threads have now moved past the barrier.  (I can't think of</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">   any other sane semantics.) */</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25215">VALGRIND_HG_BARRIER_RESIZE_PRE</a></span><span class="default">(_bar, _newcount)      </span><span class="preproc">\</span>
+<a name="299"><font size=-1>299     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_BARRIER_RESIZE_PRE,  </span><span class="preproc">\</span>
+<a name="300"><font size=-1>300     </font></a><span class="preproc">                </span><span class="default">void*,(_bar),                                </span><span class="preproc">\</span>
+<a name="301"><font size=-1>301     </font></a><span class="preproc">                </span><span class="default">unsigned long,(_newcount))</span>
+<a name="302"><font size=-1>302     </font></a><span class="default"></span>
+<a name="303"><font size=-1>303     </font></a><span class="default"></span><span class="comment">/* Notify here immediately before barrier destruction. */</span>
+<a name="304"><font size=-1>304     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25216">VALGRIND_HG_BARRIER_DESTROY_PRE</a></span><span class="default">(_bar)                </span><span class="preproc">\</span>
+<a name="305"><font size=-1>305     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_BARRIER_DESTROY_PRE,  </span><span class="preproc">\</span>
+<a name="306"><font size=-1>306     </font></a><span class="preproc">               </span><span class="default">void*,(_bar))</span>
+<a name="307"><font size=-1>307     </font></a><span class="default"></span>
+<a name="308"><font size=-1>308     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------</span>
+<a name="309"><font size=-1>309     </font></a><span class="comment">   For describing memory ownership changes.</span>
+<a name="310"><font size=-1>310     </font></a><span class="comment">   ---------------------------------------------------------- */</span>
+<a name="311"><font size=-1>311     </font></a><span class="comment"></span>
+<a name="312"><font size=-1>312     </font></a><span class="comment">/* Clean memory state.  This makes Helgrind forget everything it knew</span>
+<a name="313"><font size=-1>313     </font></a><span class="comment">   about the specified memory range.  Effectively this announces that</span>
+<a name="314"><font size=-1>314     </font></a><span class="comment">   the specified memory range now &quot;belongs&quot; to the calling thread, so</span>
+<a name="315"><font size=-1>315     </font></a><span class="comment">   that: (1) the calling thread can access it safely without</span>
+<a name="316"><font size=-1>316     </font></a><span class="comment">   synchronisation, and (2) all other threads must sync with this one</span>
+<a name="317"><font size=-1>317     </font></a><span class="comment">   to access it safely.  This is particularly useful for memory</span>
+<a name="318"><font size=-1>318     </font></a><span class="comment">   allocators that wish to recycle memory. */</span>
+<a name="319"><font size=-1>319     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#18990">VALGRIND_HG_CLEAN_MEMORY</a></span><span class="default">(_qzz_start, _qzz_len)       </span><span class="preproc">\</span>
+<a name="320"><font size=-1>320     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(VG_USERREQ__HG_CLEAN_MEMORY,                 </span><span class="preproc">\</span>
+<a name="321"><font size=-1>321     </font></a><span class="preproc">                </span><span class="default">void*,(_qzz_start),                          </span><span class="preproc">\</span>
+<a name="322"><font size=-1>322     </font></a><span class="preproc">                </span><span class="default">unsigned long,(_qzz_len))</span>
+<a name="323"><font size=-1>323     </font></a><span class="default"></span>
+<a name="324"><font size=-1>324     </font></a><span class="default"></span><span class="comment">/* The same, but for the heap block starting at _qzz_blockstart.  This</span>
+<a name="325"><font size=-1>325     </font></a><span class="comment">   allows painting when we only know the address of an object, but not</span>
+<a name="326"><font size=-1>326     </font></a><span class="comment">   its size, which is sometimes the case in C++ code involving</span>
+<a name="327"><font size=-1>327     </font></a><span class="comment">   inheritance, and in which RTTI is not, for whatever reason,</span>
+<a name="328"><font size=-1>328     </font></a><span class="comment">   available.  Returns the number of bytes painted, which can be zero</span>
+<a name="329"><font size=-1>329     </font></a><span class="comment">   for a zero-sized block.  Hence, return values &gt;= 0 indicate success</span>
+<a name="330"><font size=-1>330     </font></a><span class="comment">   (the block was found), and the value -1 indicates block not</span>
+<a name="331"><font size=-1>331     </font></a><span class="comment">   found, and -2 is returned when not running on Helgrind. */</span>
+<a name="332"><font size=-1>332     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25217">VALGRIND_HG_CLEAN_MEMORY_HEAPBLOCK</a></span><span class="default">(_qzz_blockstart)  </span><span class="preproc">\</span>
+<a name="333"><font size=-1>333     </font></a><span class="preproc">   </span><span class="default">(<a href="dictionary_Non-Alpha.html#25218">__extension__</a>                                            </span><span class="preproc">\</span>
+<a name="334"><font size=-1>334     </font></a><span class="preproc">   </span><span class="default">({long int _npainted;                                     </span><span class="preproc">\</span>
+<a name="335"><font size=-1>335     </font></a><span class="preproc">     <a href="dictionary_D.html#25199">DO_CREQ_W_W</a></span><span class="default">(_npainted, (-</span><span class="number">2</span><span class="default">)</span><span class="comment">/*default*/</span><span class="default">,                 </span><span class="preproc">\</span>
+<a name="336"><font size=-1>336     </font></a><span class="preproc">                 </span><span class="default">_VG_USERREQ__HG_CLEAN_MEMORY_HEAPBLOCK,     </span><span class="preproc">\</span>
+<a name="337"><font size=-1>337     </font></a><span class="preproc">                            </span><span class="default">void*,(_qzz_blockstart));        </span><span class="preproc">\</span>
+<a name="338"><font size=-1>338     </font></a><span class="preproc">     </span><span class="default">_npainted;                                              </span><span class="preproc">\</span>
+<a name="339"><font size=-1>339     </font></a><span class="preproc">   </span><span class="default">}))</span>
+<a name="340"><font size=-1>340     </font></a><span class="default"></span>
+<a name="341"><font size=-1>341     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------</span>
+<a name="342"><font size=-1>342     </font></a><span class="comment">   For error control.</span>
+<a name="343"><font size=-1>343     </font></a><span class="comment">   ---------------------------------------------------------- */</span>
+<a name="344"><font size=-1>344     </font></a><span class="comment"></span>
+<a name="345"><font size=-1>345     </font></a><span class="comment">/* Tell H that an address range is not to be &quot;tracked&quot; until further</span>
+<a name="346"><font size=-1>346     </font></a><span class="comment">   notice.  This puts it in the NOACCESS state, in which case we</span>
+<a name="347"><font size=-1>347     </font></a><span class="comment">   ignore all reads and writes to it.  Useful for ignoring ranges of</span>
+<a name="348"><font size=-1>348     </font></a><span class="comment">   memory where there might be races we don't want to see.  If the</span>
+<a name="349"><font size=-1>349     </font></a><span class="comment">   memory is subsequently reallocated via malloc/new/stack allocation,</span>
+<a name="350"><font size=-1>350     </font></a><span class="comment">   then it is put back in the trackable state.  Hence it is safe in</span>
+<a name="351"><font size=-1>351     </font></a><span class="comment">   the situation where checking is disabled, the containing area is</span>
+<a name="352"><font size=-1>352     </font></a><span class="comment">   deallocated and later reallocated for some other purpose. */</span>
+<a name="353"><font size=-1>353     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25219">VALGRIND_HG_DISABLE_CHECKING</a></span><span class="default">(_qzz_start, _qzz_len)   </span><span class="preproc">\</span>
+<a name="354"><font size=-1>354     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_ARANGE_MAKE_UNTRACKED,       </span><span class="preproc">\</span>
+<a name="355"><font size=-1>355     </font></a><span class="preproc">                 </span><span class="default">void*,(_qzz_start),                         </span><span class="preproc">\</span>
+<a name="356"><font size=-1>356     </font></a><span class="preproc">                 </span><span class="default">unsigned long,(_qzz_len))</span>
+<a name="357"><font size=-1>357     </font></a><span class="default"></span>
+<a name="358"><font size=-1>358     </font></a><span class="default"></span><span class="comment">/* And put it back into the normal &quot;tracked&quot; state, that is, make it</span>
+<a name="359"><font size=-1>359     </font></a><span class="comment">   once again subject to the normal race-checking machinery.  This</span>
+<a name="360"><font size=-1>360     </font></a><span class="comment">   puts it in the same state as new memory allocated by this thread --</span>
+<a name="361"><font size=-1>361     </font></a><span class="comment">   that is, basically owned exclusively by this thread. */</span>
+<a name="362"><font size=-1>362     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_V.html#25220">VALGRIND_HG_ENABLE_CHECKING</a></span><span class="default">(_qzz_start, _qzz_len)    </span><span class="preproc">\</span>
+<a name="363"><font size=-1>363     </font></a><span class="preproc">   <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_ARANGE_MAKE_TRACKED,         </span><span class="preproc">\</span>
+<a name="364"><font size=-1>364     </font></a><span class="preproc">                 </span><span class="default">void*,(_qzz_start),                         </span><span class="preproc">\</span>
+<a name="365"><font size=-1>365     </font></a><span class="preproc">                 </span><span class="default">unsigned long,(_qzz_len))</span>
+<a name="366"><font size=-1>366     </font></a><span class="default"></span>
+<a name="367"><font size=-1>367     </font></a><span class="default"></span>
+<a name="368"><font size=-1>368     </font></a><span class="default"></span><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="369"><font size=-1>369     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="370"><font size=-1>370     </font></a><span class="comment">/*--- ThreadSanitizer-compatible requests                      ---*/</span>
+<a name="371"><font size=-1>371     </font></a><span class="comment">/*--- (mostly unimplemented)                                   ---*/</span>
+<a name="372"><font size=-1>372     </font></a><span class="comment">/*---                                                          ---*/</span>
+<a name="373"><font size=-1>373     </font></a><span class="comment">/*----------------------------------------------------------------*/</span>
+<a name="374"><font size=-1>374     </font></a><span class="comment"></span>
+<a name="375"><font size=-1>375     </font></a><span class="comment">/* A quite-broad set of annotations, as used in the ThreadSanitizer</span>
+<a name="376"><font size=-1>376     </font></a><span class="comment">   project.  This implementation aims to be a (source-level)</span>
+<a name="377"><font size=-1>377     </font></a><span class="comment">   compatible implementation of the macros defined in:</span>
+<a name="378"><font size=-1>378     </font></a><span class="comment"></span>
+<a name="379"><font size=-1>379     </font></a><span class="comment">   http://code.google.com/p/data-race-test/source</span>
+<a name="380"><font size=-1>380     </font></a><span class="comment">          /browse/trunk/dynamic_annotations/dynamic_annotations.h</span>
+<a name="381"><font size=-1>381     </font></a><span class="comment"></span>
+<a name="382"><font size=-1>382     </font></a><span class="comment">   (some of the comments below are taken from the above file)</span>
+<a name="383"><font size=-1>383     </font></a><span class="comment"></span>
+<a name="384"><font size=-1>384     </font></a><span class="comment">   The implementation here is very incomplete, and intended as a</span>
+<a name="385"><font size=-1>385     </font></a><span class="comment">   starting point.  Many of the macros are unimplemented.  Rather than</span>
+<a name="386"><font size=-1>386     </font></a><span class="comment">   allowing unimplemented macros to silently do nothing, they cause an</span>
+<a name="387"><font size=-1>387     </font></a><span class="comment">   assertion.  Intention is to implement them on demand.</span>
+<a name="388"><font size=-1>388     </font></a><span class="comment"></span>
+<a name="389"><font size=-1>389     </font></a><span class="comment">   The major use of these macros is to make visible to race detectors,</span>
+<a name="390"><font size=-1>390     </font></a><span class="comment">   the behaviour (effects) of user-implemented synchronisation</span>
+<a name="391"><font size=-1>391     </font></a><span class="comment">   primitives, that the detectors could not otherwise deduce from the</span>
+<a name="392"><font size=-1>392     </font></a><span class="comment">   normal observation of pthread etc calls.</span>
+<a name="393"><font size=-1>393     </font></a><span class="comment"></span>
+<a name="394"><font size=-1>394     </font></a><span class="comment">   Some of the macros are no-ops in Helgrind.  That's because Helgrind</span>
+<a name="395"><font size=-1>395     </font></a><span class="comment">   is a pure happens-before detector, whereas ThreadSanitizer uses a</span>
+<a name="396"><font size=-1>396     </font></a><span class="comment">   hybrid lockset and happens-before scheme, which requires more</span>
+<a name="397"><font size=-1>397     </font></a><span class="comment">   accurate annotations for correct operation.</span>
+<a name="398"><font size=-1>398     </font></a><span class="comment"></span>
+<a name="399"><font size=-1>399     </font></a><span class="comment">   The macros are listed in the same order as in dynamic_annotations.h</span>
+<a name="400"><font size=-1>400     </font></a><span class="comment">   (URL just above).</span>
+<a name="401"><font size=-1>401     </font></a><span class="comment"></span>
+<a name="402"><font size=-1>402     </font></a><span class="comment">   I should point out that I am less than clear about the intended</span>
+<a name="403"><font size=-1>403     </font></a><span class="comment">   semantics of quite a number of them.  Comments and clarifications</span>
+<a name="404"><font size=-1>404     </font></a><span class="comment">   welcomed!</span>
+<a name="405"><font size=-1>405     </font></a><span class="comment">*/</span>
+<a name="406"><font size=-1>406     </font></a><span class="comment"></span>
+<a name="407"><font size=-1>407     </font></a><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="408"><font size=-1>408     </font></a><span class="comment">   These four allow description of user-level condition variables,</span>
+<a name="409"><font size=-1>409     </font></a><span class="comment">   apparently in the style of POSIX's pthread_cond_t.  Currently</span>
+<a name="410"><font size=-1>410     </font></a><span class="comment">   unimplemented and will assert.</span>
+<a name="411"><font size=-1>411     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="412"><font size=-1>412     </font></a><span class="comment">*/</span>
+<a name="413"><font size=-1>413     </font></a><span class="comment">/* Report that wait on the condition variable at address CV has</span>
+<a name="414"><font size=-1>414     </font></a><span class="comment">   succeeded and the lock at address LOCK is now held.  CV and LOCK</span>
+<a name="415"><font size=-1>415     </font></a><span class="comment">   are completely arbitrary memory addresses which presumably mean</span>
+<a name="416"><font size=-1>416     </font></a><span class="comment">   something to the application, but are meaningless to Helgrind. */</span>
+<a name="417"><font size=-1>417     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25221">ANNOTATE_CONDVAR_LOCK_WAIT</a></span><span class="default">(cv, lock) </span><span class="preproc">\</span>
+<a name="418"><font size=-1>418     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_CONDVAR_LOCK_WAIT&quot;</span><span class="default">)</span>
+<a name="419"><font size=-1>419     </font></a><span class="default"></span>
+<a name="420"><font size=-1>420     </font></a><span class="default"></span><span class="comment">/* Report that wait on the condition variable at CV has succeeded.</span>
+<a name="421"><font size=-1>421     </font></a><span class="comment">   Variant w/o lock. */</span>
+<a name="422"><font size=-1>422     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25222">ANNOTATE_CONDVAR_WAIT</a></span><span class="default">(cv) </span><span class="preproc">\</span>
+<a name="423"><font size=-1>423     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_CONDVAR_WAIT&quot;</span><span class="default">)</span>
+<a name="424"><font size=-1>424     </font></a><span class="default"></span>
+<a name="425"><font size=-1>425     </font></a><span class="default"></span><span class="comment">/* Report that we are about to signal on the condition variable at</span>
+<a name="426"><font size=-1>426     </font></a><span class="comment">   address CV. */</span>
+<a name="427"><font size=-1>427     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25223">ANNOTATE_CONDVAR_SIGNAL</a></span><span class="default">(cv) </span><span class="preproc">\</span>
+<a name="428"><font size=-1>428     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_CONDVAR_SIGNAL&quot;</span><span class="default">)</span>
+<a name="429"><font size=-1>429     </font></a><span class="default">  </span>
+<a name="430"><font size=-1>430     </font></a><span class="default"></span><span class="comment">/* Report that we are about to signal_all on the condition variable at</span>
+<a name="431"><font size=-1>431     </font></a><span class="comment">   CV. */</span>
+<a name="432"><font size=-1>432     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25224">ANNOTATE_CONDVAR_SIGNAL_ALL</a></span><span class="default">(cv) </span><span class="preproc">\</span>
+<a name="433"><font size=-1>433     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_CONDVAR_SIGNAL_ALL&quot;</span><span class="default">)</span>
+<a name="434"><font size=-1>434     </font></a><span class="default"></span>
+<a name="435"><font size=-1>435     </font></a><span class="default"></span>
+<a name="436"><font size=-1>436     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="437"><font size=-1>437     </font></a><span class="comment">   Create completely arbitrary happens-before edges between threads.</span>
+<a name="438"><font size=-1>438     </font></a><span class="comment"></span>
+<a name="439"><font size=-1>439     </font></a><span class="comment">   If threads T1 .. Tn all do ANNOTATE_HAPPENS_BEFORE(obj) and later</span>
+<a name="440"><font size=-1>440     </font></a><span class="comment">   (w.r.t. some notional global clock for the computation) thread Tm</span>
+<a name="441"><font size=-1>441     </font></a><span class="comment">   does ANNOTATE_HAPPENS_AFTER(obj), then Helgrind will regard all</span>
+<a name="442"><font size=-1>442     </font></a><span class="comment">   memory accesses done by T1 .. Tn before the ..BEFORE.. call as</span>
+<a name="443"><font size=-1>443     </font></a><span class="comment">   happening-before all memory accesses done by Tm after the</span>
+<a name="444"><font size=-1>444     </font></a><span class="comment">   ..AFTER.. call.  Hence Helgrind won't complain about races if Tm's</span>
+<a name="445"><font size=-1>445     </font></a><span class="comment">   accesses afterwards are to the same locations as accesses before by</span>
+<a name="446"><font size=-1>446     </font></a><span class="comment">   any of T1 .. Tn.</span>
+<a name="447"><font size=-1>447     </font></a><span class="comment"></span>
+<a name="448"><font size=-1>448     </font></a><span class="comment">   OBJ is a machine word (unsigned long, or void*), is completely</span>
+<a name="449"><font size=-1>449     </font></a><span class="comment">   arbitrary, and denotes the identity of some synchronisation object</span>
+<a name="450"><font size=-1>450     </font></a><span class="comment">   you're modelling.</span>
+<a name="451"><font size=-1>451     </font></a><span class="comment"></span>
+<a name="452"><font size=-1>452     </font></a><span class="comment">   You must do the _BEFORE call just before the real sync event on the</span>
+<a name="453"><font size=-1>453     </font></a><span class="comment">   signaller's side, and _AFTER just after the real sync event on the</span>
+<a name="454"><font size=-1>454     </font></a><span class="comment">   waiter's side.</span>
+<a name="455"><font size=-1>455     </font></a><span class="comment"></span>
+<a name="456"><font size=-1>456     </font></a><span class="comment">   If none of the rest of these macros make sense to you, at least</span>
+<a name="457"><font size=-1>457     </font></a><span class="comment">   take the time to understand these two.  They form the very essence</span>
+<a name="458"><font size=-1>458     </font></a><span class="comment">   of describing arbitrary inter-thread synchronisation events to</span>
+<a name="459"><font size=-1>459     </font></a><span class="comment">   Helgrind.  You can get a long way just with them alone.</span>
+<a name="460"><font size=-1>460     </font></a><span class="comment"></span>
+<a name="461"><font size=-1>461     </font></a><span class="comment">   See also, extensive discussion on semantics of this in </span>
+<a name="462"><font size=-1>462     </font></a><span class="comment">   https://bugs.kde.org/show_bug.cgi?id=243935</span>
+<a name="463"><font size=-1>463     </font></a><span class="comment"></span>
+<a name="464"><font size=-1>464     </font></a><span class="comment">   ANNOTATE_HAPPENS_BEFORE_FORGET_ALL(obj) is interim until such time</span>
+<a name="465"><font size=-1>465     </font></a><span class="comment">   as bug 243935 is fully resolved.  It instructs Helgrind to forget</span>
+<a name="466"><font size=-1>466     </font></a><span class="comment">   about any ANNOTATE_HAPPENS_BEFORE calls on the specified object, in</span>
+<a name="467"><font size=-1>467     </font></a><span class="comment">   effect putting it back in its original state.  Once in that state,</span>
+<a name="468"><font size=-1>468     </font></a><span class="comment">   a use of ANNOTATE_HAPPENS_AFTER on it has no effect on the calling</span>
+<a name="469"><font size=-1>469     </font></a><span class="comment">   thread.</span>
+<a name="470"><font size=-1>470     </font></a><span class="comment"></span>
+<a name="471"><font size=-1>471     </font></a><span class="comment">   An implementation may optionally release resources it has</span>
+<a name="472"><font size=-1>472     </font></a><span class="comment">   associated with 'obj' when ANNOTATE_HAPPENS_BEFORE_FORGET_ALL(obj)</span>
+<a name="473"><font size=-1>473     </font></a><span class="comment">   happens.  Users are recommended to use</span>
+<a name="474"><font size=-1>474     </font></a><span class="comment">   ANNOTATE_HAPPENS_BEFORE_FORGET_ALL to indicate when a</span>
+<a name="475"><font size=-1>475     </font></a><span class="comment">   synchronisation object is no longer needed, so as to avoid</span>
+<a name="476"><font size=-1>476     </font></a><span class="comment">   potential indefinite resource leaks.</span>
+<a name="477"><font size=-1>477     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="478"><font size=-1>478     </font></a><span class="comment">*/</span>
+<a name="479"><font size=-1>479     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25225">ANNOTATE_HAPPENS_BEFORE</a></span><span class="default">(obj) </span><span class="preproc">\</span>
+<a name="480"><font size=-1>480     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_USERSO_SEND_PRE, void*,(obj))</span>
+<a name="481"><font size=-1>481     </font></a><span class="default"></span>
+<a name="482"><font size=-1>482     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#25226">ANNOTATE_HAPPENS_AFTER</a></span><span class="default">(obj) </span><span class="preproc">\</span>
+<a name="483"><font size=-1>483     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_USERSO_RECV_POST, void*,(obj))</span>
+<a name="484"><font size=-1>484     </font></a><span class="default"></span>
+<a name="485"><font size=-1>485     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_A.html#25227">ANNOTATE_HAPPENS_BEFORE_FORGET_ALL</a></span><span class="default">(obj) </span><span class="preproc">\</span>
+<a name="486"><font size=-1>486     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_USERSO_FORGET_ALL, void*,(obj))</span>
+<a name="487"><font size=-1>487     </font></a><span class="default"></span>
+<a name="488"><font size=-1>488     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="489"><font size=-1>489     </font></a><span class="comment">   Memory publishing.  The TSan sources say:</span>
+<a name="490"><font size=-1>490     </font></a><span class="comment"></span>
+<a name="491"><font size=-1>491     </font></a><span class="comment">     Report that the bytes in the range [pointer, pointer+size) are about</span>
+<a name="492"><font size=-1>492     </font></a><span class="comment">     to be published safely. The race checker will create a happens-before</span>
+<a name="493"><font size=-1>493     </font></a><span class="comment">     arc from the call ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) to</span>
+<a name="494"><font size=-1>494     </font></a><span class="comment">     subsequent accesses to this memory.</span>
+<a name="495"><font size=-1>495     </font></a><span class="comment"></span>
+<a name="496"><font size=-1>496     </font></a><span class="comment">   I'm not sure I understand what this means exactly, nor whether it</span>
+<a name="497"><font size=-1>497     </font></a><span class="comment">   is relevant for a pure h-b detector.  Leaving unimplemented for</span>
+<a name="498"><font size=-1>498     </font></a><span class="comment">   now.</span>
+<a name="499"><font size=-1>499     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="500"><font size=-1>500     </font></a><span class="comment">*/</span>
+<a name="501"><font size=-1>501     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25228">ANNOTATE_PUBLISH_MEMORY_RANGE</a></span><span class="default">(pointer, size) </span><span class="preproc">\</span>
+<a name="502"><font size=-1>502     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PUBLISH_MEMORY_RANGE&quot;</span><span class="default">)</span>
+<a name="503"><font size=-1>503     </font></a><span class="default"></span>
+<a name="504"><font size=-1>504     </font></a><span class="default"></span><span class="comment">/* DEPRECATED. Don't use it. */</span>
+<a name="505"><font size=-1>505     </font></a><span class="comment">/* #define ANNOTATE_UNPUBLISH_MEMORY_RANGE(pointer, size) */</span>
+<a name="506"><font size=-1>506     </font></a><span class="comment"></span>
+<a name="507"><font size=-1>507     </font></a><span class="comment">/* DEPRECATED. Don't use it. */</span>
+<a name="508"><font size=-1>508     </font></a><span class="comment">/* #define ANNOTATE_SWAP_MEMORY_RANGE(pointer, size) */</span>
+<a name="509"><font size=-1>509     </font></a><span class="comment"></span>
+<a name="510"><font size=-1>510     </font></a><span class="comment"></span>
+<a name="511"><font size=-1>511     </font></a><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="512"><font size=-1>512     </font></a><span class="comment">   TSan sources say:</span>
+<a name="513"><font size=-1>513     </font></a><span class="comment">   </span>
+<a name="514"><font size=-1>514     </font></a><span class="comment">     Instruct the tool to create a happens-before arc between</span>
+<a name="515"><font size=-1>515     </font></a><span class="comment">     MU-&gt;Unlock() and MU-&gt;Lock().  This annotation may slow down the</span>
+<a name="516"><font size=-1>516     </font></a><span class="comment">     race detector; normally it is used only when it would be</span>
+<a name="517"><font size=-1>517     </font></a><span class="comment">     difficult to annotate each of the mutex's critical sections</span>
+<a name="518"><font size=-1>518     </font></a><span class="comment">     individually using the annotations above.</span>
+<a name="519"><font size=-1>519     </font></a><span class="comment"></span>
+<a name="520"><font size=-1>520     </font></a><span class="comment">   If MU is a posix pthread_mutex_t then Helgrind will do this anyway.</span>
+<a name="521"><font size=-1>521     </font></a><span class="comment">   In any case, leave as unimp for now.  I'm unsure about the intended</span>
+<a name="522"><font size=-1>522     </font></a><span class="comment">   behaviour.</span>
+<a name="523"><font size=-1>523     </font></a><span class="comment">   ---------------------------------------------------------------- </span>
+<a name="524"><font size=-1>524     </font></a><span class="comment">*/</span>
+<a name="525"><font size=-1>525     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25229">ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX</a></span><span class="default">(mu) </span><span class="preproc">\</span>
+<a name="526"><font size=-1>526     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX&quot;</span><span class="default">)</span>
+<a name="527"><font size=-1>527     </font></a><span class="default"></span>
+<a name="528"><font size=-1>528     </font></a><span class="default"></span><span class="comment">/* Deprecated. Use ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX. */</span>
+<a name="529"><font size=-1>529     </font></a><span class="comment">/* #define ANNOTATE_MUTEX_IS_USED_AS_CONDVAR(mu) */</span>
+<a name="530"><font size=-1>530     </font></a><span class="comment"></span>
+<a name="531"><font size=-1>531     </font></a><span class="comment"></span>
+<a name="532"><font size=-1>532     </font></a><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="533"><font size=-1>533     </font></a><span class="comment">   TSan sources say:</span>
+<a name="534"><font size=-1>534     </font></a><span class="comment">   </span>
+<a name="535"><font size=-1>535     </font></a><span class="comment">     Annotations useful when defining memory allocators, or when</span>
+<a name="536"><font size=-1>536     </font></a><span class="comment">     memory that was protected in one way starts to be protected in</span>
+<a name="537"><font size=-1>537     </font></a><span class="comment">     another.</span>
+<a name="538"><font size=-1>538     </font></a><span class="comment"></span>
+<a name="539"><font size=-1>539     </font></a><span class="comment">     Report that a new memory at &quot;address&quot; of size &quot;size&quot; has been</span>
+<a name="540"><font size=-1>540     </font></a><span class="comment">     allocated.  This might be used when the memory has been retrieved</span>
+<a name="541"><font size=-1>541     </font></a><span class="comment">     from a free list and is about to be reused, or when a the locking</span>
+<a name="542"><font size=-1>542     </font></a><span class="comment">     discipline for a variable changes.</span>
+<a name="543"><font size=-1>543     </font></a><span class="comment"></span>
+<a name="544"><font size=-1>544     </font></a><span class="comment">   AFAICS this is the same as VALGRIND_HG_CLEAN_MEMORY.</span>
+<a name="545"><font size=-1>545     </font></a><span class="comment">   ---------------------------------------------------------------- </span>
+<a name="546"><font size=-1>546     </font></a><span class="comment">*/</span>
+<a name="547"><font size=-1>547     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25230">ANNOTATE_NEW_MEMORY</a></span><span class="default">(address, size) </span><span class="preproc">\</span>
+<a name="548"><font size=-1>548     </font></a><span class="preproc">   <a href="dictionary_V.html#18990">VALGRIND_HG_CLEAN_MEMORY</a></span><span class="default">((address), (size))</span>
+<a name="549"><font size=-1>549     </font></a><span class="default"></span>
+<a name="550"><font size=-1>550     </font></a><span class="default"></span>
+<a name="551"><font size=-1>551     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="552"><font size=-1>552     </font></a><span class="comment">   TSan sources say:</span>
+<a name="553"><font size=-1>553     </font></a><span class="comment"></span>
+<a name="554"><font size=-1>554     </font></a><span class="comment">     Annotations useful when defining FIFO queues that transfer data</span>
+<a name="555"><font size=-1>555     </font></a><span class="comment">     between threads.</span>
+<a name="556"><font size=-1>556     </font></a><span class="comment"></span>
+<a name="557"><font size=-1>557     </font></a><span class="comment">   All unimplemented.  Am not claiming to understand this (yet).</span>
+<a name="558"><font size=-1>558     </font></a><span class="comment">   ---------------------------------------------------------------- </span>
+<a name="559"><font size=-1>559     </font></a><span class="comment">*/</span>
+<a name="560"><font size=-1>560     </font></a><span class="comment"></span>
+<a name="561"><font size=-1>561     </font></a><span class="comment">/* Report that the producer-consumer queue object at address PCQ has</span>
+<a name="562"><font size=-1>562     </font></a><span class="comment">   been created.  The ANNOTATE_PCQ_* annotations should be used only</span>
+<a name="563"><font size=-1>563     </font></a><span class="comment">   for FIFO queues.  For non-FIFO queues use ANNOTATE_HAPPENS_BEFORE</span>
+<a name="564"><font size=-1>564     </font></a><span class="comment">   (for put) and ANNOTATE_HAPPENS_AFTER (for get). */</span>
+<a name="565"><font size=-1>565     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25231">ANNOTATE_PCQ_CREATE</a></span><span class="default">(pcq) </span><span class="preproc">\</span>
+<a name="566"><font size=-1>566     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PCQ_CREATE&quot;</span><span class="default">)</span>
+<a name="567"><font size=-1>567     </font></a><span class="default"></span>
+<a name="568"><font size=-1>568     </font></a><span class="default"></span><span class="comment">/* Report that the queue at address PCQ is about to be destroyed. */</span>
+<a name="569"><font size=-1>569     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25232">ANNOTATE_PCQ_DESTROY</a></span><span class="default">(pcq) </span><span class="preproc">\</span>
+<a name="570"><font size=-1>570     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PCQ_DESTROY&quot;</span><span class="default">)</span>
+<a name="571"><font size=-1>571     </font></a><span class="default"></span>
+<a name="572"><font size=-1>572     </font></a><span class="default"></span><span class="comment">/* Report that we are about to put an element into a FIFO queue at</span>
+<a name="573"><font size=-1>573     </font></a><span class="comment">   address PCQ. */</span>
+<a name="574"><font size=-1>574     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25233">ANNOTATE_PCQ_PUT</a></span><span class="default">(pcq) </span><span class="preproc">\</span>
+<a name="575"><font size=-1>575     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PCQ_PUT&quot;</span><span class="default">)</span>
+<a name="576"><font size=-1>576     </font></a><span class="default"></span>
+<a name="577"><font size=-1>577     </font></a><span class="default"></span><span class="comment">/* Report that we've just got an element from a FIFO queue at address</span>
+<a name="578"><font size=-1>578     </font></a><span class="comment">   PCQ. */</span>
+<a name="579"><font size=-1>579     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25234">ANNOTATE_PCQ_GET</a></span><span class="default">(pcq) </span><span class="preproc">\</span>
+<a name="580"><font size=-1>580     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_PCQ_GET&quot;</span><span class="default">)</span>
+<a name="581"><font size=-1>581     </font></a><span class="default"></span>
+<a name="582"><font size=-1>582     </font></a><span class="default"></span>
+<a name="583"><font size=-1>583     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="584"><font size=-1>584     </font></a><span class="comment">   Annotations that suppress errors.  It is usually better to express</span>
+<a name="585"><font size=-1>585     </font></a><span class="comment">   the program's synchronization using the other annotations, but</span>
+<a name="586"><font size=-1>586     </font></a><span class="comment">   these can be used when all else fails.</span>
+<a name="587"><font size=-1>587     </font></a><span class="comment"></span>
+<a name="588"><font size=-1>588     </font></a><span class="comment">   Currently these are all unimplemented.  I can't think of a simple</span>
+<a name="589"><font size=-1>589     </font></a><span class="comment">   way to implement them without at least some performance overhead.</span>
+<a name="590"><font size=-1>590     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="591"><font size=-1>591     </font></a><span class="comment">*/</span>
+<a name="592"><font size=-1>592     </font></a><span class="comment"></span>
+<a name="593"><font size=-1>593     </font></a><span class="comment">/* Report that we may have a benign race at &quot;pointer&quot;, with size</span>
+<a name="594"><font size=-1>594     </font></a><span class="comment">   &quot;sizeof(*(pointer))&quot;. &quot;pointer&quot; must be a non-void* pointer.  Insert at the</span>
+<a name="595"><font size=-1>595     </font></a><span class="comment">   point where &quot;pointer&quot; has been allocated, preferably close to the point</span>
+<a name="596"><font size=-1>596     </font></a><span class="comment">   where the race happens.  See also ANNOTATE_BENIGN_RACE_STATIC.</span>
+<a name="597"><font size=-1>597     </font></a><span class="comment"></span>
+<a name="598"><font size=-1>598     </font></a><span class="comment">   XXX: what's this actually supposed to do?  And what's the type of</span>
+<a name="599"><font size=-1>599     </font></a><span class="comment">   DESCRIPTION?  When does the annotation stop having an effect?</span>
+<a name="600"><font size=-1>600     </font></a><span class="comment">*/</span>
+<a name="601"><font size=-1>601     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25235">ANNOTATE_BENIGN_RACE</a></span><span class="default">(pointer, description) </span><span class="preproc">\</span>
+<a name="602"><font size=-1>602     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BENIGN_RACE&quot;</span><span class="default">)</span>
+<a name="603"><font size=-1>603     </font></a><span class="default"></span>
+<a name="604"><font size=-1>604     </font></a><span class="default"></span><span class="comment">/* Same as ANNOTATE_BENIGN_RACE(address, description), but applies to</span>
+<a name="605"><font size=-1>605     </font></a><span class="comment">   the memory range [address, address+size). */</span>
+<a name="606"><font size=-1>606     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25236">ANNOTATE_BENIGN_RACE_SIZED</a></span><span class="default">(address, size, description) </span><span class="preproc">\</span>
+<a name="607"><font size=-1>607     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BENIGN_RACE_SIZED&quot;</span><span class="default">)</span>
+<a name="608"><font size=-1>608     </font></a><span class="default"></span>
+<a name="609"><font size=-1>609     </font></a><span class="default"></span><span class="comment">/* Request the analysis tool to ignore all reads in the current thread</span>
+<a name="610"><font size=-1>610     </font></a><span class="comment">   until ANNOTATE_IGNORE_READS_END is called.  Useful to ignore</span>
+<a name="611"><font size=-1>611     </font></a><span class="comment">   intentional racey reads, while still checking other reads and all</span>
+<a name="612"><font size=-1>612     </font></a><span class="comment">   writes. */</span>
+<a name="613"><font size=-1>613     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25237">ANNOTATE_IGNORE_READS_BEGIN</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="614"><font size=-1>614     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_IGNORE_READS_BEGIN&quot;</span><span class="default">)</span>
+<a name="615"><font size=-1>615     </font></a><span class="default"></span>
+<a name="616"><font size=-1>616     </font></a><span class="default"></span><span class="comment">/* Stop ignoring reads. */</span>
+<a name="617"><font size=-1>617     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25238">ANNOTATE_IGNORE_READS_END</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="618"><font size=-1>618     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_IGNORE_READS_END&quot;</span><span class="default">)</span>
+<a name="619"><font size=-1>619     </font></a><span class="default"></span>
+<a name="620"><font size=-1>620     </font></a><span class="default"></span><span class="comment">/* Similar to ANNOTATE_IGNORE_READS_BEGIN, but ignore writes. */</span>
+<a name="621"><font size=-1>621     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25239">ANNOTATE_IGNORE_WRITES_BEGIN</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="622"><font size=-1>622     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_IGNORE_WRITES_BEGIN&quot;</span><span class="default">)</span>
+<a name="623"><font size=-1>623     </font></a><span class="default"></span>
+<a name="624"><font size=-1>624     </font></a><span class="default"></span><span class="comment">/* Stop ignoring writes. */</span>
+<a name="625"><font size=-1>625     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25240">ANNOTATE_IGNORE_WRITES_END</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="626"><font size=-1>626     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_IGNORE_WRITES_END&quot;</span><span class="default">)</span>
+<a name="627"><font size=-1>627     </font></a><span class="default"></span>
+<a name="628"><font size=-1>628     </font></a><span class="default"></span><span class="comment">/* Start ignoring all memory accesses (reads and writes). */</span>
+<a name="629"><font size=-1>629     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25241">ANNOTATE_IGNORE_READS_AND_WRITES_BEGIN</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="630"><font size=-1>630     </font></a><span class="preproc">   </span><span class="default">do { </span><span class="preproc">\</span>
+<a name="631"><font size=-1>631     </font></a><span class="preproc">      <a href="dictionary_A.html#25237">ANNOTATE_IGNORE_READS_BEGIN</a></span><span class="default">(); </span><span class="preproc">\</span>
+<a name="632"><font size=-1>632     </font></a><span class="preproc">      <a href="dictionary_A.html#25239">ANNOTATE_IGNORE_WRITES_BEGIN</a></span><span class="default">(); </span><span class="preproc">\</span>
+<a name="633"><font size=-1>633     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="634"><font size=-1>634     </font></a><span class="default"></span>
+<a name="635"><font size=-1>635     </font></a><span class="default"></span><span class="comment">/* Stop ignoring all memory accesses. */</span>
+<a name="636"><font size=-1>636     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25242">ANNOTATE_IGNORE_READS_AND_WRITES_END</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="637"><font size=-1>637     </font></a><span class="preproc">   </span><span class="default">do { </span><span class="preproc">\</span>
+<a name="638"><font size=-1>638     </font></a><span class="preproc">      <a href="dictionary_A.html#25240">ANNOTATE_IGNORE_WRITES_END</a></span><span class="default">(); </span><span class="preproc">\</span>
+<a name="639"><font size=-1>639     </font></a><span class="preproc">      <a href="dictionary_A.html#25238">ANNOTATE_IGNORE_READS_END</a></span><span class="default">(); </span><span class="preproc">\</span>
+<a name="640"><font size=-1>640     </font></a><span class="preproc">   </span><span class="default">} while (</span><span class="number">0</span><span class="default">)</span>
+<a name="641"><font size=-1>641     </font></a><span class="default"></span>
+<a name="642"><font size=-1>642     </font></a><span class="default"></span>
+<a name="643"><font size=-1>643     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="644"><font size=-1>644     </font></a><span class="comment">   Annotations useful for debugging.</span>
+<a name="645"><font size=-1>645     </font></a><span class="comment"></span>
+<a name="646"><font size=-1>646     </font></a><span class="comment">   Again, so for unimplemented, partly for performance reasons.</span>
+<a name="647"><font size=-1>647     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="648"><font size=-1>648     </font></a><span class="comment">*/</span>
+<a name="649"><font size=-1>649     </font></a><span class="comment"></span>
+<a name="650"><font size=-1>650     </font></a><span class="comment">/* Request to trace every access to ADDRESS. */</span>
+<a name="651"><font size=-1>651     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25243">ANNOTATE_TRACE_MEMORY</a></span><span class="default">(address) </span><span class="preproc">\</span>
+<a name="652"><font size=-1>652     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_TRACE_MEMORY&quot;</span><span class="default">)</span>
+<a name="653"><font size=-1>653     </font></a><span class="default"></span>
+<a name="654"><font size=-1>654     </font></a><span class="default"></span><span class="comment">/* Report the current thread name to a race detector. */</span>
+<a name="655"><font size=-1>655     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25244">ANNOTATE_THREAD_NAME</a></span><span class="default">(name) </span><span class="preproc">\</span>
+<a name="656"><font size=-1>656     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_THREAD_NAME&quot;</span><span class="default">)</span>
+<a name="657"><font size=-1>657     </font></a><span class="default"></span>
+<a name="658"><font size=-1>658     </font></a><span class="default"></span>
+<a name="659"><font size=-1>659     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="660"><font size=-1>660     </font></a><span class="comment">   Annotations for describing behaviour of user-implemented lock</span>
+<a name="661"><font size=-1>661     </font></a><span class="comment">   primitives.  In all cases, the LOCK argument is a completely</span>
+<a name="662"><font size=-1>662     </font></a><span class="comment">   arbitrary machine word (unsigned long, or void*) and can be any</span>
+<a name="663"><font size=-1>663     </font></a><span class="comment">   value which gives a unique identity to the lock objects being</span>
+<a name="664"><font size=-1>664     </font></a><span class="comment">   modelled.</span>
+<a name="665"><font size=-1>665     </font></a><span class="comment"></span>
+<a name="666"><font size=-1>666     </font></a><span class="comment">   We just pretend they're ordinary posix rwlocks.  That'll probably</span>
+<a name="667"><font size=-1>667     </font></a><span class="comment">   give some rather confusing wording in error messages, claiming that</span>
+<a name="668"><font size=-1>668     </font></a><span class="comment">   the arbitrary LOCK values are pthread_rwlock_t*'s, when in fact</span>
+<a name="669"><font size=-1>669     </font></a><span class="comment">   they are not.  Ah well.</span>
+<a name="670"><font size=-1>670     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="671"><font size=-1>671     </font></a><span class="comment">*/</span>
+<a name="672"><font size=-1>672     </font></a><span class="comment">/* Report that a lock has just been created at address LOCK. */</span>
+<a name="673"><font size=-1>673     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25245">ANNOTATE_RWLOCK_CREATE</a></span><span class="default">(lock)                         </span><span class="preproc">\</span>
+<a name="674"><font size=-1>674     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_RWLOCK_INIT_POST,     </span><span class="preproc">\</span>
+<a name="675"><font size=-1>675     </font></a><span class="preproc">               </span><span class="default">void*,(lock))</span>
+<a name="676"><font size=-1>676     </font></a><span class="default">    </span>
+<a name="677"><font size=-1>677     </font></a><span class="default"></span><span class="comment">/* Report that the lock at address LOCK is about to be destroyed. */</span>
+<a name="678"><font size=-1>678     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25246">ANNOTATE_RWLOCK_DESTROY</a></span><span class="default">(lock)                        </span><span class="preproc">\</span>
+<a name="679"><font size=-1>679     </font></a><span class="preproc">   <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_RWLOCK_DESTROY_PRE,   </span><span class="preproc">\</span>
+<a name="680"><font size=-1>680     </font></a><span class="preproc">               </span><span class="default">void*,(lock))</span>
+<a name="681"><font size=-1>681     </font></a><span class="default"></span>
+<a name="682"><font size=-1>682     </font></a><span class="default"></span><span class="comment">/* Report that the lock at address LOCK has just been acquired.</span>
+<a name="683"><font size=-1>683     </font></a><span class="comment">   is_w=1 for writer lock, is_w=0 for reader lock. */</span>
+<a name="684"><font size=-1>684     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25247">ANNOTATE_RWLOCK_ACQUIRED</a></span><span class="default">(lock, is_w)                 </span><span class="preproc">\</span>
+<a name="685"><font size=-1>685     </font></a><span class="preproc">  <a href="dictionary_D.html#25200">DO_CREQ_v_WW</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_RWLOCK_LOCK_POST,     </span><span class="preproc">\</span>
+<a name="686"><font size=-1>686     </font></a><span class="preproc">               </span><span class="default">void*,(lock), unsigned long,(is_w))</span>
+<a name="687"><font size=-1>687     </font></a><span class="default"></span>
+<a name="688"><font size=-1>688     </font></a><span class="default"></span><span class="comment">/* Report that the lock at address LOCK is about to be released. */</span>
+<a name="689"><font size=-1>689     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25248">ANNOTATE_RWLOCK_RELEASED</a></span><span class="default">(lock, is_w)                 </span><span class="preproc">\</span>
+<a name="690"><font size=-1>690     </font></a><span class="preproc">  <a href="dictionary_D.html#25198">DO_CREQ_v_W</a></span><span class="default">(_VG_USERREQ__HG_PTHREAD_RWLOCK_UNLOCK_PRE,     </span><span class="preproc">\</span>
+<a name="691"><font size=-1>691     </font></a><span class="preproc">              </span><span class="default">void*,(lock)) </span><span class="comment">/* is_w is ignored */</span>
+<a name="692"><font size=-1>692     </font></a><span class="comment"></span>
+<a name="693"><font size=-1>693     </font></a><span class="comment"></span>
+<a name="694"><font size=-1>694     </font></a><span class="comment">/* -------------------------------------------------------------</span>
+<a name="695"><font size=-1>695     </font></a><span class="comment">   Annotations useful when implementing barriers.  They are not</span>
+<a name="696"><font size=-1>696     </font></a><span class="comment">   normally needed by modules that merely use barriers.</span>
+<a name="697"><font size=-1>697     </font></a><span class="comment">   The &quot;barrier&quot; argument is a pointer to the barrier object.</span>
+<a name="698"><font size=-1>698     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="699"><font size=-1>699     </font></a><span class="comment">*/</span>
+<a name="700"><font size=-1>700     </font></a><span class="comment"></span>
+<a name="701"><font size=-1>701     </font></a><span class="comment">/* Report that the &quot;barrier&quot; has been initialized with initial</span>
+<a name="702"><font size=-1>702     </font></a><span class="comment">   &quot;count&quot;.  If 'reinitialization_allowed' is true, initialization is</span>
+<a name="703"><font size=-1>703     </font></a><span class="comment">   allowed to happen multiple times w/o calling barrier_destroy() */</span>
+<a name="704"><font size=-1>704     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25249">ANNOTATE_BARRIER_INIT</a></span><span class="default">(barrier, count, reinitialization_allowed) </span><span class="preproc">\</span>
+<a name="705"><font size=-1>705     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BARRIER_INIT&quot;</span><span class="default">)</span>
+<a name="706"><font size=-1>706     </font></a><span class="default"></span>
+<a name="707"><font size=-1>707     </font></a><span class="default"></span><span class="comment">/* Report that we are about to enter barrier_wait(&quot;barrier&quot;). */</span>
+<a name="708"><font size=-1>708     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25250">ANNOTATE_BARRIER_WAIT_BEFORE</a></span><span class="default">(barrier) </span><span class="preproc">\</span>
+<a name="709"><font size=-1>709     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BARRIER_DESTROY&quot;</span><span class="default">)</span>
+<a name="710"><font size=-1>710     </font></a><span class="default"></span>
+<a name="711"><font size=-1>711     </font></a><span class="default"></span><span class="comment">/* Report that we just exited barrier_wait(&quot;barrier&quot;). */</span>
+<a name="712"><font size=-1>712     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25251">ANNOTATE_BARRIER_WAIT_AFTER</a></span><span class="default">(barrier) </span><span class="preproc">\</span>
+<a name="713"><font size=-1>713     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BARRIER_DESTROY&quot;</span><span class="default">)</span>
+<a name="714"><font size=-1>714     </font></a><span class="default"></span>
+<a name="715"><font size=-1>715     </font></a><span class="default"></span><span class="comment">/* Report that the &quot;barrier&quot; has been destroyed. */</span>
+<a name="716"><font size=-1>716     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25252">ANNOTATE_BARRIER_DESTROY</a></span><span class="default">(barrier) </span><span class="preproc">\</span>
+<a name="717"><font size=-1>717     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_BARRIER_DESTROY&quot;</span><span class="default">)</span>
+<a name="718"><font size=-1>718     </font></a><span class="default"></span>
+<a name="719"><font size=-1>719     </font></a><span class="default"></span>
+<a name="720"><font size=-1>720     </font></a><span class="default"></span><span class="comment">/* ----------------------------------------------------------------</span>
+<a name="721"><font size=-1>721     </font></a><span class="comment">   Annotations useful for testing race detectors.</span>
+<a name="722"><font size=-1>722     </font></a><span class="comment">   ----------------------------------------------------------------</span>
+<a name="723"><font size=-1>723     </font></a><span class="comment">*/</span>
+<a name="724"><font size=-1>724     </font></a><span class="comment"></span>
+<a name="725"><font size=-1>725     </font></a><span class="comment">/* Report that we expect a race on the variable at ADDRESS.  Use only</span>
+<a name="726"><font size=-1>726     </font></a><span class="comment">   in unit tests for a race detector. */</span>
+<a name="727"><font size=-1>727     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25253">ANNOTATE_EXPECT_RACE</a></span><span class="default">(address, description) </span><span class="preproc">\</span>
+<a name="728"><font size=-1>728     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_EXPECT_RACE&quot;</span><span class="default">)</span>
+<a name="729"><font size=-1>729     </font></a><span class="default"></span>
+<a name="730"><font size=-1>730     </font></a><span class="default"></span><span class="comment">/* A no-op. Insert where you like to test the interceptors. */</span>
+<a name="731"><font size=-1>731     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25254">ANNOTATE_NO_OP</a></span><span class="default">(arg) </span><span class="preproc">\</span>
+<a name="732"><font size=-1>732     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_NO_OP&quot;</span><span class="default">)</span>
+<a name="733"><font size=-1>733     </font></a><span class="default"></span>
+<a name="734"><font size=-1>734     </font></a><span class="default"></span><span class="comment">/* Force the race detector to flush its state. The actual effect depends on</span>
+<a name="735"><font size=-1>735     </font></a><span class="comment"> * the implementation of the detector. */</span>
+<a name="736"><font size=-1>736     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_A.html#25255">ANNOTATE_FLUSH_STATE</a></span><span class="default">() </span><span class="preproc">\</span>
+<a name="737"><font size=-1>737     </font></a><span class="preproc">   <a href="dictionary_Non-Alpha.html#25202">_HG_CLIENTREQ_UNIMP</a></span><span class="default">(</span><span class="string">&quot;ANNOTATE_FLUSH_STATE&quot;</span><span class="default">)</span>
+<a name="738"><font size=-1>738     </font></a><span class="default"></span>
+<a name="739"><font size=-1>739     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">/* __HELGRIND_H */</span>
+<a name="740"><font size=-1>740     </font></a><span class="comment"></span>
+</pre></body></html>

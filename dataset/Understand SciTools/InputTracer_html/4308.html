@@ -1,0 +1,425 @@
+<html><head><title>guest_x86_defs.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/guest_x86_defs.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/inputtracer/valgrind-inputtracer/VEX/priv/guest_x86_defs.h";
+top.document.title  = "guest_x86_defs.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span>
+<a name="2"><font size=-1>2     </font></a><span class="default"></span><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">/*--- begin                                  guest_x86_defs.h ---*/</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">/*</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">   This file is part of Valgrind, a dynamic binary instrumentation</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">   framework.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"></span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">   Copyright (C) 2004-2010 OpenWorks LLP</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">      info@open-works.net</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">   This program is free software; you can redistribute it and/or</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">   modify it under the terms of the GNU General Public License as</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">   published by the Free Software Foundation; either version 2 of the</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">   License, or (at your option) any later version.</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">   This program is distributed in the hope that it will be useful, but</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">   WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">   General Public License for more details.</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">   You should have received a copy of the GNU General Public License</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment">   along with this program; if not, write to the Free Software</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment">   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment">   02110-1301, USA.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"></span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">   The GNU General Public License is contained in the file COPYING.</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"></span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">   Neither the names of the U.S. Department of Energy nor the</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">   University of California nor the names of its contributors may be</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">   used to endorse or promote products derived from this software</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">   without prior written permission.</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">*/</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"></span>
+<a name="36"><font size=-1>36     </font></a><span class="comment">/* Only to be used within the guest-x86 directory. */</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"></span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#35176">__VEX_GUEST_X86_DEFS_H</a></span>
+<a name="39"><font size=-1>39     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#35176">__VEX_GUEST_X86_DEFS_H</a></span>
+<a name="40"><font size=-1>40     </font></a><span class="preproc"></span>
+<a name="41"><font size=-1>41     </font></a><span class="preproc"></span>
+<a name="42"><font size=-1>42     </font></a><span class="preproc"></span><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">/*--- x86 to IR conversion                              ---*/</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"></span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">/* Convert one x86 insn to IR.  See the type DisOneInstrFn in</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">   bb_to_IR.h. */</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment"></span><span class="keyword">extern</span>
+<a name="49"><font size=-1>49     </font></a><span class="keyword"><a href="dictionary_D.html#4631">DisResult</a> <a href="dictionary_D.html#4448">disInstr_X86</a> </span><span class="default">( <a href="dictionary_I.html#561">IRSB</a>*        irbb,</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">                         <a href="dictionary_B.html#78">Bool</a>         put_IP,</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">                         Bool         (*resteerOkFn) ( </span><span class="keyword">void</span><span class="default">*, Addr64 ),</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">                         <a href="dictionary_B.html#78">Bool</a>         resteerCisOk,</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">                         </span><span class="keyword">void</span><span class="default">*        callback_opaque,</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">                         <a href="dictionary_U.html#449">UChar</a>*       guest_code,</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">                         <a href="dictionary_L.html#1058">Long</a>         delta,</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">                         <a href="dictionary_A.html#4338">Addr64</a>       guest_IP,</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">                         <a href="dictionary_V.html#2377">VexArch</a>      guest_arch,</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">                         <a href="dictionary_V.html#2379">VexArchInfo</a>* archinfo,</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">                         <a href="dictionary_V.html#2381">VexAbiInfo</a>*  abiinfo,</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">                         <a href="dictionary_B.html#78">Bool</a>         host_bigendian );</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span><span class="comment">/* Used by the optimiser to specialise calls to helpers. */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"></span><span class="keyword">extern</span>
+<a name="64"><font size=-1>64     </font></a><span class="keyword"><a href="dictionary_I.html#573">IRExpr</a></span><span class="default">* <a href="dictionary_G.html#4449">guest_x86_spechelper</a> ( <a href="dictionary_H.html#46">HChar</a>*   function_name,</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">                               <a href="dictionary_I.html#573">IRExpr</a>** args,</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">                               <a href="dictionary_I.html#2228">IRStmt</a>** precedingStmts,</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">                               <a href="dictionary_I.html#113">Int</a>      n_precedingStmts );</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span><span class="comment">/* Describes to the optimiser which part of the guest state require</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">   precise memory exceptions.  This is logically part of the guest</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">   state description. */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment"></span><span class="keyword">extern </span>
+<a name="73"><font size=-1>73     </font></a><span class="keyword"><a href="dictionary_B.html#78">Bool</a> <a href="dictionary_G.html#4447">guest_x86_state_requires_precise_mem_exns</a> </span><span class="default">( <a href="dictionary_I.html#113">Int</a>, <a href="dictionary_I.html#113">Int</a> );</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span>
+<a name="75"><font size=-1>75     </font></a><span class="default"></span><span class="keyword">extern</span>
+<a name="76"><font size=-1>76     </font></a><span class="keyword"><a href="dictionary_V.html#4134">VexGuestLayout</a> <a href="dictionary_X.html#4450">x86guest_layout</a></span><span class="default">;</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span>
+<a name="79"><font size=-1>79     </font></a><span class="default"></span><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">/*--- x86 guest helpers                                 ---*/</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment"></span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">/* --- CLEAN HELPERS --- */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment"></span>
+<a name="85"><font size=-1>85     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35177">x86g_calculate_eflags_all</a> </span><span class="default">( </span>
+<a name="86"><font size=-1>86     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> cc_op, <a href="dictionary_U.html#8">UInt</a> cc_dep1, <a href="dictionary_U.html#8">UInt</a> cc_dep2, <a href="dictionary_U.html#8">UInt</a> cc_ndep </span>
+<a name="87"><font size=-1>87     </font></a><span class="default">             );</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span>
+<a name="89"><font size=-1>89     </font></a><span class="default"><a href="dictionary_V.html#35178">VEX_REGPARM</a>(</span><span class="number">3</span><span class="default">)</span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35179">x86g_calculate_eflags_c</a> </span><span class="default">( </span>
+<a name="91"><font size=-1>91     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> cc_op, <a href="dictionary_U.html#8">UInt</a> cc_dep1, <a href="dictionary_U.html#8">UInt</a> cc_dep2, <a href="dictionary_U.html#8">UInt</a> cc_ndep </span>
+<a name="92"><font size=-1>92     </font></a><span class="default">             );</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35180">x86g_calculate_condition</a> </span><span class="default">( </span>
+<a name="95"><font size=-1>95     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a></span><span class="comment">/*X86Condcode*/ </span><span class="default">cond, </span>
+<a name="96"><font size=-1>96     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> cc_op, </span>
+<a name="97"><font size=-1>97     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> cc_dep1, <a href="dictionary_U.html#8">UInt</a> cc_dep2, <a href="dictionary_U.html#8">UInt</a> cc_ndep </span>
+<a name="98"><font size=-1>98     </font></a><span class="default">             );</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35181">x86g_calculate_FXAM</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> tag, <a href="dictionary_U.html#1057">ULong</a> dbl );</span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35182">x86g_calculate_RCR</a> </span><span class="default">( </span>
+<a name="103"><font size=-1>103     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> arg, <a href="dictionary_U.html#8">UInt</a> rot_amt, <a href="dictionary_U.html#8">UInt</a> eflags_in, <a href="dictionary_U.html#8">UInt</a> sz </span>
+<a name="104"><font size=-1>104     </font></a><span class="default">             );</span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35183">x86g_calculate_RCL</a> </span><span class="default">( </span>
+<a name="106"><font size=-1>106     </font></a><span class="default">                <a href="dictionary_U.html#8">UInt</a> arg, <a href="dictionary_U.html#8">UInt</a> rot_amt, <a href="dictionary_U.html#8">UInt</a> eflags_in, <a href="dictionary_U.html#8">UInt</a> sz </span>
+<a name="107"><font size=-1>107     </font></a><span class="default">             );</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_X.html#35184">x86g_calculate_daa_das_aaa_aas</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> AX_and_flags, <a href="dictionary_U.html#8">UInt</a> opcode );</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_X.html#35185">x86g_calculate_aad_aam</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> AX_and_flags, <a href="dictionary_U.html#8">UInt</a> opcode );</span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35186">x86g_check_fldcw</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> fpucw );</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35187">x86g_create_fpucw</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> fpround );</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35188">x86g_check_ldmxcsr</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> mxcsr );</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35189">x86g_create_mxcsr</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> sseround );</span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span><span class="comment">/* Translate a guest virtual_addr into a guest linear address by</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">   consulting the supplied LDT/GDT structures.  Their representation</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">   must be as specified in pub/libvex_guest_x86.h.  To indicate a</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">   translation failure, 1&lt;&lt;32 is returned.  On success, the lower 32</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">   bits of the returned result indicate the linear address.  </span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">*/</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment"></span><span class="keyword">extern </span>
+<a name="129"><font size=-1>129     </font></a><span class="keyword"><a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35190">x86g_use_seg_selector</a> </span><span class="default">( <a href="dictionary_H.html#462">HWord</a> ldt, <a href="dictionary_H.html#462">HWord</a> gdt, </span>
+<a name="130"><font size=-1>130     </font></a><span class="default">                              <a href="dictionary_U.html#8">UInt</a> seg_selector, <a href="dictionary_U.html#8">UInt</a> virtual_addr );</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35191">x86g_calculate_mmx_pmaddwd</a>  </span><span class="default">( <a href="dictionary_U.html#1057">ULong</a>, <a href="dictionary_U.html#1057">ULong</a> );</span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35192">x86g_calculate_mmx_psadbw</a>   </span><span class="default">( <a href="dictionary_U.html#1057">ULong</a>, <a href="dictionary_U.html#1057">ULong</a> );</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35193">x86g_calculate_mmx_pmovmskb</a> </span><span class="default">( <a href="dictionary_U.html#1057">ULong</a> );</span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a>  <a href="dictionary_X.html#35194">x86g_calculate_sse_pmovmskb</a> </span><span class="default">( <a href="dictionary_U.html#1057">ULong</a> w64hi, <a href="dictionary_U.html#1057">ULong</a> w64lo );</span>
+<a name="136"><font size=-1>136     </font></a><span class="default"></span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span><span class="comment">/* --- DIRTY HELPERS --- */</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment"></span>
+<a name="140"><font size=-1>140     </font></a><span class="comment"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35195">x86g_dirtyhelper_loadF80le</a>  </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> );</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35196">x86g_dirtyhelper_storeF80le</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a>, <a href="dictionary_U.html#1057">ULong</a> );</span>
+<a name="143"><font size=-1>143     </font></a><span class="default"></span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35197">x86g_dirtyhelper_CPUID_sse0</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>* );</span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35198">x86g_dirtyhelper_CPUID_sse1</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>* );</span>
+<a name="146"><font size=-1>146     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35199">x86g_dirtyhelper_CPUID_sse2</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>* );</span>
+<a name="147"><font size=-1>147     </font></a><span class="default"></span>
+<a name="148"><font size=-1>148     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35200">x86g_dirtyhelper_FINIT</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>* );</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35201">x86g_dirtyhelper_FXSAVE</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="151"><font size=-1>151     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35202">x86g_dirtyhelper_FSAVE</a>  </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="152"><font size=-1>152     </font></a><span class="default"></span><span class="keyword">extern void  <a href="dictionary_X.html#35203">x86g_dirtyhelper_FSTENV</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="153"><font size=-1>153     </font></a><span class="default"></span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#1057">ULong</a> <a href="dictionary_X.html#35204">x86g_dirtyhelper_RDTSC</a> </span><span class="default">( </span><span class="keyword">void </span><span class="default">);</span>
+<a name="155"><font size=-1>155     </font></a><span class="default"></span>
+<a name="156"><font size=-1>156     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_U.html#8">UInt</a> <a href="dictionary_X.html#35205">x86g_dirtyhelper_IN</a>  </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> portno, <a href="dictionary_U.html#8">UInt</a> sz</span><span class="comment">/*1,2 or 4*/ </span><span class="default">);</span>
+<a name="157"><font size=-1>157     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_X.html#35206">x86g_dirtyhelper_OUT</a> </span><span class="default">( <a href="dictionary_U.html#8">UInt</a> portno, <a href="dictionary_U.html#8">UInt</a> data, </span>
+<a name="158"><font size=-1>158     </font></a><span class="default">                                   <a href="dictionary_U.html#8">UInt</a> sz</span><span class="comment">/*1,2 or 4*/ </span><span class="default">);</span>
+<a name="159"><font size=-1>159     </font></a><span class="default"></span>
+<a name="160"><font size=-1>160     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_X.html#35207">x86g_dirtyhelper_SxDT</a> </span><span class="default">( </span><span class="keyword">void</span><span class="default">* address,</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">                                    <a href="dictionary_U.html#8">UInt</a> op </span><span class="comment">/* 0 or 1 */ </span><span class="default">);</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_V.html#4546">VexEmWarn</a></span>
+<a name="164"><font size=-1>164     </font></a><span class="keyword">            <a href="dictionary_X.html#35208">x86g_dirtyhelper_FXRSTOR</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span>
+<a name="166"><font size=-1>166     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_V.html#4546">VexEmWarn</a></span>
+<a name="167"><font size=-1>167     </font></a><span class="keyword">            <a href="dictionary_X.html#35209">x86g_dirtyhelper_FRSTOR</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="168"><font size=-1>168     </font></a><span class="default"></span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_V.html#4546">VexEmWarn</a> </span>
+<a name="170"><font size=-1>170     </font></a><span class="keyword">            <a href="dictionary_X.html#35210">x86g_dirtyhelper_FLDENV</a> </span><span class="default">( <a href="dictionary_V.html#364">VexGuestX86State</a>*, <a href="dictionary_H.html#462">HWord</a> );</span>
+<a name="171"><font size=-1>171     </font></a><span class="default"></span>
+<a name="172"><font size=-1>172     </font></a><span class="default"></span>
+<a name="173"><font size=-1>173     </font></a><span class="default"></span><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">/*--- Condition code stuff                              ---*/</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">/*---------------------------------------------------------*/</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment"></span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">/* eflags masks */</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_X.html#35211">X86G_CC_SHIFT_O</a>   </span><span class="number">11</span>
+<a name="179"><font size=-1>179     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35212">X86G_CC_SHIFT_S</a>   </span><span class="number">7</span>
+<a name="180"><font size=-1>180     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35213">X86G_CC_SHIFT_Z</a>   </span><span class="number">6</span>
+<a name="181"><font size=-1>181     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35214">X86G_CC_SHIFT_A</a>   </span><span class="number">4</span>
+<a name="182"><font size=-1>182     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35215">X86G_CC_SHIFT_C</a>   </span><span class="number">0</span>
+<a name="183"><font size=-1>183     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35216">X86G_CC_SHIFT_P</a>   </span><span class="number">2</span>
+<a name="184"><font size=-1>184     </font></a><span class="number"></span>
+<a name="185"><font size=-1>185     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35217">X86G_CC_MASK_O</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35211">X86G_CC_SHIFT_O</a>)</span>
+<a name="186"><font size=-1>186     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35218">X86G_CC_MASK_S</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35212">X86G_CC_SHIFT_S</a>)</span>
+<a name="187"><font size=-1>187     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35219">X86G_CC_MASK_Z</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35213">X86G_CC_SHIFT_Z</a>)</span>
+<a name="188"><font size=-1>188     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35220">X86G_CC_MASK_A</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35214">X86G_CC_SHIFT_A</a>)</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35221">X86G_CC_MASK_C</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35215">X86G_CC_SHIFT_C</a>)</span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35222">X86G_CC_MASK_P</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35216">X86G_CC_SHIFT_P</a>)</span>
+<a name="191"><font size=-1>191     </font></a><span class="default"></span>
+<a name="192"><font size=-1>192     </font></a><span class="default"></span><span class="comment">/* FPU flag masks */</span>
+<a name="193"><font size=-1>193     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_X.html#35223">X86G_FC_SHIFT_C3</a>   </span><span class="number">14</span>
+<a name="194"><font size=-1>194     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35224">X86G_FC_SHIFT_C2</a>   </span><span class="number">10</span>
+<a name="195"><font size=-1>195     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35225">X86G_FC_SHIFT_C1</a>   </span><span class="number">9</span>
+<a name="196"><font size=-1>196     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35226">X86G_FC_SHIFT_C0</a>   </span><span class="number">8</span>
+<a name="197"><font size=-1>197     </font></a><span class="number"></span>
+<a name="198"><font size=-1>198     </font></a><span class="number"></span><span class="preproc">#define <a href="dictionary_X.html#35227">X86G_FC_MASK_C3</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35223">X86G_FC_SHIFT_C3</a>)</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35228">X86G_FC_MASK_C2</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35224">X86G_FC_SHIFT_C2</a>)</span>
+<a name="200"><font size=-1>200     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35229">X86G_FC_MASK_C1</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35225">X86G_FC_SHIFT_C1</a>)</span>
+<a name="201"><font size=-1>201     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_X.html#35230">X86G_FC_MASK_C0</a>    </span><span class="default">(</span><span class="number">1 </span><span class="default">&lt;&lt; <a href="dictionary_X.html#35226">X86G_FC_SHIFT_C0</a>)</span>
+<a name="202"><font size=-1>202     </font></a><span class="default"></span>
+<a name="203"><font size=-1>203     </font></a><span class="default"></span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span><span class="comment">/* %EFLAGS thunk descriptors.  A four-word thunk is used to record</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">   details of the most recent flag-setting operation, so the flags can</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">   be computed later if needed.  It is possible to do this a little</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">   more efficiently using a 3-word thunk, but that makes it impossible</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">   to describe the flag data dependencies sufficiently accurately for</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">   Memcheck.  Hence 4 words are used, with minimal loss of efficiency.</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment"></span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">   The four words are:</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment"></span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">      CC_OP, which describes the operation.</span>
+<a name="214"><font size=-1>214     </font></a><span class="comment"></span>
+<a name="215"><font size=-1>215     </font></a><span class="comment">      CC_DEP1 and CC_DEP2.  These are arguments to the operation.</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment">         We want Memcheck to believe that the resulting flags are</span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">         data-dependent on both CC_DEP1 and CC_DEP2, hence the </span>
+<a name="218"><font size=-1>218     </font></a><span class="comment">         name DEP.</span>
+<a name="219"><font size=-1>219     </font></a><span class="comment"></span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">      CC_NDEP.  This is a 3rd argument to the operation which is</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">         sometimes needed.  We arrange things so that Memcheck does</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment">         not believe the resulting flags are data-dependent on CC_NDEP</span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">         (&quot;not dependent&quot;).</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment"></span>
+<a name="225"><font size=-1>225     </font></a><span class="comment">   To make Memcheck believe that (the definedness of) the encoded</span>
+<a name="226"><font size=-1>226     </font></a><span class="comment">   flags depends only on (the definedness of) CC_DEP1 and CC_DEP2</span>
+<a name="227"><font size=-1>227     </font></a><span class="comment">   requires two things:</span>
+<a name="228"><font size=-1>228     </font></a><span class="comment"></span>
+<a name="229"><font size=-1>229     </font></a><span class="comment">   (1) In the guest state layout info (x86guest_layout), CC_OP and</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment">       CC_NDEP are marked as always defined.</span>
+<a name="231"><font size=-1>231     </font></a><span class="comment"></span>
+<a name="232"><font size=-1>232     </font></a><span class="comment">   (2) When passing the thunk components to an evaluation function</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment">       (calculate_condition, calculate_eflags, calculate_eflags_c) the</span>
+<a name="234"><font size=-1>234     </font></a><span class="comment">       IRCallee's mcx_mask must be set so as to exclude from</span>
+<a name="235"><font size=-1>235     </font></a><span class="comment">       consideration all passed args except CC_DEP1 and CC_DEP2.</span>
+<a name="236"><font size=-1>236     </font></a><span class="comment"></span>
+<a name="237"><font size=-1>237     </font></a><span class="comment">   Strictly speaking only (2) is necessary for correctness.  However,</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment">   (1) helps efficiency in that since (2) means we never ask about the</span>
+<a name="239"><font size=-1>239     </font></a><span class="comment">   definedness of CC_OP or CC_NDEP, we may as well not even bother to</span>
+<a name="240"><font size=-1>240     </font></a><span class="comment">   track their definedness.</span>
+<a name="241"><font size=-1>241     </font></a><span class="comment"></span>
+<a name="242"><font size=-1>242     </font></a><span class="comment">   When building the thunk, it is always necessary to write words into</span>
+<a name="243"><font size=-1>243     </font></a><span class="comment">   CC_DEP1 and CC_DEP2, even if those args are not used given the</span>
+<a name="244"><font size=-1>244     </font></a><span class="comment">   CC_OP field (eg, CC_DEP2 is not used if CC_OP is CC_LOGIC1/2/4).</span>
+<a name="245"><font size=-1>245     </font></a><span class="comment">   This is important because otherwise Memcheck could give false</span>
+<a name="246"><font size=-1>246     </font></a><span class="comment">   positives as it does not understand the relationship between the</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment">   CC_OP field and CC_DEP1 and CC_DEP2, and so believes that the </span>
+<a name="248"><font size=-1>248     </font></a><span class="comment">   definedness of the stored flags always depends on both CC_DEP1 and</span>
+<a name="249"><font size=-1>249     </font></a><span class="comment">   CC_DEP2.</span>
+<a name="250"><font size=-1>250     </font></a><span class="comment"></span>
+<a name="251"><font size=-1>251     </font></a><span class="comment">   However, it is only necessary to set CC_NDEP when the CC_OP value</span>
+<a name="252"><font size=-1>252     </font></a><span class="comment">   requires it, because Memcheck ignores CC_NDEP, and the evaluation</span>
+<a name="253"><font size=-1>253     </font></a><span class="comment">   functions do understand the CC_OP fields and will only examine</span>
+<a name="254"><font size=-1>254     </font></a><span class="comment">   CC_NDEP for suitable values of CC_OP.</span>
+<a name="255"><font size=-1>255     </font></a><span class="comment"></span>
+<a name="256"><font size=-1>256     </font></a><span class="comment">   A summary of the field usages is:</span>
+<a name="257"><font size=-1>257     </font></a><span class="comment"></span>
+<a name="258"><font size=-1>258     </font></a><span class="comment">   Operation          DEP1               DEP2               NDEP</span>
+<a name="259"><font size=-1>259     </font></a><span class="comment">   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment"></span>
+<a name="261"><font size=-1>261     </font></a><span class="comment">   add/sub/mul        first arg          second arg         unused</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment"></span>
+<a name="263"><font size=-1>263     </font></a><span class="comment">   adc/sbb            first arg          (second arg)</span>
+<a name="264"><font size=-1>264     </font></a><span class="comment">                                         XOR old_carry      old_carry</span>
+<a name="265"><font size=-1>265     </font></a><span class="comment"></span>
+<a name="266"><font size=-1>266     </font></a><span class="comment">   and/or/xor         result             zero               unused</span>
+<a name="267"><font size=-1>267     </font></a><span class="comment"></span>
+<a name="268"><font size=-1>268     </font></a><span class="comment">   inc/dec            result             zero               old_carry</span>
+<a name="269"><font size=-1>269     </font></a><span class="comment"></span>
+<a name="270"><font size=-1>270     </font></a><span class="comment">   shl/shr/sar        result             subshifted-        unused</span>
+<a name="271"><font size=-1>271     </font></a><span class="comment">                                         result</span>
+<a name="272"><font size=-1>272     </font></a><span class="comment"></span>
+<a name="273"><font size=-1>273     </font></a><span class="comment">   rol/ror            result             zero               old_flags</span>
+<a name="274"><font size=-1>274     </font></a><span class="comment"></span>
+<a name="275"><font size=-1>275     </font></a><span class="comment">   copy               old_flags          zero               unused.</span>
+<a name="276"><font size=-1>276     </font></a><span class="comment"></span>
+<a name="277"><font size=-1>277     </font></a><span class="comment"></span>
+<a name="278"><font size=-1>278     </font></a><span class="comment">   Therefore Memcheck will believe the following:</span>
+<a name="279"><font size=-1>279     </font></a><span class="comment"></span>
+<a name="280"><font size=-1>280     </font></a><span class="comment">   * add/sub/mul -- definedness of result flags depends on definedness</span>
+<a name="281"><font size=-1>281     </font></a><span class="comment">     of both args.</span>
+<a name="282"><font size=-1>282     </font></a><span class="comment"></span>
+<a name="283"><font size=-1>283     </font></a><span class="comment">   * adc/sbb -- definedness of result flags depends on definedness of</span>
+<a name="284"><font size=-1>284     </font></a><span class="comment">     both args and definedness of the old C flag.  Because only two</span>
+<a name="285"><font size=-1>285     </font></a><span class="comment">     DEP fields are available, the old C flag is XOR'd into the second</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment">     arg so that Memcheck sees the data dependency on it.  That means</span>
+<a name="287"><font size=-1>287     </font></a><span class="comment">     the NDEP field must contain a second copy of the old C flag</span>
+<a name="288"><font size=-1>288     </font></a><span class="comment">     so that the evaluation functions can correctly recover the second</span>
+<a name="289"><font size=-1>289     </font></a><span class="comment">     arg.</span>
+<a name="290"><font size=-1>290     </font></a><span class="comment"></span>
+<a name="291"><font size=-1>291     </font></a><span class="comment">   * and/or/xor are straightforward -- definedness of result flags</span>
+<a name="292"><font size=-1>292     </font></a><span class="comment">     depends on definedness of result value.</span>
+<a name="293"><font size=-1>293     </font></a><span class="comment"></span>
+<a name="294"><font size=-1>294     </font></a><span class="comment">   * inc/dec -- definedness of result flags depends only on</span>
+<a name="295"><font size=-1>295     </font></a><span class="comment">     definedness of result.  This isn't really true -- it also depends</span>
+<a name="296"><font size=-1>296     </font></a><span class="comment">     on the old C flag.  However, we don't want Memcheck to see that,</span>
+<a name="297"><font size=-1>297     </font></a><span class="comment">     and so the old C flag must be passed in NDEP and not in DEP2.</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment">     It's inconceivable that a compiler would generate code that puts</span>
+<a name="299"><font size=-1>299     </font></a><span class="comment">     the C flag in an undefined state, then does an inc/dec, which</span>
+<a name="300"><font size=-1>300     </font></a><span class="comment">     leaves C unchanged, and then makes a conditional jump/move based</span>
+<a name="301"><font size=-1>301     </font></a><span class="comment">     on C.  So our fiction seems a good approximation.</span>
+<a name="302"><font size=-1>302     </font></a><span class="comment"></span>
+<a name="303"><font size=-1>303     </font></a><span class="comment">   * shl/shr/sar -- straightforward, again, definedness of result</span>
+<a name="304"><font size=-1>304     </font></a><span class="comment">     flags depends on definedness of result value.  The subshifted</span>
+<a name="305"><font size=-1>305     </font></a><span class="comment">     value (value shifted one less) is also needed, but its</span>
+<a name="306"><font size=-1>306     </font></a><span class="comment">     definedness is the same as the definedness of the shifted value.</span>
+<a name="307"><font size=-1>307     </font></a><span class="comment"></span>
+<a name="308"><font size=-1>308     </font></a><span class="comment">   * rol/ror -- these only set O and C, and leave A Z C P alone.</span>
+<a name="309"><font size=-1>309     </font></a><span class="comment">     However it seems prudent (as per inc/dec) to say the definedness</span>
+<a name="310"><font size=-1>310     </font></a><span class="comment">     of all resulting flags depends on the definedness of the result,</span>
+<a name="311"><font size=-1>311     </font></a><span class="comment">     hence the old flags must go in as NDEP and not DEP2.</span>
+<a name="312"><font size=-1>312     </font></a><span class="comment"></span>
+<a name="313"><font size=-1>313     </font></a><span class="comment">   * rcl/rcr are too difficult to do in-line, and so are done by a</span>
+<a name="314"><font size=-1>314     </font></a><span class="comment">     helper function.  They are not part of this scheme.  The helper</span>
+<a name="315"><font size=-1>315     </font></a><span class="comment">     function takes the value to be rotated, the rotate amount and the</span>
+<a name="316"><font size=-1>316     </font></a><span class="comment">     old flags, and returns the new flags and the rotated value.</span>
+<a name="317"><font size=-1>317     </font></a><span class="comment">     Since the helper's mcx_mask does not have any set bits, Memcheck</span>
+<a name="318"><font size=-1>318     </font></a><span class="comment">     will lazily propagate undefinedness from any of the 3 args into </span>
+<a name="319"><font size=-1>319     </font></a><span class="comment">     both results (flags and actual value).</span>
+<a name="320"><font size=-1>320     </font></a><span class="comment">*/</span>
+<a name="321"><font size=-1>321     </font></a><span class="comment"></span><span class="keyword">enum </span><span class="default">{</span>
+<a name="322"><font size=-1>322     </font></a><span class="default">    X86G_CC_OP_COPY=</span><span class="number">0</span><span class="default">,  </span><span class="comment">/* DEP1 = current flags, DEP2 = 0, NDEP = unused */</span>
+<a name="323"><font size=-1>323     </font></a><span class="comment">                        /* just copy DEP1 to output */</span>
+<a name="324"><font size=-1>324     </font></a><span class="comment"></span>
+<a name="325"><font size=-1>325     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADDB,    </span><span class="comment">/* 1 */</span>
+<a name="326"><font size=-1>326     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADDW,    </span><span class="comment">/* 2 DEP1 = argL, DEP2 = argR, NDEP = unused */</span>
+<a name="327"><font size=-1>327     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADDL,    </span><span class="comment">/* 3 */</span>
+<a name="328"><font size=-1>328     </font></a><span class="comment"></span>
+<a name="329"><font size=-1>329     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SUBB,    </span><span class="comment">/* 4 */</span>
+<a name="330"><font size=-1>330     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SUBW,    </span><span class="comment">/* 5 DEP1 = argL, DEP2 = argR, NDEP = unused */</span>
+<a name="331"><font size=-1>331     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SUBL,    </span><span class="comment">/* 6 */</span>
+<a name="332"><font size=-1>332     </font></a><span class="comment"></span>
+<a name="333"><font size=-1>333     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADCB,    </span><span class="comment">/* 7 */</span>
+<a name="334"><font size=-1>334     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADCW,    </span><span class="comment">/* 8 DEP1 = argL, DEP2 = argR ^ oldCarry, NDEP = oldCarry */</span>
+<a name="335"><font size=-1>335     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ADCL,    </span><span class="comment">/* 9 */</span>
+<a name="336"><font size=-1>336     </font></a><span class="comment"></span>
+<a name="337"><font size=-1>337     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SBBB,    </span><span class="comment">/* 10 */</span>
+<a name="338"><font size=-1>338     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SBBW,    </span><span class="comment">/* 11 DEP1 = argL, DEP2 = argR ^ oldCarry, NDEP = oldCarry */</span>
+<a name="339"><font size=-1>339     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SBBL,    </span><span class="comment">/* 12 */</span>
+<a name="340"><font size=-1>340     </font></a><span class="comment"></span>
+<a name="341"><font size=-1>341     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_LOGICB,  </span><span class="comment">/* 13 */</span>
+<a name="342"><font size=-1>342     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_LOGICW,  </span><span class="comment">/* 14 DEP1 = result, DEP2 = 0, NDEP = unused */</span>
+<a name="343"><font size=-1>343     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_LOGICL,  </span><span class="comment">/* 15 */</span>
+<a name="344"><font size=-1>344     </font></a><span class="comment"></span>
+<a name="345"><font size=-1>345     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_INCB,    </span><span class="comment">/* 16 */</span>
+<a name="346"><font size=-1>346     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_INCW,    </span><span class="comment">/* 17 DEP1 = result, DEP2 = 0, NDEP = oldCarry (0 or 1) */</span>
+<a name="347"><font size=-1>347     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_INCL,    </span><span class="comment">/* 18 */</span>
+<a name="348"><font size=-1>348     </font></a><span class="comment"></span>
+<a name="349"><font size=-1>349     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_DECB,    </span><span class="comment">/* 19 */</span>
+<a name="350"><font size=-1>350     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_DECW,    </span><span class="comment">/* 20 DEP1 = result, DEP2 = 0, NDEP = oldCarry (0 or 1) */</span>
+<a name="351"><font size=-1>351     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_DECL,    </span><span class="comment">/* 21 */</span>
+<a name="352"><font size=-1>352     </font></a><span class="comment"></span>
+<a name="353"><font size=-1>353     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHLB,    </span><span class="comment">/* 22 DEP1 = res, DEP2 = res', NDEP = unused */</span>
+<a name="354"><font size=-1>354     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHLW,    </span><span class="comment">/* 23 where res' is like res but shifted one bit less */</span>
+<a name="355"><font size=-1>355     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHLL,    </span><span class="comment">/* 24 */</span>
+<a name="356"><font size=-1>356     </font></a><span class="comment"></span>
+<a name="357"><font size=-1>357     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHRB,    </span><span class="comment">/* 25 DEP1 = res, DEP2 = res', NDEP = unused */</span>
+<a name="358"><font size=-1>358     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHRW,    </span><span class="comment">/* 26 where res' is like res but shifted one bit less */</span>
+<a name="359"><font size=-1>359     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SHRL,    </span><span class="comment">/* 27 */</span>
+<a name="360"><font size=-1>360     </font></a><span class="comment"></span>
+<a name="361"><font size=-1>361     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ROLB,    </span><span class="comment">/* 28 */</span>
+<a name="362"><font size=-1>362     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ROLW,    </span><span class="comment">/* 29 DEP1 = res, DEP2 = 0, NDEP = old flags */</span>
+<a name="363"><font size=-1>363     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_ROLL,    </span><span class="comment">/* 30 */</span>
+<a name="364"><font size=-1>364     </font></a><span class="comment"></span>
+<a name="365"><font size=-1>365     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_RORB,    </span><span class="comment">/* 31 */</span>
+<a name="366"><font size=-1>366     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_RORW,    </span><span class="comment">/* 32 DEP1 = res, DEP2 = 0, NDEP = old flags */</span>
+<a name="367"><font size=-1>367     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_RORL,    </span><span class="comment">/* 33 */</span>
+<a name="368"><font size=-1>368     </font></a><span class="comment"></span>
+<a name="369"><font size=-1>369     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_UMULB,   </span><span class="comment">/* 34 */</span>
+<a name="370"><font size=-1>370     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_UMULW,   </span><span class="comment">/* 35 DEP1 = argL, DEP2 = argR, NDEP = unused */</span>
+<a name="371"><font size=-1>371     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_UMULL,   </span><span class="comment">/* 36 */</span>
+<a name="372"><font size=-1>372     </font></a><span class="comment"></span>
+<a name="373"><font size=-1>373     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SMULB,   </span><span class="comment">/* 37 */</span>
+<a name="374"><font size=-1>374     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SMULW,   </span><span class="comment">/* 38 DEP1 = argL, DEP2 = argR, NDEP = unused */</span>
+<a name="375"><font size=-1>375     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_SMULL,   </span><span class="comment">/* 39 */</span>
+<a name="376"><font size=-1>376     </font></a><span class="comment"></span>
+<a name="377"><font size=-1>377     </font></a><span class="comment">    </span><span class="default">X86G_CC_OP_NUMBER</span>
+<a name="378"><font size=-1>378     </font></a><span class="default">};</span>
+<a name="379"><font size=-1>379     </font></a><span class="default"></span>
+<a name="380"><font size=-1>380     </font></a><span class="default"></span><span class="keyword">typedef</span>
+<a name="381"><font size=-1>381     </font></a><span class="keyword">   enum </span><span class="default">{</span>
+<a name="382"><font size=-1>382     </font></a><span class="default">      X86CondO      = </span><span class="number">0</span><span class="default">,  </span><span class="comment">/* overflow           */</span>
+<a name="383"><font size=-1>383     </font></a><span class="comment">      </span><span class="default">X86CondNO     = </span><span class="number">1</span><span class="default">,  </span><span class="comment">/* no overflow        */</span>
+<a name="384"><font size=-1>384     </font></a><span class="comment"></span>
+<a name="385"><font size=-1>385     </font></a><span class="comment">      </span><span class="default">X86CondB      = </span><span class="number">2</span><span class="default">,  </span><span class="comment">/* below              */</span>
+<a name="386"><font size=-1>386     </font></a><span class="comment">      </span><span class="default">X86CondNB     = </span><span class="number">3</span><span class="default">,  </span><span class="comment">/* not below          */</span>
+<a name="387"><font size=-1>387     </font></a><span class="comment"></span>
+<a name="388"><font size=-1>388     </font></a><span class="comment">      </span><span class="default">X86CondZ      = </span><span class="number">4</span><span class="default">,  </span><span class="comment">/* zero               */</span>
+<a name="389"><font size=-1>389     </font></a><span class="comment">      </span><span class="default">X86CondNZ     = </span><span class="number">5</span><span class="default">,  </span><span class="comment">/* not zero           */</span>
+<a name="390"><font size=-1>390     </font></a><span class="comment"></span>
+<a name="391"><font size=-1>391     </font></a><span class="comment">      </span><span class="default">X86CondBE     = </span><span class="number">6</span><span class="default">,  </span><span class="comment">/* below or equal     */</span>
+<a name="392"><font size=-1>392     </font></a><span class="comment">      </span><span class="default">X86CondNBE    = </span><span class="number">7</span><span class="default">,  </span><span class="comment">/* not below or equal */</span>
+<a name="393"><font size=-1>393     </font></a><span class="comment"></span>
+<a name="394"><font size=-1>394     </font></a><span class="comment">      </span><span class="default">X86CondS      = </span><span class="number">8</span><span class="default">,  </span><span class="comment">/* negative           */</span>
+<a name="395"><font size=-1>395     </font></a><span class="comment">      </span><span class="default">X86CondNS     = </span><span class="number">9</span><span class="default">,  </span><span class="comment">/* not negative       */</span>
+<a name="396"><font size=-1>396     </font></a><span class="comment"></span>
+<a name="397"><font size=-1>397     </font></a><span class="comment">      </span><span class="default">X86CondP      = </span><span class="number">10</span><span class="default">, </span><span class="comment">/* parity even        */</span>
+<a name="398"><font size=-1>398     </font></a><span class="comment">      </span><span class="default">X86CondNP     = </span><span class="number">11</span><span class="default">, </span><span class="comment">/* not parity even    */</span>
+<a name="399"><font size=-1>399     </font></a><span class="comment"></span>
+<a name="400"><font size=-1>400     </font></a><span class="comment">      </span><span class="default">X86CondL      = </span><span class="number">12</span><span class="default">, </span><span class="comment">/* jump less          */</span>
+<a name="401"><font size=-1>401     </font></a><span class="comment">      </span><span class="default">X86CondNL     = </span><span class="number">13</span><span class="default">, </span><span class="comment">/* not less           */</span>
+<a name="402"><font size=-1>402     </font></a><span class="comment"></span>
+<a name="403"><font size=-1>403     </font></a><span class="comment">      </span><span class="default">X86CondLE     = </span><span class="number">14</span><span class="default">, </span><span class="comment">/* less or equal      */</span>
+<a name="404"><font size=-1>404     </font></a><span class="comment">      </span><span class="default">X86CondNLE    = </span><span class="number">15</span><span class="default">, </span><span class="comment">/* not less or equal  */</span>
+<a name="405"><font size=-1>405     </font></a><span class="comment"></span>
+<a name="406"><font size=-1>406     </font></a><span class="comment">      </span><span class="default">X86CondAlways = </span><span class="number">16  </span><span class="comment">/* HACK */</span>
+<a name="407"><font size=-1>407     </font></a><span class="comment">   </span><span class="default">}</span>
+<a name="408"><font size=-1>408     </font></a><span class="default">   <a href="dictionary_X.html#35291">X86Condcode</a>;</span>
+<a name="409"><font size=-1>409     </font></a><span class="default"></span>
+<a name="410"><font size=-1>410     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">/* ndef __VEX_GUEST_X86_DEFS_H */</span>
+<a name="411"><font size=-1>411     </font></a><span class="comment"></span>
+<a name="412"><font size=-1>412     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="413"><font size=-1>413     </font></a><span class="comment">/*--- end                                    guest_x86_defs.h ---*/</span>
+<a name="414"><font size=-1>414     </font></a><span class="comment">/*---------------------------------------------------------------*/</span>
+<a name="415"><font size=-1>415     </font></a><span class="comment"></span>
+</pre></body></html>

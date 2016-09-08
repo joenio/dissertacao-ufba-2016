@@ -1,0 +1,69 @@
+<html><head><title>InnerClassLexicalReads.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.java.test.data/src/InnerClassLexicalReads.java</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/PAPERS/wala/WALA-R_1.3.8/com.ibm.wala.cast.java.test.data/src/InnerClassLexicalReads.java";
+top.document.title  = "InnerClassLexicalReads.java";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/******************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> * Copyright (c) 2002 - 2008 IBM Corporation.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * All rights reserved. This program and the accompanying materials</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * are made available under the terms of the Eclipse Public License v1.0</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> * which accompanies this distribution, and is available at</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> * http://www.eclipse.org/legal/epl-v10.html</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Contributors:</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *     IBM Corporation - initial API and implementation</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *****************************************************************************/</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"></span><span class="keyword">interface <a href="dictionary_I.html#60305">IntConstant</a> </span><span class="default">{</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_I.html#60306">getConstant</a></span><span class="default">();</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">}</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"></span>
+<a name="15"><font size=-1>15     </font></a><span class="default"></span><span class="keyword">public class <a href="dictionary_I.html#60292">InnerClassLexicalReads</a> </span><span class="default">{</span>
+<a name="16"><font size=-1>16     </font></a><span class="default">	</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">	</span><span class="comment">/*</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">	 * CAst Instructions:</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">	 * 2   v3 = new &lt;Source,LInnerClassLexicalReads/makeIntConstant(I)LIntConstant;/&lt;anonymous subtype of IntConstant&gt;$9$9&gt;@2[9:9] -&gt; [13:3]</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">	 * 3   invokespecial &lt; Source, LInnerClassLexicalReads/makeIntConstant(I)LIntConstant;/&lt;anonymous subtype of IntConstant&gt;$9$9, &lt;init&gt;()V &gt; v3 @3 exception:v5[9:9] -&gt; [13:3]</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">	 * 4   return v3                                [9:2] -&gt; [13:4]</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">	 */</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">	</span><span class="keyword">public static <a href="dictionary_I.html#60305">IntConstant</a> <a href="dictionary_I.html#60300">makeIntConstant</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_I.html#60303">x</a></span><span class="default">) {</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">		</span><span class="keyword">final int <a href="dictionary_I.html#60304">y</a> </span><span class="default">= <a href="dictionary_I.html#60303">x</a> * <a href="dictionary_I.html#60303">x</a>;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default">		</span><span class="keyword">return new <a href="dictionary_I.html#60305">IntConstant</a></span><span class="default">() {</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="comment">//			CAst CONSTRUCTOR Instructions:</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment">//				1   invokespecial &lt; Source, Ljava/lang/Object, &lt;init&gt;()V &gt; v1 @1 exception:v3[20:9] -&gt; [32:3]</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment">			</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">			/*</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment">			 * CAst Instructions:</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment">			 * 0   v2:com.ibm.wala.ssa.SymbolTable$1@16b18b6 = lexical:y@LInnerClassLexicalReads/makeIntConstant(I)LIntConstant;</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">			 * 1   return v2:com.ibm.wala.ssa.SymbolTable$1@16b18b6[11:4] -&gt; [11:13]</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">			 */</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment">			</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment">      </span><span class="keyword">public int <a href="dictionary_I.html#60302">getConstant</a></span><span class="default">() {</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">				</span><span class="keyword">return <a href="dictionary_I.html#60304">y</a></span><span class="default">;</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">			}</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">		};</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">	}</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span>
+<a name="42"><font size=-1>42     </font></a><span class="default">	</span><span class="comment">/*</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment">	 * CAst Instructions:</span>
+<a name="44"><font size=-1>44     </font></a><span class="comment">	 * 1   v2:com.ibm.wala.ssa.SymbolTable$1@4272b2 = invokestatic &lt; Source, LInnerClassLexicalReads, makeIntConstant(I)LIntConstant; &gt; v3:#123 @1 exception:v4[17:19] -&gt; [17:39]</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment">	 * 2   v7 = getstatic &lt; Source, Ljava/lang/System, out, &lt;Source,Ljava/io/PrintStream&gt; &gt;[18:2] -&gt; [18:12]</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment">	 * 3   v8 = invokeinterface &lt; Source, LIntConstant, getConstant()I &gt; v2:com.ibm.wala.ssa.SymbolTable$1@4272b2 @3 exception:v9[18:21] -&gt; [18:37]</span>
+<a name="47"><font size=-1>47     </font></a><span class="comment">	 * 4   invokevirtual &lt; Source, Ljava/io/PrintStream, println(I)V &gt; v7,v8 @4 exception:v10[18:2] -&gt; [18:38]</span>
+<a name="48"><font size=-1>48     </font></a><span class="comment">	 */</span>
+<a name="49"><font size=-1>49     </font></a><span class="comment">	</span><span class="keyword">public static void <a href="dictionary_I.html#60293">main</a></span><span class="default">(<a href="dictionary_S.html#208">String</a> <a href="dictionary_I.html#60294">args</a>[]) {</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">		<a href="dictionary_I.html#60292">InnerClassLexicalReads</a> <a href="dictionary_I.html#60298">ignored</a> = </span><span class="keyword">new <a href="dictionary_I.html#60292">InnerClassLexicalReads</a></span><span class="default">(); </span><span class="comment">// call this just to make &lt;init&gt; reachable (test checks for unreachable methods)</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">		</span><span class="keyword">int <a href="dictionary_I.html#60295">foo</a> </span><span class="default">= </span><span class="number">5</span><span class="default">;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">		</span><span class="keyword">int <a href="dictionary_I.html#60296">haha</a> </span><span class="default">= <a href="dictionary_I.html#60295">foo</a> * <a href="dictionary_I.html#60295">foo</a>;</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">		<a href="dictionary_I.html#60305">IntConstant</a> <a href="dictionary_I.html#60297">ic</a> = <a href="dictionary_I.html#60300">makeIntConstant</a>(<a href="dictionary_I.html#60296">haha</a>);</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">		System.out.<a href="dictionary_P.html#80">println</a>(<a href="dictionary_I.html#60297">ic</a>.<a href="dictionary_I.html#60306">getConstant</a>());</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">		</span><span class="keyword">int <a href="dictionary_I.html#60299">x</a> </span><span class="default">= <a href="dictionary_I.html#60297">ic</a>.<a href="dictionary_I.html#60306">getConstant</a>();</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">		System.out.<a href="dictionary_P.html#80">println</a>(<a href="dictionary_I.html#60299">x</a>);</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">	}</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">}</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span>
+</pre></body></html>

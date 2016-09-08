@@ -1,0 +1,42 @@
+<html><head><title>termNode.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/termNode.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/splint/splint-3.1.2/src/Headers/termNode.h";
+top.document.title  = "termNode.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/*</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">** Copyright (C) University of Virginia, Massachusetts Institue of Technology 1994-2003.</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">** See ../LICENSE for license information.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">*/</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"></span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"></span><span class="keyword">struct <a href="dictionary_S.html#23517">s_termNode</a> </span>
+<a name="7"><font size=-1>7     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="8"><font size=-1>8     </font></a><span class="default">  </span><span class="keyword">int <a href="dictionary_S.html#23518">wrapped</a></span><span class="default">; </span><span class="comment">/* the number of matched parentheses around this term */</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">  <a href="dictionary_T.html#628">termKIND</a> <a href="dictionary_S.html#23519">kind</a></span><span class="default">; </span>
+<a name="10"><font size=-1>10     </font></a><span class="default">  <a href="dictionary_S.html#152">sort</a> <a href="dictionary_S.html#23520">sort</a>;</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">  </span><span class="comment">/*@reldef@*/ <a href="dictionary_S.html#152">sort</a> <a href="dictionary_S.html#23521">given</a></span><span class="default">; </span><span class="comment">/* if term has a given sort */</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">  <a href="dictionary_S.html#12637">sortSet</a> <a href="dictionary_S.html#23522">possibleSorts</a></span><span class="default">;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">  </span><span class="keyword">bool <a href="dictionary_S.html#23523">error_reported</a></span><span class="default">; </span><span class="comment">/* to prevent multiple sort checking error messages */</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">  <a href="dictionary_L.html#13960">lslOpSet</a> <a href="dictionary_S.html#23524">possibleOps</a></span><span class="default">; </span><span class="comment">/* only for TRM_ZEROARY and TRM_APPLICATION */</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">  /* should make a union but skip this for now */</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">  /*@null@*/ <a href="dictionary_N.html#651">nameNode</a> <a href="dictionary_S.html#23525">name</a></span><span class="default">;</span>
+<a name="17"><font size=-1>17     </font></a><span class="default">  <a href="dictionary_T.html#760">termNodeList</a> <a href="dictionary_S.html#23526">args</a>; </span><span class="comment">/* in order */</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">  /*@reldef@*/ <a href="dictionary_L.html#154">ltoken</a> <a href="dictionary_S.html#23527">literal</a></span><span class="default">; </span><span class="comment">/* for TRM_LITERAL, TRM_UNCHANGEDALL, </span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">		       TRM_SIZEOF, LCLvariableKIND, </span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">		       TRM_CONST, TRM_ZEROARY */</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment">  /*@reldef@*/ <a href="dictionary_S.html#772">storeRefNodeList</a> <a href="dictionary_S.html#23528">unchanged</a></span><span class="default">; </span><span class="comment">/* only for TRM_UNCHANGEDOTHERS */</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">  /*@reldef@*/ <a href="dictionary_Q.html#20171">quantifiedTermNode</a> <a href="dictionary_S.html#23529">quantified</a></span><span class="default">; </span><span class="comment">/* only for TRM_QUANTIFIER */</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">  /*@reldef@*/ <a href="dictionary_L.html#705">lclTypeSpecNode</a> <a href="dictionary_S.html#23530">sizeofField</a></span><span class="default">; </span><span class="comment">/* only for TRM_SIZEOF */</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="default">} ;</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">extern </span><span class="comment">/*@falsewhennull@*/ </span><span class="keyword">bool <a href="dictionary_T.html#23531">termNode_isDefined</a> </span><span class="default">(</span><span class="comment">/*@null@*/ <a href="dictionary_T.html#734">termNode</a> </span><span class="default">p_t) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span><span class="preproc"># define <a href="dictionary_T.html#23532">termNode_isDefined</a></span><span class="default">(t) ((t) != <a href="dictionary_N.html#12">NULL</a>)</span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span>
+<a name="29"><font size=-1>29     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_T.html#734">termNode</a> <a href="dictionary_T.html#7816">termNode_copySafe</a> </span><span class="default">(<a href="dictionary_T.html#734">termNode</a> p_t) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span><span class="keyword">extern <a href="dictionary_C.html#21">cstring</a> <a href="dictionary_T.html#7830">termNode_unparse</a> </span><span class="default">(</span><span class="comment">/*@null@*/ <a href="dictionary_T.html#734">termNode</a> </span><span class="default">p_n) </span><span class="comment">/*@*/ </span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_T.html#7852">termNode_free</a> </span><span class="default">(</span><span class="comment">/*@only@*/ /*@null@*/ <a href="dictionary_T.html#734">termNode</a> </span><span class="default">p_t);</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+</pre></body></html>

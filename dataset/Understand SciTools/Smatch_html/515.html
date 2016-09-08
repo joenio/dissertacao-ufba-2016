@@ -1,0 +1,257 @@
+<html><head><title>lib.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/lib.h</h3>
+<SCRIPT>
+defaultStatus = "File: /home/joenio/src/dissertacao-ufba-2016/dataset/NIST/smatch/smatch.git/lib.h";
+top.document.title  = "lib.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_L.html#10293">LIB_H</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc">#define <a href="dictionary_L.html#10293">LIB_H</a></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc"></span>
+<a name="4"><font size=-1>4     </font></a><span class="preproc">#include </span><span class="string">&lt;stdlib.h&gt;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stddef.h&gt;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span>
+<a name="7"><font size=-1>7     </font></a><span class="string"></span><span class="comment">/*</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> * Basic helper routine descriptions for 'sparse'.</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> * Copyright (C) 2003 Transmeta Corp.</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> *               2003 Linus Torvalds</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *               2004 Christopher Li</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> * of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> * in the Software without restriction, including without limitation the rights</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> * copies of the Software, and to permit persons to whom the Software is</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> * furnished to do so, subject to the following conditions:</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> *</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> * The above copyright notice and this permission notice shall be included in</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> * all copies or substantial portions of the Software.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> *</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * THE SOFTWARE.</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> */</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"></span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&quot;compat.h&quot;</span>
+<a name="34"><font size=-1>34     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;ptrlist.h&quot;</span>
+<a name="35"><font size=-1>35     </font></a><span class="string"></span>
+<a name="36"><font size=-1>36     </font></a><span class="string"></span><span class="preproc">#define <a href="dictionary_D.html#10294">DO_STRINGIFY</a></span><span class="default">(x) </span><span class="preproc">#</span><span class="default">x</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#10007">STRINGIFY</a></span><span class="default">(x) <a href="dictionary_D.html#10294">DO_STRINGIFY</a>(x)</span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_A.html#516">ARRAY_SIZE</a></span>
+<a name="40"><font size=-1>40     </font></a><span class="preproc">#define <a href="dictionary_A.html#516">ARRAY_SIZE</a></span><span class="default">(x) (sizeof(x)/sizeof((x)[</span><span class="number">0</span><span class="default">]))</span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="42"><font size=-1>42     </font></a><span class="preproc"></span>
+<a name="43"><font size=-1>43     </font></a><span class="preproc"></span><span class="keyword">extern int <a href="dictionary_V.html#708">verbose</a></span><span class="default">, <a href="dictionary_O.html#9754">optimize</a>, <a href="dictionary_O.html#9755">optimize_size</a>, <a href="dictionary_P.html#9756">preprocessing</a>;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_D.html#9757">die_if_error</a></span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_R.html#7523">repeat_phase</a></span><span class="default">, <a href="dictionary_M.html#10295">merge_phi_sources</a>;</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_G.html#9762">gcc_major</a></span><span class="default">, <a href="dictionary_G.html#9763">gcc_minor</a>, <a href="dictionary_G.html#9765">gcc_patchlevel</a>;</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">extern unsigned int <a href="dictionary_H.html#6307">hexval</a></span><span class="default">(</span><span class="keyword">unsigned int </span><span class="default">c);</span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span>
+<a name="50"><font size=-1>50     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_P.html#136">position</a> </span><span class="default">{</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	</span><span class="keyword">unsigned int <a href="dictionary_P.html#137">type</a></span><span class="default">:</span><span class="number">6</span><span class="default">,</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">		     <a href="dictionary_P.html#669">stream</a>:</span><span class="number">14</span><span class="default">,</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">		     <a href="dictionary_P.html#10015">newline</a>:</span><span class="number">1</span><span class="default">,</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">		     <a href="dictionary_P.html#10014">whitespace</a>:</span><span class="number">1</span><span class="default">,</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">		     <a href="dictionary_P.html#680">pos</a>:</span><span class="number">10</span><span class="default">;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">	</span><span class="keyword">unsigned int <a href="dictionary_P.html#628">line</a></span><span class="default">:</span><span class="number">31</span><span class="default">,</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">		     <a href="dictionary_P.html#10296">noexpand</a>:</span><span class="number">1</span><span class="default">;</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">};</span>
+<a name="59"><font size=-1>59     </font></a><span class="default"></span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_I.html#1109">ident</a></span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_T.html#129">token</a></span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a></span><span class="default">;</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_S.html#626">statement</a></span><span class="default">;</span>
+<a name="64"><font size=-1>64     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a></span><span class="default">;</span>
+<a name="65"><font size=-1>65     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_B.html#658">basic_block</a></span><span class="default">;</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_E.html#656">entrypoint</a></span><span class="default">;</span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_I.html#660">instruction</a></span><span class="default">;</span>
+<a name="68"><font size=-1>68     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_M.html#7708">multijmp</a></span><span class="default">;</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_P.html#5022">pseudo</a></span><span class="default">;</span>
+<a name="70"><font size=-1>70     </font></a><span class="default"></span>
+<a name="71"><font size=-1>71     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_S.html#733">symbol_list</a>, </span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a></span><span class="default">);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_S.html#1122">statement_list</a>, </span><span class="keyword">struct <a href="dictionary_S.html#626">statement</a></span><span class="default">);</span>
+<a name="73"><font size=-1>73     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_E.html#951">expression_list</a>, </span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a></span><span class="default">);</span>
+<a name="74"><font size=-1>74     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_B.html#674">basic_block_list</a>, </span><span class="keyword">struct <a href="dictionary_B.html#658">basic_block</a></span><span class="default">);</span>
+<a name="75"><font size=-1>75     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_I.html#684">instruction_list</a>, </span><span class="keyword">struct <a href="dictionary_I.html#660">instruction</a></span><span class="default">);</span>
+<a name="76"><font size=-1>76     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_C.html#3111">context_list</a>, </span><span class="keyword">struct <a href="dictionary_C.html#2251">context</a></span><span class="default">);</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_M.html#10297">multijmp_list</a>, </span><span class="keyword">struct <a href="dictionary_M.html#7708">multijmp</a></span><span class="default">);</span>
+<a name="78"><font size=-1>78     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_P.html#5097">pseudo_list</a>, </span><span class="keyword">struct <a href="dictionary_P.html#5022">pseudo</a></span><span class="default">);</span>
+<a name="79"><font size=-1>79     </font></a><span class="default"><a href="dictionary_D.html#274">DECLARE_PTR_LIST</a>(<a href="dictionary_S.html#582">string_list</a>, </span><span class="keyword">char</span><span class="default">);</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span><span class="keyword">typedef struct <a href="dictionary_P.html#5022">pseudo</a> </span><span class="default">*<a href="dictionary_P.html#3188">pseudo_t</a>;</span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span>
+<a name="83"><font size=-1>83     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_T.html#129">token</a> </span><span class="default">*<a href="dictionary_S.html#9768">skip_to</a>(</span><span class="keyword">struct <a href="dictionary_T.html#129">token</a> </span><span class="default">*, </span><span class="keyword">int</span><span class="default">);</span>
+<a name="84"><font size=-1>84     </font></a><span class="default"></span><span class="keyword">struct <a href="dictionary_T.html#129">token</a> </span><span class="default">*<a href="dictionary_E.html#9772">expect</a>(</span><span class="keyword">struct <a href="dictionary_T.html#129">token</a> </span><span class="default">*, </span><span class="keyword">int</span><span class="default">, </span><span class="keyword">const char </span><span class="default">*);</span>
+<a name="85"><font size=-1>85     </font></a><span class="default"></span><span class="preproc">#ifdef <a href="dictionary_Non-Alpha.html#9761">__GNUC__</a></span>
+<a name="86"><font size=-1>86     </font></a><span class="preproc">#define <a href="dictionary_F.html#4253">FORMAT_ATTR</a></span><span class="default">(pos) __attribute__ ((__format__ (__printf__, pos, pos+</span><span class="number">1</span><span class="default">)))</span>
+<a name="87"><font size=-1>87     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_N.html#10299">NORETURN_ATTR</a> </span><span class="default">__attribute__ ((__noreturn__))</span>
+<a name="88"><font size=-1>88     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_S.html#10300">SENTINEL_ATTR</a> </span><span class="default">__attribute__ ((__sentinel__))</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span><span class="preproc">#else</span>
+<a name="90"><font size=-1>90     </font></a><span class="preproc">#define <a href="dictionary_F.html#4253">FORMAT_ATTR</a></span><span class="default">(pos)</span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_N.html#10299">NORETURN_ATTR</a></span>
+<a name="92"><font size=-1>92     </font></a><span class="preproc">#define <a href="dictionary_S.html#10300">SENTINEL_ATTR</a></span>
+<a name="93"><font size=-1>93     </font></a><span class="preproc">#endif</span>
+<a name="94"><font size=-1>94     </font></a><span class="preproc"></span><span class="keyword">extern void <a href="dictionary_D.html#4369">die</a></span><span class="default">(</span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">1</span><span class="default">) <a href="dictionary_N.html#10299">NORETURN_ATTR</a>;</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_I.html#2420">info</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#136">position</a></span><span class="default">, </span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">2</span><span class="default">);</span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_W.html#2318">warning</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#136">position</a></span><span class="default">, </span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">2</span><span class="default">);</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_S.html#2381">sparse_error</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#136">position</a></span><span class="default">, </span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">2</span><span class="default">);</span>
+<a name="98"><font size=-1>98     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_E.html#4659">error_die</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#136">position</a></span><span class="default">, </span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">2</span><span class="default">) <a href="dictionary_N.html#10299">NORETURN_ATTR</a>;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_E.html#9808">expression_error</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*, </span><span class="keyword">const char </span><span class="default">*, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">2</span><span class="default">);</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_A.html#9864">add_pre_buffer</a></span><span class="default">(</span><span class="keyword">const char </span><span class="default">*fmt, ...) <a href="dictionary_F.html#4253">FORMAT_ATTR</a>(</span><span class="number">1</span><span class="default">);</span>
+<a name="102"><font size=-1>102     </font></a><span class="default"></span>
+<a name="103"><font size=-1>103     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_P.html#9849">preprocess_only</a></span><span class="default">;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9823">Waddress_space</a></span><span class="default">;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9824">Wbitwise</a></span><span class="default">;</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9825">Wcast_to_as</a></span><span class="default">;</span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9826">Wcast_truncate</a></span><span class="default">;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9827">Wcontext</a></span><span class="default">;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9828">Wdecl</a></span><span class="default">;</span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9829">Wdeclarationafterstatement</a></span><span class="default">;</span>
+<a name="112"><font size=-1>112     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9830">Wdefault_bitfield_sign</a></span><span class="default">;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9831">Wdesignated_init</a></span><span class="default">;</span>
+<a name="114"><font size=-1>114     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9832">Wdo_while</a></span><span class="default">;</span>
+<a name="115"><font size=-1>115     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9834">Wenum_mismatch</a></span><span class="default">;</span>
+<a name="116"><font size=-1>116     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9803">Werror</a></span><span class="default">;</span>
+<a name="117"><font size=-1>117     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9833">Winit_cstring</a></span><span class="default">;</span>
+<a name="118"><font size=-1>118     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9835">Wnon_pointer_null</a></span><span class="default">;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9836">Wold_initializer</a></span><span class="default">;</span>
+<a name="120"><font size=-1>120     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9837">Wone_bit_signed_bitfield</a></span><span class="default">;</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9838">Wparen_string</a></span><span class="default">;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9839">Wptr_subtraction_blows</a></span><span class="default">;</span>
+<a name="123"><font size=-1>123     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9840">Wreturn_void</a></span><span class="default">;</span>
+<a name="124"><font size=-1>124     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#2419">Wshadow</a></span><span class="default">;</span>
+<a name="125"><font size=-1>125     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9841">Wsizeof_bool</a></span><span class="default">;</span>
+<a name="126"><font size=-1>126     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9842">Wtransparent_union</a></span><span class="default">;</span>
+<a name="127"><font size=-1>127     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9843">Wtypesign</a></span><span class="default">;</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9844">Wundef</a></span><span class="default">;</span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9845">Wuninitialized</a></span><span class="default">;</span>
+<a name="130"><font size=-1>130     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#9846">Wunknown_attribute</a></span><span class="default">;</span>
+<a name="131"><font size=-1>131     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_W.html#2317">Wvla</a></span><span class="default">;</span>
+<a name="132"><font size=-1>132     </font></a><span class="default"></span>
+<a name="133"><font size=-1>133     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_D.html#9847">dbg_entry</a></span><span class="default">;</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_D.html#9848">dbg_dead</a></span><span class="default">;</span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span>
+<a name="136"><font size=-1>136     </font></a><span class="default"></span><span class="keyword">extern int <a href="dictionary_A.html#9859">arch_m64</a></span><span class="default">;</span>
+<a name="137"><font size=-1>137     </font></a><span class="default"></span>
+<a name="138"><font size=-1>138     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_D.html#10005">declare_builtin_functions</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="139"><font size=-1>139     </font></a><span class="default"></span><span class="keyword">extern void <a href="dictionary_C.html#10006">create_builtin_stream</a></span><span class="default">(</span><span class="keyword">void</span><span class="default">);</span>
+<a name="140"><font size=-1>140     </font></a><span class="default"></span><span class="keyword">extern struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_S.html#735">sparse_initialize</a>(</span><span class="keyword">int </span><span class="default">argc, </span><span class="keyword">char </span><span class="default">**argv, </span><span class="keyword">struct <a href="dictionary_S.html#582">string_list</a> </span><span class="default">**files);</span>
+<a name="141"><font size=-1>141     </font></a><span class="default"></span><span class="keyword">extern struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_Non-Alpha.html#10039">__sparse</a>(</span><span class="keyword">char </span><span class="default">*filename);</span>
+<a name="142"><font size=-1>142     </font></a><span class="default"></span><span class="keyword">extern struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_S.html#5345">sparse_keep_tokens</a>(</span><span class="keyword">char </span><span class="default">*filename);</span>
+<a name="143"><font size=-1>143     </font></a><span class="default"></span><span class="keyword">extern struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_S.html#741">sparse</a>(</span><span class="keyword">char </span><span class="default">*filename);</span>
+<a name="144"><font size=-1>144     </font></a><span class="default"></span>
+<a name="145"><font size=-1>145     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_S.html#10301">symbol_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_L.html#10302">list</a>)</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">{</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10302">list</a>));</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">}</span>
+<a name="149"><font size=-1>149     </font></a><span class="default"></span>
+<a name="150"><font size=-1>150     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_S.html#10303">statement_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#1122">statement_list</a> </span><span class="default">*<a href="dictionary_L.html#10304">list</a>)</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">{</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10304">list</a>));</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">}</span>
+<a name="154"><font size=-1>154     </font></a><span class="default"></span>
+<a name="155"><font size=-1>155     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_C.html#10305">context_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_C.html#3111">context_list</a> </span><span class="default">*<a href="dictionary_L.html#10306">list</a>)</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">{</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10306">list</a>));</span>
+<a name="158"><font size=-1>158     </font></a><span class="default">}</span>
+<a name="159"><font size=-1>159     </font></a><span class="default"></span>
+<a name="160"><font size=-1>160     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_E.html#10307">expression_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#951">expression_list</a> </span><span class="default">*<a href="dictionary_L.html#10308">list</a>)</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">{</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10308">list</a>));</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">}</span>
+<a name="164"><font size=-1>164     </font></a><span class="default"></span>
+<a name="165"><font size=-1>165     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_I.html#10148">instruction_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">*<a href="dictionary_L.html#10309">list</a>)</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">{</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10309">list</a>));</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">}</span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span>
+<a name="170"><font size=-1>170     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_P.html#10310">pseudo_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#5097">pseudo_list</a> </span><span class="default">*<a href="dictionary_L.html#10311">list</a>)</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">{</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10311">list</a>));</span>
+<a name="173"><font size=-1>173     </font></a><span class="default">}</span>
+<a name="174"><font size=-1>174     </font></a><span class="default"></span>
+<a name="175"><font size=-1>175     </font></a><span class="default"></span><span class="keyword">static inline int <a href="dictionary_B.html#7460">bb_list_size</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_B.html#674">basic_block_list</a> </span><span class="default">*<a href="dictionary_L.html#10312">list</a>)</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">{</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_P.html#1937">ptr_list_size</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)(<a href="dictionary_L.html#10312">list</a>));</span>
+<a name="178"><font size=-1>178     </font></a><span class="default">}</span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span>
+<a name="180"><font size=-1>180     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_F.html#10313">free_instruction_list</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">**<a href="dictionary_H.html#10314">head</a>)</span>
+<a name="181"><font size=-1>181     </font></a><span class="default">{</span>
+<a name="182"><font size=-1>182     </font></a><span class="default">	<a href="dictionary_F.html#3925">free_ptr_list</a>((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_H.html#10314">head</a>);</span>
+<a name="183"><font size=-1>183     </font></a><span class="default">}</span>
+<a name="184"><font size=-1>184     </font></a><span class="default"></span>
+<a name="185"><font size=-1>185     </font></a><span class="default"></span><span class="keyword">static inline struct <a href="dictionary_I.html#660">instruction</a> </span><span class="default">* <a href="dictionary_D.html#10130">delete_last_instruction</a>(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">**<a href="dictionary_H.html#10315">head</a>)</span>
+<a name="186"><font size=-1>186     </font></a><span class="default">{</span>
+<a name="187"><font size=-1>187     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_U.html#10316">undo_ptr_list_last</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_H.html#10315">head</a>);</span>
+<a name="188"><font size=-1>188     </font></a><span class="default">}</span>
+<a name="189"><font size=-1>189     </font></a><span class="default"></span>
+<a name="190"><font size=-1>190     </font></a><span class="default"></span><span class="keyword">static inline struct <a href="dictionary_B.html#658">basic_block</a> </span><span class="default">* <a href="dictionary_D.html#10317">delete_last_basic_block</a>(</span><span class="keyword">struct <a href="dictionary_B.html#674">basic_block_list</a> </span><span class="default">**<a href="dictionary_H.html#10318">head</a>)</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">{</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_D.html#4004">delete_ptr_list_last</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_H.html#10318">head</a>);</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">}</span>
+<a name="194"><font size=-1>194     </font></a><span class="default"></span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span><span class="keyword">static inline struct <a href="dictionary_B.html#658">basic_block</a> </span><span class="default">*<a href="dictionary_F.html#7461">first_basic_block</a>(</span><span class="keyword">struct <a href="dictionary_B.html#674">basic_block_list</a> </span><span class="default">*<a href="dictionary_H.html#10319">head</a>)</span>
+<a name="196"><font size=-1>196     </font></a><span class="default">{</span>
+<a name="197"><font size=-1>197     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_F.html#1938">first_ptr_list</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_H.html#10319">head</a>);</span>
+<a name="198"><font size=-1>198     </font></a><span class="default">}</span>
+<a name="199"><font size=-1>199     </font></a><span class="default"></span><span class="keyword">static inline struct <a href="dictionary_I.html#660">instruction</a> </span><span class="default">*<a href="dictionary_L.html#7481">last_instruction</a>(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">*<a href="dictionary_H.html#10320">head</a>)</span>
+<a name="200"><font size=-1>200     </font></a><span class="default">{</span>
+<a name="201"><font size=-1>201     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_L.html#1118">last_ptr_list</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_H.html#10320">head</a>);</span>
+<a name="202"><font size=-1>202     </font></a><span class="default">}</span>
+<a name="203"><font size=-1>203     </font></a><span class="default"></span>
+<a name="204"><font size=-1>204     </font></a><span class="default"></span><span class="keyword">static inline struct <a href="dictionary_I.html#660">instruction</a> </span><span class="default">*<a href="dictionary_F.html#10321">first_instruction</a>(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">*<a href="dictionary_H.html#10322">head</a>)</span>
+<a name="205"><font size=-1>205     </font></a><span class="default">{</span>
+<a name="206"><font size=-1>206     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_F.html#1938">first_ptr_list</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_H.html#10322">head</a>);</span>
+<a name="207"><font size=-1>207     </font></a><span class="default">}</span>
+<a name="208"><font size=-1>208     </font></a><span class="default"></span>
+<a name="209"><font size=-1>209     </font></a><span class="default"></span><span class="keyword">static inline <a href="dictionary_P.html#3188">pseudo_t</a> <a href="dictionary_F.html#10323">first_pseudo</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_P.html#5097">pseudo_list</a> </span><span class="default">*<a href="dictionary_H.html#10324">head</a>)</span>
+<a name="210"><font size=-1>210     </font></a><span class="default">{</span>
+<a name="211"><font size=-1>211     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_F.html#1938">first_ptr_list</a></span><span class="default">((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_H.html#10324">head</a>);</span>
+<a name="212"><font size=-1>212     </font></a><span class="default">}</span>
+<a name="213"><font size=-1>213     </font></a><span class="default"></span>
+<a name="214"><font size=-1>214     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_C.html#736">concat_symbol_list</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">*<a href="dictionary_F.html#10325">from</a>, </span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">**<a href="dictionary_T.html#10326">to</a>)</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">{</span>
+<a name="216"><font size=-1>216     </font></a><span class="default">	<a href="dictionary_C.html#3262">concat_ptr_list</a>((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_F.html#10325">from</a>, (</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_T.html#10326">to</a>);</span>
+<a name="217"><font size=-1>217     </font></a><span class="default">}</span>
+<a name="218"><font size=-1>218     </font></a><span class="default"></span>
+<a name="219"><font size=-1>219     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_C.html#10327">concat_basic_block_list</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_B.html#674">basic_block_list</a> </span><span class="default">*<a href="dictionary_F.html#10328">from</a>, </span><span class="keyword">struct <a href="dictionary_B.html#674">basic_block_list</a> </span><span class="default">**<a href="dictionary_T.html#10329">to</a>)</span>
+<a name="220"><font size=-1>220     </font></a><span class="default">{</span>
+<a name="221"><font size=-1>221     </font></a><span class="default">	<a href="dictionary_C.html#3262">concat_ptr_list</a>((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_F.html#10328">from</a>, (</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_T.html#10329">to</a>);</span>
+<a name="222"><font size=-1>222     </font></a><span class="default">}</span>
+<a name="223"><font size=-1>223     </font></a><span class="default"></span>
+<a name="224"><font size=-1>224     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_C.html#10330">concat_instruction_list</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">*<a href="dictionary_F.html#10331">from</a>, </span><span class="keyword">struct <a href="dictionary_I.html#684">instruction_list</a> </span><span class="default">**<a href="dictionary_T.html#10332">to</a>)</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">{</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">	<a href="dictionary_C.html#3262">concat_ptr_list</a>((</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">*)<a href="dictionary_F.html#10331">from</a>, (</span><span class="keyword">struct <a href="dictionary_P.html#365">ptr_list</a> </span><span class="default">**)<a href="dictionary_T.html#10332">to</a>);</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">}</span>
+<a name="228"><font size=-1>228     </font></a><span class="default"></span>
+<a name="229"><font size=-1>229     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_A.html#2242">add_symbol</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#733">symbol_list</a> </span><span class="default">**<a href="dictionary_L.html#10333">list</a>, </span><span class="keyword">struct <a href="dictionary_S.html#202">symbol</a> </span><span class="default">*<a href="dictionary_S.html#10334">sym</a>)</span>
+<a name="230"><font size=-1>230     </font></a><span class="default">{</span>
+<a name="231"><font size=-1>231     </font></a><span class="default">	<a href="dictionary_A.html#404">add_ptr_list</a>(<a href="dictionary_L.html#10333">list</a>, <a href="dictionary_S.html#10334">sym</a>);</span>
+<a name="232"><font size=-1>232     </font></a><span class="default">}</span>
+<a name="233"><font size=-1>233     </font></a><span class="default"></span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_A.html#10335">add_statement</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_S.html#1122">statement_list</a> </span><span class="default">**<a href="dictionary_L.html#10336">list</a>, </span><span class="keyword">struct <a href="dictionary_S.html#626">statement</a> </span><span class="default">*<a href="dictionary_S.html#10337">stmt</a>)</span>
+<a name="235"><font size=-1>235     </font></a><span class="default">{</span>
+<a name="236"><font size=-1>236     </font></a><span class="default">	<a href="dictionary_A.html#404">add_ptr_list</a>(<a href="dictionary_L.html#10336">list</a>, <a href="dictionary_S.html#10337">stmt</a>);</span>
+<a name="237"><font size=-1>237     </font></a><span class="default">}</span>
+<a name="238"><font size=-1>238     </font></a><span class="default"></span>
+<a name="239"><font size=-1>239     </font></a><span class="default"></span><span class="keyword">static inline void <a href="dictionary_A.html#10338">add_expression</a></span><span class="default">(</span><span class="keyword">struct <a href="dictionary_E.html#951">expression_list</a> </span><span class="default">**<a href="dictionary_L.html#10339">list</a>, </span><span class="keyword">struct <a href="dictionary_E.html#19">expression</a> </span><span class="default">*<a href="dictionary_E.html#10340">expr</a>)</span>
+<a name="240"><font size=-1>240     </font></a><span class="default">{</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">	<a href="dictionary_A.html#404">add_ptr_list</a>(<a href="dictionary_L.html#10339">list</a>, <a href="dictionary_E.html#10340">expr</a>);</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">}</span>
+<a name="243"><font size=-1>243     </font></a><span class="default"></span>
+<a name="244"><font size=-1>244     </font></a><span class="default"></span><span class="preproc">#define <a href="dictionary_H.html#10057">hashval</a></span><span class="default">(x) ((unsigned long)(x))</span>
+<a name="245"><font size=-1>245     </font></a><span class="default"></span>
+<a name="246"><font size=-1>246     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="247"><font size=-1>247     </font></a><span class="preproc"></span>
+</pre></body></html>
