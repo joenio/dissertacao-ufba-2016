@@ -477,8 +477,49 @@ produto de software à características de qualidade de código-fonte através d
 observação de suas métricas, são elas:
 
 \begin{itemize}
-  \item {\bf ACC} {\it Aferent Connections per Class (Conexões aferentes de
-    uma classe)}: mede a conectividade de uma classe \cite{Brito1994}.
+  \item {\bf ACC} {\it Afferent Connections per Class (Conexões aferentes de
+    uma classe)}: mede a conectividade de uma classe através do número total de
+    classes clientes e é dado pela seguinte função indicando o número de
+    classes que uma dada classe depende.
+
+\[ CBO(C) = \sum_{i=1}^{n} cliente(Ci, C) \]
+
+Onde:
+\[ cliente(Ci, Cj) =
+  \begin{cases}
+    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
+    0 \text{ caso contrario} \\
+  \end{cases}
+\]
+
+$ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
+entre módulos ou classes.
+
+Esta métrica é encontrada na literatura também como {\it Afferent coupling
+(Ca)} ou Acoplamento aferente \cite{Martin1994}, sendo o número de classes de
+outros pacotes que dependem das classes pertencentes a um dado pacote.  Apesar
+da definição original da métrica ser apenas em nível de pacotes, alguns estudos
+calculam esta métrica em nível de classe \cite{Ferreira2012}.
+
+A definição original da métrica Ca \cite{Martin1994} não deixa claro exatamente
+o que compreende dependencia entre classes, mas indica que "relacionamento de
+classe" são contabilizados, "como herança e associação" por exemplo. Isto levou
+autores em estudos posteriores a propor algo, e existe um concenso de que
+dependencia é indicada através de uso de métodos e atributos entre classes
+\cite{Briand1999Unified} \cite{Fenton2014} \cite{Ferreira2008}.
+
+Assim a definição usual, e também usada para a métrica ACC é a seguinte:   se
+uma classe A referencia outra classe B, então existe um acoplamento aferente de
+B para A e um acoplamento eferente correspondente em A. Uma data classe A
+referencia outra classe B se (i) A chama um método de B, (ii) A acessa um campo
+de B, ou (iii) A é uma subclasse de B. Esta métrica é o número de acoplamentos
+de entrada de uma classe.
+
+Classes com um alto número de acoplamento aferentes desempenham um importante
+papel no sistema, porque erros ou modificações nelas podem causar grande
+impacto em outras classes. Para softwares Java, nós computamos esta métrica
+também para interfaces.
+
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
@@ -497,7 +538,7 @@ observação de suas métricas, são elas:
 \[ CBO(C) = \sum_{i=1}^{n} cliente(C, Ci) \]
 
 Onde:
-\[ cliente(C, Ci) =
+\[ cliente(Ci, Cj) =
   \begin{cases}
     1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
     0 \text{ caso contrario} \\
