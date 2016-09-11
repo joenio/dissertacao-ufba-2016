@@ -50,7 +50,7 @@ do Debian utilizado as instruções podem ser diferentes.
 
 ### Debian Jessie (como root)
 
-    apt-get install r-recommended r-cran-evaluate r-cran-digest r-cran-stringr
+    apt-get install r-recommended r-cran-evaluate r-cran-digest r-cran-stringr r-cran-xtable
     R -e "install.packages('knitr', repos = 'http://www.rforge.net/', type = 'source', dependencies = TRUE)"
 
 ### Compilar
