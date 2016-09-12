@@ -523,12 +523,33 @@ também para interfaces.
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
     \cite{McCabe1976}.
+
+Essa métrica pode ser representada através de um grafo de fluxo de controle,
+onde os nós representam uma ou mais instruções sequenciais e os arcos
+orientados indicam o sentido do fluxo de controle entre várias instruções. A
+complexidade ciclomática de um determinado grafo pode ser calculada através de
+uma fórmula da teoria dos grafos:
+
+$ v(G) = e − n + 2 $
+
+onde $e$ é o número de arestas e $n$ é o número de nós do grafo.
+
+
   \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
     código por método)}: indica se o código está bem distribuído entre os
     métodos, quanto maior mais ``pesados'' são os métodos.
+
   \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
     Número de Parâmetros por Método)}: calcula a média de parâmetros dos
-    métodos da classe \cite{Jagdish1997}.
+    métodos da classe \cite{Jagdish1997}. Computada calculando o número
+    total de parametros de todos os métodos de uma classe dividido pelo número
+    de métodos da classe.
+
+    Esta métrica na literatura identificada como NPM apenas, é chamada aqui
+    de ANPN seguindo a mesma postura dos estudos de \cite{Meirelles2013} para
+    evitar conflito com a métrica {\bf NPM} {\it Number of Public Methods
+    (Número de métodos públicos)}.
+
   \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
     mede o acoplamento entre objetos do software \cite{Chidamber1994}
     calculando em nível de classe o número total de acessos à outras classes do
@@ -565,27 +586,111 @@ testes, pois mais partes do sistema dependem delas.
 
   \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
     herança)}: mede o número de ancestrais de uma classe \cite{Shih1997}.
+
+É o número de superclasses ou classes ancestrais da classe sendo analisada. São
+contabilizadas apenas as superclasses do sistema, ou seja, as classes de
+bibliotecas não são contabilizadas. Nos casos onde herança múltipla é
+permitida, considera-se o maior caminho da classe até uma das raízes da
+hierarquia. Quanto maior for o valor DIT, maior é o número de atributos e
+métodos herdados, e portanto maior é a complexidade. Os intervalos sugeridos
+são: até 2 (bom); entre 2 e 4 (regular); de 4 em diante (ruim). Entretanto,
+valores baixos indicam pouco reúso de código via herança.
+
   \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
     métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
+
+Para calcular LCOM4 de um módulo, é necessário construir um gráfico
+não-orientado em que os nós são os métodos e atributos de uma classe. Para cada
+método, deve haver uma aresta entre ele e um outro método ou variável que ele
+usa. O valor da LCOM4 é o número de componentes $ M = {M_{1}, ..., M_{n} } $ o
+conjunto dos métodos da Mi e Mj estão relacionados se ambos acessam pelo menos
+um se M i chama ou é chamado por Mj. LCOM4 é a quantidade fracamente conectados
+nesse gráfico. Seja classe analisada. Dois métodos mesmo atributo da classe ou
+de partições de M formadas após separar os métodos em conjuntos de métodos
+relacionados.  Coesão entre os métodos de uma classe é uma propriedade
+desejável, portanto o valor ideal dessa métrica é 1. Se uma classe tem
+diferentes conjuntos de métodos não relacionados entre si, é um indício de que
+a classe deveria ser quebrada em classes menores e mais coesas.
+
   \item {\bf LOC} {\it Lines of Code (Número de linhas de código)}: mede o
     número de linhas excluindo linhas em branco e comentários
     \cite{Lorenz1994}.
+
   \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: número de
     atributos de uma classe \cite{Kolewe1993}.
+
   \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
     filhos de uma classe \cite{Rosenberg1997}.
+
+The number of children is the number of immediate subclasses subordinate to a class in
+the hierarchy. It is an indicator of the potential influence a class can have on the design
+and on the system. The greater the number of children, the greater the likelihood of
+improper abstraction of the parent and may be a case of misuse of subclassing. But the
+greater the number of children, the greater the reusability since inheritance is a form of
+reuse. If a class has a large number of children, it may require more testing of the
+methods of that class, thus increase the testing time. NOC, therefore, primarily
+evaluates Efficiency, Reusability, and Testability
+
   \item {\bf NOM} {\it Number of Methods (Número de métodos)}: mede o tamanho
-    das classes em termos das suas operações implementadas.
+    das classes em termos das suas operações implementadas. Calcula o número
+    total de métodos de uma classe.
+
   \item {\bf NPA} {\it Number of Public Attributes (Número de atributos
-    públicos)}: mede o encapsulamento \cite{Jagdish1997}.
+    públicos)}: mede o encapsulamento \cite{Jagdish1997}. Calcula o número
+    de atributos públicos de uma classe.
+
   \item {\bf NPM} {\it Number of Public Methods (Número de métodos públicos)}:
-    representa o tamanho da ``interface'' da classe \cite{Jagdish1997}.
+    representa o tamanho da ``interface'' da classe \cite{Jagdish1997}. Calcula
+    o número total de métodos públicos de uma classe.
+
   \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
     número de métodos dentre todos os métodos que podem ser invocados em
     resposta a uma mensagem enviada por um objeto de uma classe
     \cite{Sharble1993}.
+
   \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
     complexidade do software \cite{Darcy2005}.
+
+\citeonline{Darcy2005} propõem que
+complexidade estrutural seja medida através da combinação de acoplamento
+e coesão. Estes são dois conceitos complementares: enquanto o
+acoplamento reflete o relacionamento entre módulos, a coesão nos fornece
+uma visão da organização dos componentes internos de um módulo e seus
+relacionamentos.  A literatura clássica para profissionais da prática de
+projeto de software defende que módulos com baixo acoplamento e alta
+coesão são mais fáceis de entender e modificar \cite{martin2003,
+mcconnel2004}.
+
+Em termos de complexidade, a combinação de acoplamento e coesão numa
+única medida captura tanto a complexidade criada pelo excesso de
+dependências entre diferentes módulos quanto a complexidade causada pela
+presença de módulos com múltiplas responsabilidades não relacionadas.
+
+Uma formalização da métrica proposta por Darcy et al.
+\cite{darcy2005} pode ser como se segue. A complexidade estrutural de um
+módulo $m$ é dada pelo produto das suas métricas de acoplamento e falta
+de coesão. Dado um projeto $p$ e seu conjunto de módulos $M(p)$, a
+complexidade estrutural de $p$ é dada por $SC(p)$, definida da seguinte
+forma:
+
+\[
+SC(p) =
+\frac
+{\displaystyle\sum_{m \in M(p)}A(m) \times FC(m)}
+{ |M(p)| }
+\]
+
+Na definição acima, $A(m)$ representa o acoplamento do módulo $m$, e
+$FC(m)$ representa a falta de coesão do módulo $m$.
+
+Esta medida de complexidade estrutural é portanto a complexidade
+estrutural média entre todos os módulos do sistema. Quando um sistema
+cresce em tamanho e também tem a sua complexidade estrutural média
+aumentada, pode-se inferir que não só o sistema como um todo está maior
+e portanto, mais difícil de compreender e modificar, mas também que cada
+módulo, em média, também é mais difícil de compreender e modificar do
+que antes.
+
 \end{itemize}
 
 \subsection{Complexidade estrutural} \label{complexidade}
@@ -601,7 +706,7 @@ detailed discussion of validation for the McCabe measures.
 
 A complexidade estrutural (SC - Structural Complexity) de um programa é uma
 medida calculada através da combinação das métricas de acoplamento (CBO) e
-coesão (LCOM4).  Esta medida é, possivelmente, um indicativo de problemas na
+coesão (LCOM4). Esta medida é, possivelmente, um indicativo de problemas na
 manutenibilidade de sistemas de software, em especial sobre o esforço
 necessário para atividades de manutenção \cite{Terceiro2012}. Ela está
 relacionada a como os módulos de um programa estão organizados bem como à
