@@ -103,7 +103,7 @@ plot_lines_for_project <- function(filename) {
 
 knitr_latex_table <- function(table, caption, label) {
   xt <- xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
-  print(xt, table.placement="H")
+  print(xt, table.placement="H", caption.placement="top")
 }
 
 add_column <- function(table1, table2, colname) {
