@@ -20,6 +20,7 @@ operacional Debian GNU/Linux)
 Projeto escrito em LaTeX para compilar é necessários ter um ambiente latex
 básico e algumas extensões.
 
+    dpkg -i dependencias/latex-mk_2.1-1.3_all.deb
     apt-get install latex-mk texlive-publishers texlive-lang-portuguese
 
 Além do ambiente LaTeX é necessário instalar as dependencias do script para
