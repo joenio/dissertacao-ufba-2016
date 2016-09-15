@@ -13,7 +13,7 @@ Slides:
 * http://joenio.me/slides/caracterizacao-analise-estatica.html
 
 (todas as instruções abaixo consideram que você está rodando o sistema
-operacional Debian GNU/Linux)
+operacional Debian GNU/Linux testing/stretch)
 
 ## Compilando
 
@@ -21,7 +21,7 @@ Projeto escrito em LaTeX para compilar é necessários ter um ambiente latex
 básico e algumas extensões.
 
     dpkg -i dependencias/latex-mk_2.1-1.3_all.deb
-    apt-get install latex-mk texlive-publishers texlive-lang-portuguese
+    apt-get install texlive-publishers texlive-lang-portuguese
 
 Além do ambiente LaTeX é necessário instalar as dependencias do script para
 extração e análise dos dados utilizados neste estudo, localizado em
@@ -30,11 +30,10 @@ manualmente).
 
     apt-get install libmodern-perl-perl sloccount
 
-Instale também as ferramentas `analizo` e `doxyparse` seguindo as seguintes
-instruções:
+Instale também as ferramentas `analizo` e `doxyparse` seguindo as
+instruções em:
 
 * http://www.analizo.org/installation.html
-* http://github.com/analizo/analizo/wiki/Doxyparse
 
 Apesar de não ser necessário executar o script para extração e análise dos
 dados manualmente ele pode ser executado da seguinte forma:
@@ -47,12 +46,7 @@ do Debian utilizado as instruções podem ser diferentes.
 
 ### Debian Testing (como root)
 
-    apt-get install r-recommended r-cran-knitr r-cran-xtable
-
-### Debian Jessie (como root)
-
-    apt-get install r-recommended r-cran-evaluate r-cran-digest r-cran-stringr r-cran-xtable
-    R -e "install.packages('knitr', repos = 'http://www.rforge.net/', type = 'source', dependencies = TRUE)"
+    apt-get install make r-recommended r-cran-knitr r-cran-xtable
 
 ### Compilar
 
