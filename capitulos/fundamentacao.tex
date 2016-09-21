@@ -479,46 +479,47 @@ observação de suas métricas, são elas:
 \begin{itemize}
   \item {\bf ACC} {\it Afferent Connections per Class (Conexões aferentes de
     uma classe)}: mede a conectividade de uma classe através do número total de
-    classes clientes e é dado pela seguinte função indicando o número de
-    classes que uma dada classe depende.
+    classes clientes, é definida pela seguinte fórmula:
 
-\[ CBO(C) = \sum_{i=1}^{n} cliente(Ci, C) \]
+\begin{equation}
+\label{formula-acc}
+ACC(C) = \sum_{i=1}^{n} cliente(Ci, C)
+\end{equation}
 
 Onde:
-\[ cliente(Ci, Cj) =
+
+\begin{equation}
+cliente(Ci, Cj) =
   \begin{cases}
     1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
     0 \text{ caso contrario} \\
   \end{cases}
-\]
+\end{equation}
 
-$ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
-entre módulos ou classes.
+A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos
+ou funções entre módulos ou classes.
 
-Esta métrica é encontrada na literatura também como {\it Afferent coupling
-(Ca)} ou Acoplamento aferente \cite{Martin1994}, sendo o número de classes de
-outros pacotes que dependem das classes pertencentes a um dado pacote.  Apesar
-da definição original da métrica ser apenas em nível de pacotes, alguns estudos
-calculam esta métrica em nível de classe \cite{Ferreira2012}.
+A métrica {\it Afferent Connections per Class} (Conexões aferentes de uma
+classe) é encontrada na literatura com o nome {\it Afferent coupling}
+(Acoplamento aferente) \cite{Martin1994}, o nome {\it Afferent Connections per
+Class} (ACC) utilizado aqui foi introduzido no estudo de
+\citeonline{Meirelles2010}, e por estarmos reproduzindo parte da abordagem
+deste estudo adotaremos o mesmo nome.
 
-A definição original da métrica Ca \cite{Martin1994} não deixa claro exatamente
-o que compreende dependencia entre classes, mas indica que "relacionamento de
-classe" são contabilizados, "como herança e associação" por exemplo. Isto levou
-autores em estudos posteriores a propor algo, e existe um concenso de que
-dependencia é indicada através de uso de métodos e atributos entre classes
-\cite{Briand1999Unified} \cite{Fenton2014} \cite{Ferreira2008}.
+A definição original da métrica não deixa claro exatamente o que compreende
+dependencia entre classes, de forma que restam dúvidas sobre o que deve ser
+contabilizado, a definição indica apenas que ``relacionamentos de classes''
+devem ser considerados, como ``herança e associação'' por exemplo.
 
-Assim a definição usual, e também usada para a métrica ACC é a seguinte:   se
-uma classe A referencia outra classe B, então existe um acoplamento aferente de
-B para A e um acoplamento eferente correspondente em A. Uma data classe A
-referencia outra classe B se (i) A chama um método de B, (ii) A acessa um campo
-de B, ou (iii) A é uma subclasse de B. Esta métrica é o número de acoplamentos
-de entrada de uma classe.
+Apesar disso muitos autores \cite{Briand1999Unified, Fenton2014, Ferreira2008}
+seguem a mesma definição da fórmula \ref{formula-acc}:
+se uma classe A referencia outra classe B, então existe um acoplamento aferente
+de B para A. Uma data classe A referencia outra classe B se (i) A chama um
+método de B, (ii) A acessa um campo de B, ou (iii) A é uma subclasse de B.
 
-Classes com um alto número de acoplamento aferentes desempenham um importante
-papel no sistema, porque erros ou modificações nelas podem causar grande
-impacto em outras classes. Para softwares Java, nós computamos esta métrica
-também para interfaces.
+É importante destacar que classes com um alto número de acoplamento aferente
+desempenham um importante papel no sistema, porque erros ou modificações nestas
+classes podem causar grande impacto em outras partes do sistema.
 
   \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
     complexidade ciclomática por método)}: mede a complexidade do programa
@@ -527,28 +528,28 @@ também para interfaces.
 Essa métrica pode ser representada através de um grafo de fluxo de controle,
 onde os nós representam uma ou mais instruções sequenciais e os arcos
 orientados indicam o sentido do fluxo de controle entre várias instruções. A
-complexidade ciclomática de um determinado grafo pode ser calculada através de
-uma fórmula da teoria dos grafos:
+complexidade ciclomática de um determinado grafo pode ser calculada através da
+seguinte fórmula da teoria dos grafos:
 
-$ v(G) = e - n + 2 $
+\[ v(G) = e - n + 2 \]
 
-onde $e$ é o número de arestas e $n$ é o número de nós do grafo.
+Onde, $e$ é o número de arestas e $n$ é o número de nós do grafo.
 
 
   \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
-    código por método)}: indica se o código está bem distribuído entre os
-    métodos, quanto maior mais ``pesados'' são os métodos.
+    código por método)}: calcula o número médio de linhas de código por método
+    de uma dada classe, indica se o código está bem distribuído entre os
+    métodos, quanto maior, mais ``pesados'' são os métodos.
 
   \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
     Número de Parâmetros por Método)}: calcula a média de parâmetros dos
     métodos da classe \cite{Jagdish1997}. Computada calculando o número
     total de parametros de todos os métodos de uma classe dividido pelo número
-    de métodos da classe.
+    de métodos.
 
-    Esta métrica na literatura identificada como NPM apenas, é chamada aqui
-    de ANPN seguindo a mesma postura dos estudos de \cite{Meirelles2013} para
-    evitar conflito com a métrica {\bf NPM} {\it Number of Public Methods
-    (Número de métodos públicos)}.
+    Esta métrica é identificada na literatura apenas como NPM, aqui chamamos de
+    ANPN para evitar conflito com a métrica {\bf NPM} {\it Number of Public
+    Methods (Número de métodos públicos)}.
 
   \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
     mede o acoplamento entre objetos do software \cite{Chidamber1994}
@@ -693,6 +694,99 @@ que antes.
 \end{itemize}
 
 \subsection{Complexidade estrutural} \label{complexidade}
+
+Sistemas complexos são sistemas no qual grandes redes de componentes sem
+controle central e regras simples de operação dão origem a um comportamento
+coletivo complexo, com processamento sofisticado de informação, e adaptação através
+de aprendizado ou evolução \cite{Mitchell2009}. As seguintes características
+são comuns a todos os sistemas complexos:
+
+\begin{description}
+
+  \item[Comportamento coletivo complexo.] Apesar de serem compostos por
+  elementos bastante simples individualmente, sistemas complexos podem exibir
+  comportamentos coletivos bastante sofisticados, que são imprevisíveis se
+  considerada unicamente a análise do comportamento individual de seus
+  componentes.
+
+  \item[Troca de sinais e processamento de informação.] Em cada um destes
+  sistemas, seus componentes individuais consomem e produzem informação entre
+  si. Parte do comportamento do sistema envolve transformação dessa informação
+  que, em alguns casos, pode até ser considerada como uma forma de computação.
+
+  %De fato, o conhecimento existente sobre colônias de formigas e sobre o
+  %funcionamento do cérebro humano inspiraram respectivamente os algoritmos de
+  %colônias de formigas e as redes neurais artificiais, dois exemplos de
+  %técnicas algorı́tmicas inspiradas em sistemas naturais.
+
+  \item[Adaptação.] Sistemas complexos adaptam-se a novas situações de forma a
+  aumentar suas chances de sobrevivência diante de novas condições em seu
+  ambiente.
+
+\end{description}
+
+Os sistemas complexos podem naturais ou artificiais, uma colônia de formigas
+por exemplo pode ser caracterizado como um sistema complexo natural, onde
+individualmente cada formiga se apresenta como criatura relativamente simples,
+com instintos básicos como procurar alimento, responder a estímulos químicos
+vindos de outras formigas, combater intrusos, etc. No entanto, quando
+observadas coletivamente em uma colônia, as formigas aparentam ser muito mais
+sofisticadas. Elas são capazes de se organizar em diferentes atividades, criar
+estruturas complexas dentro de seu formigueiro, e de encontrar o caminho mais
+curto para uma fonte de alimento.
+
+Os sistemas naturais são aqueles cuja constituição não tem participação humana.
+Sistemas artificiais são projetados por humanos, com objetivos e funções
+definidos.  Sistemas artificiais podem ou não serem projetados à imagem de um
+sistema natural, e durante a sua concepção eles são discutidos em termos tanto
+de suas características (o que eles são) como de necessidades que eles devem
+satisfazer (o que eles deveriam ser) \cite{Simon1996}.
+
+A partir desta definição podemos caracterizar sistemas de software como um
+sistema complexo artificial.
+
+Primeiro, sistemas de software exibem comportamento coletivo complexo. Sistemas
+de software são compostos por componentes, em geral chamados de módulos, que
+possuem tanto estado quanto comportamento próprios. Em geral, módulos
+individuais de um sistema de software são simples quando comparados com o
+sistema como um todo e, certamente, é mais fácil de entender o comportamento de
+um módulo do que o de todo o sistema de software. Os módulos são compostos para
+formar um sistema cujo comportamento é bastante sofisticado em relação ao
+comportamento individual de seus componentes.
+
+Segundo, sistemas de software exibem trocas de sinais e processamento de informação.
+Módulos produzem informação para outros módulos através de parâmetros em chamadas
+de sub-rotinas e consomem informação através dos valores de retornos das chamadas
+realizadas a sub-rotinas de outros módulos e dos parâmetros de suas próprias sub-rotinas
+quando estas são invocadas por outros módulos.
+
+Por último, sistemas de software de fato passam por adaptação para se adequar a
+mudanças em seu ambiente. O fluxo contínuo de novos requisitos e de mudanças no
+ambiente operacional de sistemas de software força-os a se manter em constante
+evolução em busca de “sobrevivência”. Sistemas de software, no entanto, se
+diferenciam dos sistemas complexos naturais pelo fato de serem projetados;
+consequentemente, o seu processo evolucionário não é intrinsecamente parte do
+seu comportamento, mas fruto da ação consciente de seus desenvolvedores.
+
+É importante ressaltar que esta caracterização de sistemas de software como
+sistemas complexos diz respeito à estrutura interna dos sistemas, ou seja, aos
+componentes que o constituem e ao relacionamento entre estes componentes. Não
+foram considerados outros aspectos importantes de sistemas complexos, como por
+exemplo o seu relacionamento com o ambiente externo.
+
+A complexidade de um sistema de software pode ser de três tipos: a complexidade
+do problema, a complexidade procedural, e a complexidade do projeto do sistema.
+Esta última é o foco deste trabalho.
+A complexidade do problema está relacionada ao domínio do problema.
+A complexidade procedural está relacionada à estrutura lógica da programa, em es-
+pecial do seu comprimento, em termos de número de tokens, linhas de código fonte, ou
+estruturas de controle. Este último tipo é o que iremos estudar neste trabalho.
+
+\cite{Tegarden1995}
+
+"The implication of this result is that, when
+designing, implementing, and maintaining software to control complexity, both coupling and cohesion should be considered jointly,
+instead of independently" Darcy 2005
 
 Many studies have demonstrated a significant correlation between
 LOC and the cyclomatic number. The researchers usually suggest that
