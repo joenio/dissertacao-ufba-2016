@@ -711,29 +711,32 @@ estrutural média entre todos os módulos do sistema.
 
 \subsection{Complexidade estrutural} \label{complexidade}
 
+Dentre as métricas apresentadas temos um interesse especial na métrica de
+complexidade estrutural SC ({\it Structural Complexity}), uma medida da
+complexidade de projetos de sistema de software proposta por
+\citeonline{Darcy2005} como indicador da complexidade dos sistemas de software
+em relação à sua estrutura interna e ao relacionamento entre os seus
+componentes.
+
+No entando, complexidade é um tema bastante amplo, e para compreender onde os
+sistemas de softwares se encaixam neste contexto precisamos definir brevemente
+o que vem a ser sistemas complexos.
+
 Sistemas complexos são sistemas no qual grandes redes de componentes sem
-controle central e regras simples de operação dão origem a um comportamento
-coletivo complexo, com processamento sofisticado de informação, e adaptação através
-de aprendizado ou evolução \cite{Mitchell2009}. As seguintes características
-são comuns a todos os sistemas complexos:
+controle central dão origem a um comportamento
+coletivo complexo, com processamento sofisticado de informação, e adaptação
+através de aprendizado ou evolução \cite{Mitchell2009}. As seguintes
+características são comuns a todos os sistemas complexos:
 
 \begin{description}
 
   \item[Comportamento coletivo complexo.] Apesar de serem compostos por
   elementos bastante simples individualmente, sistemas complexos podem exibir
-  comportamentos coletivos bastante sofisticados, que são imprevisíveis se
-  considerada unicamente a análise do comportamento individual de seus
-  componentes.
+  comportamentos coletivos bastante sofisticados.
 
   \item[Troca de sinais e processamento de informação.] Em cada um destes
   sistemas, seus componentes individuais consomem e produzem informação entre
-  si. Parte do comportamento do sistema envolve transformação dessa informação
-  que, em alguns casos, pode até ser considerada como uma forma de computação.
-
-  %De fato, o conhecimento existente sobre colônias de formigas e sobre o
-  %funcionamento do cérebro humano inspiraram respectivamente os algoritmos de
-  %colônias de formigas e as redes neurais artificiais, dois exemplos de
-  %técnicas algorı́tmicas inspiradas em sistemas naturais.
+  si. Parte do comportamento do sistema envolve transformação dessa informação.
 
   \item[Adaptação.] Sistemas complexos adaptam-se a novas situações de forma a
   aumentar suas chances de sobrevivência diante de novas condições em seu
@@ -741,86 +744,81 @@ são comuns a todos os sistemas complexos:
 
 \end{description}
 
-Os sistemas complexos podem naturais ou artificiais, uma colônia de formigas
-por exemplo pode ser caracterizado como um sistema complexo natural, onde
-individualmente cada formiga se apresenta como criatura relativamente simples,
-com instintos básicos como procurar alimento, responder a estímulos químicos
-vindos de outras formigas, combater intrusos, etc. No entanto, quando
-observadas coletivamente em uma colônia, as formigas aparentam ser muito mais
-sofisticadas. Elas são capazes de se organizar em diferentes atividades, criar
-estruturas complexas dentro de seu formigueiro, e de encontrar o caminho mais
-curto para uma fonte de alimento.
+Os sistemas complexos podem ser classificados como naturais ou artificiais, os
+sistemas naturais são aqueles cuja constituição não tem participação humana, ao
+contrário dos sistemas artificiais que são projetados por humanos, com
+objetivos e funções previamente definidos \cite{Simon1996}.
 
-Os sistemas naturais são aqueles cuja constituição não tem participação humana.
-Sistemas artificiais são projetados por humanos, com objetivos e funções
-definidos.  Sistemas artificiais podem ou não serem projetados à imagem de um
-sistema natural, e durante a sua concepção eles são discutidos em termos tanto
-de suas características (o que eles são) como de necessidades que eles devem
-satisfazer (o que eles deveriam ser) \cite{Simon1996}.
+Neste sentido, sistemas de software podem ser caracterizados como sistemas
+complexos artificiais. Pois, exibem comportamento coletivo complexo, realizam
+trocas de sinais e processamento de informação e passam por adaptação para se
+adequar a mudanças em seu ambiente.
 
-A partir desta definição podemos caracterizar sistemas de software como um
-sistema complexo artificial.
+Sistemas de software são compostos por componentes, em geral chamados de
+módulos, que possuem tanto estado quanto comportamento próprios. Em geral,
+módulos individuais de um sistema de software são simples quando comparados com
+o sistema como um todo. Módulos produzem informação para outros módulos
+através de parâmetros em chamadas de sub-rotinas e consomem informação através
+dos valores de retornos destas chamadas. O fluxo contínuo de novos requisitos e
+de mudanças no ambiente operacional de sistemas de software força-os a se
+manter em constante evolução em busca de “sobrevivência”.
 
-Primeiro, sistemas de software exibem comportamento coletivo complexo. Sistemas
-de software são compostos por componentes, em geral chamados de módulos, que
-possuem tanto estado quanto comportamento próprios. Em geral, módulos
-individuais de um sistema de software são simples quando comparados com o
-sistema como um todo e, certamente, é mais fácil de entender o comportamento de
-um módulo do que o de todo o sistema de software. Os módulos são compostos para
-formar um sistema cujo comportamento é bastante sofisticado em relação ao
-comportamento individual de seus componentes.
+Esta medida é, possivelmente, um indicativo de problemas na manutenibilidade de
+sistemas de software, em especial sobre o esforço necessário para atividades de
+manutenção \cite{Terceiro2012}. Ela está relacionada a como os módulos de um
+programa estão organizados bem como à estrutura interna de cada módulo. Esta
+métrica pode dar indícios importantes sobre características arquiteturais de um
+programa de software e pode explicar seus atributos de qualidade interna.
 
-Segundo, sistemas de software exibem trocas de sinais e processamento de informação.
-Módulos produzem informação para outros módulos através de parâmetros em chamadas
-de sub-rotinas e consomem informação através dos valores de retornos das chamadas
-realizadas a sub-rotinas de outros módulos e dos parâmetros de suas próprias sub-rotinas
-quando estas são invocadas por outros módulos.
-
-Por último, sistemas de software de fato passam por adaptação para se adequar a
-mudanças em seu ambiente. O fluxo contínuo de novos requisitos e de mudanças no
-ambiente operacional de sistemas de software força-os a se manter em constante
-evolução em busca de “sobrevivência”. Sistemas de software, no entanto, se
-diferenciam dos sistemas complexos naturais pelo fato de serem projetados;
-consequentemente, o seu processo evolucionário não é intrinsecamente parte do
-seu comportamento, mas fruto da ação consciente de seus desenvolvedores.
-
-É importante ressaltar que esta caracterização de sistemas de software como
-sistemas complexos diz respeito à estrutura interna dos sistemas, ou seja, aos
-componentes que o constituem e ao relacionamento entre estes componentes. Não
-foram considerados outros aspectos importantes de sistemas complexos, como por
-exemplo o seu relacionamento com o ambiente externo.
-
-A complexidade de um sistema de software pode ser de três tipos: a complexidade
-do problema, a complexidade procedural, e a complexidade do projeto do sistema.
-Esta última é o foco deste trabalho.
-A complexidade do problema está relacionada ao domínio do problema.
-A complexidade procedural está relacionada à estrutura lógica da programa, em es-
-pecial do seu comprimento, em termos de número de tokens, linhas de código fonte, ou
-estruturas de controle. Este último tipo é o que iremos estudar neste trabalho.
-
-\cite{Tegarden1995}
-
-"The implication of this result is that, when
-designing, implementing, and maintaining software to control complexity, both coupling and cohesion should be considered jointly,
-instead of independently" Darcy 2005
-
-Many studies have demonstrated a significant correlation between
-LOC and the cyclomatic number. The researchers usually suggest that
-this correlation proves that cyclomatic number increases with size; that
-is, larger code is more complex code. However, careful interpretation of
-the measures and their association reveals only that the number of deci-
-sions increases with code length, a far less profound conclusion. The cyclo-
-matic number may be just another size measure. Chapter 9 contains more
-detailed discussion of validation for the McCabe measures.
-
-A complexidade estrutural (SC - Structural Complexity) de um programa é uma
-medida calculada através da combinação das métricas de acoplamento (CBO) e
-coesão (LCOM4). Esta medida é, possivelmente, um indicativo de problemas na
-manutenibilidade de sistemas de software, em especial sobre o esforço
-necessário para atividades de manutenção \cite{Terceiro2012}. Ela está
-relacionada a como os módulos de um programa estão organizados bem como à
-estrutura interna de cada módulo.
-
-Esta métrica pode dar indícios importantes sobre características arquiteturais
-de um programa de software e pode explicar seus atributos de qualidade
-interna.
+%A complexidade de um sistema de software pode ser de três tipos: a complexidade
+%do problema, a complexidade procedural, e a complexidade do projeto do sistema.
+%Esta última é o foco deste trabalho.
+%A complexidade do problema está relacionada ao domínio do problema.
+%A complexidade procedural está relacionada à estrutura lógica da programa, em es-
+%pecial do seu comprimento, em termos de número de tokens, linhas de código fonte, ou
+%estruturas de controle. Este último tipo é o que iremos estudar neste trabalho.
+%
+%Os sistemas complexos podem naturais ou artificiais, uma colônia de formigas
+%por exemplo pode ser caracterizado como um sistema complexo natural, onde
+%individualmente cada formiga se apresenta como criatura relativamente simples,
+%com instintos básicos como procurar alimento, responder a estímulos químicos
+%vindos de outras formigas, combater intrusos, etc. No entanto, quando
+%observadas coletivamente em uma colônia, as formigas aparentam ser muito mais
+%sofisticadas. Elas são capazes de se organizar em diferentes atividades, criar
+%estruturas complexas dentro de seu formigueiro, e de encontrar o caminho mais
+%curto para uma fonte de alimento.
+%
+%Os sistemas naturais são aqueles cuja constituição não tem participação humana.
+%Sistemas artificiais são projetados por humanos, com objetivos e funções
+%definidos.  Sistemas artificiais podem ou não serem projetados à imagem de um
+%sistema natural, e durante a sua concepção eles são discutidos em termos tanto
+%de suas características (o que eles são) como de necessidades que eles devem
+%satisfazer (o que eles deveriam ser) \cite{Simon1996}.
+%
+%É importante ressaltar que esta caracterização de sistemas de software como
+%sistemas complexos diz respeito à estrutura interna dos sistemas, ou seja, aos
+%componentes que o constituem e ao relacionamento entre estes componentes. Não
+%foram considerados outros aspectos importantes de sistemas complexos, como por
+%exemplo o seu relacionamento com o ambiente externo.
+%
+%como uma combinação das métricas de acoplamento (CBO) e coesão (LCOM4), 
+%
+%Sistemas de software, no entanto, se
+%diferenciam dos sistemas complexos naturais pelo fato de serem projetados;
+%consequentemente, o seu processo evolucionário não é intrinsecamente parte do
+%seu comportamento, mas fruto da ação consciente de seus desenvolvedores.
+%
+%\cite{Tegarden1995}
+%
+%"The implication of this result is that, when
+%designing, implementing, and maintaining software to control complexity, both coupling and cohesion should be considered jointly,
+%instead of independently" Darcy 2005
+%
+%Many studies have demonstrated a significant correlation between
+%LOC and the cyclomatic number. The researchers usually suggest that
+%this correlation proves that cyclomatic number increases with size; that
+%is, larger code is more complex code. However, careful interpretation of
+%the measures and their association reveals only that the number of deci-
+%sions increases with code length, a far less profound conclusion. The cyclo-
+%matic number may be just another size measure. Chapter 9 contains more
+%detailed discussion of validation for the McCabe measures.
