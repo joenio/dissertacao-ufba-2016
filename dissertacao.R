@@ -13,12 +13,11 @@ metric_by_project <- function(metric) {
   inputtracer = metrics["inputtracer", metric]
   jastadd = metrics["jastadd", metric]
   sonarqubeplugin = metrics["sonarqube-plugin", metric]
-  # está dando erro de sintaxe no R ao ler o arquivo .dat
-  #simplicissimus =
+  simplicissimus = metrics["simplicissimus", metric]
   srcml = metrics["srcml", metric]
   tacle = metrics["tacle", metric]
   wala = metrics["wala", metric]
-  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, simplicissimus, srcml, tacle, wala)
   return(table)
 }
 
@@ -78,12 +77,11 @@ percentis_by_project <- function(metric) {
   inputtracer = percentis_for_metric(metric, "dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
   jastadd = percentis_for_metric(metric, "dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
   sonarqubeplugin = percentis_for_metric(metric, "dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
-  # está dando erro de sintaxe no R ao ler o arquivo .dat
-  #simplicissimus = percentis_for_metric(metric, "dataset/PAPERS/simplicissimus/Simplicissimus.analizo.metrics.dat")
+  simplicissimus = percentis_for_metric(metric, "dataset/PAPERS/simplicissimus/Simplicissimus.analizo.metrics.dat")
   srcml = percentis_for_metric(metric, "dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
-  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, simplicissimus, srcml, tacle, wala)
   return(table)
 }
 
@@ -185,6 +183,7 @@ histograma <- function(metric, caption) {
   inputtracer = read.table("dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
   jastadd = read.table("dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
   sonarqubeplugin = read.table("dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
+  simplicissimus = read.table("dataset/PAPERS/simplicissimus/Simplicissimus.analizo.metrics.dat")
   srcml = read.table("dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = read.table("dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = read.table("dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
@@ -203,7 +202,7 @@ histograma <- function(metric, caption) {
   uno = read.table("dataset/NIST/uno/uno.analizo.metrics.dat")
   wap = read.table("dataset/NIST/wap/wap-2.1.analizo.metrics.dat")
 
-  x = c(accessanalysis[,metric], ejb[,metric], errorprone[,metric], indus[,metric], inputtracer[,metric], jastadd[,metric], sonarqubeplugin[,metric], srcml[,metric], tacle[,metric], wala[,metric], closure[,metric], cppcheck[,metric], cqual[,metric], findbugs[,metric], findsecuritybugs[,metric], jlint[,metric], pixy[,metric], pmd[,metric], rats[,metric], smatch[,metric], splint[,metric], uno[,metric], wap[,metric])
+  x = c(accessanalysis[,metric], ejb[,metric], errorprone[,metric], indus[,metric], inputtracer[,metric], jastadd[,metric], sonarqubeplugin[,metric], simplicissimus[,metric], srcml[,metric], tacle[,metric], wala[,metric], closure[,metric], cppcheck[,metric], cqual[,metric], findbugs[,metric], findsecuritybugs[,metric], jlint[,metric], pixy[,metric], pmd[,metric], rats[,metric], smatch[,metric], splint[,metric], uno[,metric], wap[,metric])
 
   nonzeros = x[x > 0 & x < 500]
   h = hist(nonzeros, main=metric, xlab="valor", ylab="frequência")
