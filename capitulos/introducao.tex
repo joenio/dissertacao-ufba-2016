@@ -17,6 +17,17 @@ especialmente na observação de atributos de qualidade através do monitorament
 de aspectos qualidade, como por exemplo as métricas de código-fonte, isto pode
 ser notado pelo uso crescente de ferramentas de análise estática em ...
 
+% The Detailed Research Methodology which you intend to employ. 
+% The methodology section should discuss what methods you are going to use in order 
+% to address the research objectives of your dissertation. 
+% You need to justify why the chosen methods were selected as the most appropriate 
+% for your research, amongst the many alternative ones, given its specific objectives, 
+% and constraints you may face in terms of access, time and so on. 
+% Reference to general advantages and disadvantages of various methods and techniques 
+% without specifying their relevance to your choice decision is unacceptable. 
+% Remember to relate the methods back to the needs of your research question. 
+
+
 % Problema. 
 \section{Problema}
 % Uma maneira de evidenciar a contribuição do trabalho é 
@@ -58,6 +69,82 @@ não apenas em usar, mas também em manter e evoluir tais ferramentas.
 
 Em tal contexto, surge o problema de identificar, medir e analisar fatores
 técnicos que influenciam na manutenção de uma ferramenta de análise estática. 
+
+\citeonline{Meirelles2013} apresenta argumentos para se observar a qualidade
+do software através das métricas de código-fonte, associa qualidade do
+software à qualidade do código. Afirma que uma maneira objetiva de se observar
+as características de um código-fonte é analisando os valores de suas métricas
+e alerta para o pouco uso de métricas por parte dos desenvolvedores no ciclo
+de desenvolvimento, ele indica que um dos motivos desta sub-utilização
+é a falta de conhecimento de como coletar automaticamente
+os valores das métricas, interpretar os seus resultados e os associar à
+qualidade do código-fonte. Assim, desenvolveu uma abordagem para identificar
+valores de métricas de forma a servirem como referência para projetos futuros,
+onde analisa estatísticamente a correlação entre as métricas e define um
+subconjunto reduzido que podem ser monitoradas ao longo do tempo e
+ainda oferecer uma boa visão do projeto.
+
+\citeonline{Terceiro2010} chamam a atenção para a importância de medir e
+compreender aspectos de qualidade interna de software, uma vez que tais
+questões impactam fortemente em atividades de evolução e manutenção. Eles
+afirmam que quanto menor a qualidade de código-fonte, maior será o esforço de
+mantê-lo. Uma das formas de medir qualidade interna é em função da
+complexidade estrutural, uma medida que leva em conta a relação entre o
+acoplamento e coesão dos módulos de um programa.
+
+Complexidade estrutural representa um aspecto arquitetural importante e envolve
+tanto a organização interna dos módulos quanto a relação entre eles. Uma alta
+complexidade estrutural faz projetos de software mais difíceis de entender, e
+por isto mesmo, mais difíceis de manter e evoluir.
+
+Não podemos perder de vista, no entanto, que projetos diferentes são
+influenciados por fatores diferentes, de forma que a observação dos aspectos
+de qualidade interna devem ser observados e interpretados separadamente por
+projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
+aplicação \cite{Meirelles2013}.
+
+O domínio de aplicação análise estática, por exemplo, carece de observação
+detalhada sobre aspectos de qualidade interna de suas ferramentas, a
+área tem se desenvolvido rapidamente com novos métodos, técnicas e ferramentas
+para os mais diversos fins, no entanto a comparação e avaliação de técnicas e ferramentas
+não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem
+estudos avaliando ferramentas de análise estática de código-fonte, poucos
+fazem isso do ponto de vista de vista de sua qualidade interna.
+
+Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
+de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
+nos resultados. \citeonline{Kratkiewicz2005} avalia cinco ferramentas de
+análise estática para determinar seus pontos fortes e fracos em detecção de
+falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
+de ferramentas de segurança com objetivo de identificar se estas ferramentas
+melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008}
+avaliam três ferramentas de análise estática da indústria com o objetivo de
+mapear funcionalidades significativas destas ferramentas, normalmente não
+fornecidas por compiladores normais. \citeonline{Wedyan2009} avaliaram três
+ferramentas para verificar a efetividade de detectar falhas e predizer
+refatorações. \citeonline{Mantere2009} compararam três ferramentas de análise
+estática de código-fonte em relação à performance e dão subsídios para apoiar
+tomada de decisão sobre seleção de ferramentas de análise estática.
+\citeonline{Al2010} avaliaram quatro ferramentas de análise estática em
+relação à capacidade de detectar bugs em programas concorrentes em Java e
+responde se ferramentas comerciais são melhores que ferramentas {\it open
+source}. \citeonline{Li2010} comparam sete diferentes ferramentas de análise
+estática com foco em detecção de vulnerabilidades, comparando suas
+caracteristicas através de um experimento. \citeonline{Johns2011} avaliaram a
+qualidade de ferramentas de análise estática de segurança a partir de uma
+série de critérios. \citeonline{Alemerien2013} avaliaram duas ferramentas de
+análise estática para cálculo de métricas com objetivo de entender as
+diferenças nos resultados de cada uma. \citeonline{Ataide2014} analisa os
+resultados gerados por três ferramentas de análise estática que podem ser
+eficientemente usadas por programadores para remover vulnerabilidades comuns
+em programas.
+
+Dentre estes estudos, a grande maioria realiza avaliação ou comparação de
+ferramentas de análise estática de código-fonte levando em conta aspectos e
+características de qualidade externa, o que nos leva a entender que estudos
+que joguem luz sobre aspectos da qualidade interna neste domínio de aplicação
+são requeridos do ponto de vista principalmente dos desenvolvedores
+interessados em atividades de manutenção e evolução.
 
 \section{Relevância}
 % ABAIXO: por que vale a pena tratar analisador estático
@@ -120,6 +207,12 @@ vista de sua manutenabilidade, a partir da análise de sua complexidade
 estrutural, discutindo quais características arquiteturais explicam seus
 atributos de qualidade interna.
 
+O objetivo principal deste trabalho é compreender as ferramentas de software
+para análise estática de código-fonte, de forma à interpretar suas
+características de qualidade interna a fim de servirem como referência para
+desenvolvedores em atividades de evolução e manutenção em ferramentas deste
+mesmo domínio.
+
 % Objectives
 \section{Objetivos específicos}
 
@@ -138,6 +231,44 @@ São objetivos específicos deste trabalho:
   \item Calcular a distância Euclidiana entre valores de referência e os
     valores das ferramentas estudadas.
 \end{itemize}
+
+\section{Hipóteses} \label{hipoteses}
+
+Para responder a questão colocada acima, definimos as seguintes hipóteses:
+
+\begin{enumerate}
+  \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
+    de código-fonte para ferramentas de análise estática a partir de um
+    conjunto de softwares da academia e da indústria.}
+  \item[{\bf H2:}] {\em Ferramentas de análise estática tendem a ter uma
+    maior complexidade estrutural do que ferramentas de outros domínios de
+    aplicação.}
+  \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
+    código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
+    complexidade estrutural.}
+\end{enumerate}
+
+A hipótese {\bf H1} ({\em É possível calcular valores de referência de
+métricas de código-fonte para ferramentas de análise estática a partir de um
+conjunto de softwares da academia e da indústria}) será validada a partir da
+análise das métricas calculadas para cada uma das ferramentas estudadas.  Esta
+análise levará em consideração a caracterização das ferramentas
+(Seção~\ref{caracterizacao-das-ferramentas}), em especial, em um subconjunto
+de ferramentas com melhores valores de métricas.
+
+A hipótese {\bf H2} ({\em Ferramentas de análise estática tendem a ter uma
+maior complexidade estrutural do que ferramentas de outros domínios de
+aplicação}) será validada a partir da comparação com os trabalhos relacionados
+(Seção \ref{trabalhos-relacionados}) que realizaram estudos similares, com
+cálculo e distribuição de métricas, mas que utilizam como objeto de estudo
+conjuntos ferramentas de outros domínios de aplicação.
+
+A hipótese {\bf H3} ({\em Dentre as ferramentas de análise estática de
+código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
+complexidade estrutural}) será validada a partir do cálculo da distância das
+métricas de cada ferramenta com os valores de referências encontrados neste
+estudo (Seção \ref{distancia}).
+
 
 \section{Contribuições esperadas}
 
@@ -158,6 +289,30 @@ Lembrando que neste trabalho serão utilizadas métricas de produto,
 especificamente, métricas de código-fonte, que cobrem aspectos de tamanho,
 complexidade e qualidade.
 
+\subsection{Seleção de ferramentas de análise estática} \label{levantamento}
+
+A seleção de ferramentas de análise estática será realizada por meio de uma
+busca por ferramentas desenvolvidas no contexto da academia e da indústria,
+com base em critérios pré-definidos. Será feito um planejamento detalhado
+para realizar a seleção de ferramentas em cada um destes contextos.
+
+No contexto acadêmico, a busca por ferramentas será feita em artigos
+publicados em conferências que tenham histórico de publicação sobre
+ferramentas de análise estática de código-fonte.  Estes artigos serão
+analisados e aqueles com publicação de ferramenta serão selecionados.
+
+Na indústria, a busca por ferramentas será feita a partir da base mantida pelo
+projeto SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance
+Metrics and Tool Evaluation}, um projeto do NIST\footnote{http://nist.gov}
+dedicado ao desenvolvimento de métodos que permitam avaliar e medir a
+eficiência de ferramentas e técnicas sobre garantia de qualidade em software.
+O site do projeto, disponível em \citeonline{SamateAnalysers}, mantém uma lista
+de ferramentas de análise estática.
+
+As ferramentas selecionadas serão avaliadas, com extração de
+seus atributos de qualidade interna a partir do cálculo de suas métricas de
+código-fonte.
+
 \section{Estrutura do texto} 
 
 O capítulo \ref{fundamentacao} apresenta conceitos sobre análise estática e
@@ -166,3 +321,11 @@ métricas de código-fonte necessários para compreensão do trabalho. O capítu
 planejamento sobre a coleta e análise dos dados
 e o cronograma do estudo. O capítulo \ref{conclusoes} traz a
 discussão e interpretação dos dados e apresenta os próximos passos do estudo.
+
+A seção \ref{trabalhos-relacionados} traz trabalhos relacionados à compreensão
+e observação de atributos de qualidade interna de programas. A seção
+\ref{hipoteses} detalha como as hipóteses serão testadas. A seção
+\ref{planejamento} descreve o planejamento de estudo e os passos iniciais de
+coleta de dados. A seção \ref{coleta} detalha a coleta de dados e a seção
+\ref{analise} traz informações de como estes dados serão analisados e
+interpretados.
