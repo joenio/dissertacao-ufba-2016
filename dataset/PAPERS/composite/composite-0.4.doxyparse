@@ -1,0 +1,2159 @@
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/composition/Composition.c
+module Composition.c
+   macro definition MAXNUMINST in line 7
+      protection public
+   variable enumEncoding in line 5
+      protection public
+   function removePrimes(MySet< char > *) in line 9
+      protection public
+      7 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable s defined in lcautocode.c
+      uses function MySet::insertElement(T *) defined in Set.h
+      uses function trimPrime(char *) defined in StringUtil.c
+   function changeDomaintoRange(Node *) in line 17
+      protection public
+      17 lines of code
+      1 parameters
+      5 conditional paths
+      uses function Node::getNumChild() defined in Node.h
+      uses function Node::getChild(int) defined in Node.h
+      uses function Node::isVariable() defined in Node.h
+      uses function addPrime(char *) defined in StringUtil.c
+      uses function Variable::getName() defined in Formula.h
+      uses function Variable::setName(char *) defined in Formula.h
+   function printVariables(Node *) in line 36
+      protection public
+      16 lines of code
+      1 parameters
+      5 conditional paths
+      uses function Node::getNumChild() defined in Node.h
+      uses function Node::getChild(int) defined in Node.h
+      uses function Node::isVariable() defined in Node.h
+      uses function Variable::getName() defined in Formula.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/composition/Composition.h
+module Composition.h
+   enumeration booleanType in line 17
+      protection public
+   enumvalue Unknown in line 17
+      protection public
+   enumvalue True in line 17
+      protection public
+   enumvalue False in line 17
+      protection public
+   variable SingleRenaming::newName in line 35
+   variable SingleRenaming::oldName in line 34
+   variable SingleRenaming::open in line 37
+   variable SingleRenaming::Type in line 36
+   variable Renaming::renamingList in line 53
+   variable Action::modulePtr in line 79
+   variable Action::name in line 77
+   variable Action::Transition in line 76
+   variable Action::TransitionFormula in line 75
+   variable Action::typedesc in line 78
+   variable Module::actions in line 142
+   variable Module::flattenedTransition in line 141
+   variable Module::initial in line 134
+   variable Module::initialFormula in line 137
+   variable Module::instanceNo in line 146
+   variable Module::ismain in line 144
+   variable Module::localVar in line 147
+   variable Module::markingForParamInst in line 150
+   variable Module::modules in line 143
+   variable Module::parameterizedFormula in line 139
+   variable Module::parameterizedInst in line 149
+   variable Module::parameters in line 148
+   variable Module::restrict in line 135
+   variable Module::restrictFormula in line 138
+   variable Module::spec in line 136
+   variable Module::specFormula in line 140
+   variable Module::upperLevel in line 145
+   variable SpecificationSystem::allActions in line 209
+   variable SpecificationSystem::domainPtr in line 204
+   variable SpecificationSystem::domainVar in line 203
+   variable SpecificationSystem::mainModule in line 207
+   variable SpecificationSystem::modules in line 206
+   variable SpecificationSystem::rangePtr in line 205
+   variable SpecificationSystem::renameTable in line 202
+   variable SpecificationSystem::typedesc in line 208
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/Action.c
+module Action.c
+   function KeepSame(MySet< ID_symtable_entry > *,MySet< char > *,HashTable *) in line 176
+      protection public
+      98 lines of code
+      3 parameters
+      1 conditional paths
+      uses function MySet::getElements() defined in Set.h
+      uses function LinkedList::getCurrent() defined in LinkedList.h
+      uses function Term::setTermType(termType) defined in Formula.h
+      uses function ID_symtable_entry::getType() defined in SymbolTable.h
+      uses enumvalue enumerated defined in Node.h
+      uses function Variable::setEnumConstants(char **,int) defined in Formula.h
+      uses function ID_symtable_entry::getEnumList() defined in SymbolTable.h
+      uses function Variable::setName(char *) defined in Formula.h
+      uses function addPrime(char *) defined in StringUtil.c
+      uses function Node::setOperator(opType) defined in Node.h
+      uses enumvalue eqOp defined in Node.h
+      uses function Node::setChild(Node *,int) defined in Node.h
+      uses function Node::getSymbolicType() defined in Node.h
+      uses function Node::setSymbolicType(symbolicType) defined in Node.h
+      uses enumvalue compType defined in Node.h
+      uses function LinkedList::next() defined in LinkedList.h
+      uses function LinkedList::hasMore() defined in LinkedList.h
+      uses enumvalue andOp defined in Node.h
+   function getType(char *,MID_symtable_entry *,HashTable *,termType &,int &) in line 276
+      protection public
+      55 lines of code
+      5 parameters
+      1 conditional paths
+      uses variable Identifier::name defined in Action.h
+      uses enumvalue enumerated defined in Node.h
+      uses function concatenate(char *,char *) defined in StringUtil.c
+      uses function symtable_entry::getName() defined in SymbolTable.h
+      uses function symtable_entry::getSymType() defined in SymbolTable.h
+      uses enumvalue idType defined in SymbolTable.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/Action.h
+module Action.h
+   function KeepSame(MySet< ID_symtable_entry > *,MySet< char > *,HashTable *) in line 82
+      protection public
+      98 lines of code
+      3 parameters
+      11 conditional paths
+      uses function MySet::getElements() defined in Set.h
+      uses function LinkedList::getCurrent() defined in LinkedList.h
+      uses function Term::setTermType(termType) defined in Formula.h
+      uses function ID_symtable_entry::getType() defined in SymbolTable.h
+      uses enumvalue enumerated defined in Node.h
+      uses function Variable::setEnumConstants(char **,int) defined in Formula.h
+      uses function ID_symtable_entry::getEnumList() defined in SymbolTable.h
+      uses function Variable::setName(char *) defined in Formula.h
+      uses function addPrime(char *) defined in StringUtil.c
+      uses function Node::setOperator(opType) defined in Node.h
+      uses enumvalue eqOp defined in Node.h
+      uses function Node::setChild(Node *,int) defined in Node.h
+      uses function Node::getSymbolicType() defined in Node.h
+      uses function Node::setSymbolicType(symbolicType) defined in Node.h
+      uses enumvalue compType defined in Node.h
+      uses function LinkedList::next() defined in LinkedList.h
+      uses function LinkedList::hasMore() defined in LinkedList.h
+      uses enumvalue andOp defined in Node.h
+   function getType(char *,MID_symtable_entry *,HashTable *,termType &,int &) in line 84
+      protection public
+      55 lines of code
+      5 parameters
+      7 conditional paths
+      uses variable Identifier::name defined in Action.h
+      uses enumvalue enumerated defined in Node.h
+      uses function concatenate(char *,char *) defined in StringUtil.c
+      uses function symtable_entry::getName() defined in SymbolTable.h
+      uses function symtable_entry::getSymType() defined in SymbolTable.h
+      uses enumvalue idType defined in SymbolTable.h
+   variable Vtype::type in line 26
+   variable CompositionExp::issynchronized in line 42
+   variable Identifier::ismodule in line 64
+   variable Identifier::name in line 63
+   variable Identifier::parameterized in line 66
+   variable Identifier::parameters in line 65
+   variable QuantifiedVar::type in line 79
+   variable QuantifiedVar::varname in line 78
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/main.c
+module main.c
+   variable CLK_TCK in line 24
+      protection public
+   variable parameterizedModule in line 27
+      protection public
+   variable yyin in line 28
+      protection public
+   variable predin in line 29
+      protection public
+   variable typedescriptor in line 31
+      protection public
+   variable numBasicTypes in line 34
+      protection public
+   variable basicTypes in line 35
+      protection public
+   variable Variables in line 36
+      protection public
+   variable VariableNames in line 37
+      protection public
+   variable mainInitialExp in line 38
+      protection public
+   variable transExp in line 39
+      protection public
+   variable mainRestrictExp in line 40
+      protection public
+   variable mainSpecExp in line 41
+      protection public
+   variable System in line 42
+      protection public
+   variable mainModulePtr in line 43
+      protection public
+   variable symbolTable in line 44
+      protection public
+   variable startHeap in line 88
+      protection public
+   function printModule(Module *,int) in line 21
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function predparse() in line 30
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function init() in line 32
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function yyparse() in line 33
+      protection public
+      1 lines of code
+      0 parameters
+      1 conditional paths
+   function printUsage(FILE *,char **) in line 46
+      protection public
+      41 lines of code
+      2 parameters
+      1 conditional paths
+   function main(int,char **) in line 89
+      protection public
+      283 lines of code
+      2 parameters
+      59 conditional paths
+      uses variable TransSys::startTime defined in TransSys.h
+      uses variable startHeap defined in main.c
+      uses variable Symbolic::verbose defined in Symbolic.h
+      uses variable TransSys::verbose defined in TransSys.h
+      uses variable TransSys::counterExample defined in TransSys.h
+      uses variable TransSys::noVerification defined in TransSys.h
+      uses variable TransSys::basis defined in TransSys.h
+      uses variable TransSys::approximate defined in TransSys.h
+      uses variable TransSys::wideningSeed defined in TransSys.h
+      uses variable TransSys::widen defined in TransSys.h
+      uses variable TransSys::boundValue defined in TransSys.h
+      uses variable CompSym::use_B_CFG defined in CompSym.h
+      uses variable TransSys::use_B_CFG defined in TransSys.h
+      uses variable CompSym::use_F_CFG defined in CompSym.h
+      uses variable TransSys::use_F_CFG defined in TransSys.h
+      uses variable CompSym::cfgBasicType defined in CompSym.h
+      uses variable CompSym::marking defined in CompSym.h
+      uses variable TransSys::marking defined in TransSys.h
+      uses variable Symbolic::intPolyhedra defined in Symbolic.h
+      uses variable Symbolic::intAutomata defined in Symbolic.h
+      uses variable Symbolic::intBdd defined in Symbolic.h
+      uses variable Symbolic::intBoolAutomata defined in Symbolic.h
+      uses variable TransSys::forwardFixpoint defined in TransSys.h
+      uses variable TransSys::loopClosure defined in TransSys.h
+      uses variable TransSys::simplifyLevel defined in TransSys.h
+      uses function printUsage(FILE *,char **) defined in main.c
+      uses variable yyin defined in main.c
+      uses function init() defined in main.c
+      uses function yyparse() defined in main.c
+      uses variable symbolTable defined in main.c
+      uses variable parameterizedModule defined in main.c
+      uses variable numBasicTypes defined in main.c
+      uses variable basicTypes defined in main.c
+      uses enumvalue intType defined in Node.h
+      uses enumvalue intPolyType defined in Node.h
+      uses enumvalue intAutoType defined in Node.h
+      uses enumvalue intBddType defined in Node.h
+      uses enumvalue boolType defined in Node.h
+      uses enumvalue intBoolAutoType defined in Node.h
+      uses variable typedescriptor defined in main.c
+      uses variable System defined in main.c
+      uses function SpecificationSystem::setTypeDescriptor(TypeDescriptor *) defined in Composition.h
+      uses function SpecificationSystem::RegisterVariables() defined in Composition.h
+      uses function SpecificationSystem::createSymbolicTransitionRelation() defined in Composition.h
+      uses function Symbolic::isEmpty() defined in Symbolic.h
+      uses function SpecificationSystem::createSymbolicInitialState() defined in Composition.h
+      uses enumvalue compType defined in Node.h
+      uses function SpecificationSystem::createSymbolicStateSpace() defined in Composition.h
+      uses function SpecificationSystem::createSymbolicStateSpaceRelation() defined in Composition.h
+      uses function SpecificationSystem::createCTLProperty() defined in Composition.h
+      uses function TransSys::verify(Node *) defined in TransSys.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/StringUtil.c
+module StringUtil.c
+   function trimDots(char *) in line 4
+      protection public
+      21 lines of code
+      1 parameters
+      1 conditional paths
+   function concatenate(char *,char *) in line 27
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable s defined in lcautocode.c
+   function concatenateSpecial(char *,char *) in line 35
+      protection public
+      28 lines of code
+      2 parameters
+      1 conditional paths
+   function compareSpecial(char *,char *) in line 65
+      protection public
+      7 lines of code
+      2 parameters
+      1 conditional paths
+      uses function trimDots(char *) defined in StringUtil.c
+   function Primed(char *) in line 74
+      protection public
+      6 lines of code
+      1 parameters
+      1 conditional paths
+   function trimPrefix(char *) in line 82
+      protection public
+      15 lines of code
+      1 parameters
+      1 conditional paths
+   function getPrefix(char *) in line 98
+      protection public
+      14 lines of code
+      1 parameters
+      1 conditional paths
+   function trimPrime(char *) in line 114
+      protection public
+      15 lines of code
+      1 parameters
+      1 conditional paths
+   function addPrime(char *) in line 131
+      protection public
+      13 lines of code
+      1 parameters
+      1 conditional paths
+   function isNumber(char *) in line 146
+      protection public
+      7 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable s defined in lcautocode.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/StringUtil.h
+module StringUtil.h
+   function concatenate(char *,char *) in line 23
+      protection public
+      4 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable s defined in lcautocode.c
+   function concatenateSpecial(char *,char *) in line 25
+      protection public
+      28 lines of code
+      2 parameters
+      6 conditional paths
+   function compareSpecial(char *,char *) in line 27
+      protection public
+      7 lines of code
+      2 parameters
+      1 conditional paths
+      uses function trimDots(char *) defined in StringUtil.c
+   function Primed(char *) in line 29
+      protection public
+      6 lines of code
+      1 parameters
+      2 conditional paths
+   function trimPrefix(char *) in line 31
+      protection public
+      15 lines of code
+      1 parameters
+      5 conditional paths
+   function trimPrime(char *) in line 33
+      protection public
+      15 lines of code
+      1 parameters
+      5 conditional paths
+   function addPrime(char *) in line 35
+      protection public
+      13 lines of code
+      1 parameters
+      1 conditional paths
+   function trimDots(char *) in line 37
+      protection public
+      21 lines of code
+      1 parameters
+      8 conditional paths
+   function getPrefix(char *) in line 39
+      protection public
+      14 lines of code
+      1 parameters
+      5 conditional paths
+   function isNumber(char *) in line 41
+      protection public
+      7 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable s defined in lcautocode.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/SymbolTable.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/SymbolTable.h
+module SymbolTable.h
+   enumeration symType in line 26
+      protection public
+   enumeration MIDType in line 28
+      protection public
+   enumeration id_type in line 30
+      protection public
+   enumvalue enumConstType in line 26
+      protection public
+   enumvalue midType in line 26
+      protection public
+   enumvalue idType in line 26
+      protection public
+   enumvalue constType in line 26
+      protection public
+   enumvalue ModuleName in line 28
+      protection public
+   enumvalue ActionName in line 28
+      protection public
+   enumvalue MacroName in line 28
+      protection public
+   enumvalue VARIABLE in line 30
+      protection public
+   enumvalue LABEL in line 30
+      protection public
+   enumvalue ENUM in line 30
+      protection public
+   variable symtable_entry::name in line 48
+   variable symtable_entry::Type in line 49
+   variable Enum_symtable_entry::capacity in line 72
+   variable Enum_symtable_entry::numSymbols in line 71
+   variable Enum_symtable_entry::symbols in line 70
+   variable ID_symtable_entry::enumlist in line 101
+   variable ID_symtable_entry::initialized in line 100
+   variable ID_symtable_entry::open in line 97
+   variable ID_symtable_entry::parameterized in line 96
+   variable ID_symtable_entry::type in line 98
+   variable MID_symtable_entry::actions in line 153
+   variable MID_symtable_entry::expression in line 143
+   variable MID_symtable_entry::formalParameters in line 154
+   variable MID_symtable_entry::includedModules in line 148
+   variable MID_symtable_entry::initialExpression in line 144
+   variable MID_symtable_entry::localVariables in line 151
+   variable MID_symtable_entry::midtype in line 150
+   variable MID_symtable_entry::parameterizedExpression in line 147
+   variable MID_symtable_entry::potentiallyQuantifiedVariables in line 140
+      protection public
+   variable MID_symtable_entry::restrictExpression in line 145
+   variable MID_symtable_entry::specExpression in line 146
+   variable MID_symtable_entry::upperLevel in line 152
+   variable HashTable::D in line 173
+   variable HashTable::ht in line 174
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/TypeInfo.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/TypeInfo.h
+   variable TypeInfo::enumConst in line 35
+   variable TypeInfo::name in line 33
+   variable TypeInfo::numEnumConst in line 36
+   variable TypeInfo::open in line 38
+   variable TypeInfo::Type in line 34
+   variable TypeInfo::typeAssigned in line 37
+   variable ListofTypeInfo::listFormal in line 62
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/parser/yylex.h
+module yylex.h
+   function yylex(void) in line 1
+      protection public
+      1 lines of code
+      1 parameters
+      1 conditional paths
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/BoolSym.c
+module BoolSym.c
+   variable CLK_TCK in line 8
+      protection public
+   variable startHeap in line 11
+      protection public
+   variable enumEncoding in line 13
+      protection public
+   function printMintermsRecursive(DdManager *,DdNode *,int *,char **,char **,int,int,EnumEncoding *,bool) in line 673
+      protection public
+      177 lines of code
+      9 parameters
+      43 conditional paths
+      uses enumvalue enumerated defined in Node.h
+      uses variable enumEncoding defined in BoolSym.c
+      uses function EnumEncoding::getEnumVariables() defined in Formula.h
+      uses function EnumEncoding::isEnumerated(char *) defined in Formula.h
+      uses function LinkedList::hasMore() defined in LinkedList.h
+      uses function LinkedList::next() defined in LinkedList.h
+      uses function LinkedList::getCurrent() defined in LinkedList.h
+      uses function EnumInfo::getInstantiationCount() defined in Formula.h
+      uses function EnumInfo::getEncodingLength() defined in Formula.h
+      uses function EnumInfo::getInstantiationForNthBit(int,int) defined in Formula.h
+      uses function EnumInfo::getNumSymbolsForEncoding(int,int *,bool) defined in Formula.h
+      uses function EnumInfo::getNumSymbols() defined in Formula.h
+      uses function EnumInfo::getStringForEncoding(int,int *,bool) defined in Formula.h
+      uses function addPrime(char *) defined in StringUtil.c
+   function printMinterms(DdManager *,DdNode *,char **,char **,int,EnumEncoding *,bool) in line 852
+      protection public
+      24 lines of code
+      7 parameters
+      5 conditional paths
+      uses function printMintermsRecursive(DdManager *,DdNode *,int *,char **,char **,int,int,EnumEncoding *,bool) defined in BoolSym.c
+      uses variable enumEncoding defined in BoolSym.c
+   function applyCountingAbstractionToMintermsRecursive(DdManager *,DdNode *,int *,char **,char **,int,int,CountingAbs *,bool,Symbolic *) in line 915
+      protection public
+      94 lines of code
+      10 parameters
+      12 conditional paths
+      uses function CountingAbs::getDomainVariables() defined in Formula.h
+      uses function CountingAbs::getNumDomainVariables() defined in Formula.h
+      uses function CountingAbs::getDomainAndRangeVariables() defined in Formula.h
+      uses function Primed(char *) defined in StringUtil.c
+      uses function CountingAbs::abstractMinterm(int *,int,bool) defined in Formula.h
+      uses function Node::print() defined in Node.h
+      uses function Symbolic::unionWith(Symbolic *) defined in Symbolic.h
+      uses function applyCountingAbstractionToMinterms(DdManager *,DdNode *,char **,char **,int,CountingAbs *,bool) defined in BoolSym.c
+   function applyCountingAbstractionToMinterms(DdManager *,DdNode *,char **,char **,int,CountingAbs *,bool) in line 1010
+      protection public
+      23 lines of code
+      7 parameters
+      5 conditional paths
+      uses function CountingAbs::getTautologyEncoding(bool) defined in Formula.h
+      uses enumvalue compType defined in Node.h
+      uses function applyCountingAbstractionToMintermsRecursive(DdManager *,DdNode *,int *,char **,char **,int,int,CountingAbs *,bool,Symbolic *) defined in BoolSym.c
+      uses function BoolSym::applyCountingAbstraction(CountingAbs *) defined in BoolSym.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/BoolSym.h
+   variable BoolSym::allVarNames in line 141
+   variable BoolSym::bdd in line 135
+   variable BoolSym::bddMgr in line 138
+   variable BoolSym::currentCube in line 143
+   variable BoolSym::currentStateVarNames in line 139
+   variable BoolSym::currentToNext in line 142
+   variable BoolSym::nextCube in line 144
+   variable BoolSym::nextStateVarNames in line 140
+   variable BoolSym::numVars in line 145
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/CompSym.c
+module CompSym.c
+   variable CLK_TCK in line 15
+      protection public
+   variable typedescriptor in line 18
+      protection public
+   variable startHeap in line 19
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/CompSym.h
+module CompSym.h
+   macro definition MAXBITSETLENGTH in line 24
+      protection public
+   variable GNode::myid in line 38
+   variable Graph::edges in line 55
+   variable Graph::numNodes in line 54
+   variable compAtom::atom in line 273
+   variable compAtom::backwardCFG in line 264
+      protection public
+   variable compAtom::backwardCFGTypeBased in line 266
+      protection public
+   variable compAtom::cfgNode in line 276
+   variable compAtom::forwardCFG in line 262
+      protection public
+   variable compAtom::forwardCFGTypeBased in line 267
+      protection public
+   variable compAtom::marked in line 274
+   variable compAtom::sourceBackward in line 283
+   variable compAtom::sourceBackwardTypeBased in line 288
+   variable compAtom::sourceForward in line 279
+   variable compAtom::sourceForwardTypeBased in line 280
+   variable compAtom::sourceNode in line 269
+      protection public
+   variable CompSym::backwardMode in line 541
+   variable CompSym::cfgBasicType in line 534
+      protection public
+   variable CompSym::compRep in line 542
+   variable CompSym::forwardMode in line 540
+   variable CompSym::isSet in line 339
+      protection public
+   variable CompSym::marking in line 537
+      protection public
+   variable CompSym::myType in line 335
+      protection public
+   variable CompSym::use_B_CFG in line 532
+      protection public
+   variable CompSym::use_F_CFG in line 533
+      protection public
+   variable CompSym::use_indexing in line 536
+      protection public
+   variable CompSym::useSubsetInfo in line 535
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntAutoSym.c
+module IntAutoSym.c
+   function compareStr(const void *,const void *) in line 976
+      protection public
+      10 lines of code
+      2 parameters
+      3 conditional paths
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntAutoSym.h
+   variable IntAutoSym::automaton in line 148
+   variable IntAutoSym::coeffs in line 149
+   variable IntAutoSym::currentStateVarNames in line 152
+   variable IntAutoSym::hashBase in line 142
+      protection public
+   variable IntAutoSym::indices in line 155
+   variable IntAutoSym::kind in line 150
+   variable IntAutoSym::map in line 156
+   variable IntAutoSym::nextStateVarNames in line 153
+   variable IntAutoSym::numVars in line 154
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntBddSym.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntBddSym.h
+   variable IntBddSym::bdd in line 156
+   variable IntBddSym::bddMgrI in line 160
+   variable IntBddSym::coeffs in line 157
+   variable IntBddSym::currentCube in line 162
+   variable IntBddSym::currentStateVarNames in line 165
+   variable IntBddSym::currentToNext in line 161
+   variable IntBddSym::indices in line 168
+   variable IntBddSym::kind in line 158
+   variable IntBddSym::nextCube in line 163
+   variable IntBddSym::nextStateVarNames in line 166
+   variable IntBddSym::numBits in line 164
+   variable IntBddSym::numVars in line 167
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntBoolAutoSym.c
+module IntBoolAutoSym.c
+   variable CLK_TCK in line 6
+      protection public
+   variable boolvars in line 15
+      protection public
+   variable startHeap in line 1090
+      protection public
+   function compareStr(const void *,const void *) in line 1055
+      protection public
+      10 lines of code
+      2 parameters
+      3 conditional paths
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntBoolAutoSym.h
+   variable IntBoolAutoSym::automaton in line 149
+      protection public
+   variable IntBoolAutoSym::coeffs in line 156
+   variable IntBoolAutoSym::currentStateVarNames in line 159
+   variable IntBoolAutoSym::hashBase in line 147
+      protection public
+   variable IntBoolAutoSym::indices in line 162
+   variable IntBoolAutoSym::kind in line 157
+   variable IntBoolAutoSym::map in line 163
+   variable IntBoolAutoSym::nextStateVarNames in line 160
+   variable IntBoolAutoSym::numVars in line 161
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntPolySym.c
+module IntPolySym.c
+   function compareStr(const void *,const void *) in line 1382
+      protection public
+      10 lines of code
+      2 parameters
+      3 conditional paths
+   function compareCoef(const void *,const void *) in line 1399
+      protection public
+      12 lines of code
+      2 parameters
+      4 conditional paths
+      uses variable IntPolySym::numVars defined in IntPolySym.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/IntPolySym.h
+   variable IntPolySym::ast in line 163
+   variable IntPolySym::astc in line 165
+   variable IntPolySym::currentStateVarNames in line 170
+   variable IntPolySym::currentTuple in line 167
+   variable IntPolySym::dnfForm in line 159
+   variable IntPolySym::domainTupleDescriptor in line 168
+   variable IntPolySym::exp in line 164
+   variable IntPolySym::hashBase in line 153
+      protection public
+   variable IntPolySym::nextStateVarNames in line 171
+   variable IntPolySym::numVars in line 151
+      protection public
+   variable IntPolySym::presForm in line 158
+   variable IntPolySym::rangeTupleDescriptor in line 169
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/lcauto.h
+module lcauto.h
+   function gcd(int,int) in line 13
+      protection public
+      10 lines of code
+      2 parameters
+      1 conditional paths
+   function count_ones(long,int,int *) in line 14
+      protection public
+      8 lines of code
+      3 parameters
+      1 conditional paths
+   function bintostr(unsigned long,int) in line 15
+      protection public
+      11 lines of code
+      2 parameters
+      1 conditional paths
+   function build_DFA_eq(int,int *,int,int *) in line 16
+      protection public
+      98 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses function build_DFA_eq_nocoef(int,int,int *) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_eq_new(int,int *,int,int *) in line 17
+      protection public
+      81 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq(int,int *,int,int *) in line 18
+      protection public
+      78 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq_new(int,int *,int,int *) in line 19
+      protection public
+      81 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_eq_2sc(int,int *,int,int *) in line 20
+      protection public
+      95 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable map_ent::sr defined in lcautocode.c
+      uses variable map_ent::ir defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq_2sc(int,int *,int,int *) in line 21
+      protection public
+      109 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable map_ent::sr defined in lcautocode.c
+      uses variable map_ent::ir defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function preprocess(int,int *,int *,int) in line 22
+      protection public
+      22 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function gcd(int,int) defined in lcautocode.c
+   function dfaEmptiness(DFA *) in line 23
+      protection public
+      17 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaOnlyNullString() defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+   function dfaTautology(DFA *) in line 24
+      protection public
+      16 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfatrue() defined in lcautocode.c
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+   function check(DFA *,DFA *,int,int,int,unsigned *) in line 25
+      protection public
+      1 lines of code
+      6 parameters
+      1 conditional paths
+   function dfaEquivalence(DFA *,DFA *) in line 26
+      protection public
+      40 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses variable corresP defined in lcautocode.c
+      uses function checK(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+   function dfaWiden(DFA *,DFA *) in line 27
+      protection public
+      55 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaClasses(DFA *,DFA *) defined in lcautocode.c
+      uses variable numClasses defined in lcautocode.c
+      uses variable cbddm defined in lcautocode.c
+      uses variable classRepC defined in lcautocode.c
+      uses variable corresPPc defined in lcautocode.c
+      uses function merge_single(DFA *,DFA *,bdd_ptr) defined in lcautocode.c
+      uses variable corresPPl defined in lcautocode.c
+      uses variable xx1 defined in lcautocode.c
+      uses variable xx2 defined in lcautocode.c
+      uses function merge(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses variable maxl defined in lcautocode.c
+      uses variable corresPc defined in lcautocode.c
+      uses variable corresPl defined in lcautocode.c
+      uses function dfaClean(DFA *) defined in lcautocode.c
+   function dfaIdentity(int,int *) in line 28
+      protection public
+      23 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function dfaNotNullString() in line 29
+      protection public
+      11 lines of code
+      0 parameters
+      1 conditional paths
+   function build_BDD(DdManager *,DFA *,int,int *,int) in line 30
+      protection public
+      1 lines of code
+      5 parameters
+      1 conditional paths
+   function dfaKey(DFA *) in line 31
+      protection public
+      32 lines of code
+      1 parameters
+      1 conditional paths
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function updatekey(DFA *,bdd_ptr,char *) defined in lcautocode.c
+   function dfaSame(int) in line 32
+      protection public
+      20 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function find_sink(DFA *) in line 33
+      protection public
+      7 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function project(DFA *,int) in line 34
+      protection public
+      34 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function project1(DFA *,int) in line 35
+      protection public
+      12 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable indexp defined in lcautocode.c
+      uses function visit1(bdd_record *) defined in lcautocode.c
+   function project2(DFA *,int,int *) in line 36
+      protection public
+      66 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function project3(DFA *,int,int *) in line 37
+      protection public
+      35 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function project4(DFA *,int,int *) in line 38
+      protection public
+      13 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable indexm defined in lcautocode.c
+      uses variable nn defined in lcautocode.c
+      uses function visit4(bdd_record *) defined in lcautocode.c
+   function project5(DFA *,int,int *) in line 39
+      protection public
+      15 lines of code
+      3 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable num5 defined in lcautocode.c
+      uses variable indices5 defined in lcautocode.c
+      uses variable SINK5 defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses function visit5(DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+   function project6(DFA *,unsigned) in line 40
+      protection public
+      14 lines of code
+      2 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable SINKa defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses function visit6(DFA *,DFA *,bdd_ptr,unsigned) defined in lcautocode.c
+   function dfaMakeExampleDFA(DFA *,int,int,unsigned *) in line 41
+      protection public
+      45 lines of code
+      4 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function build_BDD_eq(DdManager *,int,int *,int,int) in line 43
+      protection public
+      28 lines of code
+      5 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_eq(int,int,int) defined in lcautocode.c
+   function build_BDD_ineq(DdManager *,int,int *,int,int) in line 44
+      protection public
+      28 lines of code
+      5 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_ineq(int,int,int) defined in lcautocode.c
+   function build_BDD_eq1(DdManager *,int,int *,int,int) in line 45
+      protection public
+      27 lines of code
+      5 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_eq1(int,int,int) defined in lcautocode.c
+   function build_BDD_ineq1(DdManager *,int,int *,int,int) in line 46
+      protection public
+      28 lines of code
+      5 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_ineq1(int,int,int) defined in lcautocode.c
+   function build_BDD_eq_2sc(DdManager *,int,int *,int,int) in line 47
+      protection public
+      1 lines of code
+      5 parameters
+      1 conditional paths
+   function build_BDD_ineq_2sc(DdManager *,int,int *,int,int) in line 48
+      protection public
+      1 lines of code
+      5 parameters
+      1 conditional paths
+   function dfaPrefixClose0(DFA *) in line 49
+      protection public
+      39 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function successors0(bdd_manager *,bdd_ptr) defined in lcautocode.c
+   function dfaPrefixClose1(DFA *) in line 50
+      protection public
+      45 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses macro definition MAXV defined in lcautocode.c
+      uses variable label defined in lcautocode.c
+      uses variable autom defined in lcautocode.c
+      uses variable nexts defined in lcautocode.c
+      uses function successors1(bdd_manager *,bdd_ptr) defined in lcautocode.c
+   function dfatrue() in line 51
+      protection public
+      9 lines of code
+      0 parameters
+      1 conditional paths
+   function dfafalse() in line 52
+      protection public
+      10 lines of code
+      0 parameters
+      1 conditional paths
+   function dfaBoolVar(int) in line 53
+      protection public
+      22 lines of code
+      1 parameters
+      1 conditional paths
+   function dfaPrefixClose2(DFA *) in line 54
+      protection public
+      11 lines of code
+      1 parameters
+      1 conditional paths
+      uses function dfaPrefixClose3(DFA *) defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/lcautocode.c
+module lcautocode.c
+   macro definition MAXV in line 2826
+      protection public
+   variable xx1 in line 9
+      protection public
+   variable xx2 in line 9
+      protection public
+   variable corresP in line 19
+      protection public
+   variable s in line 20
+      protection public
+   variable maxl in line 839
+      protection public
+   variable corresPc in line 840
+      protection public
+   variable corresPcc in line 840
+      protection public
+   variable corresPPc in line 840
+      protection public
+   variable corresPl in line 841
+      protection public
+   variable corresPll in line 841
+      protection public
+   variable corresPPl in line 841
+      protection public
+   variable SINKa in line 842
+      protection public
+   variable SINKb in line 842
+      protection public
+   variable added in line 843
+      protection public
+   variable hi in line 844
+      protection public
+   variable done in line 845
+      protection public
+   variable classRepA in line 969
+      protection public
+   variable classRepB in line 969
+      protection public
+   variable classRepC in line 969
+      protection public
+   variable numClasses in line 971
+      protection public
+   variable fromS in line 1266
+      protection public
+   variable fromPath in line 1267
+      protection public
+   variable fromIndy in line 1268
+      protection public
+   variable fromIndex in line 1269
+      protection public
+   variable fromCount in line 1270
+      protection public
+   variable at in line 1271
+      protection public
+   variable torepcaller in line 1305
+      protection public
+   variable cbddm in line 1306
+      protection public
+   variable reachable in line 1375
+      protection public
+   variable reachc in line 1376
+      protection public
+   variable ren in line 1395
+      protection public
+   variable SINK5 in line 1461
+      protection public
+   variable num5 in line 1462
+      protection public
+   variable indices5 in line 1463
+      protection public
+   variable iscandidate in line 1863
+      protection public
+   variable tocheck in line 1864
+      protection public
+   variable bddmp in line 2152
+      protection public
+   variable indexp in line 2153
+      protection public
+   variable indexm in line 2153
+      protection public
+   variable sinkp in line 2153
+      protection public
+   variable nn in line 2153
+      protection public
+   variable lc in line 2326
+      protection public
+   variable pinax in line 2328
+      protection public
+   variable preds in line 2755
+      protection public
+   variable predalloc in line 2756
+      protection public
+   variable predused in line 2756
+      protection public
+   variable current_state in line 2758
+      protection public
+   variable label in line 2827
+      protection public
+   variable numnexts in line 2830
+      protection public
+   variable nexts in line 2831
+      protection public
+   variable autom in line 2832
+      protection public
+   variable target in line 2983
+      protection public
+   variable clone in line 2984
+      protection public
+   function gcd(int,int) in line 23
+      protection public
+      10 lines of code
+      2 parameters
+      3 conditional paths
+   function count_ones(long,int,int *) in line 37
+      protection public
+      8 lines of code
+      3 parameters
+      3 conditional paths
+   function bintostr(unsigned long,int) in line 47
+      protection public
+      11 lines of code
+      2 parameters
+      3 conditional paths
+   function dfaNotNullString() in line 60
+      protection public
+      11 lines of code
+      0 parameters
+      1 conditional paths
+   function dfaOnlyNullString() in line 73
+      protection public
+      11 lines of code
+      0 parameters
+      1 conditional paths
+   function preprocess(int,int *,int *,int) in line 90
+      protection public
+      22 lines of code
+      4 parameters
+      7 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function gcd(int,int) defined in lcautocode.c
+   function build_DFA_eq_nocoef(int,int,int *) in line 113
+      protection public
+      44 lines of code
+      3 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+   function build_DFA_eq(int,int *,int,int *) in line 159
+      protection public
+      98 lines of code
+      4 parameters
+      21 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses function build_DFA_eq_nocoef(int,int,int *) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_eq_new(int,int *,int,int *) in line 262
+      protection public
+      81 lines of code
+      4 parameters
+      15 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_eq_2sc(int,int *,int,int *) in line 347
+      protection public
+      95 lines of code
+      4 parameters
+      19 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable map_ent::sr defined in lcautocode.c
+      uses variable map_ent::ir defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq(int,int *,int,int *) in line 444
+      protection public
+      78 lines of code
+      4 parameters
+      16 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq_new(int,int *,int,int *) in line 526
+      protection public
+      81 lines of code
+      4 parameters
+      16 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function build_DFA_ineq_2sc(int,int *,int,int *) in line 611
+      protection public
+      109 lines of code
+      4 parameters
+      20 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses function preprocess(int,int *,int *,int) defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable map_ent::sr defined in lcautocode.c
+      uses variable map_ent::ir defined in lcautocode.c
+      uses function count_ones(long,int,int *) defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function checK(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 722
+      protection public
+      33 lines of code
+      4 parameters
+      7 conditional paths
+      uses variable corresP defined in lcautocode.c
+   function dfaEquivalence(DFA *,DFA *) in line 796
+      protection public
+      40 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses variable corresP defined in lcautocode.c
+      uses function checK(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+   function check22(DFA *,bdd_ptr,bdd_ptr) in line 847
+      protection public
+      59 lines of code
+      3 parameters
+      11 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable SINKb defined in lcautocode.c
+      uses variable corresPcc defined in lcautocode.c
+      uses variable corresPll defined in lcautocode.c
+      uses variable maxl defined in lcautocode.c
+      uses variable added defined in lcautocode.c
+      uses variable done defined in lcautocode.c
+   function check2(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 910
+      protection public
+      57 lines of code
+      4 parameters
+      10 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable SINKa defined in lcautocode.c
+      uses variable SINKb defined in lcautocode.c
+      uses variable corresPc defined in lcautocode.c
+      uses variable corresPl defined in lcautocode.c
+      uses variable maxl defined in lcautocode.c
+   function find_sink(DFA *) in line 970
+      protection public
+      7 lines of code
+      1 parameters
+      3 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function detail(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 974
+      protection public
+      40 lines of code
+      4 parameters
+      9 conditional paths
+   function dfaClasses(DFA *,DFA *) in line 1018
+      protection public
+      247 lines of code
+      2 parameters
+      55 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses function dfaOnlyNullString() defined in lcautocode.c
+      uses variable maxl defined in lcautocode.c
+      uses variable corresPc defined in lcautocode.c
+      uses variable corresPl defined in lcautocode.c
+      uses variable done defined in lcautocode.c
+      uses variable corresPcc defined in lcautocode.c
+      uses variable corresPll defined in lcautocode.c
+      uses variable SINKa defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses variable SINKb defined in lcautocode.c
+      uses function check2(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses variable corresP defined in lcautocode.c
+      uses function checK(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses variable added defined in lcautocode.c
+      uses function check22(DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses variable corresPPc defined in lcautocode.c
+      uses variable corresPPl defined in lcautocode.c
+      uses variable classRepC defined in lcautocode.c
+      uses variable numClasses defined in lcautocode.c
+   function nonsink(bdd_manager *,bdd_ptr) in line 1273
+      protection public
+      31 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable SINKb defined in lcautocode.c
+      uses variable classRepB defined in lcautocode.c
+      uses variable fromIndex defined in lcautocode.c
+      uses variable at defined in lcautocode.c
+      uses variable fromCount defined in lcautocode.c
+      uses variable fromPath defined in lcautocode.c
+   function torep(DFA *,bdd_ptr) in line 1309
+      protection public
+      65 lines of code
+      2 parameters
+      9 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable classRepB defined in lcautocode.c
+      uses variable SINKb defined in lcautocode.c
+      uses variable classRepA defined in lcautocode.c
+      uses variable fromS defined in lcautocode.c
+      uses variable corresPc defined in lcautocode.c
+      uses variable at defined in lcautocode.c
+      uses function nonsink(bdd_manager *,bdd_ptr) defined in lcautocode.c
+      uses variable corresPl defined in lcautocode.c
+      uses variable cbddm defined in lcautocode.c
+      uses variable fromCount defined in lcautocode.c
+      uses variable fromIndex defined in lcautocode.c
+      uses variable fromPath defined in lcautocode.c
+      uses variable torepcaller defined in lcautocode.c
+   function reach(DFA *,bdd_ptr) in line 1378
+      protection public
+      16 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable reachable defined in lcautocode.c
+      uses variable reachc defined in lcautocode.c
+   function reName(bdd_manager *,bdd_ptr) in line 1397
+      protection public
+      16 lines of code
+      2 parameters
+      3 conditional paths
+      uses variable ren defined in lcautocode.c
+   function dfaClean(DFA *) in line 1416
+      protection public
+      44 lines of code
+      1 parameters
+      7 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable reachable defined in lcautocode.c
+      uses variable reachc defined in lcautocode.c
+      uses function reach(DFA *,bdd_ptr) defined in lcautocode.c
+      uses variable ren defined in lcautocode.c
+      uses function reName(bdd_manager *,bdd_ptr) defined in lcautocode.c
+   function visit5(DFA *,bdd_ptr,bdd_ptr) in line 1465
+      protection public
+      66 lines of code
+      3 parameters
+      17 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable SINK5 defined in lcautocode.c
+      uses variable num5 defined in lcautocode.c
+      uses variable indices5 defined in lcautocode.c
+   function project5(DFA *,int,int *) in line 1533
+      protection public
+      15 lines of code
+      3 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable num5 defined in lcautocode.c
+      uses variable indices5 defined in lcautocode.c
+      uses variable SINK5 defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses function visit5(DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+   function merge1(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 1549
+      protection public
+      47 lines of code
+      4 parameters
+      7 conditional paths
+      uses variable SINKa defined in lcautocode.c
+   function visit6(DFA *,DFA *,bdd_ptr,unsigned) in line 1598
+      protection public
+      21 lines of code
+      4 parameters
+      3 conditional paths
+      uses function merge1(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+   function project6(DFA *,unsigned) in line 1620
+      protection public
+      14 lines of code
+      2 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable SINKa defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses function visit6(DFA *,DFA *,bdd_ptr,unsigned) defined in lcautocode.c
+   function merge(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 1637
+      protection public
+      62 lines of code
+      4 parameters
+      10 conditional paths
+      uses variable SINKb defined in lcautocode.c
+      uses variable classRepC defined in lcautocode.c
+   function merge_single(DFA *,DFA *,bdd_ptr) in line 1701
+      protection public
+      13 lines of code
+      3 parameters
+      2 conditional paths
+      uses variable classRepC defined in lcautocode.c
+   function dfaWiden(DFA *,DFA *) in line 1717
+      protection public
+      55 lines of code
+      2 parameters
+      9 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaClasses(DFA *,DFA *) defined in lcautocode.c
+      uses variable numClasses defined in lcautocode.c
+      uses variable cbddm defined in lcautocode.c
+      uses variable classRepC defined in lcautocode.c
+      uses variable corresPPc defined in lcautocode.c
+      uses function merge_single(DFA *,DFA *,bdd_ptr) defined in lcautocode.c
+      uses variable corresPPl defined in lcautocode.c
+      uses variable xx1 defined in lcautocode.c
+      uses variable xx2 defined in lcautocode.c
+      uses function merge(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses variable maxl defined in lcautocode.c
+      uses variable corresPc defined in lcautocode.c
+      uses variable corresPl defined in lcautocode.c
+      uses function dfaClean(DFA *) defined in lcautocode.c
+   function dfaIdentity(int,int *) in line 1775
+      protection public
+      23 lines of code
+      2 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function bintostr(unsigned long,int) defined in lcautocode.c
+   function dfaSame(int) in line 1799
+      protection public
+      20 lines of code
+      1 parameters
+      1 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function dfaEmptiness(DFA *) in line 1822
+      protection public
+      17 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfaOnlyNullString() defined in lcautocode.c
+      uses function dfafalse() defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+   function dfaTautology(DFA *) in line 1841
+      protection public
+      16 lines of code
+      1 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function dfatrue() defined in lcautocode.c
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+   function traverce() in line 1896
+      protection public
+      3 lines of code
+      0 parameters
+      1 conditional paths
+   function dfaRelax(DFA *) in line 1901
+      protection public
+      14 lines of code
+      1 parameters
+      5 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable iscandidate defined in lcautocode.c
+      uses function traverce() defined in lcautocode.c
+   function dfaLength(int,int,int *) in line 1918
+      protection public
+      18 lines of code
+      3 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function updatekey(DFA *,bdd_ptr,char *) in line 1938
+      protection public
+      74 lines of code
+      3 parameters
+      1 conditional paths
+   function dfaKey(DFA *) in line 2014
+      protection public
+      32 lines of code
+      1 parameters
+      2 conditional paths
+      uses function dfaNotNullString() defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses function updatekey(DFA *,bdd_ptr,char *) defined in lcautocode.c
+   function examine(DFA *,int) in line 2057
+      protection public
+      25 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function project2(DFA *,int,int *) in line 2083
+      protection public
+      66 lines of code
+      3 parameters
+      11 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function visit4(bdd_record *) in line 2156
+      protection public
+      25 lines of code
+      1 parameters
+      6 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable indexm defined in lcautocode.c
+      uses variable nn defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+   function project4(DFA *,int,int *) in line 2184
+      protection public
+      13 lines of code
+      3 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable indexm defined in lcautocode.c
+      uses variable nn defined in lcautocode.c
+      uses function visit4(bdd_record *) defined in lcautocode.c
+   function visit1(bdd_record *) in line 2204
+      protection public
+      23 lines of code
+      1 parameters
+      5 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable indexp defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+   function project1(DFA *,int) in line 2229
+      protection public
+      12 lines of code
+      2 parameters
+      2 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable sinkp defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+      uses variable bddmp defined in lcautocode.c
+      uses variable indexp defined in lcautocode.c
+      uses function visit1(bdd_record *) defined in lcautocode.c
+   function project3(DFA *,int,int *) in line 2243
+      protection public
+      35 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function project(DFA *,int) in line 2282
+      protection public
+      34 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses function find_sink(DFA *) defined in lcautocode.c
+   function node_eq(int,int,int) in line 2332
+      protection public
+      50 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable pinax defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+   function build_BDD_eq(DdManager *,int,int *,int,int) in line 2385
+      protection public
+      28 lines of code
+      5 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_eq(int,int,int) defined in lcautocode.c
+   function node_ineq(int,int,int) in line 2417
+      protection public
+      43 lines of code
+      3 parameters
+      4 conditional paths
+      uses variable pinax defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+   function build_BDD_ineq(DdManager *,int,int *,int,int) in line 2463
+      protection public
+      28 lines of code
+      5 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_ineq(int,int,int) defined in lcautocode.c
+   function node_eq1(int,int,int) in line 2492
+      protection public
+      50 lines of code
+      3 parameters
+      6 conditional paths
+      uses variable pinax defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+   function build_BDD_eq1(DdManager *,int,int *,int,int) in line 2545
+      protection public
+      27 lines of code
+      5 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_eq1(int,int,int) defined in lcautocode.c
+   function node_ineq1(int,int,int) in line 2576
+      protection public
+      43 lines of code
+      3 parameters
+      4 conditional paths
+      uses variable pinax defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+   function build_BDD_ineq1(DdManager *,int,int *,int,int) in line 2622
+      protection public
+      28 lines of code
+      5 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable pinax defined in lcautocode.c
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+      uses variable constraint::cons defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses function node_ineq1(int,int,int) defined in lcautocode.c
+   function node_eq_2sc(int,int,int) in line 2652
+      protection public
+      54 lines of code
+      3 parameters
+      7 conditional paths
+      uses variable lc defined in lcautocode.c
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable constraint::bits defined in lcautocode.c
+      uses variable constraint::vars defined in lcautocode.c
+      uses variable constraint::kind defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable constraint::coeffs defined in lcautocode.c
+   function dfaMakeExampleDFA(DFA *,int,int,unsigned *) in line 2709
+      protection public
+      45 lines of code
+      4 parameters
+      6 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+   function successors0(bdd_manager *,bdd_ptr) in line 2760
+      protection public
+      22 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable current_state defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+   function dfaPrefixClose0(DFA *) in line 2785
+      protection public
+      39 lines of code
+      1 parameters
+      8 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable current_state defined in lcautocode.c
+      uses function successors0(bdd_manager *,bdd_ptr) defined in lcautocode.c
+   function toaccepting(bdd_manager *,bdd_ptr) in line 2834
+      protection public
+      16 lines of code
+      2 parameters
+      5 conditional paths
+      uses variable nexts defined in lcautocode.c
+      uses variable numnexts defined in lcautocode.c
+      uses variable label defined in lcautocode.c
+   function successors1(bdd_manager *,bdd_ptr) in line 2854
+      protection public
+      37 lines of code
+      2 parameters
+      7 conditional paths
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable numnexts defined in lcautocode.c
+      uses function toaccepting(bdd_manager *,bdd_ptr) defined in lcautocode.c
+      uses variable autom defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable nexts defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+      uses variable label defined in lcautocode.c
+   function dfaPrefixClose1(DFA *) in line 2892
+      protection public
+      45 lines of code
+      1 parameters
+      9 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses macro definition MAXV defined in lcautocode.c
+      uses variable label defined in lcautocode.c
+      uses variable autom defined in lcautocode.c
+      uses variable nexts defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable current_state defined in lcautocode.c
+      uses function successors1(bdd_manager *,bdd_ptr) defined in lcautocode.c
+   function dfatrue() in line 2938
+      protection public
+      9 lines of code
+      0 parameters
+      1 conditional paths
+   function dfafalse() in line 2948
+      protection public
+      10 lines of code
+      0 parameters
+      1 conditional paths
+   function dfaBoolVar(int) in line 2960
+      protection public
+      22 lines of code
+      1 parameters
+      1 conditional paths
+   function merge2(DFA *,DFA *,bdd_ptr,bdd_ptr) in line 2986
+      protection public
+      49 lines of code
+      4 parameters
+      8 conditional paths
+      uses variable target defined in lcautocode.c
+      uses variable clone defined in lcautocode.c
+   function successorz(DFA *,bdd_ptr) in line 3037
+      protection public
+      24 lines of code
+      2 parameters
+      6 conditional paths
+      uses variable constraint::bddm defined in lcautocode.c
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable map_ent::s defined in lcautocode.c
+      uses variable current_state defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+   function dfaPrefixClose3(DFA *) in line 3063
+      protection public
+      60 lines of code
+      1 parameters
+      11 conditional paths
+      uses variable map_ent::i defined in lcautocode.c
+      uses variable predalloc defined in lcautocode.c
+      uses variable predused defined in lcautocode.c
+      uses variable preds defined in lcautocode.c
+      uses variable current_state defined in lcautocode.c
+      uses function successorz(DFA *,bdd_ptr) defined in lcautocode.c
+      uses variable clone defined in lcautocode.c
+      uses variable target defined in lcautocode.c
+      uses function merge2(DFA *,DFA *,bdd_ptr,bdd_ptr) defined in lcautocode.c
+      uses function dfaClean(DFA *) defined in lcautocode.c
+   function dfaPrefixClose2(DFA *) in line 3124
+      protection public
+      11 lines of code
+      1 parameters
+      2 conditional paths
+      uses function dfaPrefixClose3(DFA *) defined in lcautocode.c
+      uses function dfaEquivalence(DFA *,DFA *) defined in lcautocode.c
+   variable map_ent::i in line 12
+      protection public
+   variable map_ent::ir in line 12
+      protection public
+   variable map_ent::s in line 13
+      protection public
+   variable map_ent::sr in line 13
+      protection public
+   variable constraint::bddm in line 2325
+      protection public
+   variable constraint::bits in line 2323
+      protection public
+   variable constraint::coeffs in line 2321
+      protection public
+   variable constraint::cons in line 2322
+      protection public
+   variable constraint::kind in line 2324
+      protection public
+   variable constraint::vars in line 2320
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/Symbolic.c
+module Symbolic.c
+   variable typedescriptor in line 31
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/symbolic/Symbolic.h
+module Symbolic.h
+   macro definition string in line 13
+      protection public
+   variable TypeDescriptor::basicTypes in line 43
+   variable TypeDescriptor::numBasicTypes in line 42
+   variable Symbolic::caching in line 157
+      protection public
+   variable Symbolic::intAutomata in line 158
+      protection public
+   variable Symbolic::intBdd in line 159
+      protection public
+   variable Symbolic::intBoolAutomata in line 161
+      protection public
+   variable Symbolic::intPolyhedra in line 160
+      protection public
+   variable Symbolic::isSet in line 54
+      protection public
+   variable Symbolic::myType in line 58
+      protection public
+   variable Symbolic::tag in line 61
+      protection public
+   variable Symbolic::verbose in line 156
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/bool.h
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Formula.c
+module Formula.c
+   function power(int,int) in line 10
+      protection public
+      12 lines of code
+      2 parameters
+      4 conditional paths
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Formula.h
+module Formula.h
+   function computeAnd(Node *,Node *) in line 305
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function computeAndCtl(Node *,Node *) in line 307
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   function printTest(Node *,int) in line 310
+      protection public
+      1 lines of code
+      2 parameters
+      1 conditional paths
+   variable CountingAbs::domainAndRangeVariables in line 49
+   variable CountingAbs::domainVariables in line 48
+   variable CountingAbs::instNo in line 45
+   variable CountingAbs::maxIndex in line 47
+   variable CountingAbs::moduleName in line 44
+   variable CountingAbs::numDomainVars in line 46
+   variable CountingAbs::paramExp in line 50
+   variable EnumInfo::encodingLength in line 84
+   variable EnumInfo::instCount in line 85
+   variable EnumInfo::modName in line 81
+   variable EnumInfo::numSymbols in line 83
+   variable EnumInfo::symbols in line 82
+   variable EnumInfo::varName in line 80
+   variable EnumEncoding::enumVariableList in line 110
+   variable Term::TermType in line 124
+   variable Variable::enumConst in line 161
+   variable Variable::name in line 160
+   variable Variable::numEnumConst in line 162
+   variable Constant::value in line 176
+   variable FormulaNode::formulatype in line 193
+   variable CtlFormula::approxStatus in line 241
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/LinkedList.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/LinkedList.h
+   variable LinkedListNode::data in line 26
+   variable LinkedListNode::next in line 27
+   variable LinkedList::current in line 63
+   variable LinkedList::head in line 64
+   variable LinkedList::numElements in line 65
+   variable LinkedList::tail in line 64
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Node.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Node.h
+module Node.h
+   macro definition NUMSYMTYPES in line 20
+      protection public
+   enumeration opType in line 15
+      protection public
+   enumeration symbolicType in line 24
+      protection public
+   enumeration termType in line 26
+      protection public
+   enumeration formulaType in line 28
+      protection public
+   enumvalue addOp in line 15
+      protection public
+   enumvalue subtractOp in line 15
+      protection public
+   enumvalue multiplyOp in line 15
+      protection public
+   enumvalue divideOp in line 15
+      protection public
+   enumvalue minusOp in line 15
+      protection public
+   enumvalue neqOp in line 15
+      protection public
+   enumvalue leqOp in line 15
+      protection public
+   enumvalue eqOp in line 16
+      protection public
+   enumvalue gtOp in line 16
+      protection public
+   enumvalue ltOp in line 16
+      protection public
+   enumvalue geqOp in line 16
+      protection public
+   enumvalue andOp in line 16
+      protection public
+   enumvalue orOp in line 16
+      protection public
+   enumvalue impliesOp in line 16
+      protection public
+   enumvalue iffOp in line 16
+      protection public
+   enumvalue notOp in line 16
+      protection public
+   enumvalue forallOp in line 16
+      protection public
+   enumvalue existsOp in line 17
+      protection public
+   enumvalue noOp in line 17
+      protection public
+   enumvalue synchOp in line 17
+      protection public
+   enumvalue asynchOp in line 17
+      protection public
+   enumvalue exOp in line 17
+      protection public
+   enumvalue axOp in line 17
+      protection public
+   enumvalue efOp in line 17
+      protection public
+   enumvalue afOp in line 17
+      protection public
+   enumvalue egOp in line 17
+      protection public
+   enumvalue agOp in line 17
+      protection public
+   enumvalue euOp in line 17
+      protection public
+   enumvalue auOp in line 18
+      protection public
+   enumvalue dereferenceOp in line 18
+      protection public
+   enumvalue listOp in line 18
+      protection public
+   enumvalue boolType in line 24
+      protection public
+   enumvalue intType in line 24
+      protection public
+   enumvalue heapType in line 24
+      protection public
+   enumvalue enumType in line 24
+      protection public
+   enumvalue compType in line 24
+      protection public
+   enumvalue intPolyType in line 24
+      protection public
+   enumvalue intAutoType in line 24
+      protection public
+   enumvalue intBddType in line 24
+      protection public
+   enumvalue intBoolAutoType in line 24
+      protection public
+   enumvalue undefinedType in line 24
+      protection public
+   enumvalue integer in line 26
+      protection public
+   enumvalue Boolean in line 26
+      protection public
+   enumvalue heap in line 26
+      protection public
+   enumvalue enumerated in line 26
+      protection public
+   enumvalue undefined in line 26
+      protection public
+   enumvalue ctlFormula in line 28
+      protection public
+   enumvalue quantifierFormula in line 28
+      protection public
+   enumvalue booleanFormula in line 28
+      protection public
+   enumvalue relationalFormula in line 29
+      protection public
+   enumvalue equalityFormula in line 29
+      protection public
+   variable constantValue::Bool_val in line 33
+      protection public
+   variable constantValue::Int_val in line 32
+      protection public
+   variable constantValue::String_val in line 34
+      protection public
+   variable UndefinedIdentifier::idname in line 44
+   variable Node::child in line 76
+   variable Node::iscomposition in line 82
+   variable Node::isconstant in line 81
+   variable Node::isformula in line 78
+   variable Node::isidentifier in line 83
+   variable Node::isterm in line 79
+   variable Node::isvariable in line 80
+   variable Node::numChild in line 77
+   variable Node::Operator in line 74
+   variable Node::symType in line 75
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Set.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Set.h
+   variable MySet::list in line 38
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Stack.c
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/util/Stack.h
+   variable Stack::capacity in line 27
+   variable Stack::increment in line 28
+   variable Stack::numElements in line 30
+   variable Stack::storage in line 29
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/verifier/TransSys.c
+module TransSys.c
+   macro definition calling in line 51
+      protection public
+   macro definition DELETE in line 54
+      protection public
+   variable CLK_TCK in line 12
+      protection public
+   variable enumEncoding in line 15
+      protection public
+   variable startHeap in line 16
+      protection public
+   variable typedescriptor in line 49
+      protection public
+file /DISSERTACAO-UFBA-2016/dataset/PAPERS/composite/composite-0.4/verifier/TransSys.h
+   variable TransSys::approximate in line 76
+      protection public
+   variable TransSys::atLeastOneSuccessor in line 26
+   variable TransSys::basis in line 75
+      protection public
+   variable TransSys::boundValue in line 79
+      protection public
+   variable TransSys::constructTime in line 87
+      protection public
+   variable TransSys::counterExample in line 72
+      protection public
+   variable TransSys::counterexampleTime in line 88
+      protection public
+   variable TransSys::currentWitness in line 85
+      protection public
+   variable TransSys::forwardFixpoint in line 80
+      protection public
+   variable TransSys::forwardFixpointFTime in line 88
+      protection public
+   variable TransSys::forwardFixpointSTime in line 88
+      protection public
+   variable TransSys::generateWitness in line 73
+      protection public
+   variable TransSys::init in line 23
+   variable TransSys::loopClosure in line 81
+      protection public
+   variable TransSys::loopClosureFTime in line 88
+      protection public
+   variable TransSys::loopClosureSTime in line 88
+      protection public
+   variable TransSys::marking in line 70
+      protection public
+   variable TransSys::noSuccessor in line 27
+   variable TransSys::noVerification in line 74
+      protection public
+   variable TransSys::parseTime in line 87
+      protection public
+   variable TransSys::realApprox in line 82
+      protection public
+   variable TransSys::simplifyLevel in line 83
+      protection public
+   variable TransSys::startTime in line 87
+      protection public
+   variable TransSys::statespace in line 24
+   variable TransSys::statespaceRelation in line 25
+   variable TransSys::transRel in line 21
+   variable TransSys::transRelClosure in line 22
+   variable TransSys::use_B_CFG in line 68
+      protection public
+   variable TransSys::use_F_CFG in line 67
+      protection public
+   variable TransSys::use_indexing in line 69
+      protection public
+   variable TransSys::verbose in line 71
+      protection public
+   variable TransSys::verifyTime in line 88
+      protection public
+   variable TransSys::widen in line 77
+      protection public
+   variable TransSys::wideningSeed in line 78
+      protection public
+   variable TransSys::witnessTreeRoot in line 84
+      protection public
+   variable WitnessTreeNode::boundValue in line 101
+      protection public
+   variable WitnessTreeNode::formula in line 98
+      protection public
+   variable WitnessTreeNode::iterates in line 96
+      protection public
+   variable WitnessTreeNode::transRel in line 100
+      protection public
+   variable WitnessTreeNode::witnessPath in line 97
+      protection public
