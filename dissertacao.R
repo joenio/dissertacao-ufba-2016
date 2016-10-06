@@ -7,17 +7,29 @@ opts_chunk$set(echo=FALSE, cache=TRUE, fig.pos='h')
 metric_by_project <- function(metric) {
   metrics = read.table("dataset/analizo.metrics.dat")
   accessanalysis = metrics["accessanalysis", metric]
+  bogor = metrics["bogor", metric]
+  composite = metrics["composite", metric]
+  cseq = metrics["cseq", metric]
   ejb = metrics["ejb", metric]
   errorprone = metrics["error-prone", metric]
+  guizmo = metrics["guizmo", metric]
+  gumtree = metrics["guizmo", metric]
   indus = metrics["indus", metric]
   inputtracer = metrics["inputtracer", metric]
   jastadd = metrics["jastadd", metric]
+  jflow = metrics["jflow", metric]
+  lotrack = metrics["lotrack", metric]
+  mpanalyzer = metrics["mpanalyzer", metric]
+  ptyasm = metrics["ptyasm", metric]
+  reassert = metrics["reassert", metric]
   sonarqubeplugin = metrics["sonarqube-plugin", metric]
+  sparta = metrics["sparta", metric]
   srcml = metrics["srcml", metric]
   tacle = metrics["tacle", metric]
   wala = metrics["wala", metric]
-  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala)
   return(table)
+
 }
 
 metric_by_nist_project <- function(metric) {
@@ -70,16 +82,27 @@ percentis_by_nist_project <- function(metric) {
 
 percentis_by_project <- function(metric) {
   accessanalysis = percentis_for_metric(metric, "dataset/PAPERS/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
+  bogor = percentis_for_metric(metric, "dataset/PAPERS/bogor/bogor-core.analizo.metrics.dat")
+  composite = percentis_for_metric(metric, "dataset/PAPERS/composite/composite-0.4.analizo.metrics.dat")
+  cseq = percentis_for_metric(metric, "dataset/PAPERS/cseq/cseq-0.5.analizo.metrics.dat")
   ejb = percentis_for_metric(metric, "dataset/PAPERS/ejb/EJB.analizo.metrics.dat")
   errorprone = percentis_for_metric(metric, "dataset/PAPERS/error-prone/error-prone-2.0.9.analizo.metrics.dat")
+  guizmo = percentis_for_metric(metric, "dataset/PAPERS/guizmo/guizmo-master.analizo.metrics.dat")
+  gumtree = percentis_for_metric(metric, "dataset/PAPERS/gumtree/gumtree-2.0.0.analizo.metrics.dat")
   indus = percentis_for_metric(metric, "dataset/PAPERS/indus/indus.analizo.metrics.dat")
   inputtracer = percentis_for_metric(metric, "dataset/PAPERS/inputtracer/valgrind-inputtracer.analizo.metrics.dat")
   jastadd = percentis_for_metric(metric, "dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
+  jflow = percentis_for_metric(metric, "dataset/PAPERS/jflow/vazexqi-JFlow-7cd7eaf.analizo.metrics.dat")
+  lotrack = percentis_for_metric(metric, "dataset/PAPERS/lotrack/Lotrack-master.analizo.metrics.dat")
+  #mpanalyzer = percentis_for_metric(metric, "dataset/PAPERS/mpanalyzer/...")
+  ptyasm = percentis_for_metric(metric, "dataset/PAPERS/ptyasm/ptyasm.analizo.metrics.dat")
+  reassert = percentis_for_metric(metric, "dataset/PAPERS/reassert/ReAssert_0.4.1.analizo.metrics.dat")
   sonarqubeplugin = percentis_for_metric(metric, "dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
+  #sparta = percentis_for_metric(metric, "dataset/PAPERS/sparta/...")
   srcml = percentis_for_metric(metric, "dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
-  table = data.frame(accessanalysis, ejb, errorprone, indus, inputtracer, jastadd, sonarqubeplugin, srcml, tacle, wala)
+  table = data.frame(accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala)
   return(table)
 }
 
