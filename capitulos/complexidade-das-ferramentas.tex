@@ -1,7 +1,16 @@
-\xchapter{Analizo}
-{Este capítulo apresenta a ferramenta Analizo utilizada neste estudo para
+\xchapter{Análise da complexidade estrutural das ferramentas}{}
+
+%4 analise das complexidade das ferramentas + metodologia + resultados
+%  * analizo
+% apresentar parte da antiga metologia aqui, apresentar alguns resultados
+...
+
+\section{Analizo}
+
+Este capítulo apresenta a ferramenta Analizo utilizada neste estudo para
 coletar métricas de código-fonte das ferramentas utilizadas como objeto de
-estudo.}
+estudo.
+
 \label{analizo}
 
 Analizo é um conjunto de ferramentas para análise de código-fonte e
@@ -14,7 +23,7 @@ referências a bibliotecas não mais disponíveis, ou que usem bibliotecas com
 mudanças de API em versões mais recentes. Isto é importante especialmente ao
 analisar código-fonte legado em estudos sobre evolução de software.
 
-\section{Arquitetura}
+\subsection{Arquitetura}
 
 A arquitetura do Analizo é apresentada na Figura \ref{arquitetura-analizo}
 através de uma representação do tipo {\it Layered Style} \cite{Clements2002},
@@ -93,15 +102,15 @@ algumas outras são desenhadas para prover saída em formato específico para
 aplicacoes externas, como por exemplo programas para desenho de grafos ou
 visualização de dados.
 
-\section{Funcionalidades}\label{funcionalidades}
+\subsection{Funcionalidades}\label{funcionalidades}
 
-\subsection{Análise de código-fonte multi-linguagem}
+\subsubsection{Análise de código-fonte multi-linguagem}
 
 Atualmente Analizo suporta análise de código-fonte escrito em C, C++ e Java.
 Entretanto, pode ser facilmente estendido para suportar outras linguagens pois
 pode potencialmente suportar as inúmeras outras linguagens suportadas pelo Doxygen.
 
-\subsection{Métricas}\label{metricas}
+\subsubsection{Métricas}\label{metricas}
 
 O Analizo suporta tanto métricas em nível de projeto, que é calculada para todo o projeto,
 quanto métricas em nível de módulos, que é calculado individualmente para cada módulo.
@@ -139,7 +148,7 @@ distribuição, valores mínimo e maximo. As seguintes métricas são suportadas
 analisados, de forma que o Analizo ignore tais arquivos durante a análise e o
 cálculo de métricas.
 
-\subsection{Processamento em lote}\label{lote}
+\subsubsection{Processamento em lote}\label{lote}
 
 A maioria dos estudos quantitativos em Engenharia de Software envolve aquisição
 de métricas de código-fonte de um grande número de projetos, processar cada
@@ -159,7 +168,7 @@ invés de gerar arquivos CSV. Outro recurso voltado à performance é um sistema
 de cache para as informações previamente calculadas, evitando repetição de
 processamento.
 
-\subsection{Histórico de métricas}
+\subsubsection{Histórico de métricas}
 
 Algumas vezes pesquisadores precisam processar o histórico de projetos de
 software de uma forma mais escalável. Analizo pode processar repositórios de
@@ -169,7 +178,7 @@ os valores diretamente num banco de dados ao invés de usar arquivos CSV. Reposi
 Subversion são suportados diretamente, repositórios CVS devem ser convertidos
 para Git de forma manual.
 
-\subsection{Grafo de dependência}
+\subsubsection{Grafo de dependência}
 
 Analizo pode gerar saída com informações sobre dependência entre as entidades
 do projeto em um formato adequado para processamento por ferramentas de
@@ -184,7 +193,7 @@ dot} do Graphviz a partir da saída gerada pelo Analizo {\it graph}.
 \label{sample-graph}
 \end{figure}
 
-\subsection{Matriz de evolução}
+\subsubsection{Matriz de evolução}
 
 Outra funcionalidade útil do Analizo é a visualização de matrizes de evolução
 \cite{Lanza2001}. Ao processar cada release de um projeto (ver Seção
@@ -199,7 +208,7 @@ apresenta um exemplo de uma matrix produzida pelo Analizo.
 \label{sample-evolution-matrix}
 \end{figure}
 
-\subsection{Matriz de estrutura de projeto}
+\subsubsection{Matriz de estrutura de projeto}
 
 Uma funcionalidade recente do Analizo é a representação visual do
 relacionamento entre os módulos do projeto em forma de uma Matriz de estrutura
@@ -214,7 +223,7 @@ exemplo gerado pelo Analizo pode ser visto na Figura \ref{sample-dsm}.
 \label{sample-dsm}
 \end{figure}
 
-\section{Uso em trabalhos de pesquisa}
+\subsection{Uso em trabalhos de pesquisa}
 \label{trabalhos-analizo}
 
 Analizo tem sido extensivamente usada por nosso grupo de pesquisa em diversos
@@ -265,7 +274,7 @@ estudos:
 A maioria destes trabalhos contribuíram com melhorias para o Analizo, fazendo
 dele ainda mais apropriado para pesquisas envolvendo análise de código-fonte.
 
-\section{Considerações finais}
+\subsection{Considerações finais}
 
 Este capítulo apresentou o Analizo, um conjunto de ferramentas para análise e
 visualização de código-fonte com suporte a C, C++ e Java. Analizo é útil tanto
