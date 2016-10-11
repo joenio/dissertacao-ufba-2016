@@ -94,11 +94,11 @@ percentis_by_project <- function(metric) {
   jastadd = percentis_for_metric(metric, "dataset/PAPERS/jastadd/jastadd2-src.analizo.metrics.dat")
   jflow = percentis_for_metric(metric, "dataset/PAPERS/jflow/vazexqi-JFlow-7cd7eaf.analizo.metrics.dat")
   lotrack = percentis_for_metric(metric, "dataset/PAPERS/lotrack/Lotrack-master.analizo.metrics.dat")
-  #mpanalyzer = percentis_for_metric(metric, "dataset/PAPERS/mpanalyzer/...")
+  mpanalyzer = percentis_for_metric(metric, "dataset/PAPERS/mpanalyzer/...")
   ptyasm = percentis_for_metric(metric, "dataset/PAPERS/ptyasm/ptyasm.analizo.metrics.dat")
   reassert = percentis_for_metric(metric, "dataset/PAPERS/reassert/ReAssert_0.4.1.analizo.metrics.dat")
   sonarqubeplugin = percentis_for_metric(metric, "dataset/PAPERS/sonarqube-plugin/SonarQube-plug-in-master.analizo.metrics.dat")
-  #sparta = percentis_for_metric(metric, "dataset/PAPERS/sparta/...")
+  sparta = percentis_for_metric(metric, "dataset/PAPERS/sparta/...")
   srcml = percentis_for_metric(metric, "dataset/PAPERS/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/PAPERS/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/PAPERS/wala/WALA-R_1.3.8.analizo.metrics.dat")
@@ -121,13 +121,20 @@ plot_lines_for_project <- function(filename) {
 }
 
 knitr_latex_table <- function(table, caption, label) {
-  xt <- xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
+  xt <- xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
   print(xt, table.placement="H", caption.placement="top")
 }
 
-add_column <- function(table1, table2, colname) {
+add_column <- function(table1, newcolumn, colname) {
   t_colnames = c(paste(colname), rownames(table1))
-  table = data.frame(t(table2), t(table1))
+  table = data.frame(t(newcolumn), t(table1))
+  colnames(table) <- t_colnames
+  return(t(table))
+}
+
+add_column_at_end <- function(table1, newcolumn, colname) {
+  t_colnames = c(rownames(table1), paste(colname))
+  table = data.frame(t(table1), t(newcolumn))
   colnames(table) <- t_colnames
   return(t(table))
 }
