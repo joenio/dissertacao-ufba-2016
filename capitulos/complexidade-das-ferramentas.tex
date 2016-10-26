@@ -4,15 +4,12 @@
 %  * analizo
 % apresentar parte da antiga metologia aqui, apresentar alguns resultados
 
-\subsection{Ferramentas da indústria} \label{ferramentas-da-industria}
+\section{Coleta de dados}
 
-A seleção de ferramentas da indústria será feita de forma não estruturada a
-partir de uma busca livre e manual no site do projeto SAMATE. As ferramentas
-com código-fonte disponível, implementadas nas linguagens de programação
-suportadas pelo Analizo serão selecionadas.
-
-Após download do código-fonte de cada ferramenta selecionada, em sua versão
-mais recente, a ferramenta Analizo será utilizada para a coleta das métricas. 
+Coletamos para cada ferramenta selecionada suas métricas de código-fonte através
+da execução da ferramenta {\it analizo metrics}, esta coleta foi automatizada pelo
+script {\it analyze-all-projects} escrito durante este estudo disponível no repositório
+git desta pesquisa\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}.
 
 \section{Análise de dados} \label{analise}
 
@@ -25,7 +22,7 @@ A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
 estatísticos e gráficos, será utilizada para manipulação de dados, criação de
 tabelas e plotagem de gráficos. Todos os cálculos em linguagem R utilizados
 neste trabalho estão disponíveis
-em nosso repositório\footnote{https://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
+em nosso repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
 
 \subsection{Distribuição dos valores das métricas}
 
@@ -47,12 +44,21 @@ estes valores.
 
 ...
 
-\subsection{A ferramenta Analizo}
+\section{Analizo} \label{analizo}
 
-Analizo\footnote{http://analizo.org} é um {\it toolkit} livre, multi-linguagem
-e extensível para análise de código-fonte, calcula uma grande quantidade de
-métricas, como CBO, LCOM4, RFC, LOC, e suporta análise das linguagens de
-programação C, C++ e Java.
+Esta seção apresenta a ferramenta Analizo utilizada neste estudo para
+coletar métricas de código-fonte das ferramentas utilizadas como objeto de
+estudo.
+
+Analizo é um conjunto de ferramentas para análise de código-fonte e
+visualização, desenvolvido tendo como requisitos suportar múltiplas linguagens
+de programação, ser software livre, ser extensível e que seja capaz de lidar
+com código-fonte não mais compilável.
+
+Este último requisito permite analisar código-fonte com erros de sintaxe, com
+referências a bibliotecas não mais disponíveis, ou que usem bibliotecas com
+mudanças de API em versões mais recentes. Isto é importante especialmente ao
+analisar código-fonte legado em estudos sobre evolução de software.
 
 Ela será a ferramenta utilizada por nós durante este estudo para análise do
 código-fonte das ferramentas selecionadas, a decisão pela ferramenta Analizo
@@ -68,27 +74,7 @@ nosso estudo.
 
 Analizo é uma ferramenta mantida constantemente, com desenvolvedores ativos, e
 atualizações frequentes, sua última versão 1.19.1 foi lançada (no escopo deste
-trabalho) em 01 de Setembro de 2016 e será esta a versão utilizada neste
-estudo.
-
-
-\section{Analizo}
-
-Este capítulo apresenta a ferramenta Analizo utilizada neste estudo para
-coletar métricas de código-fonte das ferramentas utilizadas como objeto de
-estudo.
-
-\label{analizo}
-
-Analizo é um conjunto de ferramentas para análise de código-fonte e
-visualização, desenvolvido tendo como requisitos suportar múltiplas linguagens
-de programação, ser software livre, ser extensível e que seja capaz de lidar
-com código-fonte não mais compilável.
-
-Este último requisito permite analisar código-fonte com erros de sintaxe, com
-referências a bibliotecas não mais disponíveis, ou que usem bibliotecas com
-mudanças de API em versões mais recentes. Isto é importante especialmente ao
-analisar código-fonte legado em estudos sobre evolução de software.
+trabalho) em 01 de Setembro de 2016 e será a versão utilizada neste estudo.
 
 \subsection{Arquitetura}
 
@@ -343,7 +329,7 @@ dele ainda mais apropriado para pesquisas envolvendo análise de código-fonte.
 
 \subsection{Considerações finais}
 
-Este capítulo apresentou o Analizo, um conjunto de ferramentas para análise e
+Apresentamos o Analizo, um conjunto de ferramentas para análise e
 visualização de código-fonte com suporte a C, C++ e Java. Analizo é útil tanto
 para pesquisadores trabalhando com análise de código-fonte quanto para
 profissionais que precisam analisar seus projetos em busca de
