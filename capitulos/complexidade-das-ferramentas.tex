@@ -11,44 +11,7 @@ da execução da ferramenta {\it analizo metrics}, esta coleta foi automatizada 
 script {\it analyze-all-projects} escrito durante este estudo disponível no repositório
 git desta pesquisa\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}.
 
-\section{Análise de dados} \label{analise}
-
-Os dados coletados incluem métricas de código-fonte para cada módulo/classe de
-cada ferramenta selecionada, tanto da indústria quanto da academia. As
-métricas a serem analisadas e interpretadas são as métricas descritas na Seção
-\ref{metricas-de-codigo}.
-
-A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
-estatísticos e gráficos, será utilizada para manipulação de dados, criação de
-tabelas e plotagem de gráficos. Todos os cálculos em linguagem R utilizados
-neste trabalho estão disponíveis
-em nosso repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/qualificacao.R}.
-
-\subsection{Distribuição dos valores das métricas}
-
-Iremos calcular os percentis de cada métrica para cada ferramenta a partir dos
-valores das métricas dos seus módulos, um percentil é a centésima parte dos
-dados ordenados de forma crescente, iremos calcular os percentis 1, 5, 10, 25,
-50, 75, 90, 95 e 99, e dentre eles iremos discutir os resultados em função dos
-percentis 75, 90 e 95, assim como feito por \citeonline{Meirelles2013},
-correspondendo a valores muito frequentes, frequentes e pouco frequentes,
-respectivamente.
-
-Esta discussão irá nos fornecer como resultado intervalos de referência para
-métricas de código-fonte neste domínio de aplicação, estes intervalos serão
-definidos a partir da interpretação manual dos percentis e serão analisados
-usando modelos de regressão a fim de serem compreendidos e validados, uma
-comparação com intervalos encontrados nos trabalhos relacionados (seção
-\ref{trabalhos-relacionados}) também será realizada com objetivo de reforçar
-estes valores.
-
-...
-
 \section{Analizo} \label{analizo}
-
-Esta seção apresenta a ferramenta Analizo utilizada neste estudo para
-coletar métricas de código-fonte das ferramentas utilizadas como objeto de
-estudo.
 
 Analizo é um conjunto de ferramentas para análise de código-fonte e
 visualização, desenvolvido tendo como requisitos suportar múltiplas linguagens
@@ -339,3 +302,117 @@ Analizo é software livre, licenciado sob a GNU General Public License versão 3
 Seu código-fonte, bem como pacotes binários, manuais e tutoriais podem ser
 obtidos em http://analizo.org. Todas as ferramentas são auto-documentadas e
 podem ser consultadas como páginas de manual UNIX. Analizo é escrito em Perl.
+
+\section{Análise de dados} \label{analise}
+
+Os dados coletados pelo Analizo incluem métricas de código-fonte para cada módulo/classe de
+cada ferramenta selecionada, tanto da indústria quanto da academia. As
+métricas a serem analisadas e interpretadas são as métricas descritas na Seção
+\ref{metricas-de-codigo}.
+
+A linguagem R \cite{Ihaka1996}, uma linguagem de programação para cálculos
+estatísticos e gráficos, será utilizada para manipulação de dados, criação de
+tabelas e plotagem de gráficos. Todos os cálculos em linguagem R utilizados
+neste trabalho estão disponíveis
+em nosso repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dissertacao.R}.
+
+\subsection{Distribuição dos valores das métricas}
+
+Iremos calcular os percentis de cada métrica para cada ferramenta a partir dos
+valores das métricas dos seus módulos, um percentil é a centésima parte dos
+dados ordenados de forma crescente, iremos calcular os percentis 1, 5, 10, 25,
+50, 75, 90, 95 e 99, e dentre eles iremos discutir os resultados em função dos
+percentis 75, 90 e 95, assim como feito por \citeonline{Meirelles2013},
+correspondendo a valores muito frequentes, frequentes e pouco frequentes,
+respectivamente.
+
+Esta discussão irá nos fornecer como resultado intervalos de referência para
+métricas de código-fonte neste domínio de aplicação, estes intervalos serão
+definidos a partir da interpretação manual dos percentis e serão analisados
+usando modelos de regressão a fim de serem compreendidos e validados, uma
+comparação com intervalos encontrados nos trabalhos relacionados (seção
+\ref{trabalhos-relacionados}) também será realizada com objetivo de reforçar
+estes valores.
+
+...
+
+\subsection{Análise exploratória dos valores das métricas}
+
+Numa análise preliminar dos valores das métricas nos percentis 75, 90 e 95,
+apresentados no Apêndice \ref{analise-metricas}, percebemos uma forte
+similaridade com o trabalho em que estamos nos apoiando \cite{Meirelles2013}
+em relação aos intervalos dos valores de métricas.
+
+A Tabela \ref{metricas-90} faz um resumo da distribuição das métricas para todas
+as ferramentas estudadas neste trabalho no
+percentil 90, cada linha
+representa uma ferramenta, os nomes foram suprimidos para ganhar
+espaço.
+
+%% begin.rcode metricas-90, fig.align='center', results="asis"
+% percentil = '90%'
+% table = data.frame(t(percentil_all_projects(percentil)), t(percentil_all_nist_projects(percentil)))
+% xt = xtable(t(table), caption='valores das métricas no percentil 90 para as ferramentas da academia e indústria', digits=0, label='metricas-90')
+% print(xt, table.placement="H", include.rownames=FALSE)
+%% end.rcode
+
+Podemos perceber, por exemplo, que para a métrica \texttt{accm}, no percentil 90,
+as ferramentas se encontram entre os valores 2 à 9, o que coloca a maioria
+delas nos intervalos sugeridos por \cite{Meirelles2013} para
+códigos C, C++ e Java, ou seja, 3,1 a 5,3, 2,1 a 4,0 e 2,9 a 4,4,
+respectivamente.
+
+A mesma similaridade é percebida para a métrica \texttt{anpm}, onde as
+ferramentas se encontram entre os valores de 1 a 3 e os intervalos sugeridos por
+\cite{Meirelles2013} para códigos C, C++ e Java estão entre 3,1 a 4,0, 2,1 a
+3,0 e 1,6 a 2,0. De forma que a maioria das ferramentas se encontram dentro
+dos intervalos sugeridos por \cite{Meirelles2013}.
+
+Já para a métrica de acomplamento \texttt{cbo} esta similaridade não se repete
+, nossas ferramentas variam de 7 a 986, e os intervalos propostos por
+\cite{Meirelles2013} estão entre 6 a 9, 4 a 5 e 4 a 6, para C, C++ e Java
+respectivamente. Percebemos claramente que \texttt{cbo} tem um comportamento
+distinto, o que nos leva a considerar que iremos precisar esta métrica com
+mais cuidado, e possivelmente realizar análises mais aprofundadas com ela.
+
+Isto claramente faz um certo gancho com o objetivo geral deste trabalho,
+caractarizar a complexidade estrutural de ferramentas de análise estática,
+pois uma das formas de calcular complexidade estrutural, e que possivelmente
+iremos utilizar aqui, é feita em relação à \texttt{cbo} e \texttt{lcom4}. Na
+Figura \ref{fig:grafico-comparativo} é fácil perceber o quanto \texttt{cbo} destoa
+das outras métricas.
+
+%% begin.rcode grafico-comparativo, fig.show='hold', fig.cap="distribuição dos percentis para as ferramentas da academia e da indústria"
+% par(mfrow=c(3,2), oma=c(0,0,0,0))
+%
+% table = data.frame(percentis_by_project("accm"), percentis_by_nist_project("accm"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="accm")
+%
+% table = data.frame(percentis_by_project("nom"), percentis_by_nist_project("nom"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="nom")
+%
+% table = data.frame(percentis_by_project("lcom4"), percentis_by_nist_project("lcom4"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="lcom4")
+%
+% table = data.frame(percentis_by_project("cbo"), percentis_by_nist_project("cbo"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="cbo")
+%
+% table = data.frame(percentis_by_project("acc"), percentis_by_nist_project("acc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="acc")
+%
+% table = data.frame(percentis_by_project("sc"), percentis_by_nist_project("sc"))
+% matplot(table, type="l", pch=1, xlab="percentis", ylab="valor", xaxt="n", cex.lab=0.6, cex.axis=0.6, cex.sub=0.6, cex.main=0.6)
+% axis(1, at=1:length(rownames(table)), labels=rownames(table), cex.axis=0.6)
+% title(main="sc")
+%% end.rcode
+
