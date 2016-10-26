@@ -6,6 +6,11 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 * Orientadora: Christina von Flach G. Chavez
 * Co-orientador: Paulo Roberto Miranda Meirelles
 
+Agenda:
+
+| Qualificação | 08 de Julho de 2016 |
+| Defesa       | _proposta: primeira semana de fevereiro/2017_ |
+
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
@@ -91,24 +96,10 @@ sistemas Debian ele pode ser instalado com o seguinte comando:
 
 ## Crétidos
 
-### Imagens e ícones de PDF utilizados
+### Imagens e ícones
 
-* https://openclipart.org/detail/171857/icon-pdf-a%C2%8Dcone
-* https://openclipart.org/detail/169750/fileiconpdf
-* https://openclipart.org/detail/188817/pdf-icon
 * https://openclipart.org/detail/237990/pdf
-* https://openclipart.org/detail/200688/primary-pdf
-
-### Imagem de máquina
-
-* https://openclipart.org/detail/176508/comicstyle-machine-2
-
-### Imagens de caixa de software
-
-* https://openclipart.org/detail/17577/software-box-remix
 * https://openclipart.org/detail/65635/software-carton-box-with-no-text-remix
-* https://openclipart.org/detail/67357/software-box-1
-* https://openclipart.org/detail/18376/software-box-ln
 
 ## Contato
 
