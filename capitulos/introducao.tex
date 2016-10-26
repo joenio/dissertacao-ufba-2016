@@ -1,5 +1,37 @@
 \xchapter{Introdução}{}
 
+% (paulo) Nesta seção manteremos a
+%discussão nos argumentos do porquê monitorar métricas de código-fonte, bem como apresentaremos
+%as métricas selecionadas (e implementadas) para nossas ferramentas estudos
+%
+%Qualquer que seja a metodologia de desenvolvimento, monitorar a qualidade do software é
+%fundamental. Dentre as inúmeras características que fazem um bom software, várias delas podem
+%ser percebidas no código-fonte, e algumas são exclusivas dele.
+%
+%Métricas de código-fonte foram propostas desde que os primeiros conceitos da engenharia de
+%software surgiram. As métricas pioneiras foram rapidamente absorvidas pela indústria, que as usa
+%com frequência. Métricas de complexidade e tamanho são as mais usuais, por exemplo LOC (linhas
+%de código) e seus derivados (p.ex., erros/LOC, LOC/tempo). Essas métricas são reconhecidamente
+%limitadas quando usadas isoladamente. Mas mesmo com o avanço da pesquisa em métricas desde
+%então, a indústria continua usando as mesmas métricas simplistas e de forma isolada (Fenton e Neil,
+%1999).
+%
+%Especialistas em métricas podem ser capazes de entender e usar métricas, mas todos desenvolve-
+%dores deveriam saber como usá-las para monitorar e melhorar seu código. Facilitar o monitoramento
+%pelos desenvolvedores em geral é uma das contribuições desta tese de doutorado ao mostrar (no
+%Capítulo 4) como é possível monitorar e estudar um conjunto de métricas de código-fonte de proje-
+%tos de software livre e acompanhar a sua evolução. Também, complementando isso, apresentamos
+%neste contexto (no Capítulo 5) um conjunto de ferramentas (i.e., uma plataforma) que sistematiza a
+%avaliação do código-fonte. Antes de chegarmos nesses pontos, apresentamos em detalhes o conjunto
+%de métricas que nortearam os estudos nesta tese.
+%
+%Em um dos trabalhos mais reconhecidos da área de métricas de código-fonte, (Lanza e Marinescu,
+%2006) coletaram diversas métricas de tamanho, complexidade e herança de 45 sistemas feitos em
+%Java e 37 em C++. Seus valores são apresentados no livro de sua autoria, que sugere valores consi-
+%derados como baixo, médio, alto e muito alto para cada métrica, obtidos através da média e desvio
+%padrão dos dados coletados dos sistemas estudados.
+%\cite{Lanza2007}
+
 % (apresento parte da metodologia)
 % apresentar parte da "antiga" metologia aqui
 %
@@ -48,24 +80,16 @@ velocidade \cite{Li2010}.
 % Além disso, o trabalho atual pode ser a extensão ou continuação de um trabalho 
 % anterior. Nesse caso, o trabalho original deve ser mencionado na introdução.
 
-Diversos trabalhos avaliam ferramentas de análise estática de código-fonte,
-em geral, que possuem um mesmo propósito (detecção de bugs, 
-detecção de vulnerabilidades, detecção de anomalias, etc.),
-sob a perspectiva de seus usuários, 
-e com foco em atributos de qualidade externa, tais como, desempenho, 
+Diversos trabalhos avaliam ferramentas de análise estática de código-fonte, em
+geral, que possuem um mesmo propósito (detecção de bugs, detecção de
+vulnerabilidades, detecção de anomalias, etc.), sob a perspectiva de seus
+usuários, e com foco em atributos de qualidade externa, tais como, desempenho,
 precisão e cobertura de seus resultados. 
 
-Por exemplo, \cite{Rutar2004} \cite{Kratkiewicz2005} \cite{Okun2007}
-\cite{Emanuelsson2008} \cite{Wedyan2009} \cite{Mantere2009} \cite{Al2010}
-\cite{Li2010} \cite{Johns2011} \cite{Alemerien2013} \cite{Ataide2014} realizam
-estudos comparando ferramentas de análise estática através dos seus atributos
-de qualidade externa.
-
-Entretanto, não foram encontrados estudos que avaliam 
-ferramentas de análise estática de código-fonte 
-com foco em sua qualidade interna, 
-considerando o ponto de vista de desenvolvedores interessados 
-não apenas em usar, mas também em manter e evoluir tais ferramentas.
+Entretanto, não foram encontrados estudos que avaliam ferramentas de análise
+estática de código-fonte com foco em sua qualidade interna, considerando o
+ponto de vista de desenvolvedores interessados não apenas em usar, mas também
+em manter e evoluir tais ferramentas.
 
 Em tal contexto, surge o problema de identificar, medir e analisar fatores
 técnicos que influenciam na manutenção de uma ferramenta de análise estática. 
@@ -203,15 +227,9 @@ Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
 
 Diante disso, definimos como objetivo principal deste trabalho: compreender
 as ferramentas de software para análise estática de código-fonte do ponto de
-vista de sua manutenabilidade, a partir da análise de sua complexidade
+vista de sua manutenabilidade, a partir da observação e análise de sua complexidade
 estrutural, discutindo quais características arquiteturais explicam seus
 atributos de qualidade interna.
-
-O objetivo principal deste trabalho é compreender as ferramentas de software
-para análise estática de código-fonte, de forma à interpretar suas
-características de qualidade interna a fim de servirem como referência para
-desenvolvedores em atividades de evolução e manutenção em ferramentas deste
-mesmo domínio.
 
 % Objectives
 \section{Objetivos específicos}
@@ -312,6 +330,20 @@ de ferramentas de análise estática.
 As ferramentas selecionadas serão avaliadas, com extração de
 seus atributos de qualidade interna a partir do cálculo de suas métricas de
 código-fonte.
+
+\section{Coleta de dados} \label{coleta}
+
+Serão realizadas duas etapas para identificar e mapear as ferramentas de
+análise estática com código-fonte disponível: uma atividade para seleção de
+ferramentas da academia, descrita na Seção \ref{ferramentas-da-academia}, e
+outra atividade para seleção de ferramentas da indústria, descrita na Seção
+\ref{ferramentas-da-industria}.
+
+As ferramentas selecionadas para o estudo serão analisadas com Analizo para
+extração dos valores de métricas de código-fonte.  Esta análise utilizará o
+comando {\it metrics} do Analizo, que calcula métricas globais de projeto e
+métricas por módulos. Este estudo levará em consideração a distribuição das
+métricas por módulos.
 
 \section{Estrutura do texto} 
 
