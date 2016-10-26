@@ -10,7 +10,7 @@ Agenda:
 
 | Aividade     | Data                                          |
 | ------------ | --------------------------------------------- |
-| Qualificação | 08 de Julho de 2016                           |
+| Qualificação | 12 de Julho de 2016                           |
 | Defesa       | _proposta: primeira semana de fevereiro/2017_ |
 
 Mais detalhes em:
