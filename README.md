@@ -8,6 +8,7 @@ Federal da Bahia ([UFBA](http://www.ufba.br)).
 
 Agenda:
 
+| Aividade     | Data                                          |
 | ------------ | --------------------------------------------- |
 | Qualificação | 08 de Julho de 2016                           |
 | Defesa       | _proposta: primeira semana de fevereiro/2017_ |
