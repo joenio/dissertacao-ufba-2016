@@ -1,5 +1,10 @@
 \xchapter{Revisão estruturada}{} \label{revisao-estruturada}
 
+%(+ metodologia)
+% apresentar parte da metodologia aqui
+% e documentar a revisao estruturada em detalhes
+% mover conteudo da antiga metodolgia pra cá, o que for relacionado a revisao
+
 A revisão estruturada é um processo disciplinado para seleção de artigos com
 publicação de ferramentas de software a partir de critérios bem definidos, de
 forma que seja possível a reprodução do estudo por parte de pesquisadores
@@ -14,9 +19,10 @@ sistemática há um esforço em caracterizar os artigos analisados o mesmo
 não ocorre na revisão estruturada.
 
 A revisão estruturada é organizada em três atividades de (1) busca de artigos
-(definição das fontes, obtenção dos artigos nas fontes), (2) filtro
-(definição de critérios de busca, definição de script de busca) e (3) seleção
-de artigos com publicação de ferramentas.
+(definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
+de critérios de busca, definição de script de busca) e (3) seleção de artigos
+com publicação de ferramentas conforme representado na Figura
+\ref{figura-revisao-estruturada}.
 
 \begin{figure}[h]
   \center
@@ -29,7 +35,7 @@ Na primeira atividade da revisão estruturada são definidas as fontes de busca,
 são conferências que abordam o tema de interesse do estudo, selecionamos a
 conferência SCAM - Source Code Analysis and Manipulation Working
 Conference\footnote{http://www.ieee-scam.org} e a conferência ASE - Automated
-Software Engineering\footnote{http://ase-conferences.org}, ambas com largo
+Software Engineering\footnote{http://ase-conferences.org}, por serem ambas conferências com largo
 histórico de publicação sobre análise de programas, apresentando um grande
 potencial de encontrarmos ferramentas de análise estática de código-fonte
 publicadas em suas inúmeras edições.
@@ -131,7 +137,7 @@ SCAM 2011 & 21    & 10        & 2           \\
 SCAM 2012 & 22    & 12        & 3           \\
 SCAM 2013 & 24    & 13        & -           \\
 SCAM 2014 & 36    & 16        & 1           \\
-SCAM 2015 & 30    & 18        & 0           \\
+SCAM 2015 & 30    & 18        & -           \\
 \hline
 Total     & 346   & 155       & 10          \\
 \hline
@@ -178,35 +184,40 @@ Total    & 1533  & 281       & 11          \\
 \label{artigos-do-ase}
 \end{table}
 
-O código-fonte da versão mais recente de cada uma destas 21 ferramentas foi
+O código-fonte da versão mais recente de cada uma destas 21 ferramentas academicas foi
 copiado localmente para caracterização e análise através da coleta de suas
 métricas de código-fonte.
 
-%(+ metodologia)
-% apresentar parte da metodologia aqui
-% e documentar a revisao estruturada em detalhes
-% mover conteudo da antiga metodolgia pra cá, o que for relacionado a revisao
+\section{Ferramentas da indústria} \label{ferramentas-da-industria}
 
-\section{Ferramentas de indústria} \label{ferramentas-da-industria}
-
-Em paralelo à revisão estruturada para obtenção de ferramentas da academia, ...
-
-Junto à revisão estruturada para seleção de ferramentas da academia, fizemos
-uma seleção manual no catálogo de ferramentas de análise estática do projeto
+Em paralelo à revisão estruturada para seleção de ferramentas da academia
+foi realizada uma seleção manual no catálogo de ferramentas de análise estática do projeto
 SAMATE\footnote{https://samate.nist.gov/index.php/Source\_Code\_Security\_Analyzers.html}
-para encontrar ferramentas da indústria, nesta seleção os critérios foram,
-ferramentas com código-fonte disponível, implementadas nas linguagens de
-programação suportadas pelo Analizo. Nesta seleção, de um total de 54 ferramentas
-presentes no catálogo do projeto SAMATE, 19 tinham código-fonte
-disponível, destas apenas 14 eram suportadas pelo Analizo.
+em busca de ferramentas da indústria.
 
-...
+O projeto SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance
+Metrics and Tool Evaluation}, um projeto do NIST\footnote{http://nist.gov}
+dedicado ao desenvolvimento de métodos que permitam avaliar e medir a
+eficiência de ferramentas e técnicas sobre garantia de qualidade em software.
+O site do projeto, disponível em \citeonline{SamateAnalysers}, mantém uma lista
+de ferramentas de análise estática.
 
-A seleção de ferramentas da indústria será feita de forma não estruturada a
-partir de uma busca livre e manual no site do projeto SAMATE. As ferramentas
-com código-fonte disponível, implementadas nas linguagens de programação
-suportadas pelo Analizo serão selecionadas.
+Esta busca se justifica pois a caracterização das ferramentas da academia será feita lado a
+lado às ferramentas da indústria a fim de traçar paralelo entre estes dois contextos, onde
+poderemos verificar se existem diferenças entre as características destes dois mundos e
+se for o caso explicar tais diferenças.
+
+Nesta busca por ferramentas da indústria encontramos um total de 54 ferramentas
+presentes no catálogo do projeto SAMATE, 19 tinham código-fonte disponível,
+destas apenas 14 eram suportadas pelo Analizo (escritas em C, C++ ou Java).
 
 Após download do código-fonte de cada ferramenta selecionada, em sua versão
 mais recente, a ferramenta Analizo será utilizada para a coleta das métricas. 
+A Tabela \ref{total-de-ferramentas} traz um resum com todas as ferramentas
+selecionadas, tando da indústria quanto da academia.
 
+As ferramentas selecionadas para o estudo serão analisadas com Analizo para
+extração dos valores de métricas de código-fonte.  Esta análise utilizará o
+comando {\it metrics} do Analizo, que calcula métricas globais de projeto e
+métricas por módulos. Este estudo levará em consideração a distribuição das
+métricas por módulos.
