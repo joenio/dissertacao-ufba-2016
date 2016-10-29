@@ -121,7 +121,7 @@ plot_lines_for_project <- function(filename) {
 }
 
 knitr_latex_table <- function(table, caption, label) {
-  xt <- xtable(t(table), caption=caption, digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
+  xt <- xtable(t(table), caption=caption, digits=c(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
   print(xt, table.placement="H", caption.placement="top")
 }
 
@@ -231,12 +231,13 @@ histograma <- function(metric, caption) {
 
   x = c(accessanalysis[,metric], ejb[,metric], errorprone[,metric], indus[,metric], inputtracer[,metric], jastadd[,metric], sonarqubeplugin[,metric], srcml[,metric], tacle[,metric], wala[,metric], closure[,metric], cppcheck[,metric], cqual[,metric], findbugs[,metric], findsecuritybugs[,metric], jlint[,metric], pixy[,metric], pmd[,metric], rats[,metric], smatch[,metric], splint[,metric], uno[,metric], wap[,metric])
 
+  par(oma=c(0, 0, 0, 0), mar=c(2, 4, 1, 0))
   nonzeros = x[x > 0 & x < 500]
   h = hist(nonzeros, main=metric, xlab="valor", ylab="frequência")
-  xfit <- seq(min(nonzeros),max(nonzeros),length=40)
-  yfit <- dnorm(xfit,mean=mean(nonzeros),sd=sd(nonzeros))
+  xfit <- seq(min(nonzeros), max(nonzeros), length=40)
+  yfit <- dnorm(xfit, mean=mean(nonzeros), sd=sd(nonzeros))
   yfit <- yfit*diff(h$mids[1:2])*length(nonzeros)
-  lines(xfit, yfit, col="blue", lwd=2)
+  lines(xfit, yfit, col="blue", lwd=4)
 }
 
 knit("_dissertacao.Rtex")
