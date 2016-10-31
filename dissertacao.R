@@ -122,6 +122,7 @@ plot_lines_for_project <- function(filename) {
 
 knitr_latex_table <- function(table, caption, label) {
   xt <- xtable(t(table), caption=caption, digits=c(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), label=label)
+  write.csv(xt, file=paste("dataset/metricas/", label, ".csv", sep=""))
   print(xt, table.placement="H", caption.placement="top")
 }
 
