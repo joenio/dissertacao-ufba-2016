@@ -110,54 +110,48 @@ sub global_metrics($file, @names) {
   return %metrics;
 }
 
-foreach my $source (@SOURCES) {
-  foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/$source/*")) {
-    foreach my $dir (grep { -d $_ } glob("$tool/*")) {
-      unless (-e "$dir.doxyparse") {
-        say "doxyparse $dir > $dir.doxyparse";
-        `doxyparse $dir > $dir.doxyparse`;
-      }
-      unless (-e "$dir.analizo.metrics") {
-        say "analizo metrics $dir > $dir.analizo.metrics";
-        `analizo metrics $dir > $dir.analizo.metrics`;
-      }
-      unless (-e "$dir.analizo.dsm.png") {
-        say "analizo dsm -o $dir.analizo.dsm.png $dir";
-        `analizo dsm -o $dir.analizo.dsm.png $dir`;
-      }
-      unless (-e "$dir.sloccount") {
-        say "sloccount $dir > $dir.sloccount";
-        `sloccount $dir > $dir.sloccount`;
-      }
+foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+  foreach my $dir (grep { -d $_ } glob("$tool/*")) {
+    unless (-e "$dir.doxyparse") {
+      say "doxyparse $dir > $dir.doxyparse";
+      `doxyparse $dir > $dir.doxyparse`;
+    }
+    unless (-e "$dir.analizo.metrics") {
+      say "analizo metrics $dir > $dir.analizo.metrics";
+      `analizo metrics $dir > $dir.analizo.metrics`;
+    }
+    unless (-e "$dir.analizo.dsm.png") {
+      say "analizo dsm -o $dir.analizo.dsm.png $dir";
+      `analizo dsm -o $dir.analizo.dsm.png $dir`;
+    }
+    unless (-e "$dir.sloccount") {
+      say "sloccount $dir > $dir.sloccount";
+      `sloccount $dir > $dir.sloccount`;
     }
   }
 }
 
-foreach my $source (@SOURCES) {
-  foreach my $file (glob("./$source/*/*.metrics")) {
-    unless (-e "$file.dat") {
-      open my $OUTPUT, '>', "$file.dat";
-      say "+ $file -> $file.dat";
-      say $OUTPUT "@METRICS";
-      foreach my $row (metrics_by_module($file, @METRICS)) {
-        say $OUTPUT "@{ $row }";
-      }
-      close $OUTPUT;
+foreach my $file (glob("./static-analysis-tools/*/*.metrics")) {
+  unless (-e "$file.dat") {
+    open my $OUTPUT, '>', "$file.dat";
+    say "+ $file -> $file.dat";
+    say $OUTPUT "@METRICS";
+    foreach my $row (metrics_by_module($file, @METRICS)) {
+      say $OUTPUT "@{ $row }";
     }
+    close $OUTPUT;
   }
 }
 
 # write global metrics to "analizo.metrics.dat" file
 open my $OUTPUT, '>', "analizo.metrics.dat";
 say $OUTPUT "@GLOBAL_METRICS";
-foreach my $source (@SOURCES) {
-  foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/$source/*")) {
-    foreach my $file (glob("$tool/*.metrics")) {
-      my %metrics = global_metrics($file, @GLOBAL_METRICS);
-      print $OUTPUT basename($tool), " ";
-      print $OUTPUT join(" ", map { $metrics{$_} } @GLOBAL_METRICS);
-      print $OUTPUT "\n";
-    }
+foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+  foreach my $file (glob("$tool/*.metrics")) {
+    my %metrics = global_metrics($file, @GLOBAL_METRICS);
+    print $OUTPUT basename($tool), " ";
+    print $OUTPUT join(" ", map { $metrics{$_} } @GLOBAL_METRICS);
+    print $OUTPUT "\n";
   }
 }
 close $OUTPUT;

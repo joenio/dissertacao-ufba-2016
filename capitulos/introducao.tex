@@ -40,6 +40,7 @@
 
 % Contexto. O contexto faz parte da motivação do trabalho.
 \section{Contexto}
+
 A análise estática de programas é a atividade de coletar informações de um
 programa de software sem necessidade de execução, é uma atividade presente
 especialmente nas primeiras etapas da compilação, realizando otimizações, ou
@@ -178,8 +179,8 @@ interessados em atividades de manutenção e evolução.
 Estudar ferramentas de análise estática a fim de compreender seus atributos de
 qualidade interna e entender quais características %arquiteturais 
 explicam tais atributos é de fundamental importância do 
-ponto de vista de usuários (gerentes, desenvolvedores) interessados
-em adotar, usar, manter e evoluir ferramentas deste domínio de aplicação.
+ponto de vista de desenvolvedores interessados
+em manter e evoluir ferramentas deste domínio de aplicação.
 % sem afetar negativamente seus atributos de qualidade interna.
 
 % compreensão, arquitetura;  falar de métricas de produto, valores de referência
@@ -217,9 +218,13 @@ ferramentas.
 Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
 
 \begin{enumerate}
-  \item [{\bf Q1:}] {\em Como a complexidade estrutural pode ser interpretada
-    e explicada para ferramentas de software do domínio de aplicação de
-    análise estática de código-fonte?}
+  \item [{\bf Q1 (opção a):}] {\em O custo de mudança e a complexidade
+  estrutural das ferramentas de análise estática de código-fonte confirmam os
+  thresholds das métricas de código-fonte identificados na literatura?}
+
+  \item [{\bf Q1 (opção b):}] {\em Uma maior complexidade estrutural das
+  ferramentas de análise estática de código-fonte implicam em um maior custo de
+  mudança?}
 \end{enumerate}
 
 % Aim, Main Research Goal
@@ -228,8 +233,8 @@ Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
 Diante disso, definimos como objetivo principal deste trabalho: compreender
 as ferramentas de software para análise estática de código-fonte do ponto de
 vista de sua manutenabilidade, a partir da observação e análise de sua complexidade
-estrutural, discutindo quais características arquiteturais explicam seus
-atributos de qualidade interna.
+estrutural e custo de mudança, discutindo quais características arquiteturais
+explicam seus atributos de qualidade interna.
 
 % Objectives
 \section{Objetivos específicos}
@@ -237,17 +242,27 @@ atributos de qualidade interna.
 São objetivos específicos deste trabalho:
 
 \begin{itemize}
-  \item Selecionar e obter código-fonte de ferramentas de análise estática
-    desenvolvidas na academia, para coletar suas métricas de código-fonte.  A
-    seleção terá como base o resultado de uma revisão estruturada feita a
-    partir de artigos publicados em conferências relacionadas. 
-  \item Selecionar e obter código-fonte de ferramentas de análise estática
-    desenvolvidas pela indústria, para coletar suas métricas de código-fonte.
-  \item Propor intervalos de referência para a observação parametrizada da
-    qualidade interna das ferramentas de análise estática, a partir de suas
-    métricas de código-fonte.
-  \item Calcular a distância Euclidiana entre valores de referência e os
-    valores das ferramentas estudadas.
+
+
+  \item Caracterizar ferramentas de análise estática com base na revisão
+        estruturada da literatura
+  \item Interpretar os valores das métricas de ferramentas de análise estática
+        com base nas percepções identificadas na caracterização proposta
+  \item Identificar a relação entre complexidade estrutural e custo de mudança 
+        das ferramentas de análise estática
+  \item Avaliar os thresholds encontrados na literatura para métricas de
+        código-fonte em relação às métricas calculadas para as ferramentas
+        de análise estática
+
+%  \item Selecionar e obter código-fonte de ferramentas de análise estática
+%    desenvolvidas na academia, para coletar suas métricas de código-fonte. A
+%    seleção terá como base o resultado de uma revisão estruturada feita a
+%    partir de artigos publicados em conferências relacionadas. 
+%  \item Selecionar e obter código-fonte de ferramentas de análise estática
+%    desenvolvidas pela indústria, para coletar suas métricas de código-fonte.
+%  \item Propor intervalos de referência para a observação parametrizada da
+%    qualidade interna das ferramentas de análise estática, a partir de suas
+%    métricas de código-fonte.
 \end{itemize}
 
 \section{Hipóteses} \label{hipoteses}
@@ -255,37 +270,42 @@ São objetivos específicos deste trabalho:
 Para responder a questão colocada acima, definimos as seguintes hipóteses:
 
 \begin{enumerate}
-  \item[{\bf H1:}] {\em É possível calcular valores de referência de métricas
-    de código-fonte para ferramentas de análise estática a partir de um
-    conjunto de softwares da academia e da indústria.}
-  \item[{\bf H2:}] {\em Ferramentas de análise estática tendem a ter uma
-    maior complexidade estrutural do que ferramentas de outros domínios de
-    aplicação.}
+  \item[{\bf H1:}] {\em A complexidade estrutural é alta em ferramentas de
+    análise estática de código-fonte com alto valor de custo de mudança.}
+  \item[{\bf H2:}] {\em Ferramentas de análise estática com alto número de
+    mudanças tem complexidade estrutural e custo de mudança altos.}
   \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
     código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
     complexidade estrutural.}
+  \item[{\bf H4:}] {\em Ferramentas de análise estática com maior número de
+    classes possuem maior complexidade estrutural e maior custo de mudança.}
+  \item[{\bf H5:}] {\em Os valores de métricas de código-fonte calculados para
+    as ferramentas de análise estática de código-fonte estão dentro dos
+    thresholds para métricas de código-fonte encontrados na literatura.}
 \end{enumerate}
 
-A hipótese {\bf H1} ({\em É possível calcular valores de referência de
-métricas de código-fonte para ferramentas de análise estática a partir de um
-conjunto de softwares da academia e da indústria}) será validada a partir da
-análise das métricas calculadas para cada uma das ferramentas estudadas.  Esta
-análise levará em consideração a caracterização das ferramentas
-(Seção~\ref{caracterizacao-das-ferramentas}), em especial, em um subconjunto
-de ferramentas com melhores valores de métricas.
+(falta explicar como cada hipótese será testada)
 
-A hipótese {\bf H2} ({\em Ferramentas de análise estática tendem a ter uma
-maior complexidade estrutural do que ferramentas de outros domínios de
-aplicação}) será validada a partir da comparação com os trabalhos relacionados
-(Seção \ref{trabalhos-relacionados}) que realizaram estudos similares, com
-cálculo e distribuição de métricas, mas que utilizam como objeto de estudo
-conjuntos ferramentas de outros domínios de aplicação.
-
-A hipótese {\bf H3} ({\em Dentre as ferramentas de análise estática de
-código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
-complexidade estrutural}) será validada a partir do cálculo da distância das
-métricas de cada ferramenta com os valores de referências encontrados neste
-estudo (Seção \ref{distancia}).
+%A hipótese {\bf H1} ({\em É possível calcular valores de referência de
+%métricas de código-fonte para ferramentas de análise estática a partir de um
+%conjunto de softwares da academia e da indústria}) será validada a partir da
+%análise das métricas calculadas para cada uma das ferramentas estudadas.  Esta
+%análise levará em consideração a caracterização das ferramentas
+%(Seção~\ref{caracterizacao-das-ferramentas}), em especial, em um subconjunto
+%de ferramentas com melhores valores de métricas.
+%
+%A hipótese {\bf H2} ({\em Ferramentas de análise estática tendem a ter uma
+%maior complexidade estrutural do que ferramentas de outros domínios de
+%aplicação}) será validada a partir da comparação com os trabalhos relacionados
+%(Seção \ref{trabalhos-relacionados}) que realizaram estudos similares, com
+%cálculo e distribuição de métricas, mas que utilizam como objeto de estudo
+%conjuntos ferramentas de outros domínios de aplicação.
+%
+%A hipótese {\bf H3} ({\em Dentre as ferramentas de análise estática de
+%código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
+%complexidade estrutural}) será validada a partir do cálculo da distância das
+%métricas de cada ferramenta com os valores de referências encontrados neste
+%estudo (Seção \ref{distancia}).
 
 
 \section{Contribuições esperadas}
@@ -293,15 +313,17 @@ estudo (Seção \ref{distancia}).
 Ao final deste trabalho, as seguintes contribuições científicas ({\bf CC}) e
 tecnológicas ({\bf CT}) são esperadas:
 
-\begin{enumerate}
-  \item [{\bf CC1:}] Um conjunto de intervalos de referência da frequência dos
-    valores de métricas de código-fonte para o domínio de aplicação de
-    análise estática de código-fonte.
-  \item [{\bf CC2:}] Definição de argumentos que expliquem a alta complexidade
-    estrutural em ferramentas de análise estática de código-fonte.
-  \item [{\bf CT1:}] Evolução de uma ferramenta de análise estática de
-    código-fonte.
-\end{enumerate}
+(pendente)
+
+%\begin{enumerate}
+%  \item [{\bf CC1:}] Um conjunto de intervalos de referência da frequência dos
+%    valores de métricas de código-fonte para o domínio de aplicação de
+%    análise estática de código-fonte.
+%  \item [{\bf CC2:}] Definição de argumentos que expliquem a alta complexidade
+%    estrutural em ferramentas de análise estática de código-fonte.
+%  \item [{\bf CT1:}] Evolução de uma ferramenta de análise estática de
+%    código-fonte.
+%\end{enumerate}
 
 Lembrando que neste trabalho serão utilizadas métricas de produto,
 especificamente, métricas de código-fonte, que cobrem aspectos de tamanho,
@@ -324,9 +346,9 @@ coleta de dados. A seção \ref{coleta} detalha a coleta de dados e a seção
 \ref{analise} traz informações de como estes dados serão analisados e
 interpretados.
 
----
+%---
 
-Média não é representativa como se pode observar nas Figuras \ref{fig:histograma-cbo} e \ref{fig:histograma-lcom4}...
+%Média não é representativa como se pode observar nas Figuras \ref{fig:histograma-cbo} e \ref{fig:histograma-lcom4}...
 
 %% begin.rcode histograma-cbo, fig.align='center', results="asis", fig.cap="distribuição da métrica CBO", fig.width=5, fig.height=3
 % histograma('cbo', 'histograma da métrica CBO para todas as ferramentas')

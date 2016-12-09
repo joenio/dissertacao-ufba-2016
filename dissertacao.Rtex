@@ -19,8 +19,8 @@
 \coadviser{Prof. Dr. Paulo Roberto Miranda Meirelles}
 
 \title{
-  Caracterização da complexidade estrutural em ferramentas de análise estática
-  de código-fonte
+  Um estudo da complexidade estrutural e do custo de mudança das
+  ferramentas de análise estática de código-fonte
 }
 
 \author{Joenio Marques da Costa\\
@@ -37,18 +37,18 @@
 
 Análise estática de código-fonte é um tema em constante evolução, ferramentas
 deste domínio continuam a ser desenvolvidas tanto na academia quanto na
-indústria, compreender os aspectos que refletem nos atributos de qualidade
-interna destas ferramentas é uma atividade primordial do ponto de vista dos
-desenvolvedores destas ferramentas. Neste sentido uma das abordagens é a
-observação dos valores de métricas de código-fonte, de forma a jogar luz sobre
-aspectos arquiteturais importantes que justifiquem ou denunciem problemas em
-sua qualidade interna. Assim propomos uma abordagem para realizar esta
-observação de forma que tenhamos como resultado final referências de valores
-de métricas de código-fonte para ferramentas deste domínio.
+indústria, compreender os aspectos que refletem na manutenabilidade destas
+ferramentas é uma atividade primordial do ponto de vista dos desenvolvedores
+destas ferramentas. Neste sentido uma das abordagens é a observação dos valores
+de métricas de código-fonte, de forma a jogar luz sobre aspectos arquiteturais
+importantes que justifiquem ou denunciem problemas em sua qualidade interna.
+Assim utilizamos abordagens encontradas na literatura especializada sobre
+métricas de código-fonte para observação da complexidade estrutural e custo de
+mudança das ferramentas deste domínio de aplicação.
 
 \begin{keywords}
 
-  métricas de código-fonte, ferramentas de análise estática, engenharia de software.
+  complexidade estrutural, custo de mudança, ferramentas de análise estática, engenharia de software.
 
 \end{keywords}
 
@@ -59,6 +59,286 @@ de métricas de código-fonte para ferramentas deste domínio.
 \mainmatter
 
 %------------------------------------------%
+
+%% Segundo definição PMBOK\cite{Pmbok2013} {\it threshold} é traduzido como ``Limite'':
+%% 
+%% \begin{quote}
+%% Um valor de custo, de tempo, de qualidade,
+%% técnico ou de recurso usado como parâmetro e
+%% que pode ser incluído nas especificações do
+%% produto. Ultrapassar o limite deve provocar
+%% alguma ação, como a geração de um relatório de
+%% exceções.
+%% \end{quote}
+%% 
+%% Lorenz and Kidd propose threshold
+%% values for several object-oriented metrics for C++ and
+%% Smalltalk based on their experience with selected C++
+%% and Smalltalk projects [11]. - Object-oriented software metrics: a practical guide
+%% (nao encontro esse livro para baixar!)
+%% 
+%% \cite{El2001}
+%% 
+%% Bowen (Bowen, 1984) proposed component size thresholds between 23-76 source
+%% statements based on his own analysis. After a lengthy critique of size
+%% thresholds, Dunn and Ullman (Dunn and Ullman, 1979) suggest two pages of
+%% source code listing as an indicator of an overly large component. Woodfield et
+%% al. (1981) suggest a maximum threshold of 70 LOC.
+%% 
+%% For example, Lorenz and
+%% Kidd (Lorenz and Kidd, 1994), based on their experiences with Smalltalk and
+%% C++ projects, recommended an inheritance nesting level threshold of 6,
+%% indicating that inheritance up to a certain point is not detrimental.
+%% 
+%% A recent series of studies led by the author investigated thresholds for object-
+%% oriented metrics (Benlarbi et al., 2000; El-Emam, Benlarbi, Goel, Melo et al.,
+%% 2000; Glasberg et al., 2000). The first study demonstrated that an absence of
+%% size thresholds for object-oriented classes (El-Emam, Benlarbi, Goel, Melo et
+%% al., 2000). The remaining two studies demonstrated that an absence of threshold
+%% effects for a subset of the metrics described earlier (Benlarbi et al., 2000;
+%% Glasberg et al., 2000). The results are consistent across all of the three studies:
+%% there are no thresholds for contemporary object-oriented metrics, including class
+%% size.
+%% 
+%% \cite{Shatnawi2006}
+%% There were enormous empirical studies that validated
+%% Object-Oriented (OO) metrics as predictors of software
+%% quality [1][4][6]. However, there is still a dearth of studies
+%% that identified the threshold values of OO metrics.
+%% 
+%% Bender pointed out that these
+%% thresholds should only be considered as valid threshold
+%% values if the prediction model’s assumption, i.e. a
+%% constant risk below the threshold, is plausible [2]. Bender
+%% proposed a quantitative method for identifying threshold
+%% values from a logistic regression curve. In this paper, we
+%% identify the threshold values of CK [5] metrics using
+%% Bender methodology [2].
+%% Metrics
+%%     VARL1  VARL2
+%% CBO 24     10
+%% RFC 161    55
+%% WMC 102    33
+%% 
+%% \cite{Sant2008}
+%% The problem is far from being new and it
+%% characterizes intrinsically any metrics-based approach. In most of the cases setting
+%% the threshold values is a highly empirical process and it is guided by similar past
+%% experiences and by hints from metrics’ authors (Lorenz & Kidd, 1994).
+%% 
+%% \cite{Clauset2009} faz um estudo detalhado da power-law em dados empiricos, n eh sobre metricas de software, teorico sobre estatistica
+%% 
+%% \cite{Ferreira2009}
+%% evidenciam valores
+%% que podem ser tomados como referência para as medidas das
+%% métricas.
+%% 
+%% ainda está em aberto a definição
+%% dos valores desejáveis para essas métricas, o que restringe
+%% o uso efetivo de métricas na produção de software.
+%% 
+%% V ALORES REFER ÊNCIA PARA M ÉTRICAS OO
+%% Fator Nı́vel Métrica Valor Referência
+%% 
+%% Conectividade
+%% Sistema: COF Bom: até 0,02 - Regular: entre 0,02 e 0,14 - Ruim: maior ou igual a 0,14
+%% Classe: # conexões aferentes Bom: 1 - Regular: entre 1 e 20 - Ruim: maior ou igual a 20
+%% 
+%% Ocultação de Informação
+%% Classe: # atributos públicos Bom: 0 - Regular: entre 0 e 8 - Ruim: maior ou igual a 8
+%% 
+%% Tamanho da Interface
+%% Classe: # métodos públicos Bom: 0 a 10 - Regular: entre 10 e 40 - Ruim: maior ou igual a 40
+%% 
+%% Herança
+%% Classe: DIT (profundidade na árvore de herança) Valor tı́pico: 2
+%% 
+%% Coesão Interna
+%% Classe: LCOM (ausência de coesão) Bom : 0 - Regular: entre 0 e 20 - Ruim: maior ou igual a 20
+%% 
+%% \cite{Shatnawi2010}
+%% The focus of the study is to identify threshold values of software metrics using receiver
+%% operating characteristic curves.
+%% 
+%% This method has not been used before to identify OO metric threshold values.
+%% 
+%% very
+%% few have identified threshold values of metrics and suggested guidelines on how to interpret and
+%% apply these values.
+%% 
+%% Table X. Candidate threshold values.
+%% Metrics Threshold values
+%% RFC 44
+%% CTM 33
+%% CBO 13
+%% WMC 24
+%% NOO 9
+%% 
+%% Although we analyzed only one system in our study, we believe that the research results can
+%% be generalized to the OO systems that are similar to Eclipse—an industrial-strength system that is
+%% continuously evolving with thousands of classes.
+%% 
+%% \cite{Herbold2011}
+%% Table 2 Threshold values for the metrics to measure the maintainability
+%% 
+%% WMC Java 100 Benlarbi et al. (2000)
+%% CBO Java 5 Benlarbi et al. (2000)
+%% RFC Java 100 Benlarbi et al. (2000)
+%% NORM Java 3 Lorenz and Kidd (1994)
+%% LOC Java 500 Adapted from Copeland (2005)
+%% NOM Java 20 Adapted from Copeland (2005)
+%% NSM Java 4 Lorenz and Kidd (1994)
+%% 
+%% \cite{Ferreira2012}
+%% define limites por dominio, por tipo de software e por tamanho
+%% 
+%% \cite{Zhang2013}
+%% o contexto influencia a distribuicao das metricas, ou seja, linguagem
+%% de programacao afeta, o dominio, etc...
+%% 
+%% Contexts of software systems are considered in Ferreira et
+%% al. [14]’s work. They propose to identify thresholds of six
+%% object-oriented software metrics using three context factors:
+%% application domain, software types and system size (in terms
+%% of the number of classes).
+%% 
+%% Este autor => application domain, pro-
+%% gramming language, and the number of changes,
+%% 
+%% Open source software systems are characterized by
+%% Capiluppi et al. [22] using 12 context factors: age, appli-
+%% cation domain, programming language, size (in terms of
+%% physical occupation), the number of developers, the number
+%% of users, modularity level, documentation level, popularity,
+%% status, success of project, and vitality.
+%% 
+%% Number of Changes (NC): describes the total number of
+%% commits made to a software system. It might be more difficult
+%% to maintain heavily-modified software systems than lightly-
+%% modified ones.
+%% 
+%% Este autor => The most influential factors are application
+%% domain, programming language, and the number of changes.
+%% 
+%% \cite{Oliveira2015}
+%% Our preliminary results indicate
+%% that good quality applications—as cited by experts—respect
+%% metric thresholds. In contrast, we observed that noncompliant
+%% applications are not largely viewed as requiring more effort to
+%% maintain than other applications.
+%% 
+%% To address the challenge of identifying thresholds that have to
+%% In this section we summarize the proposed technique for
+%% be followed by many but not all methods, classes or components extracting relative thresholds from a Corpus, a benchmark of
+%% we have introduced in previous work the notion of a relative software applications [6], [7]. This technique derives thresholds
+%% threshold [6], [7]. Relative thresholds are represented by pairs represented by pairs [p, k], such that p% of the classes in an
+%% (p, k) such that p% of the classes in an application should have application should have M ≤ k. Therefore, a relative threshold
+%% M ≤ k, where M is a given source code metric and p is the tolerates (100 − p)% of classes with M > k. As an example,
+%% minimal percentage of classes in each application that should we can derive a relative threshold as follows: at least 75% of
+%% respect the upper limit k.
+%% 
+%% For each application, we evaluate their percentage of classes
+%% respecting the k-value of the proposed relative threshold. The
+%% results are summarized in Table IV. For instance, the relative
+%% threshold for NOA is (75, 5) and the table shows that 100%
+%% of the classes of PetitParser have five attributes or less.
+%% 
+%% introduz o conceito de threshold relatives (bom p eu usar igual)
+%% 
+%% \cite{Gil2016}
+%% code
+%% metrics such as lines of code are extremely context dependent and their distri-
+%% bution differs from project to project.
+%% 
+%% metric values are so sensitive
+%% to context, that their measurement in one project offers little prediction regarding
+%% their measurement in another project.
+%% 
+%% % ---
+%% 
+%% 
+%% ideias malucas:
+%% 
+%% Change Cost eh uma metrica proposta para medir quanto custoso eh fazer mudanças,
+%% indica, preve apenas, que uma mudança aqui ira impactar em X partes do sistema.
+%% 
+%% Isto indica que arquitetura pode ser comparada com outras arquiteturas, posso
+%% comparar change cost entre 2 sistems e dizer que este tem melhor arquitetura
+%% que aquele.
+%% 
+%% The smaller the module, the easier it is
+%% to improve, and the more such small, independent modules
+%% there are, the more developers can contribute to the system
+%% independently and in parallel. In our prior work, we created
+%% a Design Rule Hierarchy (DRH) clustering algorithm [5, 36,
+%% 6] to identify independent modules. We now calculate the
+%% Decoupling Level of a system from its DRH.
+%% 
+%% SC, complexidade estrutural indica quanto manutenabiliadde um programa
+%% pode ser boa ou ruim.
+%% 
+%% Tenho valores de metricas referencia, as metricas calculadas dos projetos
+%% que estou estudando irao poder me dizer qunto cada projeto esta dentro
+%% da referencia ou nao, indicando que esta ruim ou nao.
+%% 
+%% Com base nisso posso validar se o Change Cost que me diz que uma arquitetura
+%% eh melhor que outra esta deacordo com as metricas dentro dos intervalos ou nao.
+%% (ou posso usar apenas CBO que a metrica de acoplamento e Change Cost eh calculada com base em acoplamento)
+%% 
+%% Assume-se que em designs menos acoplados a medida de Change Cost também será menor.
+%% 
+%% \cite{Maccormack2006}
+%% 
+%% Se houver tempo de implementar no Analizo Decoupling Level posso usar tb essa metrica pois
+%% ela eh indepentende de tamanho de acordo com o autor, nao eh sensivel ao tamanho do software.
+%% 
+%% % ---
+%% 
+%% terceiro:
+%% 
+%% As proposições da teoria proposta por terceiro:
+%% 
+%% P7 A complexidade estrutural influencia positivamente o esforço necessário para a ati-
+%% vidade de compreensão de software, um aumento
+%% na complexidade do software implica em um aumento no esforço necessário para
+%% que desenvolvedores consigam compreender a arquitetura do software.
+%% 
+%% P8 O esforço necessário para compreensão de um sistema de software influencia positi-
+%% vamente o esforço necessário para realizar atividades de manutenção, um aumento
+%% no esforço para compreensão acarreta um aumento no esforço necessário para rea-
+%% lizar atividades de manutenção.
+%% 
+%% P9 O esforço necessário para atividades de manutenção influencia positivamente os cus-
+%% tos de projetos de software.
+%% Explicação: Se os desenvolvedores têm maior dificuldade para compreender e mo-
+%% dificar sistemas de software, os custos do projeto de manutenção de tal sistema
+%% tendem a subir. Os desenvolvedores precisam de mais tempo para realizar as mu-
+%% danças, o que, por consequência, faz com que o projeto consiga alcançar menos
+%% resultados com os recursos disponı́veis.
+%% 
+%% P7 é considerada como proposição válida com base na literatura existente (Darcy et
+%% al., 2005; Midha, 2008) (capı́tulo 3), e é considerada como justificativa para os estudos
+%% realizados.
+%% P8 e P9, propondo que o esforço de compreensão influencia positivamente no esforço
+%% de manutenção e que este influencia nos custos do projeto, são consideradas axiomas.
+%% Isto é, elas são assumidas como verdadeiros dentro do nosso domı́nio de análise, e servem
+%% de ponto de partida para inferir outros fatos na nossa teoria.
+%% 
+%% ---
+%% 
+%% Outra possibilidade de trabalho futuro é explorar diferentes aspectos da complexi-
+%% dade estrutural. A métrica utilizada neste trabalho para complexidade estrutural de um
+%% projeto representa a complexidade estrutural média entre os seus módulos. O uso apenas
+%% da média não leva em consideração a distribuição da complexidade entre os módulos, ou
+%% seja, a variância. Dois projetos, ou dois momentos no histórico de um mesmo projeto, que
+%% possuam a mesma complexidade estrutural média mas variâncias diferentes, podem apre-
+%% sentar desafios diferentes à atividade de manutenção. Por exemplo, uma baixa variância
+%% implica que a complexidade é distribuı́da de forma mais uniforme entre os módulos, o que
+%% pode indicar um problema estrutural grave cuja resolução demandaria bastante esforço.
+%% Já uma variância alta pode indicar que o excesso de complexidade estrutural está loca-
+%% lizado num subconjunto do módulos, o que pode eventualmente ser solucionado através
+%% de um esforço localizado de reengenharia. Este tipo de análise pode ajudar a identificar
+%% problemas de design em sistemas de software.
 
 \input{capitulos/introducao.tex}
 

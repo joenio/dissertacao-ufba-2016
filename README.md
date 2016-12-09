@@ -63,8 +63,7 @@ Após instalar todas as dependências basta executar o `make` na raiz do projeto
 
 ## Script para revisão estruturada semi-automatizada
 
-O script `revisao-estruturada/filter` depende do comando `pdftotext`, em
-sistemas Debian ele pode ser instalado com o seguinte comando:
+O script `revisao-estruturada/filter` depende do comando `pdftotext`.
 
     apt-get install poppler-utils
 
