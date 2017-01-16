@@ -111,6 +111,7 @@ sub global_metrics($file, @names) {
 }
 
 foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+  next if $tool =~ /clang/;
   foreach my $dir (grep { -d $_ } glob("$tool/*")) {
     unless (-e "$dir.doxyparse") {
       say "doxyparse $dir > $dir.doxyparse";
