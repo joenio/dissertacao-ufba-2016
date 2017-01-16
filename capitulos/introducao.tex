@@ -31,25 +31,16 @@
 %derados como baixo, médio, alto e muito alto para cada métrica, obtidos através da média e desvio
 %padrão dos dados coletados dos sistemas estudados.
 %\cite{Lanza2007}
-
+%
 % (apresento parte da metodologia)
 % apresentar parte da "antiga" metologia aqui
 %
 %* na introducao coloco questoes de pesquisa, etc, para alcancar os objetivos, usei esta metodologia
 %* a outra parte da metodologia será em colcusão ou resultados
-
+%
 % Contexto. O contexto faz parte da motivação do trabalho.
-\section{Contexto}
-
-A análise estática de programas é a atividade de coletar informações de um
-programa de software sem necessidade de execução, é uma atividade presente
-especialmente nas primeiras etapas da compilação, realizando otimizações, ou
-verificações de erros diversos, mas além dos compiladores esta atividade tem
-se mostrado útil em diversas etapas do processo de desenvolvimento,
-especialmente na observação de atributos de qualidade através do monitoramento
-de aspectos qualidade, como por exemplo as métricas de código-fonte, isto pode
-ser notado pelo uso crescente de ferramentas de análise estática em ...
-
+% \section{Contexto}
+%
 % The Detailed Research Methodology which you intend to employ. 
 % The methodology section should discuss what methods you are going to use in order 
 % to address the research objectives of your dissertation. 
@@ -59,21 +50,16 @@ ser notado pelo uso crescente de ferramentas de análise estática em ...
 % Reference to general advantages and disadvantages of various methods and techniques 
 % without specifying their relevance to your choice decision is unacceptable. 
 % Remember to relate the methods back to the needs of your research question. 
-
-
+%
 % Problema. 
-\section{Problema}
+% \section{Problema}
 % Uma maneira de evidenciar a contribuição do trabalho é 
 % definir bem o problema a ser resolvido. 
 % Nesse caso, pode-se discutir: o problema em questão, a definição formal 
 % do problema e sua importância, relevância, aplicações práticas.
-
-A tecnologia de análise estática tem se desenvolvido rapidamente, mas a
-comparação e avaliação de técnicas e ferramentas não tem acompanhado tal
-velocidade \cite{Li2010}.
-
+%
 % Trabalhos Relacionados. 
-\section{Trabalhos relacionados}
+% \section{Trabalhos relacionados}
 % Outra maneira de evidenciar a contribuição do trabalho 
 % é discutir os trabalhos relacionados (resumidamente) ainda na introdução. 
 % Esses trabalhos estão no mesmo contexto, não resolvem o problema ou 
@@ -81,19 +67,7 @@ velocidade \cite{Li2010}.
 % Além disso, o trabalho atual pode ser a extensão ou continuação de um trabalho 
 % anterior. Nesse caso, o trabalho original deve ser mencionado na introdução.
 
-Diversos trabalhos avaliam ferramentas de análise estática de código-fonte, em
-geral, que possuem um mesmo propósito (detecção de bugs, detecção de
-vulnerabilidades, detecção de anomalias, etc.), sob a perspectiva de seus
-usuários, e com foco em atributos de qualidade externa, tais como, desempenho,
-precisão e cobertura de seus resultados. 
-
-Entretanto, não foram encontrados estudos que avaliam ferramentas de análise
-estática de código-fonte com foco em sua qualidade interna, considerando o
-ponto de vista de desenvolvedores interessados não apenas em usar, mas também
-em manter e evoluir tais ferramentas.
-
-Em tal contexto, surge o problema de identificar, medir e analisar fatores
-técnicos que influenciam na manutenção de uma ferramenta de análise estática. 
+Observação de métricas de código fonte é importante e tem sido, bla bla bla...
 
 \citeonline{Meirelles2013} apresenta argumentos para se observar a qualidade
 do software através das métricas de código-fonte, associa qualidade do
@@ -126,15 +100,32 @@ Não podemos perder de vista, no entanto, que projetos diferentes são
 influenciados por fatores diferentes, de forma que a observação dos aspectos
 de qualidade interna devem ser observados e interpretados separadamente por
 projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
-aplicação \cite{Meirelles2013}.
+aplicação \cite{Meirelles2013}. Dito isto, é importante estudar o domínio
+de ferramentas de análise estática visto que ainda temos poucos estudos
+sobre qualidade interna destas ferramentas.
 
-O domínio de aplicação análise estática, por exemplo, carece de observação
+A análise estática de programas é a atividade de coletar informações de um
+programa de software sem necessidade de execução, é uma atividade presente
+especialmente nas primeiras etapas da compilação, realizando otimizações, ou
+verificações de erros diversos, mas além dos compiladores esta atividade tem
+se mostrado útil em diversas etapas do processo de desenvolvimento,
+especialmente na observação de atributos de qualidade através do monitoramento
+de aspectos qualidade, como por exemplo as métricas de código-fonte.
+
+O domínio de aplicação análise estática carece de observação
 detalhada sobre aspectos de qualidade interna de suas ferramentas, a
 área tem se desenvolvido rapidamente com novos métodos, técnicas e ferramentas
 para os mais diversos fins, no entanto a comparação e avaliação de técnicas e ferramentas
 não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem
 estudos avaliando ferramentas de análise estática de código-fonte, poucos
 fazem isso do ponto de vista de vista de sua qualidade interna.
+
+Diversos trabalhos avaliam ferramentas de análise estática de código-fonte sob
+a perspectiva de seus usuários, e com foco em atributos de qualidade externa,
+tais como, desempenho, precisão e cobertura de seus resultados. Dentre estes
+estudos, a grande maioria realiza avaliação ou comparação de ferramentas de
+análise estática de código-fonte levando em conta aspectos e características de
+qualidade externa.
 
 Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
 de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
@@ -164,12 +155,168 @@ resultados gerados por três ferramentas de análise estática que podem ser
 eficientemente usadas por programadores para remover vulnerabilidades comuns
 em programas.
 
-Dentre estes estudos, a grande maioria realiza avaliação ou comparação de
-ferramentas de análise estática de código-fonte levando em conta aspectos e
-características de qualidade externa, o que nos leva a entender que estudos
-que joguem luz sobre aspectos da qualidade interna neste domínio de aplicação
-são requeridos do ponto de vista principalmente dos desenvolvedores
-interessados em atividades de manutenção e evolução.
+Entretanto, poucos estudos avaliam ferramentas de análise estática de
+código-fonte com foco em sua qualidade interna, considerando o ponto de vista
+de desenvolvedores interessados não apenas em usar, mas também em manter e
+evoluir tais ferramentas. Em tal contexto, surge o problema de identificar,
+medir e analisar fatores técnicos que influenciam na manutenção de uma
+ferramenta de análise estática. Estudos que joguem luz sobre aspectos da
+qualidade interna neste domínio de aplicação são requeridos do ponto de vista
+principalmente dos desenvolvedores interessados em atividades de manutenção e
+evolução.
+
+Em paralelo aos estudos sobre observação de métricas de código-fonte, temos
+muitos estudos sobre observação e avaliação de design e arquitetura de produtos
+de software, este ramo tem uma longa e respeitável tradição, dentre estes
+estudos alguns fazem uso de uma técnica chamada DSM (Design Structure Matrix)
+para observação e avaliação de sistemas complexos.
+
+{\it Design Structure Matrix} (DSM) foi concebido por \citeonline{Steward1981}
+e extendido por \citeonline{Eppinger1991} em um estudo sobre engenharia
+concorrente, DSM é uma ferramenta de análise para mapear sistemas complexos, ele
+provê uma representação compacta de um sistema complexo para visualização da
+interdependencia entre os vários elementos do sistema.
+
+DSM tem sido utilizado em diversas áreas do conhecimento, deste gestão de
+projetos \cite{Browning2016} até análise de sistemas da engenharia de energia,
+automotiva, construção civil, etc. Chegando à desenvolvimento de software em
+estudos sobre estrutura de design de softwares, tanto para analisar quanto para
+comparar a estrutura de produtos de software complexos. DSM é uma ferramenta
+que destaca a estrutura do design examinando as dependencias existentes entre
+os componentes usando uma matriz simétrica \cite{Steward1981}
+
+Dentre os estudos sobre DSM em design de software \citeonline{Maccormack2006}
+propõe uma métrica chamada Change Cost para caracterizar a estrutura do design
+a partir da medida de acoplamento que ela exibe, captura o nível com qual uma
+mudança em um elemento causa (potencialmente) mudanças em outros elementos do
+mesmo sitema, seja diretamente ou indiretamente (através de chamadas aninhadas
+entre os elementos).
+
+Este conceito é bem proximo relacionado no conceito de visibilidade
+\cite{Sharman2004}, que por sua vez, é construído sobre o conceito de
+reachability matrices \cite{Warfield1973}. Visibilidade é está relacionado
+à seguinte pergunta: ``Quais outros elementos devem ser reprojetados se
+este elemento for modificado?''.
+
+Paara um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $ um caminho direcionado representando $ ij $. Então o grafo:
+
+$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
+
+é dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $ é dita como $ G $ {\it reachability matrix}.
+(Note that when G is undirected, we simply take each undirected edge to be bidirectional.) Vertices which are adjacent in the reachability graph are connected by one or more directed paths in the original graph; thus, structural equivalence classes in the reachability graph are synonymous with strongly connected components in the original structure. 
+
+Os autores afirmam que este conceito pode ser examinado apenas de forma
+comparativa, ou seja, não é possível afirmar que um design específico é ou não
+modular, mas apenas pode-se afirmar que um design A é mais (ou menos) modular
+que um design B. Este comparação pode ser feito entre produtos diferentes ou de
+uma perspectiva longitudinal ao longo da história evolutiva.
+
+O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
+\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
+praticamente igual chamda Propagation Cost. \citeonline{Mo2016} baseado em DSM
+e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
+da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
+ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
+de código).
+
+\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
+Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
+Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
+Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
+e nem sempre captura variações arquiteturais.
+
+Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
+de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
+independentes) módulos que podem ser modificadas independentemente por
+desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
+mais modular. No entando no estudo realizado notou-se que nem sempre um alto
+valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
+mostraram projetos de difícil manutenabilidade e alto valor de DL.
+
+Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
+de produto de software que indica a possibilidade de impacto que uma
+certa mudança num projeto de software causa no restante do sistema, é
+um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
+apenas.
+
+Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
+utilizada para comparar vários software distintos entre sí. Esta é uma métrica
+calculada em nível de projeto, representa o impacto que uma mudança localizada
+em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
+calculado a partir de uma matriz chamada {\it Reachability Matrix}.
+
+A observação de métricas de código-fonte para projetos de software leva
+ao desafio de como obter valores de métricas que representem todo o projeto,
+métricas de código-fonte usualmente são calculadas para cada arquivo ou classe,
+no entando quando se tem necessidade de ter uma visão a nível de projeto é
+necessário chegar num único valor representando todo o projeto.
+
+Este desafio tem sido amplamente discutido em estudos sobre definição de
+valores de referência para métricas, valores de referência pode ser chamado
+também de thresholds, limites ou intervalos. Seja qual termo for, estes estudos
+tem resolvido o problema usando inúmeras técnicas. Uma das mais amplamente
+conhecidas é o uso de média e desvio padrão por Lanza, neste método
+é calculada a média dos valores de métricas de cada arquivo/classe de um
+software e partir disso chega-se a um valor único da métrica representando
+o software.
+
+Outros autores utilizam ... bla bla ...
+
+Muitos trabalhos avaliam estas diversas técnicas, a fim de mostrar se são representativas
+estatisticamente ou não, pois dependendo da natureza dos dados, a média pode ou não ser
+um bom indicador.
+
+No contexto de desenvolvimento e evolução de software, a avaliação contínua,
+baseada em métricas de código fonte, pode contribuir para melhoria da qualidade
+interna do {\it Android Framework}.  Métricas de código fonte são úteis como
+indicadores de qualidade~\cite{Basili1996}. Por exemplo, métricas de tamanho
+têm sido usadas para estimativa de custos e prazos e métricas de complexidade
+de código  podem ser utilizadas para prever a qualidade de software em estágios
+iniciais de desenvolvimento~\cite{Xing2005}.
+
+Diversos estudos com métricas de código-fonte tem sido conduzidos para avaliar
+a qualidade de um produto de software, entretando métricas precisam prover
+informações reais e não apenas valores numéricos, diante disso muitos estudos
+tem caminhado no sentido de definir intervalos de referência, ou {\it
+thresholds}, para métricas de código-fonte.
+
+Alguns destes estudos sugerem que tais intervalos sejam definidos de forma
+subjetiva com base na experiência do desenvolvedor, outros sugerem abordagens
+baseadas em modelos estatísticos, outros chegam a propor abordagens com uso de
+aprendizado de máquina e inteligência artificial.
+
+Entre as inúmeras propostas muitas partem de estudos empíricos usando softwares
+da indústria como objeto de estudo, analisando conjuntos de softwares de
+domínios diferentes, ou mesmo conduzindo estudos longitudinais com um único
+software através do seu histórico de lançamentos, nestes estudos parte-se da
+coleta de dados de métricas de código-fonte e com uso de uma abordagem, ou uma
+combinação entre elas, chega-se a intervalos de referência.
+
+Inúmeros estudos avaliam a natureza dos dados com objetivo de definir a melhor
+estratégia para calcular tais intervalos de referência, avaliando qual tipo de
+distribuição as métricas de código-fonte de um projeto de software segue.
+Muitos estudos sobre métricas de código-fonte tem mostrado que estes dados
+seguem a lei de distribuição de potência \cite{Clauset2009}, em geral com calda
+longa e grafo livre de escala. Mas não existe regra geral dizendo qual tipo de
+distribuição métricas de código-fonte pertence, se seguem as leis de potência
+de distribuição ou uma distribuição normal, pois apesar de existirem estudos
+mostrando que projetos orientados a objetos escritos em Java seguem uma
+distribuição de lei de potência \cite{Wheeldon2003, Potanin2005, Concas2007,
+Ferreira2009, Yao2009}, outros estudos apresentam evidências de que não
+necessariamente seguem tal distribuição \cite{Baxter2006, Lanza2007,
+Herraiz2011, Herraiz2012}.
+
+----
+
+Com base nisso posso validar se o Change Cost que me diz que uma arquitetura
+eh melhor que outra esta deacordo com as metricas dentro dos intervalos ou nao.
+(ou posso usar apenas CBO que a metrica de acoplamento e Change Cost eh calculada com base em acoplamento)
+
+Assume-se que em designs menos acoplados a medida de Change Cost também será menor.
+
+
+Se houver tempo de implementar no Analizo Decoupling Level posso usar tb essa metrica pois
+ela eh indepentende de tamanho de acordo com o autor, nao eh sensivel ao tamanho do software.
 
 \section{Relevância}
 % ABAIXO: por que vale a pena tratar analisador estático
@@ -199,21 +346,6 @@ interessados em atividades de manutenção e evolução.
 %%% Valores de referência são importantes ...
 %%% Em geral, valores de referência são encontrados para linguagens de programação.
 %%% E para domínios?
-%%% 
-%%% % ------------------
-%%% 
-%%% O domínio de aplicação de análise estática tem evoluído constantemente desde o
-%%% seu surgimento a mais de 40 anos, e apesar da sua evolução constante poucos
-%%% estudos demonstram a preocupação em avaliar ou comparar ferramentas de análise
-%%% estática de código-fonte em relação à seus atributos de qualidade interna, um
-%%% aspecto importante para guiar e auxiliar desenvolvedores em atividades de
-%%% evolução e manutenção de software.
-%%% 
-%%% Desta forma estudar e comparar tais ferramentas a fim de compreender seus
-%%% atributos de qualidade interna e entender quais características arquiteturais
-%%% explicam tais atributos é de fundamental importância do ponto de vista de
-%%% desenvolvedores interessados em melhorar a qualidade interna de suas
-%%% ferramentas.
 
 \subsection{Questão de pesquisa}
 
@@ -271,16 +403,18 @@ Para responder a questão colocada acima, definimos as seguintes hipóteses:
 \begin{enumerate}
   \item[{\bf H1:}] {\em A complexidade estrutural é alta em ferramentas de
     análise estática de código-fonte com alto valor de custo de mudança.}
+
   \item[{\bf H2:}] {\em Ferramentas de análise estática com alto número de
     mudanças tem complexidade estrutural e custo de mudança altos.}
-  \item[{\bf H3:}] {\em Dentre as ferramentas de análise estática de
-    código-fonte, aquelas desenvolvidas na indústria apresentam uma menor
-    complexidade estrutural.}
+
+  \item[{\bf H3:}] {\em 
+    
+
   \item[{\bf H4:}] {\em Ferramentas de análise estática com maior número de
     classes possuem maior complexidade estrutural e maior custo de mudança.}
-  \item[{\bf H5:}] {\em Os valores de métricas de código-fonte calculados para
-    as ferramentas de análise estática de código-fonte estão dentro dos
-    thresholds para métricas de código-fonte encontrados na literatura.}
+
+  \item[{\bf H5:}] {\em 
+
 \end{enumerate}
 
 (falta explicar como cada hipótese será testada)
