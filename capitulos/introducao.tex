@@ -67,256 +67,340 @@
 % Além disso, o trabalho atual pode ser a extensão ou continuação de um trabalho 
 % anterior. Nesse caso, o trabalho original deve ser mencionado na introdução.
 
-Observação de métricas de código fonte é importante e tem sido, bla bla bla...
+Observação de métricas de código fonte tem sido uma prática útil em diversos
+estudos em engenharia de software, como por exemplo, predição de erros,
+visualização de código-fonte através de metáforas visuais, definição e
+avaliação de intervalos de referência ({\it thresholds}), estimativa de custos e prazos, entre outros.
+Métricas de código-fonte tem sido também utilizadas como uma maneira efetiva
+de se observar a qualidade interna de produtos de software \cite{Meirelles2013}
+uma vez que são bons indicadores de qualidade \cite{Basili1996}.
 
-\citeonline{Meirelles2013} apresenta argumentos para se observar a qualidade
-do software através das métricas de código-fonte, associa qualidade do
-software à qualidade do código. Afirma que uma maneira objetiva de se observar
-as características de um código-fonte é analisando os valores de suas métricas
-e alerta para o pouco uso de métricas por parte dos desenvolvedores no ciclo
-de desenvolvimento, ele indica que um dos motivos desta sub-utilização
-é a falta de conhecimento de como coletar automaticamente
-os valores das métricas, interpretar os seus resultados e os associar à
-qualidade do código-fonte. Assim, desenvolveu uma abordagem para identificar
-valores de métricas de forma a servirem como referência para projetos futuros,
-onde analisa estatísticamente a correlação entre as métricas e define um
-subconjunto reduzido que podem ser monitoradas ao longo do tempo e
-ainda oferecer uma boa visão do projeto.
+%têm sido usadas para  e métricas de complexidade
+%de código  podem ser utilizadas para prever a qualidade de software em estágios
+%iniciais de desenvolvimento~\cite{Xing2005}.
 
-\citeonline{Terceiro2010} chamam a atenção para a importância de medir e
-compreender aspectos de qualidade interna de software, uma vez que tais
-questões impactam fortemente em atividades de evolução e manutenção. Eles
-afirmam que quanto menor a qualidade de código-fonte, maior será o esforço de
-mantê-lo. Uma das formas de medir qualidade interna é em função da
-complexidade estrutural, uma medida que leva em conta a relação entre o
-acoplamento e coesão dos módulos de um programa.
+Medir e compreender aspectos de qualidade interna de software pode ser útil em
+atividades de evolução e manutenção, a qualidade interna produz forte impacto
+nestas atividades, quanto menor a qualidade de código-fonte, maior será o
+esforço de mantê-lo \cite{Terceiro2010}. Uma das formas de medir qualidade
+interna é em função de métricas de código-fonte, dentre as quais destaca-se a
+métrica de complexidade estrutural, uma medida que leva em conta a relação
+entre o acoplamento e coesão dos módulos de um programa \cite{Darcy2005}, esta
+métrica não está limitada ao paradigma de orientação a objetos e é independente
+de tamanho, ou seja, o tamanho do software não influencia na sua medida.
+Os autores desta métrica validaram a suposição de que ela
+está associada a maior esforço de manutenção por meio de um
+experimento controlado e concluíram que uma alta complexidade estrutural faz
+projetos de software mais difíceis de entender, e por isto mesmo, mais difíceis
+de manter e evoluir.
 
-Complexidade estrutural representa um aspecto arquitetural importante e envolve
-tanto a organização interna dos módulos quanto a relação entre eles. Uma alta
-complexidade estrutural faz projetos de software mais difíceis de entender, e
-por isto mesmo, mais difíceis de manter e evoluir.
+%Complexidade estrutural representa um aspecto arquitetural importante e envolve
+%tanto a organização interna dos módulos quanto a relação entre eles. 
 
-Não podemos perder de vista, no entanto, que projetos diferentes são
-influenciados por fatores diferentes, de forma que a observação dos aspectos
-de qualidade interna devem ser observados e interpretados separadamente por
-projeto \cite{Terceiro2012Understanding} ou ao menos por domínio de
-aplicação \cite{Meirelles2013}. Dito isto, é importante estudar o domínio
-de ferramentas de análise estática visto que ainda temos poucos estudos
-sobre qualidade interna destas ferramentas.
+A observação de métricas de código-fonte e as conclusões tomadas a partir
+delas, no entando, não podem ser generalizadas uma vez que projetos diferentes
+são influenciados por fatores diferentes, de forma que a observação dos
+aspectos de qualidade interna devem ser observados e interpretados
+separadamente por projeto \cite{Terceiro2012Understanding} ou ao menos por
+domínio de aplicação \cite{Meirelles2013}. Dessa forma, pode-se afirmar que
+realizar estudos em domínios específicos, especialmente em domínios ainda pouco
+estudados são extremamente importantes.
 
-A análise estática de programas é a atividade de coletar informações de um
-programa de software sem necessidade de execução, é uma atividade presente
-especialmente nas primeiras etapas da compilação, realizando otimizações, ou
-verificações de erros diversos, mas além dos compiladores esta atividade tem
-se mostrado útil em diversas etapas do processo de desenvolvimento,
-especialmente na observação de atributos de qualidade através do monitoramento
-de aspectos qualidade, como por exemplo as métricas de código-fonte.
+%A análise estática de programas é a atividade de coletar informações de um
+%programa de software sem necessidade de execução, é uma atividade presente
+%especialmente nas primeiras etapas da compilação, realizando otimizações, ou
+%verificações de erros diversos, mas além dos compiladores esta atividade tem
+%se mostrado útil em diversas etapas do processo de desenvolvimento,
+%especialmente na observação de atributos de qualidade através do monitoramento
+%de aspectos qualidade, como por exemplo as métricas de código-fonte.
 
-O domínio de aplicação análise estática carece de observação
-detalhada sobre aspectos de qualidade interna de suas ferramentas, a
-área tem se desenvolvido rapidamente com novos métodos, técnicas e ferramentas
-para os mais diversos fins, no entanto a comparação e avaliação de técnicas e ferramentas
-não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem
-estudos avaliando ferramentas de análise estática de código-fonte, poucos
-fazem isso do ponto de vista de vista de sua qualidade interna.
+Sabe-se portanto que o domínio de aplicação de análise estática carece de observação
+detalhada sobre aspectos de qualidade interna de suas ferramentas, a área tem
+se desenvolvido rapidamente com novos métodos, técnicas e ferramentas para os
+mais diversos fins, no entanto a comparação e avaliação de técnicas e
+ferramentas não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de
+existirem estudos avaliando ferramentas de análise estática de
+código-fonte \cite{Rutar2004, Kratkiewicz2005, Okun2007, Emanuelsson2008,
+Wedyan2009, Mantere2009, Al2010, Li2010, Johns2011, Alemerien2013, Ataide2014},
+poucos fazem isso do ponto de vista de sua qualidade interna, em sua maioria
+observam apenas atributos de qualidade
+externa, como, desempenho, precisão, cobertura de resultados, entre outros.
 
-Diversos trabalhos avaliam ferramentas de análise estática de código-fonte sob
-a perspectiva de seus usuários, e com foco em atributos de qualidade externa,
-tais como, desempenho, precisão e cobertura de seus resultados. Dentre estes
-estudos, a grande maioria realiza avaliação ou comparação de ferramentas de
-análise estática de código-fonte levando em conta aspectos e características de
-qualidade externa.
+%poucos fazem isso do ponto de vista de vista de sua qualidade interna, costumando
+%observar tais ferramentas sob a perspectiva de seus usuários, com o foco em seus atributos de qualidade
+%externa, como, desempenho, precisão e cobertura de seus resultados.
 
-Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
-de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
-nos resultados. \citeonline{Kratkiewicz2005} avalia cinco ferramentas de
-análise estática para determinar seus pontos fortes e fracos em detecção de
-falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
-de ferramentas de segurança com objetivo de identificar se estas ferramentas
-melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008}
-avaliam três ferramentas de análise estática da indústria com o objetivo de
-mapear funcionalidades significativas destas ferramentas, normalmente não
-fornecidas por compiladores normais. \citeonline{Wedyan2009} avaliaram três
-ferramentas para verificar a efetividade de detectar falhas e predizer
-refatorações. \citeonline{Mantere2009} compararam três ferramentas de análise
-estática de código-fonte em relação à performance e dão subsídios para apoiar
-tomada de decisão sobre seleção de ferramentas de análise estática.
-\citeonline{Al2010} avaliaram quatro ferramentas de análise estática em
-relação à capacidade de detectar bugs em programas concorrentes em Java e
-responde se ferramentas comerciais são melhores que ferramentas {\it open
-source}. \citeonline{Li2010} comparam sete diferentes ferramentas de análise
-estática com foco em detecção de vulnerabilidades, comparando suas
-caracteristicas através de um experimento. \citeonline{Johns2011} avaliaram a
-qualidade de ferramentas de análise estática de segurança a partir de uma
-série de critérios. \citeonline{Alemerien2013} avaliaram duas ferramentas de
-análise estática para cálculo de métricas com objetivo de entender as
-diferenças nos resultados de cada uma. \citeonline{Ataide2014} analisa os
-resultados gerados por três ferramentas de análise estática que podem ser
-eficientemente usadas por programadores para remover vulnerabilidades comuns
-em programas.
+%Por exemplo, \citeonline{Rutar2004} compara cinco ferramentas de localização
+%de bugs para Java e discute as técnicas utilizadas por cada uma e seu impacto
+%nos resultados. \citeonline{Kratkiewicz2005} avalia cinco ferramentas de
+%análise estática para determinar seus pontos fortes e fracos em detecção de
+%falhas de buffer overflow em código C. \citeonline{Okun2007} avalia os efeitos
+%de ferramentas de segurança com objetivo de identificar se estas ferramentas
+%melhoram de fato a segurança de programas. \citeonline{Emanuelsson2008}
+%avaliam três ferramentas de análise estática da indústria com o objetivo de
+%mapear funcionalidades significativas destas ferramentas, normalmente não
+%fornecidas por compiladores normais. \citeonline{Wedyan2009} avaliaram três
+%ferramentas para verificar a efetividade de detectar falhas e predizer
+%refatorações. \citeonline{Mantere2009} compararam três ferramentas de análise
+%estática de código-fonte em relação à performance e dão subsídios para apoiar
+%tomada de decisão sobre seleção de ferramentas de análise estática.
+%\citeonline{Al2010} avaliaram quatro ferramentas de análise estática em
+%relação à capacidade de detectar bugs em programas concorrentes em Java e
+%responde se ferramentas comerciais são melhores que ferramentas {\it open
+%source}. \citeonline{Li2010} comparam sete diferentes ferramentas de análise
+%estática com foco em detecção de vulnerabilidades, comparando suas
+%caracteristicas através de um experimento. \citeonline{Johns2011} avaliaram a
+%qualidade de ferramentas de análise estática de segurança a partir de uma
+%série de critérios. \citeonline{Alemerien2013} avaliaram duas ferramentas de
+%análise estática para cálculo de métricas com objetivo de entender as
+%diferenças nos resultados de cada uma. \citeonline{Ataide2014} analisa os
+%resultados gerados por três ferramentas de análise estática que podem ser
+%eficientemente usadas por programadores para remover vulnerabilidades comuns
+%em programas.
 
-Entretanto, poucos estudos avaliam ferramentas de análise estática de
-código-fonte com foco em sua qualidade interna, considerando o ponto de vista
-de desenvolvedores interessados não apenas em usar, mas também em manter e
-evoluir tais ferramentas. Em tal contexto, surge o problema de identificar,
-medir e analisar fatores técnicos que influenciam na manutenção de uma
-ferramenta de análise estática. Estudos que joguem luz sobre aspectos da
-qualidade interna neste domínio de aplicação são requeridos do ponto de vista
-principalmente dos desenvolvedores interessados em atividades de manutenção e
-evolução.
+%Entretanto, poucos estudos avaliam ferramentas de análise estática de
+%código-fonte com foco em sua qualidade interna, considerando o ponto de vista
+%de desenvolvedores interessados não apenas em usar, mas também em manter e
+%evoluir tais ferramentas. Em tal contexto, surge o problema de identificar,
+%medir e analisar fatores técnicos que influenciam na manutenção de uma
+%ferramenta de análise estática. Estudos que joguem luz sobre aspectos da
+%qualidade interna neste domínio de aplicação são requeridos do ponto de vista
+%principalmente dos desenvolvedores interessados em atividades de manutenção e
+%evolução.
 
-Em paralelo aos estudos sobre observação de métricas de código-fonte, temos
-muitos estudos sobre observação e avaliação de design e arquitetura de produtos
-de software, este ramo tem uma longa e respeitável tradição, dentre estes
-estudos alguns fazem uso de uma técnica chamada DSM (Design Structure Matrix)
-para observação e avaliação de sistemas complexos.
-
-{\it Design Structure Matrix} (DSM) foi concebido por \citeonline{Steward1981}
-e extendido por \citeonline{Eppinger1991} em um estudo sobre engenharia
-concorrente, DSM é uma ferramenta de análise para mapear sistemas complexos, ele
-provê uma representação compacta de um sistema complexo para visualização da
-interdependencia entre os vários elementos do sistema.
-
-DSM tem sido utilizado em diversas áreas do conhecimento, deste gestão de
-projetos \cite{Browning2016} até análise de sistemas da engenharia de energia,
-automotiva, construção civil, etc. Chegando à desenvolvimento de software em
-estudos sobre estrutura de design de softwares, tanto para analisar quanto para
-comparar a estrutura de produtos de software complexos. DSM é uma ferramenta
-que destaca a estrutura do design examinando as dependencias existentes entre
-os componentes usando uma matriz simétrica \cite{Steward1981}
-
-Dentre os estudos sobre DSM em design de software \citeonline{Maccormack2006}
-propõe uma métrica chamada Change Cost para caracterizar a estrutura do design
-a partir da medida de acoplamento que ela exibe, captura o nível com qual uma
-mudança em um elemento causa (potencialmente) mudanças em outros elementos do
-mesmo sitema, seja diretamente ou indiretamente (através de chamadas aninhadas
-entre os elementos).
-
-Este conceito é bem proximo relacionado no conceito de visibilidade
-\cite{Sharman2004}, que por sua vez, é construído sobre o conceito de
-reachability matrices \cite{Warfield1973}. Visibilidade é está relacionado
-à seguinte pergunta: ``Quais outros elementos devem ser reprojetados se
-este elemento for modificado?''.
-
-Paara um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $ um caminho direcionado representando $ ij $. Então o grafo:
-
-$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
-
-é dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $ é dita como $ G $ {\it reachability matrix}.
-(Note that when G is undirected, we simply take each undirected edge to be bidirectional.) Vertices which are adjacent in the reachability graph are connected by one or more directed paths in the original graph; thus, structural equivalence classes in the reachability graph are synonymous with strongly connected components in the original structure. 
-
-Os autores afirmam que este conceito pode ser examinado apenas de forma
-comparativa, ou seja, não é possível afirmar que um design específico é ou não
-modular, mas apenas pode-se afirmar que um design A é mais (ou menos) modular
-que um design B. Este comparação pode ser feito entre produtos diferentes ou de
-uma perspectiva longitudinal ao longo da história evolutiva.
-
-O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
-\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
-praticamente igual chamda Propagation Cost. \citeonline{Mo2016} baseado em DSM
-e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
-da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
-ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
-de código).
-
-\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
-Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
-Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
-Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
-e nem sempre captura variações arquiteturais.
-
-Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
-de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
-independentes) módulos que podem ser modificadas independentemente por
-desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
-mais modular. No entando no estudo realizado notou-se que nem sempre um alto
-valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
-mostraram projetos de difícil manutenabilidade e alto valor de DL.
-
-Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
-de produto de software que indica a possibilidade de impacto que uma
-certa mudança num projeto de software causa no restante do sistema, é
-um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
-apenas.
-
-Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
-utilizada para comparar vários software distintos entre sí. Esta é uma métrica
-calculada em nível de projeto, representa o impacto que uma mudança localizada
-em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
-calculado a partir de uma matriz chamada {\it Reachability Matrix}.
-
-A observação de métricas de código-fonte para projetos de software leva
-ao desafio de como obter valores de métricas que representem todo o projeto,
-métricas de código-fonte usualmente são calculadas para cada arquivo ou classe,
-no entando quando se tem necessidade de ter uma visão a nível de projeto é
-necessário chegar num único valor representando todo o projeto.
-
+Observar métricas de código-fonte em nível de projetos de software leva
+ao seguinte desafio: como obter valores de métricas que representem todo o projeto sendo
+que métricas de código-fonte usualmente são calculadas para cada elemento do sistema, como arquivos ou classes?
 Este desafio tem sido amplamente discutido em estudos sobre definição de
-valores de referência para métricas, valores de referência pode ser chamado
-também de thresholds, limites ou intervalos. Seja qual termo for, estes estudos
-tem resolvido o problema usando inúmeras técnicas. Uma das mais amplamente
-conhecidas é o uso de média e desvio padrão por Lanza, neste método
-é calculada a média dos valores de métricas de cada arquivo/classe de um
-software e partir disso chega-se a um valor único da métrica representando
-o software.
+valores ou intervalos de referência ({\it thresholds}) para métricas de
+código-fonte \cite{Shatnawi2010, Kaur2013, Herbold2011}. Intervalos de
+referência são valores conhecidos para uma dada medida
+\cite[Chapter~2.1]{Lanza2007} com algum valor semantico, por exemplo, se
+medirmos a altura das pessoas e definirmos até 2 metros como alto, então
+pessoas acima de 2 metros serão classificadas como muito altas.
 
-Outros autores utilizam ... bla bla ...
+%Diversos estudos com métricas de código-fonte tem sido conduzidos para avaliar
+%a qualidade de um produto de software, entretanto métricas precisam prover
+%informações reais e não apenas valores numéricos. Diante disso, muitos estudos
+%tem caminhado no sentido de definir intervalos de referência, ou {\it
+%thresholds}, para métricas de código-fonte.
 
-Muitos trabalhos avaliam estas diversas técnicas, a fim de mostrar se são representativas
-estatisticamente ou não, pois dependendo da natureza dos dados, a média pode ou não ser
-um bom indicador.
+Intervalos de referência podem ser definidos de diversas formas, desde
+abordagens baseadas em modelos estatísticos \cite{Shatnawi2010, Kaur2013}
+até aprendizado de máquina \cite{Herbold2011} e inteligência artificial.
+Entre as inúmeras abordagens, muitas partem de estudos empíricos
+usando softwares da indústria como objeto de estudo, geralmente com
+softwares de domínios específicos, parte-se da coleta de dados de
+métricas de código-fonte e com uso de uma abordagem, ou uma combinação entre
+elas, chega-se aos intervalos.
 
-No contexto de desenvolvimento e evolução de software, a avaliação contínua,
-baseada em métricas de código fonte, pode contribuir para melhoria da qualidade
-interna do {\it Android Framework}.  Métricas de código fonte são úteis como
-indicadores de qualidade~\cite{Basili1996}. Por exemplo, métricas de tamanho
-têm sido usadas para estimativa de custos e prazos e métricas de complexidade
-de código  podem ser utilizadas para prever a qualidade de software em estágios
-iniciais de desenvolvimento~\cite{Xing2005}.
+Estes intervalos são também continuamente avaliados a fim de saber se são
+válidos ou não, as abordagens utilizadas para calcular os intervalos levam em
+consideração inúmeros aspectos na tentativa de validar os valores
+encontrados, como por exemplo a
+natureza dos dados, se seguem a lei de distribuição de potência
+\cite{Wheeldon2003,Potanin2005,Concas2007,Ferreira2009,Yao2009,Clauset2009} ou
+seguem uma distribuição normal
+\cite{Baxter2006,Lanza2007,Herraiz2011,Herraiz2012}, avaliam ainda, se possui cauda longa, se são
+livre de escala, entre outros aspectos.
 
-Diversos estudos com métricas de código-fonte tem sido conduzidos para avaliar
-a qualidade de um produto de software, entretando métricas precisam prover
-informações reais e não apenas valores numéricos, diante disso muitos estudos
-tem caminhado no sentido de definir intervalos de referência, ou {\it
-thresholds}, para métricas de código-fonte.
+No entando, não foram encontrados estudos comparando intervalos de referência
+com características arquiteturais de produtos de software, algo que pode ser
+útil para compreensão de tais intervalos. Estudos sobre arquitetura de software
+tem uma longa e respeitável tradição, a área emergiu como uma importante
+disciplina da engenharia de software, particularmento em atividades de
+desenvolvimento de grandes sistemas. Arquitetura dá controle intelectual
+sobre a complexidade permitindo focar em partes essenciais do sistema e suas
+interações, ajudando a compreender como as diferentes partes de um sistema se
+relacionam entre sí \cite{Clements2002Book}.
 
-Alguns destes estudos sugerem que tais intervalos sejam definidos de forma
-subjetiva com base na experiência do desenvolvedor, outros sugerem abordagens
-baseadas em modelos estatísticos, outros chegam a propor abordagens com uso de
-aprendizado de máquina e inteligência artificial.
+%métricas que representam questões arquiteturais, como complexidade
+%estrutural por exemplo, e seus valores de referência podem ser colocados frente
+%à frente à 
 
-Entre as inúmeras propostas muitas partem de estudos empíricos usando softwares
-da indústria como objeto de estudo, analisando conjuntos de softwares de
-domínios diferentes, ou mesmo conduzindo estudos longitudinais com um único
-software através do seu histórico de lançamentos, nestes estudos parte-se da
-coleta de dados de métricas de código-fonte e com uso de uma abordagem, ou uma
-combinação entre elas, chega-se a intervalos de referência.
+Traçar uma comparação entre intervalos de referência ({\it thresholds}) de
+métricas como complexidade estrutural, por exemplo, com métricas que
+representam visões arquiteturais de projetos de software pode ser útil como
+forma de avaliar se tais medidas estão consistentes entre sí, por exemplo, se
+numa dada medida de complexidade estrutural encontra-se valores considerados
+ruins indicando problemas arquiteturais, então medidas e métricas relacionadas
+essencialmente a design e arquitetura de software também deveriam confirmar tal
+indicação.
 
-Inúmeros estudos avaliam a natureza dos dados com objetivo de definir a melhor
-estratégia para calcular tais intervalos de referência, avaliando qual tipo de
-distribuição as métricas de código-fonte de um projeto de software segue.
-Muitos estudos sobre métricas de código-fonte tem mostrado que estes dados
-seguem a lei de distribuição de potência \cite{Clauset2009}, em geral com calda
-longa e grafo livre de escala. Mas não existe regra geral dizendo qual tipo de
-distribuição métricas de código-fonte pertence, se seguem as leis de potência
-de distribuição ou uma distribuição normal, pois apesar de existirem estudos
-mostrando que projetos orientados a objetos escritos em Java seguem uma
-distribuição de lei de potência \cite{Wheeldon2003, Potanin2005, Concas2007,
-Ferreira2009, Yao2009}, outros estudos apresentam evidências de que não
-necessariamente seguem tal distribuição \cite{Baxter2006, Lanza2007,
-Herraiz2011, Herraiz2012}.
+Dentre os inúmeros estudos sobre arquitetura de software alguns tem feito uso
+de uma técnica chamada DSM ({\it Design Structure Matrix}) para observar e
+avaliar sistemas complexos, ela foi concebida por \citeonline{Steward1981} e
+extendido por \citeonline{Eppinger1991} em um estudo sobre engenharia
+concorrente, útil em análises para mapear sistemas complexos, DSM provê uma
+representação compacta de um sistema complexo para visualização de
+interdependencia entre os seus vários elementos.
 
-----
+DSM tem sido aplicada em diversas áreas do conhecimento, deste gestão de
+projetos \cite{Browning2016}, análise de sistemas da engenharia de energia,
+automotiva, construção civil, etc. Em engenharia de software
+estudos sobre arquitetura e design de softwares são conduzidos para analisar e
+comparar estruturas de produtos de software complexos, DSM
+destaca a estrutura do design examinando as dependencias existentes entre
+os componentes através de uma matriz simétrica \cite{Steward1981}
 
-Com base nisso posso validar se o Change Cost que me diz que uma arquitetura
-eh melhor que outra esta deacordo com as metricas dentro dos intervalos ou nao.
-(ou posso usar apenas CBO que a metrica de acoplamento e Change Cost eh calculada com base em acoplamento)
+Entre os estudos sobre DSM aplicados à arquitetura de software
+\citeonline{Maccormack2006} propuseram a métrica ``custo de mudança'' ({\it Change Cost})
+para caracterizar a estrutura do design a partir da medida de acoplamento que
+ela exibe, capturando o nível com qual uma mudança em um elemento causa impacto
+em outros elementos do mesmo sitema, seja diretamente ou indiretamente
+através de chamadas aninhadas entre os elementos.
 
-Assume-se que em designs menos acoplados a medida de Change Cost também será menor.
+%(potencialmente) 
 
+%{\it Change Cost} é conceitualmente bem próximo à idéia visibilidade
+%\cite{Sharman2004}, que por sua vez é construída sobre o conceito de {\it
+%reachability matrices} \cite{Warfield1973}. Visibilidade é um conceito
+%relacionado à seguinte pergunta: ``Quais outros elementos do sistema devem ser
+%reprojetados se este elemento for modificado?''.
+%
+%Para um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $
+%um caminho direcionado representando $ ij $. Então o grafo:
+%
+%$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
+%
+%É dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $
+%é dita como $ G $ {\it reachability matrix}.  Vértices adjacentes no {\it
+%reachability graph} são conectados por um ou mais caminhos direto no grafo
+%original.
 
-Se houver tempo de implementar no Analizo Decoupling Level posso usar tb essa metrica pois
-ela eh indepentende de tamanho de acordo com o autor, nao eh sensivel ao tamanho do software.
+Os autores afirmam que esta métrica pode ser aplicada apenas de forma
+comparativa, ou seja, não pode-se afirmar que um design específico é ou não
+modular, mas sim que um certo design é mais (ou menos) modular que um outro
+design. Esta comparação pode ser feita entre produtos de software distintos ou
+entre várias versões de um mesmo software.
+
+Apesar da métrica custo de mudança se mostrar bastante útil em estudos sobre
+qualidade interna de produtos de software poucos trabalhos fazendo uso de tal
+métrica foram encontrados, dentre estes trabalhos nenhum faz uma comparação dos
+valores encontrados com outras métricas de código-fonte, usualmente criam
+outras métricas a partir do custo de mudança, como é o caso das métricas {\it
+relative clustered cost} \cite{Milev2009} e {\it decoupling level}
+\cite{Mo2016} propostas para resolver, ambos, o mesmo problema apontado no
+custo de mudança, de que custo de mudança é uma métrica sensível ao tamanho do
+software em número de arquivos.
+
+Apesar dos problemas apontados no custo de mudança, esta métrica carece de mais
+estudos, especialmente estudos que tracem paralelos com outras áreas da
+engenharia de software, como é o caso do estudo sobre métricas e intervalos de
+referência.
+
+Assim, iremos neste trabalho, analisar ferramentas do domínio de análise
+estática, extrair as métricas de complexidade estrutural e custo de mudança,
+comparar seus valores sempre partindo do princípio que em designs menos
+acoplados a medida de custo de mudança e complexidade estrutural também serão menor.
+
+%O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
+%\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
+%chamada {\it relative clustered cost}. \citeonline{Mo2016} baseado em DSM
+%e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
+%da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
+%ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
+%de código).
+%
+%\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
+%Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
+%Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
+%Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
+%e nem sempre captura variações arquiteturais.
+%
+%Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
+%de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
+%independentes) módulos que podem ser modificadas independentemente por
+%desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
+%mais modular. No entando no estudo realizado notou-se que nem sempre um alto
+%valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
+%mostraram projetos de difícil manutenabilidade e alto valor de DL.
+%
+%Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
+%de produto de software que indica a possibilidade de impacto que uma
+%certa mudança num projeto de software causa no restante do sistema, é
+%um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
+%apenas.
+%
+%Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
+%utilizada para comparar vários software distintos entre sí. Esta é uma métrica
+%calculada em nível de projeto, representa o impacto que uma mudança localizada
+%em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
+%calculado a partir de uma matriz chamada {\it Reachability Matrix}.
+%
+%Mas é importante nos questionar: como chegamos ao {\it threshold} 2? Porque não
+%1.95m? Porque não 3m? E se uma pessoa tem 2.01 metros, não é pequeno comparado
+%com uma pessoa de 2.5 metros?
+%
+%Inúmeras técnicas tem sido adotadas, uma das mais amplamente
+%conhecidas e utilizada é o uso de média e desvio padrão por Lanza, neste método
+%é calculada a média dos valores de métricas de cada arquivo/classe de um
+%software e partir disso chega-se a um valor único da métrica representando
+%o software.
+%
+%Mas o ponto importante é que não existe intervalos perfeitos, entretanto podemos
+%definir intervalos explicáveis, exemplo, valores que podem ser escolhidos com base
+%em argumentos adequados. Não são perfeitos mas podem ser úteis na prática, e isto é
+%bom o suficiente para alguns propósitos. Podem ser úteis por exemplo para selecionar
+%classes para inspeção ou redesign \cite{Rosenberg1998}.
+%
+%Intervalos de referência podem ser definidos de forma subjetiva, com base na
+%experiência do desenvolvedor [CITAR REFS], por meio de abordagens baseadas em
+%modelos estatísticos \cite{Shatnawi2010, Kaur2013}, ou ainda por meio de
+%abordagens que utilizam aprendizado de máquina\cite{Herbold2011} e inteligência
+%artificial 
+%
+%Entre as inúmeras propostas, muitas partem de estudos empíricos usando software
+%da indústria como objeto de estudo, analisando conjuntos de sistemas de
+%software de domínios diferentes, ou mesmo conduzindo estudos longitudinais com
+%um único software através do seu histórico de lançamentos. Nestes estudos
+%parte-se da coleta de dados de métricas de código-fonte e com uso de uma
+%abordagem, ou uma combinação entre elas, chega-se a intervalos de referência.
+%
+%Inúmeros estudos avaliam a natureza dos dados com objetivo de definir a melhor
+%estratégia para calcular tais intervalos de referência, avaliando qual tipo de
+%distribuição as métricas de código-fonte de um projeto de software segue.
+%
+%Muitos estudos sobre métricas de código-fonte têm mostrado que estes dados
+%seguem a lei de distribuição de potência \cite{Clauset2009}, em geral com cauda
+%longa e grafo livre de escala.  Há estudos que mostram que projetos orientados
+%a objetos escritos em Java seguem uma distribuição de lei de potência
+%\cite{Wheeldon2003,Potanin2005,Concas2007,Ferreira2009,Yao2009}; outros
+%estudos apresentam evidências de que não necessariamente seguem tal
+%distribuição \cite{Baxter2006,Lanza2007,Herraiz2011,Herraiz2012}.  Assim,
+%não há regra geral para determinar o tipo de distribuição de métricas de
+%código-fonte, se seguem as leis de potência de distribuição ou uma distribuição
+%normal. 
+%
+%Muitos trabalhos avaliam estas diversas técnicas, a fim de mostrar se são representativas
+%estatisticamente ou não, pois dependendo da natureza dos dados, a média pode ou não ser
+%um bom indicador.
+%
+%Diversos estudos com métricas de código-fonte tem sido conduzidos para avaliar
+%a qualidade de um produto de software, entretando métricas precisam prover
+%informações reais e não apenas valores numéricos, diante disso muitos estudos
+%tem caminhado no sentido de definir intervalos de referência, ou {\it
+%thresholds}, para métricas de código-fonte.
+%
+%Inúmeros estudos avaliam a natureza dos dados com objetivo de definir a melhor
+%estratégia para calcular tais intervalos de referência, avaliando qual tipo de
+%distribuição as métricas de código-fonte de um projeto de software segue.
+%Muitos estudos sobre métricas de código-fonte tem mostrado que estes dados
+%seguem a lei de distribuição de potência \cite{Clauset2009}, em geral com calda
+%longa e grafo livre de escala. Mas não existe regra geral dizendo qual tipo de
+%distribuição métricas de código-fonte pertence, se seguem as leis de potência
+%de distribuição ou uma distribuição normal, pois apesar de existirem estudos
+%mostrando que projetos orientados a objetos escritos em Java seguem uma
+%%distribuição de lei de potência \cite{Wheeldon2003, Potanin2005, Concas2007,
+%%Ferreira2009, Yao2009}, outros estudos apresentam evidências de que não
+%%necessariamente seguem tal distribuição \cite{Baxter2006, Lanza2007, Herraiz2011, Herraiz2012}.
+%
+%Com base nisso posso validar se o Change Cost que me diz que uma arquitetura
+%eh melhor que outra esta deacordo com as metricas dentro dos intervalos ou nao.
+%(ou posso usar apenas CBO que a metrica de acoplamento e Change Cost eh calculada com base em acoplamento)
+%
+%Se houver tempo de implementar no Analizo Decoupling Level posso usar tb essa metrica pois
+%ela eh indepentende de tamanho de acordo com o autor, nao eh sensivel ao tamanho do software.
 
 \section{Relevância}
 % ABAIXO: por que vale a pena tratar analisador estático
@@ -352,13 +436,8 @@ ela eh indepentende de tamanho de acordo com o autor, nao eh sensivel ao tamanho
 Com este objetivo em mente, levantamos a seguinte questão de pesquisa:
 
 \begin{enumerate}
-  \item [{\bf Q1 (a):}] {\em O custo de mudança e a complexidade
-  estrutural das ferramentas de análise estática de código-fonte confirmam os
-  thresholds das métricas de código-fonte identificados na literatura?}
-
-  \item [{\bf Q1 (b):}] {\em Uma maior complexidade estrutural das
-  ferramentas de análise estática de código-fonte implicam em um maior custo de
-  mudança?}
+  \item [{\bf Q1:}] {\em Uma maior complexidade estrutural das ferramentas de
+  análise estática de código-fonte implicam em um maior custo de mudança?}
 \end{enumerate}
 
 % Aim, Main Research Goal
@@ -407,13 +486,13 @@ Para responder a questão colocada acima, definimos as seguintes hipóteses:
   \item[{\bf H2:}] {\em Ferramentas de análise estática com alto número de
     mudanças tem complexidade estrutural e custo de mudança altos.}
 
-  \item[{\bf H3:}] {\em 
+  \item[{\bf H3:}] {\em  ...}
     
 
   \item[{\bf H4:}] {\em Ferramentas de análise estática com maior número de
     classes possuem maior complexidade estrutural e maior custo de mudança.}
 
-  \item[{\bf H5:}] {\em 
+  \item[{\bf H5:}] {\em  ...}
 
 \end{enumerate}
 
