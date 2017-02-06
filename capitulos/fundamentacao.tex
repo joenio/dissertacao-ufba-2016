@@ -477,79 +477,6 @@ produto de software à características de qualidade de código-fonte através d
 observação de suas métricas, são elas:
 
 \begin{itemize}
-  \item {\bf ACC} {\it Afferent Connections per Class (Conexões aferentes de
-    uma classe)}: mede a conectividade de uma classe através do número total de
-    classes clientes, é definida pela seguinte fórmula:
-
-\begin{equation}
-\label{formula-acc}
-ACC(C) = \sum_{i=1}^{n} cliente(Ci, C)
-\end{equation}
-
-Onde:
-
-\begin{equation}
-cliente(Ci, Cj) =
-  \begin{cases}
-    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
-    0 \text{ caso contrario} \\
-  \end{cases}
-\end{equation}
-
-A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos
-ou funções entre módulos ou classes.
-
-A métrica {\it Afferent Connections per Class} (Conexões aferentes de uma
-classe) é encontrada na literatura com o nome {\it Afferent coupling}
-(Acoplamento aferente) \cite{Martin1994}, o nome {\it Afferent Connections per
-Class} (ACC) utilizado aqui foi introduzido no estudo de
-\citeonline{Meirelles2010}, e por estarmos reproduzindo parte da abordagem
-deste estudo adotaremos o mesmo nome.
-
-A definição original da métrica não deixa claro exatamente o que compreende
-dependencia entre classes, de forma que restam dúvidas sobre o que deve ser
-contabilizado, a definição indica apenas que ``relacionamentos de classes''
-devem ser considerados, como ``herança e associação'' por exemplo.
-
-Apesar disso muitos autores \cite{Briand1999Unified, Fenton2014, Ferreira2008}
-seguem a mesma definição da fórmula \ref{formula-acc}:
-se uma classe A referencia outra classe B, então existe um acoplamento aferente
-de B para A. Uma data classe A referencia outra classe B se (i) A chama um
-método de B, (ii) A acessa um campo de B, ou (iii) A é uma subclasse de B.
-
-É importante destacar que classes com um alto número de acoplamento aferente
-desempenham um importante papel no sistema, porque erros ou modificações nestas
-classes podem causar grande impacto em outras partes do sistema.
-
-  \item {\bf ACCM} {\it Average Cyclomatic Complexity per Method (Média de
-    complexidade ciclomática por método)}: mede a complexidade do programa
-    \cite{McCabe1976}.
-
-Essa métrica pode ser representada através de um grafo de fluxo de controle,
-onde os nós representam uma ou mais instruções sequenciais e os arcos
-orientados indicam o sentido do fluxo de controle entre várias instruções. A
-complexidade ciclomática de um determinado grafo pode ser calculada através da
-seguinte fórmula da teoria dos grafos:
-
-\[ v(G) = e - n + 2 \]
-
-Onde, $e$ é o número de arestas e $n$ é o número de nós do grafo.
-
-
-  \item {\bf AMLOC} {\it Average Method LOC (Média do número de linhas de
-    código por método)}: calcula o número médio de linhas de código por método
-    de uma dada classe, indica se o código está bem distribuído entre os
-    métodos, quanto maior, mais ``pesados'' são os métodos.
-
-  \item {\bf ANPM} {\it Average Number of Parameters per Method (Média do
-    Número de Parâmetros por Método)}: calcula a média de parâmetros dos
-    métodos da classe \cite{Jagdish1997}. Computada calculando o número
-    total de parametros de todos os métodos de uma classe dividido pelo número
-    de métodos.
-
-    Esta métrica é identificada na literatura apenas como NPM, aqui chamamos de
-    ANPN para evitar conflito com a métrica {\bf NPM} {\it Number of Public
-    Methods (Número de métodos públicos)}.
 
   \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
     mede o acoplamento entre objetos do software \cite{Chidamber1994}
@@ -590,20 +517,6 @@ Quanto mais as classes forem independentes, mais fácil é reutilizá-las e meno
 arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
 testes, pois mais partes do sistema dependem delas.
 
-  \item {\bf DIT} {\it Depth of Inheritance Tree (Profundidade da árvore de
-    herança)}: mede o número de ancestrais de uma classe \cite{Chidamber1994}.
-
-É o número de superclasses ou classes ancestrais de uma dada classe. São
-contabilizadas apenas as superclasses do sistema, ou seja, as classes de
-bibliotecas externas não são contabilizadas. Nos casos onde herança múltipla é
-permitida, considera-se o maior caminho da classe até uma das raízes da
-hierarquia. Quanto maior for o valor DIT, maior é o número de atributos e
-métodos herdados, e portanto maior é a complexidade.
-
-%Os intervalos sugeridos
-%são: até 2 (bom); entre 2 e 4 (regular); de 4 em diante (ruim). Entretanto,
-%valores baixos indicam pouco reúso de código via herança.
-
   \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
     métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
 
@@ -634,57 +547,6 @@ valor ideal para esta métrica é 1. Se uma classe tem diferentes conjuntos de
 métodos não relacionados entre si, é um indício de que a classe deveria ser
 refatorada em classes menores e mais coesas.
 
-  \item {\bf LOC} {\it Lines of Code (Número de linhas de código)}: mede o
-    número de linhas excluindo linhas em branco e comentários
-    \cite{Lorenz1994}.
-
-  \item {\bf NOA} {\it Number of Attributes (Número de atributos)}: número de
-    atributos de uma classe \cite{Kolewe1993}. É calculado através da soma de
-    todos os atributos de instância de uma dada classe.
-
-  \item {\bf NOC} {\it Number Of Children (Número de filhos)}: número total de
-    filhos de uma classe \cite{Rosenberg1997}.
-
-O número de filhos é o número de subclasses imediatamente subordinadas a classe
-em questão. É um indicador do potencial de influencia que uma classe tem no
-design do sistema. Quanto maior o número de filhos, maior é a possibilidade da
-abstração implementada na classe pai ser imprópria. Ainda que quanto maior o
-número de filhos maior a reusabilidade através de herança, maior também é a
-necessidade de testes nos métodos da classe pai, aumentando o tempo de teste.
-NOC, então, primeiramente avalia eficiência, reusabilidade e testabilidade.
-
-  \item {\bf NOM} {\it Number of Methods (Número de métodos)}: mede o tamanho
-    das classes em termos das suas operações implementadas \cite{Li1993}.
-    Calcula o número total de métodos locais de uma classe.
-
-  \item {\bf NPA} {\it Number of Public Attributes (Número de atributos
-    públicos)}: calcula o número de atributos públicos de uma classe
-    \cite{Jagdish1997}. Indica o nível de encapsulamento de uma classe.
-
-  \item {\bf NPM} {\it Number of Public Methods (Número de métodos públicos)}:
-    Calcula o número total de métodos públicos de uma classe \cite{Jagdish1997}.
-    Representa o tamanho da ``interface'' de uma classe.
-
-  \item {\bf RFC} {\it Response For a Class (Resposta para uma classe)}:
-    número de métodos dentre todos os métodos que podem ser invocados em
-    resposta a uma mensagem enviada por um objeto de uma classe
-    \cite{Chidamber1991}.
-
-RFC pode ser definido como:
-
-\begin{equation}
-RFC = | RS | \quad \text{ onde: $ RS $ é o conjunto de respostas de uma classe. }
-\end{equation}
-
-O conjunto de resposta de uma classe $ RS $ pode ser expressado como:
-
-\begin{equation}
-RS = \{ M \} \cup \text{ todo $ i $ } \{ Ri \}
-\end{equation}
-
-Onde $ M $ é o conjunto de todos os métodos da classe e $ Ri $ o conjunto de
-métodos chamado pelo método $ i $.
-
   \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
     complexidade do software \cite{Darcy2005} combinando os valores de CBO e LCOM4.
 
@@ -706,6 +568,12 @@ SC(p) = \frac
 
 Esta medida de complexidade estrutural é portanto a complexidade
 estrutural média entre todos os módulos do sistema.
+
+  \item {\bf CC} {\it Change Cost (Custo de mudança)}: mede a possibilidade de
+    impacto que uma certa mudança num projeto de software causa no restante do
+    sistema\cite{Maccormack2006}, indica o quão custoso é realizar mudanças.
+
+(pendente descrever melhor CC e mostrar uma formalizacao da métrica)
 
 \end{itemize}
 
@@ -822,3 +690,135 @@ programa de software e pode explicar seus atributos de qualidade interna.
 %sions increases with code length, a far less profound conclusion. The cyclo-
 %matic number may be just another size measure. Chapter 9 contains more
 %detailed discussion of validation for the McCabe measures.
+
+\subsection{Custo de mudança} \label{custo-mudanca}
+
+Muitos estudos tem abordado compreensão e visualização de softwares complexos,
+dentre estes alguns focam no uso de {\it DSM} a fim de se ter uma visão geral
+do relacionamento entre as entidades que compõe o sistema, além de obter meios
+para cálculo de métricas como {\it Change Cost}, uma medida que representa o
+custo médio de uma mudança no design de um software em termos do potencial
+impacto desta mudança em outras partes do sistema.
+
+\subsection{Implementação e validação}
+
+Uma {\it DSM} é a representação de um grafo de dependência em forma de uma
+matriz quadrada, 
+...
+pode ser visto na Figura~\ref{fig:dsm}.
+
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.3]{dsm.png}
+\caption{Design Structure Matrix do Linux 2.1.105 gerado pelo Analizo}
+\label{fig:dsm}
+\end{figure}
+
+O {\it Change Cost} representa o impacto que uma mudança localizada em um
+certo ponto pode causar em outros pontos do mesmo sistema, ele é calculado a
+partir de uma matrix chamada {\it Reachability
+Matrix}\cite{ReachabilityMatrices}, foi implementado também através do módulo
+{\it Graph} via método {\it transitive\_closure\_matrix}. Por fim calcula-se o
+{\it Fan-out} de cada linha da matriz e divide-se pelo total de linhas para
+chegar ao resultado final de {\it Change Cost}.
+
+{\it Change Cost} não indica design bom ou ruim, mas sinaliza em grau de
+comparação que um design é mais modular que outro, ou ainda que a
+modularização está aumentando ou diminuindo ao longo do tempo. É possível ver na
+Figura~\ref{fig:files} por exemplo que o {\it Change Cost} não se altera em
+relação ao número de arquivos do projeto.
+
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.3]{imagens/plot-files.png}
+\caption{Relação entre Change Cost e Número de Arquivos}
+\label{fig:files}
+\end{figure}
+
+Assume-se que em designs menos acoplados a medida de {\it Change Cost} também
+será menor. A partir desta afirmação é possível relacionar {\it LCOM4 (Lack of
+Cohesion in Methods)} com {\it Change Cost}, uma vez que coesão e acoplamento
+possuem relação direta. A Figura~\ref{fig:lcom4} mostra o quão próximos se
+mantém {\it Change Cost} e {\it LCOM4}, apesar de não ser possível traçar
+afirmações sem um estudo aprofundado, intuitivamente estas 2 medidas estão
+relacionadas.
+
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.3]{imagens/plot-lcom4.png}
+\caption{Relação entre Change Cost e LCOM4 médio}
+\label{fig:lcom4}
+\end{figure}
+
+(fundamentar custo de mudança em mais detalhes)
+
+%Apesar da métrica custo de mudança se mostrar bastante útil em estudos sobre
+%qualidade interna de produtos de software poucos trabalhos fazem uso 
+%métrica em comparação com métricas mais tradicionais, como a complexidade
+%estrutural, por exemplo. Estudos recentes propõem novas métricas
+%\cite{Milev2009,Mo2016} argumentando que o custo de mudança possui o problema
+%de ser sensível ao tamanho do software, por exemplo, softwares com poucos
+%arquivos tem uma tendência de apresentar altos valores para esta métrica.
+
+%{\it Change Cost} é conceitualmente bem próximo à idéia visibilidade
+%\cite{Sharman2004}, que por sua vez é construída sobre o conceito de {\it
+%reachability matrices} \cite{Warfield1973}. Visibilidade é um conceito
+%relacionado à seguinte pergunta: ``Quais outros elementos do sistema devem ser
+%reprojetados se este elemento for modificado?''.
+%
+%Para um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $
+%um caminho direcionado representando $ ij $. Então o grafo:
+%
+%$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
+%
+%É dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $
+%é dita como $ G $ {\it reachability matrix}.  Vértices adjacentes no {\it
+%reachability graph} são conectados por um ou mais caminhos direto no grafo
+%original.
+
+%Os autores afirmam que esta métrica pode ser aplicada apenas de forma
+%comparativa, ou seja, não pode-se afirmar que um design específico é ou não
+%modular, mas sim que um certo design é mais (ou menos) modular que um outro
+%design. Esta comparação pode ser feita entre produtos de software distintos ou
+%entre várias versões de um mesmo software.
+%problemas na medida de tal métrica, como é o caso das
+%métricas {\it relative clustered cost} \cite{Milev2009} e {\it decoupling
+%level} \cite{Mo2016}, ambos estudos apontam que o custo de mudança é uma
+%
+%, dentre estes trabalhos nenhum faz uma comparação dos
+%valores encontrados com outras métricas de código-fonte, usualmente criam
+
+%O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
+%\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
+%chamada {\it relative clustered cost}. \citeonline{Mo2016} baseado em DSM
+%e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
+%da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
+%ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
+%de código).
+%
+%\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
+%Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
+%Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
+%Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
+%e nem sempre captura variações arquiteturais.
+%
+%Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
+%de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
+%independentes) módulos que podem ser modificadas independentemente por
+%desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
+%mais modular. No entando no estudo realizado notou-se que nem sempre um alto
+%valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
+%mostraram projetos de difícil manutenabilidade e alto valor de DL.
+%
+%Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
+%de produto de software que indica a possibilidade de impacto que uma
+%certa mudança num projeto de software causa no restante do sistema, é
+%um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
+%apenas.
+%
+%Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
+%utilizada para comparar vários software distintos entre sí. Esta é uma métrica
+%calculada em nível de projeto, representa o impacto que uma mudança localizada
+%em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
+%calculado a partir de uma matriz chamada {\it Reachability Matrix}.
+%
