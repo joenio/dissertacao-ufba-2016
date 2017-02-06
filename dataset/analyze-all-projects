@@ -2,116 +2,9 @@
 use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
-
-our @SOURCES = qw(NIST PAPERS);
-our @METRICS = qw(
-  acc
-  accm
-  amloc
-  an
-  anpm
-  asom
-  auv
-  bd
-  bf
-  cbo
-  da
-  dbz
-  df
-  dit
-  dnp
-  dupv
-  fgbo
-  lcom4
-  loc
-  mlk
-  mmloc
-  noa
-  noc
-  nom
-  npa
-  npm
-  obaa
-  osf
-  pitfc
-  rfc
-  rogu
-  rsva
-  saigv
-  sc
-  ua
-  uaf
-  uav
-);
-
-our @GLOBAL_METRICS = qw(
-  total_modules
-  change_cost
-  acc_mean
-  acc_standard_deviation
-  accm_mean
-  accm_standard_deviation
-  amloc_mean
-  amloc_standard_deviation
-  anpm_mean
-  anpm_standard_deviation
-  cbo_mean
-  cbo_standard_deviation
-  dit_mean
-  dit_standard_deviation
-  lcom4_mean
-  lcom4_standard_deviation
-  loc_mean
-  loc_standard_deviation
-  noa_mean
-  noa_standard_deviation
-  noc_mean
-  noc_standard_deviation
-  nom_mean
-  nom_standard_deviation
-  npa_mean
-  npa_standard_deviation
-  npm_mean
-  npm_standard_deviation
-  rfc_mean
-  rfc_standard_deviation
-  sc_mean
-  sc_standard_deviation
-);
-
-sub metrics_by_module($file, @metrics) {
-  my $table = ();
-  my $i = -1;
-  open my $FILE, '<', $file;
-  my $_metrics = join '|', @metrics;
-  while(my $line = <$FILE>) {
-    if ($line =~ m/^_module: (.+)/) {
-      $i++;
-      push @{ $table->[$i] }, $1;
-    }
-    if ($line =~ m/^(?:$_metrics): (.+)/) {
-      push @{ $table->[$i] }, $1;
-    }
-  }
-  close $FILE;
-  return @{ $table };
-}
-
-sub global_metrics($file, @names) {
-  my %metrics = ();
-  open my $FILE, '<', $file;
-  my $_metrics = join '|', @names;
-    while(my $line = <$FILE>) {
-    if ($line =~ m/^($_metrics): (.+)/) {
-      $metrics{$1} = $2;
-    }
-  }
-  close $FILE;
-  return %metrics;
-}
+use Statistics::Descriptive;
 
 foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
-  next if $tool =~ /clang/;
   foreach my $dir (grep { -d $_ } glob("$tool/*")) {
     unless (-e "$dir.doxyparse") {
       say "doxyparse $dir > $dir.doxyparse";
@@ -132,27 +25,44 @@ foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
   }
 }
 
-foreach my $file (glob("./static-analysis-tools/*/*.metrics")) {
-  unless (-e "$file.dat") {
-    open my $OUTPUT, '>', "$file.dat";
-    say "+ $file -> $file.dat";
-    say $OUTPUT "@METRICS";
-    foreach my $row (metrics_by_module($file, @METRICS)) {
-      say $OUTPUT "@{ $row }";
+sub metric_values($file, $metric) {
+  my @values = ();
+  open my $FILE, '<', $file;
+  while(my $line = <$FILE>) {
+    if ($line =~ m/^(?:$metric): (.+)/) {
+      push @values, $1;
     }
-    close $OUTPUT;
   }
+  close $FILE;
+  return @values;
 }
 
-# write global metrics to "analizo.metrics.dat" file
-open my $OUTPUT, '>', "analizo.metrics.dat";
-say $OUTPUT "@GLOBAL_METRICS";
-foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
-  foreach my $file (glob("$tool/*.metrics")) {
-    my %metrics = global_metrics($file, @GLOBAL_METRICS);
-    print $OUTPUT basename($tool), " ";
-    print $OUTPUT join(" ", map { $metrics{$_} } @GLOBAL_METRICS);
+sub metric_value($file, $metric) {
+  open my $FILE, '<', $file;
+  while(my $line = <$FILE>) {
+    if ($line =~ m/^(?:$metric): (.+)/) {
+      return $1;
+    }
+  }
+  close $FILE;
+  return;
+}
+
+foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+  my $tool = basename($tool_dir);
+  open my $OUTPUT, '>', "metricas/metrics-$tool.csv" or die $!;
+  print $OUTPUT "tool, release, total_modules, change_cost, sc_75, sc_90, sc_95\n";
+  foreach my $file (glob("$tool_dir/*.metrics")) {
+    my $release = basename($file, '.analizo.metrics');
+    my $total_modules = metric_value($file, 'total_modules');
+    my $change_cost = metric_value($file, 'change_cost');
+    my $stat = Statistics::Descriptive::Full->new();
+    $stat->add_data(metric_values($file, 'sc'));
+    my $sc_75 = $stat->percentile(75);
+    my $sc_90 = $stat->percentile(90);
+    my $sc_95 = $stat->percentile(95);
+    print $OUTPUT join(', ', $tool, $release, $total_modules, $change_cost, $sc_75, $sc_90, $sc_95);
     print $OUTPUT "\n";
   }
+  close $OUTPUT;
 }
-close $OUTPUT;
