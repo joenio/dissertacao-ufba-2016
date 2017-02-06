@@ -256,87 +256,12 @@ projeto, como a complexidade estrutural.  Algo que se mostra como uma enorme
 oportunidade de estudo sobre o cálculo de intervalos de referência, podendo
 servir de base de comparação e apoio na interpretação dos valores encontrados.
 
-%Apesar da métrica custo de mudança se mostrar bastante útil em estudos sobre
-%qualidade interna de produtos de software poucos trabalhos fazem uso 
-%métrica em comparação com métricas mais tradicionais, como a complexidade
-%estrutural, por exemplo. Estudos recentes propõem novas métricas
-%\cite{Milev2009,Mo2016} argumentando que o custo de mudança possui o problema
-%de ser sensível ao tamanho do software, por exemplo, softwares com poucos
-%arquivos tem uma tendência de apresentar altos valores para esta métrica.
-
 Assim, iremos neste trabalho, analisar ferramentas do domínio de análise
 estática, extrair as métricas de complexidade estrutural e custo de mudança,
 calcular intervalos de referência para a métrica de complexidade estrutural, em
 seguida comparar tais intervalos com os valores da métrica custo de mudança a
 fim de compreender como estas medidas se comportam neste domínio de aplicação.
 
-%métricas que representam questões arquiteturais, como complexidade
-%estrutural por exemplo, e seus valores de referência podem ser colocados frente
-%à frente à 
-%(potencialmente) 
-
-%{\it Change Cost} é conceitualmente bem próximo à idéia visibilidade
-%\cite{Sharman2004}, que por sua vez é construída sobre o conceito de {\it
-%reachability matrices} \cite{Warfield1973}. Visibilidade é um conceito
-%relacionado à seguinte pergunta: ``Quais outros elementos do sistema devem ser
-%reprojetados se este elemento for modificado?''.
-%
-%Para um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $
-%um caminho direcionado representando $ ij $. Então o grafo:
-%
-%$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
-%
-%É dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $
-%é dita como $ G $ {\it reachability matrix}.  Vértices adjacentes no {\it
-%reachability graph} são conectados por um ou mais caminhos direto no grafo
-%original.
-
-%Os autores afirmam que esta métrica pode ser aplicada apenas de forma
-%comparativa, ou seja, não pode-se afirmar que um design específico é ou não
-%modular, mas sim que um certo design é mais (ou menos) modular que um outro
-%design. Esta comparação pode ser feita entre produtos de software distintos ou
-%entre várias versões de um mesmo software.
-%problemas na medida de tal métrica, como é o caso das
-%métricas {\it relative clustered cost} \cite{Milev2009} e {\it decoupling
-%level} \cite{Mo2016}, ambos estudos apontam que o custo de mudança é uma
-%
-%, dentre estes trabalhos nenhum faz uma comparação dos
-%valores encontrados com outras métricas de código-fonte, usualmente criam
-
-%O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
-%\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
-%chamada {\it relative clustered cost}. \citeonline{Mo2016} baseado em DSM
-%e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
-%da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
-%ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
-%de código).
-%
-%\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
-%Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
-%Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
-%Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
-%e nem sempre captura variações arquiteturais.
-%
-%Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
-%de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
-%independentes) módulos que podem ser modificadas independentemente por
-%desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
-%mais modular. No entando no estudo realizado notou-se que nem sempre um alto
-%valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
-%mostraram projetos de difícil manutenabilidade e alto valor de DL.
-%
-%Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
-%de produto de software que indica a possibilidade de impacto que uma
-%certa mudança num projeto de software causa no restante do sistema, é
-%um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
-%apenas.
-%
-%Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
-%utilizada para comparar vários software distintos entre sí. Esta é uma métrica
-%calculada em nível de projeto, representa o impacto que uma mudança localizada
-%em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
-%calculado a partir de uma matriz chamada {\it Reachability Matrix}.
-%
 %Mas é importante nos questionar: como chegamos ao {\it threshold} 2? Porque não
 %1.95m? Porque não 3m? E se uma pessoa tem 2.01 metros, não é pequeno comparado
 %com uma pessoa de 2.5 metros?
@@ -358,6 +283,30 @@ fim de compreender como estas medidas se comportam neste domínio de aplicação
 %modelos estatísticos \cite{Shatnawi2010, Kaur2013}, ou ainda por meio de
 %abordagens que utilizam aprendizado de máquina\cite{Herbold2011} e inteligência
 %artificial 
+
+\cite{Lima2014}
+
+Nas últimas décadas, autores como Alves, Ypma e Visser (2010),
+Coppick e Cheatham (1992), Ferreira et al. (2011), Rosenberg, Stapko e Gallo
+(1999) e Shatnawi et al. (2010) vêm propondo técnicas e valores de referência
+para algumas medidas de software. Há artigos como o de Coppick e Cheatham
+(1992), French (1999) e Rosenberg, Stapko e Gallo (1999), que apresentam
+valores de referência baseados em “experiência própria” (conhecimento tácito)
+sem nenhuma análise estatística ou técnica que suporte a afirmação. No entanto,
+uma vez obtidos, em um contexto específico ou sem técnica adequada, os
+valores de referência publicados tendem a não ser generalizáveis para além do
+contexto de sua obtenção.
+
+--
+
+Este estudo faz uma revisao sistematicca de literatura para encontrar
+estudos que definem valores de referencia e conclui que nao existem
+valores confiaveis a ponto de serem utilizados sem nenhuma adaptacao.
+
+Na segunda metaade o estudo faz um comparativo interessante entre
+os valores teoricos encontrados a partir da RSL e valores da pratica
+encontrados a partir da analise de 107 software livres.
+
 %
 %Entre as inúmeras propostas, muitas partem de estudos empíricos usando software
 %da indústria como objeto de estudo, analisando conjuntos de sistemas de
@@ -469,9 +418,9 @@ São objetivos específicos deste trabalho:
         com base nas percepções identificadas na caracterização proposta.
   \item Identificar a relação entre complexidade estrutural e custo de mudança 
         das ferramentas de análise estática.
-  \item Avaliar os thresholds encontrados na literatura para métricas de
-        código-fonte em relação às métricas calculadas para as ferramentas
-        de análise estática.
+%  \item Avaliar os thresholds encontrados na literatura para métricas de
+%        código-fonte em relação às métricas calculadas para as ferramentas
+%        de análise estática.
 %  \item Selecionar e obter código-fonte de ferramentas de análise estática
 %    desenvolvidas na academia, para coletar suas métricas de código-fonte. A
 %    seleção terá como base o resultado de uma revisão estruturada feita a
