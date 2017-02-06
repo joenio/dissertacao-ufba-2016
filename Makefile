@@ -1,7 +1,7 @@
 # DOCUMENT VARIABLES
 
 NAME= dissertacao
-CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* figure/* _*.Rtex dissertacao.tex
+CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* figure/* _*.Rtex
 
 # PROJECT VARIABLES
 
@@ -17,8 +17,8 @@ knitr:
 	Rscript dissertacao.R
 	mv _dissertacao.tex dissertacao.tex
 
-dissertacao.tex: knitr
-	@echo "running knitr"
+#dissertacao.tex: knitr
+#	@echo "running knitr"
 
 viewpdf_dissertacao:
 	@echo "done"
