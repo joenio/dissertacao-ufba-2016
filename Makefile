@@ -11,14 +11,10 @@ VIEWPDF= evince
 
 include /usr/share/latex-mk/latex.gmk
 
-knitr:
-	cd dataset; ./analyze-all-projects; cd ..
-	latexpand --keep-comments dissertacao.Rtex > _dissertacao.Rtex
-	Rscript dissertacao.R
-	mv _dissertacao.tex dissertacao.tex
+dissertacao.tex: analyze
 
-#dissertacao.tex: knitr
-#	@echo "running knitr"
+analyze:
+	cd dataset; ./analyze-all-projects; cd ..
 
 viewpdf_dissertacao:
 	@echo "done"
