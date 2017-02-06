@@ -27,14 +27,6 @@ metric_by_project <- function(metric) {
   srcml = metrics["srcml", metric]
   tacle = metrics["tacle", metric]
   wala = metrics["wala", metric]
-  table = data.frame(accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala)
-  return(table)
-
-}
-
-metric_by_nist_project <- function(metric) {
-  metrics = read.table("dataset/analizo.metrics.dat")
-  #clang = metrics["clang", metric]
   closure = metrics["closure", metric]
   cppcheck = metrics["cppcheck", metric]
   cqual = metrics["cqual", metric]
@@ -48,8 +40,7 @@ metric_by_nist_project <- function(metric) {
   splint = metrics["splint", metric]
   uno = metrics["uno", metric]
   wap = metrics["wap", metric]
-  #table = data.frame(clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
-  table = data.frame(closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
+  table = data.frame(accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
   return(table)
 }
 
@@ -59,8 +50,7 @@ percentis_for_metric <- function(metric, filename) {
   return(percentis)
 }
 
-percentis_by_nist_project <- function(metric) {
-  #clang = percentis_for_metric(metric, "dataset/static-analysis-tools/clang/cfe-3.7.1.src.analizo.metrics.dat")
+percentis_by_project <- function(metric) {
 
   closure = percentis_for_metric(metric, "dataset/static-analysis-tools/closure-compiler/closure-compiler-closure-compiler-parent-v20160619.analizo.metrics.dat")
   cppcheck = percentis_for_metric(metric, "dataset/static-analysis-tools/cppcheck/cppcheck-1.72.analizo.metrics.dat")
@@ -75,12 +65,6 @@ percentis_by_nist_project <- function(metric) {
   splint = percentis_for_metric(metric, "dataset/static-analysis-tools/splint/splint-3.1.2.analizo.metrics.dat")
   uno = percentis_for_metric(metric, "dataset/static-analysis-tools/uno/uno.analizo.metrics.dat")
   wap = percentis_for_metric(metric, "dataset/static-analysis-tools/wap/wap-2.1.analizo.metrics.dat")
-  #table = data.frame(clang, closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
-  table = data.frame(closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap)
-  return(table)
-}
-
-percentis_by_project <- function(metric) {
   accessanalysis = percentis_for_metric(metric, "dataset/static-analysis-tools/accessanalysis/AccessAnalysis-1.2-src.analizo.metrics.dat")
   bogor = percentis_for_metric(metric, "dataset/static-analysis-tools/bogor/bogor-core.analizo.metrics.dat")
   composite = percentis_for_metric(metric, "dataset/static-analysis-tools/composite/composite-0.4.analizo.metrics.dat")
@@ -102,7 +86,7 @@ percentis_by_project <- function(metric) {
   srcml = percentis_for_metric(metric, "dataset/static-analysis-tools/srcml/srcML-src.analizo.metrics.dat")
   tacle = percentis_for_metric(metric, "dataset/static-analysis-tools/tacle/tacle_1_2_1_src.analizo.metrics.dat")
   wala = percentis_for_metric(metric, "dataset/static-analysis-tools/wala/WALA-R_1.3.8.analizo.metrics.dat")
-  table = data.frame(accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala)
+  table = data.frame(closure, cppcheck, cqual, findbugs, findsecuritybugs, jlint, pixy, pmd, rats, smatch, splint, uno, wap, accessanalysis, bogor, composite, cseq, ejb, errorprone, guizmo, gumtree, indus, inputtracer, jastadd, jflow, lotrack, mpanalyzer, ptyasm, reassert, sonarqubeplugin, sparta, srcml, tacle, wala)
   return(table)
 }
 
@@ -202,6 +186,14 @@ percentil_all_nist_projects <- function(percentil) {
   table = data.frame(t(acc), t(accm), t(amloc), t(anpm), t(cbo), t(lcom4), t(loc), t(noa), t(nom), t(npa), t(npm), t(rfc), t(sc))
   colnames(table) = c('acc', 'accm', 'amloc', 'anpm', 'cbo', 'lcom4', 'loc', 'noa', 'nom', 'npa', 'npm', 'rfc', 'sc')
   return(table)
+}
+
+ahhhh <- function() {
+  tools = list.dirs(path="dataset/static-analysis-tools", recursive=FALSE)
+  files =
+  for (tool in tools) {
+    files = list.files(path=tool, pattern=".metrics$")
+  }
 }
 
 histograma <- function(metric, caption) {
