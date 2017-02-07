@@ -48,13 +48,6 @@ dados manualmente ele pode ser executado da seguinte forma:
     cd dataset
     ./analyze-all-projects
 
-Algumas extensões da linguagem R precisam ser instaladas e a depender da versão
-do Debian utilizado as instruções podem ser diferentes.
-
-### Debian Testing (como root)
-
-    apt-get install make r-recommended r-cran-knitr r-cran-xtable
-
 ### Compilar
 
 Após instalar todas as dependências basta executar o `make` na raiz do projeto.
