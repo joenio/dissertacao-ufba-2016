@@ -48,10 +48,10 @@ sub metric_value($file, $metric) {
   return;
 }
 
+open my $SUMMARY, '>', "$ENV{PWD}/static-analysis-tools/metrics.csv" or die $!;
+print $SUMMARY "tool, release, total_modules, change_cost, sc_75, sc_90, sc_95\n";
 foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
   my $tool = basename($tool_dir);
-  open my $OUTPUT, '>', "metricas/metrics-$tool.csv" or die $!;
-  print $OUTPUT "tool, release, total_modules, change_cost, sc_75, sc_90, sc_95\n";
   foreach my $file (glob("$tool_dir/*.metrics")) {
     my $release = basename($file, '.analizo.metrics');
     my $total_modules = metric_value($file, 'total_modules');
@@ -61,8 +61,8 @@ foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) 
     my $sc_75 = $stat->percentile(75);
     my $sc_90 = $stat->percentile(90);
     my $sc_95 = $stat->percentile(95);
-    print $OUTPUT join(', ', $tool, $release, $total_modules, $change_cost, $sc_75, $sc_90, $sc_95);
-    print $OUTPUT "\n";
+    print $SUMMARY join(', ', $tool, $release, $total_modules, $change_cost, $sc_75, $sc_90, $sc_95);
+    print $SUMMARY "\n";
   }
-  close $OUTPUT;
 }
+close $SUMMARY;;
