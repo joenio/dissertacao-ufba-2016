@@ -6,10 +6,6 @@ use Statistics::Descriptive;
 
 foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
   foreach my $dir (grep { -d $_ } glob("$tool/*")) {
-    unless (-e "$dir.doxyparse") {
-      say "doxyparse $dir > $dir.doxyparse";
-      `doxyparse $dir > $dir.doxyparse`;
-    }
     unless (-e "$dir.analizo.metrics") {
       say "analizo metrics $dir > $dir.analizo.metrics";
       `analizo metrics $dir > $dir.analizo.metrics`;
