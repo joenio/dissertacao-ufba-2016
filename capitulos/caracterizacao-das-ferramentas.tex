@@ -638,3 +638,58 @@ as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
  srcML                    (releases nao encontrado)
 
  WALA                     13 releases
+
+
+Comparacao entre ferramentas de tamanho similar:
+
+nas 5 comparações de versões distintas com tamanhos similares entre pmd e findbugs,
+apresentaram o mesmo resultado, pmd tem valores menos tanto para CC quanto para SC,
+indicando que pmd tem um design mais modular que findbugs.
+
+pmd < findbugs
+pmd < findbugs
+pmd < findbugs
+pmd < findbugs
+pmd < findbugs
+
+Ao comparar as imagens da matrix DSM dá para notar que isto reflete na matrix, 
+pegando o findbugs 3.0.1 e o pmd 5.2.0, é possível notar na matrix que o findbugs
+tem mais pontos nas duas diagonais da matrix, indicando dependencias ciclicar, e
+design menos modular, enquanto o pmd concentra as dependencias na diagonal inferior
+esquerda, indicando poucas dependencias ciclicar e um design mais modular.
+
+
+findbugs	 findbugs-3.0.1	1486	0,07	8	25	56
+pmd	 pmd-src-5.2.0	1295	0,02	6	12	25
+/home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/pmd/pmd-src-5.2.0.analizo.dsm.png
+/home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/findbugs/findbugs-3.0.1.analizo.dsm.png
+
+
+accessanalysis < findsecuritybugs
+mpanalyzer < ejb
+indus < bogor
+reassert > jflow
+pmd-5.4.0 > pmd-5.3.0
+pmd-5.4.2 > pmd-5.3.7
+findbugs-3.0.1 > findbugs-2.0.3
+pixy > mpanalyzer
+pmd < closure-compiler
+
+closure-compiler > wala
+closure-compiler > wala
+wala[Java]     ? closure-compiler[Java] (wala tem CC maior mas SC diferentes)
+closure-compiler[Java] ? wala[Java]     (closure tem CC maior mas SC menor)
+
+comparar linguagens diferentes não rola, sempre dá ruim, ver:
+
+rats[C]        ? uno[C]                 (rats tem CC menor e SC maior)
+cppcheck[C++]  ? wap[Java]              (cppcheck tem CC menor mas SC maior)
+srcml[C++]     ? ptyasm[Java]           (srcml tem CC maior mas SC menor)
+closure-compiler[Java] ? inputtracer[C] (closure tem CC menor mas SC diferentes nos percentis)
+pmd[Java] ? srcml[C++]                  (pmd tem CC maior e SC diferentes nos percentis)
+inputtracer[C] ? wala[Java]             (tem CC maior e SC diferentes mas no percentil 95 tem SC maior também)
+
+fica claro que comparacao entre linguagens diferentes mesmo com tamanhos iguais não dá para chegar a conclusões nenhuma.
+
+findbugs[Java] ? wala[Java]             (findbugs tem CC maior mas SC menor)
+closure-compiler ? closure-compiler     (CC menor mas SC maior)

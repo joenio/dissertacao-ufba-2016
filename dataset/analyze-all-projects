@@ -48,7 +48,7 @@ sub metric_value($file, $metric) {
   return;
 }
 
-open my $SUMMARY, '>', "$ENV{PWD}/static-analysis-tools/metrics.csv" or die $!;
+open my $SUMMARY, '>', "$ENV{PWD}/metrics.csv" or die $!;
 print $SUMMARY "tool, release, total_modules, change_cost, sc_75, sc_90, sc_95\n";
 foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
   my $tool = basename($tool_dir);
