@@ -6,7 +6,7 @@
 % more insightful and focused research questions about your topic. 
 % Therefore, your literature review should lead to and justify your research objectives and questions.
 
-\xchapter{Fundamentação Teórica}
+\xchapter{Fundamentação teórica}
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 \label{fundamentacao}
 
@@ -466,118 +466,60 @@ Neste trabalho, são utilizadas métricas de produto e, especificamente,
 métricas de código-fonte, que cobrem aspectos de tamanho, complexidade e
 qualidade que podem ser medidos a partir do código-fonte de um software.
 
+Métricas de software tem um escopo bastante abrangente, e o termo está
+associado com muitas atividades da engenharia de software: Medidade e modelos
+para estimativa de custo e esforço, Coleção de dados, Modelos e medidas de
+qualidade, Modelos de confiabilidade, Métricas de segurança, Métricas
+estruturais e de complexidade, Avaliação de maturidade de capacidade,
+Gerenciamento através de métricas, Avaliação de métodos e ferramentas.
+
 \subsection{Métricas de código-fonte} \label{metricas-de-codigo}
 
 As propriedades visíveis aos desenvolvedores podem ser medidas através de
 métricas de código-fonte. A observação e o monitoramento de seus valores podem
 indicar aspectos relevantes à manutenibilidade de um programa. Dentre as
-inúmeras métricas de código-fonte iremos destacar aquelas utilizadas no estudo
-de \citeonline{Meirelles2013} onde associou-se características de qualidade de
-produto de software à características de qualidade de código-fonte através da
-observação de suas métricas, são elas:
+inúmeras métricas de código-fonte nosso interesse está em métricas que indicam
+características relevantes à modularidade de um produto de software,
+complexidade estrutural e custo de mudança.
 
-\begin{itemize}
+3.1.2.4 Internal Attributes and Quality Control and Assurance
+A major reason that developers want to use internal attributes to predict
+external ones is the need to monitor and control the products during devel-
+opment. For example, we want to be able to identify modules at the design
+stage whose profile, in terms of measures of internal attributes, shows that
+they are likely to be error-prone or difficult to maintain or test later on. To
+do this, we need to know the relationship between internal design attri-
+butes and failures. Figure 3.1 is an irreverent view of this process.
 
-  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
-    mede o acoplamento entre objetos do software \cite{Chidamber1994}
-    calculando em nível de classe o número total de acessos à outras classes do
-    mesmo sistema, é comum ser também chamada de Fan-out da classe. CBO é então
-    definida pela seguinte fórmula:
+Brooks, Yourdon and Constantine, and Larman assume what most
+other software engineers assume: good internal structure leads to good
+external quality. Although intuitively appealing, the connection between
+internal attribute values and the resulting external attribute values has
+rarely been established, in part because (as we shall see in Chapter 4) it
+is difficult to perform controlled experiments and confirm relationships
+between attributes. At the same time, validating measures of attributes
+such as cohesion and coupling is difficult but necessary. Valid software
+measurement can help us to understand and confirm relationships empir-
+ically; a key to the success of this analysis is the ability to provide accurate
+and meaningful measures of internal product attributes.
 
-\begin{equation}
-\label{formula-cbo}
-CBO(C) = \sum_{i=1}^{n} cliente(C, Ci)
-\end{equation}
+Structural and Complexity Metrics
+Desirable quality attributes like reliability and maintainability cannot be
+measured until some operational version of the code is available. Yet, we
+wish to be able to predict which parts of the software system are likely to be
+less reliable, more difficult to test, or require more maintenance than oth-
+ers, even before the system is complete. As a result, we measure structural
+attributes of representations of the software that are available in advance
+of (or without the need for) execution; then, we try to establish empiri-
+cally predictive theories to support quality assurance, quality control, and
+quality prediction. These representations include control flow graphs that
+usually model code and various unified modeling language (UML) dia-
+grams that model software designs and requirements. Structural metrics
+can involve the arrangement of program modules, for example, the use
+and properties of design patterns. These models and related metrics are
+described in Chapter 9.
 
-Onde:
-
-\begin{equation}
-cliente(Ci, Cj) =
-  \begin{cases}
-    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
-    0 \text{ caso contrario} \\
-  \end{cases}
-\end{equation}
-
-A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
-entre módulos ou classes.
-
-Apesar de ser possível formalizar a métrica CBO através da fórmula acima, sua descriçao original é
-bastante complexa, levando à implementações variadas do seu cálculo
-\cite{Lincke2008}. A definição original, por exemplo, inclui explicitamente
-acoplamento via herança \cite{Harrison1998}, no entando não deixa claro como
-deve ser tratado métodos herdados \cite{Briand1999}. A definição original
-afirma também que apenas chamadas explícitas (e não chamadas implicitas) de
-construtores são contabilizadas. Algumas definições de CBO incluem não apenas $
-cliente(Ci, Cj) $ mas também a recíproca $ cliente(Cj, Ci) $ de forma que o valor
-final inclui classes que ela acessa somado ao número de classes do sistema que
-a acessam \cite{Sant2008}.
-
-Quanto mais as classes forem independentes, mais fácil é reutilizá-las e menos
-arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
-testes, pois mais partes do sistema dependem delas.
-
-  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
-    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
-
-O cálculo de LCOM4 é dado através de grafo não-orientado em que os nós ou
-vértices são os métodos e atributos de uma classe e as arestas são acessos à
-métodos e atributos. O cálculo desta métrica pode ser formalizado como a
-seguir \cite{Silva2012}.
-
-Seja $ X $ uma classe qualquer e $ M_x $ o conjunto de métodos desta classe,
-considere um grafo simples não-orientado $ G_x(V, E) $, sendo:
-
-\begin{equation}
-V = M_x
-\text{ e }
-E = \{ \langle m, n \rangle \in V \times V \}
-\end{equation}
-
-Onde:
-\begin{equation}
-(\exists i \in Ix : (m \text{ accessos } i) \land (n \text{ accessos } i)) \lor (m \text{ chamadas } n) \lor (n \text{ chamadas } m)
-\end{equation}
-
-O valor da métrica LCOM4 para uma classe $ X $ é então definido como o número
-de componentes conectados do grafo $ G_x (1 \leq LCOM(x) \geq | M_x |)$.
-
-Coesão entre os métodos de uma classe é uma propriedade desejável, portanto o
-valor ideal para esta métrica é 1. Se uma classe tem diferentes conjuntos de
-métodos não relacionados entre si, é um indício de que a classe deveria ser
-refatorada em classes menores e mais coesas.
-
-  \item {\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
-    complexidade do software \cite{Darcy2005} combinando os valores de CBO e LCOM4.
-
-\citeonline{Darcy2005} definem complexidade estrutural como uma combinação de
-acoplamento e coesão. Estes são dois conceitos complementares: enquanto o
-acoplamento reflete o relacionamento entre módulos, a coesão nos fornece uma
-visão da organização dos componentes internos de um módulo e seus
-relacionamentos.
-
-Uma formalização da métrica proposta por \citeonline{Darcy2005} pode ser
-expressa da seguinte maneira, para um projeto $p$ e seu conjunto de módulos
-$M(p)$, a complexidade estrutural $SC(p)$ de $p$ é:
-
-\begin{equation}
-SC(p) = \frac
-{ \displaystyle \sum_{m \in M(p)} CBO(m) \times LCOM4(m) }
-{ |M(p)| }
-\end{equation}
-
-Esta medida de complexidade estrutural é portanto a complexidade
-estrutural média entre todos os módulos do sistema.
-
-  \item {\bf CC} {\it Change Cost (Custo de mudança)}: mede a possibilidade de
-    impacto que uma certa mudança num projeto de software causa no restante do
-    sistema\cite{Maccormack2006}, indica o quão custoso é realizar mudanças.
-
-(pendente descrever melhor CC e mostrar uma formalizacao da métrica)
-
-\end{itemize}
-
-\subsection{Complexidade estrutural} \label{complexidade}
+\subsubsection{Complexidade estrutural} \label{complexidade}
 
 Dentre as métricas apresentadas temos um interesse especial na métrica de
 complexidade estrutural SC ({\it Structural Complexity}), uma medida da
@@ -691,6 +633,101 @@ programa de software e pode explicar seus atributos de qualidade interna.
 %matic number may be just another size measure. Chapter 9 contains more
 %detailed discussion of validation for the McCabe measures.
 
+{\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
+complexidade do software \cite{Darcy2005} combinando os valores de CBO e LCOM4.
+
+\citeonline{Darcy2005} definem complexidade estrutural como uma combinação de
+acoplamento e coesão. Estes são dois conceitos complementares: enquanto o
+acoplamento reflete o relacionamento entre módulos, a coesão nos fornece uma
+visão da organização dos componentes internos de um módulo e seus
+relacionamentos.
+
+Uma formalização da métrica proposta por \citeonline{Darcy2005} pode ser
+expressa da seguinte maneira, para um projeto $p$ e seu conjunto de módulos
+$M(p)$, a complexidade estrutural $SC(p)$ de $p$ é:
+
+\begin{equation}
+SC(p) = \frac
+{ \displaystyle \sum_{m \in M(p)} CBO(m) \times LCOM4(m) }
+{ |M(p)| }
+\end{equation}
+
+Esta medida de complexidade estrutural é portanto a complexidade
+estrutural média entre todos os módulos do sistema.
+
+\begin{itemize}
+
+  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
+    mede o acoplamento entre objetos do software \cite{Chidamber1994}
+    calculando em nível de classe o número total de acessos à outras classes do
+    mesmo sistema, é comum ser também chamada de Fan-out da classe. CBO é então
+    definida pela seguinte fórmula:
+
+\begin{equation}
+\label{formula-cbo}
+CBO(C) = \sum_{i=1}^{n} cliente(C, Ci)
+\end{equation}
+
+Onde:
+
+\begin{equation}
+cliente(Ci, Cj) =
+  \begin{cases}
+    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
+    0 \text{ caso contrario} \\
+  \end{cases}
+\end{equation}
+
+A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
+entre módulos ou classes.
+
+Apesar de ser possível formalizar a métrica CBO através da fórmula acima, sua descriçao original é
+bastante complexa, levando à implementações variadas do seu cálculo
+\cite{Lincke2008}. A definição original, por exemplo, inclui explicitamente
+acoplamento via herança \cite{Harrison1998}, no entando não deixa claro como
+deve ser tratado métodos herdados \cite{Briand1999}. A definição original
+afirma também que apenas chamadas explícitas (e não chamadas implicitas) de
+construtores são contabilizadas. Algumas definições de CBO incluem não apenas $
+cliente(Ci, Cj) $ mas também a recíproca $ cliente(Cj, Ci) $ de forma que o valor
+final inclui classes que ela acessa somado ao número de classes do sistema que
+a acessam \cite{Sant2008}.
+
+Quanto mais as classes forem independentes, mais fácil é reutilizá-las e menos
+arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
+testes, pois mais partes do sistema dependem delas.
+
+  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
+    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
+
+O cálculo de LCOM4 é dado através de grafo não-orientado em que os nós ou
+vértices são os métodos e atributos de uma classe e as arestas são acessos à
+métodos e atributos. O cálculo desta métrica pode ser formalizado como a
+seguir \cite{Silva2012}.
+
+Seja $ X $ uma classe qualquer e $ M_x $ o conjunto de métodos desta classe,
+considere um grafo simples não-orientado $ G_x(V, E) $, sendo:
+
+\begin{equation}
+V = M_x
+\text{ e }
+E = \{ \langle m, n \rangle \in V \times V \}
+\end{equation}
+
+Onde:
+\begin{equation}
+(\exists i \in Ix : (m \text{ accessos } i) \land (n \text{ accessos } i)) \lor (m \text{ chamadas } n) \lor (n \text{ chamadas } m)
+\end{equation}
+
+O valor da métrica LCOM4 para uma classe $ X $ é então definido como o número
+de componentes conectados do grafo $ G_x (1 \leq LCOM(x) \geq | M_x |)$.
+
+Coesão entre os métodos de uma classe é uma propriedade desejável, portanto o
+valor ideal para esta métrica é 1. Se uma classe tem diferentes conjuntos de
+métodos não relacionados entre si, é um indício de que a classe deveria ser
+refatorada em classes menores e mais coesas.
+
+\end{itemize}
+
 \subsection{Custo de mudança} \label{custo-mudanca}
 
 Muitos estudos tem abordado compreensão e visualização de softwares complexos,
@@ -699,6 +736,17 @@ do relacionamento entre as entidades que compõe o sistema, além de obter meios
 para cálculo de métricas como {\it Change Cost}, uma medida que representa o
 custo médio de uma mudança no design de um software em termos do potencial
 impacto desta mudança em outras partes do sistema.
+
+\begin{itemize}
+
+  \item {\bf CC} {\it Change Cost (Custo de mudança)}: mede a possibilidade de
+    impacto que uma certa mudança num projeto de software causa no restante do
+    sistema\cite{Maccormack2006}, indica o quão custoso é realizar mudanças.
+
+(pendente descrever melhor CC e mostrar uma formalizacao da métrica)
+
+\end{itemize}
+
 
 \subsection{Implementação e validação}
 
