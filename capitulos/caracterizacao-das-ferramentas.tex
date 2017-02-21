@@ -698,3 +698,24 @@ fica claro que comparacao entre linguagens diferentes mesmo com tamanhos iguais 
 
 findbugs[Java] ? wala[Java]             (findbugs tem CC maior mas SC menor)
 closure-compiler ? closure-compiler     (CC menor mas SC maior)
+
+\subsection{Analizo}
+
+Numa primeira análise dos valores coletados pelo Analizo notamos uma anomalia
+nos valores da métrica CBO, o que nos levou a investigar de perto os motivos,
+esta anomalia se apresentava como valores extremamente altos para esta métrica,
+bastante discrepante com as demais métricas calculadas.
+
+Para entender se estes valores estavam corretor ou não, utilizamos uma outra
+ferramenta para cálculo das métricas, em nossos estudos encontramos e
+utilizamos uma versão de avaliação da ferramenta {\it SciTools
+Understand}\footnote{http://scitools.com/trial-download-3} em sua versão
+``4.0.853'' em Linux 64 bits. Os dados extraídos por esta ferramenta podem ser
+encontrados em nosso
+repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/tree/master/dataset/Understand
+SciTools}. Eles demonstraram que os valores calculados pelo Analizo estavam
+bastante alto em comparação com as demais métricas.
+
+Assim, descobrimos que o Analizo tinha de fato um erro no cálculo da métrica
+CBO, erro que foi corrigido durante este estudo e disponibilizado na versão
+mais recente do Analizo, versão que está sendo utilizada aqui.
