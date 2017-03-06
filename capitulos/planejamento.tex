@@ -52,34 +52,31 @@ delas.
 
 A compreensão que se busca neste estudo será conduzida através de uma avaliação
 empírica das características das ferramentas de análise estática e de seu nível
-de manutenabilidade, este nível de manutenabilidade será dado pela
-interpretação das métricas de código-fonte calculadas para este estudo.
+de manutenabilidade. Tais características serão utilizadas para criar grupos
+distintos, estes grupos de ferramentas serão comparados entre sí com objetivo
+de identificar empiricamente quais características afetam na sua
+manutenabilidade.
 
-%tanto 
-%incluindo uma
-%dimensão sobre qualidade interna através de métricas de código-fonte.
-%iremos estudar algumas características externas destas
-%ferramentas bem como características internas obtidas a partir de métricas de
-%código-fonte, então todas as ferramentas incluídas neste estudo são ferramentas
-%com disponibilidade de código-fonte. 
+A manutenabilidade das ferramentas será dado pela interpretação das métricas de
+código-fonte de complexidade estrutural e custo de mudança, estudos mostram que
+existe relação entre atributos de qualidade interna e atributos de qualidade
+externa, Brooks, Yourdon e Constantine, e Larman assumem, por exemplo, o que grande parte dos
+engenheiros de software assumen \cite{Fenton2014}: uma boa estrutura interna
+resulta em boa qualidade externa. A métrica de complexidade estrutural, por
+exemplo, é considerado um indicativo de manutenabilidade, valores altos desta métrica
+implicam em projetos de software mais difíceis de entender, portanto, mais
+difíceis de manter e evoluir \cite{Darcy2005}.
 
-
-As características das ferramentas, descritas no Capítulo \ref{caracterizacao-ferramentas},
-serão utilizadas para criar grupos distintos de ferramentas, estes grupos de ferramentas
-serão comparados entre sí com objetivo de identificar empiricamente se as características
-afetam na manutenabilidade das ferramentas.
-
-O nível de manutenabilidade das ferramentas será dado pela interpretação das métricas de
-código-fonte de complexidade estrutural e custo de mudança, para evitar influência de fatores
-conhecidos nos valores destas métricas, iremos isolar estes fatores realizando comparações
-entre ferramentas com os mesmos fatores, por exemplo, comparação entre linguagens diferentes,
-domínio de aplicação diferentes, tamanho em número de classes.
-
-O estudo é um experimento com um fator e mais de dois tratamentos, o fator
-neste estudo é a manutenabilidade das ferramentas de análise estática e o
-tratamento será uma série de comparações entre grupos distintos de ferramentas
-com características comuns.
-
+%No entando é conhecido que alguns fatores inflenciam o valor de algumas métricas,
+%para evitar tais influências iremos isolar estes fatores realizando comparações
+%entre ferramentas com os mesmos fatores, por exemplo, comparação entre linguagens diferentes,
+%domínio de aplicação diferentes, tamanho em número de classes.
+%
+%O estudo é um experimento com um fator e mais de dois tratamentos, o fator
+%neste estudo é a manutenabilidade das ferramentas de análise estática e o
+%tratamento será uma série de comparações entre grupos distintos de ferramentas
+%com características comuns.
+%
 %Para garantir o princípio de ``randomization'' irei comparar com o maior número
 %de características das ferramentas possíveis.
 %Para garantir o princípio de ``balancing'' selecionei o mesmo número de
@@ -87,17 +84,15 @@ com características comuns.
 
 \section{Objects}
 
-Os objetos deste estudo são ferramentas de análise estática de código-fonte.
-Serão incluídas
-também ferramentas mais abrangentes, desde que contenham análise estática entre
-suas funcionalidades.
+Os objetos deste estudo serão ferramentas de análise estática de código-fonte,
+ferramentas mais abrangentes do que apenas análise estática também serão
+incluídas, desde que tenham esta funcionalidade entre seus recursos.
 
 \section{Instrumentation}
 
 As ferramentas selecionadas como objeto de estudo terão suas métricas de
 código-fonte calculadas pelo Analizo, um conjunto de ferramentas para análise
-de código-fonte e visualização. Para isso será necessário obter o código-fonte
-de cada ferramenta.
+de código-fonte e visualização.
 
 %A investigação será realizada a partir de uma busca e seleção de ferramentas de
 %análise estática, em seguida para cada ferramenta selecionada iremos obter
@@ -115,7 +110,7 @@ de cada ferramenta.
   \item Obtenção do código-fonte de cada ferramenta
   \item Cálculo e coleta de métricas de código-fonte
   \item Caracterização inicial das ferramentas, dimensões: Linguagem, Lançamentos, Tamanho, Experiência de usuário, Contexto
-  \item Obtenção de código-fonte de mais versões de algumas ferramentas com releases frequentes ou ocasionais
+  \item Obtenção de código-fonte de mais versões de ferramentas com {\it Lançamentos} frequentes ou ocasionais
   \item Cálculo e coleta de métricas de código-fonte das novas versões
   \item Caracterização final das ferramentas, dimensões: Entrada, Linguagens suportadas
 \end{itemize}
@@ -205,11 +200,13 @@ código-fonte da ferramenta. Neste momento, pode-se enfrentar algumas situaçõe
 
 \end{itemize}
 
-Uma vez que os autores contactados por email respondam com informações sobre
-local onde obter o software, a ferramenta é adicionada ao conjunto de
-ferramentas a serem analisadas. O código-fonte da versão mais recente de cada
-uma destas ferramentas será copiado localmente para caracterização e análise
-através da coleta de suas métricas de código-fonte.
+Uma vez que os autores sejam contactados por email e respondam com informações
+sobre onde obter o software, a ferramenta é adicionada ao conjunto de
+ferramentas a serem analisadas.
+
+%O código-fonte da versão mais recente de cada
+%uma destas ferramentas será copiado localmente para caracterização e análise
+%através da coleta de suas métricas de código-fonte.
 
 \subsection{Ferramentas da indústria}
 
@@ -221,31 +218,13 @@ nova dimensão na caracterzação das ferramentas e permitirá realizar compara�
 entre ferramentas de contextos distintos.
 
 \subsection{Caracterização das ferramentas de análise estática}
+\label{caracterizacao}
 
-As ferramentas de análise estática selecionadas serão caracterizadas
-a partir de algumas dimensões que se mostrem necessárias ao nosso estudo, todas
-as ferramentas foram obtidas em sua versão mais recente, apenas uma única versão
-de cada ferramenta foi selecionada e será caracterizada a partir de tal versão,
-esta cópia de cada ferramenta foi do seu código-fonte, algumas características
-são obtidas do código-fonte, outras da documentação da ferramenta.
-
-Esta caracterização será fundamental para compreender as métricas de código-fonte
-extraídas destas ferramentas,
-ferramentas que tenham interface gráfica de usuário por exemplo podem apresentar
-valores diferentes daquelas que tenham apenas interface modo texto, suporte
-a analisar múltiplas linguagens pode também trazer valores de métricas maiores ou
-piores. Iremos levar estas características em consideração durante a análise
-exploratória dos nosso dados.
-
-Para compor as características e também evitar re-criar dimensões para características
-de ferramentas deste domínio iremos nos basear no trabalho de
-\citeonline{Novak2010}, onde um estudo para construção de uma taxonomia para
-ferramentas de análise estática propuseram uma classificação a partir de uma
-série de categorias.
-
-Iremos utilizar algumas de suas características, apenas aquelas que nos forem necessárias
-para interpretar e caracterizar a complexidade estrutural de tais ferramentas, segue abaixo todas
-as características proposta no trabalho de \citeonline{Novak2010}.
+As ferramentas de análise estática selecionadas serão caracterizadas a partir
+do trabalho de \citeonline{Novak2010}, neste estudo o autor propôe um
+conjunto de dimensões para caracterização de ferramentas de análise estática.
+Iremos utilizar algumas destas dimensões na caracterização das ferramentas
+selecionadas neste estudo.
 
 \begin{description}
 
@@ -270,43 +249,6 @@ as características proposta no trabalho de \citeonline{Novak2010}.
       \item C\# - suporta C\#
       \item Java - suporta linguagem de programação Java
       \item C, C++ - suporta linguagem de programação C ou C++
-    \end{itemize}
-
-  \item {\it Tecnologia - quais tecnologias são usadas para procurar erros no código:}
-    \begin{itemize}
-      \item Dataflow - busca por erros com dataflow
-      \item Sintaxe - busca por errors de sintaxe e correctness
-      \item Prova de teoremas - procurar erros em provar diferentes teoremas
-      \item Verificação de modelos - procurar erros com verificação de modelo
-    \end{itemize}
-
-  \item {\it Regras - conjunto de regras, quais são suportadas por diferentes código estático:}
-    \begin{itemize}
-      \item Estilo - inspeciona a aparência do código-fonte
-      \item Naming - checa se as varáveis são nomeadas corretamente (ortografia, padroes de nomenclatura, ...)
-      \item Geral - regras gerais de analise estática de código
-      \item Concorrencia - erros com execução de código de concorrente
-      \item Exceções - erros lançando ou não exceções
-      \item Performance - erros de performance das aplicações
-      \item Interoperabilidade - erros de comportamento comum
-      \item Segurança - erros que podem impactar na segurança da aplicação
-      \item SQL - procurar por "SQL injections" e outros erros de SQL
-      \item Buffer overflow - erros de segurança, que explorar buffer overflow
-      \item Manutenabilidade - regras para melhor manutenabilidade da aplicação
-    \end{itemize}
-
-  \item {\it Configurabilidade - habilidade de configurar a ferramenta:}
-    \begin{itemize}
-      \item Documento texto - comfiguração é feita via documento texto
-      \item XML - configuração pe feita por documento XML
-      \item GUI - configuraçãi é feita via interface gráfica
-      \item Ruleset - ferramenta pode ligar/desligar conjunto de regras
-    \end{itemize}
-
-  \item {\it Extensibilidade - se a ferramenta pode ser extendida com regras próprias:}
-    \begin{itemize}
-      \item Possível - é possível extender
-      \item Não possível - não é possível extender
     \end{itemize}
 
   \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
@@ -336,10 +278,9 @@ as características proposta no trabalho de \citeonline{Novak2010}.
 
 \end{description}
 
-Iremos utilizar algumas destas categorias na caracterização das ferramentas
-selecionadas neste estudo, e vamos também caracterizar em relação à algumas dimensões que nos
-foram necessárias mas que não faziam parte das dimensões propostas por \citeonline{Novak2010},
-estas dimensões são as seguintes.
+As dimensões apresentada por \citeonline{Novak2010} não cobrem alguns aspectos
+importantes para este estudo, de forma que iremos adicionar as seguintes novas
+dimensões para caracterização das ferramentas.
 
 \begin{description}
 
@@ -352,48 +293,49 @@ estas dimensões são as seguintes.
       \item C, C++
     \end{itemize}
 
-  \item {\it Tamanho em número de classes - número de classes/módulos da ferramenta}
-
   \item {\it Contexto - onde a ferramenta surgiu:}
     \begin{itemize}
-      \item Academia
-      \item Indústria
+      \item Academia - foi desenvolvida inicialmente em contexto acadêmico
+      \item Indústria - foi desenvolvido fora da academia
+    \end{itemize}
+
+  \item {\it Tamanho em número de classes - número de classes/módulos da ferramenta}
+
+  \item {\it Nível de manutenabilidade - interpretação das seguintes métricas de código-fonte:}
+    \begin{itemize}
+      \item Complexidade Estrutural
+      \item Custo de Mudança
     \end{itemize}
 
 \end{description}
 
-Além das características citadas iremos também caracterizar cada ferramente quando ao
-seu nível de manutenabilidade através da interpretação das suas métricas de código-fonte.
-
-Para cada uma das ferramentas selecionadas, iremos coletar suas métricas de código-fonte de
-forma automatizada através da ferramenta Analizo, em seguida analisaremos seus valores em
-comparação com as demais características.
+A fonte de informação para essa caracterização serão os artigos relacionados às
+ferramentas, o código-fonte, documentos e site do projeto. Dimensões que
+envolvem coleta de métricas de código-fonte serão caracterizadas com o auxílio
+da ferramenta de análise de código-fonte Analizo, apresentada à seguir.
 
 \subsection{Analizo} \label{analizo}
 
 Analizo é um conjunto de ferramentas para análise de código-fonte e
-visualização, desenvolvido tendo como requisitos suportar múltiplas linguagens
-de programação, ser software livre, ser extensível e que seja capaz de lidar
-com código-fonte não mais compilável.
+visualização com suporte a múltiplas linguagens de programação, software livre,
+extensível e capaz de lidar com código-fonte não mais compilável. A capacidade
+de lidar com código-fonte não mais compilável permite analisar código-fonte
+com erros de sintaxe, com referências a bibliotecas não mais disponíveis, ou
+que usem bibliotecas com mudanças de API.
 
-Este último requisito permite analisar código-fonte com erros de sintaxe, com
-referências a bibliotecas não mais disponíveis, ou que usem bibliotecas com
-mudanças de API em versões mais recentes. Isto é importante especialmente ao
-analisar código-fonte legado em estudos sobre evolução de software.
+%Ela será a ferramenta utilizada por nós durante este estudo para análise do
+%código-fonte das ferramentas selecionadas, a decisão pela ferramenta Analizo
+%se deu por conta dela ser também a escolha utilizada nos trabalhos
+%relacionados (seção \ref{trabalhos-relacionados}) onde estamos nos apoiando,
+%além disso, Analizo também tem sido utilizada em diversos estudos
+%desenvolvidos em nosso grupo de pesquisa (seção \ref{trabalhos-analizo}).
 
-Ela será a ferramenta utilizada por nós durante este estudo para análise do
-código-fonte das ferramentas selecionadas, a decisão pela ferramenta Analizo
-se deu por conta dela ser também a escolha utilizada nos trabalhos
-relacionados (seção \ref{trabalhos-relacionados}) onde estamos nos apoiando,
-além disso, Analizo também tem sido utilizada em diversos estudos
-desenvolvidos em nosso grupo de pesquisa (seção \ref{trabalhos-analizo}).
-
-\subsubsection{Arquitetura}
+\subsubsection{Arquitetura do Analizo}
 
 A arquitetura do Analizo é apresentada na Figura \ref{arquitetura-analizo}
-através de uma representação do tipo {\it Layered Style} \cite{Clements2002},
-onde cada camada no diagrama usa apenas os serviços oferecidos pela camada
-diretamente abaixo dela.
+através de uma representação {\it Layered Style} \cite{Clements2002}, cada
+camada no diagrama usa apenas os serviços oferecidos pela camada diretamente
+abaixo dela.
 
 \begin{figure}[h]
 \center
@@ -403,17 +345,17 @@ diretamente abaixo dela.
 \end{figure}
 
 O {\it Core} contém as estruturas de dados usadas para armazenar informações a
-respeito do código-fonte sendo analisado, como a lista de módulos\footnote{o
+respeito do código-fonte sendo analisado, lista de módulos\footnote{o
 conceito ``módulo'' é usado como um termo abrangente para designar diferentes
 tipos de estruturas usados em desenvolvimento de software, como classes e
 arquivos fonte C}, elementos dentro de cada módulo (atributos, variáveis,
-métodos, funções), informações de dependência (chamada, herança, etc). Esta
+métodos, funções) e informações de dependência (chamada, herança, etc). Esta
 camada implementa a maior parte da lógica de negócio do Analizo, e não depende
 de nenhuma outra camada.
 
 A camada {\it Extractor} lida com as informaçoes de código-fonte obtidas pelas
 diferentes estratégias implementadas no Analizo. Os extratores obtém
-informações do código-fonte e armazenam em estruturas de dados da camada {\it
+informações do código-fonte e armazenam em estruturas de dados na camada {\it
 Core}. Adicionar um novo extrator requer apenas a criação de uma nova subclasse
 que faça interface com uma ferramenta externa ou que ela própria realize análise
 de código-fonte. Atualmente existem dois extratores, ambos fazem interface
@@ -432,50 +374,51 @@ com ferramentas externas de análise estática de código-fonte:
 
 \end{itemize}
 
-As outras camadas intermediárias são {\it Metrics} e {\it Output}. A camada
-{\it Metrics} processa as estruturas de dados do {\it Core} para calcular
-métricas, até o momento Analizo suporta um conjunto razoável de métricas
-(listadas na Seção \ref{metricas}), uma representação desta camada pode ser
-vista no diagrama da Figura \ref{arquitetura-metrics-analizo}. A camada {\it
-Output} é responsável por lidar com diferentes formatos de arquivos.
-Atualmente, apenas o formato DOT é implementado no Analizo para representar
-grafo de dependencia, adicionar novos formatos é simplesmente adicionar novas
-classes nesta camada.
+A camada {\it Metrics} processa as estruturas de dados do {\it Core} para
+calcular métricas, até o momento Analizo suporta um conjunto razoável de
+métricas (listadas na Seção \ref{metricas}), uma representação desta camada
+pode ser vista no diagrama da Figura \ref{arquitetura-metrics-analizo}.
+
+A camada {\it Output} é responsável por lidar com diferentes formatos de
+arquivos.  Atualmente, apenas o formato DOT é implementado no Analizo para
+representar grafo de dependencia, adicionar novos formatos é simplesmente
+adicionar novas classes nesta camada.
 
 \begin{figure}[H]
 \center
 \includegraphics[scale=0.4]{imagens/analizo-metrics-architecture.png}
-\caption{Arquitetura do módulo metrics em detalhe, usando Layered Style \cite{Clements2002}}
+\caption{Arquitetura do módulo metrics em detalhes, usando Layered Style \cite{Clements2002}}
 \label{arquitetura-metrics-analizo}
 \end{figure}
 
-A camada {\it Tools} fornece um conjunto de ferramentas de linha de comando que
+A última camada, {\it Tools}, fornece um conjunto de ferramentas de linha de comando que
 constituem a interface do analizo, tanto para usuários finais quanto para
 aplicações de mais alto nível. Estas ferramentas usam serviços providos pelas
 outras camadas: eles instanciam as estruturas de dados do {\it Core},
 inicializam um ou mais extratores, opcionalmente executam o processador de
 métricas, instanciam um módulo de formato de saída, e gerencia todos eles para
 prover o resultado desejado. A maioria das funcionalidades descritas na Seção
-\ref{funcionalidades} são implementadas na camada {\it Tools} do Analizo.
+\ref{funcionalidades} são implementadas nesta camada.
 
 Estas ferramentas são pensadas na filosofia UNIX: fazem uma tarefa
 especializada e geram uma saída que pode ser utilizada como entrada para outras
-ferramentas, seja para o próprio Analizo ou para ferramentas externas. Algumas das
-ferramentas implementadas no Analizo são feitas consumindo saída gerada por
-outra ferramenta ao invés de manipular explicitamente os internos do Analizo,
-algumas outras são desenhadas para prover saída em formato específico para
-aplicacoes externas, como por exemplo programas para desenho de grafos ou
+ferramentas, seja para o próprio Analizo ou para ferramentas externas. Algumas
+das ferramentas implementadas no Analizo são feitas consumindo saída gerada por
+outra ferramenta, outras são desenhadas para prover saída em formato específico
+para aplicações externas, por exemplo, programas para desenho de grafos ou
 visualização de dados.
 
 \subsubsection{Funcionalidades}\label{funcionalidades}
 
-{\bf Análise de código-fonte multi-linguagem}
+\begin{itemize}
+
+\item {\bf Análise de código-fonte multi-linguagem}
 
 Atualmente Analizo suporta análise de código-fonte escrito em C, C++ e Java.
 Entretanto, pode ser facilmente estendido para suportar outras linguagens pois
 pode potencialmente suportar as inúmeras outras linguagens suportadas pelo Doxygen.
 
-{\bf Métricas}\label{metricas}
+\item {\bf Métricas}\label{metricas}
 
 O Analizo suporta tanto métricas em nível de projeto, que é calculada para todo o projeto,
 quanto métricas em nível de módulos, que é calculado individualmente para cada módulo.
@@ -513,7 +456,7 @@ distribuição, valores mínimo e maximo. As seguintes métricas são suportadas
 analisados, de forma que o Analizo ignore tais arquivos durante a análise e o
 cálculo de métricas.
 
-{\bf Processamento em lote}\label{lote}
+\item {\bf Processamento em lote}\label{lote}
 
 A maioria dos estudos quantitativos em Engenharia de Software envolve aquisição
 de métricas de código-fonte de um grande número de projetos, processar cada
@@ -533,7 +476,7 @@ invés de gerar arquivos CSV. Outro recurso voltado à performance é um sistema
 de cache para as informações previamente calculadas, evitando repetição de
 processamento.
 
-{\bf Histórico de métricas}
+\item {\bf Histórico de métricas}
 
 Algumas vezes pesquisadores precisam processar o histórico de projetos de
 software de uma forma mais escalável. Analizo pode processar repositórios de
@@ -543,7 +486,7 @@ os valores diretamente num banco de dados ao invés de usar arquivos CSV. Reposi
 Subversion são suportados diretamente, repositórios CVS devem ser convertidos
 para Git de forma manual.
 
-{\bf Grafo de dependência}
+\item {\bf Grafo de dependência}
 
 Analizo pode gerar saída com informações sobre dependência entre as entidades
 do projeto em um formato adequado para processamento por ferramentas de
@@ -558,25 +501,25 @@ dot} do Graphviz a partir da saída gerada pelo Analizo {\it graph}.
 \label{sample-graph}
 \end{figure}
 
-{\bf Matriz de evolução}
+\item {\bf Matriz de evolução}
 
 Outra funcionalidade útil do Analizo é a visualização de matrizes de evolução
 \cite{Lanza2001}. Ao processar cada release de um projeto (ver Seção
-\ref{lote}), o usuário pode solicitar a criação de uma matrix de evolução a
+\ref{lote}), o usuário pode solicitar a criação de uma matriz de evolução a
 partir de arquivos de dados individuais. A Figura \ref{sample-evolution-matrix}
-apresenta um exemplo de uma matrix produzida pelo Analizo.
+apresenta um exemplo de uma matriz produzida pelo Analizo.
 
 \begin{figure}[h]
 \center
 \includegraphics[scale=0.2]{imagens/sample-evolution-matrix.png}
-\caption{Exemplo de matrix de evolução}
+\caption{Exemplo de matriz de evolução}
 \label{sample-evolution-matrix}
 \end{figure}
 
-{\bf Matriz de estrutura de projeto}
+\item {\bf Matriz de estrutura de projeto}
 
 Uma funcionalidade recente do Analizo é a representação visual do
-relacionamento entre os módulos do projeto em forma de uma Matriz de estrutura
+relacionamento entre os módulos do projeto em forma de uma matriz de estrutura
 de projeto ({\it Design Structure Matrix}) \cite{Maccormack2006}, uma DSM é a
 representação de um grafo de dependência em forma de uma matriz quadrada. Um
 exemplo gerado pelo Analizo pode ser visto na Figura \ref{sample-dsm}.
@@ -584,14 +527,16 @@ exemplo gerado pelo Analizo pode ser visto na Figura \ref{sample-dsm}.
 \begin{figure}[h]
 \center
 \includegraphics[scale=0.3]{imagens/sample-dsm.png}
-\caption{Exemplo de matrix de estrutura de projeto}
+\caption{Exemplo de matriz de estrutura de projeto}
 \label{sample-dsm}
 \end{figure}
+
+\end{itemize}
 
 \subsubsection{Uso em trabalhos de pesquisa}
 \label{trabalhos-analizo}
 
-Analizo tem sido extensivamente usada por nosso grupo de pesquisa em diversos
+Analizo tem sido extensivamente usado por nosso grupo de pesquisa em diversos
 estudos:
 
 \begin{itemize}
@@ -637,65 +582,63 @@ estudos:
 \end{itemize}
 
 A maioria destes trabalhos contribuíram com melhorias para o Analizo, fazendo
-dele ainda mais apropriado para pesquisas envolvendo análise de código-fonte.
-
-\subsubsection{Considerações finais}
-
-Analizo é útil tanto para pesquisadores trabalhando com análise de código-fonte
+dele uma ferramenta bastante apropriada para pesquisas envolvendo análise de código-fonte,
+sendo útil tanto para pesquisadores trabalhando com análise de código-fonte
 quanto para profissionais que precisam analisar seus projetos em busca de
-potenciais problemas ou melhorias. Neste trabalho de mestrado utilizamos o
-Analizo para coletar métricas de código-fonte das ferramentas de análise
-estática selecionadas.
+potenciais problemas ou melhorias.
 
-Analizo é software livre, licenciado sob a GNU General Public License versão 3.
-Seu código-fonte, bem como pacotes binários, manuais e tutoriais podem ser
-obtidos em http://analizo.org. Todas as ferramentas são auto-documentadas e
-podem ser consultadas como páginas de manual UNIX. Analizo é escrito em Perl.
-Sua última versão 1.19.1 foi lançada (no escopo deste trabalho) em 01 de
-Setembro de 2016 e será a versão utilizada neste estudo.
+Analizo é software livre, distribuído sob a licença GNU General Public License
+versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
+podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
+auto-documentadas e podem ser consultadas como páginas de manual UNIX. Analizo
+é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
+será a versão utilizada neste estudo.
 
-\subsection{Análise dos dados} \label{analise}
+\section{Análise dos dados} \label{analise}
 
-Os dados coletados pelo Analizo incluem métricas de código-fonte para cada módulo/classe de
-cada ferramenta selecionada, tanto da indústria quanto da academia. As
-métricas a serem analisadas e interpretadas são as métricas descritas na Seção
-\ref{metricas-de-codigo}.
+Os dados coletados incluem as dimensões das ferramentas de análise estática já
+caracterizadas, bem como valores de métricas de código-fonte para cada
+ferramenta, como: complexidade estrutural e custo de mudança.
 
-Todos os cálculos utilizados neste trabalho estão disponíveis em nosso
-repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016} no arquivo
-{\em
-dataset/analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}.
+A coleta das métricas de código-fonte será realizada de forma automatizada pelo
+Analizo com auxílio do script {\em
+analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}
+escrito durante o desenvolvimento deste estudo. As dimensões das ferramentas
+serão caracterizadas a partir dos artigos selecionados na revisão estruturada,
+documentação, site do projeto e repositórios da ferramenta.
+
+...
 
 Com isto podemos analisar os dados das métricas para cada uma das ferramentas analisadas.
 Estes valores serão compreendidos e validados através de uma interpretação manual.
 
-Os valores encontrados serão avaliados sempre tendo em vista os intervalos
-sugeridos na Tabela \ref{valores-frequentes}, esta tabela traz os valores encontrados
-no estudo que estamos replicando em parte\cite{Meirelles2013}.
-
-\begin{table}[H]
-  \caption{Valores frequentes\cite{Meirelles2013}}
-  \centering
-  \begin{tabular}{| c | l | l | l | l | l |}
-    \hline
-    Métrica           & Linguagem & Muito frequente & Frequente & Pouco frequente & Não frequente \\
-    \hline
-\multirow{3}{*}{CBO}   & C         & 0 -- 5,0   & 6,0 -- 9,0   & 9,0 -- 12,0  & $>$ 12,0  \\
-                       & C++       & 0 -- 3,0   & 4,0 -- 5,0   & 6,0 -- 7,0   & $>$ 7,0   \\
-                       & Java      & 0 -- 3,0   & 4,0 -- 6,0   & 7,0 -- 9,0   & $>$ 9,0   \\
-    \hline
-\multirow{3}{*}{LCOM4} & C         & 0 -- 5,0   & 6,0 -- 12,0  & 12,0 -- 20,0 & $>$ 20,0  \\
-                       & C++       & 0 -- 5,0   & 6,0 -- 10,0  & 10,0 -- 14,0 & $>$ 14,0  \\
-                       & Java      & 0 -- 3,0   & 4,0 -- 7,0   & 8,0 -- 12,0  & $>$ 12,0  \\
-    \hline
-\multirow{3}{*}{SC}    & C         & 0 -- 18,0  & 19,0 -- 77,0 & 78,0 -- 168,0 & $>$ 168,0 \\
-                       & C++       & 0 -- 12,0  & 13,0 -- 28,0 & 29,0 -- 51,0  & $>$ 51,0  \\
-                       & Java      & 0 -- 6,0   & 7,0 -- 21,0  & 22,0 -- 45,0  & $>$ 45,0  \\
-    \hline
-  \end{tabular}
-  \label{valores-frequentes}
-\end{table}
-
-\section{Analysis procedure}
-
-\section{Evaluation of validity}
+%Os valores encontrados serão avaliados sempre tendo em vista os intervalos
+%sugeridos na Tabela \ref{valores-frequentes}, esta tabela traz os valores encontrados
+%no estudo que estamos replicando em parte \cite{Meirelles2013}.
+%
+%\begin{table}[H]
+%  \caption{Valores frequentes\cite{Meirelles2013}}
+%  \centering
+%  \begin{tabular}{| c | l | l | l | l | l |}
+%    \hline
+%    Métrica           & Linguagem & Muito frequente & Frequente & Pouco frequente & Não frequente \\
+%    \hline
+%\multirow{3}{*}{CBO}   & C         & 0 -- 5,0   & 6,0 -- 9,0   & 9,0 -- 12,0  & $>$ 12,0  \\
+%                       & C++       & 0 -- 3,0   & 4,0 -- 5,0   & 6,0 -- 7,0   & $>$ 7,0   \\
+%                       & Java      & 0 -- 3,0   & 4,0 -- 6,0   & 7,0 -- 9,0   & $>$ 9,0   \\
+%    \hline
+%\multirow{3}{*}{LCOM4} & C         & 0 -- 5,0   & 6,0 -- 12,0  & 12,0 -- 20,0 & $>$ 20,0  \\
+%                       & C++       & 0 -- 5,0   & 6,0 -- 10,0  & 10,0 -- 14,0 & $>$ 14,0  \\
+%                       & Java      & 0 -- 3,0   & 4,0 -- 7,0   & 8,0 -- 12,0  & $>$ 12,0  \\
+%    \hline
+%\multirow{3}{*}{SC}    & C         & 0 -- 18,0  & 19,0 -- 77,0 & 78,0 -- 168,0 & $>$ 168,0 \\
+%                       & C++       & 0 -- 12,0  & 13,0 -- 28,0 & 29,0 -- 51,0  & $>$ 51,0  \\
+%                       & Java      & 0 -- 6,0   & 7,0 -- 21,0  & 22,0 -- 45,0  & $>$ 45,0  \\
+%    \hline
+%  \end{tabular}
+%  \label{valores-frequentes}
+%\end{table}
+%
+%\section{Analysis procedure}
+%
+%\section{Evaluation of validity}
