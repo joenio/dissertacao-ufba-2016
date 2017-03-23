@@ -11,8 +11,6 @@ VIEWPDF= evince
 
 include /usr/share/latex-mk/latex.gmk
 
-dissertacao.tex: analyze
-
 analyze:
 	cd dataset; ./analyze-all-projects; cd ..
 
