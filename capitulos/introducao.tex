@@ -1,48 +1,170 @@
 \xchapter{Introdução}{}
 
+%Modularity
+%Modularity describes the logical partitioning of software into several parts, components, and modules.
+%Software will be easy to understand and change when composed of independent modules.
+%Simplicity
+%Software simplicity to the extent that it lacks complexity in organization, language, and
+%implementation techniques and reflects the use of singularity concepts and basic structures.
+%sao dois faotes citados em TABLE-II: FACTORS REPORTED IN [21]
+%21 = David E. Peercy, “A Software Maintainability Evaluation
+%Methodology”, IEEE Transactions on Software Engineering,
+%Vol. SE-7, NO. 4, July 1981.
+%
+%Complexity
+%The complexity of a software affects its maintainability. It is supposed to reflect to a certain extent, the
+%difficulty in comprehending or maintaining codes. é um dos fatores que afetam a manutenabilidade
+%TABLE-III: FACTORS REPORTED IN [17]
+%17 = Khairuddin Hashim and Elizabeth Key,” A Software
+%Maintainability Attributes Model”, Malaysian Journal of
+%Computer Science, Vol. 9 No. 2, December 1996, pp. 92-97
+%
+%Average
+%Cyclomatic
+%Complexity
+%Average Cyclomatic Complexity can be expressed as the average of cyclomatic complexities of all
+%modules.
+%TABLE-IV: FACTORS REPORTED IN [18]
+%18 = K.K. Aggarwal, Yogesh Singh, Pravin Chandra and
+%Manimala Puri,” Measurement of Software Maintainability
+%Using a Fuzzy Model”, Journal of Computer Sciences 1 (4):
+%538-542, 2005 ISSN 1549-3636 © 2005 Science
+%Publications
+%
+%
+%Simplicity
+%Software size and its complexity is a very critical issue. The code smell “DuplicateCode” is, perhaps,
+%the worst [7]. It takes longer to identify a specific class when there are many classes. The presence of
+%several classes that are almost empty is a sign of code that may possess low maintainability.
+%TABLE-V: FACTORS REPORTED IN [12]
+%12 = B. Anda, “Assessing Software System Maintainability using
+%Structural Measures and Expert Assessments,” in IEEE
+%International Conference Software Maintenance, 2007, pp.
+%204–213.
+%
+%\cite{A Survey of Key Factors Affecting Software Maintainability}
+%
+%
+%We will also
+%investigate the maintainability measures taxonomy by
+%Oman et al where 92 measures are listed and classified [24].
+%[24] Oman, P., Hagemeister, J., and Ash, D., A Definition
+%and Taxonomy for Software Maintainability, report
+%SETL Report 91-08-TR, University of Idaho, 1991.
+%
+%\cite{Measurements of Software Maintainability}
+%
+%Taxonomia, metricas, etc ... sobre manutenabilidade de software.
+%
+%\cite{Metrics for Assessing a Software System’s Maintainability}
+%
+%Faz um experimento usando CBO LCOM e outras metricas como preditor de manutenabilidade...
+%
+%\cite{Predicting Maintainability with Object-Oriented Metrics - An Empirical Comparison}
+
+Em diversas linhas de pesquisa da Computação, em especial, em Engenharia de
+Software, é bastante comum que novos softwares sejam desenvolvidos durante
+trabalhos de pesquisa, tais softwares tem sido chamados na literatura de {\it research tool}
+\cite{Portillo12} ou {\it research-originated software} \cite{Kon2011}, e vêm
+ganhando atenção por serem considerados artefatos importantes produzidos em tais
+pesquisas \cite{Stodden2009}.
+
+Diante desta importância e considerando que o trabalho de pesquisa em Engenharia de Software
+é uma disciplina centrada em avaliar e validar métodos, técnicas, linguagens e
+ferramentas, podemos considerar que {\it research tool} ou {\it
+research-originated software}, chamados a partir daqui apenas de {\it software
+científico}, também devem ser avaliados e validados com métodos
+científicos adequados.
+
+Não pode-se deixar de citar, no entanto, que estudos avaliando produtos de
+software, seja ele {\it software científico} ou {\it software da indústria}, são bastante comuns, apenas
+no domínio de aplicação de análise estática, por exemplo, encontramos diversos estudos
+avaliando ferramentas de localização de bugs \cite{Rutar2004},
+detecção de buffer overflow \cite{Kratkiewicz2005},
+segurança \cite{Okun2007, Johns2011},
+detecção de falhas e refatorações \cite{Wedyan2009},
+detecção de vulnerabilidades \cite{Li2010, Ataide2014},
+cálculo de métricas \cite{Alemerien2013}, e ainda, estudos
+comparando ferramentas de análise estática com compiladores comuns \cite{Emanuelsson2008}
+e estudos comparando ferramentas comerciais com ferramentas {\it open source} \cite{Al2010}.
+
+Apesar dos inúmeros estudos avaliando softwares deste domínio,
+poucos levam em consideração aspectos relevantes à sua
+manutenabilidade, uma característica que indica o quão fácil é realizar
+modificações em um sistema ou componente de software, compreender e avaliar os
+fatores que influenciam esta característica é de fundamental importância já que
+atividades de manutenção consomem boa parte do ciclo de vida de um software,
+chegando a 75\% do tempo total de desenvolvimento \cite{aggarwal2002integrated, kumar2012survey}.
+
+Um dos fatores que possivelmente influenciam a manutenabilidade de um sistema
+ou componente de software é a sua complexidade, estudos mostram que quanto
+maior a complexidade, maior é o esforço de manutenção \cite{Darcy2005}, em
+especial, a complexidade estrutural, uma medida definida em termos de
+acoplamento e coesão. Ainda, grande parte dos engenheiros de software assumem que uma
+boa estrutura interna resulta em boa qualidade externa \cite{Fenton2014}.
+
+Partindo deste fato e sabendo que o domínio de análise estática de código-fonte
+tem carência de estudos sobre a compreensão e avaliação de sua manutenabilidade
+\cite{Li2010}, expecialmente os {\it softwares científicos}, vemos como uma um
+boa oportunidade de investigação compreender e explorar os aspectos que
+influenciam na manutenabilidade de tais softwares, a partir da observação de
+sua complexidade estrutural.
+
+Ferramentas de análise estática de código-fonte tem se tornado mais e mais
+comuns no ciclo de vida do desenvolvimento de software \cite{Novak2010}, a
+variedade de categorias destas ferramentas é hoje enorme, elas podem ser
+caracterizadas pelo tipo de tecnologia empregada, pela linguagem de programação
+suportada, pelo formato de saída, ou ainda, pelo modo como a ferramenta é
+integrada ao ambiente, entre outras.
+
+Estas categorias potencialmente influenciam na medição da complexidade
+estrutural dos softwares de análise estática de código-fonte, sabe-se que
+fatores como linguagem de programação, domínio de aplicação ou o tamanho do
+sistema influenciam nos valores das métricas de manutenabilidade
+\cite{Zhang2013}. \citeonline{Zhang2013} realizaram um estudo exploratório com
+mais de 300 softwares distintos, de 9 domínios de aplicação diferentes, e
+forneceram evidências empíricas do impacto destes e de outros fatores na
+distribuição dos valores das métricas de manutenabilidade, como acoplamento e
+coesão por exemplo. 
+
+% referencia sobre complexidade:
+% Livro: Software Metrics, A Rigorous and Practical Approach [3rd 2015]
+% 9.1.1 Structural Complexity Properties
+
+Assim, definimos como objetivo geral deste trabalho compreender os
+fatores, ou as características, que causam impacto na complexidade estrutural
+das ferramentas de software de análise estática de código-fonte, com especial
+atenção aos {\it softwares científicos} deste domínio.
+
+E, como objetivo específico o seguinte:
+
+\begin{enumerate}
+  \item Caracterizar as ferramentas de análise estática.
+  \item Medir a complexidade estrutural das ferramentas de análise estática.
+  \item Compreender a relação entre as características e a complexidade estrutural
+        das ferramentas de análise estática.
+\end{enumerate}
+
+\section{Metodologia de trabalho}
+
+Nesta dissertação, foi conduzida uma investigado empírica das características
+das ferramentas de análise estática e seu impacto na complexidade estrutural.
+Os objetos de estudo foram ferramentas de análise estática de código-fonte,
+ferramentas mais abrangentes do que apenas análise estática também foram
+incluídas.  Estas ferramentas tiveram sua medida de complexidade estrutural
+calculadas automaticamente pela ferramenta
+Analizo\footnote{\url{http://www.analizo.org}}, um conjunto de ferramentas para
+análise estática e cálculo de métricas de código-fonte.
+
+\section{Resultados}
+
 (pendente)
 
-%Observação de métricas de código fonte tem sido uma prática útil em diversos
-%estudos em engenharia de software, como por exemplo, predição de erros,
-%visualização de código-fonte, definição e avaliação de intervalos de referência
-%({\it thresholds}), estimativa de custos e prazos, entre outros.  Métricas tem
-%sido útil ainda como uma maneira efetiva de se observar a qualidade interna de
-%produtos de software \cite{Meirelles2013}, uma vez que são bons indicadores de
-%qualidade \cite{Basili1996}.
-%
-%Medir e compreender aspectos de qualidade interna de software é útil em
-%atividades de evolução e manutenção, uma vez que a qualidade interna produz
-%forte impacto nestas atividades, quanto menor a qualidade de código-fonte,
-%maior será o esforço de mantê-lo \cite{Terceiro2010}. Uma das formas de medir
-%qualidade interna é em função de métricas de código-fonte, dentre as quais
-%podemos citar a complexidade estrutural, uma medida que leva em conta a relação
-%entre acoplamento e coesão dos módulos de um programa \cite{Darcy2005}. Os
-%autores desta métrica demonstraram por meio de um experimento controlado que
-%uma alta complexidade estrutural faz projetos de software mais difíceis de
-%entender, e por isto mesmo, mais difíceis de manter e evoluir.
-%
-%A observação de métricas de código-fonte e as conclusões tomadas a partir
-%delas, no entando, não podem ser generalizadas uma vez que projetos diferentes
-%são influenciados por fatores diferentes, de forma que a observação dos
-%aspectos de qualidade interna devem ser observados e interpretados
-%separadamente por projeto \cite{Terceiro2012Understanding} ou ao menos por
-%domínio de aplicação \cite{Meirelles2013}. Dessa forma, pode-se afirmar que
-%realizar estudos em domínios específicos, especialmente em domínios ainda pouco
-%estudados são extremamente importantes.
-%
-%Diante disso e sabendo que o domínio de aplicação de análise estática carece de
-%observação detalhada sobre aspectos de qualidade interna de suas ferramentas
-%podemos concluir que estudos que joguem luz sobre tais aspectos neste domínio
-%são altamente desejáveis. A área de análise estática de código-fonte tem se
-%desenvolvido rapidamente com novos métodos, técnicas e ferramentas para os mais
-%diversos fins, no entanto a comparação e avaliação de técnicas e ferramentas
-%não tem acompanhado tal velocidade \cite{Li2010}, e, apesar de existirem
-%estudos avaliando ferramentas de análise estática de código-fonte
-%\cite{Rutar2004, Kratkiewicz2005, Okun2007, Emanuelsson2008, Wedyan2009,
-%Mantere2009, Al2010, Li2010, Johns2011, Alemerien2013, Ataide2014}, poucos
-%fazem isso do ponto de vista de sua qualidade interna, em sua maioria observam
-%apenas atributos de qualidade externa, como, desempenho, precisão, cobertura de
-%resultados, entre outros.
+\section{Organização do texto}
+
+(pendente)
+
+% aproveitar perte destas referencias ao justificar o uso de percentis ao inves de média
 %
 %Observar métricas de código-fonte em nível de projetos de software leva
 %ao seguinte desafio: como obter valores de métricas que representem todo o projeto sendo
@@ -73,91 +195,3 @@
 %seguem uma distribuição normal
 %\cite{Baxter2006,Lanza2007,Herraiz2011,Herraiz2012}, avaliam ainda se possuem
 %cauda longa, se são livre de escala, entre outros aspectos.
-%
-%Apesar dos inúmeros estudos sobre métricas e intervalos de referência, e as
-%várias abordagens utilizadas para validar os valores encontrados, nenhum trabalho
-%compara tais valores com características arquiteturais,
-%algo que pode vir a ser útil na compreensão de tais intervalos.
-%Estudos sobre arquitetura de software tem uma longa e respeitável tradição, a
-%área emergiu como uma importante disciplina da engenharia de software,
-%particularmento em atividades de desenvolvimento de grandes sistemas.
-%Arquitetura dá controle intelectual sobre a complexidade permitindo focar em
-%partes essenciais do sistema e suas interações, ajudando a compreender como as
-%diferentes partes de um sistema se relacionam entre sí \cite{Clements2002Book}.
-%
-%Traçar uma comparação entre intervalos de referência ({\it thresholds}) de
-%métricas como complexidade estrutural, por exemplo, com métricas que
-%representam visões arquiteturais de projetos de software pode ser útil como
-%forma de avaliar se tais medidas estão consistentes entre sí, por exemplo, se
-%numa dada medida de complexidade estrutural encontra-se valores considerados
-%ruins indicando problemas arquiteturais, então medidas e métricas relacionadas
-%arquitetura de software também deveriam confirmar tal indicação.
-%
-%Dentre os inúmeros estudos sobre arquitetura de software alguns tem feito uso
-%de uma técnica chamada DSM ({\it Design Structure Matrix}) para observar e
-%avaliar sistemas complexos, esta técnica foi concebida por
-%\citeonline{Steward1981} e extendido por \citeonline{Eppinger1991} em um estudo
-%sobre engenharia concorrente, ela é bastante útil em análises para mapear
-%sistemas complexos, DSM provê uma representação compacta de um sistema complexo
-%para visualização de interdependencia entre os seus vários elementos.
-%
-%DSM tem sido aplicada em diversas áreas do conhecimento, deste gestão de
-%projetos \cite{Browning2016}, análise de sistemas da engenharia de energia,
-%automotiva, construção civil, etc. Em engenharia de software alguns estudos
-%sobre arquitetura de software foram conduzidos para analisar e comparar
-%estruturas de produtos de software complexos, nestes estudos DSMs são
-%utilizados para destacar a estrutura do design examinando as dependencias
-%existentes entre os componentes através de uma matriz simétrica
-%\cite{Steward1981}. DSM tem sido utilizada também como meio para calcular a
-%métrica ``custo de mudança'' ({\it Change Cost}) \cite{Maccormack2006},
-%uma medida para caracterizar a estrutura do design de software a partir da
-%medida de acoplamento que ela exibe, capturando o nível com qual uma mudança em
-%um elemento causa de impacto em outras partes do mesmo sitema, seja diretamente
-%ou indiretamente através de chamadas aninhadas entre os elementos.
-%
-%A partir disso pode-se dizer que a métrica custo de mudança se mostra bastante
-%útil em estudos sobre qualidade interna de produtos de software, uma vez que
-%ela representa características arquiteturais importantes. Além disso, essa
-%métrica é calculada em nível de projeto e não passa pelos problemas enfrentados
-%por métricas tradicionais de código-fonte ao serem calculadas em nível de
-%projeto, como a complexidade estrutural.  Algo que se mostra como uma enorme
-%oportunidade de estudo sobre o cálculo de intervalos de referência, podendo
-%servir de base de comparação e apoio na interpretação dos valores encontrados.
-%
-%Assim, iremos neste trabalho, analisar ferramentas do domínio de análise
-%estática, extrair as métricas de complexidade estrutural e custo de mudança,
-%calcular intervalos de referência para a métrica de complexidade estrutural, em
-%seguida comparar tais intervalos com os valores da métrica custo de mudança a
-%fim de compreender como estas medidas se comportam neste domínio de aplicação.
-
-%% \section{Contribuições esperadas}
-%% 
-%% (pendente)
-%% 
-%Ao final deste trabalho, as seguintes contribuições científicas ({\bf CC}) e
-%tecnológicas ({\bf CT}) são esperadas:
-%
-%\begin{enumerate}
-%  \item [{\bf CC1:}] ...
-%  \item [{\bf CC2:}] ...
-%  \item [{\bf CT1:}] ...
-%\end{enumerate}
-
-%% \section{Estrutura do texto} 
-%% 
-%% (pendente)
-%% 
-%% O capítulo \ref{fundamentacao} apresenta conceitos sobre análise estática e
-%% métricas de código-fonte necessários para compreensão do trabalho. O capítulo
-%% \ref{metodologia} apresenta trabalhos relacionados, hipóteses do estudo,
-%% planejamento sobre a coleta e análise dos dados
-%% e o cronograma do estudo. O capítulo \ref{conclusoes} traz a
-%% discussão e interpretação dos dados e apresenta os próximos passos do estudo.
-%% 
-%% A seção \ref{trabalhos-relacionados} traz trabalhos relacionados à compreensão
-%% e observação de atributos de qualidade interna de programas. A seção
-%% \ref{hipoteses} detalha como as hipóteses serão testadas. A seção
-%% \ref{planejamento} descreve o planejamento de estudo e os passos iniciais de
-%% coleta de dados. A seção \ref{coleta} detalha a coleta de dados e a seção
-%% \ref{analise} traz informações de como estes dados serão analisados e
-%% interpretados.
