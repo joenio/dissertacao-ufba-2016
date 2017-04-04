@@ -2,58 +2,63 @@
 
 Em diversas linhas de pesquisa da Computação, em especial, em Engenharia de
 Software, é bastante comum que novos softwares sejam desenvolvidos durante
-trabalhos de pesquisa, tais softwares tem sido chamados na literatura de {\it research tool}
-\cite{Portillo12} ou {\it research-originated software} \cite{Kon2011}, e vêm
-ganhando atenção por serem considerados artefatos importantes produzidos em tais
-pesquisas \cite{Stodden2009}.
+trabalhos de pesquisa, tais softwares tem sido chamados na literatura de {\it
+research tool} \cite{Portillo12} ou {\it research-originated software}
+\cite{Kon2011}, e vêm ganhando atenção por ser artefatos importantes para a
+divulgação do conhecimento e para replicação dos resultados de pesquisas
+\cite{Stodden2009}.
 
-Diante desta importância e considerando que o trabalho de pesquisa em Engenharia de Software
-é uma disciplina centrada em avaliar e validar métodos, técnicas, linguagens e
-ferramentas, podemos considerar que {\it research tool} ou {\it
-research-originated software}, chamados a partir daqui apenas de {\it software
-científico}, também devem ser avaliados e validados com métodos
-científicos adequados.
+Avaliar estes softwares, chamados a partir daqui apenas de {\it software
+científico}, deve ser uma preocupação da Engenharia de Software, uma disciplina
+centrada em avaliar e validar métodos, técnicas, linguagens e ferramentas.
+Estudos avaliando produtos de software são bastante comuns, apenas no domínio
+de aplicação de análise estática, por exemplo, encontra-se estudos
+avaliando desde ferramentas de localização de bugs \cite{Rutar2004}, detecção
+de buffer overflow \cite{Kratkiewicz2005}, segurança \cite{Okun2007,
+Johns2011}, detecção de falhas e refatorações \cite{Wedyan2009}, detecção de
+vulnerabilidades \cite{Li2010, Ataide2014}, cálculo de métricas
+\cite{Alemerien2013}, até estudos comparando ferramentas de análise estática
+com compiladores comuns \cite{Emanuelsson2008} e estudos comparando ferramentas
+comerciais com ferramentas {\it open source} \cite{Al2010}.
 
-Não pode-se deixar de citar, no entanto, que estudos avaliando produtos de
-software, seja ele {\it software científico} ou {\it software da indústria}, são bastante comuns, apenas
-no domínio de aplicação de análise estática, por exemplo, encontramos diversos estudos
-avaliando ferramentas de localização de bugs \cite{Rutar2004},
-detecção de buffer overflow \cite{Kratkiewicz2005},
-segurança \cite{Okun2007, Johns2011},
-detecção de falhas e refatorações \cite{Wedyan2009},
-detecção de vulnerabilidades \cite{Li2010, Ataide2014},
-cálculo de métricas \cite{Alemerien2013}, e ainda, estudos
-comparando ferramentas de análise estática com compiladores comuns \cite{Emanuelsson2008}
-e estudos comparando ferramentas comerciais com ferramentas {\it open source} \cite{Al2010}.
+Apesar dos inúmeros trabalhos avaliando produtos de software, poucos realizam
+estudos avaliando {\it softwares científicos}, algo de extrema importância para
+compreender como tais artefatos estão contribuindo para a divulgação do
+conhecimento. A área de pesquisa em análise de código-fonte tem uma longa e
+respeitável tradição, ferramentas de análise estática de código-fonte tem sido
+continuamente desenvolvidas, e apesar da rápida e constante evolução, existe
+carência de estudos sobre a compreensão e avaliação das ferramentas
+desenvolvidas \cite{Li2010}.
 
-Apesar dos inúmeros estudos avaliando softwares deste domínio,
-poucos levam em consideração aspectos relevantes à sua
+Assim, vemos como boa oportunidade de investigação (a) explorar como estes
+softwares são publicados e (b) avaliar atributos da sua qualidade interna,
+como complexidade por exemplo.
+
+A complexidade do
+sistema é uma característica bastante referenciada na literatura como com
+importante indicador de qualidade, sendo uma característica que influencia diretamente na
 manutenabilidade, uma característica que indica o quão fácil é realizar
-modificações em um sistema ou componente de software, compreender e avaliar os
-fatores que influenciam esta característica é de fundamental importância já que
-atividades de manutenção consomem boa parte do ciclo de vida de um software,
-chegando a 75\% do tempo total de desenvolvimento \cite{aggarwal2002integrated, kumar2012survey}.
+modificações em um sistema ou componente de software. Estudos mostram que
+quanto maior a complexidade, maior é o esforço de manutenção
+\cite{hashim1996software, Darcy2005}. Em especial a complexidade estrutural,
+uma medida definida em termos de acoplamento e coesão. Além do mais, grande
+parte dos engenheiros de software assumem que uma boa estrutura interna resulta
+em boa qualidade externa \cite{Fenton2014}.
 
-Um dos fatores que possivelmente influenciam a manutenabilidade de um sistema
-ou componente de software é a sua complexidade, estudos mostram que quanto
-maior a complexidade, maior é o esforço de manutenção \cite{hashim1996software, Darcy2005}, em
-especial, a complexidade estrutural, uma medida definida em termos de
-acoplamento e coesão. Ainda, grande parte dos engenheiros de software assumem que uma
-boa estrutura interna resulta em boa qualidade externa \cite{Fenton2014}.
-
-Partindo deste fato e sabendo que o domínio de análise estática de código-fonte
-tem carência de estudos sobre a compreensão e avaliação de sua manutenabilidade
-\cite{Li2010}, expecialmente os {\it softwares científicos}, vemos como uma um
-boa oportunidade de investigação compreender e explorar os aspectos que
-influenciam na manutenabilidade de tais softwares, a partir da observação de
-sua complexidade estrutural.
+%manutenabilidade,  compreender e avaliar os fatores que influenciam esta característica
+%é de fundamental importância já que atividades de manutenção consomem boa parte
+%do ciclo de vida de um software, chegando a 75\% do tempo total de
+%desenvolvimento \cite{aggarwal2002integrated, kumar2012survey}.
+%Um dos fatores que possivelmente influenciam a manutenabilidade de um sistema
+%ou componente de software é a sua complexidade, 
 
 Ferramentas de análise estática de código-fonte tem se tornado mais e mais
 comuns no ciclo de vida do desenvolvimento de software \cite{Novak2010}, a
-variedade de categorias destas ferramentas é hoje enorme, elas podem ser
-caracterizadas pelo tipo de tecnologia empregada, pela linguagem de programação
-suportada, pelo formato de saída, ou ainda, pelo modo como a ferramenta é
-integrada ao ambiente, entre outras.
+importância destas ferramentas no ciclo de desenvolvimento de softwares tem
+crescido ao longo do tempo, a variedade de categorias destas ferramentas é hoje
+enorme, elas podem ser caracterizadas pelo tipo de tecnologia empregada, pela
+linguagem de programação suportada, pelo formato de saída, ou ainda, pelo modo
+como a ferramenta é integrada ao ambiente, entre outras.
 
 Estas categorias potencialmente influenciam na medição da complexidade
 estrutural dos softwares de análise estática de código-fonte, sabe-se que
