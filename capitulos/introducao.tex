@@ -4,16 +4,15 @@ Em diversas linhas de pesquisa da Computação, em especial, em Engenharia de
 Software, é bastante comum que novos softwares sejam desenvolvidos durante
 trabalhos de pesquisa, tais softwares tem sido chamados na literatura de {\it
 research tool} \cite{Portillo12} ou {\it research-originated software}
-\cite{Kon2011}, e vêm ganhando atenção por ser artefatos importantes para a
-divulgação do conhecimento e para replicação dos resultados de pesquisas
-\cite{Stodden2009}.
+\cite{Kon2011}, e vêm ganhando atenção por serem artefatos importantes para a
+divulgação do conhecimento e para replicação dos resultados \cite{Stodden2009}.
 
 Avaliar estes softwares, chamados a partir daqui apenas de {\it software
 científico}, deve ser uma preocupação da Engenharia de Software, uma disciplina
 centrada em avaliar e validar métodos, técnicas, linguagens e ferramentas.
-Estudos avaliando produtos de software são bastante comuns, apenas no domínio
-de aplicação de análise estática, por exemplo, encontra-se estudos
-avaliando desde ferramentas de localização de bugs \cite{Rutar2004}, detecção
+Estudos avaliando softwares são bastante comuns, apenas no domínio
+de aplicação de análise estática, por exemplo, é possível encontrar diversos estudos
+avaliando ferramentas, desde ferramentas de localização de bugs \cite{Rutar2004}, detecção
 de buffer overflow \cite{Kratkiewicz2005}, segurança \cite{Okun2007,
 Johns2011}, detecção de falhas e refatorações \cite{Wedyan2009}, detecção de
 vulnerabilidades \cite{Li2010, Ataide2014}, cálculo de métricas
@@ -21,79 +20,76 @@ vulnerabilidades \cite{Li2010, Ataide2014}, cálculo de métricas
 com compiladores comuns \cite{Emanuelsson2008} e estudos comparando ferramentas
 comerciais com ferramentas {\it open source} \cite{Al2010}.
 
-Apesar dos inúmeros trabalhos avaliando produtos de software, poucos realizam
-estudos avaliando {\it softwares científicos}, algo de extrema importância para
-compreender como tais artefatos estão contribuindo para a divulgação do
-conhecimento. A área de pesquisa em análise de código-fonte tem uma longa e
-respeitável tradição, ferramentas de análise estática de código-fonte tem sido
-continuamente desenvolvidas, e apesar da rápida e constante evolução, existe
-carência de estudos sobre a compreensão e avaliação das ferramentas
-desenvolvidas \cite{Li2010}.
+%Ferramentas de análise estática de código-fonte tem se tornado mais e mais
+%comum no ciclo de vida do desenvolvimento de software \cite{Novak2010}, a
+%importância destas ferramentas no ciclo de desenvolvimento de softwares tem
+%crescido ao longo do tempo enorme.
 
-Assim, vemos como boa oportunidade de investigação (a) explorar como estes
-softwares são publicados e (b) avaliar atributos da sua qualidade interna,
-como complexidade por exemplo.
+Apesar dos inúmeros estudos avaliando softwares, poucos fazem isso com {\it
+softwares científicos}, algo de extrema importância para compreender como estes
+artefatos estão contribuindo para a divulgação do conhecimento e para
+replicação dos resultados das pesquisas em engenharia de software. A área de
+análise de código-fonte tem uma longa e respeitável tradição, ferramentas de
+análise estática de código-fonte tem sido continuamente desenvolvidas, e apesar
+da rápida e constante evolução da área, ainda há carência de estudos avaliando
+estas ferramentas \cite{Li2010}, especialmente os {\it softwares científicos}.
 
-A complexidade do
-sistema é uma característica bastante referenciada na literatura como com
-importante indicador de qualidade, sendo uma característica que influencia diretamente na
-manutenabilidade, uma característica que indica o quão fácil é realizar
-modificações em um sistema ou componente de software. Estudos mostram que
-quanto maior a complexidade, maior é o esforço de manutenção
-\cite{hashim1996software, Darcy2005}. Em especial a complexidade estrutural,
-uma medida definida em termos de acoplamento e coesão. Além do mais, grande
-parte dos engenheiros de software assumem que uma boa estrutura interna resulta
-em boa qualidade externa \cite{Fenton2014}.
+Assim, avaliar estes softwares e explorar como são publicados pode jogar luz
+sobre o quanto eles estão contribuindo para a divulgação do conhecimento em
+pesquisas da engenharia de software e o quanto estão contribuindo para
+proporcionar reprodução dos seus resultados. Avaliar os {\it softwares
+científicos} do ponto de vista de sua qualidade pode também ajudar a
+compreender quanta atenção é dada ao seu desenvolvimento, uma vez que
+tradicionalmente os autores de {\it software científico} enfrentam problemas
+com manutenabilidade e disponibilidade de tais softwares \cite{Prlic2012}.
 
-%manutenabilidade,  compreender e avaliar os fatores que influenciam esta característica
-%é de fundamental importância já que atividades de manutenção consomem boa parte
-%do ciclo de vida de um software, chegando a 75\% do tempo total de
-%desenvolvimento \cite{aggarwal2002integrated, kumar2012survey}.
-%Um dos fatores que possivelmente influenciam a manutenabilidade de um sistema
-%ou componente de software é a sua complexidade, 
+Manutenabilidade é uma característica de qualidade externa que indica o quão
+fácil é realizar atividades de evolução e manutenção em componentes de
+software, ela pode ser medida através de características de qualidade interna,
+uma vez que grande parte dos engenheiros de software assumem que uma boa
+estrutura interna resulta em boa qualidade externa \cite{Fenton2014}. A
+estrutura interna de um software pode ser avaliada através da sua complexidade,
+uma característica bastante referenciada na literatura como um importante
+indicador de qualidade, estudos mostram que quanto maior a complexidade, maior
+é o esforço de manutenção \cite{hashim1996software, Darcy2005}, em especial a
+complexidade estrutural, uma medida definida em termos de acoplamento e coesão
+\cite{Terceiro2012}.
 
-Ferramentas de análise estática de código-fonte tem se tornado mais e mais
-comuns no ciclo de vida do desenvolvimento de software \cite{Novak2010}, a
-importância destas ferramentas no ciclo de desenvolvimento de softwares tem
-crescido ao longo do tempo, a variedade de categorias destas ferramentas é hoje
-enorme, elas podem ser caracterizadas pelo tipo de tecnologia empregada, pela
-linguagem de programação suportada, pelo formato de saída, ou ainda, pelo modo
-como a ferramenta é integrada ao ambiente, entre outras.
+%Estas categorias potencialmente influenciam na medição da complexidade
+%estrutural dos softwares de análise estática de código-fonte, sabe-se que
+%fatores como linguagem de programação, domínio de aplicação ou o tamanho do
+%sistema influenciam nos valores das métricas de manutenabilidade
+%\cite{Zhang2013}. \citeonline{Zhang2013} realizaram um estudo exploratório com
+%mais de 300 softwares distintos, de 9 domínios de aplicação diferentes, e
+%forneceram evidências empíricas do impacto destes e de outros fatores na
+%distribuição dos valores das métricas de manutenabilidade, como acoplamento e
+%coesão por exemplo. 
 
-Estas categorias potencialmente influenciam na medição da complexidade
-estrutural dos softwares de análise estática de código-fonte, sabe-se que
-fatores como linguagem de programação, domínio de aplicação ou o tamanho do
-sistema influenciam nos valores das métricas de manutenabilidade
-\cite{Zhang2013}. \citeonline{Zhang2013} realizaram um estudo exploratório com
-mais de 300 softwares distintos, de 9 domínios de aplicação diferentes, e
-forneceram evidências empíricas do impacto destes e de outros fatores na
-distribuição dos valores das métricas de manutenabilidade, como acoplamento e
-coesão por exemplo. 
+Assim, definimos como objetivo geral deste trabalho caracterizar e avaliar os
+{\it softwares científicos} para análise estática de código-fonte, a fim de
+compreender como eles contribuem para divulgação e reprodução dos resultados de
+pesquisas da área de engenharia de software.
 
-Assim, definimos como objetivo geral deste trabalho compreender os
-fatores, ou as características, que causam impacto na complexidade estrutural
-das ferramentas de software de análise estática de código-fonte, com especial
-atenção aos {\it softwares científicos} deste domínio.
-
-E, como objetivo específico o seguinte:
+São objetivos específicos deste trabalho:
 
 \begin{enumerate}
-  \item Caracterizar as ferramentas de análise estática.
-  \item Medir a complexidade estrutural das ferramentas de análise estática.
-  \item Compreender a relação entre as características e a complexidade estrutural
-        das ferramentas de análise estática.
+  \item Caracterizar os {\it softwares científicos} de análise estática de código-fonte.
+  \item Avaliar a qualidade dos {\it softwares científicos} a partir de sua complexidade estrutural.
+  \item Compreender como os {\it software científicos} estão contribuindo para divulgação e reprodução dos resultados de pesquisas em engenharia de software.
 \end{enumerate}
 
 \section{Metodologia de trabalho}
 
-Nesta dissertação, foi conduzida uma investigado empírica das características
-das ferramentas de análise estática e seu impacto na complexidade estrutural.
-Os objetos de estudo foram ferramentas de análise estática de código-fonte,
-ferramentas mais abrangentes do que apenas análise estática também foram
-incluídas.  Estas ferramentas tiveram sua medida de complexidade estrutural
-calculadas automaticamente pela ferramenta
-Analizo\footnote{\url{http://www.analizo.org}}, um conjunto de ferramentas para
-análise estática e cálculo de métricas de código-fonte.
+(pendente)
+
+%Nesta dissertação, foi conduzida uma investigado empírica das características
+%das ferramentas de análise estática e seu impacto na complexidade estrutural.
+%Os objetos de estudo foram ferramentas de análise estática de código-fonte,
+%ferramentas mais abrangentes do que apenas análise estática também foram
+%incluídas.  Estas ferramentas tiveram sua medida de complexidade estrutural
+%calculadas automaticamente pela ferramenta
+%Analizo\footnote{\url{http://www.analizo.org}}, um conjunto de ferramentas para
+%análise estática e cálculo de métricas de código-fonte.
 
 \section{Resultados}
 
