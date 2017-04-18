@@ -1,36 +1,240 @@
-\xchapter{Caracterização das ferramentas de análise estática}
-{Este capítulo apresenta a caracterização das ferramentas selecionadas a partir
-da revisão estruturada.}
+\xchapter{Caracterização dos softwares científicos}
+{Este capítulo apresenta a caracterização dos softwares científicos de análise
+estática de código-fonte a partir da revisão estruturada.}
 \label{caracterizacao-ferramentas}
 
-(pendente)
+Caracterizar os {\it softwares científicos} do domínio de aplicação de análise
+estática de código-fonte publicados em conferências de engenharia de software
+com objetivo de compreender como estão sendo publicados e mantidos, classificar
+e explorar estes softwares entre as distintas categorias deste domínio de
+aplicação.
 
-\section{Seleção das ferramentas}
+%\section{Fundamentação teórica}
+
+\section{Planejamento do experimento}
+
+% # Scope [why?]
+% ## Goal
+% # Planning [how?]
+% ## Context selection
+% ## Hypothesis Formulation
+% ## Variables selection
+% ## Selection of subjects
+% ## Experiment design
+% ### Choice of experiment design
+% ### General design principles
+% ### Standard design types
+% ## Instrumentation
+% ## Validity evaluation
+% # Operation
+% # Analysis and Interpretation
+% ## Teste de hipótese
+%
+%\section{Data collection procedure}
+%
+%\begin{itemize}
+%  \item Revisão estruturada para busca e seleção de ferramentas a partir de artigos acadêmicos
+%  \item Caracterização inicial das ferramentas, dimensões: Linguagem, Lançamentos, Tamanho, Experiência de usuário, Contexto
+%  \item Caracterização final das ferramentas, dimensões: Entrada, Linguagens suportadas
+%\end{itemize}
 
 \subsection{Revisão estruturada}
 
-Selecionamos a conferência SCAM - Source Code Analysis and Manipulation Working
-Conference\footnote{http://www.ieee-scam.org} e a conferência ASE - Automated
-Software Engineering\footnote{http://ase-conferences.org}, por serem ambas
+A revisão estruturada é um processo disciplinado para busca e seleção de {\it
+softwares científicos} de um domínio específico a partir de critérios bem
+definidos, de forma que seja possível a reprodução do estudo por parte de
+pesquisadores interessados.
+
+A revisão estruturada difere da revisão e do mapeamento sistemático por ser um
+processo mais simples e menos rígido, onde o resultado final é um conjunto de
+softwares, enquanto no mapeamento ou na revisão sistemática há um esforço em
+caracterizar os artigos analisados o mesmo não ocorre na revisão estruturada.
+
+A revisão estruturada é organizada em três atividades de (1) busca de artigos
+(definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
+de critérios de busca, definição de script de busca) e (3) seleção de artigos
+com publicação de ferramentas. Estas atividades estão representadas na Figura
+\ref{figura-revisao-estruturada}.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.33]{imagens/revisao-estruturada.png}
+  \caption{Atividades da revisão estruturada: (1) busca, (2) filtro e (3) seleção}
+  \label{figura-revisao-estruturada}
+\end{figure}
+
+Na primeira atividade da revisão estruturada são definidas as fontes de busca,
+estas fontes são conferências que abordam o tema de interesse do estudo, e que
+apresentam um grande potencial de encontrar ferramentas de software
+do domínio de aplicação desejado. Esta primeira atividade de busca deve
+incluir o maior número possível de ediçoes das conferências selecionadas, para
+cada edição são copiados localmente todos os artigos em PDF para posterior
+filtro nas atividades subsequentes.
+
+A segunda atividade da revisão estruturada realizada em cima de todo o conjunto
+de artigos é um filtro automática que busca em todo o conteúdo dos artigos os
+termos de interesse, estes termos devem ser pensados em relaçao ao domínio de aplicação
+desejado, devem ser abrangentes a fim de evitar falsos negativos.
+
+A terceira e última atividade da revisão estruturada é a seleção de artigos,
+nela é identificado se cada artigo resulta, de fato, em publicação de {\it software científico}
+do domínio de aplicação desejado. Esta seleção é feita a partir de uma
+leitura superficial do artigo em busca de indícios de que o artigo publica uma
+ferramenta do domínio em questão.
+
+%O código-fonte da versão mais recente de cada
+%uma destas ferramentas será copiado localmente para caracterização e análise
+%através da coleta de suas métricas de código-fonte.
+
+\subsection{Caracterização dos softwares científicos}
+\label{caracterizacao}
+
+Os {\it softwares científicos} de análise estática de código-fonte selecionados
+na revisão estruturada serão avaliados inicialmente em relação à sua
+disponibilidade visto a importância de tais artefatos para a divulgação do
+conhecimento e para replicação dos resultados das pesquisas em engenharia de
+software.
+
+%, o artigo será lido em busca de informações onde obter uma
+%cópia da ferramenta, o objetivo é avaliar a disponibilidade destas ferramentas.
+
+\begin{description}
+
+  \item {\it Disponibilidade - como a ferramenta foi publicada:}
+    \begin{itemize}
+      \item Artigo não indica onde obter a ferramenta
+      \item Link para download da ferramenta offline
+      \item Ferramenta disponivel para download (binários ou código-fonte)
+    \end{itemize}
+
+\end{description}
+
+Em seguida serão caracterizadas a partir do trabalho de \citeonline{Novak2010},
+neste estudo o autor propôe uma taxonomia e um conjunto de dimensões para
+caracterização de ferramentas de análise estática. Um subconjunto destas
+dimensões será utilizado na caracterização das ferramentas selecionadas
+na revisão estruturada.
+
+\begin{description}
+
+  \item {\it Entrada - quais tipos de arquivos podem ser carregados na ferramenta:}
+    \begin{itemize}
+      \item Código-fonte - arquivos de código texto podem ser carregados
+      \item Byte code - arquivos com Java Byte Code ou Microsoft
+      \item Linguagem intermediária (MSIL) pode ser carregada
+    \end{itemize}
+
+  \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
+    \begin{itemize}
+      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
+      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
+      \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
+    \end{itemize}
+
+  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta suporta:}
+    \begin{itemize}
+      \item .NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
+      \item VB .NET - suporta VB.NET
+      \item C\# - suporta C\#
+      \item Java - suporta linguagem de programação Java
+      \item C, C++ - suporta linguagem de programação C ou C++
+    \end{itemize}
+
+  \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
+    \begin{itemize}
+      \item Código Aberto ({\it Open Source}) - a ferrament é livre e o código-fonte está disponível
+      \item Grátis ({\it Free}) - a ferramenta é grátis mas o código-fonte não está disponível
+      \item Comercial - a ferramenta está disponível mediante pagamento
+    \end{itemize}
+
+  \item {\it Experiência do usuário - de que forma a ferramenta pode ser usada, como é oferecida:}
+    \begin{itemize}
+      \item Integração com ambiente - como a ferramenta é integrada ao ambiente de trabalho
+      \item Localização automática de erros no código - quando a ferramenta encontra um erro, ela leva ao local do erro
+      \item Ajuda abrangente sobre falhas - se a ferramenta oferece ajuda na resolução de erros
+      \item Interface de usuário - disponibilidade de uma interface de usuário
+      \item Linha de comando - ela pode ser executada via linha de comando
+      \item GUI - a ferramente pode ser executada em uma interface gráfica (GUI)
+    \end{itemize}
+
+  \item {\it Saída - representação dos resultados da ferramenta:}
+    \begin{itemize}
+      \item Arquivo texto - ferramenta pode apresentar resultados em arquivos texto
+      \item Lista - ferramenta pode apresentar resultados numa interface de usuário customizada controlada em GUI
+      \item Arquivo XML - ferramenta pode apresentar resultados em dados XML
+      \item Arquivo HTML - ferramenta pode apresentar resultados em dados HTML
+    \end{itemize}
+
+\end{description}
+
+As dimensões apresentada por \citeonline{Novak2010} não cobrem alguns aspectos
+importantes percebidos ao longo deste estudo, assim novas dimensões serão utilizadas
+em complemento às dimensões citadas acima.
+
+\begin{description}
+
+  \item {\it Linguagem de programação - em que linguagem de programação à ferramenta é escrita:}
+    \begin{itemize}
+      \item .NET
+      \item VB .NET
+      \item C\#
+      \item Java
+      \item C, C++
+    \end{itemize}
+
+%\end{description}
+%
+%Acrescentamos ainda novas opções que sentimos falta durante a caracterização das
+%ferramentas, algumas dimensões de \cite{Novak2010} não apresentou opção necessária
+%para caracterizar as ferramentas deste estudo, segue essas novas opções:
+%
+%\begin{description}
+
+  \item {\it Saída - representação dos resultados da ferramenta:}
+    \begin{itemize}
+      \item Banco de dados - ferramenta pode armazenar resultados em banco de dados (relacional ou não-relacional)
+    \end{itemize}
+
+\end{description}
+
+A fonte de informação para essa caracterização serão os artigos relacionados às
+ferramentas, o código-fonte, documentos e site do projeto.
+
+%Dimensões que
+%envolvem coleta de métricas de código-fonte serão caracterizadas com o auxílio
+%da ferramenta de análise de código-fonte Analizo, apresentada à seguir.
+
+%\section{Seleção das ferramentas}
+
+\section{Operação do experimento}
+
+\subsection{Revisão estruturada}
+
+Foi selecionada a conferência SCAM - {\it Source Code Analysis and Manipulation Working
+Conference}\footnote{http://www.ieee-scam.org} e a conferência ASE - {\it Automated
+Software Engineering}\footnote{http://ase-conferences.org}, por serem ambas
 conferências com largo histórico de publicação sobre análise de programas.
 
-Esta primeira atividade de busca passa então por todas as ediçoes destas duas
-conferências até o ano de 2015, uma lista
-completa e o endereço de cada edição onde os artigos foram obtidos está
-documentado no Apêndice \ref{edicoes-conferencias}, lá está indicado os
-endereços da conferência nos portais do IEEE Xplore ou do ACM Digital Library
-onde os artigos em PDF estão disponíveis para download.
+A primeira atividade da revisão estruturada, busca, passa por todas as ediçoes
+destas duas conferências até o ano de 2015, uma lista completa e o endereço de
+cada edição onde os artigos foram obtidos está documentado no Apêndice
+\ref{edicoes-conferencias}, lá é indicado o endereço da conferência nos
+respectivos portais onde os artigos em PDF foram obtidos.
 
-O resultado desta primeira atividade foi um total de 1879 artigos obtidos, 346
-artigos do SCAM e 1533 artigos do ASE, os artigos foram documentados e estão disponíveis num arquivo externo
-{\it artigos.ods}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/artigos.ods}.
+Esta atividade de busca resultou num total de 1879 artigos, 346 artigos do SCAM
+e 1533 artigos do ASE, a Figura \ref{grafico-total-artigos} (a) apresenta um
+gráfico com estes números.
 
-A segunda atividade da revisão estruturada realizada em cima deste conjunto inicial
-é um filtro realizado de forma automática com o auxílio do script
-{\it
-filter}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
-escrito especialmente para este estudo. Este script busca em todo o conteúdo
-dos artigos os seguintes termos:
+\begin{figure}[H]
+  \center
+  \includegraphics[scale=0.9]{imagens/total-artigos-e-ferramentas.png}
+  \caption{Total de artigos e ferramentas por conferência (até o ano de 2015)}
+  \label{grafico-total-artigos}
+\end{figure}
+
+A segunda atividade da revisão estruturada, filtro, realizada em cima deste conjunto
+inicial de 1879 artigos é um filtro automático de busca que pesquisa em todos
+os artigos os seguintes termos.
 
 \begin{verbatim}
   "tool" OU "framework"; E
@@ -39,57 +243,67 @@ dos artigos os seguintes termos:
   "static analysis" OU "parser".
 \end{verbatim}
 
+Estes termos devem encontrar artigos com publicação de {\it softwares
+científicos} do domínio de análise estática de código-fonte com disponibilidade
+para {\it download}, seja binários ou código-fonte, o filtro realizado nesta
+etapa no conjunto de 1879 artigos resultou em 436 artigos, deste total,
+155 artigos da conferência SCAM e 281 da conferência ASE.
 
-A segunda atividade da revisão estruturada realizada em cima deste conjunto de
-1879 artigos realizada automaticamente pelo script filter
-resultou num total de 436 contendo os termos acima, deste
-total 155 artigos do SCAM e 281 do ASE. Os artigos selecionados nesta atividade
-estão documentados no arquivo {\it artigos.ods} indicados na coluna ``Filtro(2)''
-quando for o caso.
+Estes 436 artigos com possível publicação de {\it software científico} de
+análise estática de código-fonte são submetidos à terceira e última atividade
+da revisão estruturada, seleção, nesta etapa cada artigo é lido, inicialmente
+apenas introdução, resultados e conclusão com o objetivo de identificar se o
+artigo publica {\it software científico} e indica onde obter uma cópia do
+software. {\it Softwares científicos} que sejam mais abrangentes do que apenas
+análise estática de código-fonte mas que contenham esta função em seu conjunto
+também são selecionadas.
 
-Estes 436 artigos foram submetidos à terceira e última atividade da revisão estruturada,
-seleção de artigos, nesta seleção, ...
+A atividade de seleção, última etapa da revisão estruturada, resultou em 103
+artigos com publicação de {\it software científico} do domínio de aplicação de
+análise estática de código-fonte, deste total 41 são da conferência
+SCAM e 62 da conferência ASE, a Figura \ref{grafico-total-artigos} (b) e as
+Figuras \ref{ferramentas-por-conferencia} (a) e (b) apresentam um resumo destes
+números, as Tabelas \ref{artigos-do-scam} e \ref{artigos-do-ase} detalham os
+resultados da revisão para cada edição das conferências analisadas.
 
-Ferramentas que sejam mais abrangentes do
-que apenas análise estática mas que contenham esta função em seu conjunto
-também serão selecionadas.
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=1]{imagens/ferramentas-por-conferencia.png}
+  \caption{Total de artigos com ferramentas (até o ano de 2015)}
+  \label{ferramentas-por-conferencia}
+\end{figure}
 
-Ao final de todas as atividades da revisão estruturada encontramos um total de
-21 ferramentas de análise estática, sendo 10 da conferência SCAM e 11 da
-conferência ASE. As Tabelas \ref{artigos-do-scam} e \ref{artigos-do-ase}
-apresentam um resumo desta revisão estruturada.
-
-\begin{table}[H]
-\caption{Total de artigos analisados em cada edição do SCAM}
+\begin{table}[h]
+\caption{Resultados da revisão estruturada para cada edição do SCAM}
 \centering
 \begin{tabular}{| l | c | c | c |}
 \hline
 Edição & (1) Busca & (2) Filtro & (3) Seleção \\
 \hline
-SCAM 2001 & 23    & 6         & -           \\
-SCAM 2002 & 18    & 6         & -           \\
-SCAM 2003 & 21    & 8         & -           \\
-SCAM 2004 & 17    & 3         & -           \\
-SCAM 2005 & 19    & 7         & -           \\
-SCAM 2006 & 22    & 10        & 2           \\
-SCAM 2007 & 23    & 7         & 1           \\
-SCAM 2008 & 29    & 14        & -           \\
+SCAM 2001 & 23    & 6         & 1           \\
+SCAM 2002 & 18    & 6         & 5           \\
+SCAM 2003 & 21    & 8         & 3           \\
+SCAM 2004 & 17    & 3         & 1           \\
+SCAM 2005 & 19    & 7         & 1           \\
+SCAM 2006 & 22    & 10        & 7           \\
+SCAM 2007 & 23    & 7         & 2           \\
+SCAM 2008 & 29    & 14        & 2           \\
 SCAM 2009 & 20    & 10        & -           \\
-SCAM 2010 & 21    & 15        & 1           \\
+SCAM 2010 & 21    & 15        & 5           \\
 SCAM 2011 & 21    & 10        & 2           \\
-SCAM 2012 & 22    & 12        & 3           \\
-SCAM 2013 & 24    & 13        & -           \\
-SCAM 2014 & 36    & 16        & 1           \\
-SCAM 2015 & 30    & 18        & -           \\
+SCAM 2012 & 22    & 12        & 4           \\
+SCAM 2013 & 24    & 13        & 2           \\
+SCAM 2014 & 36    & 16        & 4           \\
+SCAM 2015 & 30    & 18        & 2           \\
 \hline
-Total     & 346   & 155       & 10          \\
+Total     & 346   & 155       & 41          \\
 \hline
 \end{tabular}
 \label{artigos-do-scam}
 \end{table}
 
-\begin{table}[H]
-\caption{Total de artigos analisados em cada edição do ASE}
+\begin{table}[h]
+\caption{Resultados da revisão estruturada para cada edição do ASE}
 \centering
 \begin{tabular}{| l | c | c | c |}
 \hline
@@ -105,55 +319,39 @@ ASE 1997 & 47    & 1         & -           \\
 ASE 1998 & 44    & 4         & -           \\
 ASE 1999 & 50    & -         & -           \\
 ASE 2000 & 44    & 2         & -           \\
-ASE 2001 & 68    & 7         & 1           \\
+ASE 2001 & 68    & 7         & 2           \\
 ASE 2002 & 46    & 5         & -           \\
-ASE 2003 & 54    & 5         & -           \\
+ASE 2003 & 54    & 5         & 2           \\
 ASE 2004 & 68    & 7         & -           \\
-ASE 2005 & 79    & 9         & -           \\
-ASE 2006 & 61    & 12        & 1           \\
-ASE 2007 & 102   & 19        & -           \\
-ASE 2008 & 90    & 18        & 1           \\
-ASE 2009 & 89    & 19        & 1           \\
-ASE 2010 & 87    & 20        & 1           \\
-ASE 2011 & 112   & 28        & -           \\
-ASE 2012 & 68    & 16        & -           \\
-ASE 2013 & 90    & 28        & 2           \\
-ASE 2014 & 100   & 39        & 3           \\
-ASE 2015 & 99    & 42        & 1           \\
+ASE 2005 & 79    & 9         & 1           \\
+ASE 2006 & 61    & 12        & 2           \\
+ASE 2007 & 102   & 19        & 5           \\
+ASE 2008 & 90    & 18        & 5           \\
+ASE 2009 & 89    & 19        & 11          \\
+ASE 2010 & 87    & 20        & 3           \\
+ASE 2011 & 112   & 28        & 5           \\
+ASE 2012 & 68    & 16        & 5           \\
+ASE 2013 & 90    & 28        & 7           \\
+ASE 2014 & 100   & 39        & 7           \\
+ASE 2015 & 99    & 42        & 7           \\
 \hline
-Total    & 1533  & 281       & 11          \\
+Total    & 1533  & 281       & 62          \\
 \hline
 \end{tabular}
 \label{artigos-do-ase}
 \end{table}
 
-\subsection{Ferramentas da indústria}
-
-Em paralelo à revisão estruturada para seleção de ferramentas da academia
-foi realizada uma seleção manual no catálogo de ferramentas de análise estática do projeto
-SAMATE\footnote{https://samate.nist.gov/index.php/Source\_Code\_Security\_Analyzers.html}
-em busca de ferramentas da indústria.
-
-O projeto SAMATE\footnote{http://samate.nist.gov} - {\em Software Assurance
-Metrics and Tool Evaluation}, um projeto do NIST\footnote{http://nist.gov}
-dedicado ao desenvolvimento de métodos que permitam avaliar e medir a
-eficiência de ferramentas e técnicas sobre garantia de qualidade em software.
-O site do projeto, disponível em \citeonline{SamateAnalysers}, mantém uma lista
-de ferramentas de análise estática.
-
-Nesta busca por ferramentas da indústria encontramos um total de 54 ferramentas
-presentes no catálogo do projeto SAMATE, 19 tinham código-fonte disponível,
-destas apenas 14 eram suportadas pelo Analizo (escritas em C, C++ ou Java).
-
-Após download do código-fonte de cada ferramenta selecionada, em sua versão
-mais recente, a ferramenta Analizo será utilizada para a coleta das métricas. 
-A Tabela \ref{total-de-ferramentas} traz um resum com todas as ferramentas
-selecionadas, tando da indústria quanto da academia.
-
-\section{Caracterização das ferramentas de análise estática}
+\subsection{Caracterização dos softwares científicos}
 
 A seção à seguir traz uma caracterização inicial das ferramentas segundo às
 categorias citadas anteriormente.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.85]{imagens/ferramentas-disponiveis.png}
+  \caption{Ferramentas disponíveis para download (até o ano de 2015)}
+  \label{ferramentas-disponiveis}
+\end{figure}
 
 A ferramenta livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount}
 foi utilizada para identificar a linguagem de programação em que cada
@@ -164,273 +362,338 @@ lendo a documentação da ferramenta junto ao código-fonte ou no site da mesma.
 Ao final desde capítulo a tabela \ref{total-de-ferramentas} apresenta um resumo
 da caracterização feita.
 
-\subsection{AccessAnalysis}
-
-Plugin do Eclipse de análise estática de código-fonte Java
-para cálculo das métricas IGAT e IGAM
-disponível em \url{http://accessanalysis.sourceforge.net}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{AccessAnalysis-1.2-src.zip}.
-
-\subsection{Kiasan/Bogor}
-
-Ferramenta de verificação de modelo disponível em
-\url{http://bogor.projects.cs.ksu.edu/manual}. O código-fonte utilizado em
-nosso estudo obtido no site da ferramenta foi o
-\texttt{bogor-src-1.2.20061023.1.zip}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{composite}
-
-Ferramenta de verificação de modelo disponível em
-\url{http://www.cs.ucsb.edu/~bultan/composite/}. O código-fonte utilizado em
-nosso estudo obtido no site da ferramenta foi o \texttt{composite-0.4.tar.gz}.
-
-\subsection{CSeq}
-
-Ferramenta de transformação {\it source-to-source} para programas C
-concorrentes disponível em
-\url{http://users.ecs.soton.ac.uk/gp4/cseq/files/cseq-0.5.zip}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{cseq-0.5.zip}.
-
-\subsection{EJB}
-
-Ferramenta de análise estática para criação de diagramas de sequência
-disponível em
-\url{https://www.dropbox.com/s/glhg8any43lccgm/EJB.zip}.
-
-\subsection{error-prone}
-
-Ferramenta de localização de bugs em código Java construída em cima do
-compilador {\it javac} disponível em
-\url{http://code.google.com/p/error-prone}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{error-prone-2.0.9.tar.gz}.
-
-\subsection{GUIZMO}
-
-Ferramenta de inferência de layout disponível em
-\url{http://modelum.es/trac/guizmo/}, plugin Eclipse. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{guizmo-master.zip}. Aceita como entrada um formato baseado em
-XML\footnote{\url{http://wireframesketcher.com/help/xmlformat.html}} e gera
-código GUI em Java Swing / ZK.
-
-\subsection{GumTree}
-
-Ferramenta de análise de código-fonte e comparação de mudanças
-disponível em \url{https://github.com/jrfaller/gumtree}. O
-código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{gumtree-2.0.0.tar.gz}.
-
-\subsection{Indus}
-
-Biblioteca de {\it program
-slicing}\footnote{http://en.wikipedia.org/wiki/Program\_slicing} Java disponível em
-\url{http://indus.projects.cs.ksu.edu}. O projeto está organizado em três
-módulos, os seguintes arquivos, contendo o código-fonte dos três módulos,
-foram copiados localmente para análise:
-\texttt{indus.indus-src-20091220.zip},
-\texttt{indus.javaslicer-src-20091220.zip} e
-\texttt{indus.staticanalyses-src-20070305.zip}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{JastAdd}
-
-Sistema para análise de código-fonte através da descrição de
-atributos via gramática de atributos (AG) disponível em \url{http://jastadd.cs.lth.se/web}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{jastadd2-src.zip}.
-
-\subsection{JFlow}
-
-Ferramenta de transformação {\it source-to-source} disponível em
-\url{http://vazexqi.github.io/JFlow/}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{vazexqi-JFlow-7cd7eaf.tar.gz}.
-
-\subsection{Lotrack}
-
-Ferramenta de análise estática de configuração disponível em
-\url{https://github.com/MaxLillack/Lotrack}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{Lotrack-master.zip}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{MPAnalyzer}
-
-Ferramenta de análise de padrões disponível em
-\url{https://github.com/YoshikiHigo/MPAnalyzer}. O código-fonte utilizado em
-nosso estudo obtido no site da ferramenta foi o \texttt{MPAnalyzer-master.zip}.
-
-\subsection{PtYasm}
-
-Ferramenta de verificação de modelo disponível em
-\url{www.cs.toronto.edu/~tomhart/ptyasm}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{ptyasm.april2008.tgz}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{ReAssert}
-
-Ferramenta de localização de falhas em testes e refatoração
-desenvolvido como plugin Ecipse disponível em
-\url{http://mir.cs.illinois.edu/reassert}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{ReAssert\_0.4.1-src.zip}.
-
-\subsection{Sonar Qube Plug-in}
-
-Plugin para o SourceMeter que extende a análise de
-código Java com o uso do SonarQube disponível em:
-\url{http://github.com/FrontEndART/SonarQube-plug-in}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{SonarQube-plug-in-master.zip}.
-
-\subsection{SPARTA}
-
-Ferramenta de análise estática de segurança pra detecção de {\it
-malware} disponível em
-\url{http://types.cs.washington.edu/sparta/}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{sparta-sparta-1.0.2.tar.gz}.
-
-\subsection{srcML}
-
-Formato texto para representação de código-fonte e um conjunto de
-ferramentas de transformação {\it source-to-source} disponível em
-\url{http://www.sdml.info/projects/srcml/trunk}\footnote{este endereço
-retornou "not found" em contato com os autores por email indicaram que o
-projeto foi movido para http://www.srcML.org}. O código-fonte utilizado em
-nosso estudo obtido no site da ferramenta foi o \texttt{srcML-src.tar.gz}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{TACLE}
-
-Plugin do Eclipse para análise de tipo ({\it Type Analysis}) e
-construção de visualizaçao de grafos de chamada ({\it Call Graph}) disponível em
-\url{http://presto.cse.ohio-state.edu/tacle}\footnote{este link está
-indisponível, por email os autores indicaram o endereço
-http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
-O código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{tacle\_1\_2\_1\_src.zip}.
-
-\subsection{WALA}
-
-Ferramenta de análise estática para {\it bytecode} Java disponível em
-\url{http://wala.sourceforge.net/wiki/index.php/Main_Page}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{WALA-R\_1.3.8.tar.gz}.
-
-Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-em número de classes na média.
-
-\subsection{Closure Compiler}
-
-Compilador que traduz código JavaScript em outro
-JavaScript melhor e mais otimizado, está disponível em
-\url{https://developers.google.com/closure/compiler}\footnote{O código fonte do
-Closure Compiler pode ser obtido em:
-http://github.com/google/closure-compiler} e foi utilizado em nosso estudo o
-seguinte lançamento
-\texttt{closure-compiler-closure-compiler-parent-v20160619.tar.gz}.
-
-Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-em número de classes na média.
-
-\subsection{Cppcheck}
-
-Ferramenta de análise estática de código C/C++ para checagem de vazamento de
-memória, erros de alocação, entre outras falhas. Disponível em
-\url{http://sourceforge.net/projects/cppcheck}. Em nosso estudo utilizamos o
-código em \texttt{cppcheck-1.72.tar.bz2}.
-
-\subsection{CQual}
-
-Ferramenta de análise de typo ({\it type-based analysis}) que fornece um
-mecanismo leve e prático para especificação e verificação de propriedades de
-programas C. Disponível em \url{http://www.cs.umd.edu/~jfoster/cqual}. Em
-nosso estudo utilizamos o código em \texttt{cqual-0.981.tar.gz}.
-
-\subsection{FindBugs}
-
-Uma ferramenta para localização de bugs em código Java disponível em
-\url{http://findbugs.sourceforge.net}. Em nosso estudo utilizamos o código em
-\texttt{findbugs-3.0.1-source.zip}.
-
-Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-em número de classes na média.
-
-\subsection{FindSecurityBugs}
-
-Plugin do FindBugs para auditoria de segurança em aplicações web Java,
-disponível em \url{http://find-sec-bugs.github.io}. O código-fonte utilizado
-em nosso estudo obtido no site da ferramenta foi o
-\texttt{findsecbugs-plugin-1.4.5-sources.jar}.
-
-\subsection{Jlint}
-
-Uma ferramenta para verificaçao de código Java em busca de bugs,
-inconsistências e problemas de sincronização disponível em
-\url{http://sourceforge.net/projects/jlint}.  O código-fonte utilizado em
-nosso estudo obtido no site da ferramenta foi o \texttt{jlint-3.1.2.zip}.
-
-\subsection{Pixy}
-
-Ferramenta de análise estática de código PHP para verificação de
-vulnerabilidades de segurança. Disponível em
-\url{http://github.com/oliverklee/pixy}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{pixy-master.zip}.
-
-\subsection{PMD}
-
-Ferramenta de análise de código-fonte para localização falhas comuns de
-programação com suporte a várias linguagens, disponível em
-\url{http://pmd.github.io}. O código-fonte utilizado em nosso estudo obtido
-no site da ferramenta foi o \texttt{pmd-src-5.4.1.zip}.
-
-Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-em número de classes na média.
-
-\subsection{RATS}
-
-Ferramenta de análise estática para auditoria de segurança 
-de códigos C, C++, Perl, PHP e Python disponível em
-\url{http://code.google.com/archive/p/rough-auditing-tool-for-security}. O
-código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{rats-2.4.tgz}.
-
-\subsection{Smatch}
-
-Ferramenta de análise estática para detecção de erros no Kernel disponível em
-\url{http://smatch.sourceforge.net}. O código-fonte utilizado em nosso estudo
-obtido no site da ferramenta foi o \texttt{smatch.git}.
-
-\subsection{Splint}
-
-Ferramenta para verificação de programas em C por vulnerabilidades de segurança e
-erros de código. Disponível em \url{http://www.splint.org}. O código-fonte
-utilizado em nosso estudo obtido no site da ferramenta foi o
-\texttt{splint-3.1.2.src.tgz}.
-
-Não possui número suficiente de releases para ser usado na análise evolutiva.
-
-\subsection{UNO}
-
-Uma ferramenta de análise de código-fonte C para detecção de defeitos.
-Disponível em \url{http://spinroot.com/uno}. O código-fonte utilizado em nosso
-estudo obtido no site da ferramenta foi o \texttt{uno\_v213.tar.gz}.
-
-\subsection{WAP}
-
-Ferramenta para análise estática de código-fonte PHP e mineraçao de dados para
-detectar e corrigir vulnerabilidades em aplicações web. Disponível em
-\url{http://awap.sourceforge.net}. O código-fonte utilizado em nosso estudo
-obtido no site da ferramenta foi o \texttt{wap-2.1.tar.gz}.
-
-\section{Resumo}
+\begin{table}[H]
+{\scriptsize
+\caption{Resumo das ferramentas selecionadas}
+\centering
+\begin{tabular}{| l | l | l | l |}
+  \hline
+  Ferramenta          & Descrição                        & Ferramenta          & Descrição                            \\
+  \hline
+  2LS                 &                                  & JstereoCode         &                                      \\
+  AccessAnalysis      & cálculo de métricas IGAT e IGAM  & JSysDG              &                                      \\
+  ADiMat              &                                  & Jtop                &                                      \\
+  AGENDA              &                                  & Kiasan/Bogor        & verificação de modelos               \\
+  AMNESIA             &                                  & LIBCROOS            &                                      \\
+  AMOEBA              &                                  & Loopfrog            &                                      \\
+  APIExample          &                                  & Lotrack             & análise estática de configuração     \\
+  BEG                 &                                  & MAGIC               &                                      \\
+  BEST                &                                  & MemSafe             &                                      \\
+  CAWDOR              &                                  & MPAnalyzer          & análise de padrões                   \\
+  CBFA                &                                  & MSP                 &                                      \\
+  ccJava              &                                  & mygcc               &                                      \\
+  CIVL                &                                  & Parfait             &                                      \\
+  ClassSplitter       &                                  & PARSEWeb            &                                      \\
+  CodeBoost           &                                  & PAT                 &                                      \\
+  CodeHow             &                                  & ProgramCutter       &                                      \\
+  composite           & verificação de modelos           & protopurity         &                                      \\
+  CONBOL              &                                  & Pseudogen           &                                      \\
+  COPES               &                                  & PtrTracker          &                                      \\
+  CPA+                &                                  & PtYasm              & verificação de modelos               \\
+  CPPCHECKER          &                                  & PuMoC               &                                      \\
+  CSeq                & transformação source-to-source   & PYTHIA              &                                      \\
+  DDVerify            &                                  & ReAssert            & localização de falhas em testes e refatoração \\
+  Decor               &                                  & Relda               &                                      \\
+  Derailer            &                                  & Rêve                &                                      \\
+  Diagnosys           &                                  & ReWeb               &                                      \\
+  DMS                 &                                  & RRFinder            &                                      \\
+  Doc2Spec            &                                  & SAFEWApp            &                                      \\
+  DOMPLETION          &                                  & Sapid/XML           &                                      \\
+  Drails              &                                  & SCATR               &                                      \\
+  EJB                 & criação de diagramas de sequência& Scoria              &                                      \\
+  ELAN                &                                  & Smack               &                                      \\
+  EMBER               &                                  & Sonar Qube Plug-in  &                                      \\
+  e-munity            &                                  & SPARTA              & segurança para detecção de {\it malwares} \\
+  error-prone         & localização de bugs              & srcML               & transformação {\it source-to-source} \\
+  ESBMC               &                                  & SUDS                &                                      \\
+  ETXL                &                                  & SWAT                &                                      \\
+  FaultBuster         &                                  & SymCrash            &                                      \\
+  Flowgen             &                                  & TACLE               & {\it Type Analysis} e visualizaçao de {\it Call Graph} \\
+  GASR                &                                  & TEBA                &                                      \\
+  Goanna              &                                  & Templar             &                                      \\
+  GRT                 &                                  & TestEra             &                                      \\
+  GUIZMO              & inferência de layout             & Tikanga             &                                      \\
+  GumTree             & análise e comparação de mudanças & UMGAR               &                                      \\
+  HaRe                &                                  & VADA                &                                      \\
+  iMaus               &                                  & Vdiff               &                                      \\
+  Impendulo           &                                  & WAIVE+              &                                      \\
+  Indus               & biblioteca de program slicing    & WALA                & análise de {\it bytecode} Java       \\
+  ISIS4J              &                                  & Wrangler            &                                      \\
+  JastAdd             & descrição e gramática de atributos & X-DEVELOP           &                                      \\
+  JFlow               & transformação source-to-source   & XOgastan            &                                      \\
+  \hline
+\end{tabular}
+\label{resumo-de-ferramentas}
+}
+\end{table}
+
+% \subsection{AccessAnalysis}
+% 
+% disponível em \url{http://accessanalysis.sourceforge.net}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{AccessAnalysis-1.2-src.zip}.
+% 
+% \subsection{Kiasan/Bogor}
+% 
+% Ferramenta de verificação de modelo disponível em
+% \url{http://bogor.projects.cs.ksu.edu/manual}. O código-fonte utilizado em
+% nosso estudo obtido no site da ferramenta foi o
+% \texttt{bogor-src-1.2.20061023.1.zip}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{composite}
+% 
+% Ferramenta de verificação de modelo disponível em
+% \url{http://www.cs.ucsb.edu/~bultan/composite/}. O código-fonte utilizado em
+% nosso estudo obtido no site da ferramenta foi o \texttt{composite-0.4.tar.gz}.
+% 
+% \subsection{CSeq}
+% 
+% Ferramenta de transformação {\it source-to-source} para programas C
+% concorrentes disponível em
+% \url{http://users.ecs.soton.ac.uk/gp4/cseq/files/cseq-0.5.zip}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{cseq-0.5.zip}.
+% 
+% \subsection{EJB}
+% 
+% Ferramenta de análise estática para criação de diagramas de sequência
+% disponível em
+% \url{https://www.dropbox.com/s/glhg8any43lccgm/EJB.zip}.
+% 
+% \subsection{error-prone}
+% 
+% Ferramenta de localização de bugs em código Java construída em cima do
+% compilador {\it javac} disponível em
+% \url{http://code.google.com/p/error-prone}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{error-prone-2.0.9.tar.gz}.
+% 
+% \subsection{GUIZMO}
+% 
+% Ferramenta de inferência de layout disponível em
+% \url{http://modelum.es/trac/guizmo/}, plugin Eclipse. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{guizmo-master.zip}. Aceita como entrada um formato baseado em
+% XML\footnote{\url{http://wireframesketcher.com/help/xmlformat.html}} e gera
+% código GUI em Java Swing / ZK.
+% 
+% \subsection{GumTree}
+% 
+% Ferramenta de análise de código-fonte e comparação de mudanças
+% disponível em \url{https://github.com/jrfaller/gumtree}. O
+% código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{gumtree-2.0.0.tar.gz}.
+% 
+% \subsection{Indus}
+% 
+% Biblioteca de {\it program
+% slicing}\footnote{http://en.wikipedia.org/wiki/Program\_slicing} Java disponível em
+% \url{http://indus.projects.cs.ksu.edu}. O projeto está organizado em três
+% módulos, os seguintes arquivos, contendo o código-fonte dos três módulos,
+% foram copiados localmente para análise:
+% \texttt{indus.indus-src-20091220.zip},
+% \texttt{indus.javaslicer-src-20091220.zip} e
+% \texttt{indus.staticanalyses-src-20070305.zip}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{JastAdd}
+% 
+% Sistema para análise de código-fonte através da descrição de
+% atributos via gramática de atributos (AG) disponível em \url{http://jastadd.cs.lth.se/web}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{jastadd2-src.zip}.
+% 
+% \subsection{JFlow}
+% 
+% Ferramenta de transformação {\it source-to-source} disponível em
+% \url{http://vazexqi.github.io/JFlow/}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{vazexqi-JFlow-7cd7eaf.tar.gz}.
+% 
+% \subsection{Lotrack}
+% 
+% Ferramenta de análise estática de configuração disponível em
+% \url{https://github.com/MaxLillack/Lotrack}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{Lotrack-master.zip}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{MPAnalyzer}
+% 
+% Ferramenta de análise de padrões disponível em
+% \url{https://github.com/YoshikiHigo/MPAnalyzer}. O código-fonte utilizado em
+% nosso estudo obtido no site da ferramenta foi o \texttt{MPAnalyzer-master.zip}.
+% 
+% \subsection{PtYasm}
+% 
+% Ferramenta de verificação de modelo disponível em
+% \url{www.cs.toronto.edu/~tomhart/ptyasm}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{ptyasm.april2008.tgz}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{ReAssert}
+% 
+% Ferramenta de localização de falhas em testes e refatoração
+% desenvolvido como plugin Ecipse disponível em
+% \url{http://mir.cs.illinois.edu/reassert}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{ReAssert\_0.4.1-src.zip}.
+% 
+% \subsection{Sonar Qube Plug-in}
+% 
+% Plugin para o SourceMeter que extende a análise de
+% código Java com o uso do SonarQube disponível em:
+% \url{http://github.com/FrontEndART/SonarQube-plug-in}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{SonarQube-plug-in-master.zip}.
+% 
+% \subsection{SPARTA}
+% 
+% Ferramenta de análise estática de segurança pra detecção de {\it
+% malware} disponível em
+% \url{http://types.cs.washington.edu/sparta/}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{sparta-sparta-1.0.2.tar.gz}.
+% 
+% \subsection{srcML}
+% 
+% Formato texto para representação de código-fonte e um conjunto de
+% ferramentas de transformação {\it source-to-source} disponível em
+% \url{http://www.sdml.info/projects/srcml/trunk}\footnote{este endereço
+% retornou "not found" em contato com os autores por email indicaram que o
+% projeto foi movido para http://www.srcML.org}. O código-fonte utilizado em
+% nosso estudo obtido no site da ferramenta foi o \texttt{srcML-src.tar.gz}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{TACLE}
+% 
+% Plugin do Eclipse para análise de tipo ({\it Type Analysis}) e
+% construção de visualizaçao de grafos de chamada ({\it Call Graph}) disponível em
+% \url{http://presto.cse.ohio-state.edu/tacle}\footnote{este link está
+% indisponível, por email os autores indicaram o endereço
+% http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
+% O código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{tacle\_1\_2\_1\_src.zip}.
+% 
+% \subsection{WALA}
+% 
+% Ferramenta de análise estática para {\it bytecode} Java disponível em
+% \url{http://wala.sourceforge.net/wiki/index.php/Main_Page}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{WALA-R\_1.3.8.tar.gz}.
+% 
+% Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
+% em número de classes na média.
+% 
+% \subsection{Closure Compiler}
+% 
+% Compilador que traduz código JavaScript em outro
+% JavaScript melhor e mais otimizado, está disponível em
+% \url{https://developers.google.com/closure/compiler}\footnote{O código fonte do
+% Closure Compiler pode ser obtido em:
+% http://github.com/google/closure-compiler} e foi utilizado em nosso estudo o
+% seguinte lançamento
+% \texttt{closure-compiler-closure-compiler-parent-v20160619.tar.gz}.
+% 
+% Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
+% em número de classes na média.
+% 
+% \subsection{Cppcheck}
+% 
+% Ferramenta de análise estática de código C/C++ para checagem de vazamento de
+% memória, erros de alocação, entre outras falhas. Disponível em
+% \url{http://sourceforge.net/projects/cppcheck}. Em nosso estudo utilizamos o
+% código em \texttt{cppcheck-1.72.tar.bz2}.
+% 
+% \subsection{CQual}
+% 
+% Ferramenta de análise de typo ({\it type-based analysis}) que fornece um
+% mecanismo leve e prático para especificação e verificação de propriedades de
+% programas C. Disponível em \url{http://www.cs.umd.edu/~jfoster/cqual}. Em
+% nosso estudo utilizamos o código em \texttt{cqual-0.981.tar.gz}.
+% 
+% \subsection{FindBugs}
+% 
+% Uma ferramenta para localização de bugs em código Java disponível em
+% \url{http://findbugs.sourceforge.net}. Em nosso estudo utilizamos o código em
+% \texttt{findbugs-3.0.1-source.zip}.
+% 
+% Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
+% em número de classes na média.
+% 
+% \subsection{FindSecurityBugs}
+% 
+% Plugin do FindBugs para auditoria de segurança em aplicações web Java,
+% disponível em \url{http://find-sec-bugs.github.io}. O código-fonte utilizado
+% em nosso estudo obtido no site da ferramenta foi o
+% \texttt{findsecbugs-plugin-1.4.5-sources.jar}.
+% 
+% \subsection{Jlint}
+% 
+% Uma ferramenta para verificaçao de código Java em busca de bugs,
+% inconsistências e problemas de sincronização disponível em
+% \url{http://sourceforge.net/projects/jlint}.  O código-fonte utilizado em
+% nosso estudo obtido no site da ferramenta foi o \texttt{jlint-3.1.2.zip}.
+% 
+% \subsection{Pixy}
+% 
+% Ferramenta de análise estática de código PHP para verificação de
+% vulnerabilidades de segurança. Disponível em
+% \url{http://github.com/oliverklee/pixy}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{pixy-master.zip}.
+% 
+% \subsection{PMD}
+% 
+% Ferramenta de análise de código-fonte para localização falhas comuns de
+% programação com suporte a várias linguagens, disponível em
+% \url{http://pmd.github.io}. O código-fonte utilizado em nosso estudo obtido
+% no site da ferramenta foi o \texttt{pmd-src-5.4.1.zip}.
+% 
+% Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
+% em número de classes na média.
+% 
+% \subsection{RATS}
+% 
+% Ferramenta de análise estática para auditoria de segurança 
+% de códigos C, C++, Perl, PHP e Python disponível em
+% \url{http://code.google.com/archive/p/rough-auditing-tool-for-security}. O
+% código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{rats-2.4.tgz}.
+% 
+% \subsection{Smatch}
+% 
+% Ferramenta de análise estática para detecção de erros no Kernel disponível em
+% \url{http://smatch.sourceforge.net}. O código-fonte utilizado em nosso estudo
+% obtido no site da ferramenta foi o \texttt{smatch.git}.
+% 
+% \subsection{Splint}
+% 
+% Ferramenta para verificação de programas em C por vulnerabilidades de segurança e
+% erros de código. Disponível em \url{http://www.splint.org}. O código-fonte
+% utilizado em nosso estudo obtido no site da ferramenta foi o
+% \texttt{splint-3.1.2.src.tgz}.
+% 
+% Não possui número suficiente de releases para ser usado na análise evolutiva.
+% 
+% \subsection{UNO}
+% 
+% Uma ferramenta de análise de código-fonte C para detecção de defeitos.
+% Disponível em \url{http://spinroot.com/uno}. O código-fonte utilizado em nosso
+% estudo obtido no site da ferramenta foi o \texttt{uno\_v213.tar.gz}.
+% 
+% \subsection{WAP}
+% 
+% Ferramenta para análise estática de código-fonte PHP e mineraçao de dados para
+% detectar e corrigir vulnerabilidades em aplicações web. Disponível em
+% \url{http://awap.sourceforge.net}. O código-fonte utilizado em nosso estudo
+% obtido no site da ferramenta foi o \texttt{wap-2.1.tar.gz}.
+
+\section{Conclusões}
+
+% analise e interpretação
 
 De forma que somando as ferramentas selecionadas na academia e na indústria
 temos um total de 34 ferramentas, 14 da indústria e 20 da academia.  A Tabela
@@ -444,29 +707,6 @@ disponível no repositório desta dissertação.
   \caption{Resumo da caracterização das ferramentas}
   \centering
   \begin{tabular}{| c | l | l | c | l | l |}
-    \hline
-    \#  & Ferramentas da academia & Linguagem & Classes & Lançamentos \\
-    \hline
-    1  & AccessAnalysis          & Java   & 91    & Obsoleta       \\
-    2  & Kiasan/Bogor            & Java   & 545   & Obsoleta       \\
-    3  & composite               & C      & 17    & -              \\
-    4  & CSeq                    & C      & 106   & -              \\
-    5  & EJB                     & Java   & 244   & Obsoleta       \\
-    6  & error-prone             & Java   & 1703  & Frequentemente \\
-    7  & GUIZMO                  & Java   & 306   & -              \\
-    8  & GumTree                 & Java   & 306   & Ocasionalmente \\
-    9  & Indus                   & Java   & 524   & Obsoleta       \\
-    10 & JastAdd                 & Java   & 59    & Frequentemente \\
-    11 & JFlow                   & Java   & 177   & Obsoleta       \\
-    12 & Lotrack                 & Java   & 4059  & -              \\
-    13 & MPAnalyzer              & Java   & 240   & -              \\
-    14 & PtYasm                  & Java   & 883   & -              \\
-    15 & ReAssert                & Java   & 169   & Obsoleta       \\
-    16 & Sonar Qube Plug-in      & Java   & 143   & Frequentemente \\
-    17 & SPARTA                  & Java   & 268   & Ocasionalmente \\
-    18 & srcML                   & C++    & 871   & Ocasionalmente \\
-    19 & TACLE                   & Java   & 34    & Obsoleta       \\
-    20 & WALA                    & Java   & 2626  & Ocasionalmente \\
     \hline
     \# & Ferramentas da indústria & Linguagem & Classes & Lançamentos \\
     \hline
@@ -489,387 +729,17 @@ disponível no repositório desta dissertação.
   \label{total-de-ferramentas}
 \end{table}
 
-Dentre estas ferramentas as seguintes foram selecionadas para análise evolutiva:
+% documentar onde os dados, fontes, etc podem ser encontrados:
 
-\begin{itemize}
-  \item Closure Compiler         
-  \item FindBugs                 
-  \item PMD                      
-  \item WALA                    
-  \item error-prone
-  \item JastAdd
-  \item SPARTA
-  \item Cppcheck
-  \item FindSecurityBugs
-  \item Smatch
-\end{itemize}
-
-
-o clang foi removido pois a analise dele demorou muito, ficou rodando 1 semana q não
-terminou, o analizo metrics que demorou tanto assim.
-
-\begin{table}[H]
-\caption{Métricas da ferramenta PMD}
-  \centering
-\begin{tabular}{|l|r|r|r|r|r|}
-\hline
-\multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-4.2.5 & 844 & 0,06 & 6 & 15 & 28 \\ \hline
-4.3 & 852 & 0,06 & 6 & 15 & 28 \\ \hline
-5.0.0 & 1043 & 0,03 & 6 & 14 & 25 \\ \hline
-5.0.4 & 1052 & 0,02 & 6 & 12 & 24 \\ \hline
-5.1.0 & 1238 & 0,02 & 6 & 12 & 24 \\ \hline
-5.1.3 & 1254 & 0,02 & 6 & 12 & 25 \\ \hline
-5.2.0 & 1295 & 0,02 & 6 & 12 & 25 \\ \hline
-5.3.0 & 1341 & 0,01 & 6 & 12 & 25 \\ \hline
-5.3.3 & 1342 & 0,02 & 6 & 12 & 25 \\ \hline
-5.3.7 & 1374 & 0,01 & 6 & 12 & 25 \\ \hline
-5.4.0 & 1332 & 0,02 & 6 & 12 & 26 \\ \hline
-5.4.2 & 1366 & 0,02 & 6 & 12 & 26 \\ \hline
-5.5.2 & 1530 & 0,01 & 6 & 12 & 25 \\ \hline
-\multicolumn{6}{l}{\texttt{Notas:}} \\
-\multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-\multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-\end{tabular}
-\label{metricas-pmd}
-\end{table}
-
-\begin{table}[H]
-\caption{Métricas da ferramenta WALA}
-  \centering
-\begin{tabular}{|l|r|r|r|r|r|}
-\hline
-\multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-1.0 & 1223 & 0,02 & 8 & 27 & 45 \\ \hline
-1.0.02 & 1685 & 0,02 & 8 & 25 & 48 \\ \hline
-1.1 & 1872 & 0,02 & 7 & 24 & 48 \\ \hline
-1.1.2 & 1720 & 0,02 & 8 & 24 & 50 \\ \hline
-1.2 & 1734 & 0,02 & 7 & 25 & 49 \\ \hline
-1.2.1.1 & 1901 & 0,02 & 6 & 24 & 48 \\ \hline
-1.2.2 & 1903 & 0,02 & 6 & 24 & 48 \\ \hline
-1.3 & 1945 & 0,02 & 6 & 24 & 52 \\ \hline
-1.3.3 & 2092 & 0,01 & 6 & 24 & 50 \\ \hline
-1.3.5 & 2143 & 0,02 & 6 & 22 & 49 \\ \hline
-1.3.6 & 2154 & 0,02 & 6 & 22 & 49 \\ \hline
-1.3.8 & 2626 & 0,02 & 7 & 24 & 54 \\ \hline
-1.3.9 & 2636 & 0,02 & 7 & 24 & 54 \\ \hline
-\multicolumn{6}{l}{\texttt{Notas:}} \\
-\multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-\multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-\end{tabular}
-\label{metricas-wala}
-\end{table}
-
-\begin{table}[H]
-\caption{Métricas da ferramenta FindBugs}
-  \centering
-\begin{tabular}{|l|r|r|r|r|r|}
-\hline
-\multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-1.2.1 & 1044 & 0,05 & 7 & 20 & 36 \\ \hline
-1.3.4 & 1216 & 0,06 & 7 & 21 & 42 \\ \hline
-1.3.5 & 1257 & 0,05 & 7 & 21 & 40 \\ \hline
-1.3.6 & 1258 & 0,05 & 8 & 21 & 42 \\ \hline
-1.3.7 & 1261 & 0,05 & 7 & 22 & 42 \\ \hline
-1.3.8 & 1275 & 0,05 & 7 & 22 & 42 \\ \hline
-1.3.9 & 1354 & 0,06 & 7 & 24 & 48 \\ \hline
-2.0.0 & 1459 & 0,06 & 7 & 24 & 52 \\ \hline
-2.0.1 & 1465 & 0,06 & 7 & 24 & 54 \\ \hline
-2.0.2 & 1469 & 0,06 & 7 & 24 & 56 \\ \hline
-2.0.3 & 1489 & 0,06 & 7 & 24 & 56 \\ \hline
-3.0.0 & 1438 & 0,07 & 7 & 24 & 56 \\ \hline
-3.0.1 & 1486 & 0,07 & 8 & 25 & 56 \\ \hline
-\multicolumn{6}{l}{\texttt{Notas:}} \\
-\multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-\multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-\end{tabular}
-\label{metricas-findbugs}
-\end{table}
-
-\begin{table}[H]
-\caption{Métricas da ferramenta Closure Compiler}
-  \centering
-\begin{tabular}{|l|r|r|r|r|r|}
-\hline
-\multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-20110119 & 1122 & 0,05 & 4 & 17 & 42 \\ \hline
-20110811 & 1730 & 0,1 & 5 & 20 & 40 \\ \hline
-20120305 & 1802 & 0,1 & 5 & 20 & 42 \\ \hline
-20120917 & 1836 & 0,1 & 6 & 20 & 42 \\ \hline
-20130227 & 1759 & 0,11 & 6 & 20 & 48 \\ \hline
-20130722 & 1806 & 0,1 & 6 & 20 & 48 \\ \hline
-20140110 & 2004 & 0,08 & 5 & 20 & 45 \\ \hline
-20140730 & 1573 & 0,04 & 4 & 20 & 48 \\ \hline
-20150126 & 1596 & 0,04 & 5 & 22 & 56 \\ \hline
-20150729 & 1649 & 0,04 & 6 & 26 & 65 \\ \hline
-20160125 & 1724 & 0,04 & 5 & 28 & 68 \\ \hline
-20160713 & 1860 & 0,04 & 6 & 30 & 70 \\ \hline
-\multicolumn{6}{l}{\texttt{Notas:}} \\
-\multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-\multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-\end{tabular}
-\label{metricas-closurecompiler}
-\end{table}
-
-As ferramentas com poucas linhas de código foram excluidas, estas
-apreentam Change Cost alto, já é conhecido que a definição desta métrica
-sofre deste problema, apresenta valores altos em projetos muito pequenos,
-tambem removemos da analise aquelas ferramentas que nao tiveram valor
-no percentil 75\%, pois a comparacao e analise se dará neste percentil
-principalmente.
-
-Com isso temos 11 projetos, destes iremos analisar longitudalmente
-as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
-
- Closure Compiler         13 releases analisados
-
- FindBugs                 13 releases
-
- Indus                    (poucos releases, deixando fora da analise longitudinal)
-
- Kiasan/Bogor             (mudou a forma de distribuir ao longo dos releases, dificil obter de forma consistente as versoes)
-
- Lotrack                  (sem releases, poucos commits no github, apenas 11)
-
- PMD                      13 releases
-
- PtYasm                   (nao tem releases disponivel, apenas a ultima versao)
-
- Splint                   (nao encontrado releases)
-
- srcML                    (releases nao encontrado)
-
- WALA                     13 releases
-
- error-prone              13 releases
-
- GumTree                  (tem apenas 2 releases do repositorio github)
-
- JastAdd                  13 releases
-
- Sonar Qube Plug-in       (apenas 4 releases no github)
-
- SPARTA                   13 releases
-
- Cppcheck                 13 releases
-
- FindSecurityBugs         13 releases
- 
- Smatch                   13 releases
-
- WAP                      (apenas 7 releases no site, estou selecionando os que tenham ao menos 13 releases)
-
-Comparacao entre ferramentas de tamanho similar:
-
-nas 5 comparações de versões distintas com tamanhos similares entre pmd e findbugs,
-apresentaram o mesmo resultado, pmd tem valores menos tanto para CC quanto para SC,
-indicando que pmd tem um design mais modular que findbugs.
-
-pmd 5.0.0 < findbugs 1.2.1
-pmd 5.0.4 < findbugs 1.2.1
-pmd 5.1.3 < findbugs 1.3.5
-pmd 5.2.0 < findbugs 1.3.8
-pmd 5.3.3 < findbugs 1.3.9
-
-Ao comparar as imagens da matrix DSM dá para notar que isto reflete na matrix, 
-pegando o findbugs 3.0.1 e o pmd 5.2.0, é possível notar na matrix que o findbugs
-tem mais pontos nas duas diagonais da matrix, indicando dependencias ciclicar, e
-design menos modular, enquanto o pmd concentra as dependencias na diagonal inferior
-esquerda, indicando poucas dependencias ciclicar e um design mais modular.
-
-findbugs	 findbugs-3.0.1	1486	0,07	8	25	56
-pmd	 pmd-src-5.2.0	1295	0,02	6	12	25
-
-/home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/pmd/pmd-src-5.2.0.analizo.dsm.png
-/home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/findbugs/findbugs-3.0.1.analizo.dsm.png
-
-accessanalysis < findsecuritybugs
-indus < bogor
-reassert > jflow
-pmd-5.4.0 > pmd-5.3.0
-pmd-5.4.2 > pmd-5.3.7
-findbugs-3.0.1 > findbugs-2.0.3
-pmd < closure-compiler
-pixy > mpanalyzer
-ejb > mpanalyzer
-ejb > sparta
-
-closure-compiler > wala
-closure-compiler > wala
-closure-compiler > wala
-closure-compiler[Java] ? wala[Java]     (closure tem CC maior mas SC menor)
-
-comparar linguagens diferentes não rola, sempre dá ruim, ver:
-
-rats[C]        ? uno[C]                 (rats tem CC menor e SC maior)
-cppcheck[C++]  ? wap[Java]              (cppcheck tem CC menor mas SC maior)
-srcml[C++]     ? ptyasm[Java]           (srcml tem CC maior mas SC menor)
-closure-compiler[Java] ? inputtracer[C] (closure tem CC menor mas SC diferentes nos percentis)
-pmd[Java] ? srcml[C++]                  (pmd tem CC maior e SC diferentes nos percentis)
-inputtracer[C] ? wala[Java]             (tem CC maior e SC diferentes mas no percentil 95 tem SC maior também)
-
-fica claro que comparacao entre linguagens diferentes mesmo com tamanhos iguais não dá para chegar a conclusões nenhuma.
-
-findbugs[Java] ? wala[Java]             (findbugs tem CC maior mas SC menor)
-closure-compiler ? closure-compiler     (CC menor mas SC maior)
-
-comparacao (v3) - ordenado por eloc - comparando apenas SC 95
-===============
-
-% findsecbugs-plugin-1.4.0-sources < sparta-code-0.6
-% findsecbugs-plugin-1.4.1-sources < sparta-code-0.7
-% findsecbugs-plugin-1.4.4-sources < sparta-code-0.8
-
-% cseq-0.5 > find-sec-bugs-version-1.0.0
-
-% sparta-code-0.9.2 < tacle_1_2_1_src
-% sparta-code-0.9.4 < jastadd2-src-2.1.5
-% MPAnalyzer-master > sparta-toolset-0.9.8
-% ReAssert_0.4.1 > sparta-sparta-1.0.2
-% sparta-sparta-1.0.2 < uno
-% sparta-toolset-1.0.1-source < cppcheck-1.30
-% SonarQube-plug-in-master > sparta-toolset-1.0.0-source
-
-% findsecbugs-plugin-1.4.5-sources < rats-2.4
-% jastadd2-src-2.1.2 > findsecbugs-plugin-1.4.6-sources
-% find-sec-bugs-version-1.1.0 < jastadd2-src-2.1.4
-% AccessAnalysis-1.2-src < jastadd2-src-2.1.9
-% jastadd2-src-2.1.13 > jlint-3.1.2
-% vazexqi-JFlow-7cd7eaf < gumtree-2.0.0
-% composite-0.4 < smatch-1.0
-% smatch-0.3 > EJB
-% smatch-0.4 > cppcheck-1.35
-% cppcheck-1.35 > guizmo-master
-% smatch-1.51 < cqual-0.981
-% pixy-master < smatch-1.52
-% error-prone-2.0 < smatch-1.54
-% smatch-1.54 > cppcheck-1.40
-% smatch-1.55 > error-prone-2.0.2
-% indus < smatch-1.56
-% smatch-1.56 > error-prone-2.0.4
-% smatch-1.59 > pmd-src-5.0.4
-% error-prone-2.0.6 < pmd-src-4.2.5
-% pmd-src-4.2.5 < smatch-1.60
-% smatch-1.60 < cppcheck-1.45
-% ptyasm > error-prone-2.0.8
-% error-prone-2.0.8 < bogor-core
-% pmd-src-5.1.0 > error-prone-2.0.9
-% pmd-src-5.3.7 < wap-2.1
-% error-prone-2.0.12 < pmd-src-5.5.2
-% error-prone-2.0.13 < cppcheck-1.50
-% cppcheck-1.50 > wala-code-4607-tags-R_1.0
-% findbugs-1.2.1-source > error-prone-2.0.14
-% cppcheck-1.55 > findbugs-1.3.4-source
-% findbugs-1.3.8-source < cppcheck-1.60
-% findbugs-1.3.9-source = wala-code-4607-tags-R_1.0.02
-% wala-code-4607-tags-R_1.2 < cppcheck-1.62
-% findbugs-2.0.2-source > wala-code-4607-tags-R_1.1
-% cppcheck-1.65 > wala-code-4607-tags-R_1.2.2
-% wala-code-4607-tags-R_1.3 < findbugs-3.0.0-source
-% findbugs-3.0.1 > WALA-R_1.3.3
-% WALA-R_1.3.3 < cppcheck-1.70
-% cppcheck-1.75 > WALA-R_1.3.5
-% WALA-R_1.3.6 > closure-compiler-20110119
-% closure-compiler-20110119 < cppcheck-1.77
-% cppcheck-1.77 < splint-3.1.2
-% srcML-src > closure-compiler-20140730
-% closure-compiler-20160713 > Lotrack-master
-
-O percentil 75 tem muitos valores zero, os percentis 90 e 95 sao pracitamente iguais 
-na comparacao, os maiores sao geralmente tb maior no outro, exceto uns 2 exemplos:
-smatch-0.3/EJB e pmd-src-5.3.7/wap-2.1.
-
-
-
-
-comparacao (v3) - ordenado por n modulos - comparando apenas SC 90 e 95
-===============
-
-
-
-rats-2.4 > uno
-jlint-3.1.2 > findsecbugs-1.2.0
-jastadd2-2.1.5 > findsecbugs-1.2.1
-findsecbugs-1.3.0 < jastadd2-2.1.8
-jastadd2-2.2.2 > findsecbugs-1.4.0
-findsecbugs-1.4.2 < cqual-0.981
-sparta-0.5 < findsecbugs-1.4.4
-findsecbugs-1.4.5 > AccessAnalysis-1.2
-AccessAnalysis-1.2 < cppcheck-1.30
-cppcheck-1.30 < smatch-1.0
-smatch-0.2 > findsecbugs-1.4.6
-findsecbugs-1.4.6 > sparta-0.6
-sparta-0.7 < smatch-0.3
-cseq-0.5 > findsecbugs-1.5.0
-smatch-0.4 > cppcheck-1.35
-cppcheck-1.35 > sparta-0.8
-cppcheck-1.40 > sparta-0.9.2
-sparta-0.9.2 > findsecbugs-1.0.0
-SonarQube-plug-in-master < smatch-1.51
-smatch-1.52 > ReAssert\_0.4.1
-smatch-1.53 > jfLow
-gumtree-2.0.0 < cppcheck-1.45
-smatch-1.54 > sparta-0.9.8
-sparta-0.9.8 < pixy
-cppcheck-1.50 > findsecbugs-1.1.0
-findsecbugs-1.1.0 < MPAnalyzer
-MPAnalyzer < EJB
-sparta-1.0.1 < cppcheck-1.55
-guizmo < cppcheck-1.60
-smatch-1.56 < cppcheck-1.70
-wap-2.1 < cppcheck-1.72
-cppcheck-1.75 > smatch-1.58
-pmd-4.3 < srcML
-srcML < ptyasm
-pmd-5.0.0 < findbugs-1.2.1
-pmd-5.0.4 > error-prone-2.0
-closure-compiler-20110119 > error-prone-2.0.2
-error-prone-2.0.4 < findbugs-1.3.4
-findbugs-1.3.4 < wala-4607-R1.0
-wala-4607-R1.0 > pmd-5.1.0
-pmd-5.1.3 < findbugs-1.3.5
-findbugs-1.3.8 > pmd-5.2.0
-pmd-5.3.3 < findbugs-1.3.9
-findbugs-1.3.9 > pmd-5.4.2
-pmd-5.3.7 < findbugs-3.0.0
-findbugs-2.0.3 > error-prone-2.0.5
-pmd-5.5.2 > error-prone-2.0.6
-closure-compiler-20140730 > error-prone-2.0.7
-error-prone-2.0.8 < closure-compiler-20150729
-error-prone-2.0.9 < wala-4607-R1.1.2
-wala-4607-R1.1.2 < closure-compiler-20160125
-closure-compiler-20110811 < wala-4607-R1.2
-error-prone-2.0.11 < closure-compiler-20160517
-closure-compiler-20160713 > error-prone-2.0.12
-error-prone-2.0.12 < wala-4607-R1.1
-wala-4607-R1.2.2 > error-prone-2.0.13
-error-prone-2.0.14 < wala-4607-R1.3
-error-prone-2.0.15 < closure-compiler-20140110
-
-
-
-
-
-
-
-
-\subsection{Analizo}
-
-Numa primeira análise dos valores coletados pelo Analizo notamos uma anomalia
-nos valores da métrica CBO, o que nos levou a investigar de perto os motivos,
-esta anomalia se apresentava como valores extremamente altos para esta métrica,
-bastante discrepante com as demais métricas calculadas.
-
-Para entender se estes valores estavam corretor ou não, utilizamos uma outra
-ferramenta para cálculo das métricas, em nossos estudos encontramos e
-utilizamos uma versão de avaliação da ferramenta {\it SciTools
-Understand}\footnote{http://scitools.com/trial-download-3} em sua versão
-``4.0.853'' em Linux 64 bits. Os dados extraídos por esta ferramenta podem ser
-encontrados em nosso
-repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/tree/master/dataset/Understand
-SciTools}. Eles demonstraram que os valores calculados pelo Analizo estavam
-bastante alto em comparação com as demais métricas.
-
-Assim, descobrimos que o Analizo tinha de fato um erro no cálculo da métrica
-CBO, erro que foi corrigido durante este estudo e disponibilizado na versão
-mais recente do Analizo, versão que está sendo utilizada aqui.
+% os artigos foram documentados e estão disponíveis num arquivo externo
+% {\it artigos.ods}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/artigos.ods}.
+%
+%com o auxílio do script
+%{\it
+%filter}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}
+%escrito especialmente para este estudo. 
+%
+%atividade (2) da revisao estruturada:
+%Os artigos selecionados nesta atividade
+%estão documentados no arquivo {\it artigos.ods} indicados na coluna ``Filtro(2)''
+%quando for o caso.

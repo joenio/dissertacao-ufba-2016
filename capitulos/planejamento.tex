@@ -26,7 +26,6 @@ delas.
 
 \section{Design}
 
-
 %No entando é conhecido que alguns fatores inflenciam o valor de algumas métricas,
 %para evitar tais influências iremos isolar estes fatores realizando comparações
 %entre ferramentas com os mesmos fatores, por exemplo, comparação entre linguagens diferentes,
@@ -51,18 +50,6 @@ delas.
 %dos dados se iniciará, o objetivo será compreender quais características
 %implicam na manutenabilidade.
 
-\section{Data collection procedure}
-
-\begin{itemize}
-  \item Revisão estruturada para busca e seleção de ferramentas a partir de artigos acadêmicos
-  \item Pesquisa livre em fontes na internet para busca e seleção de ferramentas da indústria
-  \item Obtenção do código-fonte de cada ferramenta
-  \item Cálculo e coleta de métricas de código-fonte
-  \item Caracterização inicial das ferramentas, dimensões: Linguagem, Lançamentos, Tamanho, Experiência de usuário, Contexto
-  \item Obtenção de código-fonte de mais versões de ferramentas com {\it Lançamentos} frequentes ou ocasionais
-  \item Cálculo e coleta de métricas de código-fonte das novas versões
-  \item Caracterização final das ferramentas, dimensões: Entrada, Linguagens suportadas
-\end{itemize}
 
 %Os dados serão coletados através de uma revisão estruturada, análise estática
 %com o Analizo, e caracterizacao manual das ferramentas a partir das fontes:
@@ -79,202 +66,6 @@ delas.
 %escrito durante este estudo disponível no
 %repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016} desta
 %pesquisa.
-
-
-\subsection{Revisão estruturada}
-
-A revisão estruturada é um processo disciplinado para seleção de artigos com
-publicação de ferramentas de software de um domínio específico a partir de critérios bem definidos, de
-forma que seja possível a reprodução do estudo por parte de pesquisadores
-interessados. O resultado final produzido pela revisão estruturada é um conjunto
-de ferramentas de software com disponibilidade de código-fonte.
-
-A revisão estruturada difere da revisão e do mapeamento sistemático
-por ser um processo mais simples e menos rígido, onde o resultado final é
-um conjunto de ferramentas de software, enquanto no mapeamento ou na revisão
-sistemática há um esforço em caracterizar os artigos analisados o mesmo
-não ocorre na revisão estruturada.
-
-A revisão estruturada é organizada em três atividades de (1) busca de artigos
-(definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
-de critérios de busca, definição de script de busca) e (3) seleção de artigos
-com publicação de ferramentas. Estas atividades estão representadas na Figura
-\ref{figura-revisao-estruturada}.
-
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.33]{imagens/revisao-estruturada.png}
-  \caption{Representação gráfica da revisão estruturada}
-  \label{figura-revisao-estruturada}
-\end{figure}
-
-Na primeira atividade da revisão estruturada são definidas as fontes de busca,
-estas fontes são conferências que abordam o tema de interesse do estudo, e que
-apresentam um grande potencial de encontrar ferramentas de software
-do domínio de aplicação desejado. Esta primeira atividade de busca deve
-incluir o maior número possível de ediçoes das conferências selecionadas, para
-cada edição são copiados localmente todos os artigos em PDF para posterior
-filtro na atividade seguinte.
-
-A segunda atividade da revisão estruturada realizada em cima de todo o conjunto
-de artigos é um filtro automática que busca em todo o conteúdo dos artigos os
-termos de interesse, estes termos devem ser pensados em relaçao ao domínio de aplicação
-desejado, devem ser abrangentes a fim de evitar falsos negativos.
-
-A terceira e última atividade da revisão estruturada é a seleção de artigos,
-nela será identificado se cada artigo resulta, de fato, em publicação de
-ferramenta do domínio de aplicação. Esta seleção é feita a partir de uma
-leitura superficial do artigo em busca de indícios de que o artigo publica uma
-ferramenta e que o código-fonte desta ferramenta está disponível.
-
-Uma vez identificados os artigos que publicaram ferramentas do domínio
-desejado, procuramos no próprio artigo por referências de onde encontrar o
-código-fonte da ferramenta. Neste momento, pode-se enfrentar algumas situações.
-
-\begin{itemize}
-
-  \item Os autores afirmam que a ferramenta está disponível mas o artigo
-    não contém referências de onde encontrar o código-fonte, estes
-    autores serão contactados, por email, solicitando informações de onde
-    obter o código-fonte da ferramenta.
-
-  \item O artigo indica onde obter o código-fonte da ferramenta, mas o acesso ao local
-    indicado não está disponível, ou está disponível mas o software não se
-    encontra lá, os autores serão contactados, solicitando informações
-    atualizadas de onde obter uma cópia do código-fonte da ferramenta.
-
-  \item Artigos que indicam onde obter o código-fonte da ferramenta e a referência
-    está correta. Será feito o download do código-fonte da última versão
-    disponível.
-
-\end{itemize}
-
-Uma vez que os autores sejam contactados por email e respondam com informações
-sobre onde obter o software, a ferramenta é adicionada ao conjunto de
-ferramentas a serem analisadas.
-
-%O código-fonte da versão mais recente de cada
-%uma destas ferramentas será copiado localmente para caracterização e análise
-%através da coleta de suas métricas de código-fonte.
-
-\subsection{Ferramentas da indústria}
-
-Em paralelo à revisão estruturada para seleção de ferramentas da academia será
-realizada uma seleção manual não estruturada para busca de ferramentas da
-indústria. O objetivo é aumentar o conjunto de objetos de estudo bem como ter
-ferramentas de outros contextos além da academia, isto irá proporcionar uma
-nova dimensão na caracterzação das ferramentas e permitirá realizar comparação
-entre ferramentas de contextos distintos.
-
-\subsection{Caracterização das ferramentas de análise estática}
-\label{caracterizacao}
-
-As ferramentas de análise estática selecionadas serão caracterizadas a partir
-do trabalho de \citeonline{Novak2010}, neste estudo o autor propôe um
-conjunto de dimensões para caracterização de ferramentas de análise estática.
-Iremos utilizar algumas destas dimensões na caracterização das ferramentas
-selecionadas neste estudo.
-
-\begin{description}
-
-  \item {\it Entrada - quais tipos de arquivos podem ser carregados na ferramenta:}
-    \begin{itemize}
-      \item Código-fonte - arquivos de código texto podem ser carregados
-      \item Byte code - arquivos com Java Byte Code ou Microsoft
-      \item Linguagem intermediária (MSIL) pode ser carregada
-    \end{itemize}
-
-  \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
-    \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
-      \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
-    \end{itemize}
-
-  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta suporta:}
-    \begin{itemize}
-      \item .NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
-      \item VB .NET - suporta VB.NET
-      \item C\# - suporta C\#
-      \item Java - suporta linguagem de programação Java
-      \item C, C++ - suporta linguagem de programação C ou C++
-    \end{itemize}
-
-  \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
-    \begin{itemize}
-      \item Código Aberto ({\it Open Source}) - a ferrament é livre e o código-fonte está disponível
-      \item Grátis ({\it Free}) - a ferramenta é grátis mas o código-fonte não está disponível
-      \item Comercial - a ferramenta está disponível mediante pagamento
-    \end{itemize}
-
-  \item {\it Experiência do usuário - de que forma a ferramenta pode ser usada, como é oferecida:}
-    \begin{itemize}
-      \item Integração com ambiente - como a ferramenta é integrada ao ambiente de trabalho
-      \item Localização automática de erros no código - quando a ferramenta encontra um erro, ela leva ao local do erro
-      \item Ajuda abrangente sobre falhas - se a ferramenta oferece ajuda na resolução de erros
-      \item Interface de usuário - disponibilidade de uma interface de usuário
-      \item Linha de comando - ela pode ser executada via linha de comando
-      \item GUI - a ferramente pode ser executada em uma interface gráfica (GUI)
-    \end{itemize}
-
-  \item {\it Saída - representação dos resultados da ferramenta:}
-    \begin{itemize}
-      \item Arquivo texto - ferramenta pode apresentar resultados em arquivos texto
-      \item Lista - ferramenta pode apresentar resultados numa interface de usuário customizada controlada em GUI
-      \item Arquivo XML - ferramenta pode apresentar resultados em dados XML
-      \item Arquivo HTML - ferramenta pode apresentar resultados em dados HTML
-    \end{itemize}
-
-\end{description}
-
-As dimensões apresentada por \citeonline{Novak2010} não cobrem alguns aspectos
-importantes para este estudo, de forma que iremos adicionar as seguintes novas
-dimensões para caracterização das ferramentas.
-
-\begin{description}
-
-  \item {\it Linguagem de programação - em que linguagem de programação à ferramenta é escrita:}
-    \begin{itemize}
-      \item .NET
-      \item VB .NET
-      \item C\#
-      \item Java
-      \item C, C++
-    \end{itemize}
-
-  \item {\it Contexto - onde a ferramenta surgiu:}
-    \begin{itemize}
-      \item Academia - foi desenvolvida inicialmente em contexto acadêmico
-      \item Indústria - foi desenvolvido fora da academia
-    \end{itemize}
-
-  \item {\it Tamanho em número de classes - número de classes/módulos da ferramenta}
-
-  \item {\it Nível de manutenabilidade - interpretação das seguintes métricas de código-fonte:}
-    \begin{itemize}
-      \item Complexidade Estrutural
-      \item Custo de Mudança
-    \end{itemize}
-
-\end{description}
-
-Acrescentamos ainda novas opções que sentimos falta durante a caracterização das
-ferramentas, algumas dimensões de \cite{Novak2010} não apresentou opção necessária
-para caracterizar as ferramentas deste estudo, segue essas novas opções:
-
-\begin{description}
-
-  \item {\it Saída - representação dos resultados da ferramenta:}
-    \begin{itemize}
-      \item Banco de dados - ferramenta pode armazenar resultados em banco de dados (relacional ou não-relacional)
-    \end{itemize}
-
-\end{description}
-
-A fonte de informação para essa caracterização serão os artigos relacionados às
-ferramentas, o código-fonte, documentos e site do projeto. Dimensões que
-envolvem coleta de métricas de código-fonte serão caracterizadas com o auxílio
-da ferramenta de análise de código-fonte Analizo, apresentada à seguir.
 
 \subsection{Analizo} \label{analizo}
 
@@ -627,7 +418,3 @@ características influenciam em sua manutenabilidade.
 %  \end{tabular}
 %  \label{valores-frequentes}
 %\end{table}
-%
-%\section{Analysis procedure}
-%
-%\section{Evaluation of validity}
