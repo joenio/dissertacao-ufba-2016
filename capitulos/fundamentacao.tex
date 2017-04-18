@@ -162,7 +162,7 @@ estritas do que as regras dos próprios compiladores da linguagem.
 %estática de código-fonte, suas aplicações, sua anatomia, seus formatos de
 %representação intermediária e técnicas mais comuns. 
 
-Análise estática de código-fonte é tem como objetivo prover
+Análise estática de código-fonte tem como objetivo prover
 informações acerca de um programa a partir do seu código-fonte sem
 necessidade de execução, e sem requerer qualquer outro artefato do programa
 além do próprio código.
@@ -312,8 +312,7 @@ usada \cite{Chess2007}, destacam-se:
 \subsection{Anatomia da análise de código-fonte} \label{anatomia}
 
 Ferramentas de análise estática de código-fonte estão organizadas em partes ou
-componentes, responsáveis por implementar três funções básicas \cite{Cruz2009}
-\cite{Binkley2007}: a) extração de dados, b) geração de representação
+componentes, responsáveis por implementar três funções básicas \cite{Cruz2009, Binkley2007}: a) extração de dados, b) geração de representação
 intermediária, e c) análise. A ferramenta de análise de código-fonte
 CodeSonar\footnote{https://www.grammatech.com/products/codesonar} segue tal
 organização, conforme mostra a Figura \ref{static-analysis-representation}.
@@ -403,8 +402,7 @@ programa com o seguinte cálculo $CC = e - n + 2p$. Onde: {\bf e} é o número d
 arestas; {\bf n} é o número de nós; e {\bf p} é o número de componentes
 fortemente conectados no grafo CFG.
 
-Assim, percebe-se que cada formato de representação intermediária \cite{Nielson2015}
-\cite{Stanier2013} \cite{Cruz2009} \cite{Ramalho1996} pode ter fins e
+Assim, percebe-se que cada formato de representação intermediária \cite{Nielson2015, Stanier2013, Cruz2009, Ramalho1996} pode ter fins e
 objetivos bastante distintos, dentre os formatos mais comuns podemos destacar:
 
 \begin{description}
@@ -554,14 +552,13 @@ métodos mais comumente encontrados nas ferramentas atuais são:
 
 \end{description}
 
-===================
+Diante a variedade e a constante evolução da área de análise estática
+\citeonline{Novak2010} fez um estudo propondo uma taxonomia e um conjunto de
+dimensões para caracterização de ferramentas de análise estática, mais detalhes
+sobre estas dimensões e categorias serão exploradas no Capítulo
+\ref{caracterizacao-ferramentas}, lá será apresentada uma caracterização de
+softwares científicos estudados neste trabalho.
 
-A seção \ref{metricas-de-software} traz uma
-definição de métricas de software e apresenta um conjunto de métricas
-utilizados neste estudo, trazendo detalhes sobre métricas de complexidade
-estrutural.
-
-%--------------------------------------%
 \section{Complexidade estrutural} \label{metricas-de-software}
 
 No glossário de terminologia para engenharia de software do IEEE
@@ -858,146 +855,3 @@ métodos não relacionados entre si, é um indício de que a classe deveria ser
 refatorada em classes menores e mais coesas.
 
 \end{itemize}
-
-\subsection{Custo de mudança} \label{custo-mudanca}
-
-Muitos estudos tem abordado compreensão e visualização de softwares complexos,
-dentre estes alguns focam no uso de {\it DSM} a fim de se ter uma visão geral
-do relacionamento entre as entidades que compõe o sistema, além de obter meios
-para cálculo de métricas como {\it Change Cost}, uma medida que representa o
-custo médio de uma mudança no design de um software em termos do potencial
-impacto desta mudança em outras partes do sistema.
-
-\begin{itemize}
-
-  \item {\bf CC} {\it Change Cost (Custo de mudança)}: mede a possibilidade de
-    impacto que uma certa mudança num projeto de software causa no restante do
-    sistema\cite{Maccormack2006}, indica o quão custoso é realizar mudanças.
-
-(pendente descrever melhor CC e mostrar uma formalizacao da métrica)
-
-\end{itemize}
-
-
-\subsection{Implementação e validação}
-
-Uma {\it DSM} é a representação de um grafo de dependência em forma de uma
-matriz quadrada, 
-...
-pode ser visto na Figura~\ref{fig:dsm}.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.3]{imagens/sample-dsm.png}
-\caption{Design Structure Matrix do Linux 2.1.105 gerado pelo Analizo}
-\label{fig:dsm}
-\end{figure}
-
-O {\it Change Cost} representa o impacto que uma mudança localizada em um
-certo ponto pode causar em outros pontos do mesmo sistema, ele é calculado a
-partir de uma matrix chamada {\it Reachability
-Matrix}\cite{ReachabilityMatrices}, foi implementado também através do módulo
-{\it Graph} via método {\it transitive\_closure\_matrix}. Por fim calcula-se o
-{\it Fan-out} de cada linha da matriz e divide-se pelo total de linhas para
-chegar ao resultado final de {\it Change Cost}.
-
-{\it Change Cost} não indica design bom ou ruim, mas sinaliza em grau de
-comparação que um design é mais modular que outro, ou ainda que a
-modularização está aumentando ou diminuindo ao longo do tempo. É possível ver na
-Figura~\ref{fig:files} por exemplo que o {\it Change Cost} não se altera em
-relação ao número de arquivos do projeto.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.3]{imagens/plot-files.png}
-\caption{Relação entre Change Cost e Número de Arquivos}
-\label{fig:files}
-\end{figure}
-
-Assume-se que em designs menos acoplados a medida de {\it Change Cost} também
-será menor. A partir desta afirmação é possível relacionar {\it LCOM4 (Lack of
-Cohesion in Methods)} com {\it Change Cost}, uma vez que coesão e acoplamento
-possuem relação direta. A Figura~\ref{fig:lcom4} mostra o quão próximos se
-mantém {\it Change Cost} e {\it LCOM4}, apesar de não ser possível traçar
-afirmações sem um estudo aprofundado, intuitivamente estas 2 medidas estão
-relacionadas.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.3]{imagens/plot-lcom4.png}
-\caption{Relação entre Change Cost e LCOM4 médio}
-\label{fig:lcom4}
-\end{figure}
-
-(fundamentar custo de mudança em mais detalhes)
-
-%Apesar da métrica custo de mudança se mostrar bastante útil em estudos sobre
-%qualidade interna de produtos de software poucos trabalhos fazem uso 
-%métrica em comparação com métricas mais tradicionais, como a complexidade
-%estrutural, por exemplo. Estudos recentes propõem novas métricas
-%\cite{Milev2009,Mo2016} argumentando que o custo de mudança possui o problema
-%de ser sensível ao tamanho do software, por exemplo, softwares com poucos
-%arquivos tem uma tendência de apresentar altos valores para esta métrica.
-
-%{\it Change Cost} é conceitualmente bem próximo à idéia visibilidade
-%\cite{Sharman2004}, que por sua vez é construída sobre o conceito de {\it
-%reachability matrices} \cite{Warfield1973}. Visibilidade é um conceito
-%relacionado à seguinte pergunta: ``Quais outros elementos do sistema devem ser
-%reprojetados se este elemento for modificado?''.
-%
-%Para um grafo dirigido $ G=(V,E) $ com vértices $ i $ e $ j $, seja $ P_ij $
-%um caminho direcionado representando $ ij $. Então o grafo:
-%
-%$ R = ( V(G), { (i,j): i,j in V(G), P_ij in G } ) $
-%
-%É dito ser um {\it reachability graph} de $ G $, e a matrix adjacente de $ R $
-%é dita como $ G $ {\it reachability matrix}.  Vértices adjacentes no {\it
-%reachability graph} são conectados por um ou mais caminhos direto no grafo
-%original.
-
-%Os autores afirmam que esta métrica pode ser aplicada apenas de forma
-%comparativa, ou seja, não pode-se afirmar que um design específico é ou não
-%modular, mas sim que um certo design é mais (ou menos) modular que um outro
-%design. Esta comparação pode ser feita entre produtos de software distintos ou
-%entre várias versões de um mesmo software.
-%problemas na medida de tal métrica, como é o caso das
-%métricas {\it relative clustered cost} \cite{Milev2009} e {\it decoupling
-%level} \cite{Mo2016}, ambos estudos apontam que o custo de mudança é uma
-%
-%, dentre estes trabalhos nenhum faz uma comparação dos
-%valores encontrados com outras métricas de código-fonte, usualmente criam
-
-%O trabalho iniciado na definição da métrica Change Cost gerou alguns desdobramentos,
-%\citeonline{Milev2009} baseado no trabalho de cormack Change Cost define uma métrica
-%chamada {\it relative clustered cost}. \citeonline{Mo2016} baseado em DSM
-%e Design Rules\cite{Baldwin2000} define uma métrica considerada como evolução
-%da métrica Change Cost, pois avalia o quanto um dado sistema de software pode
-%ser desacoplado, e cria um cálculo indepente do tamanho do software (em linhas
-%de código).
-%
-%\cite{Mo2016} diz que \cite{Maccormack2006} propõe a métrica com o nome
-%Propagation Cost (PC) mas o nome proposto por \cite{Maccormack2006} é Change
-%Cost, então onde ele cita Propagation Cost está se referindo à Change Cost.
-%Neste estudo \cite{Mo2016} mostra que Change Cost é sensível ao número de arquivos
-%e nem sempre captura variações arquiteturais.
-%
-%Decoupling Level (DL) é uma métrica para medir manutenabilidade da arquitetura
-%de software. Mede o grau com que uma arquitetura é desacoplada em (pequenas,
-%independentes) módulos que podem ser modificadas independentemente por
-%desenvolvedores. Altos valores de DL são melhores, indicando uma arquitetura
-%mais modular. No entando no estudo realizado notou-se que nem sempre um alto
-%valor de DL implica em um projeto de fácil manutenção, alguns dos estudos de caso
-%mostraram projetos de difícil manutenabilidade e alto valor de DL.
-%
-%Custo de mudança ({\it Change Cost})\cite{Maccormack2006} é uma métrica
-%de produto de software que indica a possibilidade de impacto que uma
-%certa mudança num projeto de software causa no restante do sistema, é
-%um indicador de quão custoso é realizar mudanças, mas indicando probabilidades
-%apenas.
-%
-%Esta métrica vem a ser útil para ter uma visão da arquitetura e pode ser
-%utilizada para comparar vários software distintos entre sí. Esta é uma métrica
-%calculada em nível de projeto, representa o impacto que uma mudança localizada
-%em um certo ponto pode causar em outros pontos do mesmo sistema, ele é
-%calculado a partir de uma matriz chamada {\it Reachability Matrix}.
-%
