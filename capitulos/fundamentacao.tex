@@ -10,11 +10,133 @@
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 \label{fundamentacao}
 
-\section{Software científico} \label{analise-estatica}
+\section{Software científico}
 
-\subsection{Software científico como importantes artefatos}
+{\it Softwares científicos} são ferramentas de software desenvolvidas no decorrer de
+pesquisas científicas como parte de um estudo, podem ser pequenos scripts,
+protótipos, ou mesmo produtos de software completos que demonstram ou refletem
+os resultados de uma pesquisa. Em Engenharia de Software este tipo de software
+desempenha um papel essencial e sua importância pode ser notada através do
+grande número de conferências com sessões específicas sobre publicação de
+ferramentas.
 
-% importancia para evolucao da ciencia, reproducao, etc...
+Seja como meio ou como fim, tais {\it softwares científicos} são produtos de
+software e, tal como propõe a Engenharia de Software Experimental, precisam
+ser avaliadas com uso de métodos científicos adequados. Neste contexto, é de
+fundamental importância que os softwares utilizados ou desenvolvidos durante
+estudos estejam disponíveis e em funcionamento. Tais softwares podem ser
+encontrados na literatura pelo nome de {\it research tool} \cite{Portillo12} ou
+{\it research-originated software} \cite{Kon2011}.
+
+Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
+resultados, é raro que façam o mesmo com toda a produção gerada durante a
+pesquisa. A maioria dos componentes necessários para a reprodução dos
+resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
+permanecem não publicados. Este é um problema sério já que um dos fundamentos
+da ciência é que novas descobertas sejam reproduzidas antes de serem
+consideradas parte da base de conhecimento \cite{Stodden2009}.
+
+Neste sentido, \citeonline{Prlic2012} enfatizam que disponibilizar o código
+criado durante pesquisas não apenas aumenta o impacto como também se torna
+essencial para outros reproduzirem os resultados encontrados, citam ainda que
+manutenabilidade e disponibilidade do software após a publicação é o maior
+problema enfrentado pelos pesquisadores que desenvolvem tais softwares.
+
+A validade de estudos empíricos deve ser averiguada com o intuito
+de aumentar o nível de confiança em seus resultados, replicação costuma ser
+citado como um importante meio para atingir tal objetivo \cite{Almqvist2006}.
+
+A replicação desses estudos empíricos pode, e deve, ser realizado, de modo a
+averiguar a validade e aumentar o nível de confiança em seus resultados. A
+reprodução dos resultados de pesquisas aumenta o impacto social das pesquisas e
+gera economia de tempo e dinheiro para os pesquisadores e para as instituições
+\cite{Nesta2010}.
+
+Apesar da preocupação com a reprodutibilidade dos
+resultados de pesquisas de forma independente \cite{Stodden2009} e aberta,
+esta área tem recebido ainda pouca atenção da comunidade de pesquisa
+\cite{Nancy2015, Grand2010Open}.
+
+Reprodutibilidade (reproducibility) é a habilidade de replicar um experimento
+ou estudo em sua totalidade a fim de confirmar suas hipóteses, seja pelo
+autor ou por pesquisadores independentes. Este conceito é um ponto
+central do método científico e continua a receber bastante atenção ainda hoje,
+como pode ser verificado em estudos recentes.
+
+\citeonline{Stodden2009} preocupada com as barreiras legais para
+disponibilidade de artefatos de pesquisa propõe o framework "Reproducible
+Research Standard (RRS)", onde sugere formas de usar o licenciamento e as leis
+de copyright da melhor forma para manter disponíveis os produtos gerados
+durante pesquisas e assim viabilizar reprodutibilidade. \citeonline{Vitek2011}
+em um estudo sobre reprodutibilidade e rigor científico destacam a importancia
+de se disponibilizar qualquer material suplementar gerado durante uma pesquisa
+de modo a possibilitar revisores verificarem e replicarem experimentos. Em
+2012 um workshop intitulado "Reproducible Research: Tools and Strategies for
+Scientific Computing" \cite{Stodden2012} discutiu especificamente iniciativas
+e ferramentas voltadas a apoiar pesquisas reprodutíveis.
+\citeonline{Krishnamurthi2015} em um estudo sobre repetibilidade chamam
+atenção para o papel central que os artefatos de software possuem em pesquisas
+de ciência da computação e questionam: "Onde está o software nas pesquisas
+sobre linguagem de programação?". \citeonline{Stodden2015} demonstram o
+projeto "ResearchCompendia.org", uma infraestrtura para reprodutibilidade e
+colaboração em ciência computacional. Além destes e tantos outros estudos em
+\cite{GithubReproducibilityGuide} é possível acessar um guia sobre como
+desenvolver pesquisas cientíticas de forma que promovam a reprodutibilidade.
+
+Apesar do termo reprodutibilidade ser relativamente concensual entre as várias
+áreas da ciência, existem alguns termos relacionados com uma certa diferença
+de significado, diante disto e preocupado em criar uma linguagem comum entre
+os pesquisadores \citeonline{Feitelson2015} propõe as seguintes definições:
+
+\begin{description}
+
+  \item[Repetição (repetition)]
+  Refazer exatamente o que outra pessoa fez usando os artefatos originais.
+
+  \item[Replicação (replication)]
+  Replicar com precisão exatamente o que outra pessoa fez, recriando os
+  artefatos.
+
+  \item[Variação (variation)]
+  Repetir ou replicar exatamente o que aoutra pessoa fez, mas com alguma
+  modificação controlada nos parâmetros.
+
+  \item[Reprodução (reproduction)]
+  Recriar o espírito do que outra pessoa fez, usando seus próprios artefatos.
+
+  \item[Corroboração (corroboration)]
+  Obter os mesmos resultados de outra pessoa, usando outros meios e
+  procedimentos experimentais.
+
+\end{description}
+
+É conhecido que a ciência precisa de reprodutibilidade e corroboração para
+realmente fazer progressos mas a prática de forma abrangente ainda é um
+obstáculo, diante disso \citeonline{Peng2011} sugere adotar soluções
+intermediárias, repetição, replicação, variação, e desta forma já teríamos uma
+grande melhoria sobre a situação atual onde muitos estudos em Engenharia de
+Software sofrem de dificuldades de repetição \cite{Tang2016}.
+
+Uma barreira comum para a reprodutibilidade, e consequentemente para repetição,
+replicação e variação é a indisponibilidade do código fonte.  Toda pesquisa que
+possua qualquer processo computadorizado deve publicar seus códigos, eles
+precisam estar disponíveis, mesmo que os dados correspondentes não estejam, o
+código deve estar. Deacordo com o espectro de reprodutibilidade (Figura
+\ref{reproducibility-spectrum}) a disponibilidade do código é o requisito
+mínimo e é o primeiro passo para possibilitar validação e confirmação dos
+resultados.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.25]{imagens/reproducibility-spectrum.png}
+  \caption{The spectrum of reproducibility\cite{Peng2011}}
+  \label{reproducibility-spectrum}
+\end{figure}
+
+%Dentre as inúmeras iniciativas voltadas à reprodutibilidade
+%de pesquisas científicas, destaco aqui o movimento chamado "Ciência Aberta" e
+%a sua grande área "Open Reproducible Research" voltada a disseminar práticas
+%que garantam a capacidade de replicação de estudos.
 
 \section{Análise estática de código-fonte} \label{analise-estatica}
 
