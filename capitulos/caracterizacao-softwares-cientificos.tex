@@ -5,9 +5,14 @@ estática de código-fonte a partir da revisão estruturada.}
 
 Caracterizar os {\it softwares científicos} do domínio de aplicação de análise
 estática de código-fonte publicados em conferências de engenharia de software
-com objetivo de compreender como estão sendo publicados e mantidos, classificar
-e explorar estes softwares entre as distintas categorias deste domínio de
-aplicação.
+com objetivo de compreender como estão sendo publicados e mantidos, com
+especial atenção à disponibilidade do código-fonte por ser o requisito mínimo
+para possibilitar {\it repetição}, ou seja, possibilitar refazer exatamente o
+que outra pessoa fez usando os artefatos originais.
+
+%Muitos estudos em
+%Engenharia de Software sofrem de dificuldades de repetição \cite{Tang2016} e
+%a indisponibilidade do código fonte é uma barreira comum para repetição é 
 
 %\section{Fundamentação teórica}
 
@@ -53,7 +58,7 @@ caracterizar os artigos analisados o mesmo não ocorre na revisão estruturada.
 A revisão estruturada é organizada em três atividades de (1) busca de artigos
 (definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
 de critérios de busca, definição de script de busca) e (3) seleção de artigos
-com publicação de ferramentas. Estas atividades estão representadas na Figura
+com publicação de softwares. Estas atividades estão representadas na Figura
 \ref{figura-revisao-estruturada}.
 
 \begin{figure}[h]
@@ -65,7 +70,7 @@ com publicação de ferramentas. Estas atividades estão representadas na Figura
 
 Na primeira atividade da revisão estruturada são definidas as fontes de busca,
 estas fontes são conferências que abordam o tema de interesse do estudo, e que
-apresentam um grande potencial de encontrar ferramentas de software
+apresentam um grande potencial de encontrar softwares
 do domínio de aplicação desejado. Esta primeira atividade de busca deve
 incluir o maior número possível de ediçoes das conferências selecionadas, para
 cada edição são copiados localmente todos os artigos em PDF para posterior
@@ -79,18 +84,14 @@ desejado, devem ser abrangentes a fim de evitar falsos negativos.
 A terceira e última atividade da revisão estruturada é a seleção de artigos,
 nela é identificado se cada artigo resulta, de fato, em publicação de {\it software científico}
 do domínio de aplicação desejado. Esta seleção é feita a partir de uma
-leitura superficial do artigo em busca de indícios de que o artigo publica uma
-ferramenta do domínio em questão.
-
-%O código-fonte da versão mais recente de cada
-%uma destas ferramentas será copiado localmente para caracterização e análise
-%através da coleta de suas métricas de código-fonte.
+leitura superficial do artigo em busca de indícios de que o artigo publica um
+software do domínio em questão.
 
 \subsection{Caracterização dos softwares científicos}
 \label{caracterizacao}
 
 Os {\it softwares científicos} de análise estática de código-fonte selecionados
-na revisão estruturada serão avaliados inicialmente em relação à sua
+na revisão estruturada serão avaliados em relação à sua
 disponibilidade visto a importância de tais artefatos para a divulgação do
 conhecimento e para replicação dos resultados das pesquisas em engenharia de
 software.
@@ -100,88 +101,56 @@ software.
 
 \begin{description}
 
-  \item {\it Disponibilidade - como a ferramenta foi publicada:}
+  \item {\it Disponibilidade - como o software científico foi publicado:}
     \begin{itemize}
-      \item Artigo não indica onde obter a ferramenta
-      \item Link para download da ferramenta offline
-      \item Ferramenta disponivel para download (binários ou código-fonte)
+      \item Artigo não indica onde obter o software\\
+        {\it \small artigo não indica fonte para obtenção do software}
+      \item Fonte para obtenção do software indisponível\\
+        {\it \small artigo indica fonte mas encontra-se inacessível, fora do ar ou com erros}
+      \item Software disponivel, binários ou código-fonte\\
+        {\it \small a fonte indicada está disponível e acessível}
     \end{itemize}
 
 \end{description}
 
-Em seguida serão caracterizadas a partir do trabalho de \citeonline{Novak2010},
-neste estudo o autor propôe uma taxonomia e um conjunto de dimensões para
-caracterização de ferramentas de análise estática. Um subconjunto destas
-dimensões será utilizado na caracterização das ferramentas selecionadas
-na revisão estruturada.
+Em seguida os softwares disponíveis, aqueles caracterizados como ``Software
+disponivel, binários ou código-fonte'' serão caracterizados com detalhes sobre
+sua disponibilidade, se tem código-fonte disponível e usam licença de software
+livre ou código aberto, e qual a frequência de lançamentos indicando se são
+atualizadas frequentemente ou estão obsoletas.
+
+Tomaremos como base o trabalho de \citeonline{Novak2010}, neste estudo o autor
+propôe uma taxonomia e um conjunto de dimensões para caracterização de
+ferramentas de análise estática. Um subconjunto destas dimensões será utilizado
+na caracterização dos {\it softwares científicos} selecionados na revisão
+estruturada.
 
 \begin{description}
 
-  \item {\it Entrada - quais tipos de arquivos podem ser carregados na ferramenta:}
-    \begin{itemize}
-      \item Código-fonte - arquivos de código texto podem ser carregados
-      \item Byte code - arquivos com Java Byte Code ou Microsoft
-      \item Linguagem intermediária (MSIL) pode ser carregada
-    \end{itemize}
-
   \item {\it Lançamentos ({\it Releases}) - quantos lançamentos por ano:}
     \begin{itemize}
-      \item Frequentemente $>=$ 3 vezes ao ano - novas versões da ferramenta são lançadas 3 ou mais vezes por ano
-      \item Ocasionalmente $<$ 3 vezes ao ano - novas versões da ferramenta são lançadas menos que 3 vezes ao ano
-      \item Obsoleta 0 vezes ao ano - intervalo entre novos lançamentos é maior que 1 ano
-    \end{itemize}
-
-  \item {\it Linguagens suportadas - quais linguagens de programação a ferramenta suporta:}
-    \begin{itemize}
-      \item .NET - todas as linguagens compiladas em bibliotecas ou programas no framework .NET
-      \item VB .NET - suporta VB.NET
-      \item C\# - suporta C\#
-      \item Java - suporta linguagem de programação Java
-      \item C, C++ - suporta linguagem de programação C ou C++
+      \item Frequentemente $>=$ 3 vezes ao ano\\
+        {\it \small novas versões da ferramenta são lançadas 3 ou mais vezes por ano}
+      \item Ocasionalmente $<$ 3 vezes ao ano\\
+        {\it \small novas versões da ferramenta são lançadas menos que 3 vezes ao ano}
+      \item Obsoleta 0 vezes ao ano\\
+        {\it \small intervalo entre novos lançamentos é maior que 1 ano}
     \end{itemize}
 
   \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
     \begin{itemize}
-      \item Código Aberto ({\it Open Source}) - a ferrament é livre e o código-fonte está disponível
-      \item Grátis ({\it Free}) - a ferramenta é grátis mas o código-fonte não está disponível
-      \item Comercial - a ferramenta está disponível mediante pagamento
+      \item Código Aberto ({\it Open Source})\\
+        {\it \small a ferramenta é livre e o código-fonte está disponível}
+      \item Grátis ({\it Free})\\
+        {\it \small a ferramenta é grátis mas o código-fonte não está disponível}
+      \item Comercial\\
+        {\it \small a ferramenta está disponível mediante pagamento}
     \end{itemize}
 
 \end{description}
 
-As dimensões apresentada por \citeonline{Novak2010} não cobrem alguns aspectos
-importantes percebidos ao longo deste estudo, assim novas dimensões serão utilizadas
-em complemento às dimensões citadas acima.
-
-\begin{description}
-
-  \item {\it Linguagem de programação - em que linguagem de programação à ferramenta é escrita:}
-    \begin{itemize}
-      \item .NET
-      \item VB .NET
-      \item C\#
-      \item Java
-      \item C, C++
-    \end{itemize}
-
-%\end{description}
-%
-%Acrescentamos ainda novas opções que sentimos falta durante a caracterização das
-%ferramentas, algumas dimensões de \cite{Novak2010} não apresentou opção necessária
-%para caracterizar as ferramentas deste estudo, segue essas novas opções:
-%
-%\begin{description}
-
-\end{description}
-
-A fonte de informação para essa caracterização serão os artigos relacionados às
-ferramentas, o código-fonte, documentos e site do projeto.
-
-%Dimensões que
-%envolvem coleta de métricas de código-fonte serão caracterizadas com o auxílio
-%da ferramenta de análise de código-fonte Analizo, apresentada à seguir.
-
-%\section{Seleção das ferramentas}
+A fonte de informação para essa caracterização serão os artigos relacionados
+aos softwares, o código-fonte, documentos e site do projeto.
 
 \section{Operação do experimento}
 
@@ -330,73 +299,7 @@ atividade da revisão contendo publicação de ferramenta de análise estática.
 
 As informações foram obtidas de forma manual lendo o artigo onde a ferramenta foi publicada,
 uma lista com todas as ferramentas selecionadas em ambas as conferências e sua descrição
-é apresentada na Tabela \ref{resumo-de-ferramentas}.
-
-\begin{table}[h]
-{\scriptsize
-\caption{Resumo das ferramentas selecionadas}
-\centering
-\begin{tabular}{| l | l | l | l |}
-  \hline
-  Ferramenta     & Descrição                            & Ferramenta       & Descrição                            \\
-  \hline
-  2LS            & análise de terminação de programas   & JstereoCode      & detecção de esteriótipos Java        \\
-  AccessAnalysis & cálculo de métricas IGAT e IGAM      & JSysDG           & construção de grafo de dependência   \\
-  ADiMat         & transformação source-to-source       & Jtop             & gestão de casos de teste             \\
-  AGENDA         & teste de banco de dados relacional   & Kiasan/Bogor     & verificação de modelos               \\
-  AMNESIA        & detecção de ataques SQL injection    & LIBCROOS         & localização de bugs                  \\
-  AMOEBA         & correção de erros de modelagem       & Loopfrog         & verificação de modelos               \\
-  APIExample     & documentação de API Java             & Lotrack          & análise estática de configuração     \\
-  BEG            & verificação de modelos Java          & MAGIC            & program slicing                      \\
-  BEST           & predição de violação de concorrência & MemSafe          & detecta violação de acesso a memória \\
-  CAWDOR         & defesa e deteção de worms            & MPAnalyzer       & análise de padrões                   \\
-  CBFA           & detecção de concerns                 & MSP              & criação de modelo de acesso a memória \\
-  ccJava         & linguagem orientada a aspectos       & mygcc            & verificação de programas C           \\
-  CIVL           & verificação de programa concorrente  & Parfait          & localização de bugs                  \\
-  ClassSplitter  & particionamento de classes           & PARSEWeb         & sugestão de uso de código e bibliotecas \\
-  CodeBoost      & transformação source-to-source C++   & PAT              & ambiente de teste automático         \\
-  CodeHow        & busca e pesquisa em código           & ProgramCutter    & particionamento automático           \\
-  composite      & verificação de modelos               & protopurity      & análise de impacto                   \\
-  CONBOL         & criação automática de teste          & Pseudogen        & transformação source-to-pseudo-source \\
-  COPES          & detecção de falhas de permissão      & PtrTracker       & detecção de bugs                     \\
-  CPA+           & análise configurável de programa     & PtYasm           & verificação de modelos               \\
-  CPPCHECKER     & detecção de inconsistência em macros & PuMoC            & verificação de modelos               \\
-  CSeq           & transformação source-to-source       & PYTHIA           & criação automática de casos de teste \\
-  DDVerify       & checagem de modelos                  & ReAssert         & localização de falhas em testes      \\
-  Decor          & detecção de defeitos de design       & Relda            & localização de vazamento de recurso  \\
-  Derailer       & localização de falhas de segurança   & Rêve             & verificação de regressão             \\
-  Diagnosys      & construção de interfaces de debug    & ReWeb            & refatoração de aplicações Web        \\
-  DMS            & transformação de programas           & RRFinder         & mineração de liberação de recursos   \\
-  Doc2Spec       & inferência de especificação de API   & SAFEWApp         & análise de performance javascript    \\
-  DOMPLETION     & sugestão de código javascript        & Sapid/XML        & representação intermediária em XML   \\
-  Drails         & detecção de erros de runtime         & SCATR            & mapeamento baseado em código         \\
-  EJB            & criação de diagramas de sequência    & Scoria           & localização de violação arquitetural \\
-  ELAN           & inspeção de resultados de defeitos   & Smack            & checagem de memória                  \\
-  EMBER          & cálculo de métricas de código-fonte  & SonarQubePlug-in & SourceMeter plugin para análise Java \\
-  e-munity       & verificação de segurança             & SPARTA           & segurança e detecção de malwares     \\
-  error-prone    & localização de bugs                  & srcML            & transformação source-to-source       \\
-  ESBMC          & verificação de modelos               & SUDS             & detecção de bugs                     \\
-  ETXL           & transformação de código              & SWAT             & teste automático para aplicação web  \\
-  FaultBuster    & refatoração de code smells           & SymCrash         & geração de casos de teste            \\
-  Flowgen        & criação de grafos UML                & TACLE            & type-analysis e visualizaçao de call-graph \\
-  GASR           & query lógica para AspectJ            & TEBA             & transformação source-to-source       \\
-  Goanna         & checagem de modelos                  & Templar          & visualização de código               \\
-  GRT            & geração automática de testes         & TestEra          & geração automática de testes         \\
-  GUIZMO         & inferência de layout                 & Tikanga          & detecção de violação                 \\
-  GumTree        & análise e comparação de mudanças     & UMGAR            & geração de modelos UML               \\
-  HaRe           & refatoração de código funcional      & VADA             & análise de dependencia de variáveis  \\
-  iMaus          & detecção de código duplicado         & Vdiff            & visualização de diferença de código  \\
-  Impendulo      & mineração de repositórios            & WAIVE+           & validação de parâmetros HTTP-request \\
-  Indus          & biblioteca de program slicing        & WALA             & análise de {\it bytecode} Java       \\
-  ISIS4J         & identificação de concerns            & Wrangler         & refatoração de código Erlang         \\
-  JastAdd        & descrição e gramática de atributos   & X-DEVELOP        & refatoração                          \\
-  JFlow          & transformação source-to-source       & XOgastan         & transformação source-to-source       \\
-  \hline
-\end{tabular}
-\label{resumo-de-ferramentas}
-}
-\end{table}
-
+é apresentada no Apendice \ref{softwares-cientificos}.
 
 \subsection{Caracterização dos softwares científicos}
 
