@@ -6,15 +6,17 @@ estática de código-fonte a partir da revisão estruturada.}
 Caracterizar os {\it softwares científicos} do domínio de aplicação de análise
 estática de código-fonte publicados em conferências de engenharia de software
 com objetivo de compreender como estão sendo publicados e mantidos, com
-especial atenção à disponibilidade do código-fonte por ser o requisito mínimo
-para possibilitar {\it repetição}, ou seja, possibilitar refazer exatamente o
-que outra pessoa fez usando os artefatos originais.
+especial atenção à disponibilidade de seu código-fonte.
 
-%Muitos estudos em
-%Engenharia de Software sofrem de dificuldades de repetição \cite{Tang2016} e
-%a indisponibilidade do código fonte é uma barreira comum para repetição é 
+Muitos estudos em engenharia de software sofrem de dificuldades de repetição
+\cite{Tang2016}, uma prática importante para aumentar a validade científica dos
+estudos e seus resultados. {\it Repetição} é a atividade de refazer exatamente
+o que outra pessoa fez usando os artefatos originais, a disponibilidade de
+código-fonte é o requisito mínimo para possibilitar tal prática.
 
-%\section{Fundamentação teórica}
+Assim temos como objetivo encontrar artigos com publicação de software de
+análise estática de código-fonte e caracterizar tais softwares do ponto de
+vista da sua disponibilidade.
 
 \section{Planejamento do experimento}
 
@@ -39,7 +41,7 @@ que outra pessoa fez usando os artefatos originais.
 %
 %\begin{itemize}
 %  \item Revisão estruturada para busca e seleção de ferramentas a partir de artigos acadêmicos
-%  \item Caracterização inicial das ferramentas, dimensões: Linguagem, Lançamentos, Tamanho, Experiência de usuário, Contexto
+%  \item Caracterização inicial das ferramentas, dimensões: Linguagem, Lançamentos
 %  \item Caracterização final das ferramentas, dimensões: Entrada, Linguagens suportadas
 %\end{itemize}
 
@@ -70,22 +72,22 @@ com publicação de softwares. Estas atividades estão representadas na Figura
 
 Na primeira atividade da revisão estruturada são definidas as fontes de busca,
 estas fontes são conferências que abordam o tema de interesse do estudo, e que
-apresentam um grande potencial de encontrar softwares
-do domínio de aplicação desejado. Esta primeira atividade de busca deve
-incluir o maior número possível de ediçoes das conferências selecionadas, para
-cada edição são copiados localmente todos os artigos em PDF para posterior
-filtro nas atividades subsequentes.
+apresentam um grande potencial de encontrar softwares do domínio de aplicação
+desejado. Esta primeira atividade de busca deve incluir o maior número possível
+de ediçoes das conferências selecionadas, para cada edição são copiados
+localmente todos os artigos em PDF para posterior filtro nas atividades
+subsequentes.
 
 A segunda atividade da revisão estruturada realizada em cima de todo o conjunto
 de artigos é um filtro automática que busca em todo o conteúdo dos artigos os
-termos de interesse, estes termos devem ser pensados em relaçao ao domínio de aplicação
-desejado, devem ser abrangentes a fim de evitar falsos negativos.
+termos de interesse, estes termos devem ser pensados em relaçao ao domínio de
+aplicação desejado, devem ser abrangentes a fim de evitar falsos negativos.
 
 A terceira e última atividade da revisão estruturada é a seleção de artigos,
-nela é identificado se cada artigo resulta, de fato, em publicação de {\it software científico}
-do domínio de aplicação desejado. Esta seleção é feita a partir de uma
-leitura superficial do artigo em busca de indícios de que o artigo publica um
-software do domínio em questão.
+nela é identificado se cada artigo resulta, de fato, em publicação de {\it
+software científico} do domínio de aplicação desejado. Esta seleção é feita a
+partir de uma leitura superficial do artigo em busca de indícios de que o
+artigo publica um software do domínio em questão.
 
 \subsection{Caracterização dos softwares científicos}
 \label{caracterizacao}
@@ -137,6 +139,19 @@ estruturada.
         {\it \small intervalo entre novos lançamentos é maior que 1 ano}
     \end{itemize}
 
+\end{description}
+
+O autor não deixa claro como categorizar softwares sem lançamentos nos últimos
+anos mas com histórico de lançamento frequente em anos anteriores. Assim, será
+considerado todo o histórico de lançamentos e só serão considerados obsoletos
+por exemplo softwares que nunca tenha tido mais de 1 lançamento ao ano
+considerando todo o histórico dele. Da mesma forma, será considerado ocasional
+apenas aqueles que sempre tiveram no máximo 2 lançamentos ao ano. Esta dimensão
+irá nos dizer o grau de evolução de cada ferramenta, considerando que softwares
+com lançamentos frequentes estão evoluindo.
+
+\begin{description}
+
   \item {\it Disponibilidade - de que forma a ferramenta está disponível:}
     \begin{itemize}
       \item Código Aberto ({\it Open Source})\\
@@ -150,7 +165,15 @@ estruturada.
 \end{description}
 
 A fonte de informação para essa caracterização serão os artigos relacionados
-aos softwares, o código-fonte, documentos e site do projeto.
+aos softwares, o código-fonte, documentos e site do projeto. A disponibilidade
+dos {\it softwares científicos} como {\it código aberto} representa o caso
+ideal, mesmo quando o autor não especifica uma licença iremos considerar como
+código aberto, mesmo não sendo, esta decisão de englobar como código aberto
+mesmo os que não citam licença é por conta da importância na disponibilidade do
+software e de seu código-fonte, mesmo quando o autor explicitamente não põe uma
+licença livre dando direitos para modificar o código-fonte ao menos a
+disponibilidade permite que o código seja estudado e isto já é suficiente para
+repetir ou replicar um dado estudo.
 
 \section{Operação do experimento}
 
@@ -297,6 +320,13 @@ continham os termos pesquisados no filtro automático da segunda atividade de
 revisão e apenas 4\% (62 artigos) foram selecionados na terceira e última
 atividade da revisão contendo publicação de ferramenta de análise estática.
 
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.85]{imagens/ferramentas-disponiveis.png}
+  \caption{Ferramentas disponíveis para download (até o ano de 2015)}
+  \label{ferramentas-disponiveis}
+\end{figure}
+
 As informações foram obtidas de forma manual lendo o artigo onde a ferramenta foi publicada,
 uma lista com todas as ferramentas selecionadas em ambas as conferências e sua descrição
 é apresentada no Apendice \ref{softwares-cientificos}.
@@ -306,145 +336,20 @@ uma lista com todas as ferramentas selecionadas em ambas as conferências e sua 
 A seção à seguir traz uma caracterização inicial das ferramentas segundo às
 categorias citadas anteriormente.
 
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.85]{imagens/ferramentas-disponiveis.png}
-  \caption{Ferramentas disponíveis para download (até o ano de 2015)}
-  \label{ferramentas-disponiveis}
-\end{figure}
-
-% \subsection{AccessAnalysis}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{AccessAnalysis-1.2-src.zip}.
-% 
-% \subsection{Kiasan/Bogor}
-% 
-% O código-fonte utilizado em
-% nosso estudo obtido no site da ferramenta foi o
-% \texttt{bogor-src-1.2.20061023.1.zip}.
-% 
-% Não possui número suficiente de releases para ser usado na análise evolutiva.
-% 
-% \subsection{composite}
-% 
-% O código-fonte utilizado em
-% nosso estudo obtido no site da ferramenta foi o \texttt{composite-0.4.tar.gz}.
-% 
-% \subsection{CSeq}
-% 
-% \O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{cseq-0.5.zip}.
-% 
-% \subsection{EJB}
-% 
-% \subsection{error-prone}
-% 
-% O código-fonte utilizado em nosso
-% estudo obtido no site da ferramenta foi o \texttt{error-prone-2.0.9.tar.gz}.
-% 
-% \subsection{GUIZMO}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{guizmo-master.zip}. Aceita como entrada um formato baseado em
-% XML\footnote{\url{http://wireframesketcher.com/help/xmlformat.html}} e gera
-% código GUI em Java Swing / ZK.
-% 
-% \subsection{GumTree}
-% 
-% código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{gumtree-2.0.0.tar.gz}.
-% 
-% \subsection{Indus}
-% 
-% O projeto está organizado em três
-% módulos, os seguintes arquivos, contendo o código-fonte dos três módulos,
-% foram copiados localmente para análise:
-% \texttt{indus.indus-src-20091220.zip},
-% \texttt{indus.javaslicer-src-20091220.zip} e
-% \texttt{indus.staticanalyses-src-20070305.zip}.
-% 
-% Não possui número suficiente de releases para ser usado na análise evolutiva.
-% 
-% \subsection{JastAdd}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{jastadd2-src.zip}.
-% 
-% \subsection{JFlow}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{vazexqi-JFlow-7cd7eaf.tar.gz}.
-% 
-% \subsection{Lotrack}
-% 
-% O código-fonte utilizado em nosso
-% estudo obtido no site da ferramenta foi o \texttt{Lotrack-master.zip}.
-% 
-% Não possui número suficiente de releases para ser usado na análise evolutiva.
-% 
-% \subsection{MPAnalyzer}
-% 
-% O código-fonte utilizado em
-% nosso estudo obtido no site da ferramenta foi o \texttt{MPAnalyzer-master.zip}.
-% 
-% \subsection{PtYasm}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{ptyasm.april2008.tgz}.
-% 
-% Não possui número suficiente de releases para ser usado na análise evolutiva.
-% 
-% \subsection{ReAssert}
-% 
-% O código-fonte utilizado em nosso
-% estudo obtido no site da ferramenta foi o \texttt{ReAssert\_0.4.1-src.zip}.
-% 
-% \subsection{Sonar Qube Plug-in}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{SonarQube-plug-in-master.zip}.
-% 
-% \subsection{SPARTA}
-% 
-% O código-fonte utilizado em nosso
-% estudo obtido no site da ferramenta foi o \texttt{sparta-sparta-1.0.2.tar.gz}.
-% 
-% \subsection{srcML}
-% 
-% \url{http://www.sdml.info/projects/srcml/trunk}\footnote{este endereço
-% retornou "not found" em contato com os autores por email indicaram que o
-% projeto foi movido para http://www.srcML.org}. O código-fonte utilizado em
-% nosso estudo obtido no site da ferramenta foi o \texttt{srcML-src.tar.gz}.
-% 
-% Não possui número suficiente de releases para ser usado na análise evolutiva.
-% 
-% \subsection{TACLE}
-% 
-% disponível em
-% \url{http://presto.cse.ohio-state.edu/tacle}\footnote{este link está
-% indisponível, por email os autores indicaram o endereço
-% http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
-% O código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{tacle\_1\_2\_1\_src.zip}.
-% 
-% \subsection{WALA}
-% 
-% O código-fonte
-% utilizado em nosso estudo obtido no site da ferramenta foi o
-% \texttt{WALA-R\_1.3.8.tar.gz}.
-% 
-% Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-% em número de classes na média.
+Total de 35 softwares científicos disponível para download, deste conjunto, 32 são
+de código aberto e 3 são grátis (apenas binários disponíveis). Deste total de
+35, 4 tem lançamentos frequentes, 9 são obsoletas, 8 tem lançamentos ocasional
+e 14 não possui informação sobre lançamentos.
 
 \section{Conclusões}
+
+Encontramos 103 artigos com publicação de {\it software científico} de análise
+estática de código-fonte, apenas 35 possuem fonte para obtenção do software,
+sendo 32 de código aberto, ou seja, com disponibilidade de código-fonte, e 3
+grátis, apenas binários disponível. Ou seja, apenas 31\% dos artigos com
+publicação de software disponibilizam o código-fonte das mesmas. Isto significa
+que 69\% dos artigos são potencialmente impossíveis de serem repetidos, já que
+os artefatos originais são necessários para tal atividade.
 
 % analise e interpretação
 
