@@ -4,7 +4,9 @@ use experimental 'signatures';
 use File::Basename;
 use Statistics::Descriptive;
 
-foreach my $tool (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+our $DATASET_DIR = "$ENV{PWD}/dataset";
+
+foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
   foreach my $dir (grep { -d $_ } glob("$tool/*")) {
     unless (-e "$dir.analizo.metrics") {
       say "analizo metrics $dir > $dir.analizo.metrics";
@@ -44,9 +46,9 @@ sub metric_value($file, $metric) {
   return;
 }
 
-open my $SUMMARY, '>', "$ENV{PWD}/metrics.csv" or die $!;
+open my $SUMMARY, '>', "$DATASET_DIR/metrics.csv" or die $!;
 print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95\n";
-foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
+foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
   my $tool = basename($tool_dir);
   foreach my $file (glob("$tool_dir/*.metrics")) {
     my $release = basename($file, '.analizo.metrics');
