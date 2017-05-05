@@ -12,7 +12,7 @@ VIEWPDF= evince
 include /usr/share/latex-mk/latex.gmk
 
 analyze:
-	cd dataset; ./analyze-all-projects; cd ..
+	./bin/analyze-softwares -o dataset/metrics.csv
 
 viewpdf_dissertacao:
 	@echo "done"

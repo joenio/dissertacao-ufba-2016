@@ -4,6 +4,13 @@ use experimental 'signatures';
 use File::Basename;
 use Statistics::Descriptive;
 
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  print "Usage: $0 -o <output-filename>\n";
+  exit 1;
+}
+our $OUTPUT_FILENAME = $ARGV[1];
+
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 
 foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
@@ -11,10 +18,6 @@ foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
     unless (-e "$dir.analizo.metrics") {
       say "analizo metrics $dir > $dir.analizo.metrics";
       `analizo metrics $dir > $dir.analizo.metrics`;
-    }
-    unless (-e "$dir.analizo.dsm.png") {
-      say "analizo dsm -o $dir.analizo.dsm.png $dir";
-      `analizo dsm -o $dir.analizo.dsm.png $dir`;
     }
     unless (-e "$dir.sloccount") {
       say "sloccount $dir > $dir.sloccount";
@@ -46,7 +49,7 @@ sub metric_value($file, $metric) {
   return;
 }
 
-open my $SUMMARY, '>', "$DATASET_DIR/metrics.csv" or die $!;
+open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
 print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95\n";
 foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
   my $tool = basename($tool_dir);
