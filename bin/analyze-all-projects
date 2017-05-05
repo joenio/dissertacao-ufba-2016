@@ -45,20 +45,19 @@ sub metric_value($file, $metric) {
 }
 
 open my $SUMMARY, '>', "$ENV{PWD}/metrics.csv" or die $!;
-print $SUMMARY "tool, release, total_modules, total_eloc, change_cost, sc_75, sc_90, sc_95\n";
+print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95\n";
 foreach my $tool_dir (grep { -d $_ } glob("$ENV{PWD}/static-analysis-tools/*")) {
   my $tool = basename($tool_dir);
   foreach my $file (glob("$tool_dir/*.metrics")) {
     my $release = basename($file, '.analizo.metrics');
     my $total_modules = metric_value($file, 'total_modules');
     my $total_eloc = metric_value($file, 'total_eloc');
-    my $change_cost = metric_value($file, 'change_cost');
     my $stat = Statistics::Descriptive::Full->new();
     $stat->add_data(metric_values($file, 'sc'));
     my $sc_75 = $stat->percentile(75);
     my $sc_90 = $stat->percentile(90);
     my $sc_95 = $stat->percentile(95);
-    print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $change_cost, $sc_75, $sc_90, $sc_95);
+    print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $sc_75, $sc_90, $sc_95);
     print $SUMMARY "\n";
   }
 }
