@@ -13,7 +13,7 @@ our $OUTPUT_FILENAME = $ARGV[1];
 
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 
-foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
+foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/softwares/*")) {
   foreach my $dir (grep { -d $_ } glob("$tool/*")) {
     unless (-e "$dir.analizo.metrics") {
       say "analizo metrics $dir > $dir.analizo.metrics";
@@ -51,7 +51,7 @@ sub metric_value($file, $metric) {
 
 open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
 print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95\n";
-foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/static-analysis-tools/*")) {
+foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/softwares/*")) {
   my $tool = basename($tool_dir);
   foreach my $file (glob("$tool_dir/*.metrics")) {
     my $release = basename($file, '.analizo.metrics');
