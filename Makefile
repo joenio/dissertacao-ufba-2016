@@ -14,5 +14,8 @@ include /usr/share/latex-mk/latex.gmk
 analyze:
 	./bin/analyze-softwares -o dataset/metrics.csv
 
+filter:
+	./bin/filter-papers -o dataset/papers.txt
+
 viewpdf_dissertacao:
 	@echo "done"

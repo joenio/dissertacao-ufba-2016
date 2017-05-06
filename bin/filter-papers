@@ -1,19 +1,18 @@
 #!/usr/bin/perl
 use strict;
 
-if ($ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
   warn "E: missing options!";
   print "Usage: $0 -o <file>\n";
   exit 1;
 }
-
 my $filename = $ARGV[1];
 
 my @INCLUIDOS = ();
 my @EXCLUIDOS = ();
 
-my @SCAM_PAPERS = `find "SCAM Papers/" -iname *.pdf | sort`;
-my @ASE_PAPERS = `find "ASE Papers/" -iname *.pdf | sort`;
+my @SCAM_PAPERS = `find "$ENV{PWD}/dataset/papers/SCAM Papers/" -iname "*.pdf" | sort`;
+my @ASE_PAPERS = `find "$ENV{PWD}/dataset/papers/ASE Papers/" -iname "*.pdf" | sort`;
 
 foreach my $paper (@SCAM_PAPERS, @ASE_PAPERS) {
   chomp $paper;
