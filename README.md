@@ -40,17 +40,18 @@ em `bin/analize-softwares` possui as seguintes dependencias:
 
     apt-get install libmodern-perl-perl sloccount
 
-É necessário também as ferramentas `analizo` e `doxyparse`, siga as
-instruções de instalação em:
+É necessário ter também o `analizo` e o `doxyparse`, siga as instruções de
+instalação em:
 
 * http://www.analizo.org/installation.html
 
-Para rodar o script basta executar o seguinte:
+Para executar use o make:
 
     make analyze
 
-Será criado um arquivo para cada software e um final contento um resumo das
-métricas coletadas no arquivo `dataset/metrics.csv`.
+O arquivo `dataset/metrics.csv` contém o resultado da execução deste
+script, ele contém as métricas coletadas pelo Analizo para cada software
+analisado.
 
 ## Script para revisão estruturada semi-automatizada
 
@@ -58,7 +59,7 @@ O script `bin/filter-papers` depende do comando `pdftotext`.
 
     apt-get install poppler-utils
 
-Para exxecutar o script basta rodar o seguinte comando:
+Para executar o script basta rodar o seguinte comando:
 
     make filter
 
