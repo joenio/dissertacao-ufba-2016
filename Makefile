@@ -7,7 +7,7 @@ CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* figure/* _*.Rtex
 
 GZCAT= zcat
 USE_PDFLATEX= true # directly generate .pdf files from the .tex
-VIEWPDF= evince
+VIEWPDF= @true
 
 include /usr/share/latex-mk/latex.gmk
 
@@ -16,6 +16,3 @@ analyze:
 
 filter:
 	./bin/filter-papers -o dataset/papers.txt
-
-viewpdf_dissertacao:
-	@echo "done"
