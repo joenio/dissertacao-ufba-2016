@@ -50,7 +50,7 @@ sub metric_value($file, $metric) {
 }
 
 open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
-print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95\n";
+print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95, lanza_low, lanza_medium, lanza_high\n";
 foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/softwares/*")) {
   my $tool = basename($tool_dir);
   foreach my $file (glob("$tool_dir/*.metrics")) {
@@ -62,8 +62,11 @@ foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/softwares/*")) {
     my $sc_75 = $stat->percentile(75);
     my $sc_90 = $stat->percentile(90);
     my $sc_95 = $stat->percentile(95);
-    print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $sc_75, $sc_90, $sc_95);
+    my $lanza_low = $stat->mean - $stat->standard_deviation;
+    my $lanza_medium = $stat->mean;
+    my $lanza_high = $stat->mean + $stat->standard_deviation;
+    print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $sc_75, $sc_90, $sc_95, $lanza_low, $lanza_medium, $lanza_high);
     print $SUMMARY "\n";
   }
 }
-close $SUMMARY;;
+close $SUMMARY;
