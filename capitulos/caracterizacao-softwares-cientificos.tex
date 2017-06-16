@@ -1,13 +1,9 @@
 \xchapter{Avaliação da disponibilidade dos softwares científicos de análise estática}
-{Este capítulo apresenta a caracterização dos softwares científicos de análise
-estática de código fonte quanto à sua disponibilidade, ou seja, sua
-sustentabilidade técnica, a capacidade de perdurar, de continuar
+{Este capítulo apresenta a avaliação e caracterização dos softwares científicos
+de análise estática de código fonte quanto à sua disponibilidade ou
+sustentabilidade técnica, ou seja, a capacidade de perdurar, de continuar
 disponível no futuro.}
 \label{caracterizacao-ferramentas}
-
-%Software in the scientific literature: Problems with seeing, finding, and using software mentioned in the biology literature
-%Software Use in Astronomy: an Informal Survey
-%A Survey of Bioinformatics Database and Software Usage through Mining the Literature
 
 % Introduction
 % Background
@@ -28,23 +24,23 @@ publicados em conferências de engenharia de software, com especial atenção à
 disponibilidade do seu código fonte, é útil para evidenciar o quão possível é
 repetir tais estudos e assim aumentar a validade em seus resultados.
 
-Sabe-se que artigos que referenciam o desenvolvimento de scripts ou protótipos
-apresentam chance próximo a nulo de serem encontrados publicamente e terem seu
-código fonte acessível, mas quando o artigo se refere à ferramentas, esta
-probabilidae pode variar \cite{robles2010replicating}. A replicabilidade tende
-a cair com a idade do paper, uma das razões é que as páginas web onde as
-ferramentas e possivelmente dados adicionais são publicados tem uma grande
-chance de se tornar indisponível ao passar do tempo.
+Sabe-se que artigos que citam o desenvolvimento de scripts ou protótipos
+apresentam chance próximo a nulo de ter estes artefatos disponíveis
+publicamente e terem seu código fonte acessível. A replicabilidade tende a cair
+com a idade do paper, uma das razões é que as páginas web onde os softwares e
+possivelmente dados são publicados tem uma grande chance de se tornarem
+indisponíveis ao passar do tempo \cite{robles2010replicating}.
 
-O recente Dagstuhl Manifesto \cite{allen2017engineering} indica como
-futura direção de pesquisa quantificar a disponibilidade
-de softwares científicos, e sugere a seguinte questão de pesquisa:
-Na literatura científica publicada, como as taxas de softwares disponíveis,
-executáveis, e escondidos (hidden software) mudam ao longo do tempo?
+O recente Dagstuhl Manifesto \cite{allen2017engineering} indica como futura
+direção de pesquisa quantificar a disponibilidade de softwares científicos, e
+sugere a seguinte questão de pesquisa: Na literatura científica publicada, como
+as taxas de softwares disponíveis, executáveis, e escondidos ({\it hidden
+software}) mudam ao longo do tempo?
 
-Desta forma, este estudo tem como objetivo geral avaliar a disponibilidade dos
-softwares científicos publicados em conferências de engenharia de software e
-assim evidenciar o quanto tais estudos sofrem com dificuldades de repetição.
+Alinhado à esta sugestão de investigação, o atual trabalho define como objetivo
+geral avaliar a disponibilidade dos softwares científicos publicados em
+conferências de engenharia de software e assim evidenciar o quanto tais estudos
+sofrem com dificuldades de repetição.
 
 Esta avaliação e caracterização será focada em publicações da área de análise
 estática de código fonte visto que seria inviável no escopo deste trabalho
@@ -60,16 +56,17 @@ resultados e proporcionam repetição dos seus estudos.
 
 \subsection{Seleção de softwares científicos}
 
-Selecionamos softwares via uma {\it
-revisão estruturada}, um processo disciplinado para busca e seleção de
-softwares de um domínio específico publicados em artigos acadêmicos a partir de
-critérios bem definidos, de forma que seja possível a reprodução do estudo por
-parte de pesquisadores interessados.
+Selecionamos softwares via {\it revisão estruturada}, um processo disciplinado
+para busca e seleção de softwares de um domínio específico publicados em
+artigos acadêmicos a partir de critérios bem definidos, de forma que seja
+possível a reprodução do estudo por parte de pesquisadores interessados.
 
-A revisão estruturada difere da revisão \cite{Kitchenham2007} e do mapeamento sistemático por ser um
-processo mais simples e menos rígido, onde o resultado final é um conjunto de
-softwares, enquanto no mapeamento ou na revisão sistemática há um esforço em
-caracterizar os artigos analisados o mesmo não ocorre na revisão estruturada.
+A revisão estruturada difere da revisão e do mapeamento sistemático
+\cite{Kitchenham2007} por ser um processo mais simples e menos rígido, onde o
+resultado final é um conjunto de softwares, enquanto no mapeamento ou na
+revisão sistemática há um esforço em caracterizar os artigos analisados o mesmo
+não ocorre na revisão estruturada, onde o esforço está em caracterizar os
+softwares científicos.
 
 A revisão estruturada é organizada em três atividades de (1) busca de artigos
 (definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
@@ -83,6 +80,13 @@ com publicação de softwares. Estas atividades estão representadas na Figura
   \caption{Atividades da revisão estruturada}
   \label{figura-revisao-estruturada}
 \end{figure}
+
+O resultado final da revisão estrutuda é um conjunto de softwares científicos e
+informações sobre em qual artigo foi publicado, qual conferência e ano o artigo
+foi publicado e em quais fontes o software pode ser obtido, geralmente páginas
+web, repositórios de código fonte ou outros endereços na internet.
+
+Cada atividade da revisão estruturada é detalhada à seguir:
 
 \begin{description}
 
@@ -130,7 +134,10 @@ selecionados.
 
 \end{description}
 
-\subsection{Avaliação da disponibilidade dos softwares científicos}
+Ao final das 3 atividades da revisão é gerado como saída um conjunto de
+softwares relacionados ao artigo em que foram publicados.
+
+\subsection{Quantificação da disponibilidade dos softwares científicos}
 
 Avaliamos os softwares científicos de análise estática de código fonte selecionados
 na revisão estruturada em relação à sua disponibilidade,
@@ -225,22 +232,17 @@ nos respectivos portais onde os artigos foram obtidos. Todas as trilhas de
 ambas as conferências foram incluídas, econtramos nesta atividade 1879 artigos, 346 artigos
 do SCAM e 1533 artigos do ASE, 
 
-A segunda atividade da revisão estruturada -- {\it (2) Filtro} -- realizada neste
-conjunto de 1879 artigos em busca dos termos abaixo resultou em 436 artigos,
-155 artigos da conferência SCAM e 281 da conferência ASE.
-
-\begin{verbatim}
-  "tool" OU "framework"; E
-  "download" OU "available"; E
-  "http" OU "ftp"; E
-  "static analysis" OU "parser".
-\end{verbatim}
+A segunda atividade da revisão estruturada -- {\it (2) Filtro} -- realizada
+neste conjunto de 1879 artigos em busca dos termos definidos anteriormente
+resultou em 436 artigos, 155 artigos da conferência SCAM e 281 da conferência
+ASE.
 
 A terceira e última atividade da revisão estruturada -- {\it (3) Seleção} --
-realizada em cima dos 436 artigos selecionou 103 artigos com publicação de {\it software
-científico} do domínio de aplicação de análise estática de código fonte, 41 da
-conferência SCAM e 62 da conferência ASE, as Tabelas \ref{artigos-do-scam} e
-\ref{artigos-do-ase} detalham o total de cada conferência.
+realizada em cima dos 436 artigos selecionou 103 artigos com publicação de {\it
+software científico} do domínio de aplicação de análise estática de código
+fonte, 41 da conferência SCAM e 62 da conferência ASE, as Tabelas
+\ref{artigos-do-scam} e \ref{artigos-do-ase} detalham o total de cada
+conferência.
 
 Assim, ao final da revisão estruturada encontramos um total de 103 artigos com
 publicação de software de análise estática de código fonte, estes 103 softwares
