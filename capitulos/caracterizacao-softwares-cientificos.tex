@@ -54,6 +54,29 @@ resultados e proporcionam repetição dos seus estudos.
 
 \section{Planejamento do estudo}
 
+\subsection{Questões de pesquisa}
+
+Neste estudo temos as seguintes questões de pesquisa, adaptados para o contexto
+de análise estática de código fonte, a partir das sugestões de investigação
+apresentadas no Dagstuhl Manifesto \cite{allen2017engineering}:
+
+\newcommand{\QuestaoUm}{Os softwares que nós usamos e produzimos no contexto
+acadêmico de análise estática de código fonte é sustentável?}
+
+\newcommand{\QuestaoDois}{Na literatura científica publicada, como as taxas de
+softwares disponíveis, do domínio de aplicação de análise estática, mudam ao
+longo do tempo?}
+
+\newcommand{\QuestaoTres}{Podemos adaptar de forma incremental o softwares
+científicos de análise estática para aproveitar oportunidades emergentes, sem
+perda de reprodutibilidade e sem custos proibitivos?}
+
+\begin{description}
+  \item [Q1:] \QuestaoUm
+  \item [Q2:] \QuestaoDois
+  \item [Q3:] \QuestaoTres
+\end{description}
+
 \subsection{Seleção de softwares científicos}
 
 Selecionamos softwares via {\it revisão estruturada}, um processo disciplinado
@@ -90,27 +113,26 @@ atividade da revisão estruturada é detalhada à seguir:
 \begin{description}
 
   \item[(1) Busca]
-    Na primeira atividade da revisão estruturada são definidas as fontes de
-    entrada, estas fontes são conferências que abordam o tema de interesse do
-    estudo, e que apresentam um grande potencial de encontrar softwares do
-    domínio de aplicação desejado, neste estudo o interesse está em softwares
-    de análise estática de código fonte, portanto as conferências selecionadas
-    serão aquelas com potencial de se encontrar softwares deste domínio de
-    aplicação. Esta primeira atividade deve incluir o maior número possível de
-    ediçoes possível de cada conferência selecionada, para cada edição são
-    copiados localmente todos os artigos em formato PDF para posterior filtro
-    na atividade 2.
+    A primeira atividade da revisão estruturada define as fontes de entrada,
+    estas fontes são conferências que abordam o tema de interesse do estudo, e
+    que apresentam um grande potencial de encontrar softwares do domínio de
+    aplicação desejado, neste estudo o interesse está em softwares de análise
+    estática de código fonte, portanto as conferências selecionadas serão
+    aquelas com potencial de se encontrar softwares deste domínio de aplicação.
+    Esta primeira atividade deve incluir o maior número possível de ediçoes de
+    cada conferência, para cada edição é copiado localmente todos os artigos em
+    formato PDF para filtro na atividade 2.
 
   \item[(2) Filtro]
     A segunda atividade da revisão estruturada realizada em cima de todo o
     conjunto de artigos selecionados na etapa anterior é um filtro automático
     que busca em todo o conteúdo dos artigos os termos de interesse, estes
     termos devem ser pensados em relaçao ao domínio de aplicação desejado,
-    devem ser abrangentes a fim de evitar falsos negativos, ou seja, deixar de
-    fora qualquer artigo que tenha o mínimo de indício sobre publicação de
-    software de análise estática, mesmo que não publiquem, a atividade seguinte
-    irá identificar esses falsos negativos deixando-os de fora do resultado
-    final da revisão. Os seguintes termos serão utilizados neste filtro:
+    devem ser abrangentes a fim de evitar falsos negativos, ou seja, evitar que
+    o filtro deixe de fora artigos que publiquem software de análise estática,
+    mesmo que isto gere alguns falsos positivos, a atividade seguinte irá
+    identificar os falsos negativos deixando-os fora do resultado final da
+    revisão. Os seguintes termos serão utilizados neste filtro:
 
     \begin{verbatim}
       "tool" OU "framework"; E
@@ -121,11 +143,10 @@ atividade da revisão estruturada é detalhada à seguir:
 
     Esses termos devem encontrar artigos com publicação de softwares
     científicos do domínio de análise estática de código fonte com
-    disponibilidade para {\it download}, seja binário ou código fonte,
-    a serão aplicados automaticamente com auxílio de um script desenvlvido
-    durante este trabalho de pesquisa, detalhes deste script, outros artefatos,
-    e onde obtê-los pode ser encontrado no Apêndice
-    \ref{reproducibilidade-do-estudo}.
+    disponibilidade para {\it download}, seja binário ou código fonte, será
+    aplicado automaticamente com auxílio de um script desenvolvido durante este
+    trabalho de pesquisa, detalhes deste script, outros artefatos produzidos durante esta
+    pesquisa, e onde obtê-los pode ser encontrado no Apêndice \ref{reproducibilidade-do-estudo}.
 
   \item[(3) Seleção]
     A terceira e última atividade da revisão estruturada identifica se cada
@@ -134,104 +155,80 @@ atividade da revisão estruturada é detalhada à seguir:
     superficial do artigo em busca de indícios de que o artigo publica de fato
     algum software.
 
-    Nesta etapa cada artigo é lido, inicialmente apenas introdução, resultados
-    e conclusão com o objetivo de identificar se o artigo publica software
+    Para cada artigo é lido, título, introdução, resultados
+    e conclusões com o objetivo de identificar se o artigo publica software
     científico e indica onde obter uma cópia do software. Quando esta leitura inicial
     não é suficiente para identificar se há publicação de software, outras seções são
     lidas, alguns artigos descrevem a implementação do software em seções específicas,
-    outros indicam detalhes do software ao longo de todo o texto. Softwares científicos
+    outros indicam detalhes do software ao longo de todo o texto, é comum o uso
+    de notas de rodapé para indicar onde o software está disponível. Softwares científicos
     que sejam mais abrangentes do que apenas análise estática de código fonte
     mas que contenham esta função em seu conjunto também são selecionados.
 
 \end{description}
 
-Ao final das 3 atividades da revisão é gerado como saída um conjunto de
-softwares científicos de análise estática de código fonte, para cada software
-teremos o nome, uma breve descrição e em qual artigo o software foi publicado.
+Ao final das 3 atividades da revisão estruturada é gerado como saída um
+conjunto de softwares científicos de análise estática de código fonte, para
+cada software teremos o nome, descrição e em qual artigo o software foi
+publicado, além da informação sobre a fonte para obtenção do software.
 
 \subsection{Quantificação da disponibilidade dos softwares científicos}
 
-Avaliamos os softwares científicos de análise estática de código fonte
-selecionados na revisão estruturada em relação à sua disponibilidade, dois
-aspectos foram levados em conta nesta avaliação, um relacionado à como o artigo
-apresenta e disponibiliza o software científico e o outro relacionado a como o
-software está de fato disponível, ou seja, se a fonte informada para obtenção
-está funcional ou não.
+Os softwares científicos selecionados na revisão estruturada foram avaliados em
+relação à sua disponibilidade, apenas os softwares com indicação de fonte para
+obtenção foram incluídos aqui, dois aspectos foram analisados.
 
-O primeiro aspecto relacionado à como o artigo disponibiliza o software
-científico será caracterizado entre uma das seguintes opções:
+O primeiro relacionado à como o artigo disponibiliza o software científico
+avalia se de fato o software está disponível, ou seja, se a fonte informada
+para obtenção está funcional e acessível publicamente, será caracterizado entre
+uma das seguintes opções:
 
 \begin{itemize}
-  \item Artigo não indica onde obter o software:\\
-    {\it O artigo não indica fonte para obtenção do software}
   \item Fonte para obtenção do software indisponível:\\
     {\it O artigo indica fonte mas encontra-se inacessível, fora do ar ou com erros}
   \item Software disponivel, binários ou código fonte\\
     {\it A fonte indicada está disponível e acessível publicamente}
 \end{itemize}
 
-Este primeiro aspecto tem a importância de mostrar quantos artigos falham em
-não informar ao leitor qual ou quais são as fontes para obtenção dos artefatos
-de software produzidos no estudo. A fonte indicada será acessada a fim de
-identificar se está funcional e se é possível obter uma cópia do software.
-Este é um requisito fundamental para conseguir responder positivamente às
-questões apresentadas no manifesto Dagstuhl \cite{allen2017engineering}:
-
-\begin{quote}
-  O software que nós usamos e produzimos no contexto acadêmico é sustentável?
-  Temos certeza de que podemos reproduzir métodos de pesquisas anteriores no
-  futuro, tendo em vistas mudanças arbitrárias no contexto tecnológico?
-  Podemos adaptar de forma incremental o software acadêmico para aproveitar
-  oportunidades emergentes, sem perda de reprodutibilidade e sem custos
-  proibitivos?
-\end{quote}
+A fonte indicada será acessada a fim de identificar se está funcional e se é
+possível obter uma cópia do software. Este é um requisito fundamental para
+conseguir responder à questão de pesquisa {\bf Q1:} \QuestaoUm
 
 %Mesmo que o autor tenha disponibilizado fontes para obtenção dos artefatos produzidos,
 %o fato de não informarem a fonte inviabiliza, ou ao menos dificulta, bastante
 %pesquisadores interessados em repetir ou reproduzir os resultados de tais estudos.
 
-É claro que não podemos responder à todas estas questões com a caracterização deste
-primeiro aspecto em relação à disponibilidade dos softwares, ou, sua sustentabilidade
-técnica, a capacidade de perdurar e continuar disponível no futuro. Mas este é o requisito
-mínimo necessário para conseguir responder tais questões, sem ele é extremamente difícil
-conseguir resposta para tal.
-
-O segundo aspecto diz respeito à como o software está disponível, é um nível de
-detalhe sobre o primeiro aspecto, os softwares caracterizados como disponíveis
-no primeiro aspecto serão detalhados aqui, informando de que forma estão
-disponíveis, se código fonte, binários de forma gratuita, ou disponíveis apenas
-comercialmente.
+Esta questão diz respeito à sustentabilidade técnica, a capacidade de perdurar
+e continuar disponível no futuro. O segundo aspecto diz respeito à como o
+software está disponível, é um nível de detalhe sobre o primeiro aspecto, os
+softwares caracterizados como disponíveis no primeiro aspecto serão detalhados
+aqui, informando de que forma estão disponíveis, se código fonte, ou apenas
+binários.
 
 \begin{itemize}
-  \item Código Aberto ({\it Open Source}):\\
-    {\it A ferramenta é livre e o código fonte está disponível}
-  \item Grátis ({\it Free}):\\
-    {\it A ferramenta é grátis mas o código fonte não está disponível}
-  \item Comercial:\\
-    {\it A ferramenta está disponível mediante pagamento}
+  \item Código fonte disponível
+  \item Apenas binários disponível
 \end{itemize}
 
-Lembrando, apenas os softwares caracterizados no primeiro aspecto como
-{\it``Software disponivel, binários ou código fonte''} serão detalhados aqui.
-Esse segundo aspecto toma como base o trabalho de \citeonline{Novak2010} em que
-propõe uma taxonomia e um conjunto de dimensões para caracterização de
-ferramentas de análise estática, uma das dimensões para caracterização
-é esta relacionado à como o software é disponibilizado.
+%Esse segundo aspecto toma como base o trabalho de \citeonline{Novak2010} em que
+%propõe uma taxonomia e um conjunto de dimensões para caracterização de
+%ferramentas de análise estática, uma das dimensões para caracterização
+%é esta relacionado à como o software é disponibilizado.
 
-Os softwares caracterizados como {\it ``Código Aberto (Open Source)''}
-incluirão qualquer software com código fonte disponível, mesmo sem licença
-definida, sabemos que isto contraria as definições de software {\it livre} e
-{\it open} da Free Software
+Lembrando que apenas os softwares caracterizados no primeiro aspecto como
+{\it``software disponivel, binários ou código fonte''} serão detalhados aqui.
+Os softwares caracterizados como {\it ``código fonte disponível''} incluirão
+qualquer softwares mesmo sem licença definida, não estamos avaliando neste
+momento se o software é livre ou aberto segundo as definições de software {\it
+livre} e {\it open} da Free Software
 Foundation\footnote{\url{https://www.gnu.org/philosophy/free-sw.html}} e Open
 Source Initiative\footnote{\url{https://opensource.org/osd}}, respectivamente,
-mas será feito assim pois o acesso ao código fonte é a característica de
-interesse neste estudo, com ele é possível estudar o conhecimento empregado nos
-softwares, bem como repetir o estudo original utilizando ou executando tal
-código quando necessário.
+o acesso ao código fonte é a característica de interesse neste estudo, com ele
+é possível estudar o conhecimento empregado nos softwares, bem como repetir o
+estudo original utilizando ou executando tal código quando necessário.
 
-A fonte de informação para a caracterização desses dois aspectos serão os
-artigos relacionados aos softwares, código fonte, documentos e site do projeto,
-quando disponíveis.
+A fonte para coleta dessas informações serão os artigos relacionados aos
+softwares, código fonte, documentos e site do projeto, quando disponíveis.
 
 \section{Resultados}
 
@@ -244,100 +241,110 @@ programas e apresentam um alto potencial de encontrar softwares do domínio de
 análise estática de código fonte.
 
 A primeira atividade da revisão estruturada -- {\it (1) Busca} -- passa por
-todas as ediçoes das duas conferências até o ano de 2015. Todas as trilhas de
-ambas as conferências foram incluídas, econtramos nesta atividade 1873 artigos
-no total, 346 artigos do SCAM e 1530 artigos do ASE, uma média de 75 artigos
-publicados por ano.
+todas as ediçoes das duas conferências até o ano de 2015, ou seja, explora o
+histórico de 24 anos de publicação. Todas as trilhas de ambas as conferências
+foram incluídas, encontramos nesta atividade 1873 artigos no total, 1527 artigos
+do ASE e 346 artigos do SCAM, com uma média geral de 75 artigos publicados por ano. A
+Figura \ref{artigos-por-ano} apresenta a distribuição por edição de cada
+evento.
 
 \begin{figure}[h]
   \center
-  \includegraphics[scale=0.65]{imagens/grafico-artigos-por-ano.png}
+  \includegraphics[scale=0.65]{imagens/artigos-por-ano.png}
   \caption{Gráfico em barras com o total de artigos publicado por ano}
-  \label{grafico-artigos-por-ano}
+  \label{artigos-por-ano}
 \end{figure}
 
-Até o ano de 1996 a conferencia ASE chamava-se KBSE - {\it Knowledge-Based
-Software Engineering Conference} e só a partir de 1997 passou a chamar-se ASE -
-{\it Automated Software Conference}. O ano com o maior número de publicações
-foi 2011 com um total de 112 artigos, seguido de 2014 com 104, e 2007 com 102,
-o ano com o menor número foi 1996 com apenas 15 artigos publicados.
+Entre os anos de 1991 e 1996 a conferencia ASE chamava-se KBSE - {\it
+Knowledge-Based Software Engineering Conference} e só a partir de 1997 passou a
+chamar-se ASE - {\it Automated Software Conference}. A edição com o maior
+número de publicações foi 2011 com 112 artigos publicados, seguido de 2014 com
+104, e 2007 com 102, a edição com o menor número foi 1996 com apenas 15 artigos
+publicados.
 
-Se compararmos os mesmos períodos de ambas as conferências, entre 2001 e 2015,
-é fácil perceber que a conferência ASE publica, no mínimo, 3 vezes mais em
-números do que a conferência SCAM, com uma média de 80 e 23 respectivamente.
+A conferência SCAM teve sua primeira edição apenas em 2001, 10 anos após a
+primeira edição do ASE, e possui uma média de 23 artigos publicados por edição.
+Se compararmos os mesmos períodos de ambas as conferências, 2001 à 2015,
+percebemos que a conferência ASE publica quase 4 vezes mais do que a
+conferência SCAM. Neste período a conferência ASE teve uma média de 80 artigos
+publicados por ano, se for levado em conta todas as edições, apenas da
+conferência ASE, a média cai para 61 artigos por ano.
 
-A segunda atividade da revisão estruturada -- {\it (2) Filtro} -- realizada
-neste conjunto total de 1873 artigos resultou em 441, 155 artigos da
-conferência SCAM e 286 da conferência ASE.
-
-%44\% do total de artigos da conferência SCAM e 10\% dos artigos do ASE possuem
-%os termos indicanos no filtro para uma busca abrangente de publicação de
-%ferramentas.
-
-Alguns artigos foram analisados manualmente pois o conteúdo era formado por
-imagens de forma que o script de filtro não é possível de processar textos
-contidos em imagens, foram artigos do ASE 2004: {\it Adaptable concern-based
-framework specialization in UML} e {\it Property-oriented test generation from
-UML Statecharts}. Nenhum continha os termos pesquisados.
+A segunda atividade da revisão estruturada -- {\it (2) Filtro} -- reduziu em 77\%
+o total de artigos de forma automática a partir da string de busca, resultando em 441 artigos
+para serem analisados na próxima etapa da revisão estruturada.  Durante a execução desta
+atividade foi necessário analisar dois artigos manualmente, {\it Adaptable
+concern-based framework specialization in UML} e {\it Property-oriented test
+generation from UML Statecharts}. O conteúdo destes dois artigos não é possível
+de ser analisados pelo script de filtro uma vez que é formado por imagens
+digitalizadas, ambos artigos publicados no ASE edição 2004. Nenhum dos dois
+artigos continham os termos pesquisados e ficaram fora do conjunto selecionado
+nesta atividade.
 
 A terceira e última atividade da revisão estruturada -- {\it (3) Seleção} --
 realizada em cima dos 441 artigos selecionou 107 artigos com publicação de
-software científico do domínio de aplicação de análise estática de código
-fonte, 41 da conferência SCAM e 66 da conferência ASE, os Apêndices
-\ref{artigos-do-scam} e \ref{artigos-do-ase} detalham o total de cada
-conferência.
+software científico do domínio de aplicação de análise estática, alguns destes
+artigos fazem referência à um mesmo software, é o caso do {\it BEST: A symbolic
+testing tool for predicting multi-threaded program failures} e do {\it Scalable
+and precise symbolic analysis for atomicity violations}, ambos publicados no
+ASE 2011 fazem referência ao software {\it BEST}. Situação similar ocorreu com o {\it Augmenting
+Counterexample-Guided Abstraction Refinement with Proof Templates} e o {\it
+PtYasm: Software Model Checking with Proof Templates} publicados no ASE 2008,
+fazem referência ao software {\it PtYasm}. Por conta disso, entre os 107 artigos, temos
+105 softwares distintos, uma lista com todos os softwares e uma breve descrição
+de cada um é apresentado no Apêndice \ref{resumo-softwares},
+detalhes sobre o número de artigos e softwares encontrados em cada conferência
+pode ser consultados nos Apêndices \ref{artigos-do-scam} e \ref{artigos-do-ase} 
 
-Assim, ao final da revisão estruturada encontramos um total de 107 artigos com
-publicação de software de análise estática de código fonte, alguns artigos
-fazem referência ao mesmo software, estes 107 artigos fazem referência à 105
-softwares diferentes, uma lista com todos os softwares e uma breve descrição de
-cada um é apresentado no Apêndice \ref{resumo-softwares}.
+Ainda durante esta atividade da revisão cada um dos 107 artigos foram
+analisados em busca de informações sobre onde encontrar o software indicado,
+esta análise resultou em 60 softwares com indicação de fonte para obtenção do
+software, todos os artigos indicam endereço de página web para download do
+software. A Figura \ref{softwares-disponivel-por-ano} apresenta estes 60
+softwares distribuídos ao longo dos anos num gráfico em linha.
 
-Todos os artigos indicam o nome do software e apresentam algum nível de detalhe
-sobre eles, apesar da busca na atividade -- (2) Filtro -- utilizar termos com o
-objetivo de encontrar apenas softwares disponíveis 45 artigos encontrados não
-indicam onde encontrar e obter o software.
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.65]{imagens/softwares-por-ano.png}
+  \caption{Gráfico em linha com o número de softwares por ano selecionados na revisão estruturada}
+  \label{softwares-por-ano}
+\end{figure}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{| l | l |}
-  \hline
-  {\bf Característica}                          & {\bf Número de artigos} \\
-  \hline
-  Artigo não indica onde obter o software       & 45 \\
-  \hline
-  Artigo indica fonte para obtenção do software & 59 \\
-  \hline
-\end{tabular}
-\end{table}
+Apesar da busca na atividade -- (2) Filtro -- utilizar termos com o objetivo de
+encontrar apenas softwares disponíveis com informação de onde encontrar o
+software, ainda assim, encontramos 45 artigos com publicação de software sem
+indicação de fonte para obtenção.
 
-Dentre os 1873 artigos, 107 referenciam 105 softwares de análise estática, e
-apenas 59 destes indicam uma fonte onde o software pode ser encontrado, 24
-destes artigos indicam fontes indisponíveis, todos indicam algum endereço web e
-alguns deram endereço não encontrado e outros endereços caem em sites não
-relacionados ao software. Outros 35 artigos indicam fonte disponível para
-obtenção, todos indicam endereço de um site ou repositório e estão disponíveis,
-seja em formato binário apenas ou em código fonte.
+Entre os 1873 artigos, encontramos 107 artigos referenciando 105 softwares de
+análise estática, apenas 60 destes indicam fonte onde o software pode ser
+encontrado, apenas 37 estão disponíveis, os 23 restantes indicam fonte não mais
+acessíveis, endereço não encontrado, indisponível, ou com informações não
+relacionadas ao software. O Apêndice \ref{resumo-softwares-disponiveis} traz
+uma tabela com os nomes e endereços web onde os softwares estão disponíveis.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{| l | l |}
-  \hline
-  {\bf Característica}                          & {\bf Número de artigos} \\
-  \hline
-  Fonte para obtenção do software indisponível  & 24 \\
-  \hline
-  Fonte para obtenção do software disponivel    & 35 \\
-  \hline
-\end{tabular}
-\end{table}
+Esta informação nos permite responder a bissa questão de pesquisa {\bf Q1:}
+\QuestaoUm
 
-Uma avaliação sobre estes 59 softwares que tem sua fonte indicada no artigo
-feita para identificar que confirmamos neste contexto se com a idade do paper
+Levando em conta a sustentabilidade técnica podemos responder que 61\% dos
+softwares produzidos no domínio de aplicação de análise estática são
+sustentáveis, ou seja, continuam disponíveis ao longo do tempo. Lembrando que
+não está sendo considerado aqui pesquisas que publicam software sem menção à
+fonte onde pode ser encontrado, a revisão estruturada teve como foco encontrar
+artigos com publicação softwares com indicação de fonte, ou seja, aqueles
+artigos que publicam software mas que não indicam fonte não está sendo
+considerado aqui, vimos que na revisão estruturada, mesmo não sendo o objetivo
+encontramos 45 artigos sem informação de fonte, isto faria esta taxa cair para
+apenas 35\%, uma revisão estruturada mais abrangente com objetivo de encontrar
+todo e qualquer software, independente de indicar fonte ou não, com certeza
+faria esta taxa cair abaixo dos 35\%.
+
+\citeonline{robles2010replicating} afirma que existe uma tendência das páginas
+web onde os softwares estão disponíveis tem uma grande chance de se tornarem
+indisponíveis ao passar do tempo, podemos investigar esta tendência 
+avaliando os 60 softwares com fonte indicada no artigo,
+identificar se confirmamos neste contexto se com a idade do paper
 as páginas web onde os softwares são publicados tem uma grande chance de se
-tornarem indisponíveis ao passar do tempo, a Figura
-\ref{softwares-disponivel-por-ano} mostra quantos porcentos do total de
-softwares com indicação de fonte estão ainda disponíveis hoje.
+tornarem indisponíveis ao passar do tempo.
 
 \begin{figure}[h]
   \center
@@ -346,39 +353,63 @@ softwares com indicação de fonte estão ainda disponíveis hoje.
   \label{softwares-disponivel-por-ano}
 \end{figure}
 
-Não é possível identificar se há um padrão de crescimento ao longo do tempo com
-as amostras analisadas, em 2006 80\% de todos os softwares de análise estática
-publicados nas conferências SCAM e ASE estão ainda disponíveis e é possível
-obter uma cópia dos softwares livrevemente. Este número cresce em 2014 chegando
-a 90\%, e no ano seguinte 2015 começa a cair 85\%. Lembrando que são softwares
-publicados em artigos indicando a fonte para obtenção.
+A Figura \ref{softwares-disponivel-por-ano} apresenta em cada ano quantos
+porcentos do total de softwares com indicação de fonte estão ainda continuam
+disponíveis hoje, ou seja, quantos qual é a taxa de softwares que continuam
+disponíveis hoje dentro do conjunto de softwares publicados em cada ano com
+informação sobre fonte para download.  Os anos de 2002, 2004, 2005, e
+anteriores a 2001 não possuem softwares publicados com fonte indicada no artigo
+ainda disponível, portanto não consta no gráfico suas informações.
 
-Os anos de 2005, 2004, 2002 e anteriores ao ano 2001 não possuem softwares
-publicados com fonte indicada no artigo ainda disponível.
+Ao analisar a figura percebemos que há um leve crescimento na disponibilidade
+dos softwares nos anos mais recentes, com isso podemos responder à nossa
+questão de pesquisa {\bf Q2:} \QuestaoDois
 
-Esses 35 softwares com fonte disponível foram avaliados em relação ao segundo
-aspecto em respeito à de que forma estão disponíveis.
+Existe uma leve tendência da fontes informadas, páginas web, se tornarem
+indisponível ao longo do tempo, é possível notar que em 2006 80\% de todos os
+softwares de análise estática publicados estão ainda disponíveis, este número
+cresce em 2014 chegando a 90\%, e cai no ano seguinte para 85\%, apesar de não
+estar sempre crescente, e de termos uma amostra pequena, apenas 60 softwares,
+este leve indício confirma a afirmação de \citeonline{robles2010replicating}.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{| l | l |}
-  \hline
-  {\bf Característica}                          & {\bf Número de artigos} \\
-  \hline
-  ``Código Aberto ({\it Open Source})''         & 32 \\
-  \hline
-  ``Grátis ({\it Free})''                       & 3  \\
-  \hline
-  ``Comercial''                                 & 0  \\
-  \hline
-\end{tabular}
-\end{table}
+Esses 37 softwares com fonte disponível foram avaliados em relação ao segundo
+aspecto em respeito à de que forma estão disponíveis, os artigos informam onde
+obter tais softwares, os softwares estão realmente disponíveis, as fontes
+indicadas foram acessadas e na presente data deste trabalho estão funcionando e
+acessíveis, mas queremos saber em qual formato estes softwares estão
+disponíveis?
 
-Em outras palavras, de um total de 103 artigos publicando softwares de análise estática de
-código fonte, apenas 32 artigos (31\%) estão disponíveis para download com
-código fonte, o que nos leva a conclusão que os 71 artigos (69\%) restantes não
-podem ser repetidos considerando que disponibilizar o código fonte dos
-artefatos de software é o mínimo requisito para possibilitar tal prática.
+\begin{itemize}
+  \item Código fonte disponível
+  \item Apenas binários disponível
+\end{itemize}
+
+Entre estes apenas 3 não possuem código fonte disponível, 34 estão com o código
+fonte disponível publicamente, dentre elas 13 não informam licença alguma
+apensar de ter o código fonte disponível, 21 informam licenças de FOSS ({\it
+free and open source software}):
+8 usam GNU General Public License;
+2 usam Apache License;
+4 usam BSD License;
+3 usam Eclipse Public License;
+2 usam University of Illinois/NCSA Open Source License;
+1 usa licença {\it FrontEndART Software Ltd}; e
+1 usa licença {\it SAnToS Laboratory Open Academic License}.
+
+Com essas informações podemos responder à terceira e última questão de
+pesquisa desse estudo {\bf Q3:} \QuestaoTres
+
+Entre os 37 softwares disponíveis 21 podem ser modificados para se adaptar às
+necessidades emergentes sem necessidades de solicitação prévia de autorização
+aos autores originais devido ao uso de licenças livres. Os 13 softwares
+restantes com código fonte disponível mas sem licença expressa podem
+eventualmente serem modificados mas a falta de uma licença impõe à necessidade
+de solicitar permissão aos autores originais.
+
+35\% dos softwares disponíveis podem ser adaptados de forma incremental para
+aproveitar oportunidades emergentes, 21\% podem mediante prévia autorização do
+autor original serem modificados, e apenas 5\% não oferecem essa possibilidade
+por não disponibilizarem o código fonte publicamente.
 
 \section{Ameaças à validade}
 
