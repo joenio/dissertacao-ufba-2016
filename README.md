@@ -94,8 +94,9 @@ Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 * Crescêncio Lima
 * Mariel Zasso
 * Hilmer Neri
+* Talita Gentil
 
-## Crétidos
+## Créditos
 
 ### Imagens e ícones
 
