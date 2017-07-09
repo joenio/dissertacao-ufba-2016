@@ -2,7 +2,7 @@
 {Este capítulo apresenta a avaliação dos softwares acadêmicos de análise
 estática de código fonte quanto à sua sustentabilidade técnica, ou seja, a
 capacidade de perdurar, de continuar disponível no futuro.}
-\label{caracterizacao-ferramentas}
+\label{sustentabilidade-tecnica}
 
 % Introduction
 % Background
@@ -11,93 +11,60 @@ capacidade de perdurar, de continuar disponível no futuro.}
 % Discussion
 % Threats to validity
 % Conclusions
-%
-% O recente manifesto de {\it
-% Dagstuhl} \cite{allen2017engineering} retrata estas questões ao falar sobre
-% {\it sustentabilidade de software}:
-% 
-% \begin{quote}
-%   O software que nós usamos e produzimos no contexto acadêmico é sustentável?
-%   Temos certeza de que podemos reproduzir métodos de pesquisas anteriores no
-%   futuro, tendo em vistas mudanças arbitrárias no contexto tecnológico
-%   (máquinas, sistemas operacionais, linguagens de programação, frameworks)?
-%   Podemos adaptar de forma incremental o software acadêmico para
-%   aproveitar oportunidades emergentes, sem perda de reprodutibilidade e
-%   sem custos proibitivos?
-% \end{quote}
 
 Muitos estudos em engenharia de software sofrem de dificuldades de repetição
-\cite{Tang2016}, uma prática importante para aumentar a validade científica dos
-estudos e seus resultados.
-Avaliar a disponibilidade dos {\it softwares cientificos}
-publicados em conferências de engenharia de software, com especial atenção à
-disponibilidade do seu código fonte, é útil para evidenciar o quão possível é
-repetir tais estudos e assim aumentar a validade em seus resultados.
+\cite{Tang2016}, artigos que citam o desenvolvimento de scripts ou protótipos
+apresentam chance próximo a nulo de ter tais artefatos disponíveis
+publicamente, a replicabilidade das pesquisas tendem a cair com a idade da
+publicação, páginas ou repositórios onde os softwares são publicados tem uma
+grande chance de se tornarem indisponíveis com o passar do tempo
+\cite{robles2010replicating}.
 
-% 
 % NumFOCUS is a 501(c)(3) nonprofit that supports and promotes world-class,
 % innovative, open source scientific computing.
 % https://www.numfocus.org/
-
+%
 %  ActivePapers: a platform for publishing and archiving computer-aided research \cite{hinsen2014activepapers}
- % The lack of replicability and reproducibility of scientific studies based on
- % computational methods has lead to serious mistakes in published scientific
- % findings, some of which have been discovered and publicized recently. Many
- % strategies are currently pursued to improve the situation. This article
- % reports the first conclusions from the ActivePapers project, whose goal is the
- % development and application of a computational platform that allows the
- % publication of computational research in a form that enables installation-free
- % deployment, encourages reuse, and permits the full integration of datasets and
- % software into the scientific record. The main finding is that these goals can
- % be achieved with existing technology, but that there is no straightforward way
- % to adapt legacy software to such a framework. 
+% The lack of replicability and reproducibility of scientific studies based on
+% computational methods has lead to serious mistakes in published scientific
+% findings, some of which have been discovered and publicized recently. Many
+% strategies are currently pursued to improve the situation. This article
+% reports the first conclusions from the ActivePapers project, whose goal is the
+% development and application of a computational platform that allows the
+% publication of computational research in a form that enables installation-free
+% deployment, encourages reuse, and permits the full integration of datasets and
+% software into the scientific record. The main finding is that these goals can
+% be achieved with existing technology, but that there is no straightforward way
+% to adapt legacy software to such a framework. 
 
-Sabe-se que artigos que citam o desenvolvimento de scripts ou protótipos
-apresentam chance próximo a nulo de ter estes artefatos disponíveis
-publicamente e terem seu código fonte acessível. A replicabilidade tende a cair
-com a idade do paper, uma das razões é que as páginas web onde os softwares e
-possivelmente dados são publicados tem uma grande chance de se tornarem
-indisponíveis ao passar do tempo \cite{robles2010replicating}.
+O campo de pesquisa sobre análise estática de software tem uma longa tradição e
+ainda hoje possui carência de estudos avaliando suas ferramentas, ainda hoje
+não sabemos como, na literatura
+científica publicada, as taxas de softwares disponíveis, executáveis, e
+escondidos ({\it hidden software}) mudam ao longo do tempo
+\cite{allen2017engineering}.
 
-O recente Dagstuhl Manifesto \cite{allen2017engineering} indica como futura
-direção de pesquisa quantificar a disponibilidade de softwares científicos, e
-sugere a seguinte questão de pesquisa: Na literatura científica publicada, como
-as taxas de softwares disponíveis, executáveis, e escondidos ({\it hidden
-software}) mudam ao longo do tempo?
-
-Alinhado à esta sugestão de investigação, o atual trabalho define como objetivo
-geral avaliar a disponibilidade dos softwares científicos publicados em
-conferências de engenharia de software e assim evidenciar o quanto tais estudos
-sofrem com dificuldades de repetição.
-
-Esta avaliação e caracterização será focada em publicações da área de análise
-estática de código fonte visto que seria inviável no escopo deste trabalho
-englobar todas as áreas de pesquisa da engenharia de software.
-
-A área de análise estática de código fonte possui carência de estudos avaliando
-suas ferramentas, desta forma conseguiremos contribuir com esta área ao mesmo
-tempo que exploramos o quanto os pesquisadores publicando softwares nesta área
-publicam e disponibilizam seus softwares contribuindo para a divulgação dos
-resultados e proporcionam repetição dos seus estudos.
+objetivo
+geral avaliar a disponibilidade dos softwares acadêmicos publicados em
+conferências de engenharia de software
 
 \section{Planejamento do estudo}
 
 \subsection{Questões de pesquisa}
 
-Neste estudo temos as seguintes questões de pesquisa, adaptados para o contexto
-de análise estática de código fonte, a partir das sugestões de investigação
-apresentadas no Dagstuhl Manifesto \cite{allen2017engineering}:
+Neste estudo as seguintes questões de pesquisa serão investigadas:
 
-\newcommand{\QuestaoUm}{Os softwares que nós usamos e produzimos no contexto
-acadêmico de análise estática de código fonte é sustentável?}
+\newcommand{\QuestaoUm}{Os softwares produzidos no contexto acadêmico de
+análise estática, publicados na literatura científica, estão disponíveis para
+obtenção hoje?}
 
 \newcommand{\QuestaoDois}{Na literatura científica publicada, como as taxas de
-softwares disponíveis, do domínio de aplicação de análise estática, mudam ao
+softwares disponíveis, no domínio de aplicação de análise estática, mudam ao
 longo do tempo?}
 
-\newcommand{\QuestaoTres}{Podemos adaptar de forma incremental o softwares
-científicos de análise estática para aproveitar oportunidades emergentes, sem
-perda de reprodutibilidade e sem custos proibitivos?}
+\newcommand{\QuestaoTres}{Podemos adaptar de forma incremental os softwares
+acadêmicos de análise estática para aproveitar oportunidades emergentes, sem
+perda de reprodutibilidade?}
 
 \begin{description}
   \item [Q1:] \QuestaoUm
