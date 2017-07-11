@@ -13,40 +13,71 @@ capacidade de perdurar, de continuar disponível no futuro.}
 % Conclusions
 
 Muitos estudos em engenharia de software sofrem de dificuldades de repetição
-\cite{Tang2016}, artigos que citam o desenvolvimento de scripts ou protótipos
-apresentam chance próximo a nulo de ter tais artefatos disponíveis
-publicamente, a replicabilidade das pesquisas tendem a cair com a idade da
-publicação, páginas ou repositórios onde os softwares são publicados tem uma
-grande chance de se tornarem indisponíveis com o passar do tempo
-\cite{robles2010replicating}.
+\cite{Tang2016}, artigos citando desenvolvimento de scripts ou protótipos
+apresentam chance próximo a nulo de terem tais artefatos disponíveis, a
+replicabilidade das pesquisas tendem a cair com a idade da publicação, páginas
+ou repositórios se tornam indisponíveis com o passar do tempo
+\cite{robles2010replicating}, não se sabe como as taxas de softwares
+disponíveis, executáveis, e escondidos ({\it hidden software}) mudam ao longo
+do tempo \cite{allen2017engineering}, softwares acadêmicos são, muitas vezes, mal
+documentados, não intuitivos e difíceis de instalar, uma fração substancial são
+abandonware, ou seja, não são mais mantidos ou desenvolvidos ativamente, mesmo
+tendo um valor potencial para a comunidade científica \cite{list2017ten}.
 
-% NumFOCUS is a 501(c)(3) nonprofit that supports and promotes world-class,
-% innovative, open source scientific computing.
-% https://www.numfocus.org/
+Estes são apenas alguns exemplos de problemas relacionados aos softwares
+acadêmicos, muitos são resultados de baixo orçamento, limitação de tempo e alta
+rotatividade de pessoas entre grupos de pesquisa, outros são, possivelmente,
+ocasionados por questões culturais \cite{niemeyer2017open}, como, por exemplo,
+a ainda tímida adoção de práticas da ciência aberta entre a comunidade de
+pesquisa, mas apesar da inegável importância de compreendermos os reais motivos
+destes problemas, consideramos necessário, antes de mais nada, compreender o
+impacto que estes problemas causam.
+
+% In my view, the challenges impeding greater adoption of open-
+% science practices are mainly institutional and cultural, rather than
+% technical.
+% General venues for sharing and developing the products of
+% research openly abound these days, with the availability of services
+% like arXiv, engrXiv, and PeerJ Preprints for ensuring open access of
+% publications; repositories like GitHub for developing (and version-
+% controlling) research software openly; and data and software archives
+% like Zenodo and Figshare, which practically have no file size limi-
+% tations. 26 Of course, some technical problems remain: How do we
+% make results of computational science, particularly when it involves
+% demanding high-performance computing resources, truly repro-
+% ducible? How can we cite software and data consistently, when the
+% version might change regularly?
+% Instead, cultural inertia and lack of institutional recognition/
+% rewards pose the most significant challenges to increased openness in
+% science.
+% In my opinion, the biggest barrier to greater openness in research
+% is ambivalence or outright hostility in many research communities.
+% Many academic researchers either disagree on or are unaware of the
+% importance (and benefits) of working openly. Since they were not
+% trained in doing this, e.g., during graduate school or during postdoc-
+% toral training, they also may simply be unaware of how to research
+% openly, or the resources that are available to do so. Furthermore,
+% since most of their colleagues, collaborators, and competitors do not
+% practice open science, no pressure comes from the research commu-
+% nity to change. In addition, some communities do not support or
+% actively oppose activities such as submitting preprints.
+% This lack of pressure is related to the other major issue: lack of
+% institutional recognition and reward for open practices. In general,
+% academic researchers will work on what gets them credit for promo-
+% tion and tenure—anything beyond that requires strong intrinsic moti-
+% vation, or external motivators from the research community. At most
+% institutions, promotion and tenure review includes some judgement
+% (whether explicit or implicit) of where faculty publish their work, but
+% many, “high-impact”’ traditional publication venues—particularly
+% domain journals—may not support, e.g., the posting of preprints.
+% \cite{niemeyer2017open}
 %
-%  ActivePapers: a platform for publishing and archiving computer-aided research \cite{hinsen2014activepapers}
-% The lack of replicability and reproducibility of scientific studies based on
-% computational methods has lead to serious mistakes in published scientific
-% findings, some of which have been discovered and publicized recently. Many
-% strategies are currently pursued to improve the situation. This article
-% reports the first conclusions from the ActivePapers project, whose goal is the
-% development and application of a computational platform that allows the
-% publication of computational research in a form that enables installation-free
-% deployment, encourages reuse, and permits the full integration of datasets and
-% software into the scientific record. The main finding is that these goals can
-% be achieved with existing technology, but that there is no straightforward way
-% to adapt legacy software to such a framework. 
+%existe carência de estudos avaliando softwares
+%acadêmicos de análise estática, 
 
-O campo de pesquisa sobre análise estática de software tem uma longa tradição e
-ainda hoje possui carência de estudos avaliando suas ferramentas, ainda hoje
-não sabemos como, na literatura
-científica publicada, as taxas de softwares disponíveis, executáveis, e
-escondidos ({\it hidden software}) mudam ao longo do tempo
-\cite{allen2017engineering}.
-
-objetivo
-geral avaliar a disponibilidade dos softwares acadêmicos publicados em
-conferências de engenharia de software
+Assim, definimos como objetivo geral deste estudo, avaliar a sustentbilidade
+técnica dos softwares acadêmicos de análise estática publicados na literatura
+acadêmica.
 
 \section{Planejamento do estudo}
 
@@ -84,12 +115,12 @@ A revisão estruturada difere da revisão e do mapeamento sistemático
 resultado final é um conjunto de softwares, enquanto no mapeamento ou na
 revisão sistemática há um esforço em caracterizar os artigos analisados o mesmo
 não ocorre na revisão estruturada, onde o esforço está em caracterizar os
-softwares científicos.
+softwares acadêmicos.
 
 A revisão estruturada é organizada em três atividades de (1) busca de artigos
 (definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
 de critérios de busca, definição de script de busca) e (3) seleção de artigos
-com publicação de softwares. Estas atividades estão representadas na Figura
+com publicação de softwares, representadas na Figura
 \ref{figura-revisao-estruturada}.
 
 \begin{figure}[h]
@@ -99,11 +130,17 @@ com publicação de softwares. Estas atividades estão representadas na Figura
   \label{figura-revisao-estruturada}
 \end{figure}
 
-O resultado final da revisão estrutuda é um conjunto de softwares científicos e
-informações sobre em qual artigo foi publicado, qual conferência e ano o artigo
-foi publicado e em quais fontes o software pode ser obtido, geralmente páginas
-web, repositórios de código fonte ou outros endereços na internet. Cada
-atividade da revisão estruturada é detalhada à seguir:
+O resultado final da revisão estrutuda é um conjunto de softwares com as
+seguintes informações:
+
+\begin{itemize}
+  \item Nome e descrição do software acadêmico.
+  \item Título do artigo onde o software é citado como contribuição, seja principal ou secundária.
+  \item Nome e ano da conferência onde o artigo foi publicado.
+  \item Endereço onde o software pode ser obtido, páginas web ou repositórios de código fonte.
+\end{itemize}
+
+Atividades da revisão estruturada:
 
 \begin{description}
 
@@ -116,18 +153,12 @@ atividade da revisão estruturada é detalhada à seguir:
     aquelas com potencial de se encontrar softwares deste domínio de aplicação.
     Esta primeira atividade deve incluir o maior número possível de ediçoes de
     cada conferência, para cada edição é copiado localmente todos os artigos em
-    formato PDF para filtro na atividade 2.
+    formato PDF, eles serão utilizados como entrada na atividade 2.
 
   \item[(2) Filtro]
     A segunda atividade da revisão estruturada realizada em cima de todo o
-    conjunto de artigos selecionados na etapa anterior é um filtro automático
-    que busca em todo o conteúdo dos artigos os termos de interesse, estes
-    termos devem ser pensados em relaçao ao domínio de aplicação desejado,
-    devem ser abrangentes a fim de evitar falsos negativos, ou seja, evitar que
-    o filtro deixe de fora artigos que publiquem software de análise estática,
-    mesmo que isto gere alguns falsos positivos, a atividade seguinte irá
-    identificar os falsos negativos deixando-os fora do resultado final da
-    revisão. Os seguintes termos serão utilizados neste filtro:
+    conjunto de artigos selecionados na etapa anterior é uma busca pelos
+    seguintes termos em todo o conteúdo dos artigos:
 
     \begin{verbatim}
       "tool" OU "framework"; E
@@ -136,36 +167,41 @@ atividade da revisão estruturada é detalhada à seguir:
       "static analysis" OU "parser".
     \end{verbatim}
 
+    Esses termos devem ser pensados em relaçao ao domínio de aplicação
+    desejado, devem ser abrangentes a fim de evitar falsos negativos, ou seja,
+    evitar que o filtro deixe de fora artigos que publiquem software de análise
+    estática, mesmo que isto resulte em falsos positivos, a atividade seguinte
+    identificará esses falsos negativos deixando-os fora do resultado final.
+
     Esses termos devem encontrar artigos com publicação de softwares
     científicos do domínio de análise estática de código fonte com
     disponibilidade para {\it download}, seja binário ou código fonte, será
     aplicado automaticamente com auxílio de um script desenvolvido durante este
-    trabalho de pesquisa, detalhes deste script, outros artefatos produzidos durante esta
-    pesquisa, e onde obtê-los pode ser encontrado no Apêndice \ref{reproducibilidade-do-estudo}.
+    trabalho de pesquisa, detalhes deste script, outros artefatos produzidos
+    durante esta pesquisa, e onde obtê-los pode ser encontrado no Apêndice
+    \ref{reproducibilidade-do-estudo}.
 
   \item[(3) Seleção]
     A terceira e última atividade da revisão estruturada identifica se cada
-    artigo resulta, de fato, em publicação de software científico do domínio de
-    aplicação desejado. Esta seleção é feita a partir de uma leitura
-    superficial do artigo em busca de indícios de que o artigo publica de fato
-    algum software.
+    artigo resulta, de fato, em publicação de software acadêmico de análise
+    estática. Esta seleção é feita a partir de uma leitura superficial do
+    artigo em busca de indícios de que o artigo publica de fato algum software.
 
-    Para cada artigo é lido, título, introdução, resultados
-    e conclusões com o objetivo de identificar se o artigo publica software
-    científico e indica onde obter uma cópia do software. Quando esta leitura inicial
-    não é suficiente para identificar se há publicação de software, outras seções são
-    lidas, alguns artigos descrevem a implementação do software em seções específicas,
-    outros indicam detalhes do software ao longo de todo o texto, é comum o uso
-    de notas de rodapé para indicar onde o software está disponível. Softwares científicos
-    que sejam mais abrangentes do que apenas análise estática de código fonte
-    mas que contenham esta função em seu conjunto também são selecionados.
+    Essa leitura inclui título, introdução, resultados e conclusões, o objetivo
+    é identificar se o artigo publica software acadêmico e indica onde obter
+    uma cópia do software. Quando esta leitura inicial não é o suficiente para
+    identificar se há publicação de software, outras seções são lidas, alguns
+    artigos descrevem a implementação do software em seções específicas, outros
+    indicam detalhes do software ao longo do texto, é comum o uso de
+    notas de rodapé para indicar onde o software está disponível. Softwares
+    acadêmicos que sejam mais abrangentes do que apenas análise estática de
+    código fonte mas que contenham esta função em seu conjunto também são
+    selecionados.
 
 \end{description}
 
-Ao final das 3 atividades da revisão estruturada é gerado como saída um
-conjunto de softwares científicos de análise estática de código fonte, para
-cada software teremos o nome, descrição e em qual artigo o software foi
-publicado, além da informação sobre a fonte para obtenção do software.
+Ao final das 3 atividades da revisão estruturada temos um conjunto de softwares
+acadêmicos de análise estática.
 
 \subsection{Quantificação da disponibilidade dos softwares científicos}
 
