@@ -15,16 +15,17 @@ my @EXCLUIDOS = ();
 
 my @SCAM_PAPERS = `find "$ENV{PWD}/dataset/papers/SCAM Papers/" -iname "*.pdf" | sort`;
 my @ASE_PAPERS = `find "$ENV{PWD}/dataset/papers/ASE Papers/" -iname "*.pdf" | sort`;
+my @SBES_PAPERS = `find "$ENV{PWD}/dataset/papers/SBES Papers/" -iname "*.pdf" | sort`;
 
-foreach my $paper (@SCAM_PAPERS, @ASE_PAPERS) {
+foreach my $paper (@SCAM_PAPERS, @ASE_PAPERS, @SBES_PAPERS) {
   chomp $paper;
   my $PAPER_CONTENT = `pdftotext "$paper" -`;
   print ".";
   if (
-       grep(/tool|framework/i, $PAPER_CONTENT) &&
-       grep(/download|available/i, $PAPER_CONTENT) &&
+       grep(/tool|framework|ferramenta/i, $PAPER_CONTENT) &&
+       grep(/download|available|dispon.vel/i, $PAPER_CONTENT) &&
        grep(/http|ftp/i, $PAPER_CONTENT) &&
-       grep(/static analysis|parser/i, $PAPER_CONTENT)
+       grep(/static analysis|parser|an.lise est.tica/i, $PAPER_CONTENT)
      ) {
     push @INCLUIDOS, $paper;
   }
@@ -38,6 +39,7 @@ open my $FILE, '>', $filename;
 
 print $FILE "TOTAL SCAM = ", scalar(@SCAM_PAPERS), "\n";
 print $FILE "TOTAL ASE = ", scalar(@ASE_PAPERS), "\n";
+print $FILE "TOTAL SBES = ", scalar(@SBES_PAPERS), "\n";
 print $FILE "INCLUIDOS = ", scalar(@INCLUIDOS), "\n";
 print $FILE "EXCLUIDOS = ", scalar(@EXCLUIDOS), "\n";
 
