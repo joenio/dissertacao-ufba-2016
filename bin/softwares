@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use experimental 'signatures';
+use File::Basename;
+use Statistics::Descriptive;
+use YAML qw( LoadFile );
+use open ':locale';
+use Term::ANSIColor;
+
+our $DATASET_DIR = "$ENV{PWD}/dataset";
+
+sub load_yaml_files($softwares_dir) {
+  my %softwares = ();
+  foreach my $dir (grep { -d $_ } glob("$softwares_dir/*")) {
+    my $yaml = LoadFile("$dir/software.yml");
+    my $software = basename $dir;
+    $softwares{$software} = $yaml;
+  }
+  return %softwares;
+}
+
+my %softwares = load_yaml_files("$DATASET_DIR/softwares");
+
+foreach my $software (sort keys %softwares) {
+  print colored($softwares{$software}->{software}{name}, 'bold'), ': ', $softwares{$software}->{software}{description};
+  if ($softwares{$software}->{features}{source_code} ne 'undefined') {
+    print colored(' source:', 'yellow'), colored($softwares{$software}->{features}{source_code}, "bright_yellow");
+  }
+  if ($softwares{$software}->{features}{releases} ne 'undefined') {
+    print colored(' releases:', 'yellow'), colored($softwares{$software}->{features}{releases}, "bright_yellow");
+  }
+  say "";
+  print '  ', $softwares{$software}->{software}{url};
+  if ($softwares{$software}->{features}{url_available} eq 'yes') {
+    print colored(' available:', 'yellow'), colored("yes", "bright_green");
+  }
+  else {
+    print colored(' available:', 'yellow'), colored("no", "bright_red");
+  }
+  if ($softwares{$software}->{features}{download_available} eq 'yes') {
+    print colored(' download:', 'yellow'), colored("yes", "bright_green");
+  }
+  else {
+    print colored(' download:', 'yellow'), colored("no", "bright_red");
+  }
+  say "";
+  say "";
+}
+
+say colored('total:', 'yellow'), colored(scalar(keys %softwares), 'bold');
