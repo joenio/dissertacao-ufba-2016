@@ -6,20 +6,53 @@ use Statistics::Descriptive;
 use YAML qw( LoadFile );
 use open ':locale';
 use Term::ANSIColor;
+use Text::BibTeX;
 
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 
-sub load_yaml_files($softwares_dir) {
+sub read_data_files($softwares_dir) {
   my %softwares = ();
   foreach my $dir (grep { -d $_ } glob("$softwares_dir/*")) {
+
+    # read YAML: software.yml
     my $yaml = LoadFile("$dir/software.yml");
     my $software = basename $dir;
     $softwares{$software} = $yaml;
+
+    # read BIBTEX: paper.bib
+    my %paper = ();
+    unless (-z "$dir/paper.bib") {
+      if (my $bib = Text::BibTeX::File->new("$dir/paper.bib")) {
+        while (my $entry = Text::BibTeX::Entry->new($bib)) {
+          next unless $entry->parse_ok;
+          my ($first_author) = $entry->split('author');
+          $paper{author} = $first_author;
+        }
+        $bib->close;
+      }
+    }
+    $softwares{$software}{paper}{bibtex} = \%paper;
+
+    # read BIBTEX: references.bib
+    my %references = ();
+    unless (-z "$dir/references.bib") {
+      if (my $bib = Text::BibTeX::File->new("$dir/references.bib")) {
+        $references{count} = 0;
+        while (my $entry = Text::BibTeX::Entry->new($bib)) {
+          next unless $entry->parse_ok;
+          $references{count}++;
+        }
+        $bib->close;
+      }
+    }
+    $softwares{$software}{references} = \%references;
+
   }
+
   return %softwares;
 }
 
-my %softwares = load_yaml_files("$DATASET_DIR/academic-softwares");
+my %softwares = read_data_files("$DATASET_DIR/academic-softwares");
 
 foreach my $software (sort keys %softwares) {
   print colored($softwares{$software}->{software}{name}, 'bold'), ': ', $softwares{$software}->{software}{description};
@@ -28,6 +61,9 @@ foreach my $software (sort keys %softwares) {
   }
   if ($softwares{$software}->{features}{releases} ne 'undefined') {
     print colored(' releases:', 'yellow'), colored($softwares{$software}->{features}{releases}, "bright_yellow");
+  }
+  if ($softwares{$software}->{references}{count}) {
+    print colored(' references:', 'yellow'), colored($softwares{$software}->{references}{count}, 'bright_yellow');
   }
   say "";
   print '  ', $softwares{$software}->{software}{url};
@@ -46,8 +82,10 @@ foreach my $software (sort keys %softwares) {
   say "";
   say '  ', $softwares{$software}->{paper}{title}, ' ',
     colored($softwares{$software}->{paper}{conference} . ':', 'yellow'),
-    colored($softwares{$software}->{paper}{year}, 'bright_yellow');
+    colored($softwares{$software}->{paper}{year}, 'bright_yellow'), ' ',
+    colored('author:', 'yellow'), colored($softwares{$software}->{paper}{bibtex}{author}, 'bright_yellow');
   say "";
+
 }
 
 say colored('total:', 'yellow'), colored(scalar(keys %softwares), 'bold');

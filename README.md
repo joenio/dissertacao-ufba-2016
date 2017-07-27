@@ -65,6 +65,12 @@ Para executar o script basta rodar o seguinte comando:
 
 Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 
+## Script para reportar os dados dos softwares acadêmicos coletados
+
+O script `bin/softwares-report` possui as seguintes dependencias:
+
+    apt-get install libtext-bibtex-perl
+
 ## Referências sobre estatística
 
 ### Vídeo: FGV / IBRE – Estatística com R: 16 Quantis e Percentis
