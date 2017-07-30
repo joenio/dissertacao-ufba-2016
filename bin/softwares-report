@@ -7,22 +7,14 @@ use YAML qw( LoadFile );
 use open ':locale';
 use Term::ANSIColor;
 use Text::BibTeX;
+use utf8;
 
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 
-sub read_data_files($softwares_dir) {
-  my %softwares = ();
-  foreach my $dir (grep { -d $_ } glob("$softwares_dir/*")) {
-
-    # read YAML: software.yml
-    my $yaml = LoadFile("$dir/software.yml");
-    my $software = basename $dir;
-    $softwares{$software} = $yaml;
-
-    # read BIBTEX: paper.bib
+sub read_paper_file($filepath) {
     my %paper = ();
-    unless (-z "$dir/paper.bib") {
-      if (my $bib = Text::BibTeX::File->new("$dir/paper.bib")) {
+    unless (-z $filepath) {
+      if (my $bib = Text::BibTeX::File->new($filepath)) {
         while (my $entry = Text::BibTeX::Entry->new($bib)) {
           next unless $entry->parse_ok;
           my ($first_author) = $entry->split('author');
@@ -31,61 +23,102 @@ sub read_data_files($softwares_dir) {
         $bib->close;
       }
     }
-    $softwares{$software}{paper}{bibtex} = \%paper;
+    return %paper;
+}
 
-    # read BIBTEX: references.bib
-    my %references = ();
-    unless (-z "$dir/references.bib") {
-      if (my $bib = Text::BibTeX::File->new("$dir/references.bib")) {
-        $references{count} = 0;
-        while (my $entry = Text::BibTeX::Entry->new($bib)) {
-          next unless $entry->parse_ok;
-          $references{count}++;
-        }
-        $bib->close;
+sub read_references_file($filepath) {
+  my %references = ();
+  unless (-z $filepath) {
+    if (my $bib = Text::BibTeX::File->new($filepath)) {
+      $references{count} = 0;
+      while (my $entry = Text::BibTeX::Entry->new($bib)) {
+        next unless $entry->parse_ok;
+        $references{count}++;
       }
+      $bib->close;
     }
-    $softwares{$software}{references} = \%references;
+  }
+  return %references;
+}
+
+sub load_collected_data($software_dir) {
+  # read YAML: software.yml
+  my $yaml = LoadFile("$software_dir/software.yml");
+  my %software = %{ $yaml };
+  # read BIBTEX: paper.bib
+  my %paper = read_paper_file("$software_dir/paper.bib");
+  $software{paper}{bibtex} = \%paper;
+  # read BIBTEX: references.bib
+  my %references = read_references_file("$software_dir/references.bib");
+  $software{references} = \%references;
+  return %software;
+}
+
+sub load_all_collected_data($softwares_dir) {
+  my %softwares = ();
+  foreach my $dir (grep { -d $_ } glob("$softwares_dir/*")) {
+    my %software_data = load_collected_data($dir);
+    my $software_key = basename $dir;
+    $softwares{$software_key} = \%software_data;
 
   }
-
   return %softwares;
 }
 
-my %softwares = read_data_files("$DATASET_DIR/academic-softwares");
-
-foreach my $software (sort keys %softwares) {
-  print colored($softwares{$software}->{software}{name}, 'bold'), ': ', $softwares{$software}->{software}{description};
-  if ($softwares{$software}->{features}{source_code} ne 'undefined') {
-    print colored(' source:', 'yellow'), colored($softwares{$software}->{features}{source_code}, "bright_yellow");
+sub output_software_data(%software) {
+  print colored($software{software}{name}, 'bold'), ': ', $software{software}{description};
+  if ($software{features}{source_code} ne 'undefined') {
+    print colored(' source:', 'yellow'), colored($software{features}{source_code}, "bright_yellow");
   }
-  if ($softwares{$software}->{features}{releases} ne 'undefined') {
-    print colored(' releases:', 'yellow'), colored($softwares{$software}->{features}{releases}, "bright_yellow");
+  if ($software{features}{releases} ne 'undefined') {
+    print colored(' releases:', 'yellow'), colored($software{features}{releases}, "bright_yellow");
   }
-  if ($softwares{$software}->{references}{count}) {
-    print colored(' references:', 'yellow'), colored($softwares{$software}->{references}{count}, 'bright_yellow');
+  if ($software{references}{count}) {
+    print colored(' references:', 'yellow'), colored($software{references}{count}, 'bright_yellow');
   }
   say "";
-  print '  ', $softwares{$software}->{software}{url};
-  if ($softwares{$software}->{features}{url_available} eq 'yes') {
+  print '  ', $software{software}{url};
+  if ($software{features}{url_available} eq 'yes') {
     print colored(' available:', 'yellow'), colored("yes", "bright_green");
   }
   else {
     print colored(' available:', 'yellow'), colored("no", "bright_red");
   }
-  if ($softwares{$software}->{features}{download_available} eq 'yes') {
+  if ($software{features}{download_available} eq 'yes') {
     print colored(' download:', 'yellow'), colored("yes", "bright_green");
   }
   else {
     print colored(' download:', 'yellow'), colored("no", "bright_red");
   }
   say "";
-  say '  ', $softwares{$software}->{paper}{title}, ' ',
-    colored($softwares{$software}->{paper}{conference} . ':', 'yellow'),
-    colored($softwares{$software}->{paper}{year}, 'bright_yellow'), ' ',
-    colored('author:', 'yellow'), colored($softwares{$software}->{paper}{bibtex}{author}, 'bright_yellow');
+  print '  ', $software{paper}{title}, ' ',
+    colored($software{paper}{conference} . ':', 'yellow'),
+    colored($software{paper}{year}, 'bright_yellow');
+  if ($software{paper}{bibtex}{author}) {
+    print colored(' author:', 'yellow'), colored($software{paper}{bibtex}{author}, 'bright_yellow');
+  }
   say "";
+  say "";
+}
 
+my %softwares = ();
+
+if (@ARGV) {
+  my $software_name = $ARGV[0];
+  unless (-d "$DATASET_DIR/academic-softwares/$software_name") {
+    die "diretório não existe: $DATASET_DIR/academic-softwares/$software_name";
+  }
+  else {
+    my %software = load_collected_data("$DATASET_DIR/academic-softwares/$software_name");
+    $softwares{$software_name} = \%software;
+  }
+}
+else {
+  %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
+}
+
+foreach my $software (sort keys %softwares) {
+  output_software_data(%{ $softwares{$software} });
 }
 
 say colored('total:', 'yellow'), colored(scalar(keys %softwares), 'bold');
