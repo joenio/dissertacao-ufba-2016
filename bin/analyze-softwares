@@ -13,15 +13,17 @@ our $OUTPUT_FILENAME = $ARGV[1];
 
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 
-foreach my $tool (grep { -d $_ } glob("$DATASET_DIR/academic-softwares/*")) {
-  foreach my $dir (grep { -d $_ } glob("$tool/*")) {
-    unless (-e "$dir.analizo.metrics") {
-      say "analizo metrics $dir > $dir.analizo.metrics";
-      `analizo metrics $dir > $dir.analizo.metrics`;
-    }
-    unless (-e "$dir.sloccount") {
-      say "sloccount $dir > $dir.sloccount";
-      `sloccount $dir > $dir.sloccount`;
+sub collect_sourcecode_data($softwares_dir) {
+  foreach my $software (grep { -d $_ } glob("$softwares_dir/*")) {
+    foreach my $software_release (grep { -d $_ } glob("$software/source-code/*")) {
+      unless (-e "$software_release.analizo.metrics") {
+        say "analizo metrics $software_release > $software_release.analizo.metrics";
+        `analizo metrics $software_release > $software_release.analizo.metrics`;
+      }
+      unless (-e "$software_release.sloccount") {
+        say "sloccount $software_release > $software_release.sloccount";
+        `sloccount $software_release > $software_release.sloccount`;
+      }
     }
   }
 }
@@ -48,6 +50,12 @@ sub metric_value($file, $metric) {
   close $FILE;
   return;
 }
+
+collect_sourcecode_data("$DATASET_DIR/academic-softwares");
+
+exit;
+
+##############################
 
 open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
 print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95, lanza_low, lanza_medium, lanza_high\n";
