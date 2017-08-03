@@ -2,14 +2,12 @@
 use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
-use Statistics::Descriptive;
 use YAML qw( LoadFile );
-use open ':locale';
 use Term::ANSIColor;
 use Text::BibTeX;
+use Mojo::Template;
+use open ':locale';
 use utf8;
-
-our $DATASET_DIR = "$ENV{PWD}/dataset";
 
 sub read_paper_file($filepath) {
     my %paper = ();
@@ -19,6 +17,7 @@ sub read_paper_file($filepath) {
           next unless $entry->parse_ok;
           my ($first_author) = $entry->split('author');
           $paper{author} = $first_author;
+          $paper{title} = $entry->get('title');
         }
         $bib->close;
       }
@@ -47,7 +46,7 @@ sub load_collected_data($software_dir) {
   my %software = %{ $yaml };
   # read BIBTEX: paper.bib
   my %paper = read_paper_file("$software_dir/paper.bib");
-  $software{paper}{bibtex} = \%paper;
+  $software{paper}{bibfile} = \%paper;
   # read BIBTEX: references.bib
   my %references = read_references_file("$software_dir/references.bib");
   $software{references} = \%references;
@@ -113,8 +112,8 @@ sub output_software_data(%software) {
   print '  ', $software{paper}{title}, ' ',
     colored($software{paper}{conference} . ':', 'yellow'),
     colored($software{paper}{year}, 'bright_yellow');
-  if ($software{paper}{bibtex}{author}) {
-    print colored(' author:', 'yellow'), colored($software{paper}{bibtex}{author}, 'bright_yellow');
+  if ($software{paper}{bibfile}{author}) {
+    print colored(' author:', 'yellow'), colored($software{paper}{bibfile}{author}, 'bright_yellow');
   }
   say "";
   print ' ';
@@ -127,7 +126,16 @@ sub output_software_data(%software) {
   say "";
 }
 
+our $DATASET_DIR = "$ENV{PWD}/dataset";
 my %softwares = ();
+
+#if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+#  warn "E: missing options!";
+#  print "Usage: $0 -o <output-filename>\n";
+#  exit 1;
+#}
+#shift @ARGV;
+#our $OUTPUT_FILENAME = shift @ARGV;
 
 if (@ARGV) {
   my $software_name = $ARGV[0];
@@ -142,6 +150,13 @@ if (@ARGV) {
 else {
   %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
 }
+
+#my $t = Mojo::Template->new;
+#my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
+#open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
+#print $SUMMARY $output;
+#close $SUMMARY;
+#exit;
 
 foreach my $software (sort keys %softwares) {
   output_software_data(%{ $softwares{$software} });
