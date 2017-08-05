@@ -18,5 +18,4 @@ filter:
 	./bin/filter-papers -o dataset/papers.txt
 
 softwares-summary:
-	mkdir -p cache
-	./bin/softwares-report -o cache/softwares-summary.tex
+	./bin/softwares-report -o capitulos/softwares-summary.tex

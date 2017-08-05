@@ -3,7 +3,6 @@ use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
 use YAML qw( LoadFile );
-use Term::ANSIColor;
 use Text::BibTeX;
 use Mojo::Template;
 use open ':locale';
@@ -83,83 +82,16 @@ sub load_all_collected_data($softwares_dir) {
   return %softwares;
 }
 
-sub output_software_data(%software) {
-  print colored($software{software}{name}, 'bold'), ': ', $software{software}{description};
-  if ($software{features}{source_code} ne 'undefined') {
-    print colored(' source:', 'yellow'), colored($software{features}{source_code}, "bright_yellow");
-  }
-  if ($software{features}{releases} ne 'undefined') {
-    print colored(' releases:', 'yellow'), colored($software{features}{releases}, "bright_yellow");
-  }
-  if ($software{references}{count}) {
-    print colored(' references:', 'yellow'), colored($software{references}{count}, 'bright_yellow');
-  }
-  say "";
-  print '  ', $software{software}{url};
-  if ($software{features}{url_available} eq 'yes') {
-    print colored(' available:', 'yellow'), colored("yes", "bright_green");
-  }
-  else {
-    print colored(' available:', 'yellow'), colored("no", "bright_red");
-  }
-  if ($software{features}{download_available} eq 'yes') {
-    print colored(' download:', 'yellow'), colored("yes", "bright_green");
-  }
-  else {
-    print colored(' download:', 'yellow'), colored("no", "bright_red");
-  }
-  say "";
-  print '  ', $software{paper}{title}, ' ',
-    colored($software{paper}{conference} . ':', 'yellow'),
-    colored($software{paper}{year}, 'bright_yellow');
-  if ($software{paper}{bibfile}{author}) {
-    print colored(' author:', 'yellow'), colored($software{paper}{bibfile}{author}, 'bright_yellow');
-  }
-  say "";
-  print ' ';
-  if ($software{debug}{symlink_to_paper_missing}) {
-    print colored(' paper.pdf(symlink):', 'yellow'), colored('missing', 'bright_red');
-  }
-  if ($software{debug}{source_code_missing}) {
-    print colored(' source-code(dir):', 'yellow'), colored('missing', 'bright_red');
-  }
-  say "";
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  print "Usage: $0 -o <output-filename>\n";
+  exit 1;
 }
-
+our $OUTPUT_FILENAME = $ARGV[1];
 our $DATASET_DIR = "$ENV{PWD}/dataset";
-my %softwares = ();
-
-#if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
-#  warn "E: missing options!";
-#  print "Usage: $0 -o <output-filename>\n";
-#  exit 1;
-#}
-#shift @ARGV;
-#our $OUTPUT_FILENAME = shift @ARGV;
-
-if (@ARGV) {
-  my $software_name = $ARGV[0];
-  unless (-d "$DATASET_DIR/academic-softwares/$software_name") {
-    die "diretório não existe: $DATASET_DIR/academic-softwares/$software_name";
-  }
-  else {
-    my %software = load_collected_data("$DATASET_DIR/academic-softwares/$software_name");
-    $softwares{$software_name} = \%software;
-  }
-}
-else {
-  %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
-}
-
-#my $t = Mojo::Template->new;
-#my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
-#open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
-#print $SUMMARY $output;
-#close $SUMMARY;
-#exit;
-
-foreach my $software (sort keys %softwares) {
-  output_software_data(%{ $softwares{$software} });
-}
-
-say colored('total:', 'yellow'), colored(scalar(keys %softwares), 'bold');
+my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
+my $t = Mojo::Template->new;
+my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
+open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
+print $SUMMARY $output;
+close $SUMMARY;
