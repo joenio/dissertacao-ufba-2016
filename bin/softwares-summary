@@ -12,7 +12,7 @@ sub read_paper_file($filepath) {
     my %paper = ();
     unless (-z $filepath) {
       if (my $bib = Text::BibTeX::File->new($filepath)) {
-        while (my $entry = Text::BibTeX::Entry->new($bib)) {
+        while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8', normalization => 'NFD'}, $bib)) {
           next unless $entry->parse_ok;
           my ($first_author) = $entry->split('author');
           $paper{author} = $first_author;
