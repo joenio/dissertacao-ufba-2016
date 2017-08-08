@@ -69,7 +69,7 @@ Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 
 O script `bin/softwares-summary` possui as seguintes dependencias:
 
-    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl
+    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl libdatetime-format-http-perl
 
 Use o make:
 
@@ -77,6 +77,17 @@ Use o make:
 
 O resultado do comando acima é gravado no arquivo
 `capitulos/softwares-summary.tex`.
+
+## Chave de acesso ao IEEE Xplore API
+
+1 criar api key:
+
+https://developer.ieee.org/member/register
+Key: yx99dre536znna6qdhafdqns
+
+2 registrar aplicação
+
+https://developer.ieee.org/apps/register
 
 ## Referências sobre estatística
 
