@@ -12,7 +12,7 @@ sub read_paper_file($filepath) {
     my %paper = ();
     unless (-z $filepath) {
       if (my $bib = Text::BibTeX::File->new($filepath)) {
-        while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8', normalization => 'NFD'}, $bib)) {
+        while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
           next unless $entry->parse_ok;
           my ($first_author) = $entry->split('author');
           $paper{author} = $first_author;
@@ -90,7 +90,7 @@ if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
 our $OUTPUT_FILENAME = $ARGV[1];
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
-my $t = Mojo::Template->new;
+my $t = Mojo::Template->new(auto_escape => 1);
 my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
 open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
 print $SUMMARY $output;
