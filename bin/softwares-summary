@@ -95,6 +95,23 @@ sub format_collected_data {
     $searched_at = $softwares->{$_}{citations}{acm}{searched_at};
     $date = DateTime::Format::HTTP->parse_datetime($searched_at);
     $softwares->{$_}{citations}{acm}{searched_at} = $date->dmy('/');
+    # format distribution as pt_BR
+    if ($softwares->{$_}{software}{distribution} eq 'undefined') {
+      $softwares->{$_}{software}{distribution} = '{\it software não disponível}';
+    }
+    elsif ($softwares->{$_}{software}{distribution} eq 'foss') {
+      $softwares->{$_}{software}{distribution} = 'software livre';
+    }
+    elsif ($softwares->{$_}{software}{distribution} eq 'gratis') {
+      $softwares->{$_}{software}{distribution} = 'software gratuito (freeware, demo, etc)';
+    }
+    # format license as pt_BR
+    if ($softwares->{$_}{software}{license} eq 'undefined') {
+      $softwares->{$_}{software}{license} = 'sem licença definida';
+    }
+    else {
+      $softwares->{$_}{software}{license} = "sob a licença $softwares->{$_}{software}{license}";
+    }
   }
 }
 
