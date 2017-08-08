@@ -5,6 +5,7 @@ use File::Basename;
 use YAML qw( LoadFile );
 use Text::BibTeX;
 use Mojo::Template;
+use DateTime::Format::HTTP;
 use open ':locale';
 use utf8;
 
@@ -82,6 +83,21 @@ sub load_all_collected_data($softwares_dir) {
   return %softwares;
 }
 
+sub format_collected_data {
+  my $softwares = shift;
+  foreach (keys %$softwares) {
+    my ($searched_at, $date);
+    # format IEEEXPLORE searched_at as dd/mm/yyyy
+    $searched_at = $softwares->{$_}{citations}{ieeexplore}{searched_at};
+    $date = DateTime::Format::HTTP->parse_datetime($searched_at);
+    $softwares->{$_}{citations}{ieeexplore}{searched_at} = $date->dmy('/');
+    # format ACM searched_at as dd/mm/yyyy
+    $searched_at = $softwares->{$_}{citations}{acm}{searched_at};
+    $date = DateTime::Format::HTTP->parse_datetime($searched_at);
+    $softwares->{$_}{citations}{acm}{searched_at} = $date->dmy('/');
+  }
+}
+
 if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
   warn "E: missing options!";
   print "Usage: $0 -o <output-filename>\n";
@@ -90,6 +106,7 @@ if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
 our $OUTPUT_FILENAME = $ARGV[1];
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
+format_collected_data \%softwares;
 my $t = Mojo::Template->new(auto_escape => 1);
 my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
 open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
