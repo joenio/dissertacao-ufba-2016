@@ -67,9 +67,16 @@ Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 
 ## Script para reportar os dados dos softwares acadêmicos coletados
 
-O script `bin/softwares-report` possui as seguintes dependencias:
+O script `bin/softwares-summary` possui as seguintes dependencias:
 
-    apt-get install libtext-bibtex-perl
+    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl
+
+Use o make:
+
+    make softwares-summary
+
+O resultado do comando acima é gravado no arquivo
+`capitulos/softwares-summary.tex`.
 
 ## Referências sobre estatística
 
