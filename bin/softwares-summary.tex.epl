@@ -49,15 +49,35 @@ Software com lançamentos <%== $softwares{$_}{features}{releases} %>,
 escrito em <%== $softwares{$_}{features}{source_code} %>,
 % }
 % my $total = $softwares{$_}{citations}{ieeexplore}{results} + $softwares{$_}{citations}{acm}{results};
-citado {\bf <%== $total %>} vezes em outros trabalhos de pesquisa ...
+citado {\bf <%== $total %>} vezes em outros trabalhos de pesquisa.
 
-Uma busca avançada do tipo {\it Full Text \& Metadata} no IEEE Xplore Digital Library por
+Busca no {\bf IEEE Xplore} por
 \texttt{<%== $softwares{$_}{citations}{ieeexplore}{search_string} %>}
-e no ACM Digital Library por
-\texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
-encontrou um total de
-{\bf <%== $total %>}
+encontrou {\bf <%== $softwares{$_}{citations}{ieeexplore}{results} %>}
 resultados.
+
+% if ($softwares{$_}{citations}{ieeexplore}{results} > 0) {
+\begin{enumerate}
+%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{ieeexplore}{bibfile} }) {
+%   next if $entry_key eq 'count';
+\item <%== $softwares{$_}{citations}{ieeexplore}{bibfile}{$entry_key}{title} %>
+%   }
+\end{enumerate}
+% }
+
+Busca no {\bf ACM} por
+\texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
+encontrou {\bf <%== $softwares{$_}{citations}{acm}{results} %>}
+resultados.
+
+% if ($softwares{$_}{citations}{acm}{results} > 0) {
+\begin{enumerate}
+%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{acm}{bibfile} }) {
+%   next if $entry_key eq 'count';
+\item <%== $softwares{$_}{citations}{acm}{bibfile}{$entry_key}{title} %>
+%   }
+\end{enumerate}
+% }
 
 % }
 

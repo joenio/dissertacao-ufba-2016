@@ -32,6 +32,11 @@ sub read_citations_file($filepath) {
       $citations{count} = 0;
       while (my $entry = Text::BibTeX::Entry->new($bib)) {
         next unless $entry->parse_ok;
+        my $key = $entry->key;
+        my ($first_author) = $entry->split('author');
+        $citations{$key}{author} = $first_author;
+        $citations{$key}{title} = $entry->get('title');
+
         $citations{count}++;
       }
       $bib->close;
@@ -50,6 +55,14 @@ sub load_collected_data($software_dir) {
   # read BIBTEX: citations.bib
   my %citations = read_citations_file("$software_dir/citations.bib");
   $software{citations}{summary} = \%citations;
+
+  # read BIBTEX: citations/ieeexplore.bib
+  my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
+  $software{citations}{ieeexplore}{bibfile} = \%ieeexplore;
+
+  # read BIBTEX: citations/acm.bib
+  my %acm = read_citations_file("$software_dir/citations/acm.bib");
+  $software{citations}{acm}{bibfile} = \%acm;
 
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
