@@ -12,9 +12,8 @@
 <%== $softwares{$_}{software}{description} %>
 publicado no artigo {\it <%== $softwares{$_}{paper}{bibfile}{title} %>}
 por <%== $softwares{$_}{paper}{bibfile}{author} %>
-no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>.
-
-Disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
+no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>,
+disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
 % if ($softwares{$_}{address}{download_available} eq 'yes') {
 %   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
 <%== $softwares{$_}{software}{distribution} %>
@@ -38,16 +37,19 @@ mas inacessível em <%== $softwares{$_}{address}{checked_at} %>.
 % }
 
 % if ($softwares{$_}{features}{releases} eq 'Obsolete') {
-Considerada obsoleta ...
+Software considerado obsoleto,
 % }
 % elsif ($softwares{$_}{features}{releases} eq 'undefined') {
-Sem informações sobre lançamentos ou releases ...
+Software sem informações sobre lançamentos ou releases,
 % }
 % else {
-Com lançamentos <%== $softwares{$_}{features}{releases} %> ...
+Software com lançamentos <%== $softwares{$_}{features}{releases} %>,
 % }
-
+% unless ($softwares{$_}{features}{source_code} eq 'undefined') {
+escrito em <%== $softwares{$_}{features}{source_code} %>,
+% }
 % my $total = $softwares{$_}{citations}{ieeexplore}{results} + $softwares{$_}{citations}{acm}{results};
+citado {\bf <%== $total %>} vezes em outros trabalhos de pesquisa ...
 
 Uma busca avançada do tipo {\it Full Text \& Metadata} no IEEE Xplore Digital Library por
 \texttt{<%== $softwares{$_}{citations}{ieeexplore}{search_string} %>}
