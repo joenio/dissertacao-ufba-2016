@@ -52,7 +52,7 @@ sub load_collected_data($software_dir) {
   $software{citations}{summary} = \%citations;
 
   # check if collected data miss something
-  if ($software{features}{download_available} eq 'yes') {
+  if ($software{address}{download_available} eq 'yes') {
     if ($software{software}{distribution} =~ /^gratis|foss$/) {
       unless (-d "$software_dir/source-code") {
         $software{debug}{source_code_missing} = 1;
@@ -95,22 +95,33 @@ sub format_collected_data {
     $searched_at = $softwares->{$_}{citations}{acm}{searched_at};
     $date = DateTime::Format::HTTP->parse_datetime($searched_at);
     $softwares->{$_}{citations}{acm}{searched_at} = $date->dmy('/');
+    # format address checked_at as dd/mm/yyyy
+    my $checked_at = $softwares->{$_}{address}{checked_at};
+    $date = DateTime::Format::HTTP->parse_datetime($checked_at);
+    $softwares->{$_}{address}{checked_at} = $date->dmy('/');
     # format distribution as pt_BR
-    if ($softwares->{$_}{software}{distribution} eq 'undefined') {
-      $softwares->{$_}{software}{distribution} = '{\it software não disponível}';
-    }
-    elsif ($softwares->{$_}{software}{distribution} eq 'foss') {
-      $softwares->{$_}{software}{distribution} = 'software livre';
+    if ($softwares->{$_}{software}{distribution} eq 'foss') {
+      $softwares->{$_}{software}{distribution} = 'como software livre';
     }
     elsif ($softwares->{$_}{software}{distribution} eq 'gratis') {
-      $softwares->{$_}{software}{distribution} = 'software gratuito (freeware, demo, etc)';
+      $softwares->{$_}{software}{distribution} = 'gratuitamente';
     }
-    # format license as pt_BR
-    if ($softwares->{$_}{software}{license} eq 'undefined') {
-      $softwares->{$_}{software}{license} = 'sem licença definida';
+    if ($softwares->{$_}{address}{url_available} eq 'yes') {
+      $softwares->{$_}{address}{url_available} = 'com sucesso';
     }
     else {
-      $softwares->{$_}{software}{license} = "sob a licença $softwares->{$_}{software}{license}";
+      $softwares->{$_}{address}{url_available} = 'sem sucesso';
+    }
+    # format license=demo as pt_BR
+    if ($softwares->{$_}{software}{license} eq 'demo') {
+      $softwares->{$_}{software}{license} = 'de demonstração';
+    }
+    # format releases as pt_BR
+    if ($softwares->{$_}{features}{releases} eq 'Frequently') {
+      $softwares->{$_}{features}{releases} = 'frequentes';
+    }
+    elsif ($softwares->{$_}{features}{releases} eq 'Occasionally') {
+      $softwares->{$_}{features}{releases} = 'ocsaionais';
     }
   }
 }

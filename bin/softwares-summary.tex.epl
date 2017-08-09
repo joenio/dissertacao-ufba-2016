@@ -10,18 +10,42 @@
 \section{<%== $softwares{$_}{software}{name} %>}
 
 <%== $softwares{$_}{software}{description} %>
-publicado no artigo
-{\it <%== $softwares{$_}{paper}{bibfile}{title} %>}
-por
-<%== $softwares{$_}{paper}{bibfile}{author} %>
-no
-<%== $softwares{$_}{paper}{conference} %>
-<%== $softwares{$_}{paper}{year} %>
-no seguinte endereço:
-\url{<%== $softwares{$_}{software}{url} %>}.
+publicado no artigo {\it <%== $softwares{$_}{paper}{bibfile}{title} %>}
+por <%== $softwares{$_}{paper}{bibfile}{author} %>
+no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>.
 
-Distribuído como <%== $softwares{$_}{software}{distribution} %>
-<%== $softwares{$_}{software}{license} %> ...
+Disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
+% if ($softwares{$_}{address}{download_available} eq 'yes') {
+%   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
+<%== $softwares{$_}{software}{distribution} %>
+%   }
+%   if ($softwares{$_}{software}{license} eq 'undefined') {
+sem uma licença definida.
+%   }
+%   else {
+sob uma licença <%== $softwares{$_}{software}{license} %>.
+%   }
+% }
+% else {
+%   if ($softwares{$_}{address}{url_available} eq 'yes') {
+mas apesar do endereço estar acessível na data 
+<%== $softwares{$_}{address}{checked_at} %>
+não é possível encontrar download do software no site.
+%   }
+%   else {
+mas inacessível em <%== $softwares{$_}{address}{checked_at} %>.
+%   }
+% }
+
+% if ($softwares{$_}{features}{releases} eq 'Obsolete') {
+Considerada obsoleta ...
+% }
+% elsif ($softwares{$_}{features}{releases} eq 'undefined') {
+Sem informações sobre lançamentos ou releases ...
+% }
+% else {
+Com lançamentos <%== $softwares{$_}{features}{releases} %> ...
+% }
 
 % my $total = $softwares{$_}{citations}{ieeexplore}{results} + $softwares{$_}{citations}{acm}{results};
 
