@@ -48,36 +48,29 @@ Software com lançamentos <%== $softwares{$_}{features}{releases} %>,
 % unless ($softwares{$_}{features}{source_code} eq 'undefined') {
 escrito em <%== $softwares{$_}{features}{source_code} %>,
 % }
-% my $total = $softwares{$_}{citations}{ieeexplore}{results} + $softwares{$_}{citations}{acm}{results};
-citado {\bf <%== $total %>} vezes em outros trabalhos de pesquisa.
-
-Busca no {\bf IEEE Xplore} por
+uma busca por citações no {\bf IEEE Xplore} por
 \texttt{<%== $softwares{$_}{citations}{ieeexplore}{search_string} %>}
-encontrou {\bf <%== $softwares{$_}{citations}{ieeexplore}{results} %>}
-resultados.
+e no {\bf ACM} com
+\texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
+retornou
+% my $results =  $softwares{$_}{citations}{ieeexplore}{results}
+%              + $softwares{$_}{citations}{acm}{results};
+<%== $results %> resultados, entre os quais
+% my $total =  $softwares{$_}{citations}{ieeexplore}{really_refers_to_software_count}
+%              + $softwares{$_}{citations}{acm}{really_refers_to_software_count};
+{\bf <%== $total %>} faz referência ao software.
 
-% if ($softwares{$_}{citations}{ieeexplore}{results} > 0) {
+% if ($total > 0) {
 \begin{enumerate}
-%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{ieeexplore}{bibfile} }) {
-%   next if $entry_key eq 'count';
+%   foreach my $entry_key (sort keys %{ $softwares{$_}{citations}{ieeexplore}{bibfile} }) {
 \item <%== $softwares{$_}{citations}{ieeexplore}{bibfile}{$entry_key}{title} %>
 %   }
-\end{enumerate}
-% }
-
-Busca no {\bf ACM} por
-\texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
-encontrou {\bf <%== $softwares{$_}{citations}{acm}{results} %>}
-resultados.
-
-% if ($softwares{$_}{citations}{acm}{results} > 0) {
-\begin{enumerate}
 %   foreach my $entry_key (keys %{ $softwares{$_}{citations}{acm}{bibfile} }) {
-%   next if $entry_key eq 'count';
 \item <%== $softwares{$_}{citations}{acm}{bibfile}{$entry_key}{title} %>
 %   }
 \end{enumerate}
 % }
+
 
 % }
 
