@@ -52,20 +52,14 @@ sub load_collected_data($software_dir) {
   # read BIBTEX: paper.bib
   my %paper = read_paper_file("$software_dir/paper.bib");
   $software{paper}{bibfile} = \%paper;
-  # read BIBTEX: citations.bib
-  my %citations = read_citations_file("$software_dir/citations.bib");
-  $software{citations}{summary} = \%citations;
-
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
   $software{citations}{ieeexplore}{bibfile} = \%ieeexplore;
   $software{citations}{ieeexplore}{really_refers_to_software_count} = scalar keys %ieeexplore;
-
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
   $software{citations}{acm}{bibfile} = \%acm;
   $software{citations}{acm}{really_refers_to_software_count} = scalar keys %acm;
-
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
     if ($software{software}{distribution} =~ /^gratis|foss$/) {
