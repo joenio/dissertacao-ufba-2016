@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use experimental 'signatures';
+use Mojo::UserAgent;
+use Mojo::URL;
+use utf8;
+ 
+our $APIKEY = 'yx99dre536znna6qdhafdqns';
+
+my $ua = Mojo::UserAgent->new;
+my $url = Mojo::URL->new('http://ieeexploreapi.ieee.org/api/v1/search/articles');
+$url->query({querytext => 'altmetrics', format => 'json', apikey => $APIKEY});
+
+say $ua->get($url)->res->to_string;
+exit;
+
+for my $hit (@{$ua->get($url)->res->json->{hits}{hits}}) {
+  say "$hit->{_source}{name} ($hit->{_source}{author})";
+}
