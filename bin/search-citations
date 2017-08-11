@@ -4,14 +4,27 @@ use experimental 'signatures';
 use Mojo::UserAgent;
 use Mojo::URL;
 use utf8;
- 
-our $APIKEY = 'yx99dre536znna6qdhafdqns';
 
+# https://developer.ieee.org/
+
+my $APIKEY = 'yx99dre536znna6qdhafdqns';
 my $ua = Mojo::UserAgent->new;
-my $url = Mojo::URL->new('http://ieeexploreapi.ieee.org/api/v1/search/articles');
-$url->query({querytext => 'altmetrics', format => 'json', apikey => $APIKEY});
 
+sub search_articles_by_content($query) {
+  my $url = Mojo::URL->new("http://ieeexploreapi.ieee.org/api/v1/search/articles");
+  $url->query({querytext => $query, format => 'json', apikey => $APIKEY});
+  return $url;
+}
+
+sub search_articles_by_doi($doi) {
+  my $url = Mojo::URL->new("http://ieeexploreapi.ieee.org/api/v1/articles/doi/$doi");
+  $url->query({format => 'json', apikey => $APIKEY});
+  return $url;
+}
+
+my $url = search_articles_by_doi("10.1109/ASE.2004.1342733");
 say $ua->get($url)->res->to_string;
+
 exit;
 
 for my $hit (@{$ua->get($url)->res->json->{hits}{hits}}) {
