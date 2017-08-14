@@ -55,20 +55,24 @@ e no {\bf ACM} com
 retornou
 % my $results =  $softwares{$_}{citations}{ieeexplore}{results}
 %              + $softwares{$_}{citations}{acm}{results};
-<%== $results %> resultados, apenas
-% my $total =  $softwares{$_}{citations}{ieeexplore}{really_refers_to_software_count}
-%              + $softwares{$_}{citations}{acm}{really_refers_to_software_count};
-{\bf <%== $total %>} faz referência ao software.
+<%== $results %> resultados,
+% my $total = $softwares{$_}{citations}{really_refers_to_software_count};
+% if ($total == 0) {
+nenhum faz referência ao software.
+% }
+% elsif ($total == 1) {
+apenas um faz referência ao software.
+% }
+% else {
+{\bf <%== $total %>} fazem referência ao software.
+% }
 
 % if ($total > 0) {
-\begin{enumerate}
-%   foreach my $entry_key (sort keys %{ $softwares{$_}{citations}{ieeexplore}{bibfile} }) {
-\item <%== $softwares{$_}{citations}{ieeexplore}{bibfile}{$entry_key}{title} %>
+\begin{itemize}
+%   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{title} cmp $softwares{$_}{citations}{uniq}{$b}{title} }keys %{ $softwares{$_}{citations}{uniq} }) {
+\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{title} %>
 %   }
-%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{acm}{bibfile} }) {
-\item <%== $softwares{$_}{citations}{acm}{bibfile}{$entry_key}{title} %>
-%   }
-\end{enumerate}
+\end{itemize}
 % }
 
 

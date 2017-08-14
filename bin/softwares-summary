@@ -31,18 +31,32 @@ sub read_citations_file($filepath) {
     if (my $bib = Text::BibTeX::File->new($filepath)) {
       while (my $entry = Text::BibTeX::Entry->new($bib)) {
         next unless $entry->parse_ok;
-        my $really_refers_to_software = $entry->get('really_refers_to_software');
-        if ($really_refers_to_software && $really_refers_to_software eq 'yes') {
-          my $key = $entry->key;
-          my ($first_author) = $entry->split('author');
-          $citations{$key}{author} = $first_author;
-          $citations{$key}{title} = $entry->get('title');
-        }
+        my $key = $entry->key;
+        my ($first_author) = $entry->split('author');
+        $citations{$key}{author} = $first_author;
+        $citations{$key}{title} = $entry->get('title');
+        $citations{$key}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
       }
       $bib->close;
     }
   }
   return %citations;
+}
+
+# returns a uniq list of entries that really refers to software
+sub compact_citations {
+  my %citations = @_;
+  my %uniq = ();
+  foreach my $entry_key (grep { $citations{$_}{really_refers_to_software} eq 'yes' } keys %citations) {
+    if (grep { lc($uniq{$_}{title}) eq lc($citations{$entry_key}{title}) } keys %uniq) {
+      next;
+    }
+    elsif (grep { $citations{$entry_key}{doi} && $uniq{$_}{doi} && $citations{$entry_key}{doi} eq $uniq{$_}{doi} } keys %uniq) {
+      next;
+    }
+    $uniq{$entry_key} = $citations{$entry_key};
+  }
+  return %uniq;
 }
 
 sub load_collected_data($software_dir) {
@@ -54,12 +68,13 @@ sub load_collected_data($software_dir) {
   $software{paper}{bibfile} = \%paper;
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
-  $software{citations}{ieeexplore}{bibfile} = \%ieeexplore;
-  $software{citations}{ieeexplore}{really_refers_to_software_count} = scalar keys %ieeexplore;
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
-  $software{citations}{acm}{bibfile} = \%acm;
-  $software{citations}{acm}{really_refers_to_software_count} = scalar keys %acm;
+  # summarize in a uniq citation list
+  my %uniq = compact_citations(%ieeexplore, %acm);
+  $software{citations}{uniq} = \%uniq;
+  $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
+
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
     if ($software{software}{distribution} =~ /^gratis|foss$/) {
