@@ -100,6 +100,11 @@ sub load_collected_data($software_dir) {
   unless ($software{releases}{source}) {
     $software{releases}{source} = $software{releases}{sources}->[0];
   }
+  # set {releases}{first_date} and {releases}{last_date}
+  if ($software{releases}{dates}) {
+    ($software{releases}{first_date}) = split(' ', $software{releases}{dates}->[-1]);
+    ($software{releases}{last_date}) = split(' ', $software{releases}{dates}->[0]);
+  }
 
   return %software;
 }
@@ -154,6 +159,18 @@ sub format_collected_data {
     }
     elsif ($softwares->{$_}{features}{releases} eq 'Occasionally') {
       $softwares->{$_}{features}{releases} = 'ocsaionais';
+    }
+    # format first release date as yyyy
+    if ($softwares->{$_}{releases}{first_date} && $softwares->{$_}{releases}{first_date} !~ /undefined/) {
+      my $first_date = $softwares->{$_}{releases}{first_date};
+      $date = DateTime::Format::HTTP->parse_datetime($first_date);
+      $softwares->{$_}{releases}{first_date} = $date->year;
+    }
+    # format last release date as yyyy
+    if ($softwares->{$_}{releases}{last_date} && $softwares->{$_}{releases}{last_date} !~ /undefined/) {
+      my $last_date = $softwares->{$_}{releases}{last_date};
+      $date = DateTime::Format::HTTP->parse_datetime($last_date);
+      $softwares->{$_}{releases}{last_date} = $date->year;
     }
   }
 }
