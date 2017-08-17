@@ -92,6 +92,14 @@ sub load_collected_data($software_dir) {
   else {
     $software{debug}{symlink_to_paper_missing} = 0;
   }
+  # set {address}{url} as {address}{urls}[0]
+  unless ($software{address}{url}) {
+    $software{address}{url} = $software{address}{urls}->[0];
+  }
+  # set {releases}{source} as {releases}{sources}[0]
+  unless ($software{releases}{source}) {
+    $software{releases}{source} = $software{releases}{sources}->[0];
+  }
 
   return %software;
 }
