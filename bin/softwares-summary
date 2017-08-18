@@ -29,12 +29,13 @@ sub read_citations_file($filepath) {
   my %citations = ();
   unless (-z $filepath) {
     if (my $bib = Text::BibTeX::File->new($filepath)) {
-      while (my $entry = Text::BibTeX::Entry->new($bib)) {
+      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
         next unless $entry->parse_ok;
         my $key = $entry->key;
         my ($first_author) = $entry->split('author');
         $citations{$key}{author} = $first_author;
         $citations{$key}{title} = $entry->get('title');
+        $citations{$key}{review} = $entry->get('review');
         $citations{$key}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
       }
       $bib->close;

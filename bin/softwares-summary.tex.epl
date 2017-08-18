@@ -87,11 +87,27 @@ apenas um faz referência ao software.
 % if ($total > 0) {
 \begin{itemize}
 %   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{title} cmp $softwares{$_}{citations}{uniq}{$b}{title} }keys %{ $softwares{$_}{citations}{uniq} }) {
-\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{title} %>
+\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{title} %> (<%== $softwares{$_}{citations}{uniq}{$entry_key}{review} %>)
 %   }
 \end{itemize}
 % }
 
 % }
+
+\section{Categorias}
+
+% my %categorias = ();
+
+% foreach (sort keys %softwares) {
+%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{uniq} }) {
+%     $categorias{$softwares{$_}{citations}{uniq}{$entry_key}{review}}++;
+%   }
+% }
+
+\begin{itemize}
+% foreach (sort keys %categorias) {
+\item <%== $_ %>: <%== $categorias{$_} %>
+% }
+\end{itemize}
 
 %# vim: filetype=epl
