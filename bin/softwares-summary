@@ -88,30 +88,40 @@ sub authors_are_the_same {
 #   Zijiang Yang        -> Z. Yang
 #   Chao Wang           -> C. Wang
 sub normalize_author_names {
+  my %entry = @_;
+  my @names = @{ $entry{authors} };
+  my @normalized_names = ();
+  for (my $i = 0; $i <= $#names; $i++) {
+    my @normalized_name = ();
+    if ($names[$i] =~ /,/) {
+      my ($last, $first) = split /\s*,\s*/, $names[$i];
+      foreach my $name (split /\s+/, $first) {
+        if ($name =~ /^[[:upper:]]/) {
+          $name =~ s/(.).*/$1./;
+        }
+        push @normalized_name, $name;
+      }
+      push @normalized_name, $last;
+    }
+    else {
+      @normalized_name = split /\s+/, $names[$i];
+      for (my $j = 0; $j < $#normalized_name; $j++) {
+        if ($normalized_name[$j] =~ /^[[:upper:]]/) {
+          $normalized_name[$j] =~ s/(.).*/$1./;
+        }
+      }
+    }
+    push @normalized_names, join(' ', @normalized_name);
+  }
+  $entry{authors} = \@normalized_names;
+  return %entry;
+}
+
+sub normalize_citations {
   my %citations = @_;
   foreach (keys %citations) {
-    for (my $i = 0; $i <= $#{ $citations{$_}{authors} }; $i++) {
-      my @names = ();
-      if ($citations{$_}{authors}->[$i] =~ /,/) {
-        my ($last, $first) = split /\s*,\s*/, $citations{$_}{authors}->[$i];
-        foreach my $name (split /\s+/, $first) {
-          if ($name =~ /^[[:upper:]]/) {
-            $name =~ s/(.).*/\1./;
-          }
-          push @names, $name;
-        }
-        push @names, $last;
-      }
-      else {
-        @names = split /\s+/, $citations{$_}{authors}->[$i];
-        for (my $j = 0; $j < $#names; $j++) {
-          if ($names[$j] =~ /^[[:upper:]]/) {
-            $names[$j] =~ s/(.).*/\1./;
-          }
-        }
-      }
-      $citations{$_}{authors}->[$i] = join(' ', @names);
-    }
+    my %normalized = normalize_author_names %{ $citations{$_} };
+    $citations{$_} = \%normalized;
   }
   return %citations;
 }
@@ -121,14 +131,14 @@ sub load_collected_data($software_dir) {
   my $yaml = LoadFile("$software_dir/software.yml");
   my %software = %{ $yaml };
   # read BIBTEX: paper.bib
-  my %paper = read_paper_file("$software_dir/paper.bib");
+  my %paper = normalize_author_names read_paper_file("$software_dir/paper.bib");
   $software{paper}{bibfile} = \%paper;
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
   # summarize in a uniq citation list
-  my %uniq = normalize_author_names( compact_citations(%ieeexplore, %acm) );
+  my %uniq = normalize_citations( compact_citations(%ieeexplore, %acm) );
   $software{citations}{uniq} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
 
