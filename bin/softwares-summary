@@ -18,6 +18,9 @@ sub read_paper_file($filepath) {
           my ($first_author) = $entry->split('author');
           $paper{author} = $first_author;
           $paper{title} = $entry->get('title');
+          my @authors = $entry->split('author');
+          $paper{authors} = \@authors;
+          $paper{year} = $entry->get('year');
         }
         $bib->close;
       }
@@ -37,6 +40,9 @@ sub read_citations_file($filepath) {
         $citations{$key}{title} = $entry->get('title');
         $citations{$key}{review} = $entry->get('review');
         $citations{$key}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
+        my @authors = $entry->split('author');
+        $citations{$key}{authors} = \@authors;
+        $citations{$key}{year} = $entry->get('year');
       }
       $bib->close;
     }
@@ -60,6 +66,56 @@ sub compact_citations {
   return %uniq;
 }
 
+sub authors_are_the_same {
+  my @citation_authors = @{ $_[0]->{authors} };
+  my @paper_authors = @{ $_[1]->{authors} };
+  my @same_authors = ();
+  foreach my $paper_author (@paper_authors) {
+    foreach my $citation_author (@citation_authors) {
+      if ($paper_author eq $citation_author) {
+        push @same_authors, $paper_author;
+      }
+    }
+  }
+  return @same_authors == @paper_authors ? 'yes' : 'no';
+}
+
+# normalize author names using format "F. Last", eg:
+#   Bajaj, Kon          -> K. Bajaj
+#   Costa, Kim A.       -> K. A. Costa
+#   Rajan, Sreeranga P. -> S. P. Rajan
+#   Pol, Jaco van de    -> J. van de Pol
+#   Zijiang Yang        -> Z. Yang
+#   Chao Wang           -> C. Wang
+sub normalize_author_names {
+  my %citations = @_;
+  foreach (keys %citations) {
+    for (my $i = 0; $i <= $#{ $citations{$_}{authors} }; $i++) {
+      my @names = ();
+      if ($citations{$_}{authors}->[$i] =~ /,/) {
+        my ($last, $first) = split /\s*,\s*/, $citations{$_}{authors}->[$i];
+        foreach my $name (split /\s+/, $first) {
+          if ($name =~ /^[[:upper:]]/) {
+            $name =~ s/(.).*/\1./;
+          }
+          push @names, $name;
+        }
+        push @names, $last;
+      }
+      else {
+        @names = split /\s+/, $citations{$_}{authors}->[$i];
+        for (my $j = 0; $j < $#names; $j++) {
+          if ($names[$j] =~ /^[[:upper:]]/) {
+            $names[$j] =~ s/(.).*/\1./;
+          }
+        }
+      }
+      $citations{$_}{authors}->[$i] = join(' ', @names);
+    }
+  }
+  return %citations;
+}
+
 sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
@@ -72,7 +128,7 @@ sub load_collected_data($software_dir) {
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
   # summarize in a uniq citation list
-  my %uniq = compact_citations(%ieeexplore, %acm);
+  my %uniq = normalize_author_names( compact_citations(%ieeexplore, %acm) );
   $software{citations}{uniq} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
 

@@ -9,6 +9,9 @@
 % foreach (sort keys %softwares) {
 \section{<%== $softwares{$_}{software}{name} %>}
 
+Autores:
+<%== join(' - ', @{ $softwares{$_}{paper}{bibfile}{authors} }) %>.
+
 <%== $softwares{$_}{software}{description} %>
 publicado no artigo {\it <%== $softwares{$_}{paper}{bibfile}{title} %>}
 por <%== $softwares{$_}{paper}{bibfile}{author} %>
@@ -86,8 +89,8 @@ apenas um faz referência ao software.
 
 % if ($total > 0) {
 \begin{itemize}
-%   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{title} cmp $softwares{$_}{citations}{uniq}{$b}{title} }keys %{ $softwares{$_}{citations}{uniq} }) {
-\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{title} %> (<%== $softwares{$_}{citations}{uniq}{$entry_key}{review} %>)
+%   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{year} cmp $softwares{$_}{citations}{uniq}{$b}{year} }keys %{ $softwares{$_}{citations}{uniq} }) {
+\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{year} %>: <%== join(' - ', @{ $softwares{$_}{citations}{uniq}{$entry_key}{authors} }) %>
 %   }
 \end{itemize}
 % }
