@@ -6,26 +6,31 @@ use YAML qw( LoadFile );
 use Text::BibTeX;
 use Mojo::Template;
 use DateTime::Format::HTTP;
+use List::Util qw( uniq );
 use open ':locale';
 use utf8;
 
 sub read_paper_file($filepath) {
-    my %paper = ();
-    unless (-z $filepath) {
-      if (my $bib = Text::BibTeX::File->new($filepath)) {
-        while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
-          next unless $entry->parse_ok;
-          my ($first_author) = $entry->split('author');
-          $paper{author} = $first_author;
-          $paper{title} = $entry->get('title');
-          my @authors = $entry->split('author');
-          $paper{authors} = \@authors;
-          $paper{year} = $entry->get('year');
+  my %paper = ();
+  unless (-z $filepath) {
+    if (my $bib = Text::BibTeX::File->new($filepath)) {
+      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
+        next unless $entry->parse_ok;
+        my ($first_author) = $entry->split('author');
+        $paper{author} = $first_author;
+        $paper{title} = $entry->get('title');
+        my @authors = $entry->split('author');
+        $paper{authors} = \@authors;
+        $paper{year} = $entry->get('year');
+        $paper{reference_weight} = $entry->get('reference_weight');
+        if (my $weightless_contributions = $entry->get('reference_weight')) {
+          $paper{weightless_contributions} = $weightless_contributions;
         }
-        $bib->close;
       }
+      $bib->close;
     }
-    return %paper;
+  }
+  return %paper;
 }
 
 sub read_citations_file($filepath) {
@@ -43,6 +48,10 @@ sub read_citations_file($filepath) {
         my @authors = $entry->split('author');
         $citations{$key}{authors} = \@authors;
         $citations{$key}{year} = $entry->get('year');
+        $citations{$key}{reference_weight} = $entry->get('reference_weight');
+        if (my $weightless_contributions = $entry->get('reference_weight')) {
+          $citations{$key}{weightless_contributions} = $weightless_contributions;
+        }
       }
       $bib->close;
     }
@@ -80,13 +89,13 @@ sub authors_are_the_same {
   return @same_authors == @paper_authors ? 'yes' : 'no';
 }
 
-# normalize author names using format "F. Last", eg:
-#   Bajaj, Kon          -> K. Bajaj
-#   Costa, Kim A.       -> K. A. Costa
-#   Rajan, Sreeranga P. -> S. P. Rajan
-#   Pol, Jaco van de    -> J. van de Pol
-#   Zijiang Yang        -> Z. Yang
-#   Chao Wang           -> C. Wang
+# normalize author names using format "Last F.", eg:
+#  * Bajaj, Kon          = Bajaj K.
+#  * Costa, Kim A.       = Costa K. A.
+#  * Rajan, Sreeranga P. = Rajan S. P.
+#  * Pol, Jaco van de    = Pol J. van de
+#  * Zijiang Yang        = Yang Z.
+#  * Chao Wang           = Wang C.
 sub normalize_author_names {
   my %entry = @_;
   my @names = @{ $entry{authors} };
@@ -101,6 +110,12 @@ sub normalize_author_names {
         }
         push @normalized_name, $name;
       }
+      if ($last =~ /\s+/) {
+        my @last_name = split /\s+/, $last;
+        $last = pop @last_name;
+        map { $_ =~ s/(.).*/$1./ } @last_name;
+        $last = join(' ', @last_name, $last);
+      }
       push @normalized_name, $last;
     }
     else {
@@ -111,7 +126,7 @@ sub normalize_author_names {
         }
       }
     }
-    push @normalized_names, join(' ', @normalized_name);
+    push @normalized_names, join(' ', reverse @normalized_name);
   }
   $entry{authors} = \@normalized_names;
   return %entry;
@@ -173,6 +188,10 @@ sub load_collected_data($software_dir) {
     ($software{releases}{last_date}) = split(' ', $software{releases}{dates}->[0]);
   }
 
+  # quantos autores distintos cita o software
+  my @all_citations_authors = uniq map { @{$software{citations}{uniq}{$_}{authors}} } keys %{$software{citations}{uniq}};
+  $software{citations}{authors} = \@all_citations_authors;
+
   return %software;
 }
 
@@ -225,7 +244,7 @@ sub format_collected_data {
       $softwares->{$_}{features}{releases} = 'frequentes';
     }
     elsif ($softwares->{$_}{features}{releases} eq 'Occasionally') {
-      $softwares->{$_}{features}{releases} = 'ocsaionais';
+      $softwares->{$_}{features}{releases} = 'ocasionais';
     }
     # format first release date as yyyy
     if ($softwares->{$_}{releases}{first_date} && $softwares->{$_}{releases}{first_date} !~ /undefined/) {

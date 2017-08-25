@@ -6,6 +6,12 @@
 \xchapter{Softwares acadêmicos}{Este capítulo ...}
 \label{softwares-summary}
 
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.35]{imagens/software-timeline-wireframe.jpg}
+  \caption{Protótipo do gráfico com timeline do software}
+\end{figure}
+
 % foreach (sort keys %softwares) {
 \section{<%== $softwares{$_}{software}{name} %>}
 
@@ -87,10 +93,19 @@ apenas um faz referência ao software.
 {\bf <%== $total %>} fazem referência ao software.
 % }
 
+% if (@{ $softwares{$_}{citations}{authors} } > 0) {
+\begin{itemize}
+%   foreach my $author (sort { $a cmp $b } @{ $softwares{$_}{citations}{authors} }) {
+\item <%== $author %>
+%   }
+\end{itemize}
+% }
+
 % if ($total > 0) {
 \begin{itemize}
 %   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{year} cmp $softwares{$_}{citations}{uniq}{$b}{year} }keys %{ $softwares{$_}{citations}{uniq} }) {
-\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{year} %>: <%== join(' - ', @{ $softwares{$_}{citations}{uniq}{$entry_key}{authors} }) %>
+\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{year} %>, <%== join(' - ', @{ $softwares{$_}{citations}{uniq}{$entry_key}{authors} }) %>, <%== $softwares{$_}{citations}{uniq}{$entry_key}{reference_weight} %>
+% #        $softwares{$_}{citations}{uniq}{$entry_key}{weightless_contributions}
 %   }
 \end{itemize}
 % }
@@ -100,13 +115,27 @@ apenas um faz referência ao software.
 \section{Categorias}
 
 % my %categorias = ();
+% my %autores = ();
 
 % foreach (sort keys %softwares) {
 %   foreach my $entry_key (keys %{ $softwares{$_}{citations}{uniq} }) {
 %     $categorias{$softwares{$_}{citations}{uniq}{$entry_key}{review}}++;
 %   }
+%   foreach my $author (@{ $softwares{$_}{citations}{authors} }) {
+%     $autores{$author}++;
+%   }
 % }
 
+\subsection{Autores}
+
+\begin{itemize}
+% foreach (sort keys %autores) {
+\item <%== $_ %>: <%== $autores{$_} %>
+% }
+
+\subsection{Reviews}
+
+\end{itemize}
 \begin{itemize}
 % foreach (sort keys %categorias) {
 \item <%== $_ %>: <%== $categorias{$_} %>
