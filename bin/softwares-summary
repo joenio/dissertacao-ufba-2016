@@ -7,6 +7,7 @@ use Text::BibTeX;
 use Mojo::Template;
 use DateTime::Format::HTTP;
 use List::Util qw( uniq );
+use Set::Tiny;
 use open ':locale';
 use utf8;
 
@@ -144,7 +145,7 @@ sub normalize_citations {
   return %citations;
 }
 
-sub summarize_citations_by_year {
+sub group_citations_by_year {
   my %citations = @_;
   my %citations_by_year = ();
   foreach (keys %citations) {
@@ -168,6 +169,36 @@ sub sum_reference_weight {
   return %reference_weight_by_year_sum;
 }
 
+sub measure_authorship_weight {
+  my %citations = @_;
+  my %citations_by_year = group_citations_by_year(@_);
+  my $past_years_authors = Set::Tiny->new();
+  foreach my $year (sort keys %citations_by_year) {
+    my $authors_these_year = Set::Tiny->new();
+    foreach (keys %{ $citations_by_year{$year} }) {
+      $authors_these_year->insert(@{ $citations{$_}{authors} });
+      # são os primeiros autores a publicar sobre o software
+      if ($past_years_authors->is_empty) {
+        $citations{$_}{authorship_weight} = 0;
+      }
+      # nenhum dos autores jamais publicou
+      elsif ($authors_these_year->is_disjoint($past_years_authors)) {
+        $citations{$_}{authorship_weight} = 0.5;
+      }
+      # uma parte dos autores já publicou sobre o software em anos anteriores
+      elsif ($authors_these_year->is_properly_intersecting($past_years_authors)) {
+        $citations{$_}{authorship_weight} = 0.25;
+      }
+      # todos os autores já publicaram sobre o software em anos anteriores
+      elsif ($authors_these_year->is_subset($past_years_authors)) {
+        $citations{$_}{authorship_weight} = 0;
+      }
+    }
+    $past_years_authors->insert($authors_these_year->members);
+  }
+  return %citations;
+}
+
 sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
@@ -183,21 +214,26 @@ sub load_collected_data($software_dir) {
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
 
   # summarize in a uniq citation list
-  my %uniq = normalize_citations compact_citations(%ieeexplore, %acm);
+  my %uniq = normalize_citations compact_citations(%ieeexplore, %acm, $paper{entry_key} => \%paper);
+  
+  # add paper selected on structured review
+  #my %_uniq = %uniq;
+  #$_uniq{$paper{entry_key}} = \%paper;
+  #%_uniq = normalize_citations compact_citations %_uniq;
+
+  # peso das autorias
+  %uniq = measure_authorship_weight %uniq;
+
   $software{citations}{bibfile} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
 
-  # add paper selected on structured review
-  my %_uniq = %uniq;
-  $_uniq{$paper{entry_key}} = \%paper;
-  %_uniq = normalize_citations compact_citations %_uniq;
-  # ... ???
-  my %citations_by_year = summarize_citations_by_year(%_uniq);
+  # group citations by year
+  my %citations_by_year = group_citations_by_year(%uniq);
   $software{citations}{by_year} = \%citations_by_year;
+
   # sum reference weight by year
   my %reference_weight_by_year = sum_reference_weight(%citations_by_year);
   $software{citations}{reference_weight_by_year_sum} = \%reference_weight_by_year;
-
 
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
