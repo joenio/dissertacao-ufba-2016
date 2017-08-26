@@ -19,6 +19,8 @@ sub read_paper_file($filepath) {
         my ($first_author) = $entry->split('author');
         $paper{author} = $first_author;
         $paper{title} = $entry->get('title');
+        $paper{review} = $entry->get('review');
+        $paper{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
         my @authors = $entry->split('author');
         $paper{authors} = \@authors;
         $paper{year} = $entry->get('year');
@@ -26,7 +28,7 @@ sub read_paper_file($filepath) {
         if (my $weightless_contributions = $entry->get('reference_weight')) {
           $paper{weightless_contributions} = $weightless_contributions;
         }
-        $paper{entry_key} = $entry->get('key');
+        $paper{entry_key} = $entry->key;
       }
       $bib->close;
     }
@@ -158,6 +160,7 @@ sub sum_reference_weight {
   my %citations_by_year = @_;
   my %reference_weight_by_year_sum = ();
   foreach my $year (keys %citations_by_year) {
+    $reference_weight_by_year_sum{$year} = 0;
     foreach (keys %{ $citations_by_year{$year} }) {
       $reference_weight_by_year_sum{$year} += $citations_by_year{$year}{$_}{reference_weight};
     }
@@ -173,20 +176,29 @@ sub load_collected_data($software_dir) {
   my %paper = normalize_author_names read_paper_file("$software_dir/paper.bib");
   $software{paper}{bibfile} = \%paper;
 
+
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
+
   # summarize in a uniq citation list
-  my %uniq = normalize_citations( compact_citations(%ieeexplore, %acm) );
+  my %uniq = normalize_citations compact_citations(%ieeexplore, %acm);
   $software{citations}{bibfile} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
+
+  # add paper selected on structured review
+  my %_uniq = %uniq;
+  $_uniq{$paper{entry_key}} = \%paper;
+  %_uniq = normalize_citations compact_citations %_uniq;
   # ... ???
-  my %citations_by_year = summarize_citations_by_year(%uniq);
+  my %citations_by_year = summarize_citations_by_year(%_uniq);
   $software{citations}{by_year} = \%citations_by_year;
   # sum reference weight by year
   my %reference_weight_by_year = sum_reference_weight(%citations_by_year);
   $software{citations}{reference_weight_by_year_sum} = \%reference_weight_by_year;
+
+
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
     if ($software{software}{distribution} =~ /^gratis|foss$/) {

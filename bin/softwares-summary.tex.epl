@@ -15,13 +15,12 @@
 % foreach (sort keys %softwares) {
 \section{<%== $softwares{$_}{software}{name} %>}
 
-Autores:
-<%== join(' - ', @{ $softwares{$_}{paper}{bibfile}{authors} }) %>.
-
 <%== $softwares{$_}{software}{description} %>
-publicado no artigo {\it <%== $softwares{$_}{paper}{bibfile}{title} %>}
-por <%== $softwares{$_}{paper}{bibfile}{author} %>
-no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>,
+publicado no artigo
+<%== join(' and ', @{ $softwares{$_}{paper}{bibfile}{authors} }) %>
+{\it <%== $softwares{$_}{paper}{bibfile}{title} %>}.
+<%== $softwares{$_}{paper}{year} %>,
+<%== $softwares{$_}{paper}{conference} %>,
 disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
 % if ($softwares{$_}{address}{download_available} eq 'yes') {
 %   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
@@ -76,7 +75,7 @@ escrito em <%== $softwares{$_}{features}{source_code} %>,
 % }
 uma busca por citações no {\bf IEEE Xplore} por
 \texttt{<%== $softwares{$_}{citations}{ieeexplore}{search_string} %>}
-e no {\bf ACM} com
+e no {\bf ACM} por
 \texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
 retornou
 % my $results =  $softwares{$_}{citations}{ieeexplore}{results}
@@ -103,7 +102,7 @@ apenas um faz referência ao software.
 %   }
 \end{itemize}
 
-Peso  total das referências por ano:
+Peso total das referências por ano:
 
 \begin{itemize}
 %   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
