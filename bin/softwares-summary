@@ -26,6 +26,7 @@ sub read_paper_file($filepath) {
         if (my $weightless_contributions = $entry->get('reference_weight')) {
           $paper{weightless_contributions} = $weightless_contributions;
         }
+        $paper{entry_key} = $entry->get('key');
       }
       $bib->close;
     }
@@ -86,7 +87,7 @@ sub authors_are_the_same {
       }
     }
   }
-  return @same_authors == @paper_authors ? 'yes' : 'no';
+  return @same_authors == @paper_authors;
 }
 
 # normalize author names using format "Last F.", eg:
@@ -141,6 +142,29 @@ sub normalize_citations {
   return %citations;
 }
 
+sub summarize_citations_by_year {
+  my %citations = @_;
+  my %citations_by_year = ();
+  foreach (keys %citations) {
+    my $year = $citations{$_}{year};
+    $citations_by_year{$year}{$_} = $citations{$_};
+  }
+  return %citations_by_year;
+}
+
+# $paper{structured_review} = 'yes'
+
+sub sum_reference_weight {
+  my %citations_by_year = @_;
+  my %reference_weight_by_year_sum = ();
+  foreach my $year (keys %citations_by_year) {
+    foreach (keys %{ $citations_by_year{$year} }) {
+      $reference_weight_by_year_sum{$year} += $citations_by_year{$year}{$_}{reference_weight};
+    }
+  }
+  return %reference_weight_by_year_sum;
+}
+
 sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
@@ -148,15 +172,21 @@ sub load_collected_data($software_dir) {
   # read BIBTEX: paper.bib
   my %paper = normalize_author_names read_paper_file("$software_dir/paper.bib");
   $software{paper}{bibfile} = \%paper;
+
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
   # read BIBTEX: citations/acm.bib
   my %acm = read_citations_file("$software_dir/citations/acm.bib");
   # summarize in a uniq citation list
   my %uniq = normalize_citations( compact_citations(%ieeexplore, %acm) );
-  $software{citations}{uniq} = \%uniq;
+  $software{citations}{bibfile} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
-
+  # ... ???
+  my %citations_by_year = summarize_citations_by_year(%uniq);
+  $software{citations}{by_year} = \%citations_by_year;
+  # sum reference weight by year
+  my %reference_weight_by_year = sum_reference_weight(%citations_by_year);
+  $software{citations}{reference_weight_by_year_sum} = \%reference_weight_by_year;
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {
     if ($software{software}{distribution} =~ /^gratis|foss$/) {
@@ -189,8 +219,21 @@ sub load_collected_data($software_dir) {
   }
 
   # quantos autores distintos cita o software
-  my @all_citations_authors = uniq map { @{$software{citations}{uniq}{$_}{authors}} } keys %{$software{citations}{uniq}};
+  my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
   $software{citations}{authors} = \@all_citations_authors;
+
+  #my $paper_authors = Set::Infinite->new(@{ $software{paper}{bibfile}{authors} });
+  #foreach (keys %{ $software{citations}{uniq} }) {
+  #  my $citation_authors = Set::Infinite->new(@{ $software{citations}{uniq}{$_}{authors} });
+  #  my @intersection = $paper_authors->intersection($citation_authors);
+  #  $software{citations}{uniq}{$_}{authors_are_the_same} = "@intersection";
+  #  if ($software{paper}{bibfile}{authors}->[0] eq $software{citations}{uniq}{$_}{authors}->[0]) {
+  #    $software{citations}{uniq}{$_}{main_author_is_the_same} = yes;
+  #  }
+  #  else {
+  #    $software{citations}{uniq}{$_}{main_authors_are_the_same} = 'no';
+  #  }
+  #}
 
   return %software;
 }

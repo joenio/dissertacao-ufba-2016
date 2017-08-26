@@ -93,21 +93,24 @@ apenas um faz referência ao software.
 {\bf <%== $total %>} fazem referência ao software.
 % }
 
-% if (@{ $softwares{$_}{citations}{authors} } > 0) {
-\begin{itemize}
-%   foreach my $author (sort { $a cmp $b } @{ $softwares{$_}{citations}{authors} }) {
-\item <%== $author %>
-%   }
-\end{itemize}
-% }
-
 % if ($total > 0) {
 \begin{itemize}
-%   foreach my $entry_key (sort { $softwares{$_}{citations}{uniq}{$a}{year} cmp $softwares{$_}{citations}{uniq}{$b}{year} }keys %{ $softwares{$_}{citations}{uniq} }) {
-\item <%== $softwares{$_}{citations}{uniq}{$entry_key}{year} %>, <%== join(' - ', @{ $softwares{$_}{citations}{uniq}{$entry_key}{authors} }) %>, <%== $softwares{$_}{citations}{uniq}{$entry_key}{reference_weight} %>
-% #        $softwares{$_}{citations}{uniq}{$entry_key}{weightless_contributions}
+%   foreach my $entry_key (sort { $softwares{$_}{citations}{bibfile}{$a}{year} cmp $softwares{$_}{citations}{bibfile}{$b}{year} }keys %{ $softwares{$_}{citations}{bibfile} }) {
+\item <%== join(' and ', @{ $softwares{$_}{citations}{bibfile}{$entry_key}{authors} }) %>
+      <%== $softwares{$_}{citations}{bibfile}{$entry_key}{year} %>.
+      {\it <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}.
+      Peso da referência: <%== $softwares{$_}{citations}{bibfile}{$entry_key}{reference_weight} %>
 %   }
 \end{itemize}
+
+Peso  total das referências por ano:
+
+\begin{itemize}
+%   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
+\item <%== $year %> = <%== $softwares{$_}{citations}{reference_weight_by_year_sum}{$year} %>
+%   }
+\end{itemize}
+
 % }
 
 % }
@@ -118,8 +121,8 @@ apenas um faz referência ao software.
 % my %autores = ();
 
 % foreach (sort keys %softwares) {
-%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{uniq} }) {
-%     $categorias{$softwares{$_}{citations}{uniq}{$entry_key}{review}}++;
+%   foreach my $entry_key (keys %{ $softwares{$_}{citations}{bibfile} }) {
+%     $categorias{$softwares{$_}{citations}{bibfile}{$entry_key}{review}}++;
 %   }
 %   foreach my $author (@{ $softwares{$_}{citations}{authors} }) {
 %     $autores{$author}++;
