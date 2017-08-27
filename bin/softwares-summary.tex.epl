@@ -136,6 +136,8 @@ nenhum dos autores publicou sobre o software antes
 %       }
 %     }
       ).
+      Final:
+      <%== $softwares{$_}{citations}{bibfile}{$entry_key}{final_weight} %>
 
 %   }
 \end{itemize}
@@ -154,8 +156,7 @@ Peso total das referências por ano:
     & <%== keys %{ $softwares{$_}{citations}{by_year}{$year} } %>
     & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} %>
     & <%== $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %>
-    & <%== sprintf("%.02f", $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} 
-                            + $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year}) %> \\\
+    & <%== $softwares{$_}{citations}{final_weight_by_year_sum}{$year} %> \\\
 %   }
   \hline
 \end{tabular}
