@@ -208,8 +208,9 @@ sub measure_authorship_weight {
 sub measure_final_weight {
   my %citations = @_;
   foreach (keys %citations) {
-    say "$_ = [ $citations{$_}{contribution_weight}, $citations{$_}{authorship_weight} ]";
-    my $weight = $citations{$_}{contribution_weight} + $citations{$_}{authorship_weight};
+    my $weight = $citations{$_}{contribution_weight}
+                   + $citations{$_}{contribution_weight}
+                     * $citations{$_}{authorship_weight};
     $citations{$_}{final_weight} = $weight > 1 ? 1 : $weight;
   }
   return %citations;
