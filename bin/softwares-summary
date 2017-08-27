@@ -25,11 +25,12 @@ sub read_paper_file($filepath) {
         my @authors = $entry->split('author');
         $paper{authors} = \@authors;
         $paper{year} = $entry->get('year');
-        $paper{reference_weight} = $entry->get('reference_weight');
-        if (my $weightless_contributions = $entry->get('reference_weight')) {
+        $paper{contribution_weight} = $entry->get('contribution_weight');
+        if (my $weightless_contributions = $entry->get('contribution_weight')) {
           $paper{weightless_contributions} = $weightless_contributions;
         }
         $paper{entry_key} = $entry->key;
+        $paper{step} = $entry->get('step') // 'structred-review';
       }
       $bib->close;
     }
@@ -52,10 +53,11 @@ sub read_citations_file($filepath) {
         my @authors = $entry->split('author');
         $citations{$key}{authors} = \@authors;
         $citations{$key}{year} = $entry->get('year');
-        $citations{$key}{reference_weight} = $entry->get('reference_weight');
-        if (my $weightless_contributions = $entry->get('reference_weight')) {
+        $citations{$key}{contribution_weight} = $entry->get('contribution_weight');
+        if (my $weightless_contributions = $entry->get('contribution_weight')) {
           $citations{$key}{weightless_contributions} = $weightless_contributions;
         }
+        $citations{$key}{step} = $entry->get('step') // 'review-citations';
       }
       $bib->close;
     }
@@ -155,18 +157,18 @@ sub group_citations_by_year {
   return %citations_by_year;
 }
 
-# $paper{structured_review} = 'yes'
-
-sub sum_reference_weight {
+sub sum_weight_by {
+  my $key = shift;
   my %citations_by_year = @_;
-  my %reference_weight_by_year_sum = ();
+  my %weight_by_year_sum = ();
   foreach my $year (keys %citations_by_year) {
-    $reference_weight_by_year_sum{$year} = 0;
+    $weight_by_year_sum{$year} = 0;
     foreach (keys %{ $citations_by_year{$year} }) {
-      $reference_weight_by_year_sum{$year} += $citations_by_year{$year}{$_}{reference_weight};
+      $citations_by_year{$year}{$_}{$key} //= 0;
+      $weight_by_year_sum{$year} += $citations_by_year{$year}{$_}{$key};
     }
   }
-  return %reference_weight_by_year_sum;
+  return %weight_by_year_sum;
 }
 
 sub measure_authorship_weight {
@@ -203,10 +205,10 @@ sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
   my %software = %{ $yaml };
+  ($software{software}{short_name}) = split '-', $software{software}{name};
   # read BIBTEX: paper.bib
-  my %paper = normalize_author_names read_paper_file("$software_dir/paper.bib");
+  my %paper = read_paper_file("$software_dir/paper.bib");
   $software{paper}{bibfile} = \%paper;
-
 
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
@@ -231,9 +233,13 @@ sub load_collected_data($software_dir) {
   my %citations_by_year = group_citations_by_year(%uniq);
   $software{citations}{by_year} = \%citations_by_year;
 
-  # sum reference weight by year
-  my %reference_weight_by_year = sum_reference_weight(%citations_by_year);
-  $software{citations}{reference_weight_by_year_sum} = \%reference_weight_by_year;
+  # sum contribution weight by year
+  my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);
+  $software{citations}{contribution_weight_by_year_sum} = \%contribution_weight_by_year;
+
+  # sum authorship weight by year
+  my %authorship_weight_by_year = sum_weight_by('authorship_weight', %citations_by_year);
+  $software{citations}{authorship_weight_by_year_sum} = \%authorship_weight_by_year;
 
   # check if collected data miss something
   if ($software{address}{download_available} eq 'yes') {

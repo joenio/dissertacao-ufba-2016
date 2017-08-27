@@ -97,19 +97,73 @@ apenas um faz referência ao software.
 %   foreach my $entry_key (sort { $softwares{$_}{citations}{bibfile}{$a}{year} cmp $softwares{$_}{citations}{bibfile}{$b}{year} }keys %{ $softwares{$_}{citations}{bibfile} }) {
 \item <%== join(' and ', @{ $softwares{$_}{citations}{bibfile}{$entry_key}{authors} }) %>
       <%== $softwares{$_}{citations}{bibfile}{$entry_key}{year} %>.
-      {\it <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}.
-      Peso da referência: <%== $softwares{$_}{citations}{bibfile}{$entry_key}{reference_weight} %>.
-      Peso da autoria: <%== $softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight} %>.
+%     if ($softwares{$_}{citations}{bibfile}{$entry_key}{step} eq 'structured-review') {
+        \textbf{\textit{ <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}}.
+%     }
+%     else {
+        \textit{ <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}.
+%     }
+      Peso:
+      <%== $softwares{$_}{citations}{bibfile}{$entry_key}{contribution_weight} %> (
+%     given ($softwares{$_}{citations}{bibfile}{$entry_key}{contribution_weight}) {
+%       when ($_ >= 0)    {
+          <%== "cita" %>
+%         continue;
+%       }
+%       when ($_ >= 0.25)    {
+          <%== "usa" %>
+%         continue;
+%       }
+%       when ($_ >= 0.5)    {
+          <%== "contribui" %>
+%         continue;
+%       }
+%       when ($_ >= 1)    {
+          <%== "cria" %>
+%         continue;
+%       }
+%     }
+      ),
+      <%== $softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight} %> (
+%     given ($softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight}) {
+%       when (0)    {
+são os primeiros autores a publicar sobre o software ou
+todos já publicaram sobre ele em anos anteriores
+%       }
+%       when (0.25)    {
+uma parte dos autores já publicou sobre o software em anos
+anteriores
+%       }
+%       when (0.5)    {
+nenhum dos autores publicou sobre o software antes
+%       }
+%     }
+      ).
+
 %   }
 \end{itemize}
 
 Peso total das referências por ano:
 
-\begin{itemize}
+\begin{table}[h]
+\caption{Número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
+\centering
+\begin{tabular}{| l | c | c | c | c |}
+  \hline
+  Ano & Número de citações & Peso da contribuição & Peso da autoria & Peso final \\\
+  \hline
 %   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
-\item <%== $year %> = <%== $softwares{$_}{citations}{reference_weight_by_year_sum}{$year} %>
+  <%== $year %>
+    & <%== keys %{ $softwares{$_}{citations}{by_year}{$year} } %>
+    & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} %>
+    & <%== $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %>
+    & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year}
+           + $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %> \\\
 %   }
-\end{itemize}
+  \hline
+\end{tabular}
+\label{peso-das-citacoes-por-ano}
+\end{table}
 
 % }
 
