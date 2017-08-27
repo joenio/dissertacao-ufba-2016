@@ -119,6 +119,7 @@ https://developer.ieee.org/apps/register
 * Mariel Zasso
 * Hilmer Neri
 * Talita Gentil
+* Jonei Costa
 
 ## Créditos
 
