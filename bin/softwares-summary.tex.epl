@@ -16,11 +16,7 @@
 \section{<%== $softwares{$_}{software}{name} %>}
 
 <%== $softwares{$_}{software}{description} %>
-publicado no artigo
-<%== join(' and ', @{ $softwares{$_}{paper}{bibfile}{authors} }) %>
-{\it <%== $softwares{$_}{paper}{bibfile}{title} %>}.
-<%== $softwares{$_}{paper}{year} %>,
-<%== $softwares{$_}{paper}{conference} %>,
+publicado no <%== $softwares{$_}{paper}{year} %>, <%== $softwares{$_}{paper}{conference} %>,
 disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
 % if ($softwares{$_}{address}{download_available} eq 'yes') {
 %   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
@@ -106,7 +102,7 @@ apenas um faz referência ao software.
       Peso:
       <%== $softwares{$_}{citations}{bibfile}{$entry_key}{contribution_weight} %> (
 %     given ($softwares{$_}{citations}{bibfile}{$entry_key}{contribution_weight}) {
-%       when ($_ >= 0)    {
+%       when ($_ >= 0.1)    {
           <%== "cita" %>
 %         continue;
 %       }
@@ -127,12 +123,13 @@ apenas um faz referência ao software.
       <%== $softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight} %> (
 %     given ($softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight}) {
 %       when (0)    {
-são os primeiros autores a publicar sobre o software ou
-todos já publicaram sobre ele em anos anteriores
+são os primeiros autores a publicar sobre o software
+%       }
+%       when (0.1)    {
+todos os autores já publicaram sobre o software em anos anteriores
 %       }
 %       when (0.25)    {
-uma parte dos autores já publicou sobre o software em anos
-anteriores
+uma parte dos autores já publicou sobre o software em anos anteriores
 %       }
 %       when (0.5)    {
 nenhum dos autores publicou sobre o software antes
@@ -157,12 +154,11 @@ Peso total das referências por ano:
     & <%== keys %{ $softwares{$_}{citations}{by_year}{$year} } %>
     & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} %>
     & <%== $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %>
-    & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year}
-           + $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %> \\\
+    & <%== sprintf("%.02f", $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} 
+                            + $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year}) %> \\\
 %   }
   \hline
 \end{tabular}
-\label{peso-das-citacoes-por-ano}
 \end{table}
 
 % }
