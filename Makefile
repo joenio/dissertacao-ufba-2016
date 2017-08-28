@@ -17,5 +17,6 @@ analyze:
 filter:
 	./bin/filter-papers -o dataset/papers.txt
 
-softwares-summary:
-	./bin/softwares-summary -o capitulos/softwares-summary.tex
+render-templates:
+	./bin/softwares-data -t capitulos/softwares-data-summary.tex.epl -o capitulos/softwares-data-summary.tex
+	./bin/softwares-data -t capitulos/softwares-data-analysis.tex.epl -o capitulos/softwares-data-analysis.tex

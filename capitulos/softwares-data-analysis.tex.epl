@@ -1,0 +1,61 @@
+% my %softwares = @_;
+
+%% **ATENÇÃO** não editar este arquivo!
+%%
+%% o conteúdo deste arquivo é gerado pelo script bin/softwares-summary e pelo
+%% template capitulos/softwares-summary.tex.epl
+
+\xchapter{Análise de dados dos softwares acadêmicos}{Este capítulo ...}
+\label{softwares-summary}
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.35]{imagens/software-timeline-wireframe.jpg}
+  \caption{Protótipo do gráfico com timeline do software}
+\end{figure}
+
+% foreach (sort keys %softwares) {
+\section{<%== $softwares{$_}{software}{name} %>}
+% if ($softwares{$_}{address}{download_available} eq 'yes') {
+\checkmark download
+% }
+% unless ($softwares{$_}{features}{source_code} eq 'undefined') {
+\checkmark código fonte
+% }
+% unless ($softwares{$_}{software}{license} eq 'undefined') {
+\checkmark licença
+% }
+% if (exists $softwares{$_}{releases}{last_date} && $softwares{$_}{releases}{last_date} ne 'undefined') {
+\checkmark última versão <%== $softwares{$_}{releases}{last_date} %>
+% }
+% if ($softwares{$_}{citations}{really_refers_to_software_count} > 0) {
+\begin{table}[H]
+\caption{Número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
+\centering
+\begin{tabular}{| l | c | c | c |}
+  \hline
+  Ano & Peso da citação & Peso da autoria & Peso final \\\
+  \hline
+%   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
+%     foreach my $entry_key (sort { $softwares{$_}{citations}{by_year}{$year}{$a}{title} cmp $softwares{$_}{citations}{by_year}{$year}{$b}{title} } keys %{ $softwares{$_}{citations}{by_year}{$year} }) {
+  <%== $year %>
+    & <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{contribution_weight}) %>
+%       if (exists $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions}) {
+          {\tiny <%== $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions} %>}
+%       }
+    & <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{authorship_weight}) %>
+%   if ($softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight} >= 0.5) {
+    & {\color{blue} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>} \\\
+%   }
+%   else {
+    & {\color{red} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>} \\\
+%   }
+%     }
+\hline
+%   }
+\end{tabular}
+\end{table}
+% }
+% }
+
+%# vim: filetype=epl

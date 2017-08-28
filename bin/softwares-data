@@ -26,7 +26,7 @@ sub read_paper_file($filepath) {
         $paper{authors} = \@authors;
         $paper{year} = $entry->get('year');
         $paper{contribution_weight} = $entry->get('contribution_weight');
-        if (my $weightless_contributions = $entry->get('contribution_weight')) {
+        if (my $weightless_contributions = $entry->get('weightless_contributions')) {
           $paper{weightless_contributions} = $weightless_contributions;
         }
         $paper{entry_key} = $entry->key;
@@ -55,7 +55,7 @@ sub read_citations_file($filepath) {
         $citations{$key}{authors} = \@authors;
         $citations{$key}{year} = $entry->get('year');
         $citations{$key}{contribution_weight} = $entry->get('contribution_weight');
-        if (my $weightless_contributions = $entry->get('contribution_weight')) {
+        if (my $weightless_contributions = $entry->get('weightless_contributions')) {
           $citations{$key}{weightless_contributions} = $weightless_contributions;
         }
         $citations{$key}{step} = $entry->get('step') // 'review-citations';
@@ -358,17 +358,27 @@ sub format_collected_data {
   }
 }
 
-if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+if ($#ARGV < 1 || $ARGV[0] ne '-t' || length($ARGV[1]) == 0) {
   warn "E: missing options!";
-  print "Usage: $0 -o <output-filename>\n";
+  print "Usage: $0 -t <template-filename> -o <output-filename>\n";
   exit 1;
 }
-our $OUTPUT_FILENAME = $ARGV[1];
+shift @ARGV;
+our $TEMPLATE_FILENAME = shift @ARGV;
+
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  print "Usage: $0 -t <template-filename> -o <output-filename>\n";
+  exit 1;
+}
+shift @ARGV;
+our $OUTPUT_FILENAME = shift @ARGV;
+
 our $DATASET_DIR = "$ENV{PWD}/dataset";
 my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
 format_collected_data \%softwares;
 my $t = Mojo::Template->new(auto_escape => 1);
-my $output = $t->render_file("$ENV{PWD}/capitulos/softwares-summary.tex.epl", %softwares);
+my $output = $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", %softwares);
 open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
 print $SUMMARY $output;
 close $SUMMARY;
