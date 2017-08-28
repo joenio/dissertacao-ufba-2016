@@ -28,34 +28,62 @@
 % if (exists $softwares{$_}{releases}{last_date} && $softwares{$_}{releases}{last_date} ne 'undefined') {
 \checkmark última versão <%== $softwares{$_}{releases}{last_date} %>
 % }
+
+% use List::Util qw ( uniq );
+% my @citations_year = keys %{ $softwares{$_}{citations}{by_year} };
+% my @releases_year = grep { s/^(\d{4})-\d{2}-\d{2}.*$/$1/ } @{ $softwares{$_}{releases}{dates} };
+% my @all_years = uniq @citations_year, @releases_year;
+
 % if ($softwares{$_}{citations}{really_refers_to_software_count} > 0) {
 \begin{table}[H]
 \caption{Número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
 \centering
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c | c | c | c | c |}
   \hline
-  Ano & Peso da citação & Peso da autoria & Peso final \\\
+  Ano & Versões & Peso da citação & Peso da autoria & Peso final & Sustentabilidade técnica \\\
   \hline
-%   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
-%     foreach my $entry_key (sort { $softwares{$_}{citations}{by_year}{$year}{$a}{title} cmp $softwares{$_}{citations}{by_year}{$year}{$b}{title} } keys %{ $softwares{$_}{citations}{by_year}{$year} }) {
-  <%== $year %>
-    & <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{contribution_weight}) %>
-%       if (exists $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions}) {
-          {\tiny <%== $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions} %>}
+%   foreach my $year (sort @all_years) {
+%     if (exists $softwares{$_}{citations}{by_year}{$year}) {
+%       foreach my $entry_key (sort { $softwares{$_}{citations}{by_year}{$year}{$a}{title} cmp $softwares{$_}{citations}{by_year}{$year}{$b}{title} } keys %{ $softwares{$_}{citations}{by_year}{$year} }) {
+%         if ($softwares{$_}{citations}{by_year}{$year}{$entry_key}{step} eq 'structured-review') {
+            {\bf <%== $year %>}
+%         }
+%         else {
+            <%== $year %>
+%         }
+          &
+          <%== (grep { /^$year$/ } @releases_year) || '-' %>
+          &
+          <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{contribution_weight}) %>
+%         if (exists $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions}) {
+            {\tiny <%== $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions} %>}
+%         }
+          &
+          <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{authorship_weight}) %>
+          &
+%         if ($softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight} >= 0.5) {
+            {\color{blue} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>}
+%         }
+%         else {
+            {\color{red} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>}
+%         }
+          &
+          ?
+          \\\
+%         @releases_year = grep { !/^$year$/ } @releases_year;
 %       }
-    & <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{authorship_weight}) %>
-%   if ($softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight} >= 0.5) {
-    & {\color{blue} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>} \\\
-%   }
-%   else {
-    & {\color{red} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>} \\\
-%   }
+%     }
+%     else {
+        <%== $year %> & <%== (grep { /^$year$/ } @releases_year) || '-' %> & - & - & - & ? \\\
 %     }
 \hline
 %   }
 \end{tabular}
 \end{table}
 % }
+
+
+
 % }
 
 %# vim: filetype=epl
