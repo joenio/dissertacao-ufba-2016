@@ -31,6 +31,7 @@ sub read_paper_file($filepath) {
         }
         $paper{entry_key} = $entry->key;
         $paper{step} = $entry->get('step') // 'structred-review';
+        $paper{conference} = $entry->get('conference');
       }
       $bib->close;
     }
@@ -223,7 +224,7 @@ sub load_collected_data($software_dir) {
   ($software{software}{short_name}) = split '-', $software{software}{name};
   # read BIBTEX: paper.bib
   my %paper = read_paper_file("$software_dir/paper.bib");
-  $software{paper}{bibfile} = \%paper;
+  $software{paper} = \%paper;
   # read BIBTEX: citations/ieeexplore.bib
   my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
   # read BIBTEX: citations/acm.bib
@@ -367,7 +368,7 @@ our $DATASET_DIR = "$ENV{PWD}/dataset";
 my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
 format_collected_data \%softwares;
 my $t = Mojo::Template->new(auto_escape => 1);
-my $output = $t->render_file("$ENV{PWD}/bin/softwares-summary.tex.epl", %softwares);
+my $output = $t->render_file("$ENV{PWD}/capitulos/softwares-summary.tex.epl", %softwares);
 open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
 print $SUMMARY $output;
 close $SUMMARY;

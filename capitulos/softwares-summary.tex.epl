@@ -5,22 +5,19 @@
 %% o conteúdo deste arquivo é gerado pelo script bin/softwares-summary e pelo
 %% template capitulos/softwares-summary.tex.epl
 
-\xchapter{Softwares acadêmicos}{Este capítulo ...}
+\xchapter{Dados dos softwares acadêmicos}{Este capítulo apresenta
+os dados coletados para cada software acadêmico selecionado na
+revisão estruturada}
 \label{softwares-summary}
-
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.35]{imagens/software-timeline-wireframe.jpg}
-  \caption{Protótipo do gráfico com timeline do software}
-\end{figure}
 
 % foreach (sort keys %softwares) {
 \section{<%== $softwares{$_}{software}{name} %>}
 
 <%== $softwares{$_}{software}{description} %>
 publicado no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>,
-disponibilizado em \url{<%== $softwares{$_}{address}{url} %>}
+disponibilizado em \url{<%== $softwares{$_}{address}{url} %>},
 % if ($softwares{$_}{address}{download_available} eq 'yes') {
+disponível,
 %   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
 <%== $softwares{$_}{software}{distribution} %>
 %   }
@@ -38,7 +35,7 @@ mas apesar do endereço estar acessível na data
 não é possível encontrar download do software no site.
 %   }
 %   else {
-mas inacessível em <%== $softwares{$_}{address}{checked_at} %>.
+inacessível.
 %   }
 % }
 
@@ -135,33 +132,9 @@ uma parte dos autores já publicou sobre o software em anos anteriores.
 nenhum dos autores publicou sobre o software antes.
 %       }
 %     }
-      Peso: <%== sprintf("%.02f", $softwares{$_}{citations}{bibfile}{$entry_key}{final_weight}) %>
-
 %   }
 \end{itemize}
-
-Peso total das referências por ano:
-
-\begin{table}[h]
-\caption{Número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
-\centering
-\begin{tabular}{| l | c | c | c | c |}
-  \hline
-  Ano & Citações & Peso da citação & Peso da autoria & Peso final \\\
-  \hline
-%   foreach my $year (sort keys %{ $softwares{$_}{citations}{by_year} }) {
-  <%== $year %>
-    & <%== keys %{ $softwares{$_}{citations}{by_year}{$year} } %>
-    & <%== $softwares{$_}{citations}{contribution_weight_by_year_sum}{$year} %>
-    & <%== $softwares{$_}{citations}{authorship_weight_by_year_sum}{$year} %>
-    & <%== $softwares{$_}{citations}{final_weight_by_year_sum}{$year} %> \\\
-%   }
-  \hline
-\end{tabular}
-\end{table}
-
 % }
-
 % }
 
 %# vim: filetype=epl
