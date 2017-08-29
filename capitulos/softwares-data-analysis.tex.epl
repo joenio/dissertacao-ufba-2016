@@ -52,7 +52,7 @@
             <%== $year %>
 %         }
           &
-          <%== (grep { /^$year$/ } @releases_year) || '-' %>
+          <%== (grep { /^$year$/ } @releases_year) || '' %>
           &
           <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{contribution_weight}) %>
 %         if (exists $softwares{$_}{citations}{by_year}{$year}{$entry_key}{weightless_contributions}) {
@@ -66,10 +66,11 @@
 %         if ($softwares{$_}{technical_sustainability_by_year}{$year} >= 0.5) {
             {\color{blue} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
 %         }
-%         else {
+%         elsif ($softwares{$_}{technical_sustainability_by_year}{$year}) {
             {\color{red} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
 %         }
           \\\
+%         $softwares{$_}{technical_sustainability_by_year}{$year} = undef;
 %         @releases_year = grep { !/^$year$/ } @releases_year;
 %       }
 %     }
