@@ -7,11 +7,11 @@ use Devel::CheckBin;
 sub run_source_code_metrics_tools($softwares_dir) {
   foreach my $software (grep { -d $_ } glob("$softwares_dir/*")) {
     foreach my $software_release (grep { -d $_ } glob("$software/source-code/*")) {
-      if (-z "$software_release.analizo.metrics") {
+      if (! -e "$software_release.analizo.metrics" || -z "$software_release.analizo.metrics") {
         say "analizo metrics $software_release > $software_release.analizo.metrics";
         `analizo metrics $software_release > $software_release.analizo.metrics`;
       }
-      if (-z "$software_release.sloccount") {
+      if (! -e "$software_release.sloccount" || -z "$software_release.sloccount") {
         say "sloccount $software_release > $software_release.sloccount";
         `sloccount $software_release > $software_release.sloccount`;
       }

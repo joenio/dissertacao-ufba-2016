@@ -6,7 +6,7 @@ use YAML qw( LoadFile );
 use Text::BibTeX;
 use Mojo::Template;
 use DateTime::Format::HTTP;
-use List::Util qw( uniq );
+use List::Util qw( uniq max );
 use Set::Tiny;
 use open ':locale';
 use utf8;
@@ -217,6 +217,21 @@ sub measure_final_weight {
   return %citations;
 }
 
+sub measure_technical_sustainnability {
+  my %software = @_;
+  my %technical_sustainnability_by_year = ();
+  my @releases_years = map { m/^(\d{4})-\d{2}-\d{2}.*$/; $1 } @{ $software{releases}{dates} };
+  foreach my $year (uniq @releases_years) {
+    $technical_sustainnability_by_year{$year} = 1.0;
+  }
+  foreach my $year (keys %{ $software{citations}{by_year} }) {
+    $technical_sustainnability_by_year{$year} //= max map {
+      $software{citations}{by_year}{$year}{$_}{final_weight}
+    } keys %{ $software{citations}{by_year}{$year} };
+  }
+  return \%technical_sustainnability_by_year;
+}
+
 sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
@@ -289,6 +304,9 @@ sub load_collected_data($software_dir) {
   # quantos autores distintos cita o software
   my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
   $software{citations}{authors} = \@all_citations_authors;
+
+  # measure software technical sustainnability metric by year
+  $software{technical_sustainability_by_year} = measure_technical_sustainnability %software;
   return %software;
 }
 
