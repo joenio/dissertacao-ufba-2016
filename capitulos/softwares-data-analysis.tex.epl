@@ -61,20 +61,28 @@
           &
           <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{authorship_weight}) %>
           &
-%         if ($softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight} >= 0.5) {
-            {\color{blue} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>}
+          <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>
+          &
+%         if ($softwares{$_}{technical_sustainability_by_year}{$year} >= 0.5) {
+            {\color{blue} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
 %         }
 %         else {
-            {\color{red} <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>}
+            {\color{red} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
 %         }
-          &
-          ?
           \\\
 %         @releases_year = grep { !/^$year$/ } @releases_year;
 %       }
 %     }
 %     else {
-        <%== $year %> & <%== (grep { /^$year$/ } @releases_year) || '-' %> & - & - & - & ? \\\
+        <%== $year %> & <%== (grep { /^$year$/ } @releases_year) || '-' %> & - & - & -
+        &
+%       if ($softwares{$_}{technical_sustainability_by_year}{$year} >= 0.5) {
+          {\color{blue} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
+%       }
+%       else {
+          {\color{red} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
+%       }
+        \\\
 %     }
 \hline
 %   }
