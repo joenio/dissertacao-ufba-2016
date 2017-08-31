@@ -63,7 +63,7 @@
           &
           <%== sprintf("%.02f", $softwares{$_}{citations}{by_year}{$year}{$entry_key}{final_weight}) %>
           &
-%         if ($softwares{$_}{technical_sustainability_by_year}{$year} >= 0.5) {
+%         if ($softwares{$_}{technical_sustainability_by_year}{$year} && $softwares{$_}{technical_sustainability_by_year}{$year} >= 0.5) {
             {\color{blue} <%== sprintf("%.02f", $softwares{$_}{technical_sustainability_by_year}{$year}) %>}
 %         }
 %         elsif ($softwares{$_}{technical_sustainability_by_year}{$year}) {
@@ -89,6 +89,15 @@
 %   }
 \end{tabular}
 \end{table}
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.50]{imagens/softwares-charts/<%== $_ %>.png}
+  \caption{Sustentabilidade técnica do <%== $softwares{$_}{software}{name} %>}
+\end{figure}
+
+Perspectiva para a sustentabilidade técnica em 2017: <%== $softwares{$_}{technical_sustainability_prospective} %>.
+
 % }
 
 

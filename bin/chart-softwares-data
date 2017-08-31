@@ -1,0 +1,65 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use YAML qw( LoadFile );
+use List::Util qw( min );
+use Chart::Clicker;
+use Chart::Clicker::Renderer::Bar;
+use Chart::Clicker::Axis;
+use open ':locale';
+use utf8;
+
+sub chart_software_data {
+  my $first_year = shift;
+  my $filename = shift;
+  my %software = @_;
+  my $cc = Chart::Clicker->new(width => 800, height => 250);
+  my $y = Chart::Clicker::Axis->new({
+    label => 'Sustentabilidade técnica',
+    orientation => 'vertical',
+    position => 'left',
+    format => '%.1f',
+    tick_values => [0, 0.5, 1],
+  });
+  my $x = Chart::Clicker::Axis->new({
+    label => 'Ano',
+    orientation => 'vertical',
+    position => 'bottom',
+    format => '%d',
+  });
+  my $context = $cc->get_context('default');
+  $context->domain_axis($x);
+  $context->range_axis($y);
+  $context->renderer(Chart::Clicker::Renderer::Bar->new);
+  my $data = {};
+  foreach my $year ($first_year .. 2016) {
+    $data->{$year} = $software{technical_sustainability_by_year}{$year} // 0;
+  }
+  $cc->add_data('Sustentabilidade técnica x Ano', $data);
+  $cc->write_output($filename);
+}
+
+if ($#ARGV < 1 || $ARGV[0] ne '-i' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  say "Usage: $0 -i <input-filename> -o <output-dir>";
+  exit 1;
+}
+shift @ARGV;
+our $INPUT_FILENAME = shift @ARGV;
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  say "Usage: $0 -i <input-filename> -o <output-dir>";
+  exit 1;
+}
+shift @ARGV;
+our $OUTPUT_DIR = shift @ARGV;
+$OUTPUT_DIR =~ s/\/$//;
+
+my %yaml = LoadFile("$ENV{PWD}/$INPUT_FILENAME");
+my $first_year = min map { keys %{ $yaml{$_}{technical_sustainability_by_year} } } keys %yaml;
+
+foreach my $software_key (sort keys %yaml) {
+  my %software_data = %{ $yaml{$software_key} };
+  my $filename = "$OUTPUT_DIR/$software_key.png";
+  say "✓ $filename";
+  chart_software_data $first_year, $filename, %software_data;
+}

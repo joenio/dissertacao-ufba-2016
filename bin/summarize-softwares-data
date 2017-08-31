@@ -2,11 +2,10 @@
 use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
-use YAML qw( LoadFile );
+use YAML qw( LoadFile DumpFile );
 use Text::BibTeX;
-use Mojo::Template;
 use DateTime::Format::HTTP;
-use List::Util qw( uniq max );
+use List::Util qw( uniq max min );
 use Set::Tiny;
 use open ':locale';
 use utf8;
@@ -217,11 +216,12 @@ sub measure_final_weight {
   return %citations;
 }
 
+# calculate the max value for each year
 sub measure_technical_sustainnability {
   my %software = @_;
   my %technical_sustainnability_by_year = ();
   my @releases_years = map { m/^(\d{4})-\d{2}-\d{2}.*$/; $1 } @{ $software{releases}{dates} };
-  foreach my $year (uniq @releases_years) {
+  foreach my $year (uniq grep { $_ } @releases_years) {
     $technical_sustainnability_by_year{$year} = 1.0;
   }
   foreach my $year (keys %{ $software{citations}{by_year} }) {
@@ -232,11 +232,23 @@ sub measure_technical_sustainnability {
   return \%technical_sustainnability_by_year;
 }
 
+sub forecast_technical_sustainnability_until {
+  my $until_year = shift;
+  my %software = @_;
+  my $year = max keys %{ $software{technical_sustainability_by_year} };
+  my $technical_sustainability = $software{technical_sustainability_by_year}{$year};
+  while ($year < $until_year) {
+    $technical_sustainability -= (0.15 * $technical_sustainability);
+    $year++;
+  }
+  return $technical_sustainability;
+}
+
 sub load_collected_data($software_dir) {
   # read YAML: software.yml
   my $yaml = LoadFile("$software_dir/software.yml");
   my %software = %{ $yaml };
-  ($software{software}{short_name}) = split '-', $software{software}{name};
+  ($software{software}{short_name}) = split ' - ', $software{software}{name};
   # read BIBTEX: paper.bib
   my %paper = read_paper_file("$software_dir/paper.bib");
   $software{paper} = \%paper;
@@ -307,6 +319,10 @@ sub load_collected_data($software_dir) {
 
   # measure software technical sustainnability metric by year
   $software{technical_sustainability_by_year} = measure_technical_sustainnability %software;
+
+  # see the future!
+  $software{technical_sustainability_prospective} = forecast_technical_sustainnability_until '2017', %software;
+
   return %software;
 }
 
@@ -376,27 +392,21 @@ sub format_collected_data {
   }
 }
 
-if ($#ARGV < 1 || $ARGV[0] ne '-t' || length($ARGV[1]) == 0) {
+if ($#ARGV < 1 || $ARGV[0] ne '-i' || length($ARGV[1]) == 0) {
   warn "E: missing options!";
-  print "Usage: $0 -t <template-filename> -o <output-filename>\n";
+  say "Usage: $0 -i <dataset-dir> -o <output-filename>";
   exit 1;
 }
 shift @ARGV;
-our $TEMPLATE_FILENAME = shift @ARGV;
-
+our $DATASET_DIR = shift @ARGV;
 if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
   warn "E: missing options!";
-  print "Usage: $0 -t <template-filename> -o <output-filename>\n";
+  say "Usage: $0 -i <dataset-dir> -o <output-filename>";
   exit 1;
 }
 shift @ARGV;
 our $OUTPUT_FILENAME = shift @ARGV;
 
-our $DATASET_DIR = "$ENV{PWD}/dataset";
-my %softwares = load_all_collected_data("$DATASET_DIR/academic-softwares");
+my %softwares = load_all_collected_data($DATASET_DIR);
 format_collected_data \%softwares;
-my $t = Mojo::Template->new(auto_escape => 1);
-my $output = $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", %softwares);
-open my $SUMMARY, '>', $OUTPUT_FILENAME or die $!;
-print $SUMMARY $output;
-close $SUMMARY;
+DumpFile($OUTPUT_FILENAME, %softwares);
