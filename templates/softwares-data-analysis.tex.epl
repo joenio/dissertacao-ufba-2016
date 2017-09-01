@@ -8,12 +8,6 @@
 \xchapter{Análise de dados dos softwares acadêmicos}{Este capítulo ...}
 \label{softwares-summary}
 
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.35]{imagens/software-timeline-wireframe.jpg}
-  \caption{Protótipo do gráfico com timeline do software}
-\end{figure}
-
 % foreach (sort keys %softwares) {
 \section{<%== $softwares{$_}{software}{name} %>}
 % if ($softwares{$_}{address}{download_available} eq 'yes') {
@@ -25,9 +19,6 @@
 % unless ($softwares{$_}{software}{license} eq 'undefined') {
 \checkmark licença
 % }
-% if (exists $softwares{$_}{releases}{last_date} && $softwares{$_}{releases}{last_date} ne 'undefined') {
-\checkmark última versão <%== $softwares{$_}{releases}{last_date} %>
-% }
 
 % use List::Util qw ( uniq );
 % my @citations_year = keys %{ $softwares{$_}{citations}{by_year} };
@@ -36,7 +27,7 @@
 
 % if ($softwares{$_}{citations}{really_refers_to_software_count} > 0) {
 \begin{table}[H]
-\caption{Número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
+\caption{Versões lançadas e número de citações ao <%== $softwares{$_}{software}{short_name} %> por ano}
 \centering
 \begin{tabular}{| l | c | c | c | c | c |}
   \hline
@@ -93,14 +84,10 @@
 \begin{figure}[h]
   \center
   \includegraphics[scale=0.50]{imagens/softwares-charts/<%== $_ %>.png}
-  \caption{Sustentabilidade técnica do <%== $softwares{$_}{software}{name} %>}
+  \caption{Sustentabilidade técnica do <%== $softwares{$_}{software}{short_name} %>}
 \end{figure}
 
-Perspectiva para a sustentabilidade técnica em 2017: <%== $softwares{$_}{technical_sustainability_prospective} %>.
-
 % }
-
-
 
 % }
 

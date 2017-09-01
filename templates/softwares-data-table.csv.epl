@@ -1,0 +1,35 @@
+% my %softwares = @_;
+%## **ATENÇÃO** não editar este arquivo!
+%##
+%## o conteúdo deste arquivo é gerado pelo script bin/render-template e pelo
+%## template templates/softwares-data-table.tex.epl
+Software;Versões;Download;Código disponível;Citações;[cita];[usa];[contribui];[cria];
+% foreach my $software_key (sort keys %softwares) {
+ %  my %count = (cita => 0, usa => 0, contribui => 0, cria => 0);
+ %  foreach (keys %{ $softwares{$software_key}{citations}{bibfile} }) {
+ %    if ($softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.1) {
+ %      $count{cita}++;
+ %    }
+ %    elsif ($softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.25) {
+ %      $count{usa}++;
+ %    }
+ %    elsif ($softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.5) {
+ %      $count{contribui}++;
+ %    }
+ %    elsif ($softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 1) {
+ %      $count{cria}++;
+ %    }
+ %  }
+<%== sprintf("%s;%s;%s;%s;%s;%d;%d;%d;%d;",
+         $software_key,
+         scalar @{ $softwares{$software_key}{releases}{dates} },
+         ($softwares{$software_key}{address}{download_available} eq 'yes' ? 'Sim' : 'Não'),
+         ($softwares{$software_key}{features}{source_code} eq 'undefined' ? 'Não' : 'Sim'),
+         $softwares{$software_key}{citations}{really_refers_to_software_count},
+         $count{cita},
+         $count{usa},
+         $count{contribui},
+         $count{cria}
+       ) %>
+% }
+%# vim: filetype=epl
