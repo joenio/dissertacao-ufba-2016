@@ -30,3 +30,7 @@ render-templates:
 
 charts:
 	./bin/chart-softwares-data -i dataset/academic-softwares.yml -o imagens/softwares-charts/
+
+citations=$(wildcard dataset/academic-softwares/*)
+merge-bibtex: $(citations)
+	@$(foreach citation,$(citations),./bin/merge-bibtex $(citation)/citations/*.bib > $(citation)/citations.bib;)

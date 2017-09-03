@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use Text::BibTeX ':subs';
+use open ':locale';
+use utf8;
+
+if (@ARGV < 1) {
+  warn "E: missing options!";
+  say "Usage: $0 <bibtex-file> [<bibtex-file> [<bibtex-file>]] > <output-file>";
+  exit 1;
+}
+
+my @FILES = @ARGV;
+my $total= 0;
+my %uniq = ();
+
+while (my $filename = shift @FILES) {
+  if (my $bib = Text::BibTeX::File->new($filename)) {
+    while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
+      next unless $entry->parse_ok;
+      $total++;
+      my $title = $entry->get('title');
+      my $doi = $entry->get('doi') // undef;
+      if (grep { $title && $uniq{$_}->get('title') && lc($uniq{$_}->get('title')) eq lc($title) } keys %uniq) {
+        next;
+      }
+      elsif (grep { $doi && $uniq{$_}->get('doi') && $doi eq $uniq{$_}->get('doi') } keys %uniq) {
+        next;
+      }
+      $uniq{$entry->key} = $entry;
+    }
+  }
+}
+
+foreach (keys %uniq) {
+  print $uniq{$_}->print_s;
+}
