@@ -1,0 +1,37 @@
+% my %softwares = @_;
+
+%% **ATENÇÃO** não editar este arquivo!
+%%
+%% o conteúdo deste arquivo é gerado pelo script bin/render-template e pelo
+%% template templates/softwares-data-table.tex.epl
+
+\xchapter{Dados resumidos}{Este capítulo ...}
+
+\begin{table}[H]
+\caption{?????}
+\centering
+\begin{tabular}{| l | c | c | c | c | c | c |}
+  \hline
+  Software & Versões & Citações & [cita] & [usa] & [contribui] & [cria] \\\
+  \hline
+% foreach my $software_key (sort keys %softwares) {
+  <%== $software_key %>
+  &
+  <%== @{ $softwares{$software_key}{releases}{dates} } %>
+  &
+  <%== $softwares{$software_key}{citations}{really_refers_to_software_count} %>
+  &
+  <%== grep { $softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.1 } keys %{ $softwares{$software_key}{citations}{bibfile} } %>
+  &
+  <%== grep { $softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.25 } keys %{ $softwares{$software_key}{citations}{bibfile} } %>
+  &
+  <%== grep { $softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.5 } keys %{ $softwares{$software_key}{citations}{bibfile} } %>
+  &
+  <%== grep { $softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 1 } keys %{ $softwares{$software_key}{citations}{bibfile} } %>
+  \\\
+% }
+  \hline
+\end{tabular}
+\end{table}
+
+%# vim: filetype=epl

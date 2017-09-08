@@ -38,7 +38,7 @@ Após instalar todas as dependências basta executar `make` na raiz do projeto.
 O script para extração e análise dos dados utilizados neste estudo, localizado
 em `bin/analize-softwares` possui as seguintes dependencias:
 
-    apt-get install libmodern-perl-perl sloccount
+    apt-get install libmodern-perl-perl sloccount libdevel-checkbin-perl
 
 É necessário ter também o `analizo` e o `doxyparse`, siga as instruções de
 instalação em:
@@ -119,6 +119,7 @@ https://developer.ieee.org/apps/register
 * Mariel Zasso
 * Hilmer Neri
 * Talita Gentil
+* Jonei Costa
 
 ## Créditos
 

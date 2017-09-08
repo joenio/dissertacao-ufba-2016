@@ -1,0 +1,141 @@
+% use experimental 'smartmatch';
+% my %softwares = @_;
+
+%% **ATENÇÃO** não editar este arquivo!
+%%
+%% o conteúdo deste arquivo é gerado pelo script bin/softwares-summary e pelo
+%% template capitulos/softwares-summary.tex.epl
+
+\xchapter{Dados dos softwares acadêmicos}{Este capítulo apresenta
+os dados coletados para cada software acadêmico selecionado na
+revisão estruturada}
+\label{softwares-summary}
+
+% foreach (sort keys %softwares) {
+\section{<%== $softwares{$_}{software}{name} %>}
+
+<%== $softwares{$_}{software}{description} %>
+publicado no <%== $softwares{$_}{paper}{conference} %> <%== $softwares{$_}{paper}{year} %>,
+disponibilizado em \url{<%== $softwares{$_}{address}{url} %>},
+% if ($softwares{$_}{address}{download_available} eq 'yes') {
+disponível,
+%   unless ($softwares{$_}{software}{distribution} eq 'undefined') {
+<%== $softwares{$_}{software}{distribution} %>
+%   }
+%   if ($softwares{$_}{software}{license} eq 'undefined') {
+sem uma licença definida.
+%   }
+%   else {
+sob uma licença <%== $softwares{$_}{software}{license} %>.
+%   }
+% }
+% else {
+%   if ($softwares{$_}{address}{url_available} eq 'yes') {
+mas apesar do endereço estar acessível na data 
+<%== $softwares{$_}{address}{checked_at} %>
+não é possível encontrar download do software no site.
+%   }
+%   else {
+inacessível.
+%   }
+% }
+
+% if ($softwares{$_}{features}{releases} eq 'Obsolete') {
+Software considerado obsoleto,
+% }
+% elsif ($softwares{$_}{features}{releases} eq 'undefined') {
+Software sem informações sobre lançamentos ou releases,
+% }
+% else {
+Software com lançamentos <%== $softwares{$_}{features}{releases} %>,
+% }
+% if ($softwares{$_}{releases} && $softwares{$_}{releases}{source} ne 'undefined') {
+<%== @{ $softwares{$_}{releases}{dates} } %> versões lançadas
+%   if ($softwares{$_}{releases}{first_date} eq $softwares{$_}{releases}{last_date}) {
+%     if ($softwares{$_}{releases}{first_date} ne 'undefined') {
+em <%== $softwares{$_}{releases}{first_date} %>,
+%     }
+%     else {
+,
+%     }
+%   }
+%   elsif ($softwares{$_}{releases}{first_date} eq 'undefined') {
+até <%== $softwares{$_}{releases}{last_date} %>,
+%   }
+%   else {
+entre <%== $softwares{$_}{releases}{first_date} %> e <%== $softwares{$_}{releases}{last_date} %>,
+%   }
+% }
+% unless ($softwares{$_}{features}{source_code} eq 'undefined') {
+escrito em <%== $softwares{$_}{features}{source_code} %>,
+% }
+uma busca por citações no {\bf IEEE Xplore} por
+\texttt{<%== $softwares{$_}{citations}{ieeexplore}{search_string} %>}
+e no {\bf ACM} por
+\texttt{<%== $softwares{$_}{citations}{acm}{search_string} %>}
+retornou
+% my $results =  $softwares{$_}{citations}{ieeexplore}{results}
+%              + $softwares{$_}{citations}{acm}{results};
+<%== $results %> resultados,
+% my $total = $softwares{$_}{citations}{really_refers_to_software_count};
+% if ($total == 0) {
+nenhum faz referência ao software.
+% }
+% elsif ($total == 1) {
+apenas um faz referência ao software.
+% }
+% else {
+{\bf <%== $total %>} fazem referência ao software.
+% }
+
+% if ($total > 0) {
+\begin{itemize}
+%   foreach my $entry_key (sort { $softwares{$_}{citations}{bibfile}{$a}{year} cmp $softwares{$_}{citations}{bibfile}{$b}{year} }keys %{ $softwares{$_}{citations}{bibfile} }) {
+\item <%== join(' and ', @{ $softwares{$_}{citations}{bibfile}{$entry_key}{authors} }) %>
+      <%== $softwares{$_}{citations}{bibfile}{$entry_key}{year} %>.
+%     if ($softwares{$_}{citations}{bibfile}{$entry_key}{step} eq 'structured-review') {
+        \textbf{\textit{ <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}}.
+%     }
+%     else {
+        \textit{ <%== $softwares{$_}{citations}{bibfile}{$entry_key}{title} %>}.
+%     }
+      [
+%     given ($softwares{$_}{citations}{bibfile}{$entry_key}{contribution_weight}) {
+%       when ($_ >= 0.1)    {
+          cita
+%         continue;
+%       }
+%       when ($_ >= 0.25)    {
+          usa
+%         continue;
+%       }
+%       when ($_ >= 0.5)    {
+          contribui
+%         continue;
+%       }
+%       when ($_ >= 1)    {
+          cria
+%         continue;
+%       }
+%     }
+      ]
+%     given ($softwares{$_}{citations}{bibfile}{$entry_key}{authorship_weight}) {
+%       when (0)    {
+são os primeiros autores a publicar sobre o software.
+%       }
+%       when (0.1)    {
+todos os autores já publicaram sobre o software em anos anteriores.
+%       }
+%       when (0.25)    {
+uma parte dos autores já publicou sobre o software em anos anteriores.
+%       }
+%       when (0.5)    {
+nenhum dos autores publicou sobre o software antes.
+%       }
+%     }
+%   }
+\end{itemize}
+% }
+% }
+
+%# vim: filetype=epl

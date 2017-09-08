@@ -2,18 +2,9 @@
 use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
-use Statistics::Descriptive;
+use Devel::CheckBin;
 
-if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
-  warn "E: missing options!";
-  print "Usage: $0 -o <output-filename>\n";
-  exit 1;
-}
-our $OUTPUT_FILENAME = $ARGV[1];
-
-our $DATASET_DIR = "$ENV{PWD}/dataset";
-
-sub collect_sourcecode_data($softwares_dir) {
+sub run_source_code_metrics_tools($softwares_dir) {
   foreach my $software (grep { -d $_ } glob("$softwares_dir/*")) {
     foreach my $software_release (grep { -d $_ } glob("$software/source-code/*")) {
       unless (-e "$software_release.analizo.metrics") {
@@ -28,6 +19,16 @@ sub collect_sourcecode_data($softwares_dir) {
   }
 }
 
+if (can_run('analizo') && can_run('sloccount')) {
+  run_source_code_metrics_tools("$ENV{PWD}/dataset/academic-softwares");
+}
+else {
+  die "E: analizo or sloccound not found, please install them!";
+}
+
+__END__
+
+use Statistics::Descriptive;
 sub metric_values($file, $metric) {
   my @values = ();
   open my $FILE, '<', $file;
@@ -40,6 +41,7 @@ sub metric_values($file, $metric) {
   return @values;
 }
 
+
 sub metric_value($file, $metric) {
   open my $FILE, '<', $file;
   while(my $line = <$FILE>) {
@@ -51,30 +53,32 @@ sub metric_value($file, $metric) {
   return;
 }
 
-collect_sourcecode_data("$DATASET_DIR/academic-softwares");
-
-exit;
-
-##############################
-
-open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
-print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95, lanza_low, lanza_medium, lanza_high\n";
-foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/academic-softwares/*")) {
-  my $tool = basename($tool_dir);
-  foreach my $file (glob("$tool_dir/*.metrics")) {
-    my $release = basename($file, '.analizo.metrics');
-    my $total_modules = metric_value($file, 'total_modules');
-    my $total_eloc = metric_value($file, 'total_eloc');
-    my $stat = Statistics::Descriptive::Full->new();
-    $stat->add_data(metric_values($file, 'sc'));
-    my $sc_75 = $stat->percentile(75);
-    my $sc_90 = $stat->percentile(90);
-    my $sc_95 = $stat->percentile(95);
-    my $lanza_low = $stat->mean - $stat->standard_deviation;
-    my $lanza_medium = $stat->mean;
-    my $lanza_high = $stat->mean + $stat->standard_deviation;
-    print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $sc_75, $sc_90, $sc_95, $lanza_low, $lanza_medium, $lanza_high);
-    print $SUMMARY "\n";
-  }
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  print "Usage: $0 -o <output-filename>\n";
+  exit 1;
 }
-close $SUMMARY;
+
+our $OUTPUT_FILENAME = $ARGV[1];
+
+ open my $SUMMARY, '>', "$OUTPUT_FILENAME" or die $!;
+ print $SUMMARY "tool, release, total_modules, total_eloc, sc_75, sc_90, sc_95, lanza_low, lanza_medium, lanza_high\n";
+ foreach my $tool_dir (grep { -d $_ } glob("$DATASET_DIR/academic-softwares/*")) {
+   my $tool = basename($tool_dir);
+   foreach my $file (glob("$tool_dir/*.metrics")) {
+     my $release = basename($file, '.analizo.metrics');
+     my $total_modules = metric_value($file, 'total_modules');
+     my $total_eloc = metric_value($file, 'total_eloc');
+     my $stat = Statistics::Descriptive::Full->new();
+     $stat->add_data(metric_values($file, 'sc'));
+     my $sc_75 = $stat->percentile(75);
+     my $sc_90 = $stat->percentile(90);
+     my $sc_95 = $stat->percentile(95);
+     my $lanza_low = $stat->mean - $stat->standard_deviation;
+     my $lanza_medium = $stat->mean;
+     my $lanza_high = $stat->mean + $stat->standard_deviation;
+     print $SUMMARY join(', ', $tool, $release, $total_modules, $total_eloc, $sc_75, $sc_90, $sc_95, $lanza_low, $lanza_medium, $lanza_high);
+     print $SUMMARY "\n";
+   }
+ }
+ close $SUMMARY;

@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use File::Basename;
+use YAML qw( LoadFile DumpFile );
+use Mojo::Template;
+use open ':locale';
+use utf8;
+
+if ($#ARGV < 1 || $ARGV[0] ne '-i' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  say "Usage: $0 -i <input-filename> -t <template-filename> -o <output-filename>";
+  exit 1;
+}
+shift @ARGV;
+our $INPUT_FILENAME = shift @ARGV;
+
+if ($#ARGV < 1 || $ARGV[0] ne '-t' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  say "Usage: $0 -i <input-filename> -t <template-filename> -o <output-filename>";
+  exit 1;
+}
+shift @ARGV;
+our $TEMPLATE_FILENAME = shift @ARGV;
+
+if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+  warn "E: missing options!";
+  say "Usage: $0 -i <input-filename> -t <template-filename> -o <output-filename>";
+  exit 1;
+}
+shift @ARGV;
+our $OUTPUT_FILENAME = shift @ARGV;
+
+die "input file not found: $INPUT_FILENAME, please run bin/summarize-softwares-data first." unless -e $INPUT_FILENAME;
+die "template file not found: $TEMPLATE_FILENAME." unless -e $TEMPLATE_FILENAME;
+
+my %yaml = LoadFile("$ENV{PWD}/$INPUT_FILENAME");
+my $t = Mojo::Template->new(auto_escape => 1);
+my $output = $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", %yaml);
+open my $OUTPUT, '>', $OUTPUT_FILENAME or die $!;
+print $OUTPUT $output;
+say "✓ $OUTPUT_FILENAME";
+close $OUTPUT;
