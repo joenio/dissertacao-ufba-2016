@@ -6,1170 +6,32 @@
 % more insightful and focused research questions about your topic. 
 % Therefore, your literature review should lead to and justify your research objectives and questions.
 
-% continuar a partir de:
-% /home/joenio/src/bibliografia/Papers/Replication of Controlled Experiments in Empirical Software Engineering - A Survey.pdf
-
 \xchapter{Fundamentação teórica}
 {Este capítulo apresenta conceitos necessários para a compreensão do trabalho.}
 \label{fundamentacao}
 
-(a ciência tem duas pernas: teoria e experimentação)
+(a ciência tem duas pernas: teoria e experimentação) \cite{vardi2010science}
 
-%% The traditional “legs” (or “pillars”) of the scientific
-%% method were theory and experimentation.
-%% 
-%% Computation has always been an
-%% integral part of theory in science.
-%% 
-%% Computation has also always been
-%% an integral part of experimentation.
-%% 
-%% So science is still carried out as an
-%% ongoing interplay between theory and
-%% experimentation.
-%% 
-%% \cite{Vardi_2010_SOT_1810891.1810892}
-%
-% (historiador da ciencia, ciencia comum, parte de open science, referencia filosofica central para meu trabalho)
-% https://pt.wikipedia.org/wiki/Antonio_Lafuente
-% https://pimentalab.milharal.org/2015/07/16/ciencia-comum-e-laboratorios-cidadaos-com-antonio-lafuente/
+Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
+resultados, é raro que façam o mesmo com toda a produção gerada durante a
+pesquisa. A maioria dos componentes necessários para a reprodução dos
+resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
+permanecem não publicados. Esse problema fere um dos fundamentos
+da ciência de que novas descobertas sejam reproduzidas antes de serem
+consideradas parte da base de conhecimento \cite{Stodden2009}.
 
-\section{Software acadêmico}
+\section{Pesquisas reproduzíveis}
 
-% Anúncio em destaque no ACM DL: Reproducibility of Results in the ACM Digital Library 
-% http://dl.acm.org/docs/reproducibility.cfm
-
-% ciencia aberta e desenvolvimento sustentavel
-% https://ocsdnet.org/open-and-collaborative-science-using-knowledge-as-a-pathway-to-sustainable-development/
-
-% (8) Comparison and evaluation of source code mining tools and techniques: A qualitative approach \cite{khatoon2013comparison}
-%
-% Lista ferramentas e técnicas para mineração de dados, estado da arte.
-%
-
-% (9) An overview of free software tools for general data mining \cite{jovic2014overview}
-%
-% Descreve característica dos 6 softwares livres mais usados para mineração de
-% dados no geral.
-%
-
-Segundo \citeonline{hettrick_2014_14809} software acadêmico ({\it research
-software}) é todo software usado para gerar, processar ou analisar resultados
-de pesquisas com intenção de ser publicados (seja num jornal, revista,
-conferência, monografia, livro ou tese). Software de pesquisa pode ser qualquer
-coisa entre poucas linhas escritas por você mesmo, até mesmo um software
-desenvolvido profissionalmente. Software que não gera, processa ou analisa
-resultados - como por exemplo um editor de textos, ou o uso de navegadores web
-- não são considerados softwares de pesquisa, segundo esta definição.
-
-%%% Softwares acadêmicos são softwares desenvolvidos no decorrer de pesquisas
-%%% científicas como parte de um estudo a ser publicado (seja num jornal, revista,
-%%% conferência, monografia, livro ou tese), podem ser pequenos scripts contendo
-%%% poucas linhas de código, protótipos, ou mesmo produtos de software completos
-%%% que demonstram ou refletem os resultados de uma pesquisa, costumam ser
-%%% utilizados para gerar, processar ou analisar resultados, mas podem ser para
-%%% qualquer outro fim, basta que seja um dos artefatos gerado na pesquisa, será
-%%% considerado software acadêmico.
-
-Tais softwares podem ser encontrados na literatura pelo nome de {\it research
-tool} \cite{Portillo12}, {\it research-originated software} \cite{Kon2011},
-%{\it research software} \cite{hettrick_2014_14809} ou
-{\it academic software} \cite{allen2017engineering}, e costumam ser citados
-pelos seus autores como uma contribuição do estudo, seja principal ou
-secundária, alguns autores criam softwares acadêmicos como meio para atingir os
-resultados da pesquisa e não descrevem muito bem o software.
-
-%
-%
-%Isto põe os softwares numa posição de destaque no debate sobre
-%replicação, uma prática fundamental para tornar novas descobertas parte da base
-%de conhecimento científica \cite{Stodden2009}.  Replicação é também o método
-%mais comum e cientificamente produtivo de produzir conhecimento novo a partir
-%dos passos trilhados por outros cientistas \cite{king1995replication}.
-
-%uma vez que, usualmente, ter acesso
-%ao software, assim como aos dados, é requisito mínimo para tal.
-%
-%estes softwares resolvem problemas comuns do cotidiano de pelo menos metade dos
-%pesquisadores de todas as áreas do conhecimento, são considerados tão
-%importantes para a ciência quanto qualquer outro aparato experimental, como por
-%exemplo os telescópios ou tubos de ensaio, temos desde grupos trabalhando
-%exclusivamente com problemas computacionais até grupos em laboratórios
-%tradicionais ou em campo fazem uso de tais aparatos de software
-%\cite{wilson2014best}.
-%
-%como qualquer outro aparato experimental, 
-%
-%, cientistas gastam mais tempo hoje utilizando e
-%desenvolvendo softwares do que gastavam no passado,  \cite{wilson2014best}.
-%
-%podem ser desde pequenos scripts ou protótipos até softwares
-%completos desenvolvidos profissionalmente.
-
-%Cientistas gastam mais tempo hoje utilizando e desenvolvendo softwares do que
-%gastavam no passado, softwares acadêmicos, assim como qualquer outro aparato
-%experimental, são tão importantes para a ciência quanto são os telescópios ou
-%tubos de ensaio, eles resolvem problemas comuns do cotidiano de metade dos
-%pesquisadores de todas as áreas do conhecimento, desde grupos trabalhando
-%exclusivamente com problemas computacionais até grupos em laboratórios
-%tradicionais ou em campo \cite{wilson2014best}.
-%
-%Apesar disso, softwares acadêmicos ainda não recebem o devido reconhecimento,
-%muitas pesquisas nem ao menos mencionam sua utilização, um estudo recente com
-%90 artigos de diversas áreas da biologia, selecionados aleatoriamente entre
-%publicações usando softwares como método, mostrou que apenas 59 mencionavam o
-%uso de softwares de alguma forma, os demais 31 artigos, apesar de usar software
-%acadêmico, não mencionavam nada a respeito \cite{howison2016software}.
-
-
-%Especialmente quando nota-se que grande parte destes softwares são desenvolvidos na própria academia, um estudo
-%entre cientistas do reino unido, por exemplo, mostrou que 56\% dos
-%pesquisadores desenvolvem seus próprios softwares, pelo menos parcialmente
-%\cite{hettrick_2014_14809}. Em outras áreas, como na astronomia, este número
-%chega a 90\% \cite{momcheva2015software}, em ciência da computação,
-%particularmente em engenharia de software, tem-se notado um aumento constante
-%no número de novos softwares acadêmicos \cite{allen2017engineering}.
-
-%No entanto, parece ser regra geral não testar ou não documentar o próprio
-%software, pesquisadores geralmente não testam ou documentam seus softwares
-%acadêmicos, a maioria também não sabe o quão confiável seu software é,
-
-
-%Apesar de nem sempre ser possível, ou viável, ter tudo dentro de
-%padrões estritos, é preciso estar consciente das boas práticas ao
-%produzir e utilizar softwares acadêmicos, tanto para melhorar a própria
-%abordagem quanto para revisar outros trabalhos \cite{wilson2014best}.
-%
-%A maior parte dos cientistas (90\%) no entretanto nunca tiveram treinamento
-%algum de como escrever software de forma eficiente, faltam práticas básicas de
-%desenvolvimento, como escrever código legível, revisão de código, controle de
-%versão, testes unitários, entre outros, como resultado, dados são perdidos,
-%análises levam mais tempo que o necessário e os pesquisadores não conseguem a
-%eficiência que poderiam ter ao trabalhar com softwares acadêmicos
-%\cite{wilson2017good}.
-%
-%Isto contradiz as boas práticas de qualquer projeto experimental ({\it
-%laboratory
-%notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
-%organizados, passos documentados, projeto estruturado para reprodutibilidade) e
-%torna praticamente impossível utilizar o método mais comum e cientificamente
-%produtivo de produzir conhecimento novo a partir de pesquisas anteriores, a
-%replicação, ou seja, seguir os mesmos passos do autor original com objetivo de
-%validar, melhorar ou estender seus dados e sua metodologia
-%\cite{king1995replication, Stodden2010}.
-
-\subsection{Software acadêmico de origem científica}
-
-% (5) Tools in mining software repositories \cite{chaturvedi2013tools}
-%
-% Faz uma revisão dos papers submetidos ao MSR desde 2007 até 2013 (?) e
-% identifica data sets, ferramentas e técnicas utilizadas pelos autores, mais
-% da metade dos papers usam ou criam ferramentas, categoriza as ferramentas em
-% ferramentas novas, ferramentas tradicionais, protótipos e scripts para
-% mineração de dados
-%
-% (10) Analyzing the State of Static Analysis: A Large-Scale Evaluation in Open Source Software \cite{beller2016analyzing}
-%
-% faz um estudo mostrando que analise estatica tem uma certa adocao em projetos livres
-% e mostra onde pode-se melhorar nas ferramentas para aumentar a adoção
-%
-% Taming the Static Analysis Beast
-% \cite{toman2017taming}
-% Despite advances in tooling and mainstream success, static analysis development is still a
-% painful process.
-
-Software acadêmico\footnote{{\it research software}, {\it academic software},
-{\it academic research software}} é todo software usado ou produzido para
-coletar, processar ou analisar resultados em trabalhos publicados na literatura
-acadêmica (seja em jornal, revista, conferência, monografia, livro, dissertação
-ou tese), podem ser desde pequenos scripts ou protótipos até softwares
-completos desenvolvidos profissionalmente.
-
-Boa parte destes softwares são desenvolvidos na própria academia, um estudo
-entre cientistas do reino unido mostrou, por exemplo, que 56\% desenvolvem seus próprios
-softwares, pelo menos pacialmente \cite{hettrick_2014_14809}, em outras áreas,
-como na astronomia, este número chega a 90\%
-\cite{momcheva2015software}, em ciência da computação, particularmente em
-engenharia de software, tem-se notado um aumento constante no número de novos
-softwares acadêmicos \cite{allen2017engineering}.
-%
-%Ainda assim, poucos estudos tem focado sua atenção nos softwares acadêmicos de
-%origem científica\footnote{\it research-originated software \cite{Kon2011}},
-%especialmente na engenharia de software, uma área com um potencial inato para a
-%criação de novos softwares, como se pode notar em áreas como a análise estática
-%de programas, uma área com uma longa e respeitável tradição, e com um constante
-%crescimento no número de ferramentas publicadas ao longo do tempo \cite{Li2010,
-%ilyas2016static}.
-%
-%Estes softwares, fazem parte do método empregado em suas pesquisas, ao mesmo
-%tempo, são também artefatos produzidos como resultado pelos seus autores, e em
-%muitos casos são também a contribuição ou resultado principal de uma
-%determinada pesquisa. Além da já citada importancia dos softwares acadêmicos na
-%capacidade de reproduzir o passo a passo do autor original numa descoberta, os
-%softwares acadêmicos de origem científica publicado como resultado pelo seus
-%autores possuem uma dupla importância neste cenário.
-%
-%Eles passam a fazer parte do conjunto de softwares acadêmicos disponíveis
-%para a comunidade acadêmica, sendo
-
-
-Cientistas gastam mais tempo hoje utilizando e desenvolvendo
-software do que gastavam no passado, softwares acadêmicos, assim como
-qualquer outro aparato experimental, são tão importantes quanto
-são os telescópios e tubos de ensaio, eles resolvem problemas comuns do
-cotidiano de metade dos pesquisadores de todas as áreas do conhecimento, desde grupos
-trabalhando exclusivamente com problemas computacionais até grupos em
-laboratórios tradicionais ou em campo \cite{wilson2014best}.
-
-%Saber como cientistas desenvolvem e usam softwares em suas pesquisas é crítico
-%para avaliar a necessidade de melhorias no praticas atuais de desenvolvimento e
-%para tomar decisões sobre a futura alocação de recursos
-%\cite{hannay2009scientists}.
-%
-%Inevitavelmente alguns softwares irão continuar sendo úteis após o primeiro
-%release, alguns terão algums gerações de melhorias, outros serão usados na sua
-%versão original sem atualização ou manutenção, e alguns outros irão ser
-%lançados e nunca utilizados. Isto é perfeitamente natural, a comunidade ao
-%redor do software irá decidir qual é o melhor caminho a se tomar num processo
-%evolutivo \cite{weiner2009astronomical}.
-
-\subsection{Visibilidade dos softwares acadêmicos}
-
-%
-%o artigo abaixo faz um estudo e usa metrica para calcular o impacto
-%das citacoes e mencoes ao software, usa um calculo baseado no numero
-%de ocorrencias que o nome do software aparece
-%Disciplinary differences of software use and impact in scientific literature
-% eu fiz a mesma coisa mas numa avaliação qualitativa, meu peso é, 0 ou 1, menciona o software ou não menciona'
-%se menciona, qual tipo, usa, contribui, etc... isto eh que vai dar o valor/peso/metrica
-
-%
-%Diversas maneiras de inventivar citação formal entre artefatos digitais,
-%software por exemplo, tem surgido, dentre elas uma iniciativa interessante
-%é o Journal of Open Source Software (JOSS) é um livre a open-access jornal para
-%publicação de artigos descrevendo software acadêmico. Ele tem dois objetivos
-%principais, melhorar a qualidade dos softwares submetidos e prover mecanismos
-%para pesquisadores desenvolvedores de software acadêmico receber crédito pelos
-%seus softwares. Enquanto pensado para trabalhar dentro do atual sistema de
-%mérito da ciência, JOSS visa a escassez de recompensas para contribuições
-%importantes para a ciência realizadas em forma de software. JOSS publica
-%artigos que encapsulam sabedoria contida no software ele mesmo, e seu rigoroso
-%revisão em pares mirado nos componentes do software: funcionalidade,
-%documentação, testes, integração contínua, e a licença. Um artigo JOSS contém
-%um resumo descrevendo o objetivo e funcionalidades do software, referencias, e
-%um link para o software archive.  O artigo é um ponto de entrada para
-%submissçao que engloba o conjunto completo de artefatos de software. Artigos
-%aceitos no JOSS recebem um digital object identifier (DOI), te seus metadados
-%depositados no Crossref, e o artigo pode começar a colecionar citações e ser
-%indexados em serviços como Google Scholar e outros. No seu primeiro ano,
-%iniciado em Maio de 2016, JOSS publicou 111 artigos, com mais de 40 artigos
-%adicionais sob revisão \cite{smith2017journal}.
-%
-%%% 
-%%% 
-%%% Como não existe ainda amadurecimento suficiente sobre como citar softwares e
-%%% outros artefatos em pesquisas científicas, não temos um padrão de como fazê-lo,
-%%% cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
-%%% específicas sobre a implementação do software, nem semprem informam onde
-%%% encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
-%%% é distribuído, ou se é de alguma forma distribuído ao público.
-%%% 
-%%% Os softwares acadêmicos neste estudo serão aquelas citados pelo autor como
-%%% contribuição do estudo, então toda vez que citarmos software acadêmico estamos
-%%% falando de artefatos de software citados pelo autor como contribuição do estudo.
-%%% 
-%%% Os autores argumentam que a comunidade acadêmica de astronomia aumenta a
-%%% dependencia de softwares e softwares precisam ser parte integral do prática
-%%% científica \cite{momcheva2015software}.
-
-% , pelo menos 30\% do tempo é gasto nesta atividade
-
-Apesar disso, ainda há pouco reconhecimento aos softwares acadêmicos, muitas
-pesquisas nem ao menos mencionam sua utilização, um estudo recente com 90
-artigos de diversas áreas da biologia, selecionados aleatoriamente entre
-publicações usando softwares acadêmicos, mostrou que apenas 59 mencionavam os
-softwares de alguma forma, os demais 31 artigos, apesar de usar algum software
-acadêmico, não mencionavam nada a respeito \cite{howison2016software}.
-
-%, até mesmo aos pesquisadores\footnote{\it research
-%software engineers} responsáveis pelo seu desenvolvimento,
-%
-% que apenas entre 31\% e
-% 43\% das menções aos softwares acadêmicos envolvem citação formal; entre 15\% e
-% 29\% dos softwares são inacessíveis, apenas entre 24\% e 40\% fornecem código
-% fonte, entre as 90 publicações do estudo apenas 59 mencionam o software de
-% alguma forma, as demais, apesar de usar algum software acadêmico, não mencionam
-% nada a respeito \cite{howison2016software}.
-
-%The pursuit of science and engineering research increas-
-%ingly relies on activities that facilitate research but are not
-%currently rewarded or recognized. This includes the sharing
-%of data; development of common data resources, software
-%and methodologies; and annotation of data and publica-
-%tions.
-%About half of the articles in many recent issues
-%of Science describe research that depended on software,
-%and a larger fraction analyze data.
-%
-%\cite{wilson2017good}
-%\cite{Vardi_2010_SOT_1810891.1810892, 10.1109_32.328993, Hatton1997},
-%
-% Few
-% events in academic life are more
-% frustrating than investing enormous
-% amounts of time, effort, and pride
-% in an article or book, only to have
-% it ignored by the profession, not
-% followed up by other researchers,
-% not used to build upon for succeed-
-% ing research, or not explored in
-% other contexts. Moreover, being
-% ignored is very damaging to a ca-
-% reer, but being applauded, cited
-% favorably, criticized, or even at-
-% tacked are all equally strong evi-
-% dence that you are being taken seri-
-% ously for your contributions to the
-% scholarly debate (see Feigenbaum
-% and Levy 1993, citing Diamond
-% 1988, and Leimer and Lesnoy
-% 1982). Unfortunately, a recent
-% study indicates that the modal num-
-% ber of citations to articles in politi-
-% cal science is zero: 90.1% of our
-% articles are never cited (Hamilton
-% 1991; Pendlebury 1994)! An even
-% smaller fraction of articles stimu-
-% lates active investigation by other
-% researchers.
-% This problem
-
-...
-%isto gera um impacto
-%negativo não apenas na visibilidade do software mas também de suas pesquisas,
-%já que parte dos pesquisadores também desenvolvem seus próprios softwares,
-%fazendo surgir os softwares acadêmicos de origem científica.
-%
-%\cite{robles2010replicating,
-%amann2015software}.
-
-%Apesar desse importante papel, algumas pesquisas não mencionam a utilização de
-%softwares acadêmicos em suas publicações, outras pesquisas, ao publicar novos
-%softwares, não testam ou documentam o seu uso, e raramente publicam seus
-%códigos.
-
-%Em ciência da computação,
-%particularmente em engenharia de software, tem-se notado um aumento constante
-%no número de novos softwares acadêmicos \cite{allen2017engineering}.
-%
-%Mas, apesar da evidente importância dos softwares acadêmicos para a ciência,
-%eles ainda não recebem o devido reconhecimento e muitas pesquisas nem ao menos
-%mencionam sua utilização \cite{howison2016software}, isto, além de gerar
-%impacto negativo na visibilidade dos softwares acadêmicos, faz surgir uma séria
-%de questionamentos sobre a sua qualidade e a capacidade de ser encontrado,
-%compartilhado e co-desenvolvido \cite{howison2013, katz2014transitive}.
-%
-%Essa falta de visibilidade, ou uma forma
-%particular de visibilidade, significa que incentivos para produzir
-%alta-qualidade, compartilhado amplamento, e co-desenvolvido software pode estar
-%em falta \cite{howison2016software}.
-%
-%Muitos cientistas estão preocupados em validar seus aparatos de
-%laboratório ou equipamentos de campo, 
-
-\subsection{Ecossistema dos softwares acadêmicos}
-
-...
-
-%+ software acadêmico: software para coleta e análise, ou resultado
-%    + de origem científica
-%        + resultado
-%        + método
-%Software is a critical part of modern research and yet there is little support across the
-%scholarly ecosystem for its acknowledgement and citation. Inspired by the activities
-%of the FORCE11 working group focused on data citation, this document
-%summarizes the recommendations of the FORCE11 Software Citation Working
-%Group and its activities between June 2015 and April 2016. Based on a review of
-%existing community practices, the goal of the working group was to produce a
-%consolidated set of citation principles that may encourage broad adoption of a
-%consistent policy for software citation across disciplines and venues. Our work is
-%presented here as a set of software citation principles, a discussion of the motivations
-%for developing the principles, reviews of existing community practice, and a
-%discussion of the requirements these principles would place upon different
-%stakeholders. Working examples and possible technical solutions for how these
-%principles can be implemented will be discussed in a separate paper.
-%\cite{smith2016software}
-
-%um caminho apontado como solução é acreditar que software deve evoluir para plataformas compartilhadas,
-%com componentes reusáveis tanto quanto possível, tanto para usuário final, quanto
-%para produtores de componentes (papel) agregando peças particulares de software,
-%crença de que o software deve evoluir em direção a uma plataforma
-%compartilhada, com componentes que são reutilizados o mais amplamente possível,
-%já que os usuários finais e os produtores de componentes se agrupam em torno de
-%peças específicas de software.
-%
-% artigo acima define ciberinfraestrutura, sustentabilidade, e faz um resumo
-% ótimo de tudo que preciso, ler e referenciar aqui
-%
-%O ecosistema de software acadêmico é um sistema que consome tempo, dinheiro e
-%atençao, e afeta a conduta e os resultados da ciência, tanto no geral, como em
-%campos específicos
-%
-%chape para isto é acreditar que software deve evoluir para plataformas compartilhadas,
-%com componentes reusáveis tanto quanto possível, tanto para usuário final, quanto
-%para produtores de componentes (papel) agregando peças particulares de software
-%
-%A visão da ciberinfraestrutura, expressada no "Relatório Atkins" e instanciada
-%para o ecossistema de software científico na NSF chamada de Infraestrutura de
-%Software para Inovação Sustentada (NSF SI2),
-%
-%Os softwares vem não apenas atuando no avanço da ciência, mas atuando com uma
-%eficiência crescente ao longo do tempo (Atkins 2003). A chave para isso é a
-%crença de que o software deve evoluir em direção a uma plataforma
-%compartilhada, com componentes que são reutilizados o mais amplamente possível,
-%já que os usuários finais e os produtores de componentes se agrupam em torno de
-%peças específicas de software.
-%
-%a literatura sobre plataformas de software fora da ciencia tem chamado isso de
-%'coring' e 'tipping' (Gawer and Cusumano 2008),
-%onde uma comunidade descobre sua funcionalidade compartilhada e se agrupa
-%em pacotes que fornecem, levando ao uso eficiente de recursos através de
-%economias de escala.
-%
-%coring também resulta em um aumento do uso sobreposto que facilita mais
-%
-%Isto também resulta em um aumento do uso sobreposto que facilita mais
-%transparência na ciência, levando a uma maior qualidade e correctude (correctness), à medida
-%que mais olhos e esforços são direcionados para os mesmos códigos que são
-%sustentados e evoluem em longos períodos de utilidade científica.
-%
-%coring em direção às plataformas pode ser contrastado com o seu oposto, muitas
-%vezes percebido por informantes: churn caótico disfuncional, com muitos
-%projetos com poucos usuários, cada um tendo vidas curtas que terminam com o
-%financiamento de concessão inicial, comunidades desconectadas e paralelas,
-%incompatibilidades teimosamente imutáveis e periódicas e tentativas
-%aparentemente não coordenadas de "reiniciar". Subjacente a isso é uma
-%preocupação que as oportunidades são perdidas e que o progresso da ciência é
-%abrandado (por exemplo, Stewart, Almes e Wheeler 2010).
-%
-%Essas preocupações gerais sugerem um conjunto de questões específicas, com foco
-%em padrões globais e padrões emergentes dentro do ecossistema, incluindo: Quais
-%recursos foram destinados à produção de software? Quantos usuários ou
-%comunidades de usuários têm projetos? Quais são os impactos científicos desse
-%uso? Os números de usuários crescem? Os projetos possuem recursos e habilidades
-%suficientes para gerenciar seu crescimento? Quais projetos possuem
-%funcionalidades sobrepostas? Há quanto tempo os pedaços de software e projetos
-%persistem? Nós desconectamos as comunidades de usuários e desenvolvedores? São
-%componentes específicos, ou camadas de componentes, faltam? Que código
-%geralmente é usado em conjunto; são os projetos e as pessoas que produzem esses
-%componentes se comunicando adequadamente? Como podemos sustentar o software
-%crítico?
-%
-%Junto com estas questões estão as questões de como influenciar o ecossistema,
-%incluindo questões de pontos de inflexão que levam ao uso coalescente, bem como
-%a intervenções políticas diretas incentivando o uso de componentes específicos.
-%Aqui há uma clara tensão entre um desejo de flexibilidade e liberdade, ligado
-%às expectativas de inovação científica e desejos de estruturas de autoridade e
-%controle de coordenação. As questões de influência incluem: como os programas
-%de financiamento e quais os requisitos em suas chamadas, resultaram em software
-%amplamente utilizado e impacto científico substancial? Quais são as
-%características dos campos que alcançaram maior coalescência? Quais jornais e
-%conferências têm políticas exemplares? Como o trabalho de software é visto
-%dentro das práticas de contratação e avaliação, como os casos de posse?
-%
-%\cite{howison2015understanding}
-
-%
-% irei encontrar os problemas documentados e com propostas e evidencias
-% de solução nos artigos abaixo, preciso ler para screver o parágrafo acima
-%https://academic.oup.com/rev/article/24/4/454/1518466/Understanding-the-scientific-software-ecosystem
-%artigo sobre ecosistema de software acadêmico, preciso citar! fala dos papeis,
-%etc...
-%
-%data availability is one of
-%the ‘critical issues for the evaluation of R&D programs and
-%policies today’ (Rogers 2013: 2).
-%
-%In addition, the second and third authors each
-%have over 15 years experience in the scientific software eco-
-%system.
-%
-% fez exatamente o que pensei, vou ler para usar a metodologia "adaptada"
-%In addition to these motivation studies, scientists have recently embarked on the issue of
-%software use and impact. A study in 2013 has found that scientists tend to choose software
-%that is widely used by others in their community and prefer software that is free for
-%academic use (Huang et al. 2013). Studies on the scientific software ecosystem have
-%suggested that the use of scientific software is influenced by its visibility, availability,
-%sustainability, reproducibility, and citation (Howison and Herbsleb 2014; Howison et al.
-%2015; Huang et al. 2013). Studies also have suggested that software developers are
-%interested to know the use and impact of their software because ‘‘software use matters to
-%them for funding purposes’’ (Howison et al. 2015; Trainer et al. 2015, p. 428).
-%Recent studies on data impact have led to the discussions on software citation and
-%evaluation, as a parallel can be drawn between software and data in scientific literature
-%(Piwowar et al. 2011; Howison and Bullard 2016). It is suggested that the numbers of
-%mentions and citations in literature can be used to measure the impact of software (Huang
-%et al. 2013; Pan et al. 2015). Yet, it is argued that ‘‘the practices of citation to software vary
-%considerably from field to field and appear to miss significant software’’ (Howison et al.
-%2015, p. 478). One study examining the use of software in scientific articles in biology has
-%found that more than half of the software mentions did not include references (Howison
-%and Bullard 2016). Thus, it validates the need to use alternative metrics in addition to
-%citations when assessing software impact, such as the numbers of downloads, registered
-%users, subscribers, user reviews, and artifacts inserted in literature (Howison et al. 2015).
-%
-%, e tem agregado discussões das
-%comunidades de ciência aberta, reprodutibilidade e sustentabilidade de
-%software.
-%
-%Dessa forma, definimos como objetivo geral deste trabalho explorar como são
-
-\subsection{Sustentabilidade de software} \label{sustentabilidade}
-
-%artigo mostra o decaimento das URLs ao longo do tempo, fundamenta o assunto,
-%mostra grafico com o caimento ao longo dos anos
-%Use it or lose it: citations predict the continued online
-%availability of published bioinformatics resources
-%outro grafico muito foda do estudo acima é cruzar o efeito das citacoes
-%por ano na availability rate (tenho dados suficiente para fazer um grafico igual)
-%
-%No entando, ainda não se sabe ao certo como os engenheiros de software
-%desenvolvem e usam seus próprios softwares acadêmicos, um conhecimento
-%necessário não apenas para tomar decisões sobre a necessidade de melhorias nas
-%práticas atuais de desenvolvimento \cite{hannay2009scientists}, mas também
-%imprescindível para compreender qual o impacto destes softwares na capacidade
-%de replicação de seus estudos.
-%
-%e qual qualidade esses softwares apresentam ao longo do tempo.
-%
-%Dessa forma, definimos como objetivo geral deste trabalho explorar como são
-%publicados os softwares acadêmicos de origem científica de análise estática do
-%ponto de vista de alguém interessado em replicar os seus estudos, seja com o
-%objetivo de avaliar, validar, refutar, melhorar ou extender os seus métodos ou
-%dados.
-
-A comunidade tem refletido sobre os problemas relacionados ao
-desenvolvimento, promoção e sustentabilidade desses softwares, e o
-impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
-reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
-software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
-problemas específicos relacionados à manutenabilidade e a sustentabilidade
-técnica dos softwares acadêmicos.
-
-Em diversas linhas de pesquisa da computação, em especial, a engenharia de
-software, é muito comum que novos softwares sejam desenvolvidos durante
-trabalhos de pesquisa, esses tem sido chamados na literatura de {\it
-research-originated software} \cite{Kon2011}, {\it research tool}
-\cite{Portillo12} ou {\it academic software} \cite{allen2017engineering}, e vêm
-ganhando atenção da comunidade devido ao papel que ocupam na reprodutibilidade
-de seus estudos \cite{Peng2011}.
-
-A comunidade tem refletido sobre os problemas relacionados ao
-desenvolvimento, promoção e sustentabilidade desses softwares, e o
-impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
-reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
-software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
-problemas específicos relacionados à manutenabilidade e a sustentabilidade
-técnica dos softwares acadêmicos.
-
-Manutenabilidade é uma característica de qualidade que indica o quão fácil é
-realizar atividades de evolução e manutenção em softwares, um aspecto
-importante aos pesquisadores interessados em adaptar softwares acadêmicos, algo
-muitas vezes necessário ao reproduzir pesquisas anteriores \cite{Peng2011}.
-Sustentabilidade técnica diz respeito a longevidade dos softwares, ou seja, a
-capacidade de continuar disponível no futuro. Muitos pesquisadores não
-disponibilizam os seus softwares \cite{robles2010replicating,
-amann2015software} ou quanto o fazem enfrentam problemas com disponibilidade e
-manutenabilidade \cite{Prlic2012}, isto leva a um corpo computacional
-extramente difícil de reproduzir uma vez que mais da metade dos pesquisadores
-desenvolvem seus próprios softwares \cite{hettrick_2014_14809}, além de ferir um dos
-fundamentos da ciência de que novas descobertas sejam reproduzidas antes de
-serem consideradas parte da base de conhecimento \cite{Stodden2009}.
-
-Isto tem motivado a organização de conferências específicas sobre o tema, como
-o RSE\footnote{Conference of Research Software Engineers
-\url{http://rse.ac.uk/conf2017}}, WSSSPE\footnote{Workshop on Sustainable
-Software for Science: Practice and Experiences
-\url{http://wssspe.researchcomputing.org.uk}} e o RESER\footnote{Workshop on
-Replication in Empirical Software Engineering Research
-\url{http://sequoia.cs.byu.edu/reser}}, e tem contribuido para a compreensão
-dos problemas relacionados aos softwares acadêmicos, abordando questões sobre
-desenvolvimento, qualidade e sustentabiliade, sobre como citar softwares em
-novas pesquisas, como promover e reconhecer o papel do pesquisador engenheiro
-desenvolvedor de softwares acadêmicos, além de questões sobre infraestrutura,
-ferramentas e práticas para o desenvolvimento de softwares acadêmicos de
-forma sustentável.
-
-Mas apesar desta crescente preocupação com os softwares acadêmicos ainda
-sabe-se pouco sobre o quanto a sustentabilidade técnica e a manutenabilidade
-impactam na reprodutibilidade de seus estudos, sobretudo em áreas específicas,
-como a análise estática de software, uma área com uma longa e respeitável
-tradição e que ainda sofre carência de estudos sobre avaliação e validação de
-seus softwares \cite{Li2010, ilyas2016static}.
-
-
-% Software Sustainability: The Modern Tower of Babel
-
-O {\it Dagstuhl Perspective Workshop} é um evento organizado por e para um
-pequeno grupo de pesquisadores sêniores de renome internacional, realizado
-anualmente na universidade de Dagstuhl\footnote{\url{http://www.dagstuhl.de}}
-com o objetivo de refletir sobre o atual estado da ciência da computação.
-
-Através de uma discussão intensiva com foco estratégico o workshop explora
-tópicos novos e emergentes da ciência da computação produzindo manifestos que
-capturam tendências e desenvolvimentos relacionados aos tópicos explorados.
-
-Realizado desde 2011 o workshop tem explorado diversos tópicos da ciência da
-computação, como computação e paleografia, tecnologia da informação como ponte
-entre biologia e medicina, métodos de aprendizado de máquina para segurança de
-computadores, análise de performance e visualização, entre outros tópicos. Em
-sua mais recente edição, o {\it Dagstuhl Perspectives Workshop on ``Engineering
-Academic Software''} \cite{allen2017engineering} examinou o estado atual dos
-softwares científicos, identificou problemas comuns em seu desenvolvimento,
-reconhecimento e sustentabilidade.
-
-Uma das contribuições chave deste workshop é um manifesto contendo um roteiro
-para o futuro da engenharia de software profissional e acadêmica, com foco em
-instrumentos de suporte para pesquisas em software científico. O manifesto é
-expresso em termos de ações ``promessas'' destinado a usuários e
-desenvolvedores de softwares científicos, com passos concretos para melhorar o
-ambiente em que os softwares são produzidos.
-
-Os compromissos expressados neste manifesto são agrupados em três conceitos gerais:
-(i) garantir que softwares científicos sejam {\it citados} apropriadamente;
-(ii) promover a {\it carreira} do engenheiro de software desenvolvedor de software científico; e
-(iii) medir a qualidade e sustentabilidade do software científico durante e após o seu {\it desenvolvimento}.
-
-No terceiro compromisso, relacionado ao conceito {\it desenvolvimento}, o Dagstuhl Manifesto enfatiza a necessidade de medir a
-qualidade e a sustentabilidade dos softwares científicos, e define
-sustentabilidade de software como capacidade de perdurar, software sustentável
-é aquele que continua a estar disponível no futuro, em novas plataformas e se
-atende às novas necessidades \cite{allen2017engineering}.
-
-% campos da engenharia de software, e apesar dos inúmeros entendimentos sobre o
-% conceito \cite{venters2014software}, 
-
-Essa definição de sustentabilidade de software é encontrada em mais detalhes no
-{\it Karlskrona Manifesto} \cite{becker2014karlskrona}, um documento que alerta
-sobre os impactos que os sistemas e a tecnologia da informação causam no futuro
-do planeta, convida praticantes e pesquisadores de software a refletir sobre
-o tema sustentabilidade na área da ciência da computação.
-
-Sustentabilidade é um conceito guarda chuva composto de múltiplas dimensões, em
-sua dimensão técnica, chamada sustentabilidade técnica, temos a preocupação com
-a longevidade da informação, dos sistemas, e infraestrutura, e sua adequada
-evolução frente as condições do ambiente em constante mudança. Software ocupa
-um papel central nessa discussão, ele pode levar a crescentes consumo de
-recurso, crescimento da desigualdade social, e influenciar no ganho ou perda de
-auto-estima individual.
-
-Se sustentabilidade não for levada em consideração em projetos de software, não
-importa qual o domínio ou qual o propósito do software, perde-se a oportunidade
-de causar mudanças positivas no planeta e na sociedade.
-
-%Pesquisadores de
-%software podem contribuir identificando questões de pesquisa em seu campo para
-%ajudar a melhor entender sustentabilidade em projetos de software, Discutir com
-%seus pares e pensar sobre como sustentabilidade impacta sua área de pesquisa.
-%
-%Assim, surge um conjunto de ações que podem ser tomadas pelos diferentes atores
-%em direção à garantir sustentabilidade nos projetos de software, ações para
-%praticantes de software, pesquisadores, associações profissionais, educadores,
-%cientes e usuários.
-% 
-% 
-% Em resumo os dois manifestos, Dagstuhl e Karlskrona, exprimem o conceito de
-% sustentabilidade necessários para este estudo, mas é importante citar que
-% algumas iniciativas e outros manifestos também estão preocupados com questões
-% similares, dentre os quais podemos destacar:
-% 
-%A ciência aberta e comunidades de pesquisa em software tem sido bastante ativas
-%em criar manifestos visando chamadas para ação. Estes manifestos chamam para melhorar
-%os softwares e os metadados de bibliografia para citação persistente destes softwares.
-%Outros tópicos endereçados nestes manifestos incluem ênfase no acesso ao código fonte.
-%
-%Agências de financiamento como o {\it US National Science Foundation} estão começando
-%a reconhecer produtos de pesquisa como software assim como fazem com as publicações.
-%Isto reconhece as contribuições ao softwares assim como primeiro produto de pesquisa.
-%
-%O {\it Journal of the American Statistical Association (JASA)} irá agora insistir na
-%disponibilidade do código e dados durante a revisão dos manuscritos \cite{baker2016scientists}.
-%% 
-%% \begin{itemize}
-%% 
-%%   \item Science Code Manifesto \cite{barnes2013science}
-%% 
-%%     Foco em código fonte escrito especificamente para processar dados de
-%%     publicações, afirma que ``todo código fonte escrito especificamente para
-%%     processar dados de uma publicação deve estar disponível para os revisores e
-%%     leitores do paper''.
-%% 
-%%   \item FORCE11 Software Citation principles \cite{smith2016software}\footnote{\url{https://www.force11.org/software-citation-principles}}
-%% 
-%%     Enfatiza persistencia e claridade e diz que ``Software deve ser considerado
-%%     um produto legítimo de pesquisas e devem ser possível de serem citados''.
-%% 
-%%   \item Open Access Pledge \cite{holcombe2011openaccess}\footnote{\url{http://www.openaccesspledge.com}}
-%% 
-%%     Concentra-se em publicar softwares e papers em locais de {\it open access}.
-%% 
-%%   \item Open Science Peer Review Oath\footnote{\url{https://f1000research.com/articles/3-271/v2}}
-%% 
-%%     Concentra-se em potencializar os revisores para exigir acesso aberto aos
-%%     softwares, práticas reprodutíveis e revisões transparentes.
-%% 
-%%   \item UK RSE \cite{ukrse2013}\footnote{\url{http://rse.ac.uk/who}}
-%% 
-%%     Conscientização sobre a importância e o papel do {\it Research Software
-%%     Engineer} através de comunicação e suporta institucional.
-%% 
 %%   \item Reproducibility manifesto \cite{Barba2012}\footnote{\url{http://lorenabarba.com/gallery/reproducibility-pi-manifesto}}
 %% 
 %%     Inclui termos para fazer softwares reusáveis por outros. Foco em
 %%     reprodutibilidade, deixando sustentabilidade de software fora de questão.
 %% 
-%%   \item The GeoScience paper of the future initiative \cite{OntoSoft2016}\footnote{\url{http://www.scientificpaperofthefuture.org/gpf/what-is-a-gpf}}
-%% 
-%%     Possui um conjunto de requerimentos para softwares serem incluidos em
-%%     papers.  Focando mais no paper em sí do que no software.
-%% 
-%%   \item FAIR principles \cite{wilkinson2016fair}\footnote{\url{https://www.nature.com/articles/sdata201618}}
-%% 
-%%     Foco em dados de pesquisa. O objetivo é fazer eles serem encontráveis,
-%%     acessíveis, interoperável e reusável. Estes princípios podem ser
-%%     generalizados para aplicar aos softwares.
-%% 
-%% \end{itemize}
-
-Dessa forma, definimos como objetivo geral deste trabalho avaliar o quanto a
-sustentabilidade técnica e a manutenabilidade dos softwares acadêmicos de
-análise estática impactam na reprodutibilidade de seus estudos.
-
-Entre os objetivos da pesquisa, pretende-se:
-
-\begin{enumerate}
-  \item Encontrar e obter o código fonte dos softwares acadêmicos de análise
-        estática.
-  \item Medir e avaliar a sustentabilidade técnica e a manutenabilidade dos
-        softwares acadêmicos de análise estática.
-\end{enumerate}
-
-Somado a isto temos ainda o fato de que pesquisadores raramente publicam seus
-códigos, piorando ainda mais toda a situação, isto tem motivado a organização
-de conferências específicas para discutir os problemas dos softwares
-acadêmicos, como o RSE (Conference of Research Software Engineers)\footnote{
-\url{http://rse.ac.uk/conf2017}}, WSSSPE (Workshop on Sustainable Software for
-Science: Practice and Experiences)\footnote{
-\url{http://wssspe.researchcomputing.org.uk}} e o RESER (Workshop on
-Replication in Empirical Software Engineering Research)\footnote{
-\url{http://sequoia.cs.byu.edu/reser}}, e tem agregado discussões das
-comunidades de ciência aberta, reprodutibilidade e sustentabilidade de
-software.
-
-Apesar disso, poucos estudos tem focado sua atenção aos softwares acadêmicos de
-origem científica\footnote{\it research-originated software \cite{Kon2011}},
-especialmente os da engenharia de software, uma área que, ao menos em teoria,
-não sofre com a falta de treinamento prévio em práticas de desenvolvimento.
-
-Dessa forma, definimos como objetivo geral deste trabalho explorar como os
-softwares acadêmicos de origem científica publicados na literatura acadêmica da
-engenharia de software estão visíveis hoje e como são mencionados ao longo do
-tempo.
-
-%%% Assim, neste trabalho temos como objetivo explorar o problema de
-%%% ``dysfunctional chaotic churn'' entre os softwares acadêmicos de origem
-%%% científica para análise estática respondendo a seguinte questão geral:
-%%% Os projetos de software acadêmico de origem científica de análise estática
-%%% estão no caminho para sustentabilidade?
-
-\subsection{Qualidade de software}
-
-% (3) Tools used in Global Software Engineering: A systematic mapping review \cite{Portillo12}
-%
-% Cita um mapeamento sistemático com objetivo de encontrar ferramentas de
-% comunicação e coordenação para suporte a times altamente distribuidos
-% gograficamente, encontrou 132 ferramentas, para uso em projetos de software
-% global. A maioria destas ferramentas foram desenvolvidas em centros de
-% pesquisas, e apenas uma pequena porcentagem (18.9\%) foram testados fora do
-% seu contexto onde foi desenvolvido.
-%
-
-% (2) Tools to support systematic literature reviews in software engineering: A mapping study \cite{marshall2013tools}
-%
-% Cita um mapeamento feito sobre estudos que criam ferramentas para apoio a
-% revisão sistemática no domínio de SE, 14 estudos foram selecionados, ao final
-% apenas 8 tinham proposta de ferramentas, ao final conclui que as ferramentas
-% encontradas estão em estado inicial de desenvolvimento. 
-%
-
-%como essas taxas mudam ao longo do tempo.
-%
-%Dessa forma, definimos como objetivo geral deste trabalho medir a qualidade
-%(técnica e não-técnica) dos softwares acadêmicos de origem científica da
-%engenharia de software e explorar como essas taxas mudam ao longo do tempo.
-%
-%Questão de pesquisa:
-%
-%
-%
-%* Como ocorre o co-desenvolvimento dos softwares
-%* Como acontece colaboração na construção dos softwares
-%* Como os softwares contribuem para a construcao de conhecimento novo em novas pesquisas derivadas
-%
-% * mais da metade desenvolvem seus próprios softwares
-% * falta de visibilidade gera questionamentos sobre qualidade
-% * falta de treinamento leva a produzir softwares sem qualidade
-% * produtividade científica requer capacidade de replicação
-% * capacidade de replicação depende de qualidade
-
-%
-% Este paper
-% apresenta um conjunto de boas práticas que todo pesquisador pode adotar,
-% independentemente do seu nível de habilidade em computação. Essas práticas
-% passam por gerenciamento de dados, programação, colaboração com colegas,
-% organização de projetos, tracking work, e escrita da manuscritos, sao
-% desenhados para uma grande variadade de fontes publicadas do noso dia a dia e
-% do nosso trabalho como voluntário organizando workshopts desde 2010
-% \cite{wilson2017good}.
-%
-% A situação com software é amplamente análoga (mas não identica) ao de dados
-% das publicações; de fato, todo dado é processado por softwares de alguma forma
-% (Borgman et al., 2012).
-%
-% Tais softwares podem ser encontrados na literatura pelo nome de {\it research
-% tool} \cite{Portillo12}, {\it research-originated software} \cite{Kon2011},
-% %{\it research software} \cite{hettrick_2014_14809} ou
-% {\it academic software} \cite{allen2017engineering}, e costumam ser citados
-% pelos seus autores como uma contribuição do estudo, seja principal ou
-% secundária, alguns autores criam softwares acadêmicos como meio para atingir os
-% resultados da pesquisa e não descrevem muito bem o software.
-% 
-
-%estas práticas permitem replicar descobertas anteriores seguindo
-%o caminho do autor original,
-%isto, segundo
-%\citeonline{king1995replication}, é o método mais comum e cientificamente
-%produtivo de produzir conhecimento novo para a ciência, tanto a ciência quanto
-%a engenharia dependem de resultados incrementais para evoluir, no entando,
-%
-%Isto se torna ainda mais difícil visto que frequentemente os pesquisadores
-%deixam de publicar o código dos seus softwares acadêmicos argumentando que o
-%código é ``ruim'' e isto irá gerar julgamentos negativos ao pesquisador
-%\cite{allen2017engineering}.
-%
-%o comum usado para não publicar o
-%código associado com um artigo científico é que 
-%
-%isto, além de fazer os próprios pesquisadores enfrentar problemas ao replicar
-%seus próprios trabalhos no futuro, torna quase impossível reproduzir e
-%verificar os resultados de pesquisas anteriores, ferindo um dos princípios da
-%ciência de que novas descobertas sejam reproduzidas antes de serem consideradas
-%parte da base de conhecimento
-
-Isto gera impacto negativo na visibilidade dos softwares acadêmicos, e faz
-surgir questionamentos sobre sua qualidade, não apenas técnica, mas também a
-capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
-importantes para a evolução do próprio software, mas também extremamente úteis
-para o uso eficiente dos limitados recursos da ciência \cite{howison2013,
-katz2014transitive}.
-
-% historia da citacao na ciencia, como isso promove o avanço,
-% problemas para citacao em artefatos digitais, solucao
-% para identificador unico de autores de artigos, orcid.org
-% resolve este problema, o mesmo para identificar artefatos
-% digitais é o doi.org \cite{allen2014credit}
-%
-%Quando um software não é visível, ele é frequentemente excluido de {\it peer
-%reviews}; um software em bom funcionamento devem atingir não apenas os
-%objetivos de entendimento e transparencia, mas também os objetivos voltados
-%para replicação \cite{Stodden2010}.
-
-No entanto, parece ser regra geral não testar ou não documentar o próprio software,
-pesquisadores geralmente não testam ou documentam seus softwares acadêmicos, a
-maioria também não sabe o quão confiável seu software é, ocasionando sérios
-erros computacionais em conclusões centrais da literatura acadêmica, gerando
-retrabalho para retratar tais erros nas mais diversas áreas da ciência
-\cite{Merali2010Computational}. Sabe-se que nem sempre é possível, ou viável,
-ter tudo exatamente dentro dos padrões, mas é preciso estar consciente das boas
-práticas ao produzir e utilizar softwares acadêmicos, tanto para melhorar a
-própria abordagem quanto para revisar trabalhos de outros
-\cite{wilson2014best}.
-
-A maior parte dos cientistas (90\%) no entretanto nunca tiveram treinamento
-algum de como escrever software de forma eficiente, faltam práticas básicas de
-desenvolvimento, como escrever código legível, revisão de código, controle de
-versão, testes unitários, entre outros, como resultado, dados são perdidos,
-análises levam mais tempo que o necessário e os pesquisadores não conseguem a
-eficiência que poderiam ter ao trabalhar com softwares acadêmicos
-\cite{wilson2017good}.
-
-%, de como escrever
-%código legível, uso de controle de versão, issue trackers, revisão de código,
-%testes unitários e automação de tarefas.
-
-%O fluxo de trabalhos científicos usando computação precisam seguir as mesmas boas práticas qualquer projeto experimental, 
-%
-%e então melhorar os seus dados ou metodologia de alguma maneira.
-
-Isto contradiz as boas práticas de qualquer projeto experimental ({\it
-laboratory
-notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
-organizados, passos documentados, projeto estruturado para reprodutibilidade) e
-torna praticamente impossível utilizar o método mais comum e cientificamente
-produtivo de produzir conhecimento novo a partir de pesquisas anteriores, a
-replicação, ou seja, seguir os mesmos passos do autor original com
-objetivo de validar, melhorar ou estender seus dados e sua metodologia
-\cite{king1995replication, Stodden2010}.
-
-%%% %, traduzido para software acadêmico para evitar o
-%%% %termo {\it software de pesquisa}, a palavra {\it research} em português {\it
-%%% %pesquisa} pode ser facilmente confundida com ferramentas ou sistemas de
-%%% %pesquisa, como sites de pesquisa por exemplo,
-%%% 
-%%% % este artigo \cite{howison2016software} faz exatamento o mesmo estudo que estou fazendo!
-%%% 
-%%% Copiar e usar exatamente esta linha de pensamento e argumentos:
-%%% Yet, the visibility of software in the scientific record is in
-%%% question, leading to concerns, expressed in a series of
-%%% National Science Foundation (NSF)- and National Institutes
-%%% of Health–funded workshops, about the extent that scientists
-%%% can understand and build upon existing scholarship (e.g.,
-%%% Katz et al., 2014; Stewart, Almes, & Wheeler, 2010). In
-%%% particular, the questionable visibility of software is linked to
-%%% concerns that the software underlying science is of question-
-%%% able quality. These quality concerns are not just technical,
-%%% but extend to the appropriateness of software for wide
-%%% sharing, and its ability to facilitate the codevelopment that
-%%% would make efficient use of limited scholarly funding
-%%% (Howison & Herbsleb, 2013; Katz et al., 2014).
-%%% The link is two-fold: First, when software is not visible, it
-%%% is often excluded from peer review; second, its lack of
-%%% visibility, or the particular form of visibility, means that
-%%% incentives to produce high-quality, widely shared, and code-
-%%% veloped software may be lacking. A well-functioning system
-%%% would assist not only the goals of understanding and trans-
-%%% parency, but also the goals of aiding replication (Stodden
-%%% et al., 2010), complementing the availability of publications
-%%% such that “the second researcher will receive all the benefits
-%%% of the first researcher’s hard work” (King, 1995, p. 445).
-%%% The situation with software is broadly analogous (but not
-%%% identical) to that of data in publications; indeed, all data are
-%%% processed by software in some form (Borgman et al., 2012).
-%%% Nonetheless, there are relevant differences. Accordingly, our
-%%% inquiry into the visibility of software in scholarly commu-
-%%% nication is complementary to recent interest in data citation.
-%%% In sum, then, the relationship of software to the scholarly
-%%% 
-%%% 
-%%% Como não existe ainda amadurecimento suficiente sobre como citar softwares e
-%%% outros artefatos em pesquisas científicas, não temos um padrão de como fazê-lo,
-%%% cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
-%%% específicas sobre a implementação do software, nem semprem informam onde
-%%% encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
-%%% é distribuído, ou se é de alguma forma distribuído ao público.
-%%% 
-%%% Os softwares acadêmicos neste estudo serão aquelas citados pelo autor como
-%%% contribuição do estudo, então toda vez que citarmos software acadêmico estamos
-%%% falando de artefatos de software citados pelo autor como contribuição do estudo.
-
-%Isto tem motivado a reflexão sobre os problemas relacionados ao
-%desenvolvimento, promoção e sustentabilidade desses softwares, e o
-%impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
-%reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
-%software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
-%problemas específicos relacionados à manutenabilidade e a sustentabilidade
-%técnica dos softwares acadêmicos.
-%
-%Apesar desse importante papel, algumas pesquisas não mencionam a utilização de
-%softwares acadêmicos em suas publicações, outras pesquisas, ao publicar novos
-%softwares, não testam ou documentam o seu uso, e raramente publicam seus
-%códigos.
-%
-%, não apenas técnica, mas também a
-%capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
-%importantes para a evolução do próprio software, mas também extremamente útil
-%para um uso eficiente dos limitados recursos da ciência \cite{howison2013,
-%katz2014transitive}.
-%
-%contradizendo as boas
-%práticas de qualquer projeto experimental, de ter {\it laboratory
-%notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
-%organizados, passos documentados, e projeto estruturado para reprodutibilidade.
-%
-%Isto torna os softwares acadêmicos tão importantes para a ciência quanto
-%qualquer outro aparato científico, como por exemplo
-%
-%Isto tem motivado a comunidade a refletir sobre
-%a importância dos softwares para a ciência chegando a conclusões que
-%os softwares acadêmicos são tão importantes para a ciência quanto são os
-%telescópios ou tubos de ensaio \cite{wilson2014best}.  
-%
-%eles são utilizados para coletar, processar ou analisar resultados em trabalhos
-%de pesquisa publicados na literatura acadêmica (seja em jornal, revista,
-%conferência, monografia, livro, dissertação ou tese), podem ser pequenos
-%scripts com poucas linhas de código, protótipos, ou mesmo produtos de software
-%completos que demonstram ou refletem os resultados de uma pesquisa.
-%
-%seu uso é crescente,
-
-\section{Iniciativas de fomento, discussao, debate, melhoria dos softwares e dados}
-
-
-%isto tem motivado a organização de conferências específicas
-%para discutir os problemas dos softwares acadêmicos, como o RSE (Conference of
-%Research Software Engineers)\footnote{ \url{http://rse.ac.uk/conf2017}}, WSSSPE
-%(Workshop on Sustainable Software for Science: Practice and
-%Experiences)\footnote{ \url{http://wssspe.researchcomputing.org.uk}} e o RESER
-%(Workshop on Replication in Empirical Software Engineering Research)\footnote{
-%\url{http://sequoia.cs.byu.edu/reser}}.
-
-\subsection{Ciência aberta}
-
-Over the past fifteen years the scholarly communications agenda
-has progressed gradually. Currently we are experiencing a strong
-tendency among all research stakeholders to engage with the
-practice of OS. Lately, research funders require the sharing not
-only of the research results they have funded, but also of the
-procedures and data that are being generated during the research
-conduct. Researchers, on the other side, are keen on observing
-their research results being used for the improvement of the
-society and are forced by their funders to demonstrate the impact
-of their research. At the same time, higher academic institutions
-aim to join the OS agenda as well, since they see the opportunity
-of great economic benefits and savings. While OS is the possible
-answer to all these factors, the stakeholders’ inability to
-understand the requirements for the application of OS can be a
-suspensory factor for the OS implementation and evolution.
-The aim of the FOSTER project is to advance the stakeholders'
-knowledge on the usefulness of OS and explain the technicalities,
-strategies and best practices using which OS can be applied. As an
-attempt to educate the largest number of researchers possible,
-FOSTER has created an e-leanring portal, which contains quality
-assured information relating to the topic and it is open to everyone
-in the world. The platform contains two types of information:
-learning material and online courses. The classification of these
-two types is supported by an OS taxonomy, where related terms
-are applied both in the portal's material and also in the courses.
-With the use of the taxonomy, users are in the position to
-understand the OS domain and the concepts around it.
-The main goal of the FOSTER project, which is mainly achieved
-through the portal functionalities, is not only to educate the
-research stakeholders on OS, but also to build a community of
-researchers, librarians, software developers, funders and research
-administrators who are interested in OS in order to advance the
-way research is being conducted and shared. In addition, FOSTER
-attempts to provide tools to this community, such as re-usable
-content for training and a platform for blended learning and e-
-learning courses that the community could run. This OS
-advancement is essential for the research promotion and,
-consequently, for the benefit of the society as a whole
-\cite{Nancy2015}.
-
-Open Science may be practised both
-for philosophical and pragmatic reasons. As the
-resources produced by open projects are
-potentially accessible to public audiences, Open
-Science offers both a novel medium for public
-access and involvement in the process of science
-and an innovative method for real-time science
-communication. Does such direct access clear
-the stream of communication or muddy the
-waters with unfocussed, unclear and unvetted
-comment? This paper suggests that adopting an
-Open Science approach allows the capture of an
-authentic and clear record of research.
-However, researchers acknowledge this involves
-opening their work up to a different type of
-scrutiny \cite{Grand2010}.
-
-Open Science is an emerging approach to the conduct of science, technology and engineering
-projects, in which information about the whole of an ongoing investigation is made available
-on and through the Internet. Adopting an Open Science approach means the audience for the
-research can extend beyond the researchers involved to other researchers and to members of
-the public. Thus, Open Science has implications for engineering research, practice,
-publishing and public engagement with engineering. This paper reviews the history and
-evolution of the Open Science movement, includes some reflections on the related areas of
-Open Access, peer-review and public engagement with science and engineering and discusses
-data gathered from interviews. The analysis suggests that interviewees have concerns about
-issues such as precedence and protection of original work and the time needed to integrate
-open science practices into daily work. Successfully working in such collaborations is likely
-to require not only common practical tools but also the development of shared language and
-understanding between researchers and members of the public. Interviewees recognise the
-value of Open Science in collaborative research and its innovative facility to sustain direct
-public access to research outputs. It also has the potential to allow members of the public to
-make real practical contributions to research \cite{Grand2010Open}.
-
-This white paper was written as a contribution to the “Imagining
-Tomorrow’s University: Rethinking scholarship, education, and institu-
-tions for an open, networked era” workshop, a joint NIH/NSF-funded
-event held 8–9 March 2017 in Rosemont, IL. In this paper, I present an
-overview of what I consider open science, its importance, and how it
-plays a role in my research agenda. I also discuss challenges faced in
-pursuing research openness, and recommend changes to university
-leaders to address these barriers \cite{niemeyer2017open}.
-
-Open to All?  Case studies of openness in research
-Since the early 1990s, the open access movement has promoted the concept of openness in relation
-to scientific research. Focusing initially upon the records of science in the form of the text of articles
-in scholarly journals, interest has broadened in the last decade to include a much wider range of
-materials produced by researchers. At the same time, concepts of openness and access have also
-developed to include various kinds of use, by machines as well as humans.
-Academic bodies, including funders and groups of researchers, have set out statements in support
-of various levels of openness in research. Such statements often focus upon two key dimensions:
-what is made open, and how; and to whom is it made open, and under what conditions? This study
-set out to consider the practice of six research groups from a range of disciplines in order to better
-understand how principles of openness are translated into practice \cite{Nesta2010}.
-
-\subsection{Reprodutibilidade / RR - Reprodubicle Research}
-
-%%% \section{Apresentação}
-%%% 
-%%% Softwares acadêmicos\footnote{{\it research software}, {\it academic software},
-%%% {\it academic research software}} ocupam um papel central na ciência moderna,
-%%% mais da metade dos cientistas de todas as áreas usam softwares acadêmicos em
-%%% suas pesquisas, pesquisadores trabalhando exclusivamente com problemas
-%%% computacionais, em laboratórios tradicionais ou em campo, todos
-%%% usam softwares de alguma forma, seja para coleta ou análise de dados, seja em
-%%% outras atividades dentro do processo científico.
-%%% 
-%%% Boa parte destes softwares são desenvolvidos na própria academia, cientistas
-%%% gastam mais tempo hoje usando e desenvolvendo softwares do que gastavam no
-%%% passado, apesar disso muitas pesquisas nem ao menos mencionam a utilização de
-%%% softwares acadêmicos em suas publicações, outras pesquisas, ao publicar novos
-%%% softwares, não testam ou documentam o seu uso, e raramente publicam seus
-%%% códigos.
-%%% 
-%%% Como resultado, dados são perdidos, análises levam mais tempo que o necessário
-%%% e os pesquisadores não conseguem a eficiência ao trabalhar com softwares
-%%% acadêmicos, isto, além de ocasionar erros em conclusões centrais da literatura
-%%% leva ao problema conhecido como ``dysfunctional chaotic churn'',
-%%% ou
-%%% seja, muitos projetos, com poucos usuários, com ciclos de vida curtos, que terminam em
-%%% paralelo ao financiamento inicial, comunidades desconectadas e paralelas,
-%%% incompatibilidades entre projetos, e tentativas aparentemente não coordenadas
-%%% de "reiniciar" (re-boots) \cite{howison2015understanding}.
-%%% 
-%%% Isto, além de contradizer as boas práticas de qualquer projeto experimental,
-%%% desacelera o progresso da ciência uma vez que oportunidades de colaboração são
-%%% perdidas e torna praticamente impossível utilizar o método mais comum e
-%%% cientificamente produtivo de produzir conhecimento novo a partir de pesquisas
-%%% anteriores através da replicação, ferindo um dos princípios da ciência de que
-%%% novas descobertas sejam reproduzidas antes de serem consideradas parte da base
-%%% de conhecimento.
-%%% 
-%%% 
-%%% Como o problema ``dysfunctional chaotic churn'' se apresenta nas
-%%% pesquisas da engenharia de software, especialmente na análise estática de
-%%% programas, uma área com uma longa e respeitável tradição, e com um constante
-%%% crescimento no número de ferramentas publicadas ao longo do tempo \cite{Li2010,
-%%% ilyas2016static}.
-%%% 
-%%% 
-%%% 
 
 %lugar, em algum momento. Uma utilidade óbvia para qualquer um destes softwares
 %é para aqueles que desejam replicar as pesquisas em que foram criados, seja com
 %o simples objetivo de validar as conclusões, seja com interesse de estender e
 %colaborar com a pesquisa original.
-
 
 The lack of replicability and reproducibility of scientific studies based on
 computational methods has lead to serious mistakes in published scientific
@@ -1305,16 +167,6 @@ whole MSR literature and some potential solutions to lower the
 barriers of replicability are finally presented and discussed
 \cite{robles2010replicating}.
 
-
-
-Enquanto pesquisadores publicam artigos descrevendo e divulgando seus
-resultados, é raro que façam o mesmo com toda a produção gerada durante a
-pesquisa. A maioria dos componentes necessários para a reprodução dos
-resultados de uma pesquisa -- por exemplo, códigos fonte e dados -- usualmente
-permanecem não publicados. Esse problema fere um dos fundamentos
-da ciência de que novas descobertas sejam reproduzidas antes de serem
-consideradas parte da base de conhecimento \cite{Stodden2009}.
-
 % Software Carpentry: lessons learned [version 2; referees: 3 approved]
 %
 % iniciativa voltada a melhorar as habilidades com computação entre os
@@ -1328,7 +180,6 @@ consideradas parte da base de conhecimento \cite{Stodden2009}.
 % to improve researchers' computing skills. This paper explains what we have
 % learned along the way, the challenges we now face, and our plans for the
 % future.
-
 
 Nesse sentido, \citeonline{Prlic2012} enfatizam que disponibilizar o código
 criado durante pesquisas não apenas aumenta o impacto como também se torna
@@ -1512,7 +363,1294 @@ discussões sobre sustentabilidade de software, um conceito que diz respeito
 %% 
 %% Ainda existem poucos estudos replicados \cite{kitchenham2015evidence}.
 
+
+\section{Software acadêmico}
+
+%%% % este artigo \cite{howison2016software} faz exatamento o mesmo estudo que estou fazendo!
+%%% 
+%%% Copiar e usar exatamente esta linha de pensamento e argumentos:
+%%% Yet, the visibility of software in the scientific record is in
+%%% question, leading to concerns, expressed in a series of
+%%% National Science Foundation (NSF)- and National Institutes
+%%% of Health–funded workshops, about the extent that scientists
+%%% can understand and build upon existing scholarship (e.g.,
+%%% Katz et al., 2014; Stewart, Almes, & Wheeler, 2010). In
+%%% particular, the questionable visibility of software is linked to
+%%% concerns that the software underlying science is of question-
+%%% able quality. These quality concerns are not just technical,
+%%% but extend to the appropriateness of software for wide
+%%% sharing, and its ability to facilitate the codevelopment that
+%%% would make efficient use of limited scholarly funding
+%%% (Howison & Herbsleb, 2013; Katz et al., 2014).
+%%% The link is two-fold: First, when software is not visible, it
+%%% is often excluded from peer review; second, its lack of
+%%% visibility, or the particular form of visibility, means that
+%%% incentives to produce high-quality, widely shared, and code-
+%%% veloped software may be lacking. A well-functioning system
+%%% would assist not only the goals of understanding and trans-
+%%% parency, but also the goals of aiding replication (Stodden
+%%% et al., 2010), complementing the availability of publications
+%%% such that “the second researcher will receive all the benefits
+%%% of the first researcher’s hard work” (King, 1995, p. 445).
+%%% The situation with software is broadly analogous (but not
+%%% identical) to that of data in publications; indeed, all data are
+%%% processed by software in some form (Borgman et al., 2012).
+%%% Nonetheless, there are relevant differences. Accordingly, our
+%%% inquiry into the visibility of software in scholarly commu-
+%%% nication is complementary to recent interest in data citation.
+%%% In sum, then, the relationship of software to the scholarly
+%%% 
+%%% 
+%%% Como não existe ainda amadurecimento suficiente sobre como citar softwares e
+%%% outros artefatos em pesquisas científicas, não temos um padrão de como fazê-lo,
+%%% cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
+%%% específicas sobre a implementação do software, nem semprem informam onde
+%%% encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
+%%% é distribuído, ou se é de alguma forma distribuído ao público.
+%%% 
+%%% Os softwares acadêmicos neste estudo serão aquelas citados pelo autor como
+%%% contribuição do estudo, então toda vez que citarmos software acadêmico estamos
+%%% falando de artefatos de software citados pelo autor como contribuição do estudo.
+
+%Isto tem motivado a reflexão sobre os problemas relacionados ao
+%desenvolvimento, promoção e sustentabilidade desses softwares, e o
+%impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
+%reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
+%software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
+%problemas específicos relacionados à manutenabilidade e a sustentabilidade
+%técnica dos softwares acadêmicos.
+%
+%Apesar desse importante papel, algumas pesquisas não mencionam a utilização de
+%softwares acadêmicos em suas publicações, outras pesquisas, ao publicar novos
+%softwares, não testam ou documentam o seu uso, e raramente publicam seus
+%códigos.
+
+research software \citeonline{hettrick_2014_14809}
+research tool \cite{Portillo12}
+research-originated software \cite{Kon2011}
+
+%%% %, traduzido para software acadêmico para evitar o
+%%% %termo {\it software de pesquisa}, a palavra {\it research} em português {\it
+%%% %pesquisa} pode ser facilmente confundida com ferramentas ou sistemas de
+%%% %pesquisa, como sites de pesquisa por exemplo,
+%%% 
+
+Segundo \citeonline{allen2017engineering} software acadêmico ({\it academic
+software}) é todo software usado para gerar, processar ou analisar resultados
+de pesquisas com intenção de ser publicados (seja num jornal, revista,
+conferência, monografia, livro ou tese). Software de pesquisa pode ser qualquer
+coisa entre poucas linhas escritas por você mesmo, até mesmo um software
+desenvolvido profissionalmente. Software que não gera, processa ou analisa
+resultados - como por exemplo um editor de textos, ou o uso de navegadores web
+- não são considerados softwares de pesquisa, segundo esta definição.
+Podem ser o resultado de uma pesquisa ou apenas uma ferramenta aplicada
+no método.
+
+Esta definição pode ser encontrada, com algumas variações, pelos nomes de
+{\it research tool} \cite{Portillo12},
+{\it research-originated software} \cite{Kon2011},
+{\it research software} \cite{hettrick_2014_14809} ou
+{\it scientific software} \cite{segal2008developing},
+e costumam ser citados
+pelos seus autores como uma contribuição do estudo, seja principal ou
+secundária, alguns autores criam softwares acadêmicos como meio para atingir os
+resultados da pesquisa e não descrevem muito bem o software.
+
+Estes softwares resolvem problemas comuns do cotidiano de pelo menos metade dos
+pesquisadores de todas as áreas do conhecimento, são considerados tão
+importantes para a ciência quanto qualquer outro aparato experimental, como por
+exemplo os telescópios ou tubos de ensaio, temos desde grupos trabalhando
+exclusivamente com problemas computacionais até grupos em laboratórios
+tradicionais ou em campo fazem uso de tais aparatos de software
+\cite{wilson2014best}.
+
+%
+%Ainda assim, poucos estudos tem focado sua atenção nos softwares acadêmicos de
+%origem científica\footnote{\it research-originated software \cite{Kon2011}},
+%especialmente na engenharia de software, uma área com um potencial inato para a
+%criação de novos softwares, como se pode notar em áreas como a análise estática
+%de programas, uma área com uma longa e respeitável tradição, e com um constante
+%crescimento no número de ferramentas publicadas ao longo do tempo \cite{Li2010,
+%ilyas2016static}.
+%
+%Estes softwares, fazem parte do método empregado em suas pesquisas, ao mesmo
+%tempo, são também artefatos produzidos como resultado pelos seus autores, e em
+%muitos casos são também a contribuição ou resultado principal de uma
+%determinada pesquisa. Além da já citada importancia dos softwares acadêmicos na
+%capacidade de reproduzir o passo a passo do autor original numa descoberta, os
+%softwares acadêmicos de origem científica publicado como resultado pelo seus
+%autores possuem uma dupla importância neste cenário.
+%
+%Eles passam a fazer parte do conjunto de softwares acadêmicos disponíveis
+%para a comunidade acadêmica, sendo
+
+Cientistas gastam mais tempo hoje utilizando e
+desenvolvendo softwares do que gastavam no passado \cite{wilson2014best}.
+
+Cientistas gastam mais tempo hoje utilizando e desenvolvendo softwares do que
+gastavam no passado, softwares acadêmicos, assim como qualquer outro aparato
+experimental, são tão importantes para a ciência quanto são os telescópios ou
+tubos de ensaio, eles resolvem problemas comuns do cotidiano de metade dos
+pesquisadores de todas as áreas do conhecimento, desde grupos trabalhando
+exclusivamente com problemas computacionais até grupos em laboratórios
+tradicionais ou em campo \cite{wilson2014best}.
+
+%Apesar disso, softwares acadêmicos ainda não recebem o devido reconhecimento,
+%muitas pesquisas nem ao menos mencionam sua utilização, um estudo recente com
+%90 artigos de diversas áreas da biologia, selecionados aleatoriamente entre
+%publicações usando softwares como método, mostrou que apenas 59 mencionavam o
+%uso de softwares de alguma forma, os demais 31 artigos, apesar de usar software
+%acadêmico, não mencionavam nada a respeito \cite{howison2016software}.
+
+%Especialmente quando nota-se que grande parte destes softwares são desenvolvidos na própria academia, um estudo
+%entre cientistas do reino unido, por exemplo, mostrou que 56\% dos
+%pesquisadores desenvolvem seus próprios softwares, pelo menos parcialmente
+%\cite{hettrick_2014_14809}. Em outras áreas, como na astronomia, este número
+%chega a 90\% \cite{momcheva2015software}, em ciência da computação,
+%particularmente em engenharia de software, tem-se notado um aumento constante
+%no número de novos softwares acadêmicos \cite{allen2017engineering}.
+
+%No entanto, parece ser regra geral não testar ou não documentar o próprio
+%software, pesquisadores geralmente não testam ou documentam seus softwares
+%acadêmicos, a maioria também não sabe o quão confiável seu software é,
+
+%Apesar de nem sempre ser possível, ou viável, ter tudo dentro de
+%padrões estritos, é preciso estar consciente das boas práticas ao
+%produzir e utilizar softwares acadêmicos, tanto para melhorar a própria
+%abordagem quanto para revisar outros trabalhos \cite{wilson2014best}.
+%
+%A maior parte dos cientistas (90\%) no entretanto nunca tiveram treinamento
+%algum de como escrever software de forma eficiente, faltam práticas básicas de
+%desenvolvimento, como escrever código legível, revisão de código, controle de
+%versão, testes unitários, entre outros, como resultado, dados são perdidos,
+%análises levam mais tempo que o necessário e os pesquisadores não conseguem a
+%eficiência que poderiam ter ao trabalhar com softwares acadêmicos
+%\cite{wilson2017good}.
+%
+%Isto contradiz as boas práticas de qualquer projeto experimental ({\it
+%laboratory
+%notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
+%organizados, passos documentados, projeto estruturado para reprodutibilidade) e
+%torna praticamente impossível utilizar o método mais comum e cientificamente
+%produtivo de produzir conhecimento novo a partir de pesquisas anteriores, a
+%replicação, ou seja, seguir os mesmos passos do autor original com objetivo de
+%validar, melhorar ou estender seus dados e sua metodologia
+%\cite{king1995replication, Stodden2010}.
+
+
+%Saber como cientistas desenvolvem e usam softwares em suas pesquisas é crítico
+%para avaliar a necessidade de melhorias no praticas atuais de desenvolvimento e
+%para tomar decisões sobre a futura alocação de recursos
+%\cite{hannay2009scientists}.
+%
+%Inevitavelmente alguns softwares irão continuar sendo úteis após o primeiro
+%release, alguns terão algums gerações de melhorias, outros serão usados na sua
+%versão original sem atualização ou manutenção, e alguns outros irão ser
+%lançados e nunca utilizados. Isto é perfeitamente natural, a comunidade ao
+%redor do software irá decidir qual é o melhor caminho a se tomar num processo
+%evolutivo \cite{weiner2009astronomical}.
+
+
+O {\it Dagstuhl Perspective Workshop} é um evento organizado por e para um
+pequeno grupo de pesquisadores sêniores de renome internacional, realizado
+anualmente na universidade de Dagstuhl\footnote{\url{http://www.dagstuhl.de}}
+com o objetivo de refletir sobre o atual estado da ciência da computação.
+
+Através de uma discussão intensiva com foco estratégico o workshop explora
+tópicos novos e emergentes da ciência da computação produzindo manifestos que
+capturam tendências e desenvolvimentos relacionados aos tópicos explorados.
+
+Realizado desde 2011 o workshop tem explorado diversos tópicos da ciência da
+computação, como computação e paleografia, tecnologia da informação como ponte
+entre biologia e medicina, métodos de aprendizado de máquina para segurança de
+computadores, análise de performance e visualização, entre outros tópicos. Em
+sua mais recente edição, o {\it Dagstuhl Perspectives Workshop on ``Engineering
+Academic Software''} \cite{allen2017engineering} examinou o estado atual dos
+softwares científicos, identificou problemas comuns em seu desenvolvimento,
+reconhecimento e sustentabilidade.
+
+Uma das contribuições chave deste workshop é um manifesto contendo um roteiro
+para o futuro da engenharia de software profissional e acadêmica, com foco em
+instrumentos de suporte para pesquisas em software científico. O manifesto é
+expresso em termos de ações ``promessas'' destinado a usuários e
+desenvolvedores de softwares científicos, com passos concretos para melhorar o
+ambiente em que os softwares são produzidos.
+
+Os compromissos expressados neste manifesto são agrupados em três conceitos gerais:
+(i) garantir que softwares científicos sejam {\it citados} apropriadamente;
+(ii) promover a {\it carreira} do engenheiro de software desenvolvedor de software científico; e
+(iii) medir a qualidade e sustentabilidade do software científico durante e após o seu {\it desenvolvimento}.
+
+No terceiro compromisso, relacionado ao conceito {\it desenvolvimento}, o Dagstuhl Manifesto enfatiza a necessidade de medir a
+qualidade e a sustentabilidade dos softwares científicos, e define
+sustentabilidade de software como capacidade de perdurar, software sustentável
+é aquele que continua a estar disponível no futuro, em novas plataformas e se
+atende às novas necessidades \cite{allen2017engineering}.
+
+
+
+
+
+\subsection{Desenvolvimento de softwares acadêmicos}
+
+%
+% Este paper
+% apresenta um conjunto de boas práticas que todo pesquisador pode adotar,
+% independentemente do seu nível de habilidade em computação. Essas práticas
+% passam por gerenciamento de dados, programação, colaboração com colegas,
+% organização de projetos, tracking work, e escrita da manuscritos, sao
+% desenhados para uma grande variadade de fontes publicadas do noso dia a dia e
+% do nosso trabalho como voluntário organizando workshopts desde 2010
+% \cite{wilson2017good}.
+
+No entanto, parece ser regra geral não testar ou não documentar o próprio software,
+pesquisadores geralmente não testam ou documentam seus softwares acadêmicos, a
+maioria também não sabe o quão confiável seu software é, ocasionando sérios
+erros computacionais em conclusões centrais da literatura acadêmica, gerando
+retrabalho para retratar tais erros nas mais diversas áreas da ciência
+\cite{Merali2010Computational}. Sabe-se que nem sempre é possível, ou viável,
+ter tudo exatamente dentro dos padrões, mas é preciso estar consciente das boas
+práticas ao produzir e utilizar softwares acadêmicos, tanto para melhorar a
+própria abordagem quanto para revisar trabalhos de outros
+\cite{wilson2014best}.
+
+A maior parte dos cientistas (90\%) no entretanto nunca tiveram treinamento
+algum de como escrever software de forma eficiente, faltam práticas básicas de
+desenvolvimento, como escrever código legível, revisão de código, controle de
+versão, testes unitários, entre outros, como resultado, dados são perdidos,
+análises levam mais tempo que o necessário e os pesquisadores não conseguem a
+eficiência que poderiam ter ao trabalhar com softwares acadêmicos
+\cite{wilson2017good}.
+
+%, de como escrever
+%código legível, uso de controle de versão, issue trackers, revisão de código,
+%testes unitários e automação de tarefas.
+
+% Academic Software Development Tools and Techniques
+% resumo de um evento local para apresentacao de ferramentas academicas criadas com OO
+% (esse é uma prática para incentivar colaboração e promover os projetos)
+% uma das ferramentas que enontrei esta apresentado nesse paper, Rigi
+
+Developing Scientific Software
+
+Such software might in-
+deed be complex simulation software devel-
+oped and running on a high-performance
+computer, but it might also be software
+developed on a PC for embedding into in-
+struments; for manipulating, analyzing, or
+visualizing data; or for orchestrating work-
+flows. We hope this special issue provides
+some flavor of that variety.
+
+What makes scientific
+software development different
+Developing scientific software is fundamen-
+tally different from developing commercial
+software. Most software developers have
+some idea of what a human-resources or ac-
+counting package should do, and they feel
+they can understand (perhaps with some ef-
+fort) such packages’ requirements. But do
+you understand, for example, how genomic
+DNA gets transformed into protein crystals?
+Do you comprehend the intricacies of fluid
+dynamics? Or how to solve 20 simultaneous
+partial differential equations? A scientist
+(domain expert) must be heavily involved
+in scientific-software development—the av-
+erage developer just doesn’t understand the
+application domain. For this reason, the sci-
+entist often is the developer.
+
+\cite{segal2008developing}
+
+% (5) Tools in mining software repositories \cite{chaturvedi2013tools}
+%
+% Faz uma revisão dos papers submetidos ao MSR desde 2007 até 2013 (?) e
+% identifica data sets, ferramentas e técnicas utilizadas pelos autores, mais
+% da metade dos papers usam ou criam ferramentas, categoriza as ferramentas em
+% ferramentas novas, ferramentas tradicionais, protótipos e scripts para
+% mineração de dados
+
+Boa parte destes softwares são desenvolvidos na própria academia, um estudo
+entre cientistas do reino unido mostrou, por exemplo, que 56\% desenvolvem seus próprios
+softwares, pelo menos pacialmente \cite{hettrick_2014_14809}, em outras áreas,
+como na astronomia, este número chega a 90\%
+\cite{momcheva2015software}, em ciência da computação, particularmente em
+engenharia de software, tem-se notado um aumento constante no número de novos
+softwares acadêmicos \cite{allen2017engineering}.
+
+Cientistas gastam mais tempo hoje utilizando e desenvolvendo
+software do que gastavam no passado, softwares acadêmicos, assim como
+qualquer outro aparato experimental, são tão importantes quanto
+são os telescópios e tubos de ensaio, eles resolvem problemas comuns do
+cotidiano de metade dos pesquisadores de todas as áreas do conhecimento, desde grupos
+trabalhando exclusivamente com problemas computacionais até grupos em
+laboratórios tradicionais ou em campo \cite{wilson2014best}.
+
+%Em ciência da computação,
+%particularmente em engenharia de software, tem-se notado um aumento constante
+%no número de novos softwares acadêmicos \cite{allen2017engineering}.
+%
+%Mas, apesar da evidente importância dos softwares acadêmicos para a ciência,
+%eles ainda não recebem o devido reconhecimento e muitas pesquisas nem ao menos
+%mencionam sua utilização \cite{howison2016software}, isto, além de gerar
+%impacto negativo na visibilidade dos softwares acadêmicos, faz surgir uma séria
+%de questionamentos sobre a sua qualidade e a capacidade de ser encontrado,
+%compartilhado e co-desenvolvido \cite{howison2013, katz2014transitive}.
+%
+%Essa falta de visibilidade, ou uma forma
+%particular de visibilidade, significa que incentivos para produzir
+%alta-qualidade, compartilhado amplamento, e co-desenvolvido software pode estar
+%em falta \cite{howison2016software}.
+%
+%Muitos cientistas estão preocupados em validar seus aparatos de
+%laboratório ou equipamentos de campo, 
+
+%
+%Isto se torna ainda mais difícil visto que frequentemente os pesquisadores
+%deixam de publicar o código dos seus softwares acadêmicos argumentando que o
+%código é ``ruim'' e isto irá gerar julgamentos negativos ao pesquisador
+%\cite{allen2017engineering}.
+%
+%o comum usado para não publicar o
+%código associado com um artigo científico é que 
+%
+%isto, além de fazer os próprios pesquisadores enfrentar problemas ao replicar
+%seus próprios trabalhos no futuro, torna quase impossível reproduzir e
+%verificar os resultados de pesquisas anteriores, ferindo um dos princípios da
+%ciência de que novas descobertas sejam reproduzidas antes de serem consideradas
+%parte da base de conhecimento
+
+Isto gera impacto negativo na visibilidade dos softwares acadêmicos, e faz
+surgir questionamentos sobre sua qualidade, não apenas técnica, mas também a
+capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
+importantes para a evolução do próprio software, mas também extremamente úteis
+para o uso eficiente dos limitados recursos da ciência \cite{howison2013,
+katz2014transitive}.
+
+% historia da citacao na ciencia, como isso promove o avanço,
+% problemas para citacao em artefatos digitais, solucao
+% para identificador unico de autores de artigos, orcid.org
+% resolve este problema, o mesmo para identificar artefatos
+% digitais é o doi.org \cite{allen2014credit}
+%
+%Quando um software não é visível, ele é frequentemente excluido de {\it peer
+%reviews}; um software em bom funcionamento devem atingir não apenas os
+%objetivos de entendimento e transparencia, mas também os objetivos voltados
+%para replicação \cite{Stodden2010}.
+
+
+%O fluxo de trabalhos científicos usando computação precisam seguir as mesmas boas práticas qualquer projeto experimental, 
+%
+%e então melhorar os seus dados ou metodologia de alguma maneira.
+
+Isto contradiz as boas práticas de qualquer projeto experimental ({\it
+laboratory
+notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
+organizados, passos documentados, projeto estruturado para reprodutibilidade) e
+torna praticamente impossível utilizar o método mais comum e cientificamente
+produtivo de produzir conhecimento novo a partir de pesquisas anteriores, a
+replicação, ou seja, seguir os mesmos passos do autor original com
+objetivo de validar, melhorar ou estender seus dados e sua metodologia
+\cite{king1995replication, Stodden2010}.
+
+\subsection{Visibilidade dos softwares acadêmicos}
+
+%
+% A situação com software é amplamente análoga (mas não identica) ao de dados
+% das publicações; de fato, todo dado é processado por softwares de alguma forma
+% (Borgman et al., 2012).
+%
+
+%% 
+%%   \item Open Access Pledge \cite{holcombe2011openaccess}\footnote{\url{http://www.openaccesspledge.com}}
+%% 
+%%     Concentra-se em publicar softwares e papers em locais de {\it open access}.
+%% 
+%%   \item Open Science Peer Review Oath\footnote{\url{https://f1000research.com/articles/3-271/v2}}
+%% 
+%%     Concentra-se em potencializar os revisores para exigir acesso aberto aos
+%%     softwares, práticas reprodutíveis e revisões transparentes.
+%% 
+%%   \item UK RSE \cite{ukrse2013}\footnote{\url{http://rse.ac.uk/who}}
+%% 
+%%     Conscientização sobre a importância e o papel do {\it Research Software
+%%     Engineer} através de comunicação e suporta institucional.
+%% 
+%%   \item FAIR principles \cite{wilkinson2016fair}\footnote{\url{https://www.nature.com/articles/sdata201618}}
+%% 
+%%     Foco em dados de pesquisa. O objetivo é fazer eles serem encontráveis,
+%%     acessíveis, interoperável e reusável. Estes princípios podem ser
+%%     generalizados para aplicar aos softwares.
+
+%% 
+%%   \item The GeoScience paper of the future initiative \cite{OntoSoft2016}\footnote{\url{http://www.scientificpaperofthefuture.org/gpf/what-is-a-gpf}}
+%% 
+%%     Possui um conjunto de requerimentos para softwares serem incluidos em
+%%     papers.  Focando mais no paper em sí do que no software.
+
+%% 
+%%   \item FORCE11 Software Citation principles \cite{smith2016software}\footnote{\url{https://www.force11.org/software-citation-principles}}
+%% 
+%%     Enfatiza persistencia e claridade e diz que ``Software deve ser considerado
+%%     um produto legítimo de pesquisas e devem ser possível de serem citados''.
+
+%o artigo abaixo faz um estudo e usa metrica para calcular o impacto
+%das citacoes e mencoes ao software, usa um calculo baseado no numero
+%de ocorrencias que o nome do software aparece
+%Disciplinary differences of software use and impact in scientific literature
+% eu fiz a mesma coisa mas numa avaliação qualitativa, meu peso é, 0 ou 1, menciona o software ou não menciona'
+%se menciona, qual tipo, usa, contribui, etc... isto eh que vai dar o valor/peso/metrica
+
+%Diversas maneiras de inventivar citação formal entre artefatos digitais,
+%software por exemplo, tem surgido, dentre elas uma iniciativa interessante
+%é o Journal of Open Source Software (JOSS) é um livre a open-access jornal para
+%publicação de artigos descrevendo software acadêmico. Ele tem dois objetivos
+%principais, melhorar a qualidade dos softwares submetidos e prover mecanismos
+%para pesquisadores desenvolvedores de software acadêmico receber crédito pelos
+%seus softwares. Enquanto pensado para trabalhar dentro do atual sistema de
+%mérito da ciência, JOSS visa a escassez de recompensas para contribuições
+%importantes para a ciência realizadas em forma de software. JOSS publica
+%artigos que encapsulam sabedoria contida no software ele mesmo, e seu rigoroso
+%revisão em pares mirado nos componentes do software: funcionalidade,
+%documentação, testes, integração contínua, e a licença. Um artigo JOSS contém
+%um resumo descrevendo o objetivo e funcionalidades do software, referencias, e
+%um link para o software archive.  O artigo é um ponto de entrada para
+%submissçao que engloba o conjunto completo de artefatos de software. Artigos
+%aceitos no JOSS recebem um digital object identifier (DOI), te seus metadados
+%depositados no Crossref, e o artigo pode começar a colecionar citações e ser
+%indexados em serviços como Google Scholar e outros. No seu primeiro ano,
+%iniciado em Maio de 2016, JOSS publicou 111 artigos, com mais de 40 artigos
+%adicionais sob revisão \cite{smith2017journal}.
+%
+%%% Como não existe ainda amadurecimento suficiente sobre como citar softwares e
+%%% outros artefatos em pesquisas científicas, não temos um padrão de como fazê-lo,
+%%% cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
+%%% específicas sobre a implementação do software, nem semprem informam onde
+%%% encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
+%%% é distribuído, ou se é de alguma forma distribuído ao público.
+%%% 
+%%% Os softwares acadêmicos neste estudo serão aquelas citados pelo autor como
+%%% contribuição do estudo, então toda vez que citarmos software acadêmico estamos
+%%% falando de artefatos de software citados pelo autor como contribuição do estudo.
+%%% 
+%%% Os autores argumentam que a comunidade acadêmica de astronomia aumenta a
+%%% dependencia de softwares e softwares precisam ser parte integral do prática
+%%% científica \cite{momcheva2015software}.
+
+% , pelo menos 30\% do tempo é gasto nesta atividade
+
+Apesar disso, ainda há pouco reconhecimento aos softwares acadêmicos, muitas
+pesquisas nem ao menos mencionam sua utilização, um estudo recente com 90
+artigos de diversas áreas da biologia, selecionados aleatoriamente entre
+publicações usando softwares acadêmicos, mostrou que apenas 59 mencionavam os
+softwares de alguma forma, os demais 31 artigos, apesar de usar algum software
+acadêmico, não mencionavam nada a respeito \cite{howison2016software}.
+
+%, até mesmo aos pesquisadores\footnote{\it research
+%software engineers} responsáveis pelo seu desenvolvimento,
+%
+% que apenas entre 31\% e
+% 43\% das menções aos softwares acadêmicos envolvem citação formal; entre 15\% e
+% 29\% dos softwares são inacessíveis, apenas entre 24\% e 40\% fornecem código
+% fonte, entre as 90 publicações do estudo apenas 59 mencionam o software de
+% alguma forma, as demais, apesar de usar algum software acadêmico, não mencionam
+% nada a respeito \cite{howison2016software}.
+
+%The pursuit of science and engineering research increas-
+%ingly relies on activities that facilitate research but are not
+%currently rewarded or recognized. This includes the sharing
+%of data; development of common data resources, software
+%and methodologies; and annotation of data and publica-
+%tions.
+%About half of the articles in many recent issues
+%of Science describe research that depended on software,
+%and a larger fraction analyze data.
+%
+%\cite{wilson2017good}
+%\cite{Vardi_2010_SOT_1810891.1810892, 10.1109_32.328993, Hatton1997},
+
+% Few
+% events in academic life are more
+% frustrating than investing enormous
+% amounts of time, effort, and pride
+% in an article or book, only to have
+% it ignored by the profession, not
+% followed up by other researchers,
+% not used to build upon for succeed-
+% ing research, or not explored in
+% other contexts. Moreover, being
+% ignored is very damaging to a ca-
+% reer, but being applauded, cited
+% favorably, criticized, or even at-
+% tacked are all equally strong evi-
+% dence that you are being taken seri-
+% ously for your contributions to the
+% scholarly debate (see Feigenbaum
+% and Levy 1993, citing Diamond
+% 1988, and Leimer and Lesnoy
+% 1982). Unfortunately, a recent
+% study indicates that the modal num-
+% ber of citations to articles in politi-
+% cal science is zero: 90.1% of our
+% articles are never cited (Hamilton
+% 1991; Pendlebury 1994)! An even
+% smaller fraction of articles stimu-
+% lates active investigation by other
+% researchers.
+% This problem
+
+...
+%isto gera um impacto
+%negativo não apenas na visibilidade do software mas também de suas pesquisas,
+%já que parte dos pesquisadores também desenvolvem seus próprios softwares,
+%fazendo surgir os softwares acadêmicos de origem científica.
+%
+%\cite{robles2010replicating,
+%amann2015software}.
+
+%Apesar desse importante papel, algumas pesquisas não mencionam a utilização de
+%softwares acadêmicos em suas publicações, outras pesquisas, ao publicar novos
+%softwares, não testam ou documentam o seu uso, e raramente publicam seus
+%códigos.
+
+\subsection{Ecossistema dos softwares acadêmicos}
+
+...
+
+%+ software acadêmico: software para coleta e análise, ou resultado
+%    + de origem científica
+%        + resultado
+%        + método
+%Software is a critical part of modern research and yet there is little support across the
+%scholarly ecosystem for its acknowledgement and citation. Inspired by the activities
+%of the FORCE11 working group focused on data citation, this document
+%summarizes the recommendations of the FORCE11 Software Citation Working
+%Group and its activities between June 2015 and April 2016. Based on a review of
+%existing community practices, the goal of the working group was to produce a
+%consolidated set of citation principles that may encourage broad adoption of a
+%consistent policy for software citation across disciplines and venues. Our work is
+%presented here as a set of software citation principles, a discussion of the motivations
+%for developing the principles, reviews of existing community practice, and a
+%discussion of the requirements these principles would place upon different
+%stakeholders. Working examples and possible technical solutions for how these
+%principles can be implemented will be discussed in a separate paper.
+%\cite{smith2016software}
+
+%um caminho apontado como solução é acreditar que software deve evoluir para plataformas compartilhadas,
+%com componentes reusáveis tanto quanto possível, tanto para usuário final, quanto
+%para produtores de componentes (papel) agregando peças particulares de software,
+%crença de que o software deve evoluir em direção a uma plataforma
+%compartilhada, com componentes que são reutilizados o mais amplamente possível,
+%já que os usuários finais e os produtores de componentes se agrupam em torno de
+%peças específicas de software.
+%
+% artigo acima define ciberinfraestrutura, sustentabilidade, e faz um resumo
+% ótimo de tudo que preciso, ler e referenciar aqui
+%
+%O ecosistema de software acadêmico é um sistema que consome tempo, dinheiro e
+%atençao, e afeta a conduta e os resultados da ciência, tanto no geral, como em
+%campos específicos
+%
+%chape para isto é acreditar que software deve evoluir para plataformas compartilhadas,
+%com componentes reusáveis tanto quanto possível, tanto para usuário final, quanto
+%para produtores de componentes (papel) agregando peças particulares de software
+%
+%A visão da ciberinfraestrutura, expressada no "Relatório Atkins" e instanciada
+%para o ecossistema de software científico na NSF chamada de Infraestrutura de
+%Software para Inovação Sustentada (NSF SI2),
+%
+%Os softwares vem não apenas atuando no avanço da ciência, mas atuando com uma
+%eficiência crescente ao longo do tempo (Atkins 2003). A chave para isso é a
+%crença de que o software deve evoluir em direção a uma plataforma
+%compartilhada, com componentes que são reutilizados o mais amplamente possível,
+%já que os usuários finais e os produtores de componentes se agrupam em torno de
+%peças específicas de software.
+%
+%a literatura sobre plataformas de software fora da ciencia tem chamado isso de
+%'coring' e 'tipping' (Gawer and Cusumano 2008),
+%onde uma comunidade descobre sua funcionalidade compartilhada e se agrupa
+%em pacotes que fornecem, levando ao uso eficiente de recursos através de
+%economias de escala.
+%
+%coring também resulta em um aumento do uso sobreposto que facilita mais
+%
+%Isto também resulta em um aumento do uso sobreposto que facilita mais
+%transparência na ciência, levando a uma maior qualidade e correctude (correctness), à medida
+%que mais olhos e esforços são direcionados para os mesmos códigos que são
+%sustentados e evoluem em longos períodos de utilidade científica.
+%
+%coring em direção às plataformas pode ser contrastado com o seu oposto, muitas
+%vezes percebido por informantes: churn caótico disfuncional, com muitos
+%projetos com poucos usuários, cada um tendo vidas curtas que terminam com o
+%financiamento de concessão inicial, comunidades desconectadas e paralelas,
+%incompatibilidades teimosamente imutáveis e periódicas e tentativas
+%aparentemente não coordenadas de "reiniciar". Subjacente a isso é uma
+%preocupação que as oportunidades são perdidas e que o progresso da ciência é
+%abrandado (por exemplo, Stewart, Almes e Wheeler 2010).
+%
+%Essas preocupações gerais sugerem um conjunto de questões específicas, com foco
+%em padrões globais e padrões emergentes dentro do ecossistema, incluindo: Quais
+%recursos foram destinados à produção de software? Quantos usuários ou
+%comunidades de usuários têm projetos? Quais são os impactos científicos desse
+%uso? Os números de usuários crescem? Os projetos possuem recursos e habilidades
+%suficientes para gerenciar seu crescimento? Quais projetos possuem
+%funcionalidades sobrepostas? Há quanto tempo os pedaços de software e projetos
+%persistem? Nós desconectamos as comunidades de usuários e desenvolvedores? São
+%componentes específicos, ou camadas de componentes, faltam? Que código
+%geralmente é usado em conjunto; são os projetos e as pessoas que produzem esses
+%componentes se comunicando adequadamente? Como podemos sustentar o software
+%crítico?
+%
+%Junto com estas questões estão as questões de como influenciar o ecossistema,
+%incluindo questões de pontos de inflexão que levam ao uso coalescente, bem como
+%a intervenções políticas diretas incentivando o uso de componentes específicos.
+%Aqui há uma clara tensão entre um desejo de flexibilidade e liberdade, ligado
+%às expectativas de inovação científica e desejos de estruturas de autoridade e
+%controle de coordenação. As questões de influência incluem: como os programas
+%de financiamento e quais os requisitos em suas chamadas, resultaram em software
+%amplamente utilizado e impacto científico substancial? Quais são as
+%características dos campos que alcançaram maior coalescência? Quais jornais e
+%conferências têm políticas exemplares? Como o trabalho de software é visto
+%dentro das práticas de contratação e avaliação, como os casos de posse?
+%
+%\cite{howison2015understanding}
+
+%
+% irei encontrar os problemas documentados e com propostas e evidencias
+% de solução nos artigos abaixo, preciso ler para screver o parágrafo acima
+%https://academic.oup.com/rev/article/24/4/454/1518466/Understanding-the-scientific-software-ecosystem
+%artigo sobre ecosistema de software acadêmico, preciso citar! fala dos papeis,
+%etc...
+%
+%data availability is one of
+%the ‘critical issues for the evaluation of R&D programs and
+%policies today’ (Rogers 2013: 2).
+%
+%In addition, the second and third authors each
+%have over 15 years experience in the scientific software eco-
+%system.
+%
+% fez exatamente o que pensei, vou ler para usar a metodologia "adaptada"
+%In addition to these motivation studies, scientists have recently embarked on the issue of
+%software use and impact. A study in 2013 has found that scientists tend to choose software
+%that is widely used by others in their community and prefer software that is free for
+%academic use (Huang et al. 2013). Studies on the scientific software ecosystem have
+%suggested that the use of scientific software is influenced by its visibility, availability,
+%sustainability, reproducibility, and citation (Howison and Herbsleb 2014; Howison et al.
+%2015; Huang et al. 2013). Studies also have suggested that software developers are
+%interested to know the use and impact of their software because ‘‘software use matters to
+%them for funding purposes’’ (Howison et al. 2015; Trainer et al. 2015, p. 428).
+%Recent studies on data impact have led to the discussions on software citation and
+%evaluation, as a parallel can be drawn between software and data in scientific literature
+%(Piwowar et al. 2011; Howison and Bullard 2016). It is suggested that the numbers of
+%mentions and citations in literature can be used to measure the impact of software (Huang
+%et al. 2013; Pan et al. 2015). Yet, it is argued that ‘‘the practices of citation to software vary
+%considerably from field to field and appear to miss significant software’’ (Howison et al.
+%2015, p. 478). One study examining the use of software in scientific articles in biology has
+%found that more than half of the software mentions did not include references (Howison
+%and Bullard 2016). Thus, it validates the need to use alternative metrics in addition to
+%citations when assessing software impact, such as the numbers of downloads, registered
+%users, subscribers, user reviews, and artifacts inserted in literature (Howison et al. 2015).
+
+\subsection{Sustentabilidade de software} \label{sustentabilidade}
+
+%artigo mostra o decaimento das URLs ao longo do tempo, fundamenta o assunto,
+%mostra grafico com o caimento ao longo dos anos
+%Use it or lose it: citations predict the continued online
+%availability of published bioinformatics resources
+%outro grafico muito foda do estudo acima é cruzar o efeito das citacoes
+%por ano na availability rate (tenho dados suficiente para fazer um grafico igual)
+
+A comunidade tem refletido sobre os problemas relacionados ao
+desenvolvimento, promoção e sustentabilidade desses softwares, e o
+impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
+reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
+software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
+problemas específicos relacionados à manutenabilidade e a sustentabilidade
+técnica dos softwares acadêmicos.
+
+Em diversas linhas de pesquisa da computação, em especial, a engenharia de
+software, é muito comum que novos softwares sejam desenvolvidos durante
+trabalhos de pesquisa, esses tem sido chamados na literatura de {\it
+research-originated software} \cite{Kon2011}, {\it research tool}
+\cite{Portillo12} ou {\it academic software} \cite{allen2017engineering}, e vêm
+ganhando atenção da comunidade devido ao papel que ocupam na reprodutibilidade
+de seus estudos \cite{Peng2011}.
+
+A comunidade tem refletido sobre os problemas relacionados ao
+desenvolvimento, promoção e sustentabilidade desses softwares, e o
+impacto que tais problemas causam no meio científico \cite{allen2017engineering}. Esta
+reflexão tem mostrado, por exemplo, que muitos estudos em engenharia de
+software sofrem de dificuldades de repetição \cite{Tang2016}, e apontam
+problemas específicos relacionados à manutenabilidade e a sustentabilidade
+técnica dos softwares acadêmicos.
+
+Manutenabilidade é uma característica de qualidade que indica o quão fácil é
+realizar atividades de evolução e manutenção em softwares, um aspecto
+importante aos pesquisadores interessados em adaptar softwares acadêmicos, algo
+muitas vezes necessário ao reproduzir pesquisas anteriores \cite{Peng2011}.
+Sustentabilidade técnica diz respeito a longevidade dos softwares, ou seja, a
+capacidade de continuar disponível no futuro. Muitos pesquisadores não
+disponibilizam os seus softwares \cite{robles2010replicating,
+amann2015software} ou quanto o fazem enfrentam problemas com disponibilidade e
+manutenabilidade \cite{Prlic2012}, isto leva a um corpo computacional
+extramente difícil de reproduzir uma vez que mais da metade dos pesquisadores
+desenvolvem seus próprios softwares \cite{hettrick_2014_14809}, além de ferir um dos
+fundamentos da ciência de que novas descobertas sejam reproduzidas antes de
+serem consideradas parte da base de conhecimento \cite{Stodden2009}.
+
+Isto tem motivado a organização de conferências específicas sobre o tema, como
+o RSE\footnote{Conference of Research Software Engineers
+\url{http://rse.ac.uk/conf2017}}, WSSSPE\footnote{Workshop on Sustainable
+Software for Science: Practice and Experiences
+\url{http://wssspe.researchcomputing.org.uk}} e o RESER\footnote{Workshop on
+Replication in Empirical Software Engineering Research
+\url{http://sequoia.cs.byu.edu/reser}}, e tem contribuido para a compreensão
+dos problemas relacionados aos softwares acadêmicos, abordando questões sobre
+desenvolvimento, qualidade e sustentabiliade, sobre como citar softwares em
+novas pesquisas, como promover e reconhecer o papel do pesquisador engenheiro
+desenvolvedor de softwares acadêmicos, além de questões sobre infraestrutura,
+ferramentas e práticas para o desenvolvimento de softwares acadêmicos de
+forma sustentável.
+
+Mas apesar desta crescente preocupação com os softwares acadêmicos ainda
+sabe-se pouco sobre o quanto a sustentabilidade técnica e a manutenabilidade
+impactam na reprodutibilidade de seus estudos, sobretudo em áreas específicas,
+como a análise estática de software, uma área com uma longa e respeitável
+tradição e que ainda sofre carência de estudos sobre avaliação e validação de
+seus softwares \cite{Li2010, ilyas2016static}.
+
+
+% Software Sustainability: The Modern Tower of Babel
+
+% campos da engenharia de software, e apesar dos inúmeros entendimentos sobre o
+% conceito \cite{venters2014software}, 
+
+Essa definição de sustentabilidade de software é encontrada em mais detalhes no
+{\it Karlskrona Manifesto} \cite{becker2014karlskrona}, um documento que alerta
+sobre os impactos que os sistemas e a tecnologia da informação causam no futuro
+do planeta, convida praticantes e pesquisadores de software a refletir sobre
+o tema sustentabilidade na área da ciência da computação.
+
+Sustentabilidade é um conceito guarda chuva composto de múltiplas dimensões, em
+sua dimensão técnica, chamada sustentabilidade técnica, temos a preocupação com
+a longevidade da informação, dos sistemas, e infraestrutura, e sua adequada
+evolução frente as condições do ambiente em constante mudança. Software ocupa
+um papel central nessa discussão, ele pode levar a crescentes consumo de
+recurso, crescimento da desigualdade social, e influenciar no ganho ou perda de
+auto-estima individual.
+
+Se sustentabilidade não for levada em consideração em projetos de software, não
+importa qual o domínio ou qual o propósito do software, perde-se a oportunidade
+de causar mudanças positivas no planeta e na sociedade.
+
+%Pesquisadores de
+%software podem contribuir identificando questões de pesquisa em seu campo para
+%ajudar a melhor entender sustentabilidade em projetos de software, Discutir com
+%seus pares e pensar sobre como sustentabilidade impacta sua área de pesquisa.
+%
+%Assim, surge um conjunto de ações que podem ser tomadas pelos diferentes atores
+%em direção à garantir sustentabilidade nos projetos de software, ações para
+%praticantes de software, pesquisadores, associações profissionais, educadores,
+%cientes e usuários.
+% 
+% 
+% Em resumo os dois manifestos, Dagstuhl e Karlskrona, exprimem o conceito de
+% sustentabilidade necessários para este estudo, mas é importante citar que
+% algumas iniciativas e outros manifestos também estão preocupados com questões
+% similares, dentre os quais podemos destacar:
+% 
+%A ciência aberta e comunidades de pesquisa em software tem sido bastante ativas
+%em criar manifestos visando chamadas para ação. Estes manifestos chamam para melhorar
+%os softwares e os metadados de bibliografia para citação persistente destes softwares.
+%Outros tópicos endereçados nestes manifestos incluem ênfase no acesso ao código fonte.
+%
+%Agências de financiamento como o {\it US National Science Foundation} estão começando
+%a reconhecer produtos de pesquisa como software assim como fazem com as publicações.
+%Isto reconhece as contribuições ao softwares assim como primeiro produto de pesquisa.
+%
+%O {\it Journal of the American Statistical Association (JASA)} irá agora insistir na
+%disponibilidade do código e dados durante a revisão dos manuscritos \cite{baker2016scientists}.
+%% 
+%%   \item Science Code Manifesto \cite{barnes2013science}
+%% 
+%%     Foco em código fonte escrito especificamente para processar dados de
+%%     publicações, afirma que ``todo código fonte escrito especificamente para
+%%     processar dados de uma publicação deve estar disponível para os revisores e
+%%     leitores do paper''.
+
+Somado a isto temos ainda o fato de que pesquisadores raramente publicam seus
+códigos, piorando ainda mais toda a situação, isto tem motivado a organização
+de conferências específicas para discutir os problemas dos softwares
+acadêmicos, como o RSE (Conference of Research Software Engineers)\footnote{
+\url{http://rse.ac.uk/conf2017}}, WSSSPE (Workshop on Sustainable Software for
+Science: Practice and Experiences)\footnote{
+\url{http://wssspe.researchcomputing.org.uk}} e o RESER (Workshop on
+Replication in Empirical Software Engineering Research)\footnote{
+\url{http://sequoia.cs.byu.edu/reser}}, e tem agregado discussões das
+comunidades de ciência aberta, reprodutibilidade e sustentabilidade de
+software.
+
+\section{Qualidade de software}
+
+% Best Practices for Scientific Computing \cite{wilson2014best}
+% * resume as melhores práticas para melhorar a situação onde softwares
+%   academisoc sofrem de manutenabilidade, disponibiliade etc, boas praticas, etc
+%
+% complemento do artigo acima: 
+% Good enough practices in scientific computing \cite{wilson2017good}
+%
+%  Software Carpentry: lessons learned \cite{wilson2014software}
+% (mais uma iniciativa preocupada com as habilidades dos pesquisadores
+%  com computacao, esta dificuldae gera pesquisas dificeis de reproduzir,
+%  repeticao de trabalho, etc.. licoes aprendidas ao longo de mais de 20 anos)
+
+
+% Improving academic software engineering projects: A comparative study of academic and industry projects
+% (compara as praticas de desenvolvimento da industria e academia e sugere melhorias, 1998!)
+% https://link.springer.com/article/10.1023%2FA%3A1018925902814?LI=true
+
+\label{complexidade}
+
+% \subsection{Qualidade de software}
+
+% (3) Tools used in Global Software Engineering: A systematic mapping review \cite{Portillo12}
+%
+% Cita um mapeamento sistemático com objetivo de encontrar ferramentas de
+% comunicação e coordenação para suporte a times altamente distribuidos
+% gograficamente, encontrou 132 ferramentas, para uso em projetos de software
+% global. A maioria destas ferramentas foram desenvolvidas em centros de
+% pesquisas, e apenas uma pequena porcentagem (18.9\%) foram testados fora do
+% seu contexto onde foi desenvolvido.
+%
+
+% (2) Tools to support systematic literature reviews in software engineering: A mapping study \cite{marshall2013tools}
+%
+% Cita um mapeamento feito sobre estudos que criam ferramentas para apoio a
+% revisão sistemática no domínio de SE, 14 estudos foram selecionados, ao final
+% apenas 8 tinham proposta de ferramentas, ao final conclui que as ferramentas
+% encontradas estão em estado inicial de desenvolvimento. 
+%
+
+%estas práticas permitem replicar descobertas anteriores seguindo
+%o caminho do autor original,
+%isto, segundo
+%\citeonline{king1995replication}, é o método mais comum e cientificamente
+%produtivo de produzir conhecimento novo para a ciência, tanto a ciência quanto
+%a engenharia dependem de resultados incrementais para evoluir, no entando,
+
+%
+%, não apenas técnica, mas também a
+%capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
+%importantes para a evolução do próprio software, mas também extremamente útil
+%para um uso eficiente dos limitados recursos da ciência \cite{howison2013,
+%katz2014transitive}.
+%
+%contradizendo as boas
+%práticas de qualquer projeto experimental, de ter {\it laboratory
+%notebooks}\footnote{\url{https://en.wikipedia.org/wiki/Lab_notebook}}, dados
+%organizados, passos documentados, e projeto estruturado para reprodutibilidade.
+
+
+%% Métricas de software podem ser classificadas em métricas de processo, métricas
+%% de projeto e métricas de produto.
+%% 
+%% Métricas de processo medem atributos relacionados ao ciclo de desenvolvimento
+%% e manutenção de software. Métricas de projeto indicam se a execução do
+%% processo está progredindo conforme planejado (por exemplo, relação entre o
+%% tamanho do software entregue e o esforço total dispendido em seu
+%% desenvolvimento).
+%% 
+%% Métricas de produto medem atributos de produtos e artefatos, como documentos,
+%% diagramas, código fonte e arquivos binários. Neste trabalho,
+%% apenas métricas de produto serão utilizadas.
+%% 
+%% Métricas de produto podem ser classificadas em internas (medem propriedades
+%% visíveis apenas aos desenvolvedores) ou externas (medem propriedades visíveis
+%% aos usuários) \cite{Mohamed1994}.
+%% 
+%% Neste trabalho, são utilizadas métricas de produto e, especificamente,
+%% métricas de código fonte, que cobrem aspectos de tamanho, complexidade e
+%% qualidade que podem ser medidos a partir do código fonte de um software.
+%% 
+%% Métricas de software tem um escopo bastante abrangente, e o termo está
+%% associado com muitas atividades da engenharia de software: Medidade e modelos
+%% para estimativa de custo e esforço, Coleção de dados, Modelos e medidas de
+%% qualidade, Modelos de confiabilidade, Métricas de segurança, Métricas
+%% estruturais e de complexidade, Avaliação de maturidade de capacidade,
+%% Gerenciamento através de métricas, Avaliação de métodos e ferramentas.
+%% 
+%% \subsection{Métricas de código fonte} \label{metricas-de-codigo}
+%% 
+%% As propriedades visíveis aos desenvolvedores podem ser medidas através de
+%% métricas de código fonte. A observação e o monitoramento de seus valores podem
+%% indicar aspectos relevantes à manutenibilidade de um programa. Dentre as
+%% inúmeras métricas de código fonte nosso interesse está em métricas que indicam
+%% características relevantes à modularidade de um produto de software,
+%% complexidade estrutural e custo de mudança.
+
+%Structural and Complexity Metrics
+%Desirable quality attributes like reliability and maintainability cannot be
+%measured until some operational version of the code is available. Yet, we
+%wish to be able to predict which parts of the software system are likely to be
+%less reliable, more difficult to test, or require more maintenance than oth-
+%ers, even before the system is complete. As a result, we measure structural
+%attributes of representations of the software that are available in advance
+%of (or without the need for) execution; then, we try to establish empiri-
+%cally predictive theories to support quality assurance, quality control, and
+%quality prediction. These representations include control flow graphs that
+%usually model code and various unified modeling language (UML) dia-
+%grams that model software designs and requirements. Structural metrics
+%can involve the arrangement of program modules, for example, the use
+%and properties of design patterns. These models and related metrics are
+%described in Chapter 9.
+
+Do ponto de vista de métricas, neste trabalho, estamos interessados, de fato, na métrica
+de complexidade estrutural SC ({\it Structural Complexity}), uma medida da
+complexidade de projetos de sistema de software proposta por
+\citeonline{Darcy2005} como indicador da complexidade dos sistemas de software
+em relação à sua estrutura interna e ao relacionamento entre os seus
+componentes.
+
+Complexidade é um tema bastante amplo, e para compreender onde os
+sistemas de softwares se encaixam neste contexto precisamos definir brevemente
+o que vem a ser sistemas complexos.
+
+Sistemas complexos são sistemas no qual grandes redes de componentes sem
+controle central dão origem a um comportamento
+coletivo complexo, com processamento sofisticado de informação, e adaptação
+através de aprendizado ou evolução \cite{Mitchell2009}. As seguintes
+características são comuns a todos os sistemas complexos:
+
+\begin{description}
+
+  \item[Comportamento coletivo complexo.] Apesar de serem compostos por
+  elementos bastante simples individualmente, sistemas complexos podem exibir
+  comportamentos coletivos bastante sofisticados.
+
+  \item[Troca de sinais e processamento de informação.] Em cada um destes
+  sistemas, seus componentes individuais consomem e produzem informação entre
+  si. Parte do comportamento do sistema envolve transformação dessa informação.
+
+  \item[Adaptação.] Sistemas complexos adaptam-se a novas situações de forma a
+  aumentar suas chances de sobrevivência diante de novas condições em seu
+  ambiente.
+
+\end{description}
+
+Os sistemas complexos podem ser classificados como naturais ou artificiais, os
+sistemas naturais são aqueles cuja constituição não tem participação humana, ao
+contrário dos sistemas artificiais que são projetados por humanos, com
+objetivos e funções previamente definidos \cite{Simon1996}. Neste sentido,
+sistemas de software podem ser caracterizados como sistemas complexos
+artificiais, pois exibem comportamento coletivo complexo, realizam trocas de
+sinais e processamento de informação e passam por adaptação para se adequar a
+mudanças em seu ambiente.
+
+Sistemas de software são compostos por componentes, em geral, chamados de
+módulos, que possuem tanto estado quanto comportamento próprios,
+módulos individuais de um sistema de software são simples quando comparados com
+o sistema como um todo. Módulos produzem informação para outros módulos
+através de parâmetros em chamadas de sub-rotinas e consomem informação através
+dos valores de retornos destas chamadas. O fluxo contínuo de novos requisitos e
+de mudanças no ambiente operacional de sistemas de software força-os a se
+manter em constante evolução em busca de “sobrevivência”.
+
+Esta medida é, possivelmente, um indicativo de problemas na manutenibilidade de
+sistemas de software, em especial sobre o esforço necessário para atividades de
+manutenção \cite{Terceiro2012}. Ela está relacionada a como os módulos de um
+programa estão organizados bem como à estrutura interna de cada módulo. Esta
+métrica pode dar indícios importantes sobre características arquiteturais de um
+programa de software e pode explicar seus atributos de qualidade interna.
+
+%Modularity
+%Modularity describes the logical partitioning of software into several parts, components, and modules.
+%Software will be easy to understand and change when composed of independent modules.
+%“A Software Maintainability Evaluation Methodology”, 1981
+%\cite{kumar2012survey}
+
+%Faz um experimento usando CBO LCOM e outras metricas como preditor de manutenabilidade...
+%\cite{Dagpinar2003}
+
+%A complexidade de um sistema de software pode ser de três tipos: a complexidade
+%do problema, a complexidade procedural, e a complexidade do projeto do sistema.
+%Esta última é o foco deste trabalho.
+%A complexidade do problema está relacionada ao domínio do problema.
+%A complexidade procedural está relacionada à estrutura lógica da programa, em es-
+%pecial do seu comprimento, em termos de número de tokens, linhas de código fonte, ou
+%estruturas de controle. Este último tipo é o que iremos estudar neste trabalho.
+%
+%Os sistemas complexos podem naturais ou artificiais, uma colônia de formigas
+%por exemplo pode ser caracterizado como um sistema complexo natural, onde
+%individualmente cada formiga se apresenta como criatura relativamente simples,
+%com instintos básicos como procurar alimento, responder a estímulos químicos
+%vindos de outras formigas, combater intrusos, etc. No entanto, quando
+%observadas coletivamente em uma colônia, as formigas aparentam ser muito mais
+%sofisticadas. Elas são capazes de se organizar em diferentes atividades, criar
+%estruturas complexas dentro de seu formigueiro, e de encontrar o caminho mais
+%curto para uma fonte de alimento.
+%
+%Os sistemas naturais são aqueles cuja constituição não tem participação humana.
+%Sistemas artificiais são projetados por humanos, com objetivos e funções
+%definidos.  Sistemas artificiais podem ou não serem projetados à imagem de um
+%sistema natural, e durante a sua concepção eles são discutidos em termos tanto
+%de suas características (o que eles são) como de necessidades que eles devem
+%satisfazer (o que eles deveriam ser) \cite{Simon1996}.
+%
+%É importante ressaltar que esta caracterização de sistemas de software como
+%sistemas complexos diz respeito à estrutura interna dos sistemas, ou seja, aos
+%componentes que o constituem e ao relacionamento entre estes componentes. Não
+%foram considerados outros aspectos importantes de sistemas complexos, como por
+%exemplo o seu relacionamento com o ambiente externo.
+%
+%como uma combinação das métricas de acoplamento (CBO) e coesão (LCOM4), 
+%
+%Sistemas de software, no entanto, se
+%diferenciam dos sistemas complexos naturais pelo fato de serem projetados;
+%consequentemente, o seu processo evolucionário não é intrinsecamente parte do
+%seu comportamento, mas fruto da ação consciente de seus desenvolvedores.
+%
+%\cite{Tegarden1995}
+%
+%"The implication of this result is that, when
+%designing, implementing, and maintaining software to control complexity, both coupling and cohesion should be considered jointly,
+%instead of independently" Darcy 2005
+%
+%Many studies have demonstrated a significant correlation between
+%LOC and the cyclomatic number. The researchers usually suggest that
+%this correlation proves that cyclomatic number increases with size; that
+%is, larger code is more complex code. However, careful interpretation of
+%the measures and their association reveals only that the number of deci-
+%sions increases with code length, a far less profound conclusion. The cyclo-
+%matic number may be just another size measure. Chapter 9 contains more
+%detailed discussion of validation for the McCabe measures.
+%
+%{\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
+%complexidade do software \cite{Darcy2005} combinando os valores de CBO e LCOM4.
+
+\citeonline{Darcy2005} definem complexidade estrutural como uma combinação de
+acoplamento e coesão. Estes são dois conceitos complementares: enquanto o
+acoplamento reflete o relacionamento entre módulos, a coesão nos fornece uma
+visão da organização dos componentes internos de um módulo e seus
+relacionamentos.
+
+Uma formalização da métrica proposta por \citeonline{Darcy2005} pode ser
+expressa da seguinte maneira, para um projeto $p$ e seu conjunto de módulos
+$M(p)$, a complexidade estrutural $SC(p)$ de $p$ é:
+
+\begin{equation}
+SC(p) = \frac
+{ \displaystyle \sum_{m \in M(p)} CBO(m) \times LCOM4(m) }
+{ |M(p)| }
+\end{equation}
+
+Esta medida de complexidade estrutural é portanto a complexidade
+estrutural média entre todos os módulos do sistema.
+
+\begin{itemize}
+
+  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
+    mede o acoplamento entre objetos do software \cite{Chidamber1994}
+    calculando em nível de classe o número total de acessos à outras classes do
+    mesmo sistema, é comum ser também chamada de Fan-out da classe. CBO é então
+    definida pela seguinte fórmula:
+
+\begin{equation}
+\label{formula-cbo}
+CBO(C) = \sum_{i=1}^{n} cliente(C, Ci)
+\end{equation}
+
+Onde:
+
+\begin{equation}
+cliente(Ci, Cj) =
+  \begin{cases}
+    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
+    0 \text{ caso contrario} \\
+  \end{cases}
+\end{equation}
+
+A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
+entre módulos ou classes.
+
+Apesar de ser possível formalizar a métrica CBO através da fórmula acima, sua descriçao original é
+bastante complexa, levando à implementações variadas do seu cálculo
+\cite{Lincke2008}. A definição original, por exemplo, inclui explicitamente
+acoplamento via herança \cite{Harrison1998}, no entando não deixa claro como
+deve ser tratado métodos herdados \cite{Briand1999}. A definição original
+afirma também que apenas chamadas explícitas (e não chamadas implicitas) de
+construtores são contabilizadas. Algumas definições de CBO incluem não apenas $
+cliente(Ci, Cj) $ mas também a recíproca $ cliente(Cj, Ci) $ de forma que o valor
+final inclui classes que ela acessa somado ao número de classes do sistema que
+a acessam \cite{Sant2008}.
+
+Quanto mais as classes forem independentes, mais fácil é reutilizá-las e menos
+arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
+testes, pois mais partes do sistema dependem delas.
+
+  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
+    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
+
+O cálculo de LCOM4 é dado através de grafo não-orientado em que os nós ou
+vértices são os métodos e atributos de uma classe e as arestas são acessos à
+métodos e atributos. O cálculo desta métrica pode ser formalizado como a
+seguir \cite{Silva2012}.
+
+Seja $ X $ uma classe qualquer e $ M_x $ o conjunto de métodos desta classe,
+considere um grafo simples não-orientado $ G_x(V, E) $, sendo:
+
+\begin{equation}
+V = M_x
+\text{ e }
+E = \{ \langle m, n \rangle \in V \times V \}
+\end{equation}
+
+Onde:
+\begin{equation}
+(\exists i \in Ix : (m \text{ accessos } i) \land (n \text{ accessos } i)) \lor (m \text{ chamadas } n) \lor (n \text{ chamadas } m)
+\end{equation}
+
+O valor da métrica LCOM4 para uma classe $ X $ é então definido como o número
+de componentes conectados do grafo $ G_x (1 \leq LCOM(x) \geq | M_x |)$.
+
+Coesão entre os métodos de uma classe é uma propriedade desejável, portanto o
+valor ideal para esta métrica é 1. Se uma classe tem diferentes conjuntos de
+métodos não relacionados entre si, é um indício de que a classe deveria ser
+refatorada em classes menores e mais coesas.
+
+\end{itemize}
+
+% (6) A systematic literature review of software product line management tools \cite{pereira2015systematic}
+%
+% (???)
+%
+% (7) Software configuration management tools \cite{chan1997software}
+%
+% (???)
+
+\section{Iniciativas de fomento, discussao, debate, melhoria dos softwares e dados}
+
+%isto tem motivado a organização de conferências específicas
+%para discutir os problemas dos softwares acadêmicos, como o RSE (Conference of
+%Research Software Engineers)\footnote{ \url{http://rse.ac.uk/conf2017}}, WSSSPE
+%(Workshop on Sustainable Software for Science: Practice and
+%Experiences)\footnote{ \url{http://wssspe.researchcomputing.org.uk}} e o RESER
+%(Workshop on Replication in Empirical Software Engineering Research)\footnote{
+%\url{http://sequoia.cs.byu.edu/reser}}.
+
+\subsection{Ciência aberta}
+
+Over the past fifteen years the scholarly communications agenda
+has progressed gradually. Currently we are experiencing a strong
+tendency among all research stakeholders to engage with the
+practice of OS. Lately, research funders require the sharing not
+only of the research results they have funded, but also of the
+procedures and data that are being generated during the research
+conduct. Researchers, on the other side, are keen on observing
+their research results being used for the improvement of the
+society and are forced by their funders to demonstrate the impact
+of their research. At the same time, higher academic institutions
+aim to join the OS agenda as well, since they see the opportunity
+of great economic benefits and savings. While OS is the possible
+answer to all these factors, the stakeholders’ inability to
+understand the requirements for the application of OS can be a
+suspensory factor for the OS implementation and evolution.
+The aim of the FOSTER project is to advance the stakeholders'
+knowledge on the usefulness of OS and explain the technicalities,
+strategies and best practices using which OS can be applied. As an
+attempt to educate the largest number of researchers possible,
+FOSTER has created an e-leanring portal, which contains quality
+assured information relating to the topic and it is open to everyone
+in the world. The platform contains two types of information:
+learning material and online courses. The classification of these
+two types is supported by an OS taxonomy, where related terms
+are applied both in the portal's material and also in the courses.
+With the use of the taxonomy, users are in the position to
+understand the OS domain and the concepts around it.
+The main goal of the FOSTER project, which is mainly achieved
+through the portal functionalities, is not only to educate the
+research stakeholders on OS, but also to build a community of
+researchers, librarians, software developers, funders and research
+administrators who are interested in OS in order to advance the
+way research is being conducted and shared. In addition, FOSTER
+attempts to provide tools to this community, such as re-usable
+content for training and a platform for blended learning and e-
+learning courses that the community could run. This OS
+advancement is essential for the research promotion and,
+consequently, for the benefit of the society as a whole
+\cite{Nancy2015}.
+
+Open Science may be practised both
+for philosophical and pragmatic reasons. As the
+resources produced by open projects are
+potentially accessible to public audiences, Open
+Science offers both a novel medium for public
+access and involvement in the process of science
+and an innovative method for real-time science
+communication. Does such direct access clear
+the stream of communication or muddy the
+waters with unfocussed, unclear and unvetted
+comment? This paper suggests that adopting an
+Open Science approach allows the capture of an
+authentic and clear record of research.
+However, researchers acknowledge this involves
+opening their work up to a different type of
+scrutiny \cite{Grand2010}.
+
+Open Science is an emerging approach to the conduct of science, technology and engineering
+projects, in which information about the whole of an ongoing investigation is made available
+on and through the Internet. Adopting an Open Science approach means the audience for the
+research can extend beyond the researchers involved to other researchers and to members of
+the public. Thus, Open Science has implications for engineering research, practice,
+publishing and public engagement with engineering. This paper reviews the history and
+evolution of the Open Science movement, includes some reflections on the related areas of
+Open Access, peer-review and public engagement with science and engineering and discusses
+data gathered from interviews. The analysis suggests that interviewees have concerns about
+issues such as precedence and protection of original work and the time needed to integrate
+open science practices into daily work. Successfully working in such collaborations is likely
+to require not only common practical tools but also the development of shared language and
+understanding between researchers and members of the public. Interviewees recognise the
+value of Open Science in collaborative research and its innovative facility to sustain direct
+public access to research outputs. It also has the potential to allow members of the public to
+make real practical contributions to research \cite{Grand2010Open}.
+
+This white paper was written as a contribution to the “Imagining
+Tomorrow’s University: Rethinking scholarship, education, and institu-
+tions for an open, networked era” workshop, a joint NIH/NSF-funded
+event held 8–9 March 2017 in Rosemont, IL. In this paper, I present an
+overview of what I consider open science, its importance, and how it
+plays a role in my research agenda. I also discuss challenges faced in
+pursuing research openness, and recommend changes to university
+leaders to address these barriers \cite{niemeyer2017open}.
+
+Open to All?  Case studies of openness in research
+Since the early 1990s, the open access movement has promoted the concept of openness in relation
+to scientific research. Focusing initially upon the records of science in the form of the text of articles
+in scholarly journals, interest has broadened in the last decade to include a much wider range of
+materials produced by researchers. At the same time, concepts of openness and access have also
+developed to include various kinds of use, by machines as well as humans.
+Academic bodies, including funders and groups of researchers, have set out statements in support
+of various levels of openness in research. Such statements often focus upon two key dimensions:
+what is made open, and how; and to whom is it made open, and under what conditions? This study
+set out to consider the practice of six research groups from a range of disciplines in order to better
+understand how principles of openness are translated into practice \cite{Nesta2010}.
+
 \section{Análise estática de código fonte} \label{analise-estatica}
+
+%
+% (10) Analyzing the State of Static Analysis: A Large-Scale Evaluation in Open Source Software \cite{beller2016analyzing}
+%
+% faz um estudo mostrando que analise estatica tem uma certa adocao em projetos livres
+% e mostra onde pode-se melhorar nas ferramentas para aumentar a adoção
+%
+% Taming the Static Analysis Beast
+% \cite{toman2017taming}
+% Despite advances in tooling and mainstream success, static analysis development is still a
+% painful process.
+
 
 A análise estática de código fonte é o primeiro passo para coletar informações
 necessárias em diversas atividades de verificação, medição e melhoria da
@@ -1895,282 +2033,3 @@ dimensões para caracterização de ferramentas de análise estática, mais deta
 sobre essas dimensões e categorias serão exploradas no Capítulo
 \ref{caracterizacao-ferramentas}, no qual apresentaremos uma caracterização de
 softwares científicos estudados neste trabalho.
-
-\section{Complexidade estrutural} \label{complexidade}
-
-%% Métricas de software podem ser classificadas em métricas de processo, métricas
-%% de projeto e métricas de produto.
-%% 
-%% Métricas de processo medem atributos relacionados ao ciclo de desenvolvimento
-%% e manutenção de software. Métricas de projeto indicam se a execução do
-%% processo está progredindo conforme planejado (por exemplo, relação entre o
-%% tamanho do software entregue e o esforço total dispendido em seu
-%% desenvolvimento).
-%% 
-%% Métricas de produto medem atributos de produtos e artefatos, como documentos,
-%% diagramas, código fonte e arquivos binários. Neste trabalho,
-%% apenas métricas de produto serão utilizadas.
-%% 
-%% Métricas de produto podem ser classificadas em internas (medem propriedades
-%% visíveis apenas aos desenvolvedores) ou externas (medem propriedades visíveis
-%% aos usuários) \cite{Mohamed1994}.
-%% 
-%% Neste trabalho, são utilizadas métricas de produto e, especificamente,
-%% métricas de código fonte, que cobrem aspectos de tamanho, complexidade e
-%% qualidade que podem ser medidos a partir do código fonte de um software.
-%% 
-%% Métricas de software tem um escopo bastante abrangente, e o termo está
-%% associado com muitas atividades da engenharia de software: Medidade e modelos
-%% para estimativa de custo e esforço, Coleção de dados, Modelos e medidas de
-%% qualidade, Modelos de confiabilidade, Métricas de segurança, Métricas
-%% estruturais e de complexidade, Avaliação de maturidade de capacidade,
-%% Gerenciamento através de métricas, Avaliação de métodos e ferramentas.
-%% 
-%% \subsection{Métricas de código fonte} \label{metricas-de-codigo}
-%% 
-%% As propriedades visíveis aos desenvolvedores podem ser medidas através de
-%% métricas de código fonte. A observação e o monitoramento de seus valores podem
-%% indicar aspectos relevantes à manutenibilidade de um programa. Dentre as
-%% inúmeras métricas de código fonte nosso interesse está em métricas que indicam
-%% características relevantes à modularidade de um produto de software,
-%% complexidade estrutural e custo de mudança.
-
-%Structural and Complexity Metrics
-%Desirable quality attributes like reliability and maintainability cannot be
-%measured until some operational version of the code is available. Yet, we
-%wish to be able to predict which parts of the software system are likely to be
-%less reliable, more difficult to test, or require more maintenance than oth-
-%ers, even before the system is complete. As a result, we measure structural
-%attributes of representations of the software that are available in advance
-%of (or without the need for) execution; then, we try to establish empiri-
-%cally predictive theories to support quality assurance, quality control, and
-%quality prediction. These representations include control flow graphs that
-%usually model code and various unified modeling language (UML) dia-
-%grams that model software designs and requirements. Structural metrics
-%can involve the arrangement of program modules, for example, the use
-%and properties of design patterns. These models and related metrics are
-%described in Chapter 9.
-
-Do ponto de vista de métricas, neste trabalho, estamos interessados, de fato, na métrica
-de complexidade estrutural SC ({\it Structural Complexity}), uma medida da
-complexidade de projetos de sistema de software proposta por
-\citeonline{Darcy2005} como indicador da complexidade dos sistemas de software
-em relação à sua estrutura interna e ao relacionamento entre os seus
-componentes.
-
-Complexidade é um tema bastante amplo, e para compreender onde os
-sistemas de softwares se encaixam neste contexto precisamos definir brevemente
-o que vem a ser sistemas complexos.
-
-Sistemas complexos são sistemas no qual grandes redes de componentes sem
-controle central dão origem a um comportamento
-coletivo complexo, com processamento sofisticado de informação, e adaptação
-através de aprendizado ou evolução \cite{Mitchell2009}. As seguintes
-características são comuns a todos os sistemas complexos:
-
-\begin{description}
-
-  \item[Comportamento coletivo complexo.] Apesar de serem compostos por
-  elementos bastante simples individualmente, sistemas complexos podem exibir
-  comportamentos coletivos bastante sofisticados.
-
-  \item[Troca de sinais e processamento de informação.] Em cada um destes
-  sistemas, seus componentes individuais consomem e produzem informação entre
-  si. Parte do comportamento do sistema envolve transformação dessa informação.
-
-  \item[Adaptação.] Sistemas complexos adaptam-se a novas situações de forma a
-  aumentar suas chances de sobrevivência diante de novas condições em seu
-  ambiente.
-
-\end{description}
-
-Os sistemas complexos podem ser classificados como naturais ou artificiais, os
-sistemas naturais são aqueles cuja constituição não tem participação humana, ao
-contrário dos sistemas artificiais que são projetados por humanos, com
-objetivos e funções previamente definidos \cite{Simon1996}. Neste sentido,
-sistemas de software podem ser caracterizados como sistemas complexos
-artificiais, pois exibem comportamento coletivo complexo, realizam trocas de
-sinais e processamento de informação e passam por adaptação para se adequar a
-mudanças em seu ambiente.
-
-Sistemas de software são compostos por componentes, em geral, chamados de
-módulos, que possuem tanto estado quanto comportamento próprios,
-módulos individuais de um sistema de software são simples quando comparados com
-o sistema como um todo. Módulos produzem informação para outros módulos
-através de parâmetros em chamadas de sub-rotinas e consomem informação através
-dos valores de retornos destas chamadas. O fluxo contínuo de novos requisitos e
-de mudanças no ambiente operacional de sistemas de software força-os a se
-manter em constante evolução em busca de “sobrevivência”.
-
-Esta medida é, possivelmente, um indicativo de problemas na manutenibilidade de
-sistemas de software, em especial sobre o esforço necessário para atividades de
-manutenção \cite{Terceiro2012}. Ela está relacionada a como os módulos de um
-programa estão organizados bem como à estrutura interna de cada módulo. Esta
-métrica pode dar indícios importantes sobre características arquiteturais de um
-programa de software e pode explicar seus atributos de qualidade interna.
-
-%Modularity
-%Modularity describes the logical partitioning of software into several parts, components, and modules.
-%Software will be easy to understand and change when composed of independent modules.
-%“A Software Maintainability Evaluation Methodology”, 1981
-%\cite{kumar2012survey}
-
-%Faz um experimento usando CBO LCOM e outras metricas como preditor de manutenabilidade...
-%\cite{Dagpinar2003}
-
-%A complexidade de um sistema de software pode ser de três tipos: a complexidade
-%do problema, a complexidade procedural, e a complexidade do projeto do sistema.
-%Esta última é o foco deste trabalho.
-%A complexidade do problema está relacionada ao domínio do problema.
-%A complexidade procedural está relacionada à estrutura lógica da programa, em es-
-%pecial do seu comprimento, em termos de número de tokens, linhas de código fonte, ou
-%estruturas de controle. Este último tipo é o que iremos estudar neste trabalho.
-%
-%Os sistemas complexos podem naturais ou artificiais, uma colônia de formigas
-%por exemplo pode ser caracterizado como um sistema complexo natural, onde
-%individualmente cada formiga se apresenta como criatura relativamente simples,
-%com instintos básicos como procurar alimento, responder a estímulos químicos
-%vindos de outras formigas, combater intrusos, etc. No entanto, quando
-%observadas coletivamente em uma colônia, as formigas aparentam ser muito mais
-%sofisticadas. Elas são capazes de se organizar em diferentes atividades, criar
-%estruturas complexas dentro de seu formigueiro, e de encontrar o caminho mais
-%curto para uma fonte de alimento.
-%
-%Os sistemas naturais são aqueles cuja constituição não tem participação humana.
-%Sistemas artificiais são projetados por humanos, com objetivos e funções
-%definidos.  Sistemas artificiais podem ou não serem projetados à imagem de um
-%sistema natural, e durante a sua concepção eles são discutidos em termos tanto
-%de suas características (o que eles são) como de necessidades que eles devem
-%satisfazer (o que eles deveriam ser) \cite{Simon1996}.
-%
-%É importante ressaltar que esta caracterização de sistemas de software como
-%sistemas complexos diz respeito à estrutura interna dos sistemas, ou seja, aos
-%componentes que o constituem e ao relacionamento entre estes componentes. Não
-%foram considerados outros aspectos importantes de sistemas complexos, como por
-%exemplo o seu relacionamento com o ambiente externo.
-%
-%como uma combinação das métricas de acoplamento (CBO) e coesão (LCOM4), 
-%
-%Sistemas de software, no entanto, se
-%diferenciam dos sistemas complexos naturais pelo fato de serem projetados;
-%consequentemente, o seu processo evolucionário não é intrinsecamente parte do
-%seu comportamento, mas fruto da ação consciente de seus desenvolvedores.
-%
-%\cite{Tegarden1995}
-%
-%"The implication of this result is that, when
-%designing, implementing, and maintaining software to control complexity, both coupling and cohesion should be considered jointly,
-%instead of independently" Darcy 2005
-%
-%Many studies have demonstrated a significant correlation between
-%LOC and the cyclomatic number. The researchers usually suggest that
-%this correlation proves that cyclomatic number increases with size; that
-%is, larger code is more complex code. However, careful interpretation of
-%the measures and their association reveals only that the number of deci-
-%sions increases with code length, a far less profound conclusion. The cyclo-
-%matic number may be just another size measure. Chapter 9 contains more
-%detailed discussion of validation for the McCabe measures.
-%
-%{\bf SC} {\it Structural Complexity (Complexidade estrutural)}: mede a
-%complexidade do software \cite{Darcy2005} combinando os valores de CBO e LCOM4.
-
-\citeonline{Darcy2005} definem complexidade estrutural como uma combinação de
-acoplamento e coesão. Estes são dois conceitos complementares: enquanto o
-acoplamento reflete o relacionamento entre módulos, a coesão nos fornece uma
-visão da organização dos componentes internos de um módulo e seus
-relacionamentos.
-
-Uma formalização da métrica proposta por \citeonline{Darcy2005} pode ser
-expressa da seguinte maneira, para um projeto $p$ e seu conjunto de módulos
-$M(p)$, a complexidade estrutural $SC(p)$ de $p$ é:
-
-\begin{equation}
-SC(p) = \frac
-{ \displaystyle \sum_{m \in M(p)} CBO(m) \times LCOM4(m) }
-{ |M(p)| }
-\end{equation}
-
-Esta medida de complexidade estrutural é portanto a complexidade
-estrutural média entre todos os módulos do sistema.
-
-\begin{itemize}
-
-  \item {\bf CBO} {\it Coupling Between Objects (Acoplamento entre objetos)}:
-    mede o acoplamento entre objetos do software \cite{Chidamber1994}
-    calculando em nível de classe o número total de acessos à outras classes do
-    mesmo sistema, é comum ser também chamada de Fan-out da classe. CBO é então
-    definida pela seguinte fórmula:
-
-\begin{equation}
-\label{formula-cbo}
-CBO(C) = \sum_{i=1}^{n} cliente(C, Ci)
-\end{equation}
-
-Onde:
-
-\begin{equation}
-cliente(Ci, Cj) =
-  \begin{cases}
-    1 \text{ se } Ci \Rightarrow Cj \wedge Ci \neq Cj \\
-    0 \text{ caso contrario} \\
-  \end{cases}
-\end{equation}
-
-A notação $ Ci \Rightarrow Cj $ indica acesso à atributos, variáveis, métodos ou funções
-entre módulos ou classes.
-
-Apesar de ser possível formalizar a métrica CBO através da fórmula acima, sua descriçao original é
-bastante complexa, levando à implementações variadas do seu cálculo
-\cite{Lincke2008}. A definição original, por exemplo, inclui explicitamente
-acoplamento via herança \cite{Harrison1998}, no entando não deixa claro como
-deve ser tratado métodos herdados \cite{Briand1999}. A definição original
-afirma também que apenas chamadas explícitas (e não chamadas implicitas) de
-construtores são contabilizadas. Algumas definições de CBO incluem não apenas $
-cliente(Ci, Cj) $ mas também a recíproca $ cliente(Cj, Ci) $ de forma que o valor
-final inclui classes que ela acessa somado ao número de classes do sistema que
-a acessam \cite{Sant2008}.
-
-Quanto mais as classes forem independentes, mais fácil é reutilizá-las e menos
-arriscado é modificá-las. Classes mais acopladas precisam de mais rigor em
-testes, pois mais partes do sistema dependem delas.
-
-  \item {\bf LCOM4} {\it Lack of Cohesion in Methods (Ausência de coesão em
-    métodos)}: mede o grau de falta de coesão em métodos \cite{Hitz1995}.
-
-O cálculo de LCOM4 é dado através de grafo não-orientado em que os nós ou
-vértices são os métodos e atributos de uma classe e as arestas são acessos à
-métodos e atributos. O cálculo desta métrica pode ser formalizado como a
-seguir \cite{Silva2012}.
-
-Seja $ X $ uma classe qualquer e $ M_x $ o conjunto de métodos desta classe,
-considere um grafo simples não-orientado $ G_x(V, E) $, sendo:
-
-\begin{equation}
-V = M_x
-\text{ e }
-E = \{ \langle m, n \rangle \in V \times V \}
-\end{equation}
-
-Onde:
-\begin{equation}
-(\exists i \in Ix : (m \text{ accessos } i) \land (n \text{ accessos } i)) \lor (m \text{ chamadas } n) \lor (n \text{ chamadas } m)
-\end{equation}
-
-O valor da métrica LCOM4 para uma classe $ X $ é então definido como o número
-de componentes conectados do grafo $ G_x (1 \leq LCOM(x) \geq | M_x |)$.
-
-Coesão entre os métodos de uma classe é uma propriedade desejável, portanto o
-valor ideal para esta métrica é 1. Se uma classe tem diferentes conjuntos de
-métodos não relacionados entre si, é um indício de que a classe deveria ser
-refatorada em classes menores e mais coesas.
-
-\end{itemize}
-
-% (6) A systematic literature review of software product line management tools \cite{pereira2015systematic}
-%
-% (???)
-%
-% (7) Software configuration management tools \cite{chan1997software}
-%
-% (???)
-%
