@@ -1,4 +1,4 @@
-\section{Análise estática de código fonte} \label{analise-estatica}
+\section{Softwares acadêmicos de análise estática} \label{analise-estatica}
 
 %
 % (10) Analyzing the State of Static Analysis: A Large-Scale Evaluation in Open Source Software \cite{beller2016analyzing}
@@ -11,6 +11,7 @@
 % Despite advances in tooling and mainstream success, static analysis development is still a
 % painful process.
 
+\subsection{Análise estática}
 
 A análise estática de código fonte é o primeiro passo para coletar informações
 necessárias em diversas atividades de verificação, medição e melhoria da
@@ -99,67 +100,67 @@ campo de aplicação destas ferramentas é bastante variado, cobrindo diferentes
 objetivos. De acordo com \citeonline{Chess2007}, as atividades em que análise
 estática de código fonte é empregada, destacam-se:
 
-\begin{description}
-
-  \item \textit{Verificação de tipos}. 
-    A forma mais amplamente utilizada de análise estática, e uma das quais os
-    programadores estão mais familiarizados, é a checagem de tipo.
-    Previne que acidentalmente atribuam valores de forma incorreta a
-    variáveis. Ainda, ao capturar erros em tempo de compilação, esta checagem
-    de tipo previne erros em tempo de execução.
-
-  \item \textit{Verificação de estilo}. 
-    Os verificadores de estilo são um tipo de análise estática que aplicam regras
-    de forma mais superficial do que os verificadores de tipo. São regras
-    relacionadas a espaços em branco, nomes, funções depreciadas, comentários,
-    estrutura do programa, entre outros. Os erros reportados por verificadores de
-    estilo são aqueles que afetam a leitura e a manutenabilidade do
-    código fonte, não indicando potenciais erros em tempo de execução como
-    fariam os verificadores de tipo.
-
-  \item \textit{Compreensão de programas}. 
-    Ferramentas de compreensão de programa ajudam programadores a terem uma visão
-    clara frente a grandes programas de computador, ou seja, programas com
-    alto volume de código fonte. Ambientes de desenvolvimento integrados (IDE)
-    geralmente incluem funcionalidade de compreensão, por exemplo, ``encontrar
-    todos os usos de um certo método'' ou ``encontrar a declaração de uma
-    variável global''. Análises mais avançadas chegam a incluir, por exemplo,
-    refatoração automática. Estas ferramentas de compreensão também são úteis
-    para programadores interessados em entender código fonte escrito por
-    outros programadores.
-
-  \item \textit{Verificação de programas}.
-    Ferramentas de verificação de programa aceitam como entrada uma especificação
-    e um conjunto de código fonte e tenta provar que o código está deacordo
-    com a especificação. Quando a especificação é uma descrição completa de
-    todo o programa, a ferramenta de verificação poderá realizar uma checagem
-    de equivalência para garantir que o código fonte e a especificação
-    combinam de forma exata. Programadores raramente têm acesso a uma
-    especificação detalhada suficientemente para ser usada numa checagem de
-    equivalência, o trabalho de criar esta especificação pode ser maior do que
-    o trabalho de escrever o próprio código fonte do programa, desta forma
-    este tipo de verificação formal raramente acontece.
-
-  \item \textit{Localização de bugs}. 
-    Um localizador de bugs está
-    preocupado em apontar locais onde o programa, possivelmente, irá se
-    comportar de forma inesperada. A maioria das ferramentas de localização de
-    bugs são fáceis de usar porque costumam vir com um conjunto de regras
-    ({\it bug idioms}) para descrição de padrões de código que indicam bugs.
-    Algumas destas ferramentas costumam usar os mesmos algoritmos utilizados
-    por ferramentas de verificação de propriedade.
-
-  \item \textit{Avaliação de segurança}. 
-    Ferramentas de análise estática para segurança usam as mesmas técnicas
-    encontradas nas outras ferramentas, mas por ter um propósito diferente,
-    identificar problemas de segurança, aplicam estas técnicas de forma diferente.
-    As primeiras ferramentas de segurança (ITS4, RATS, Flawfinder) eram pouco mais
-    do que um {\it ``grep''} melhorado; na maior parte, elas escaneavam o código
-    procurando por funções como por exemplo {\it ``strcpy()''} que são
-    facilmente usadas de forma inadequada e devem ser inspecionadas
-    manualmente no processo de revisão de código fonte.
-
-\end{description}
+%\begin{description}
+%
+%  \item \textit{Verificação de tipos}. 
+%    A forma mais amplamente utilizada de análise estática, e uma das quais os
+%    programadores estão mais familiarizados, é a checagem de tipo.
+%    Previne que acidentalmente atribuam valores de forma incorreta a
+%    variáveis. Ainda, ao capturar erros em tempo de compilação, esta checagem
+%    de tipo previne erros em tempo de execução.
+%
+%  \item \textit{Verificação de estilo}. 
+%    Os verificadores de estilo são um tipo de análise estática que aplicam regras
+%    de forma mais superficial do que os verificadores de tipo. São regras
+%    relacionadas a espaços em branco, nomes, funções depreciadas, comentários,
+%    estrutura do programa, entre outros. Os erros reportados por verificadores de
+%    estilo são aqueles que afetam a leitura e a manutenabilidade do
+%    código fonte, não indicando potenciais erros em tempo de execução como
+%    fariam os verificadores de tipo.
+%
+%  \item \textit{Compreensão de programas}. 
+%    Ferramentas de compreensão de programa ajudam programadores a terem uma visão
+%    clara frente a grandes programas de computador, ou seja, programas com
+%    alto volume de código fonte. Ambientes de desenvolvimento integrados (IDE)
+%    geralmente incluem funcionalidade de compreensão, por exemplo, ``encontrar
+%    todos os usos de um certo método'' ou ``encontrar a declaração de uma
+%    variável global''. Análises mais avançadas chegam a incluir, por exemplo,
+%    refatoração automática. Estas ferramentas de compreensão também são úteis
+%    para programadores interessados em entender código fonte escrito por
+%    outros programadores.
+%
+%  \item \textit{Verificação de programas}.
+%    Ferramentas de verificação de programa aceitam como entrada uma especificação
+%    e um conjunto de código fonte e tenta provar que o código está deacordo
+%    com a especificação. Quando a especificação é uma descrição completa de
+%    todo o programa, a ferramenta de verificação poderá realizar uma checagem
+%    de equivalência para garantir que o código fonte e a especificação
+%    combinam de forma exata. Programadores raramente têm acesso a uma
+%    especificação detalhada suficientemente para ser usada numa checagem de
+%    equivalência, o trabalho de criar esta especificação pode ser maior do que
+%    o trabalho de escrever o próprio código fonte do programa, desta forma
+%    este tipo de verificação formal raramente acontece.
+%
+%  \item \textit{Localização de bugs}. 
+%    Um localizador de bugs está
+%    preocupado em apontar locais onde o programa, possivelmente, irá se
+%    comportar de forma inesperada. A maioria das ferramentas de localização de
+%    bugs são fáceis de usar porque costumam vir com um conjunto de regras
+%    ({\it bug idioms}) para descrição de padrões de código que indicam bugs.
+%    Algumas destas ferramentas costumam usar os mesmos algoritmos utilizados
+%    por ferramentas de verificação de propriedade.
+%
+%  \item \textit{Avaliação de segurança}. 
+%    Ferramentas de análise estática para segurança usam as mesmas técnicas
+%    encontradas nas outras ferramentas, mas por ter um propósito diferente,
+%    identificar problemas de segurança, aplicam estas técnicas de forma diferente.
+%    As primeiras ferramentas de segurança (ITS4, RATS, Flawfinder) eram pouco mais
+%    do que um {\it ``grep''} melhorado; na maior parte, elas escaneavam o código
+%    procurando por funções como por exemplo {\it ``strcpy()''} que são
+%    facilmente usadas de forma inadequada e devem ser inspecionadas
+%    manualmente no processo de revisão de código fonte.
+%
+%\end{description}
 
 %\subsection{Anatomia da análise de código fonte} \label{anatomia}
 %
@@ -394,3 +395,11 @@ sobre essas dimensões e categorias serão exploradas no Capítulo
 \ref{caracterizacao-ferramentas}, no qual apresentaremos uma caracterização de
 softwares científicos estudados neste trabalho.
 
+\subsection{Ecossistema de software acadêmico de análise estática}
+
+Os softwares avaliados neste estudo serão do domínio de aplicação de análise de
+código-fonte, ferramentas de análise estática de código-fonte tem sido
+continuamente desenvolvidas e tem se tornado mais e mais comuns no ciclo de
+desenvolvimento de software \cite{Novak2010}, e apesar da rápida e constante
+evolução da área, ainda há carência de estudos avaliando estas ferramentas
+\cite{Li2010}, especialmente os {\it softwares científicos}.
