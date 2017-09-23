@@ -120,6 +120,8 @@ https://developer.ieee.org/apps/register
 * Hilmer Neri
 * Talita Gentil
 * Jonei Costa
+* José Flávio
+* Jannine (IBICT)
 
 ## Créditos
 
