@@ -2,26 +2,41 @@
 {Este capítulo ... }
 \label{metodologia}
 
+Pesquisa de natureza exploratória à respeito do ecossistema de software
+acadêmico de análise estática delineado (design) como uma pesquisa documental
+com o objetivo principal de aprimorar o conhecimento e compreender melhor a
+percepção a respeito do problema "dysfunctional chaotic churn" no ecossistema
+de software acadêmico de análise estática.
 
-% IDEIA!
-% levantar ano de publicação do artigo para cada software e
-% calcular por quanto tempo cada software está disponível,
-% com isso verificar se há um padrão, ou seja, se publicações
-% mais antigas possuem softwares não-disponíveis, obsoletos,
-% etc...
+Como resultados busca-se: (1) tornar o problema mais visível e (2) formular
+hipóteses sobre o problema.
 
-O objeto de estudo é o ecossistema de software acadêmico de análise estática,
-ou, ferramentas de análise estática desenvolvidas e publicados na literatura
-acadêmica.
-
-A ... em três atividades de (1) busca de artigos
-(definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
-de critérios de busca, definição de script de busca) e (3) seleção de artigos
-com publicação de softwares.
-
-o conjunto estudado representa um corte transversal nas
-publicações de dois eventos tradicionais da engenharia
-de software, análise estática, uma área com um bom histórico
+% pesquisa documental
+% 
+% Boa parte dos estudos exploratórios pode ser definida como pesquisas
+% bibliográficas
+% 
+% A principal vantagem da pesquisa bibliográfica reside no fato de permitir ao
+% investigador a cobertura de uma gama de fenômenos muito mais ampla do que
+% aquela que poderia pesquisar diretamente
+% 
+% A pesquisa bibliográfica também é indispensável nos estudos históricos
+% 
+% Enquanto a pesquisa bibliográfica se utiliza fundamentalmente das contribuições
+% dos diversos autores sobre determinado assunto, a pesquis"ã documental yale-se
+% de materiais que não recebem ainda um tratamento analítico, ou que ainda podem
+% ser reelaborados de acordo com os objetos da pesquisa
+% 
+% A pesquisa bibliográfica é desenvolvida com base em material já elaborado,
+% constituído principalmente de livros e artigos científicos
+% 
+% Uma vantagem da pesquisa documental é que os documentos constituem fonte rica e
+% estável de dados
+% 
+% Outra vantagem da pesquisa documental está em seu custo
+% 
+% Outra vantagem da pesquisa documental é não exigir contato com os sujeitos da
+% pesquisa
 
 engenharia de software é talvez a área com maior aptidão
 para criar softwares, a área de análise estática tem um
@@ -35,7 +50,44 @@ conferências ao invés de buscar strings em bibliotecas digitais
 por saber a princípio com conhecimento de causa que algumas
 conferências tem um alto potencial de encontrar ferramentas
 
-SCAM E ASE, SBES ficou fora :'(
+o conjunto estudado representa um corte transversal nas
+publicações de dois eventos tradicionais da engenharia
+de software, análise estática, uma área com um bom histórico
+
+\section{Trabalhos relacionados}
+
+\cite{howison2016software} \cite{howison2015understanding} \cite{howison2011scientific}
+
+\section{Coleta de dados}
+
+Encontrar estudos com publicação de software acadêmico de análise estática
+dentro dos seguintes critérios:
+
+\begin{itemize}
+  \item Indiquem o nome do software acadêmico
+  \item Mencionem o software como um dos artefatos produzidos/modificados no estudo
+  \item Indiquem alguma URL do projeto de software
+\end{itemize}
+
+Coletar informações sobre cada software acadêmico usando como fonte o próprio
+artigo, documentação, código fonte quando disponível, entre outros, quando possível
+coletar o changelog do software indicando data e versão lançada, coletar também
+o número de commits ao longo do tempo.
+
+Para cada software acadêmico, pesquisar nas bibliotecas digitais IEEE Explore e
+ACM qualquer menção ao nome do software, uma string de busca foi criada usando
+o nome do software e quando necessário compondo com outras características.
+
+Para cada resultado encontrado fazer uma leitura do paper e identificar em
+qual contexto o software é mencionado e de que forma é mencionado, identificando
+se aquele estudo apenas cita o software, por exemplo, trabalhos relacionados
+ou trabalho futuro, ou se além de citar avalia ou utiliza o software, ou se
+contribui, ou se é um paper criando o software, ou um trabalho fazendo grande
+contribuição so projeto.
+
+Para cada resultado também foi coletado os autores da publicação.
+
+\subsection{Seleção de software acadêmico}
 
 manualmente obtivemos os todos os papers publicados em cada edição
 de ambas as conferências
@@ -58,8 +110,6 @@ Automated Software Engineering}\footnote{\url{http://ase-conferences.org}},
 ambas com um largo histórico de publicação sobre análise de programas e
 apresentam um alto potencial de encontrar software do domínio de análise
 estática.
-
-%Na revisão estruturada selecionamos a conferência 
 
 Esta seleção foi realizada através de um procedimento composto de 3 (?)
 atividades para seleção e coleta de informações sobre software acadêmico de
@@ -99,11 +149,6 @@ de fato, disponíveis, parte dos dados coletados coincidem com o trabalho
 recente, publicado após o início deste estudo, \cite{howison2016software}, o
 autor sugere um esquema de codificação para menções a software:
 
-
-\begin{minipage}[t]{0.3\textwidth}
-bla
-\end{minipage}
-
 \begin{table}[h]
 \caption{Coding scheme for mentions of software \cite{howison2016software}}
 \centering
@@ -117,15 +162,12 @@ bla
   Data                     & Uma data usada para indicar uma versão do software (não é a data do artigo ou referência) \\
   Detalhes de configuração & Qualquer menção a configuração do software \\
   Software utilizado       & Para menções ao software que foi utilizado na pesquisa \\
-  Software não utilizado   & Para menções ao software que os autores não \\
-                           & utilizaram (ex, discute-se porque não utilizou \\
-                           & um determinado software, ou o método implementado pelo software) \\
+  Software não utilizado   & Para menções ao software que os autores não utilizaram (ex, discute-se porque não utilizou um determinado software, ou o método implementado pelo software) \\
   Criador                  & Menção ao criador do software (pode ser aplicado no texto ou nas referências) \\
   \hline
 \end{tabular}
 \label{coding-scheme-mentions}
 \end{table}
-
 
 Diferentemente do autor do esquema na tabela \ref{coding-scheme-mantions} nós
 estamos lidando apenas com software publicado junto ao paper selecionado, ou seja,
@@ -226,53 +268,84 @@ mesmo dados, com nomes diferente, basta eu adaptar meu texto e dados para casar,
 Findable, Access, Source available, Permission to modify, Matches preferred citation eu
 não coletei, mas n sei se é interessante pro meu caso, talvez sim, ou não...
 
+\subsection{Citações e menções}
+
 características da menção aos softwares
 
 com base numa adaptação de \cite{howison2016software} identificamos as caracteristicas
 da tabela abaixo em cada menção encontrara nas menções
 
-* nome do software, toda citação tem nome pois foi através do nome que buscamos as citações
-* tipo e peso da citação (peso em ordem crescente)
-cita
-  - apenas cita o software ou é o mesmo artigo selecionado na revisão estruturada
-  - ou é um artigo com "mesmo" conteúdo publicado na "mesma" época \^
-  - descreve o software
-  - cita numa tabela com outros, classifica
-  - cita como exemplo
-  - cita trabalho relacionado
-  - cita em trabalhos futuros
-avalia ou usa
-  - avalia ou caracteriza o software
-  - usa para coleta ou análise de dados
-  - usa como objeto de estudo
-  - usa o software como parte de uma solução, implementação, etc
-  - cria um software derivado mas não disponibiliza as contribuições
-contribui
-  - contribuição pequena ou moderada
-  - extende o software
-  - integra o software a outros sistemas, formatos de entrada/saída, APIs, etc
-    (seja implementando suporte no software ou do outro lado)
-  - refatora parte do software
-  - implementa parte do software em outro projeto e compara resultados
-cria ou CONTRIBUI
-  - contribuição inicial criando o projeto
-  - faz uma grande contribuição
-  - refatora todo o software
-  - abre o código
+% * nome do software, toda citação tem nome pois foi através do nome que buscamos as citações
+% * tipo e peso da citação (peso em ordem crescente)
+% cita
+%   - apenas cita o software ou é o mesmo artigo selecionado na revisão estruturada
+%   - ou é um artigo com "mesmo" conteúdo publicado na "mesma" época \^
+%   - descreve o software
+%   - cita numa tabela com outros, classifica
+%   - cita como exemplo
+%   - cita trabalho relacionado
+%   - cita em trabalhos futuros
+% avalia ou usa
+%   - avalia ou caracteriza o software
+%   - usa para coleta ou análise de dados
+%   - usa como objeto de estudo
+%   - usa o software como parte de uma solução, implementação, etc
+%   - cria um software derivado mas não disponibiliza as contribuições
+% contribui
+%   - contribuição pequena ou moderada
+%   - extende o software
+%   - integra o software a outros sistemas, formatos de entrada/saída, APIs, etc
+%     (seja implementando suporte no software ou do outro lado)
+%   - refatora parte do software
+%   - implementa parte do software em outro projeto e compara resultados
+% cria ou CONTRIBUI
+%   - contribuição inicial criando o projeto
+%   - faz uma grande contribuição
+%   - refatora todo o software
+%   - abre o código
 
 Os softwares disponíveis foram avaliados em relação à disponibilidade de código
 fonte e à licença utilizada, essas informações, e as demais coletadas até aqui,
 foram distribuídas cronologicamente, e interpretadas numa perspectiva histórica
 sobre a sustentabilidade técnica dos softwares acadêmicos de análise estática.
 
-Os softwares disponíveis foram avaliados em relação à disponibilidade de código
-fonte e à licença utilizada, essas informações, e as demais coletadas até aqui,
-foram distribuídas cronologicamente, e interpretadas numa perspectiva histórica
-sobre a sustentabilidade técnica dos softwares acadêmicos de análise estática.
+% * revisão estruturada
+%    paper{step} = 'structured-review';
+% * citações ao software
+%    citations{key}{step} = 'review-citations';
+% 
+% escala de peso da contribuição:
+% ===============================
+% 
+% cita
+%   contribution\_weight=0.1
+% avalia ou usa
+%   contribution\_weight=0.25
+% contribui
+%   contribution\_weight=0.5
+% cria ou CONTRIBUI
+%   contribution\_weight=1
+% 
+% contribuições sem peso:
+% =======================
+% 
+% o software mudou de nome, qual o nome antigo, qual o novo nome
+% um novo software foi criado a partir daqui, qual o nome do novo
+% um novo software foi criado com base neste
+% 
+%   weightless\_contributions={},
 
+%#### artigos nao encontrados para download:
+%
+%  url = {http://doi.acm.org/10.1145/3090064.3090070},
 
-%%%%%%%%%%
+o próximo passo coletamos os nomes dos autores de cada artigo que faz menção
+aos softwares em nosso conjunto, 
 
+\subsection{Métricas de software}
+
+% de produto e projeto 
+%\subsection{Obtenção de código fonte, métricas, número de commits, lançamentos}
 
 No segundo estudo, os softwares com código fonte disponível foram avaliados em
 relação a sua manutenabilidade através da métrica de complexidade estrutural. A
@@ -280,20 +353,9 @@ coleta dessa métrica para cada software foi realizada pelo Analizo, uma suíte
 de ferramentas para análise de código fonte, e está sendo considerado como um
 indicador de manutenabilidade.
 
-
-um conjunto total de  XXX artigos, tabela e figura com a distribuicao
-dos artigos
-
-obtivemos o arquivo pdf de cada paper
-
-nosso conjunto de seleção incluindo todas publicações de conferência
-nos permite ter uma visão do histórico de publicações de softwares
-acadêmicos nestes eventos
-
-(seleção estruturada gera lista de softwares academicos de origem cientifica de analise estatica)
+\section{Análise dos dados}
 
 secao: identificando menção aos softwares acadêmicos selecionados
-
 
 4º Princípio, Persistencia
 
@@ -322,37 +384,22 @@ vende o software ou o link para um site que venda o software
 
 5. Accessibility: Software citations should facilitate access to the software itself and to its
 
-
-o próximo passo coletamos os nomes dos autores de cada artigo que faz menção
-aos softwares em nosso conjunto, os nomes dos autores foram normalizados,
+os nomes dos autores foram normalizados,
 e para cada artigo citando um software extraimos e identificamos o nível
 de ineditismo daqueles pesquisadores com aquele software, os valores
 são os seguites:
 
-escala de peso da autoria:
-==========================
-
-são os primeiros autores a publicar sobre o software
-  authorship\_weight=0
-todos os autores já publicaram sobre o software em anos anteriores
-  authorship\_weight=0.1
-uma parte dos autores já publicou sobre o software em anos anteriores
-  authorship\_weight=0.25
-nenhum dos autores jamais publicou sobre o software
-  authorship\_weight=0.5
-
-
-
-análise estática
-
-
-====
-
-
-
-aartigo propoe uma categoria de tipos de citacao a softwares,
-coincide com o que eu coletei, posso usar algumas dimensoes
-\cite{smith2016software}
+% escala de peso da autoria:
+% ==========================
+% 
+% são os primeiros autores a publicar sobre o software
+%   authorship\_weight=0
+% todos os autores já publicaram sobre o software em anos anteriores
+%   authorship\_weight=0.1
+% uma parte dos autores já publicou sobre o software em anos anteriores
+%   authorship\_weight=0.25
+% nenhum dos autores jamais publicou sobre o software
+%   authorship\_weight=0.5
 
 cada citação pontua no máximo 1 ponto para o peso final do paper ao quanto
 contribui para a sustentabilidade técnica do software, esta pontuação será
@@ -373,44 +420,6 @@ outro fator de peso para definir o valor final do peso é se houve lençamentos
 de novas versões do software naquele ano, se houve ao menos 1 versão lançada,
 isso leva o final\_weight para o valor máximo 1.0 (que representa 100\%)
 
-* revisão estruturada
-   paper{step} = 'structured-review';
-* citações ao software
-   citations{key}{step} = 'review-citations';
-
-escala de peso da contribuição:
-===============================
-
-cita
-  contribution\_weight=0.1
-avalia ou usa
-  contribution\_weight=0.25
-contribui
-  contribution\_weight=0.5
-cria ou CONTRIBUI
-  contribution\_weight=1
-
-contribuições sem peso:
-=======================
-
-o software mudou de nome, qual o nome antigo, qual o novo nome
-um novo software foi criado a partir daqui, qual o nome do novo
-um novo software foi criado com base neste
-
-  weightless\_contributions={},
-
-%####
-
-%#### artigos nao encontrados para download:
-%
-%  url = {http://doi.acm.org/10.1145/3090064.3090070},
-%
-%#### para instalar a versão correda do analizo:
-%
-%apt-get install doxyparse=1.8.11 analizo=1.19.1
-
-
-%
 % Metodologia
 %
 %No segundo estudo, os softwares com código fonte disponível foram avaliados em
@@ -435,28 +444,17 @@ um novo software foi criado com base neste
 %dados, essa análise apresenta também uma perspectiva evolutiva de alguns
 %softwares, aqueles com maior frequencia de lançamentos foram selecionados para
 %esta avaliação.
-%
-%(continua...)
 
 %como essas taxas mudam ao longo do tempo.
-%
-%Dessa forma, definimos como objetivo geral deste trabalho medir a qualidade
-%(técnica e não-técnica) dos softwares acadêmicos de origem científica da
-%engenharia de software e explorar como essas taxas mudam ao longo do tempo.
-%
+
 %Questão de pesquisa:
-%
+
 %* Como ocorre o co-desenvolvimento dos softwares
 %* Como acontece colaboração na construção dos softwares
 %* Como os softwares contribuem para a construcao de conhecimento novo em novas pesquisas derivadas
-%
+
 % * mais da metade desenvolvem seus próprios softwares
 % * falta de visibilidade gera questionamentos sobre qualidade
 % * falta de treinamento leva a produzir softwares sem qualidade
 % * produtividade científica requer capacidade de replicação
 % * capacidade de replicação depende de qualidade
-
-\subsection{Software acadêmico de análise estática}
-
-Os softwares avaliados neste estudo serão do domínio de aplicação de análise de
-código-fonte, ...
