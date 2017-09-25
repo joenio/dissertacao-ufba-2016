@@ -45,6 +45,10 @@ instalação em:
 
 * http://www.analizo.org/installation.html
 
+Tenha o cuidado de instalar a versão `1.19.1` do Analizo corretamente:
+
+    apt-get install doxyparse=1.8.11 analizo=1.19.1
+
 Para executar use o make:
 
     make analyze
