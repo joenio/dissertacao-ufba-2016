@@ -58,97 +58,22 @@ para busca e seleção de softwares de um domínio específico publicados em
 artigos acadêmicos, usando critérios bem definidos, de forma que seja
 possível a reprodução do estudo por parte de pesquisadores interessados.
 
-A revisão estruturada difere da revisão e do mapeamento sistemático
-\cite{Kitchenham2007} por ser um processo mais simples e menos rígido, onde o
-resultado final é um conjunto de softwares, enquanto no mapeamento ou na
-revisão sistemática há um esforço em caracterizar os artigos analisados o mesmo
-não ocorre na revisão estruturada, onde o esforço reside em caracterizar os
-softwares acadêmicos.
-
-A revisão estruturada é organizada em três atividades de (1) busca de artigos
-(definição das fontes, obtenção dos artigos nas fontes), (2) filtro (definição
-de critérios de busca, definição de script de busca) e (3) seleção de artigos
-com publicação de softwares.
-
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.21]{imagens/revisao-estruturada.png}
-  \caption{Atividades da revisão estruturada}
-  \label{figura-revisao-estruturada}
-\end{figure}
-
-As 3 atividades da revisão estruturada, representadas na Figura
-\ref{figura-revisao-estruturada}, apresentam como resultado final um conjunto
-de softwares com as seguintes informações:
-
-\begin{itemize}
-  \item Nome e descrição do software acadêmico.
-  \item Título do artigo onde o software é citado como contribuição, seja principal ou secundária.
-  \item Nome e ano da conferência onde o artigo foi publicado.
-  \item Endereço onde o software pode ser obtido, páginas web ou repositórios de código fonte.
-\end{itemize}
-
-Cada atividade da revisão gera como saída um conjunto de artigos, este conjunto
-é reduzido a cada atividade, a última delas gera também um conjunto de
-softwares acadêmicos com algumas de suas informações.
+%A revisão estruturada difere da revisão e do mapeamento sistemático
+%\cite{Kitchenham2007} por ser um processo mais simples e menos rígido, onde o
+%resultado final é um conjunto de softwares, enquanto no mapeamento ou na
+%revisão sistemática há um esforço em caracterizar os artigos analisados o mesmo
+%não ocorre na revisão estruturada, onde o esforço reside em caracterizar os
+%softwares acadêmicos.
 
 Seguem detalhes de cada atividade:
 
 \begin{description}
 
-  \item[(1) Busca]
-    A primeira atividade da revisão estruturada define as fontes de entrada,
-    estas fontes são conferências que abordam o tema de interesse do estudo, e
-    que apresentam um grande potencial de encontrar softwares do domínio de
-    aplicação desejado, neste estudo o interesse está em softwares de análise
-    estática de código fonte, portanto as conferências selecionadas serão
-    aquelas com potencial de se encontrar softwares deste domínio de aplicação.
-    Esta primeira atividade deve incluir o maior número possível de ediçoes de
-    cada conferência, para cada edição é copiado localmente todos os artigos em
-    formato PDF, eles serão utilizados como entrada na atividade 2.
+  \item[(1) Busca] ...
 
   \item[(2) Filtro]
-    A segunda atividade da revisão estruturada realizada em cima de todo o
-    conjunto de artigos selecionados na etapa anterior é uma busca pelos
-    seguintes termos em todo o conteúdo dos artigos:
-
-    \begin{verbatim}
-      "tool" OU "framework"; E
-      "download" OU "available"; E
-      "http" OU "ftp"; E
-      "static analysis" OU "parser".
-    \end{verbatim}
-
-    Esses termos devem ser pensados em relaçao ao domínio de aplicação
-    desejado, devem ser abrangentes a fim de evitar falsos negativos, ou seja,
-    evitar que o filtro deixe de fora artigos que publiquem software de análise
-    estática, mesmo que isto resulte em falsos positivos, a atividade seguinte
-    identificará esses falsos negativos deixando-os fora do resultado final.
-
-    Esses termos devem encontrar artigos com publicação de softwares
-    científicos do domínio de análise estática de código fonte com
-    disponibilidade para {\it download}, seja binário ou código fonte, será
-    aplicado automaticamente com auxílio de um script desenvolvido durante este
-    trabalho de pesquisa, detalhes deste script, outros artefatos produzidos
-    durante esta pesquisa, e onde obtê-los pode ser encontrado no Apêndice
-    \ref{reproducibilidade-do-estudo}.
 
   \item[(3) Seleção]
-    A terceira e última atividade da revisão estruturada identifica se cada
-    artigo resulta, de fato, em publicação de software acadêmico de análise
-    estática. Esta seleção é feita a partir de uma leitura superficial do
-    artigo em busca de indícios de que o artigo publica de fato algum software.
-
-    Essa leitura inclui título, introdução, resultados e conclusões, o objetivo
-    é identificar se o artigo publica software acadêmico e indica onde obter
-    uma cópia do software. Quando esta leitura inicial não é o suficiente para
-    identificar se há publicação de software, outras seções são lidas, alguns
-    artigos descrevem a implementação do software em seções específicas, outros
-    indicam detalhes do software ao longo do texto, é comum o uso de
-    notas de rodapé para indicar onde o software está disponível. Softwares
-    acadêmicos que sejam mais abrangentes do que apenas análise estática de
-    código fonte mas que contenham esta função em seu conjunto também são
-    selecionados.
 
 \end{description}
 
@@ -230,21 +155,16 @@ softwares, código fonte, documentos e site do projeto, quando disponíveis.
 
 \section{Resultados}
 
-Na revisão estruturada selecionamos a conferência SCAM - {\it
-Source Code Analysis and Manipulation Working
-Conference}\footnote{\url{http://www.ieee-scam.org}} e a conferência ASE - {\it
-Automated Software Engineering}\footnote{\url{http://ase-conferences.org}},
-ambas conferências com largo histórico de publicação sobre análise de
-programas e apresentam um alto potencial de encontrar softwares do domínio de
-análise estática de código fonte.
-
-A primeira atividade da revisão estruturada -- (1) Busca -- passa por
-todas as ediçoes das duas conferências até o ano de 2015, ou seja, explora o
-histórico de 24 anos de publicação. Todas as trilhas de ambas as conferências
+Todas as trilhas de ambas as conferências
 foram incluídas, encontramos nesta atividade 1873 artigos no total, 1527 artigos
 do ASE e 346 artigos do SCAM, com uma média geral de 75 artigos publicados por ano. A
 Figura \ref{artigos-por-ano} apresenta a distribuição por edição de cada
 evento.
+
+(1) Busca -- Todas as trilhas de ambas as conferências foram incluídas,
+encontramos nesta atividade 1873 artigos no total, 1527 artigos do ASE e 346
+artigos do SCAM, com uma média geral de 75 artigos publicados por ano. A Figura
+\ref{artigos-por-ano} apresenta a distribuição por edição de cada evento.
 
 \begin{figure}[h]
   \center
@@ -268,8 +188,8 @@ conferência SCAM. Neste período a conferência ASE teve uma média de 80 artig
 publicados por ano, se for levado em conta todas as edições, apenas da
 conferência ASE, a média cai para 61 artigos por ano.
 
-A segunda atividade da revisão estruturada -- (2) Filtro -- reduziu em 77\%
-o número total de artigos de forma automática a partir da string de busca, resultando em 441 artigos
+(2) Filtro -- reduziu em 77\%
+o número total de artigos, resultando em 441 artigos
 para serem analisados na próxima etapa da revisão estruturada.  Durante a execução desta
 atividade foi necessário analisar dois artigos manualmente, {\it Adaptable
 concern-based framework specialization in UML} e {\it Property-oriented test
