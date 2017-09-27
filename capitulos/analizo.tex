@@ -1,6 +1,9 @@
-\subsection{Analizo} \label{analizo}
+\xchapter{Analizo}
+{Este capítulo apresenta o software de análise estática Analizo utilizado
+neste estudo para coleta de dados.}
+\label{analizo}
 
-Analizo é um conjunto de ferramentas para análise de código-fonte e
+Analizo \cite{Terceiro2010Analizo} é um conjunto de ferramentas para análise de código-fonte e
 visualização com suporte a múltiplas linguagens de programação, software livre,
 extensível e capaz de lidar com código-fonte não mais compilável. A capacidade
 de lidar com código-fonte não mais compilável permite analisar código-fonte
@@ -14,7 +17,7 @@ que usem bibliotecas com mudanças de API.
 %além disso, Analizo também tem sido utilizada em diversos estudos
 %desenvolvidos em nosso grupo de pesquisa (seção \ref{trabalhos-analizo}).
 
-\subsubsection{Arquitetura do Analizo}
+\section{Arquitetura do Analizo}
 
 A arquitetura do Analizo é apresentada na Figura \ref{arquitetura-analizo}
 através de uma representação {\it Layered Style} \cite{Clements2002}, cada
@@ -94,7 +97,7 @@ outra ferramenta, outras são desenhadas para prover saída em formato específi
 para aplicações externas, por exemplo, programas para desenho de grafos ou
 visualização de dados.
 
-\subsubsection{Funcionalidades}\label{funcionalidades}
+\section{Funcionalidades}\label{funcionalidades}
 
 \begin{itemize}
 
@@ -142,18 +145,18 @@ distribuição, valores mínimo e maximo. As seguintes métricas são suportadas
 analisados, de forma que o Analizo ignore tais arquivos durante a análise e o
 cálculo de métricas.
 
-\item {\bf Processamento em lote}\label{lote}
-
-A maioria dos estudos quantitativos em engenharia de software envolve aquisição
-de métricas de código-fonte de um grande número de projetos, processar cada
-projeto individualmente é pouco prático, passível de erros e difícil de
-repetir. Analizo pode processar multiplos projetos em lote e produzir arquivo
-de dados CSV com métricas de cada projeto, bem como um resumo com as métricas
-em nível de projeto de todos os projetos. Estes arquivos de dados podem ser
-facilmente importados em ferramentas de estatística ou planilhas para análise
-futura. Esta capacidade de processar em lote pode também ser utilizada para
-analisar várias versões de um mesmo projeto, especialmente útil em estudos
-sobre evolução de software.
+%\item {\bf Processamento em lote}\label{lote}
+%
+%A maioria dos estudos quantitativos em engenharia de software envolve aquisição
+%de métricas de código-fonte de um grande número de projetos, processar cada
+%projeto individualmente é pouco prático, passível de erros e difícil de
+%repetir. Analizo pode processar multiplos projetos em lote e produzir arquivo
+%de dados CSV com métricas de cada projeto, bem como um resumo com as métricas
+%em nível de projeto de todos os projetos. Estes arquivos de dados podem ser
+%facilmente importados em ferramentas de estatística ou planilhas para análise
+%futura. Esta capacidade de processar em lote pode também ser utilizada para
+%analisar várias versões de um mesmo projeto, especialmente útil em estudos
+%sobre evolução de software.
 
 %% Este processamento em lote pode se beneficiar de processamento paralelo dando
 %% mais agilidade e na análise e reduzindo o tempo total de processamento.  A
@@ -162,30 +165,30 @@ sobre evolução de software.
 %% de cache para as informações previamente calculadas, evitando repetição de
 %% processamento.
 
-\item {\bf Histórico de métricas}
+%\item {\bf Histórico de métricas}
+%
+%Algumas vezes pesquisadores precisam processar o histórico de projetos de
+%software de uma forma mais escalável. Analizo pode processar repositórios de
+%controle de versão e prover arquivo de dados CSV com valores de métricas para
+%cada revisão onde o código-fonte foi alterado no projeto, ou pode também gravar
+%os valores diretamente num banco de dados ao invés de usar arquivos CSV. Repositórios Git e
+%Subversion são suportados diretamente, repositórios CVS devem ser convertidos
+%para Git de forma manual.
 
-Algumas vezes pesquisadores precisam processar o histórico de projetos de
-software de uma forma mais escalável. Analizo pode processar repositórios de
-controle de versão e prover arquivo de dados CSV com valores de métricas para
-cada revisão onde o código-fonte foi alterado no projeto, ou pode também gravar
-os valores diretamente num banco de dados ao invés de usar arquivos CSV. Repositórios Git e
-Subversion são suportados diretamente, repositórios CVS devem ser convertidos
-para Git de forma manual.
-
-\item {\bf Grafo de dependência}
-
-Analizo pode gerar saída com informações sobre dependência entre as entidades
-do projeto em um formato adequado para processamento por ferramentas de
-renderização de grafos do Graphviz\footnote{graphviz.org}. A Figura
-\ref{sample-graph} apresenta um exemplo de grafo desenhado pela ferramenta {\it
-dot} do Graphviz a partir da saída gerada pelo Analizo {\it graph}.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.4]{imagens/sample-graph.png}
-\caption{Exemplo de grafo de dependência}
-\label{sample-graph}
-\end{figure}
+%\item {\bf Grafo de dependência}
+%
+%Analizo pode gerar saída com informações sobre dependência entre as entidades
+%do projeto em um formato adequado para processamento por ferramentas de
+%renderização de grafos do Graphviz\footnote{graphviz.org}. A Figura
+%\ref{sample-graph} apresenta um exemplo de grafo desenhado pela ferramenta {\it
+%dot} do Graphviz a partir da saída gerada pelo Analizo {\it graph}.
+%
+%\begin{figure}[h]
+%\center
+%\includegraphics[scale=0.4]{imagens/sample-graph.png}
+%\caption{Exemplo de grafo de dependência}
+%\label{sample-graph}
+%\end{figure}
 
 %% \item {\bf Matriz de evolução}
 %% 
@@ -219,7 +222,7 @@ dot} do Graphviz a partir da saída gerada pelo Analizo {\it graph}.
 
 \end{itemize}
 
-\subsubsection{Uso em trabalhos de pesquisa}
+\section{Uso em trabalhos de pesquisa}
 \label{trabalhos-analizo}
 
 Analizo tem sido extensivamente usado por nosso grupo de pesquisa em diversos
@@ -278,4 +281,25 @@ versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
 podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
 auto-documentadas e podem ser consultadas como páginas de manual UNIX. Analizo
 é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
-será a versão utilizada neste estudo.
+foi a versão utilizada neste estudo.
+
+%% \subsection{Analizo}
+%% 
+%% Numa primeira análise dos valores coletados pelo Analizo notamos uma anomalia
+%% nos valores da métrica CBO, o que nos levou a investigar de perto os motivos,
+%% esta anomalia se apresentava como valores extremamente altos para esta métrica,
+%% bastante discrepante com as demais métricas calculadas.
+%% 
+%% Para entender se estes valores estavam corretor ou não, utilizamos uma outra
+%% ferramenta para cálculo das métricas, em nossos estudos encontramos e
+%% utilizamos uma versão de avaliação da ferramenta {\it SciTools
+%% Understand}\footnote{http://scitools.com/trial-download-3} em sua versão
+%% ``4.0.853'' em Linux 64 bits. Os dados extraídos por esta ferramenta podem ser
+%% encontrados em nosso
+%% repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016/tree/master/dataset/Understand
+%% SciTools}. Eles demonstraram que os valores calculados pelo Analizo estavam
+%% bastante alto em comparação com as demais métricas.
+%% 
+%% Assim, descobrimos que o Analizo tinha de fato um erro no cálculo da métrica
+%% CBO, erro que foi corrigido durante este estudo e disponibilizado na versão
+%% mais recente do Analizo, versão que está sendo utilizada aqui.
