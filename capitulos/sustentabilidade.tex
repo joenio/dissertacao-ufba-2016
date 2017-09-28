@@ -22,16 +22,6 @@ de perdurar, de continuar disponível no futuro, e a sua manutenabilidade.}
 Este estudo tem como objetivo medir e avaliar a sustentabilidade técnica dos
 softwares acadêmicos de análise estática publicados na literatura acadêmica.
 
-%\subsection{Planejamento do estudo}
-
-Coletamos para cada ferramenta selecionada suas métricas de código-fonte
-através da execução da ferramenta {\it analizo metrics}, esta coleta foi
-automatizada pelo script {\it
-analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}
-escrito durante este estudo disponível no
-repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016} desta
-pesquisa.
-
 \subsection{Questões de pesquisa}
 
 Neste estudo as seguintes questões de pesquisa serão investigadas:
@@ -123,30 +113,20 @@ como saída um conjunto de artigos utilizado como entrada na etapa seguinte, a
 \subsubsection{Busca}
 
 Nesta primeira etapa definimos as fontes utilizadas como ponto de partida para
-criar o conjunto inicial de artigos onde será realizada a seleção de software
-acadêmico, o principal critério utilizado na definição destas fontes é que
-tenham um alto potencial de encontrar software acadêmico de análise estática
-publicado como contribuição do artigo.
+selecionar o conjunto inicial de artigos, o critério utilizado na definição
+destas fontes é bastante subjetivo e depende de conhecimento prévio do
+pesquisador, seus pares, e colaboradores.
 
-Este critério é avaliado de maneira subjetiva e depende do conhecimento prévio
-do pesquisador e de seus pares, neste estudo selecionamos como fonte duas
-conferências tradicionais da engenharia de software, SCAM - {\it Source Code
-Analysis and Manipulation Working
-Conference}\footnote{\url{http://www.ieee-scam.org}} e ASE - {\it Automated
-Software Engineering}\footnote{\url{http://ase-conferences.org}}, ambas com um
-largo histórico de publicações sobre análise de programas.
+Neste estudo selecionamos a conferência SCAM - {\it Source Code Analysis and
+Manipulation Working Conference}\footnote{\url{http://www.ieee-scam.org}} e ASE
+- {\it Automated Software Engineering}\footnote{\url{http://ase-conferences.org}},
+ambas com um largo histórico de publicações sobre análise de programas.
+Incluimos todas as ediçoes das duas conferências até o ano de 2015.
 
-Esta primeira atividade deve incluir o maior período de tempo possível de
-ediçoes de cada conferência, analisado cada edição, cada trilha, de cada uma
-das conferências, ASE e SCAM, até o ano de 2015, resultando 1873 artigos em
-formato PDF, cada artigo foi obtido online de forma manual através das
-bibliotecas digitais disponibilizando tais publicações, cada arquivo foi
-copiado localmente e organizado em diretórios separados por conferência e ano
-de edição, para ser processados pela etapa seguinte. Esta etapa explorou o
-histórico de 25 anos de publicação da conferência ASE e 15 anos da conferência
-SCAM, representados na Figura \ref{artigos-por-ano}.
-
-%apresenta a distribuição por edição de cada evento.
+Isto resultou em um conjunto inicial de 1873 artigos, todos estes artigos foram
+copiados localmente em formato PDF e organizados em diretórios, por conferência
+e ano de edição, a Figura \ref{artigos-por-ano} apresenta este total distribuído
+por ano para cada conferência.
 
 \begin{figure}[h]
   \center
@@ -161,52 +141,56 @@ SCAM, representados na Figura \ref{artigos-por-ano}.
 
 \subsubsection{Filtro}
 
-A segunda etapa reduz o número total de artigos obtidos na busca através
-de um critério de corte abrangente pensado para reduzir este enorme volume
-de artigos exluindo aqueles que não se enquadram nos critérios definidos
-na Tabela \ref{codes-for-filter}.
+A segunda etapa filtra o conjunto total de artigos mantendo apenas aqueles que
+combinam com os critérios definidos na Tabela \ref{codes-for-filter}, estes
+critérios são aplicados de forma automática em cada artigo do conjunto, se um
+artigo não satisfaz um ou mais de um destes critérios ele é excluído do
+conjunto final.
 
 \begin{table}[h]
 \caption{Critérios para filtro de artigos}
 \centering
-\begin{tabular}{ l l l }
+\begin{tabular}{ l l }
   \hline
-  Código                          & String de filtro                   & Exemplos \\
+  Critério                        & String da busca textual               \\
   \hline
-  Menciona software acadêmico     & {\tt tool} ou {\tt framework}         & ...      \\
-  Disponibiliza online            & {\tt download} ou {\tt available}     & ...      \\
-  Identifica fonte                & {\tt http} ou {\tt ftp}               & ...      \\
-  Domínio de análise estática     & {\tt static analysis} ou {\tt parser} & ...      \\
+  Menciona software acadêmico     & {\tt tool} ou {\tt framework}         \\
+  Disponibiliza online            & {\tt download} ou {\tt available}     \\
+  Identifica fonte                & {\tt http} ou {\tt ftp}               \\
+  Domínio de análise estática     & {\tt static analysis} ou {\tt parser} \\
   \hline
 \end{tabular}
 \label{codes-for-filter}
 \end{table}
 
-Estes critérios são aplicados de forma automática numa busca textual aplicada
-em todo o conteúdo de cada artigo selecionado na etapa anterior, a string de
-busca final tem o objetivo geral de ser abrangente a fim de evitar falsos
-negativos, ou seja, evitar que o filtro deixe de fora artigos que publiquem
-software de análise estática.
+O filtro automático percorre os arquivos pdf de cada artigo, aplicando uma
+busca textual em todo o conteúdo, incluindo título, resumo, corpo, referências,
+apêndices, anexos e demais seções do arquivo. Esta etapa excluiu 1432 artigos
+do conjunto total, restando agora 441 artigos.
 
-Esses termos devem encontrar artigos com publicação de softwares científicos do
-domínio de análise estática de código fonte com disponibilidade para {\it
-download}, seja binário ou código fonte, é esperado encontrar resultados com
-falso positivo, ou seja, artigos com publicação de software acadêmico de outros
-domínios, ou artigos com publicação de software acadêmico mas sem menção
-à fonte online para obtenção, entre outras situações.
+%identificará os possíveis falsos negativos deste conjunto reduzido deixando-os
+%fora do resultado final.
 
-Nesta reduzimos o conjunto total de artigos para 441 artigos, a etapa seguinte
-identificará os possíveis falsos negativos deste conjunto reduzido deixando-os
-fora do resultado final.
+%Cada critério são aplicados de forma automática numa busca textual aplicada
+%em todo o conteúdo de cada artigo selecionado na etapa anterior, a string de
+%busca final tem o objetivo geral de ser abrangente a fim de evitar falsos
+%negativos, ou seja, evitar que o filtro deixe de fora artigos que publiquem
+%software de análise estática.
+
+%é esperado encontrar resultados com
+%falso positivo, ou seja, artigos com publicação de software acadêmico de outros
+%domínios, ou artigos com publicação de software acadêmico mas sem menção
+%à fonte online para obtenção, entre outras situações.
 
 \subsubsection{Seleção}
 
-Na terceira e última etapa avaliamos se, de fato, os artigos contribuem com software
-acadêmico de análise estática dentro dos critérios de disponibilidade
-descritos na Tabela \ref{codes-for-selecao}.
+Na terceira e última etapa os 441 artigos foram lidos com o principal objetivo
+de identificar se entre as contribuições do estudo há menção a software
+acadêmico de análise estática, identificado minimamente com nome e URL para
+obtenção online, essa leitura foi guiada pelos critérios descritos na Tabela \ref{codes-for-selecao}.
 
 \begin{table}[h]
-\caption{Codes for functions \cite{howison2016software}}
+\caption{Critério for functions \cite{howison2016software}}
 \centering
 \begin{tabular}{ l p{12cm} }
   \hline
@@ -221,18 +205,35 @@ descritos na Tabela \ref{codes-for-selecao}.
 \label{codes-for-selecao}
 \end{table}
 
-Esta seleção é feita a partir de uma leitura superficial do artigo incluindo
-título, introdução, resultados e conclusões, o objetivo é identificar se o
-artigo publica software acadêmico e indica onde obter uma cópia do software.
+Quando a leitura do título, introdução, resultados e conclusão não é suficiente
+para identificar o software utilizamos as demais seções do artigo, alguns
+artigos descrevem a contribuição de software acadêmico em seções específicas, é
+comum, por exemplo, o uso de notas de rodapé para indicar URL do projeto de
+software acadêmico.
 
-Quando esta leitura inicial não é o suficiente para
-identificar se há publicação de software, outras seções são lidas, alguns
-artigos descrevem a implementação do software em seções específicas, outros
-indicam detalhes do software ao longo do texto, é comum o uso de
-notas de rodapé para indicar onde o software está disponível. Software
-acadêmico que seja mais abrangente do que apenas análise estática de
-código fonte mas que contenham esta função em seu conjunto também são
-selecionados.
+\begin{table}[h]
+\caption{Esquema de características coletadas para cada software acadêmico}
+\centering
+\begin{tabular}{ l p{11cm} }
+  \hline
+  Característica           & Explicação \\
+  \hline
+  Nome do software         & O nome do projeto de software \\
+  URL                      & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
+  Título do artigo         & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
+  Nome do evento           & Nome da conferência onde o software foi publicado \\
+  Ano do evento            & Ano da edição da conferência onde o artigo foi publicado \\
+  \hline
+\end{tabular}
+\label{coding-scheme-software-1}
+\end{table}
+
+Encontramos 62 artigos contribuindo com 60 projetos de software acadêmico de
+análise estática, o número de projetos é menor porque alguns foram mencionados
+em mais de um artigo, a Figura \ref{softwares-por-ano} apresenta os resultados
+distribuídos por ano. Cada software acadêmico do conjunto foi caracterizado com
+as informações até esta etapa: nome do software, URL do software, título do
+artigo, título e ano da confêrencia, Tabela \ref{coding-scheme-software-1}.
 
 \begin{figure}[h]
   \center
@@ -241,34 +242,44 @@ selecionados.
   \label{softwares-por-ano}
 \end{figure}
 
-Nesta última etapa selecionamos 62 artigos mencionando como uma das
-contribuições um software acadêmico, identificado com nome e URL, disponível
-para download segundo seus autores. Dois dos resultados de software acadêmico
-encontrados são mencionados em dois artigos, resultado ao final 60 projetos de
-software acadêmico, apresentados na Figura \ref{softwares-por-ano}
-distribuídos por ano.
+%cada um destes projetos foram devidamente identificados
+%com nome e URL, e estão disponíveis para download segundo os autores.
+
+%Dois dos resultados de software acadêmico
+%encontrados são mencionados em dois artigos, resultado ao final 60 projetos de
+%software acadêmico, 
+
+%Software
+%acadêmico que seja mais abrangente do que apenas análise estática de
+%código fonte mas que contenham esta função em seu conjunto também são
+%selecionados.
 
 \subsection{Caracterização dos projetos selecionados}
 
-Cada software acadêmico selecionado foi caracterizado com informações obtidas a
-em fontes documentais diversas, como, artigos onde o software foi selecionado,
-fonte online sobre o projeto, site ou repositório de código fonte, manuais, e o
-próprio código fonte quando disponível, as informações coletadas, descritas na
-Tabela \ref{coding-scheme-software}.
+As informações coletadas foram extendidas através de uma pesquisa livre em
+diversas fontes, como, artigo onde o software foi publicado, site do projeto,
+repositório de código fonte, manuais e o próprio código fonte, quando
+disponível.
+
+Toda a pesquisa foi realizada de forma manual, as informações descritas na
+Tabela \ref{coding-scheme-software} foram coletadas navegando no site do
+projeto, abrindo documentos, manuais e artigos, quando o código fonte está
+disponível o código fonte foi explorado em busca de informações sobre licença,
+tipo de entrada e linguagens suportadas.
+
+%O objetivo foi conseguir caracterizar cada software com todas
+%as 
+%Os softwares disponíveis foram avaliados em relação à disponibilidade de código
+%fonte e à licença utilizada, essas informações, ...
 
 \begin{table}[h]
 \caption{Esquema de características coletadas para cada software acadêmico}
 \centering
 \begin{tabular}{ l p{11cm} }
   \hline
-  Código                   & Explicação \\
+  Característica           & Explicação \\
   \hline
-  Nome do software         & O nome do projeto de software \\
   Descrição do software    & A descrição do projeto de software \\
-  URL                      & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
-  Título do artigo         & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
-  Nome do evento           & Nome da conferência onde o software foi publicado \\
-  Ano do evento            & Ano da edição da conferência onde o artigo foi publicado \\
   Código fonte disponível  & É possível acessar o código fonte de alguma forma? \\
   Acesso                   & Podemos acessar o software agora? Pode receber os seguintes valores: Sem Acesso, Acesso Pago, Acesso Gratuito \\
   Distribuição             & Como o software é distribuído e pode ser acessado? Pode receber os seguintes valores: gratis, foss, proprietário \\
@@ -282,20 +293,18 @@ Tabela \ref{coding-scheme-software}.
 \label{coding-scheme-software}
 \end{table}
 
-Os softwares disponíveis foram avaliados em relação à disponibilidade de código
-fonte e à licença utilizada, essas informações, ...
+Para identificar em qual linguagem o software foi escrito utilizamos a
+ferramenta livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount}.
 
-A ferramenta livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount}
-foi utilizada para identificar a linguagem de programação em que cada software
-é escrito.
+\subsection{Menções ao software}
 
-\subsection{Citações e menções}
-
-Coletamos também para cada software acadêmico todas as menções encontradas nas
-bibliotecas digitais IEEE Explore e ACM, a busca foi realizada usando o nome do
-software, uma string de busca foi criada usando o nome do software e quando
-necessário compondo com outras características, alguns exemplos de strings de
-busca são apresentados na Tabela \ref{exemplos-strings}.
+Após caracterizar cada software acadêmico, com as informações das Tabelas
+\ref{coding-scheme-software} e \ref{coding-scheme-software-1}, coletamos, para
+cada software, as menções na literatura acadêmica ao nome do software, a
+pesquisa foi realizada através das bibliotecas digitais ACM e IEEE Xplore, em
+alguns casos foi necessário montar uma string de busca componto com outras
+características do software além do nome, alguns exemplos são apresentados na
+Tabela \ref{exemplos-strings}.
 
 \begin{table}[h]
 \caption{Exemplos de strings de busca por menções}
@@ -317,22 +326,44 @@ busca são apresentados na Tabela \ref{exemplos-strings}.
 \label{exemplos-strings}
 \end{table}
 
-Todos os resultados, do IEEE e ACM, foram agrupados num único arquivo no
-formato BibTeX, as duas bibliotecas possuem a opção de fazer download do
-resultado de uma busca neste formato de arquivo, os resultados foram unificados
-para reduzir duplicidades.
+Os resultados foram armazenados localmente em arquivos no formato BibTeX, para
+cada software os resultados foram agrupados num arquivo único, sem duplicidades
+entre os resultados trazidos por cada biblioteca. Além deste arquivo, com os
+metadados do artigo, autores, ano de publicação, conferência, jornal, etc,
+copiamos também o próprio artigo no formato pdf.
 
-Para cada resultado copiamos localmente o artigo em formato pdf, cada artigo
-foi lido em busca de encontrar menções ao nome do software,
-em qual contexto o software é mencionado e de que forma é mencionado,
-a Tabela \ref{coding-scheme-mention} resume cada
-tipo de menção com explicação dos casos em que se enquadram,
-o método utilizado
-para esta busca foi realizado com auxílio do mecanismo de busca do leitor de
-pdf\footnote{Utilizamos o software livre Evince versão 3.22.1} utilizado para
-leitura dos artigos, com o auxílio da busca encontramos cada ocorrência ao nome
-do software tomando nota sobre o contexto e o uso que é feito do software neste
-contexto.
+A partir de então, já com os resultados das buscas em mãos, iniciamos a leitura
+de cada artigo em busca de confirmar se os autores, de fato, mencionam o
+software acadêmico em alguma seção do artigo, e se mencionam, em qual contexto
+o software acadêmico é mencionado, o software pode ser mencionado de diversas
+formas e diversas vezes num mesmo artigo, podendo variar deste uma simples
+menção nos trabalhos relacionados até uma grande contribuição ao software.
+
+A avaliação dos diversos artigos nos gerou uma escala de tipos de menção ao
+software, detalhado na Tabela \ref{coding-scheme-mention}, com 5 valores
+distintos, onde o último tipo de menção com maior valor inclui todos os demais,
+a idéia é que um tipo de menção com maior peso inclui implicitamente o tipo de
+menção de menor peso, e assim sucessivamente.
+
+%se os autores mencionam alguma contribuição
+%ao software, ou se o software foi utilizado apenas para coleta de dados, ou se
+%nem mesmo mencionam o nome do software.
+
+%a busca por ocorrências ao nome do
+%software foi realizado com o auxílio da funcionalidade de busca do leitor de
+%pdf utilizado para ...
+%mecanismo de busca do leitor de
+%pdf\footnote{Utilizamos o software livre Evince versão 3.22.1} utilizado para
+%leitura dos artigos, com o auxílio da busca encontramos cada ocorrência ao nome
+%do software tomando nota sobre o contexto e o uso que é feito do software neste
+%contexto
+
+%foi lido em busca de encontrar menções ao nome do software,
+%em qual contexto o software é mencionado e de que forma é mencionado,
+%a Tabela \ref{coding-scheme-mention} resume cada
+%tipo de menção com explicação dos casos em que se enquadram,
+%o método utilizado
+%para .
 
 \begin{table}[h]
 \caption{Tipos de menções ao software acadêmico encontrados nos artigos}
@@ -342,7 +373,8 @@ contexto.
   Tipo da menção   & Peso & Explicação \\
   \hline
 % * tipo e peso da citação (peso em ordem crescente)
-  Cita o software  & 0.1    & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros \\
+  Não menciona o software  & 0  & Não menciona o nome do software em nenhum contexto \\
+  Menciona o software  & 0.1    & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros \\
   Usa o software   & 0.25    & Avalia ou caracteriza o software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o software como parte de uma solução, implementação, etc; Cria um software derivado mas não disponibiliza as contribuições \\
   Contribui ou integra & 0.5 & Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados \\
   Contribui ou cria & 1 & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado \\
@@ -351,49 +383,44 @@ contexto.
 \label{coding-scheme-mention}
 \end{table}
 
-Como os resultados da busca foram copiados em seu formato BibTeX diretamente
-das bibliotecas digitais, temos para cada um dos artigos todos os seus
-metadados, autores, ano de publicação, conferência, jornal, etc. Os autores de
-cada uma das menções ao software, por exemplo, serão utilizados na fase de
-análise para calcular o quanto de autores novos começaram a publicar sobre
-certo software acadêmico.
+Cada artigo assume, em relação ao software, um valor nesta escala de tipos de
+menção, esta informação foi armazenada no próprio arquivo BibTeX num campo
+adicional aos demais campos dos metadados do artigo, assim, ao final temos os
+metadados do artigo como, título, autores, ano de publicação, etc e temos
+também o tipo de menção que é feita ao software, se apenas cita como exemplo,
+se contribui com novos algoritmos e técnicas, se avalia, ou apenas descreve o
+software comparando-o com outro software.
+
+%das bibliotecas digitais, temos para cada um dos artigos todos os seus
+%metadados,. Os autores de
+%cada uma das menções ao software, por exemplo, serão utilizados na fase de
+%análise para calcular o quanto de autores novos começaram a publicar sobre
+%certo software acadêmico.
 
 \subsection{Métricas de software}
 
-Coletamos métricas de produto e projeto de cada software, como, número total de
-lançamentos, datas e versões de cada lançamento, número de commits no
-repositório git e calculamos a complexidade estrutural do código fonte do
-software.
+Ao final, coletamos também algumas métricas do software em relação ao seu
+ecossistema de software e em relação a sua qualidade interna, coletamos número
+total de lançamentos, data e número de versão de cada lançamento, número de
+commits e a complexidade estrutural do código fonte.
 
-As informações de lançamentos, versões e datas de cada lançamento foram coletadas
-manualmente, geralmente disponíveis em arquivos de changelog ou em tags no
-repositório de código fonte.
+As informações sobre lançamentos foram coletadas manualmente em arquivos de
+changelog, no site do projeto, ou em tags no próprio repositório de código
+fonte, o número de commits foi coletado com o uso do git via linha de comando,
+o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
+coletada com software de análise estática Analizo.
 
-O número de commits foi agrupado por ano, para cada software, apenas entre os
-que estão disponível em repositórios git, coletamos o número total de commits
-realizado e agrupamos por ano.
+\section{Resultados} % Análise dos dados
 
-Os softwares com código fonte disponível foi coletado a métrica de complexidade
-estrutural. A coleta dessa métrica foi realizada pelo Analizo, uma suíte de
-ferramentas para análise de código fonte, apresentada em detalhes no Capítulo
-\ref{analizo}.
+Os dados coletados sobre as menções a cada software foram acrescentados com uma
+nova informação calculada a partir da autoria de cada artigo mencionando o
+software, representado numa escala de peso quantos novos atores foram incluídos
+no ecossistema daquele software, isto foi feito comparando o conjunto de autores
+da publicaçao com o conjunto acumulado de todos os autores anteriores, 
+podendo assumir um dos valores da Tabela \ref{coding-scheme-author}.
 
-
-
-
-
-
-%\section{Análise dos dados}
-\section{Resultados}
-
-os nomes dos autores foram normalizados,
-e para cada artigo citando um software extraimos e identificamos o nível
-de ineditismo daqueles pesquisadores com aquele software, os valores
-são os seguites:
-
-e as demais coletadas até aqui,
-foram distribuídas cronologicamente, e interpretadas numa perspectiva histórica
-sobre a sustentabilidade técnica dos softwares acadêmicos de análise estática.
+%segundo a publicação
+%representa
 
 \begin{table}[h]
 \caption{Autoria das menções ao software acadêmico encontradas nos artigos}
@@ -411,7 +438,21 @@ sobre a sustentabilidade técnica dos softwares acadêmicos de análise estátic
 \label{coding-scheme-author}
 \end{table}
 
-Escala de peso da autoria ... Tabela \ref{coding-scheme-author} ...
+A comparação entre os nomes do autores passou antes pela normalização
+no formato de representação, visto que cada artigo utiliza um formato
+de nome diferente, transformamos, por exemplo, ``Bajaj, Kon'' em ``Bajaj K.'',
+``Costa, Kim A.'' em ``Costa K. A.'', ``Rajan, Sreeranga P.'' em ``Rajan S. P.'',
+``Pol, Jaco van de'' em ``Pol J. van de'', ``Zijiang Yang'' em ``Yang Z.'',
+e assim comparamos dois nomes considerando que cada um destes nomes representa,
+de forma única, um autor.
+
+
+e as demais coletadas até aqui,
+foram distribuídas cronologicamente, e interpretadas numa perspectiva histórica
+sobre a sustentabilidade técnica dos softwares acadêmicos de análise estática.
+
+
+Escala de peso da autoria ... 
 
 %\subsection{Seleção de software acadêmico}
 
