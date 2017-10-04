@@ -2,7 +2,7 @@
 use Modern::Perl '2014';
 use experimental 'signatures';
 use File::Basename;
-use YAML qw( LoadFile DumpFile );
+use YAML qw( LoadFile Dump );
 use Text::BibTeX;
 use DateTime::Format::HTTP;
 use List::Util qw( uniq max min );
@@ -420,22 +420,13 @@ sub format_collected_data {
   }
 }
 
-if ($#ARGV < 1 || $ARGV[0] ne '-i' || length($ARGV[1]) == 0) {
+if (@ARGV < 1) {
   warn "E: missing options!";
-  say "Usage: $0 -i <dataset-dir> -o <output-filename>";
+  say "Usage: $0 <dataset-dir>";
   exit 1;
 }
-shift @ARGV;
 our $DATASET_DIR = shift @ARGV;
-if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
-  warn "E: missing options!";
-  say "Usage: $0 -i <dataset-dir> -o <output-filename>";
-  exit 1;
-}
-shift @ARGV;
-our $OUTPUT_FILENAME = shift @ARGV;
 
 my %softwares = load_all_collected_data($DATASET_DIR);
 format_collected_data \%softwares;
-DumpFile($OUTPUT_FILENAME, %softwares);
-say "✓ $OUTPUT_FILENAME";
+print Dump(%softwares);
