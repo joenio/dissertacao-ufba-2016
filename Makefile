@@ -22,10 +22,11 @@ summarize:
 filter:
 	./bin/filter-papers -o dataset/papers.txt
 
-render-templates:
+render-templates: summarize
 	./bin/render-template -i dataset/academic-softwares.yml -t templates/softwares-data-summary.tex.epl -o capitulos/softwares-data-summary.tex
 	./bin/render-template -i dataset/academic-softwares.yml -t templates/softwares-data-table.tex.epl -o capitulos/softwares-data-table.tex
-	./bin/render-template -i dataset/academic-softwares.yml -t templates/softwares-data-table.csv.epl -o dataset/softwares-data-table.csv
+	#./bin/render-template -i dataset/academic-softwares.yml -t templates/softwares-data-table.csv.epl -o dataset/softwares-data-table.csv
+	./bin/render-template -i dataset/academic-softwares.yml -t templates/software-mentions.csv.epl -o dataset/softwares-mentions.csv
 
 charts:
 	./bin/chart-softwares-data -i dataset/academic-softwares.yml -o imagens/softwares-charts/
