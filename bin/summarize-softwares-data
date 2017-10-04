@@ -172,6 +172,21 @@ sub sum_weight_by {
   return %weight_by_year_sum;
 }
 
+sub count_mentions_by_type {
+  my $type = shift;
+  my %citations_by_year = @_;
+  my %count = ();
+  foreach my $year (keys %citations_by_year) {
+    $count{$year} = {};
+    foreach (keys %{ $citations_by_year{$year} }) {
+      if ($citations_by_year{$year}{$_}{contribution_weight} == $type) {
+        $count{$year}++;
+      }
+    }
+  }
+  return %count;
+}
+
 sub measure_authorship_weight {
   my %citations = @_;
   my %citations_by_year = group_citations_by_year(@_);
@@ -270,6 +285,19 @@ sub load_collected_data($software_dir) {
   # group citations by year
   my %citations_by_year = group_citations_by_year(%uniq);
   $software{citations}{by_year} = \%citations_by_year;
+
+  #my %count = count_mentions_by_type %citations_by_year;
+  #$software{citations}{count} = \%count;
+
+  my %count = ();
+  %count = count_mentions_by_type 0.1, %citations_by_year;
+  $software{citations}{mention_count} = \%count;
+  %count = count_mentions_by_type 0.25, %citations_by_year;
+  $software{citations}{use_count} = \%count;
+  %count = count_mentions_by_type 0.5, %citations_by_year;
+  $software{citations}{contribute_count} = \%count;
+  %count = count_mentions_by_type 1, %citations_by_year;
+  $software{citations}{create_count} = \%count;
 
   # sum contribution weight by year
   my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);
