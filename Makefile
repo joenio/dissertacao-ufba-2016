@@ -28,7 +28,7 @@ render-templates: summary
 	./bin/render-template cache/dataset.yml templates/dataset-table.tex.epl > result-documents/dataset-table.tex
 
 charts:
-	./bin/chart-softwares-data -i dataset/academic-softwares.yml -o imagens/softwares-charts/
+	./bin/chart-dataset -i cache/dataset.yml -o result-documents/charts/
 
 citations=$(wildcard dataset/academic-softwares/*)
 merge-bibtex: $(citations)
