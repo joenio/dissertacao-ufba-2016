@@ -17,36 +17,36 @@ que usem bibliotecas com mudanças de API.
 %além disso, Analizo também tem sido utilizada em diversos estudos
 %desenvolvidos em nosso grupo de pesquisa (seção \ref{trabalhos-analizo}).
 
-\section{Arquitetura do Analizo}
-
-A arquitetura do Analizo é apresentada na Figura \ref{arquitetura-analizo}
-através de uma representação {\it Layered Style} \cite{Clements2002}, cada
-camada no diagrama usa apenas os serviços oferecidos pela camada diretamente
-abaixo dela.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.3]{imagens/analizo-architecture.png}
-\caption{Arquitetura do Analizo, usando Layered Style \cite{Clements2002}}
-\label{arquitetura-analizo}
-\end{figure}
-
-O {\it Core} contém as estruturas de dados usadas para armazenar informações a
-respeito do código-fonte sendo analisado, lista de módulos\footnote{o
-conceito ``módulo'' é usado como um termo abrangente para designar diferentes
-tipos de estruturas usados em desenvolvimento de software, como classes e
-arquivos fonte C}, elementos dentro de cada módulo (atributos, variáveis,
-métodos, funções) e informações de dependência (chamada, herança, etc). Esta
-camada implementa a maior parte da lógica de negócio do Analizo, e não depende
-de nenhuma outra camada.
-
-A camada {\it Extractor} lida com as informaçoes de código-fonte obtidas pelas
-diferentes estratégias implementadas no Analizo. Os extratores obtém
-informações do código-fonte e armazenam em estruturas de dados na camada {\it
-Core}. Adicionar um novo extrator requer apenas a criação de uma nova subclasse
-que faça interface com uma ferramenta externa ou que ela própria realize análise
-de código-fonte.
-
+%% \section{Arquitetura do Analizo}
+%% 
+%% A arquitetura do Analizo é apresentada na Figura \ref{arquitetura-analizo}
+%% através de uma representação {\it Layered Style} \cite{Clements2002}, cada
+%% camada no diagrama usa apenas os serviços oferecidos pela camada diretamente
+%% abaixo dela.
+%% 
+%% \begin{figure}[h]
+%% \center
+%% \includegraphics[scale=0.3]{imagens/analizo-architecture.png}
+%% \caption{Arquitetura do Analizo, usando Layered Style \cite{Clements2002}}
+%% \label{arquitetura-analizo}
+%% \end{figure}
+%% 
+%% O {\it Core} contém as estruturas de dados usadas para armazenar informações a
+%% respeito do código-fonte sendo analisado, lista de módulos\footnote{o
+%% conceito ``módulo'' é usado como um termo abrangente para designar diferentes
+%% tipos de estruturas usados em desenvolvimento de software, como classes e
+%% arquivos fonte C}, elementos dentro de cada módulo (atributos, variáveis,
+%% métodos, funções) e informações de dependência (chamada, herança, etc). Esta
+%% camada implementa a maior parte da lógica de negócio do Analizo, e não depende
+%% de nenhuma outra camada.
+%% 
+%% A camada {\it Extractor} lida com as informaçoes de código-fonte obtidas pelas
+%% diferentes estratégias implementadas no Analizo. Os extratores obtém
+%% informações do código-fonte e armazenam em estruturas de dados na camada {\it
+%% Core}. Adicionar um novo extrator requer apenas a criação de uma nova subclasse
+%% que faça interface com uma ferramenta externa ou que ela própria realize análise
+%% de código-fonte.
+%% 
 %% Atualmente existem dois extratores, ambos fazem interface
 %% com ferramentas externas de análise estática de código-fonte:
 %% 
@@ -62,40 +62,40 @@ de código-fonte.
 %%   uma ferramenta que calcula o número efetivo de linhas de código.
 %% 
 %% \end{itemize}
-
-A camada {\it Metrics} processa as estruturas de dados do {\it Core} para
-calcular métricas, até o momento Analizo suporta um conjunto razoável de
-métricas (listadas na Seção \ref{metricas}), uma representação desta camada
-pode ser vista no diagrama da Figura \ref{arquitetura-metrics-analizo}.
-
-A camada {\it Output} é responsável por lidar com diferentes formatos de
-arquivos.  Atualmente, apenas o formato DOT é implementado no Analizo para
-representar grafo de dependencia, adicionar novos formatos é simplesmente
-adicionar novas classes nesta camada.
-
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.4]{imagens/analizo-metrics-architecture.png}
-\caption{Arquitetura do módulo metrics em detalhes, usando Layered Style \cite{Clements2002}}
-\label{arquitetura-metrics-analizo}
-\end{figure}
-
-A última camada, {\it Tools}, fornece um conjunto de ferramentas de linha de comando que
-constituem a interface do analizo, tanto para usuários finais quanto para
-aplicações de mais alto nível. Estas ferramentas usam serviços providos pelas
-outras camadas: eles instanciam as estruturas de dados do {\it Core},
-inicializam um ou mais extratores, opcionalmente executam o processador de
-métricas, instanciam um módulo de formato de saída, e gerencia todos eles para
-prover o resultado desejado. A maioria das funcionalidades descritas na Seção
-\ref{funcionalidades} são implementadas nesta camada.
-
-Estas ferramentas são pensadas na filosofia UNIX: fazem uma tarefa
-especializada e geram uma saída que pode ser utilizada como entrada para outras
-ferramentas, seja para o próprio Analizo ou para ferramentas externas. Algumas
-das ferramentas implementadas no Analizo são feitas consumindo saída gerada por
-outra ferramenta, outras são desenhadas para prover saída em formato específico
-para aplicações externas, por exemplo, programas para desenho de grafos ou
-visualização de dados.
+%% 
+%% A camada {\it Metrics} processa as estruturas de dados do {\it Core} para
+%% calcular métricas, até o momento Analizo suporta um conjunto razoável de
+%% métricas (listadas na Seção \ref{metricas}), uma representação desta camada
+%% pode ser vista no diagrama da Figura \ref{arquitetura-metrics-analizo}.
+%% 
+%% A camada {\it Output} é responsável por lidar com diferentes formatos de
+%% arquivos.  Atualmente, apenas o formato DOT é implementado no Analizo para
+%% representar grafo de dependencia, adicionar novos formatos é simplesmente
+%% adicionar novas classes nesta camada.
+%% 
+%% \begin{figure}[h]
+%% \center
+%% \includegraphics[scale=0.4]{imagens/analizo-metrics-architecture.png}
+%% \caption{Arquitetura do módulo metrics em detalhes, usando Layered Style \cite{Clements2002}}
+%% \label{arquitetura-metrics-analizo}
+%% \end{figure}
+%% 
+%% A última camada, {\it Tools}, fornece um conjunto de ferramentas de linha de comando que
+%% constituem a interface do analizo, tanto para usuários finais quanto para
+%% aplicações de mais alto nível. Estas ferramentas usam serviços providos pelas
+%% outras camadas: eles instanciam as estruturas de dados do {\it Core},
+%% inicializam um ou mais extratores, opcionalmente executam o processador de
+%% métricas, instanciam um módulo de formato de saída, e gerencia todos eles para
+%% prover o resultado desejado. A maioria das funcionalidades descritas na Seção
+%% \ref{funcionalidades} são implementadas nesta camada.
+%% 
+%% Estas ferramentas são pensadas na filosofia UNIX: fazem uma tarefa
+%% especializada e geram uma saída que pode ser utilizada como entrada para outras
+%% ferramentas, seja para o próprio Analizo ou para ferramentas externas. Algumas
+%% das ferramentas implementadas no Analizo são feitas consumindo saída gerada por
+%% outra ferramenta, outras são desenhadas para prover saída em formato específico
+%% para aplicações externas, por exemplo, programas para desenho de grafos ou
+%% visualização de dados.
 
 \section{Funcionalidades}\label{funcionalidades}
 
