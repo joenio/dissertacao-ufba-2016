@@ -45,6 +45,10 @@ instalação em:
 
 * http://www.analizo.org/installation.html
 
+Tenha o cuidado de instalar a versão `1.19.1` do Analizo corretamente:
+
+    apt-get install doxyparse=1.8.11 analizo=1.19.1
+
 Para executar use o make:
 
     make analyze
@@ -78,17 +82,6 @@ Use o make:
 O resultado do comando acima é gravado no arquivo
 `capitulos/softwares-summary.tex`.
 
-## Chave de acesso ao IEEE Xplore API
-
-1 criar api key:
-
-https://developer.ieee.org/member/register
-Key: yx99dre536znna6qdhafdqns
-
-2 registrar aplicação
-
-https://developer.ieee.org/apps/register
-
 ## Referências sobre estatística
 
 ### Vídeo: FGV / IBRE – Estatística com R: 16 Quantis e Percentis
@@ -120,6 +113,8 @@ https://developer.ieee.org/apps/register
 * Hilmer Neri
 * Talita Gentil
 * Jonei Costa
+* José Flávio
+* Jannine (IBICT)
 
 ## Créditos
 
