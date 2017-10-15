@@ -25,7 +25,8 @@ filter:
 
 render-templates: summary
 	./bin/render-template cache/dataset.yml templates/dataset-summary.tex.epl > result-documents/dataset-summary.tex
-	./bin/render-template cache/dataset.yml templates/dataset-table.tex.epl > result-documents/dataset-table.tex
+#	./bin/render-template cache/dataset.yml templates/dataset-table.tex.epl > result-documents/dataset-table.tex
+	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
 
 charts:
 	./bin/chart-dataset -i cache/dataset.yml -o result-documents/charts/
