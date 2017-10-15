@@ -24,6 +24,10 @@ com poucos usuários, com ciclos de vida curtos, e encerrados quando o financiam
 bem como, comunidades desconectadas e paralelas, incompatibilidades entre projetos em um mesmo domínio, 
 e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it re-boots}).
 
+\section{Fundamentação}
+
+(definir longevidade)
+
 \section{Definição} \label{estudo1:definicao} % {{{
 
 % Por que o estudo será realizado?
@@ -105,37 +109,29 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 % }}}
 
-
-% DEFINIR: * projeto de software acadêmico de análise estática
-%          * longevidade
-
 \section{Planejamento do Estudo} \label{estudo1:planejamento}
 
 Realizamos duas grandes etapas neste estudo, a primeira com objetivo de buscar
 na literatura acadêmica publicações realizando contribuições em software de
 análise estática, a segunda com objetivo de caracterizar os projetos a partir
-de fontes documentais variadas.
-
-\subsection{Seleção dos projetos de software acadêmico de análise estática} % {{{
-
-A seleção dos projetos de software acadêmico de análise estática foi realizada
-através de uma revisão de literatura acadêmica organizada em três etapas
-distintas -- busca, filtro e seleção -- com critérios de inclusão e exclusão
-utilizados para avaliar as publicações em cada etapa.
-
-Cada etapa deste procedimento, representada na Figura
-\ref{etapas-selecao-software}, produz como saída um conjunto de artigos que
-atendem aos critérios de inclusão e exclusão definidos naquela etapa, estes
-artigos são utilizados como entrada na etapa seguinte. A última etapa --
-seleção -- gera como saída o conjunto final de artigos com publicação de
-software acadêmico de análise estática.
+de fontes documentais variadas. Figura \ref{estudo1-etapas}.
 
 \begin{figure}[h]
   \center
-  \includegraphics[scale=0.21]{imagens/etapas-selecao-software.png}
-  \caption{Etapas da seleção de projetos de software acadêmico}
-  \label{etapas-selecao-software}
+  \includegraphics[scale=0.4]{imagens/estudo1-etapas.png}
+  \caption{Etapas do estudo}
+  \label{estudo1-etapas}
 \end{figure}
+
+\subsection{Revisão de literatura com publicação de software acadêmico de análise estática} % {{{
+
+A seleção de artigos com publicação de software acadêmico de análise estática
+foi realizada através de uma revisão de literatura organizada em três
+atividades -- busca, filtro e seleção -- cada etapa deste procedimento produz
+como saída um conjunto de artigos que atendem aos critérios de inclusão e
+exclusão definidos naquela atividade, estes artigos são utilizados como entrada
+na etapa seguinte.  A última atividade -- seleção -- gera como saída o conjunto
+final de artigos com publicação de software acadêmico de análise estática.
 
 \subsubsection{Busca}
 
@@ -148,12 +144,13 @@ vista aumentar e potencializar o número total de projetos selecionados e
 busca-se conferências com histórico de publicações sobre o domínio de aplicação
 do estudo, neste caso, análise estática.
 
-Deve-se definir uma data final limite como critério de inclusão e exclusão,
-sendo que a data inicial é determinada pelo histórico da conferência, devendo
-englobar as edições iniciais até a última definido pela data limite.
+Todos os artigos publicados nas conferências são incluídos, deve-se definir uma
+data final limite como critério de inclusão e exclusão, sendo que a data
+inicial é determinada pelo histórico da conferência, devendo englobar as
+edições iniciais até a última definido pela data limite.
 
 Em casos de conferências tradicionais com longa data de existência, não é raro
-que a conferência mude de nome ao longo de história, neste caso adotamos como
+que a conferência mude de nome ao longo do tempo, neste caso adotamos como
 nome da conferência o nome mais recente e consideramos todos os outros nomes
 que se passou como sendo de uma única conferência, ou seja, o nome mais
 recente, mesmo que isto inclua conferencias distintas que tornaram-se uma em
@@ -165,26 +162,18 @@ são todos organizados em pastas por nome e ano da conferência e são também
 registrados os títulos de cada artigo, além do nome da conferência e ano de
 edição da conferência.
 
-% DUVIDA: preciso dar detalhes sobre os arquivos, formato pdf, como organizei
-%    em pastas, por ano, conferencia, etc?
-
-% PDF 
-
-% detalhar tudo, arquivos, planilhas, formato, 
-% para coletar após alguns meses defini planilha, com os campos X Y e Z,
-% é interessante para quem lê para saber, ...
-
-% DUVIDA: usei libreoffice, preciso dar detalhes? fazer referencia ao nome do
-%    arquivo, colunas, estrutura interna da planilha?
-
-% o empacotamento do estudo vai pro apendice como eu já apontei sobre o sloccount por exemplo
+Todas as informações foram gerenciadas manualmente com o auxílio de uma
+planilha eletrônica da suíte de escritório LibreOffice, com as colunas: Evento,
+Busca, Fitro, Selecao, Software e Anotações. Cada linha representa um artigo.
+Esta planilha e seu formato é melhor apresentado em detalhes no Apêndice
+\ref{reproducibilidade-do-estudo}.
 
 \subsubsection{Filtro}
 
 A segunda etapa realiza uma busca textual automática no conteúdo de cada artigo
 em seu formato pdf buscando por um conjunto de palavras chave, este conjunto
 total de palavras chave é composto por subconjuntos de palavras chave
-representando cada subconjunto um dos critérios de inclusão e exclusão desta
+representando cada subconjunto um dos critérios de inclusão desta
 fase.
 
 \begin{itemize}
@@ -214,10 +203,8 @@ contendo os termos pesquisados.
 Nesta etapa cada artigo deste subconjunto foi lido com objetivo de identificar
 através de inspeção manual se entre as contribuições do estudo há menção a
 software acadêmico de análise estática, identificado minimamente com nome e URL
-para obtenção online. 
+para download.
 Essa leitura foi guiada pelos critérios descritos na Tabela \ref{criterios-selecao}.
-
-% DUVIDA: tenho evitado usar o termo download, isso é necessário?
 
 \begin{table}[h]
 \caption{Critério de seleção de software acadêmico}
@@ -270,13 +257,13 @@ dados e mais nome e URL do software, como mostra a Tabela \ref{esquema-selecao}.
 \centering
 \begin{tabular}{ l p{11cm} }
   \hline
-  Código                   & Explicação \\
+  Código           & Explicação \\
   \hline
-  Nome do software         & O nome do projeto de software \\
-  URL                      & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
-  Título do artigo         & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
-  Nome do evento           & Nome da conferência onde o software foi publicado \\
-  Ano do evento            & Ano da edição da conferência onde o artigo foi publicado \\
+  Nome do software & O nome do projeto de software \\
+  URL              & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
+  Título do artigo & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
+  Nome do evento   & Nome da conferência onde o software foi publicado \\
+  Ano do evento    & Ano da edição da conferência onde o artigo foi publicado \\
   \hline
 \end{tabular}
 \label{esquema-selecao}
@@ -300,11 +287,6 @@ estava disponível, o código fonte foi explorado em busca de informações sobr
 licença, tipo de entrada e linguagens suportadas. Estas características são apresentadas
 na Tabela \ref{esquema-caracteristicas}.
 
-%foram coletadas 
-%por meio de inspeção manual no website do projeto, de documentos, manuais e artigos.
-%Quando o código fonte estava disponível, o código fonte foi explorado em busca de 
-%informações sobre licença, tipo de entrada e linguagens suportadas.
-
 \begin{table}[h]
 \caption{Esquema para caracterização dos projetos de software selecionados}
 \centering
@@ -326,7 +308,7 @@ na Tabela \ref{esquema-caracteristicas}.
 \label{esquema-caracteristicas}
 \end{table}
 
-Cada uma dessas características foram coletadas manualmente, primeiro
+Cada uma dessas características foi coletada manualmente, primeiro
 inspecionando o site do projeto, quando disponível, alguns projetos
 disponibilizam manuais e documentos em seu site para download, estes documentos
 foram consultados, normalmente arquivos txt, pdf ou doc. Quando disponível,
@@ -349,11 +331,6 @@ quanto do código total é escrito em cada uma delas.
 
 \subsubsection{Busca}
 
-%pesquisa foram utilizadas como ponto de partida para
-%selecionar o conjunto inicial de artigos: 
-%O critério utilizado na definição destas fontes é bastante subjetivo 
-%e depende de conhecimento prévio do pesquisador, seus pares, e colaboradores.
-
 Seguindo o planejamento descrito em \ref{estudo1:planejamento}, definimos como
 fonte de busca as conferências SCAM\footnote{\url{http://www.ieee-scam.org}}
 ({\it Source Code Analysis and Manipulation Working Conference}) e
@@ -372,34 +349,11 @@ se chamava KBSE - Knowledge-Based Software Engineering Conference e a partir de
 
 \subsubsection{Filtro}
 
-1 ler sobre GQM > fechar questões de pesquisa
-2 ler sobre mapeamento e revisao sistematica > revisar termos e estrutura da revisão estruturada
-
-%Dos 346 artigos do SCAM e 1533 artigos do ASE analisados na revisão estruturada
-%apenas 44\% (155 artigos) e 18\% (281 artigos) continham os termos pesquisados
-%no filtro automático da segunda atividade da revisão, respectivamente.
-
-% chris: consultar artigo de perterson para se apoiar no processo de mapeamento ou revisao sistemativa
-%        tem a fase de screeming \cite{petersen2008systematic}
-%        esta fase de filtro parece com a fase de screeming, ....
-%        esse filtro é o screeming
-% a revisao vai em profundidade lendo os artigos o mapeamento vai em largura ou abrangencia
-
-
-
 Dando sequência a preparação do estudo, definimos as palavras chave para cada
 critério de filtro, como mostra a Tabela \ref{criterios-filtro}, para definir
 estas palavras chave consultamos artigos com publicação de software de análise
 estática e inspecionando o seu conteúdo percebemos como usualmente os
 autores mencionam contribuição em software.
-
-% DUVIDA: qual nível de detalhe preciso dar sobre a definição destas palavras?
-%         na prática, eu usei alguns artigos já conhecidos com publicação
-%         de ferramenta de análise estática.
-
-% usar termos do mapeamento e revisao, se inspirar, nao preciso me amarrar mas vou me inspirar
-% o meu método vai na diagonal algo entre o mapeamento e a revisão
-
 
 \begin{table}[h]
 \caption{Critérios para filtro de artigos}
@@ -451,9 +405,26 @@ caracterização dos projetos de software acadêmico.
 
 \subsection{Seleção dos projetos de software acadêmico de análise estática} % {{{
 
-A seleção dos projetos de software acadêmico de análise estática seguiu
-as etapas, conforme apresentadas na Figura \ref{etapas-selecao-software}, tomando
-como primeiro passo a etapa de busca.
+A seleção dos projetos de software acadêmico de análise estática encontrou
+60 projetos entre os 1873 artigos processados na revisão de literatura, conforme
+Figura \ref{revisao-literatura-execucao}.
+
+%seguiu
+%as etapas apresentadas na Figura \ref{etapas-selecao-software}, 
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.4]{imagens/revisao-literatura-execucao.png}
+  \caption{Processo de seleção de artigos nas conferências ASE e SCAM.}
+  \label{revisao-literatura-execucao}
+\end{figure}
+% figura feita com base no artigo Nicolli Alves 2016, Fig 2
+
+
+...tomando como primeiro passo a etapa de busca.
+
+
+
 
 \subsubsection{Busca}
 
@@ -503,15 +474,9 @@ resultados distribuídos por ano.
 Dois artigos, entre os 61, fazem referência a um mesmo software, assim temos no
 total 60 projetos de software selecionados, para cada projeto foi criado um
 diretório contendo o nome do software e um arquivo chamado
-\texttt{software.yml} com os dados descritos na Tabela \ref{esquema-selecao}.
-
-% DUVIDA: é necessário dar detalhes sobre o arquivo software.yml? sua
-%         estrutura interna, quais campos, nomes dos campos.
-
-
-%contribuindo com 60 projetos de software acadêmico de
-%análise estática. O número de projetos de software é menor do que o número
-%de artigos porque alguns foram mencionados em mais de um artigo. 
+\texttt{software.yml} com os dados descritos na Tabela \ref{esquema-selecao},
+informaçoes sobre o formato deste arquivo está detalhado no Apêndice
+\ref{reproducibilidade-do-estudo}
 
 % }}}
 
@@ -521,16 +486,7 @@ Conforme planejado coletamos informações adicionais para cada projeto de
 software selecionado, as informações descritas na Tabela
 \ref{esquema-caracteristicas} foram coletadas,
 
-%por meio de inspeção manual no website do projeto, de documentos, manuais e artigos.
-%Quando o código fonte estava disponível, o código fonte foi explorado em busca de 
-%informações sobre licença, tipo de entrada e linguagens suportadas.
-
-%Para identificar a linguagem de programação em que o software foi escrito, utilizamos a
-%ferramenta livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount}.
-
 % }}}
-
-% \section{Operação} %%%%%%%%
 
 % Raw results from the analysis
 \section{Análise dos Dados} \label{estudo1:analise}
@@ -551,7 +507,7 @@ licenciamento, dados de acesso ao software.
 %   - código fonte disponível?
 %   - licença
 %   - código fonte
-\input{tab-softwares-data-table.tex}
+\input{result-documents/software-table.tex}
 
 % Hypothesis rejection
 \section{Interpretação dos Resultados} \label{estudo1:interpretacao}
@@ -806,3 +762,35 @@ Planejamos fazer outro estudo ...
 %  em respeito a um aspecto de qualidade
 %    para determinar sua qualidade
 %      sob um determinado ponto de vista
+
+%pesquisa foram utilizadas como ponto de partida para
+%selecionar o conjunto inicial de artigos: 
+%O critério utilizado na definição destas fontes é bastante subjetivo 
+%e depende de conhecimento prévio do pesquisador, seus pares, e colaboradores.
+
+%1 ler sobre GQM > fechar questões de pesquisa
+%2 ler sobre mapeamento e revisao sistematica > revisar termos e estrutura da revisão estruturada
+
+%Dos 346 artigos do SCAM e 1533 artigos do ASE analisados na revisão estruturada
+%apenas 44\% (155 artigos) e 18\% (281 artigos) continham os termos pesquisados
+%no filtro automático da segunda atividade da revisão, respectivamente.
+
+% chris: consultar artigo de perterson para se apoiar no processo de mapeamento ou revisao sistemativa
+%        tem a fase de screeming \cite{petersen2008systematic}
+%        esta fase de filtro parece com a fase de screeming, ....
+%        esse filtro é o screeming
+% a revisao vai em profundidade lendo os artigos o mapeamento vai em largura ou abrangencia
+
+
+
+% usar termos do mapeamento e revisao, se inspirar, nao preciso me amarrar mas vou me inspirar
+% o meu método vai na diagonal algo entre o mapeamento e a revisão
+
+
+% DUVIDA: é necessário dar detalhes sobre o arquivo software.yml? sua
+%         estrutura interna, quais campos, nomes dos campos. SIM!
+
+
+%contribuindo com 60 projetos de software acadêmico de
+%análise estática. O número de projetos de software é menor do que o número
+%de artigos porque alguns foram mencionados em mais de um artigo. 
