@@ -21,11 +21,11 @@ summary:
 	./bin/summarize-dataset dataset/academic-softwares/ > cache/dataset.yml
 
 filter:
-	./bin/filter-papers -o dataset/papers.txt
+	./bin/filter-papers "dataset/papers/ASE Papers/" > result-documents/filter-papers-ase.md
+	./bin/filter-papers "dataset/papers/SCAM Papers/" > result-documents/filter-papers-scam.md
 
 render-templates: summary
 	./bin/render-template cache/dataset.yml templates/dataset-summary.tex.epl > result-documents/dataset-summary.tex
-#	./bin/render-template cache/dataset.yml templates/dataset-table.tex.epl > result-documents/dataset-table.tex
 	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
 
 charts:

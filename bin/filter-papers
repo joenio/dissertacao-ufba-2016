@@ -1,50 +1,42 @@
 #!/usr/bin/perl
-use strict;
+use Modern::Perl '2014';
+use File::Basename;
 
-if ($#ARGV < 1 || $ARGV[0] ne '-o' || length($ARGV[1]) == 0) {
+if ($#ARGV < 0) {
   warn "E: missing required argument!";
   print "\n";
-  print "Usage: $0 -o <file>\n";
-  print "Example: $0 -o dataset/papers.txt\n";
+  print "Usage: $0 <papers-directory>/\n";
+  print "Example: $0 'dataset/papers/ASE Papers/'\n";
   exit 1;
 }
-my $filename = $ARGV[1];
+my $PAPERS_DIR = $ARGV[0];
 
-my @INCLUIDOS = ();
-my @EXCLUIDOS = ();
+my @INCLUDED = ();
+my @EXCLUDED = ();
+my @PAPERS = `find "$ENV{PWD}/$PAPERS_DIR" -iname "*.pdf" | sort`;
 
-my @SCAM_PAPERS = `find "$ENV{PWD}/dataset/papers/SCAM Papers/" -iname "*.pdf" | sort`;
-my @ASE_PAPERS = `find "$ENV{PWD}/dataset/papers/ASE Papers/" -iname "*.pdf" | sort`;
-my @SBES_PAPERS = `find "$ENV{PWD}/dataset/papers/SBES Papers/" -iname "*.pdf" | sort`;
-
-foreach my $paper (@SCAM_PAPERS, @ASE_PAPERS, @SBES_PAPERS) {
+foreach my $paper (@PAPERS) {
   chomp $paper;
   my $PAPER_CONTENT = `pdftotext "$paper" -`;
-  print ".";
   if (
        grep(/tool|framework|ferramenta/i, $PAPER_CONTENT) &&
        grep(/download|available|dispon.vel/i, $PAPER_CONTENT) &&
        grep(/http|ftp/i, $PAPER_CONTENT) &&
        grep(/static analysis|parser|an.lise est.tica/i, $PAPER_CONTENT)
      ) {
-    push @INCLUIDOS, $paper;
+    push @INCLUDED, $paper;
   }
   else {
-    push @EXCLUIDOS, $paper;
+    push @EXCLUDED, $paper;
   }
 }
-print "\n";
 
-open my $FILE, '>', $filename;
-
-print $FILE "TOTAL SCAM = ", scalar(@SCAM_PAPERS), "\n";
-print $FILE "TOTAL ASE = ", scalar(@ASE_PAPERS), "\n";
-print $FILE "TOTAL SBES = ", scalar(@SBES_PAPERS), "\n";
-print $FILE "INCLUIDOS = ", scalar(@INCLUIDOS), "\n";
-print $FILE "EXCLUIDOS = ", scalar(@EXCLUIDOS), "\n";
-
-print $FILE "### INCLUIDOS ###\n";
-$" = "\n";
-print $FILE "@INCLUIDOS\n";
-
-close $FILE;
+my $CONF = basename $PAPERS_DIR;
+say "# Literature review, activity 2, filter '$CONF'\n";
+say "* TOTAL = ", scalar(@PAPERS);
+say "* INCLUDED = ", scalar(@INCLUDED);
+say "* EXCLUDED = ", scalar(@EXCLUDED);
+say "\n## Included list\n";
+map { s|^$ENV{PWD}/$PAPERS_DIR|1. | } @INCLUDED;
+local $" = "\n";
+say "@INCLUDED";
