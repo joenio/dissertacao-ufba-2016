@@ -381,30 +381,6 @@ sub format_collected_data {
     my $checked_at = $softwares->{$_}{address}{checked_at};
     $date = DateTime::Format::HTTP->parse_datetime($checked_at);
     $softwares->{$_}{address}{checked_at} = $date->dmy('/');
-    # format distribution as pt_BR
-    if ($softwares->{$_}{software}{distribution} eq 'foss') {
-      $softwares->{$_}{software}{distribution} = 'como software livre';
-    }
-    elsif ($softwares->{$_}{software}{distribution} eq 'gratis') {
-      $softwares->{$_}{software}{distribution} = 'gratuitamente';
-    }
-    if ($softwares->{$_}{address}{url_available} eq 'yes') {
-      $softwares->{$_}{address}{url_available} = 'com sucesso';
-    }
-    else {
-      $softwares->{$_}{address}{url_available} = 'sem sucesso';
-    }
-    # format license=demo as pt_BR
-    if ($softwares->{$_}{software}{license} eq 'demo') {
-      $softwares->{$_}{software}{license} = 'de demonstração';
-    }
-    # format releases as pt_BR
-    if ($softwares->{$_}{features}{releases} eq 'Frequently') {
-      $softwares->{$_}{features}{releases} = 'frequentes';
-    }
-    elsif ($softwares->{$_}{features}{releases} eq 'Occasionally') {
-      $softwares->{$_}{features}{releases} = 'ocasionais';
-    }
     # format first release date as yyyy
     if ($softwares->{$_}{releases}{first_date} && $softwares->{$_}{releases}{first_date} !~ /undefined/) {
       my $first_date = $softwares->{$_}{releases}{first_date};
