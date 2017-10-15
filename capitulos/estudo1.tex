@@ -33,8 +33,8 @@ e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it re-boots
 % Por que o estudo será realizado?
 
 Sabemos quantos e quais são as características dos projetos de software
-acadêmico de análise estática publicados em conferências de Engenharia de
-Software?
+acadêmico de análise estática publicados nas conferências de Engenharia de
+Software ASE e SCAM?
 
 \subsection{Definição do Objetivo}
 
@@ -111,10 +111,11 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \section{Planejamento do Estudo} \label{estudo1:planejamento}
 
-Realizamos duas grandes etapas neste estudo, a primeira com objetivo de buscar
-na literatura acadêmica publicações realizando contribuições em software de
-análise estática, a segunda com objetivo de caracterizar os projetos a partir
-de fontes documentais variadas. Figura \ref{estudo1-etapas}.
+Realizamos este estudo em duas grandes etapas, uma primeira etapa de revisão de
+literatura para identificar estudos com publicação de software acadêmico de
+análise estática, e uma segunda etapa para caracterização dos projetos de
+software acadêmico publicados nestes artigos, conforme mostra a Figura
+\ref{estudo1-etapas}.
 
 \begin{figure}[h]
   \center
@@ -135,68 +136,71 @@ final de artigos com publicação de software acadêmico de análise estática.
 
 \subsubsection{Busca}
 
-Nesta etapa definimos quais conferências serão utilizadas como fonte de busca
-de software acadêmico de análise estática publicados pelos seus autores como
-uma das contribuições do estudo.
+Nesta etapa definimos quais conferências serão utilizadas como fonte dos
+artigos da revisão, a escolha é realizada tendo em vista aumentar e
+potencializar o número total de projetos de software acadêmico de análise estática,
+buscando sempre conferências com histórico de publicações sobre o
+domínio de aplicação do estudo, neste caso, análise estática.
 
-A escolha de quais conferências farão parte desta etapa é realizada tendo em
-vista aumentar e potencializar o número total de projetos selecionados e
-busca-se conferências com histórico de publicações sobre o domínio de aplicação
-do estudo, neste caso, análise estática.
+Todos os artigos publicados nas conferências selecionadas serão incluídos,
+desde as publicações da primeira edição de cada conferência até a edição
+definida por uma data limite, a data limite é definida apenas com o ano, mês
+e dia não são necessários, os artigos publicados no ano definido pela data
+limite serão incluídos.
 
-Todos os artigos publicados nas conferências são incluídos, deve-se definir uma
-data final limite como critério de inclusão e exclusão, sendo que a data
-inicial é determinada pelo histórico da conferência, devendo englobar as
-edições iniciais até a última definido pela data limite.
+%sendo que a data
+%inicial é determinada pelo histórico da conferência, devendo englobar as
+%edições iniciais até a última definido pela data limite.
 
-Em casos de conferências tradicionais com longa data de existência, não é raro
-que a conferência mude de nome ao longo do tempo, neste caso adotamos como
-nome da conferência o nome mais recente e consideramos todos os outros nomes
-que se passou como sendo de uma única conferência, ou seja, o nome mais
-recente, mesmo que isto inclua conferencias distintas que tornaram-se uma em
-algum momento.
+Não é raro que conferências com muitos anos de existência mudem de nome ao
+longo do tempo, nestes casos adotamos o nome da conferência mais recente e
+consideramos todos os anteriores como sendo desta conferência mais recente, ou
+seja, o nome mais recente, mesmo que isto inclua conferencias distintas, é
+adotado para todas as edições.
 
-Uma vez que estas fontes de busca estejam definidas copiamos localmente todas
-as suas publicações em formato pdf até a data limite determinada, os artigos
-são todos organizados em pastas por nome e ano da conferência e são também
-registrados os títulos de cada artigo, além do nome da conferência e ano de
-edição da conferência.
+Uma vez que as conferências sejam selecionadas copiamos localmente todos os
+seus artigos em formato pdf, respeitando a data limite determinada, os artigos
+são organizados em pastas por nome e ano da conferência, os títulos de cada
+artigo, conferência e ano de publicação são registrados numa planilha do
+LibreOffice Calc, nesta planilha será registrado também as informações das
+atividades seguintes da revisão.
 
-Todas as informações foram gerenciadas manualmente com o auxílio de uma
-planilha eletrônica da suíte de escritório LibreOffice, com as colunas: Evento,
-Busca, Fitro, Selecao, Software e Anotações. Cada linha representa um artigo.
-Esta planilha e seu formato é melhor apresentado em detalhes no Apêndice
+Detalhes sobre o formato desta planilha, sobre a estrutura de pastas utilizadas
+para armazenar os artigos, e onde encontrar o arquivo utilizado neste estudo
+para a coleta destes dados pode ser consultado em detalhes no Apêndice
 \ref{reproducibilidade-do-estudo}.
 
 \subsubsection{Filtro}
 
-A segunda etapa realiza uma busca textual automática no conteúdo de cada artigo
-em seu formato pdf buscando por um conjunto de palavras chave, este conjunto
-total de palavras chave é composto por subconjuntos de palavras chave
-representando cada subconjunto um dos critérios de inclusão desta
-fase.
+A segunda atividade da revisão filtra os artigos selecionados na
+atividade anterior realizando uma busca textual automática no conteúdo de cada
+artigo, este filtro é realizado automaticamente com o apoio de um script
+desenvolvido durante este trabalho de pesquisa, este script percorre cada
+artigo realizando uma busca textual em todo o conteúdo do arquivo pdf,
+incluindo título, resumo, corpo, referências, apêndices, anexos e demais seções
+do artigo.
 
-\begin{itemize}
+O filtro é construído com conjuntos de palavras chave associados a cada um dos
+seguintes critérios:
+
+\begin{enumerate}
   \item Menciona software ou ferramenta
   \item Disponibiliza online
   \item Identifica endereço
   \item Domínio de análise estática
-\end{itemize}
+\end{enumerate}
 
-Se um artigo não satisfaz um ou mais de um destes critérios ele é excluído do
-conjunto final. Cada critério é mapeado num conjunto de strings para compor a
-busca final com todos os critérios.
+Cada um destes critérios é traduzido num conjunto de palavras chave, o conjunto
+final utilizado no filtro é composto pela junção de todas as palavras de cada
+critério, se um artigo não satisfaz um ou mais de um destes critérios ele é
+excluído do conjunto final.
 
-O principal objetivo desta etapa é reduzir o conjunto de artigos inicial,
-critérios são aplicados de forma automática em cada artigo do conjunto, o
-filtro automático percorre os arquivos pdf de cada artigo, aplicando uma busca
-textual em todo o conteúdo, incluindo título, resumo, corpo, referências,
-apêndices, anexos e demais seções do arquivo.
+Ao final desta atividade o conjunto inicial de artigos é reduzido em um
+conjunto menor contendo os artigos com ocorrencia das palavras chave
+relacionadas a cada um dos critérios, este conjunto reduzido é passado para a
+etapa seguinte.
 
-Assim o conjunto inicial de artigos é dividido em dois outros subconjunto, um
-contendo artigos sem ocorrencia dos termos relacionados aos critérios de
-interesse, e outro subconjunto, passado para a etapa seguinte, com artigos
-contendo os termos pesquisados.
+
 
 \subsubsection{Seleção}
 
