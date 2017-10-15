@@ -200,15 +200,19 @@ conjunto menor contendo os artigos com ocorrencia das palavras chave
 relacionadas a cada um dos critérios, este conjunto reduzido é passado para a
 etapa seguinte.
 
-
+Detalhes sobre o funcionamento do script de fitro, código fonte e instruções
+de uso podem ser consultados no Apêndice \ref{reproducibilidade-do-estudo}.
 
 \subsubsection{Seleção}
 
-Nesta etapa cada artigo deste subconjunto foi lido com objetivo de identificar
-através de inspeção manual se entre as contribuições do estudo há menção a
-software acadêmico de análise estática, identificado minimamente com nome e URL
-para download.
-Essa leitura foi guiada pelos critérios descritos na Tabela \ref{criterios-selecao}.
+Este é a última fase da revisão, cada artigo, dentre aqueles que atendem aos
+critérios do filtro, foi inspecionado manualmente em busca de contribuições em
+forma de software acadêmico de análise estática, ou seja, artigos com menção a
+software entre os resultados produzidos no estudo.
+
+A inspeção foi guiada pelos critérios descritos na Tabela
+\ref{criterios-selecao}, buscamos artigos com menção a software identificado
+minimamente com o nome do projeto de software e URL para download.
 
 \begin{table}[h]
 \caption{Critério de seleção de software acadêmico}
@@ -217,28 +221,12 @@ Essa leitura foi guiada pelos critérios descritos na Tabela \ref{criterios-sele
   \hline
   Critério         & Explicação \\
   \hline
-  Identificável    & É possível identificar uma contribuição em software? (ex: ``um programa que nós escrevemos``, ``nossa implementação``, ``nosso protótipo'') \\
-  Disponível       & Podemos encontrar a URL do software para obtenção online (download)? \\
+  Identificável    & É possível identificar um projeto de software entre as contribuições do artigo? (ex: ``um programa que nós escrevemos``, ``nossa implementação``, ``nosso protótipo'') \\
+  Disponível       & Podemos encontrar menção a URL do projeto de software para download? \\
   \hline
 \end{tabular}
 \label{criterios-selecao}
 \end{table}
-
-Estes critérios foram utilizados durante a inspeção de cada artigo, sendo
-realizado de forma sequencial entre cada edição de cada conferência, iniciando
-pelos resultados de uma certa conferência e à seguir às demais, uma por vez, de
-forma crescente, ou seja, primeiro a primeira edição de uma dada conferência,
-por último a última edição, em seguida, a próxima conferência, até esgotar cada
-artigo de cada conferência.
-
-%1 seleciona um artigo do conjunto e abre o arquivo pdf deste artigo
-%2 busca nome do software mencionado como de autoria desta publicação
-%  se encontrar toma nota do nome, artigo, conferência e passa pro próximo passo
-%  se não encontrar marca artigo como não publica software e passa pro próximo artigo
-%3 busca URL e identificação sobre disponibilidade do software para obtenção
-%  se encontrar toma nota da URL e passa pra próxima etapa
-%  se não encontrar marca artigo como não indica fonte URL para obtenção do software
-%4 registra informações sobre o artigo e sobre o projeto, seleciona próximo artigo
 
 A inspeção manual de cada artigo foi realizado através da leitura do título,
 introdução, resultados e conclusão, inicialmente, caso não seja suficiente para
@@ -247,57 +235,54 @@ as demais seções do artigo. Alguns artigos descrevem a contribuição de softw
 acadêmico em seções específicas, por exemplo, é comum o uso de notas de rodapé
 para indicar a URL do software.
 
-% DUVIDA: é necessário citar o nome do software que usei para ler o PDF? Evince?
-%         (pode fazer diferença, mas não é necessário dar detalhes)
+Estes critérios foram utilizados durante a inspeção de cada artigo, sendo
+realizado de forma sequencial entre cada edição de cada conferência, iniciando
+pelos resultados de uma certa conferência e à seguir às demais, uma por vez, de
+forma crescente, ou seja, primeiro a primeira edição de uma dada conferência,
+por último a última edição, em seguida, a próxima conferência, até esgotar cada
+artigo de cada conferência.
 
-Os artigos inspecionados, tenha passado ou não nos critérios definidos aqui,
-tiveram seus títulos, conferência, ano da conferência e uma informação
-indicando se atenderam ou não os critérios, aqueles artigos que passaram nos
-critérios, gera conjunto de projetos de software acadêmico com todos esses
-dados e mais nome e URL do software, como mostra a Tabela \ref{esquema-selecao}.
+Assim ao final desta atividade temos um conjunto de artigos com publicação de
+projeto de software acadêmico de análise estática com identificação do nome do
+projeto e URL para download. A planilha LibreOffice Calc utilizada como apoio
+na revisão foi atualizada com o nome do software publicado no artigo
+correspondente.
 
-\begin{table}[h]
-\caption{Esquema para identificação do software na fase de seleção}
-\centering
-\begin{tabular}{ l p{11cm} }
-  \hline
-  Código           & Explicação \\
-  \hline
-  Nome do software & O nome do projeto de software \\
-  URL              & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
-  Título do artigo & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
-  Nome do evento   & Nome da conferência onde o software foi publicado \\
-  Ano do evento    & Ano da edição da conferência onde o artigo foi publicado \\
-  \hline
-\end{tabular}
-\label{esquema-selecao}
-\end{table}
+Os critérios de seleção da Tabela \ref{criterios-selecao} foram adaptados do
+trabalho de \citeonline{howison2016software}, que fez uma revisão de literatura
+da Biologia em busca de menções a software acadêmico para evidenciar problemas
+de visibilidade e de uso.
 
-Os critérios de seleção da Tabela \ref{criterios-selecao} e o esquema para
-identificação dos projetos de software apresentados na Tabela
-\ref{esquema-selecao} foram adaptados do trabalho de
-\citeonline{howison2016software}, que fez uma revisão de literatura da Biologia
-em busca de menções a software acadêmico para evidenciar problemas de
-visibilidade e de uso.
+%e o esquema para identificação dos projetos de software apresentados na Tabela \ref{esquema-selecao} 
 
 % }}}
 
 \subsection{Caracterização dos projetos de software acadêmico de análise estática} % {{{
 
-Os projetos de software acadêmico de análise estática selecionados foram então
-caracterizados com informações adicionais coletadas por meio de inspeção manual
-no website do projeto, de documentos, manuais e artigos. Quando o código fonte
-estava disponível, o código fonte foi explorado em busca de informações sobre
-licença, tipo de entrada e linguagens suportadas. Estas características são apresentadas
-na Tabela \ref{esquema-caracteristicas}.
+Os artigos indicados na planilha com o nome do software acadêmico e com
+indicação de que passaram pelas três atividades do procedimento de revisão de
+literatura foram caracterizados com informações adicionais coletadas em
+documentos relacionados ao projeto, como website, documentos, manuais,
+repositório e código fonte.
+
+Esta caracterização incluiu avaliar não apenas a disponibilidade do software
+para download, mas também coletou informações sobre a forma de distribuição,
+descrição do projeto, licença e acesso ao código fonte, todas as
+características coletadas nesta etapa do estudo estão detalhadas na Tabela
+\ref{esquema-caracteristicas}.
 
 \begin{table}[h]
-\caption{Esquema para caracterização dos projetos de software selecionados}
+\caption{Esquema para caracterização dos projetos de software acadêmico}
 \centering
 \begin{tabular}{ l p{11cm} }
   \hline
   Característica           & Explicação \\
   \hline
+  Nome do software         & O nome do projeto de software \\
+  URL                      & Endereço web do software ou projeto, site ou repositório de código fonte, com o software disponível \\
+  Título do artigo         & Título do artigo onde o software é citado como contribuição, seja principal ou secundária \\
+  Nome do evento           & Nome da conferência onde o software foi publicado \\
+  Ano do evento            & Ano da edição da conferência onde o artigo foi publicado \\
   Descrição do software    & A descrição do projeto de software \\
   Acesso                   & Podemos acessar a URL do projeto agora? Pode receber os seguintes valores: Sem Acesso, Acesso Pago, Acesso Gratuito \\
   Distribuição             & Como o software é distribuído e pode ser acessado? Pode receber os seguintes valores: gratis, livre, proprietário \\
@@ -312,26 +297,31 @@ na Tabela \ref{esquema-caracteristicas}.
 \label{esquema-caracteristicas}
 \end{table}
 
-Cada uma dessas características foi coletada manualmente, primeiro
-inspecionando o site do projeto, quando disponível, alguns projetos
-disponibilizam manuais e documentos em seu site para download, estes documentos
-foram consultados, normalmente arquivos txt, pdf ou doc. Quando disponível,
-o código fonte também foi inspecionado em busca de informações, alguns projetos
-distribuem junto ao código fonte documentos e manuais, outros documentam
-algumas informações no próprio código fonte.
+A primeira fonte consultada foi o site do projeto indicado pela URL mencionada
+no artigo, alguns projetos disponibilizam manuais e documentos para download no
+site, estes documentos, quando disponíveis, também foram consultados, estes
+documentos estão normalmente disponíveis em formato txt, pdf ou doc.
+Quando disponível, o código fonte também foi inspecionado em busca de
+informações, alguns projetos distribuem junto ao código fonte documentos e
+manuais, outros documentam informações sobre o projeto no próprio código.
 
-A característica sobre em qual linguagem de programação o projeto está escrito
-foi coletado com o uso da ferramenta de software livre {\it
+A coleta sobre a linguagem de programação que projeto está escrito foi
+realizada com o uso da ferramenta de software livre {\it
 sloccount}\footnote{http://www.dwheeler.com/sloccount}, muitos projetos são
 escritos em mais de uma linguagem, nestes casos consideramos a linguagem
-dominante, o sloccount produz um resultado indicando todas as linguagens e
-quanto do código total é escrito em cada uma delas.
+dominante indicada pelo sloccount.
+
+Instruções de uso do sloccount e como ele foi utilizado neste estudo está
+documentado no Apêndice \ref{reproducibilidade-do-estudo}.
 
 % }}}
 
 \section{Preparação} \label{estudo1:preparacao}
 
-\subsection{Seleção dos projetos de software acadêmico de análise estática} % {{{
+Nesta seção apresentamos a preparação do estudo para a realização da coleta de
+dados.
+
+\subsection{Revisão de literatura com publicação de software acadêmico de análise estática} % {{{
 
 \subsubsection{Busca}
 
@@ -339,17 +329,19 @@ Seguindo o planejamento descrito em \ref{estudo1:planejamento}, definimos como
 fonte de busca as conferências SCAM\footnote{\url{http://www.ieee-scam.org}}
 ({\it Source Code Analysis and Manipulation Working Conference}) e
 ASE\footnote{\url{http://ase-conferences.org}} ({\it Automated Software
-Engineering}), ambas conferências com um grande histórico de edições, ASE teve
-sua primeira edição no ano de 1991 e o SCAM no ano de 2001, definimos como data
-limite o ano de 2015, ou seja, incluimos os artigos publicados neste ano.
+Engineering}), ambas conferências com um grande histórico de edições, e
+definimos a data limite para o ano de 2015, ou seja, incluimos os artigos
+publicados neste ano.
 
-Ainda neste momento de preparação, buscamos descobrir onde estão disponíveis os
-artigos de cada conferência e edição, as publicações da conferência SCAM, por
-exemplo, estão todos disponibilizados no IEEE, ao menos até a data limite
-investigada, já a conferência ASE, algumas edições está no IEEE outras só foram
-encontradas na biblioteca digital da ACM, até o ano de 1996 a conferencia ASE
-se chamava KBSE - Knowledge-Based Software Engineering Conference e a partir de
-1997 passou a se chamar ASE - Automated Software Conference.
+Buscamos descobrir onde os artigos estão disponíveis para download, as
+publicações da conferência SCAM estão todos disponibilizados no IEEE, já
+algumas edições da conferência ASE estão no IEEE outras na ACM, o Apêndice
+\ref{reproducibilidade-do-estudo} indica onde encontrar os dados coletados.
+
+Até o ano de 1996 a conferencia ASE chamava-se KBSE - Knowledge-Based Software
+Engineering Conference e a partir de 1997 passou a chamar-se ASE - Automated
+Software Conference, ela teve sua primeira edição no ano de 1991 e o SCAM
+apenas em 2001.
 
 \subsubsection{Filtro}
 
