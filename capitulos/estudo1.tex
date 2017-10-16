@@ -366,34 +366,46 @@ associado à cada um são apresentados na Tabela \ref{criterios-filtro}.
 \label{criterios-filtro}
 \end{table}
 
-apresenta , para definir
-estas palavras chave consultamos artigos com publicação de software de análise
-estática e inspecionando o seu conteúdo percebemos como usualmente os
-autores mencionam contribuição em software.
+Estas palavras foram escolhidas de forma empírica e contam com experiência
+prévia na área de análise estática, notamos que usualmente os autores de
+software acadêmico de análise estática mencionam contribuição em software
+fazendo menção utilizando estes termos, de forma que consideramos que a
+aplicação deste filtro em outros domínios necessita de adaptações.
 
-
-Implementamos estes critérios num script e instalamos todas as dependências
-necessárias para execução, todos os detalhes de instalação e forma de uso deste
-script e suas dependências de execução estão documentados no Apêndice
+Implementamos o filtro com estas palavras num script, instalamos todas as suas
+dependências de execução, os detalhes de instalação e forma de uso deste script
+e suas dependências são documentados no Apêndice
 \ref{reproducibilidade-do-estudo}.
 
 \subsubsection{Seleção}
 
-Nesta fase não há preparação necessária.
+A única preparação necessária para esta atividade é se certificar que temos
+instalado um programa leitor de pdf para realização da inspeção manual dos
+artigos.
 
 % }}}
 
 \subsection{Caracterização dos projetos de software acadêmico de análise estática} % {{{
 
-Nesta fase de preparação para caracterização dos projetos com informações
-adicionais conforme planejado, definimos o formato de armazenamendo destas
-informações e quais tecnologias usar para gerenciar os dados coletados, optamos
-por utilizar arquivos YAML organizados em diretórios distintos para cada
-projeto de software, para coletar a informação a respeito de qual linguagem de
-programação o projeto está escrito, instalamos o software livre {\it
-sloccount}\footnote{http://www.dwheeler.com/sloccount}, detalhes sobre o
-formato YAML, estrutura utilizada para armazenamento e instalação estão
-documentados no Apêndice \ref{reproducibilidade-do-estudo}.
+Nesta fase de preparação para a caracterização dos projetos de software
+acadêmico define-se quantos e quais são os projetos encontrados no conjunto de
+artigos selecionados na revisão de literatura, realizamos a verificação de
+quais são os projetos consultando a planilha LibreOffice Calc e para cada
+projeto criamos um diretório com o nome do software, o nome do software é antes
+transformado em minúsculas e removemos caracteres especiais, acentos, espaços
+em branco, este nome é utilizado para fazer referência ao software no restante
+do estudo.
+
+Definimos também o formato de armazenamendo das informações que serão
+coletadas, quais tecnologias usaremos para gerenciar estes dados coletados,
+optamos por utilizar arquivos texto simples no formato YAML organizados em
+diretórios por software, para cada software teremos um diretório contendo um
+arquivo chamado \texttt{software.yml}
+
+Para coletar em qual linguagem de programação o projeto está escrito instalamos
+o software livre {\it sloccount}\footnote{http://www.dwheeler.com/sloccount},
+detalhes sobre o formato YAML, estrutura utilizada para armazenamento e
+instalação estão documentados no Apêndice \ref{reproducibilidade-do-estudo}.
 
 % }}}
 
@@ -401,91 +413,83 @@ documentados no Apêndice \ref{reproducibilidade-do-estudo}.
 
 Seguindo o planejamento e preparação descritos nas seções
 \ref{estudo1:planejamento} e \ref{estudo1:preparacao} iniciamos a coleta dos
-dados seguindo também duas grandes etapas, uma de seleção, outra de
-caracterização dos projetos de software acadêmico.
+dados seguindo também duas grandes etapas, uma de revisão de literatura, outra
+de caracterização dos projetos de software acadêmico.
 
-\subsection{Seleção dos projetos de software acadêmico de análise estática} % {{{
+\subsection{Revisão de literatura com publicação de software acadêmico de análise estática} % {{{
 
-A seleção dos projetos de software acadêmico de análise estática encontrou
-60 projetos entre os 1873 artigos processados na revisão de literatura, conforme
-Figura \ref{revisao-literatura-execucao}.
-
-%seguiu
-%as etapas apresentadas na Figura \ref{etapas-selecao-software}, 
+A revisão de literatura encontrou 61 artigos com publicação de projeto de
+software acadêmico de análise estática entre os 1873 artigos publicados nas
+conferências ASE e SCAM, as atividades e resultados de cada fase da revisão são
+representadas na Figura \ref{revisao-literatura-execucao}.
 
 \begin{figure}[h]
   \center
   \includegraphics[scale=0.4]{imagens/revisao-literatura-execucao.png}
-  \caption{Processo de seleção de artigos nas conferências ASE e SCAM.}
+  \caption{Atividades da revisão de literatura realizada nas conferências ASE e SCAM.}
   \label{revisao-literatura-execucao}
 \end{figure}
 % figura feita com base no artigo Nicolli Alves 2016, Fig 2
 
-
-...tomando como primeiro passo a etapa de busca.
-
-
-
-
 \subsubsection{Busca}
 
-A busca realizada nas conferências ASE e SCAM considerando todas as edições até
-o ano de 2015 resultou num conjunto total de 1873 artigos, representados na
-Figura \ref{artigos-por-ano} distribuídos ao longo dos anos em cada conferência.
-346 artigos do SCAM e 1527 artigos do ASE,
-com uma média geral de 75 artigos publicados por ano. 
+A busca realizada nas conferências ASE e SCAM até o ano de 2015 resultou em
+1873 artigos, deste total 346 artigos são do SCAM e 1527 artigos do ASE, a
+Figura \ref{artigos-por-ano} apresenta este total distribuídos ao longo de cada
+edição.
 
 \begin{figure}[h]
   \center
   \includegraphics[scale=0.65]{imagens/artigos-por-ano.png}
-  \caption{Gráfico em barras com o total de artigos publicado por ano}
+  \caption{Total de artigos por ano publicados nas conferências ASE e SCAM.}
   \label{artigos-por-ano}
 \end{figure}
 
-Coletamos o título de cada artigo e armazenamos juntamente com o nome da
-conferência e edição onde o artigo foi publicado num arquivo do tipo ODS,
-formato padrão da suíte de escritórios livre e multiplataforma
-LibreOffice\footnote{\url{https://www.libreoffice.org}}, detalhes sobre este
-arquivo pode ser encontrado no Apêndice \ref{reproducibilidade-do-estudo}.
+%Coletamos o título de cada artigo e armazenamos juntamente com o nome da
+%conferência e edição onde o artigo foi publicado num arquivo do tipo ODS,
+%formato padrão da suíte de escritórios livre e multiplataforma
+%LibreOffice\footnote{\url{https://www.libreoffice.org}}, detalhes sobre este
+%arquivo pode ser encontrado no Apêndice \ref{reproducibilidade-do-estudo}.
 
 \subsubsection{Filtro}
 
-%no filtro automático da segunda atividade da revisão, respectivamente.
-
 O filtro executado automaticamente usando os critérios definidos na fase de
-preparação (seção \ref{estudo1:preparacao}) reduziu o conjunto de artigos para
-441, que serão inspecionados manualmente na sequência,
-155 artigos do SCAM e 286 artigos do ASE.
+preparação reduziu o conjunto de 1873 para 441 artigos, 155 artigos do SCAM e
+286 artigos do ASE, estes artigos serão inspecionados manualmente na atividade
+seguinte.
 
 \subsubsection{Seleção}
 
-Na etapa de seleção, os 441 artigos foram inspecionados, guiada pelos critérios
-descritos na Tabela \ref{criterios-selecao} na fase de planejamento,
-selecionados 61 artigos com publicação de software acadêmico de análise estática
-segundo estes critérios, conforme Figura \ref{artigos-e-software-por-ano}
+Nesta atividade os 441 artigos foram inspecionados manualmente tendo como guia
+os critérios descritos na Tabela \ref{criterios-selecao} na fase de
+planejamento, selecionamos, nesta atividade, 61 artigos com publicação de
+software acadêmico de análise estática, a Figura \ref{artigos-com-software-por-ano}
 resultados distribuídos por ano.
 
 \begin{figure}[h]
   \center
-  \includegraphics[scale=0.65]{imagens/artigos-e-software-por-ano.png}
-  \caption{Número de projetos de software selecionados em relação ao total de publicações}
-  \label{artigos-e-software-por-ano}
+  \includegraphics[scale=0.65]{imagens/artigos-com-software-por-ano.png}
+  \caption{Artigos com publicação de software acadêmico selecionados na revisão de literatura.}
+  \label{artigos-com-software-por-ano}
 \end{figure}
-
-Dois artigos, entre os 61, fazem referência a um mesmo software, assim temos no
-total 60 projetos de software selecionados, para cada projeto foi criado um
-diretório contendo o nome do software e um arquivo chamado
-\texttt{software.yml} com os dados descritos na Tabela \ref{esquema-selecao},
-informaçoes sobre o formato deste arquivo está detalhado no Apêndice
-\ref{reproducibilidade-do-estudo}
 
 % }}}
 
 \subsection{Caracterização dos projetos de software acadêmico de análise estática} % {{{
 
-Conforme planejado coletamos informações adicionais para cada projeto de
-software selecionado, as informações descritas na Tabela
-\ref{esquema-caracteristicas} foram coletadas,
+%Dois artigos, entre os 61, fazem referência a um mesmo software, assim temos no
+%total 60 projetos de software selecionados, para cada projeto foi criado um
+%diretório contendo o nome do software e um arquivo chamado
+%\texttt{software.yml} com os dados descritos na Tabela \ref{esquema-selecao},
+%informaçoes sobre o formato deste arquivo está detalhado no Apêndice
+%\ref{reproducibilidade-do-estudo}
+
+Conforme planejado coletamos informações adicionais, descritas na Tabela
+\ref{esquema-caracteristicas}, para cada projeto de software consultando
+documentos de cada projeto, as informações coletadas são apresentadas, de forma
+resumida, na Tabela \ref{software-table}.
+
+\input{result-documents/software-table.tex}
 
 % }}}
 
@@ -499,19 +503,10 @@ licenciamento, dados de acesso ao software.
 
 % ATENCAO: parei aqui, proximo passo:
 
-% * criar template para gerar uma tabela e substituir a tabela (temporaria)
-%   incluida abaixo
-% * exibir nesta tabela as seguintes colunas para cada software:
-%   - nome do software
-%   - distribuição
-%   - disponível para download?
-%   - código fonte disponível?
-%   - licença
-%   - código fonte
-\input{result-documents/software-table.tex}
-
 % Hypothesis rejection
 \section{Interpretação dos Resultados} \label{estudo1:interpretacao}
+
+%com uma média geral de 75 artigos publicados por ano. 
 
 \subsection{Q1 - \EstudoUmQuestaoUm} % {{{
 
