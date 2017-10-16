@@ -116,13 +116,6 @@ O resultado do comando acima é gravado no arquivo
 * José Flávio
 * Jannine (IBICT)
 
-## Créditos
-
-### Imagens e ícones
-
-* https://openclipart.org/detail/237990/pdf
-* https://openclipart.org/detail/65635/software-carton-box-with-no-text-remix
-
 ## Contato
 
 joenio EM joenio.me
