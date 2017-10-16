@@ -1,6 +1,6 @@
 # Literature review, activity 2, filter 'SCAM Papers'
 
-* TOTAL = 346
+* PAPERS TOTAL = 346
 * INCLUDED = 155
 * EXCLUDED = 191
 

@@ -1,6 +1,6 @@
 # Literature review, activity 2, filter 'ASE Papers'
 
-* TOTAL = 1527
+* PAPERS TOTAL = 1527
 * INCLUDED = 286
 * EXCLUDED = 1241
 
