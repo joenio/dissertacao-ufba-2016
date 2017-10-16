@@ -19,10 +19,10 @@ foreach my $paper (@PAPERS) {
   chomp $paper;
   my $PAPER_CONTENT = `pdftotext "$paper" -`;
   if (
-       grep(/tool|framework|ferramenta/i, $PAPER_CONTENT) &&
-       grep(/download|available|dispon.vel/i, $PAPER_CONTENT) &&
+       grep(/tool|framework/i, $PAPER_CONTENT) &&
+       grep(/download|available/i, $PAPER_CONTENT) &&
        grep(/http|ftp/i, $PAPER_CONTENT) &&
-       grep(/static analysis|parser|an.lise est.tica/i, $PAPER_CONTENT)
+       grep(/static analysis|parser/i, $PAPER_CONTENT)
      ) {
     push @INCLUDED, $paper;
   }

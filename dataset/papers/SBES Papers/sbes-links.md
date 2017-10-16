@@ -1,5 +1,18 @@
 # SBES - Brazilian Symposium on Software Engineering
 
+O SBES não foi incluído no estudo, as informações sobre ele foram coletadas
+parcialmente, pretendemos expandir o estudo em trabalhos futuros incluindo esta
+conferência para se ter uma visão sobre as publicações com software acadêmico
+de análise estática no Brasil.
+
+Em nosso processo de coleta de informaçoes desta conferência realizamos
+testes na etapa de filtro com adição das seguintes palavras chave:
+
+* Menciona projeto, software ou ferramenta: `ferramenta`
+* Disponibiliza download do projeto: `dispon.vel`
+* Identifica URL do projeto: (sem alteração em relação as palavras utilizadas para filtar o ASE e SCAM)
+* Domínio de análise estática: `an.lise est.tica`
+
 Link para a conferência no IEEE Xplore: http://ieeexplore.ieee.org/servlet/opac?punumber=1800181
 
 Link para o repositório BDBComp: http://www.lbd.dcc.ufmg.br/bdbcomp/servlet/PesquisaEvento?evento=SBES
