@@ -18,7 +18,7 @@ analyze:
 
 summary:
 	@mkdir -p cache
-	./bin/summarize-dataset dataset/academic-softwares/ > cache/dataset.yml
+	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > result-documents/filter-papers-ase.md
@@ -31,6 +31,6 @@ render-templates: summary
 charts:
 	./bin/chart-dataset -i cache/dataset.yml -o result-documents/charts/
 
-citations=$(wildcard dataset/academic-softwares/*)
+citations=$(wildcard dataset/software/*)
 merge-bibtex: $(citations)
 	@$(foreach citation,$(citations),./bin/merge-bibtex $(citation)/citations/*.bib > $(citation)/citations.bib;)
