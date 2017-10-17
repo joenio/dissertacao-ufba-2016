@@ -21,8 +21,8 @@ summary:
 	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
 
 filter:
-	./bin/filter-papers "dataset/papers/ASE Papers/" > result-documents/filter-papers-ase.md
-	./bin/filter-papers "dataset/papers/SCAM Papers/" > result-documents/filter-papers-scam.md
+	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
+	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
 render-templates: summary
 	./bin/render-template cache/dataset.yml templates/dataset-summary.tex.epl > result-documents/dataset-summary.tex
