@@ -1,0 +1,26 @@
+% my %yaml = @_;
+
+% my %table = ();
+% foreach my $k (grep { $yaml{$_}{address}{download_available} eq 'yes' } sort keys %yaml) {
+%   my $source_code = $yaml{$k}{features}{source_code};
+%   next if $source_code eq 'undefined';
+%   $table{$source_code}{total} //= 0;
+%   $table{$source_code}{total}++;
+% }
+
+\begin{table}[h]
+\caption{Linguagem de programação dos projetos com código fonte disponível.}
+\centering
+\begin{tabular}{| l | c |}
+  \hline
+  {\bf Linguagem de programação} & {\bf Número de projetos} \\\
+  \hline
+% foreach my $source_code (sort keys %table) {
+  <%== $source_code %> & <%== $table{$source_code}{total} %> \\\
+% }
+  \hline
+\end{tabular}
+\label{source-code-table}
+\end{table}
+
+%# vim: filetype=epl

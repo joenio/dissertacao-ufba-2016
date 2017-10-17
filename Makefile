@@ -28,6 +28,8 @@ render-templates: summary
 	./bin/render-template cache/dataset.yml templates/dataset-summary.tex.epl > result-documents/dataset-summary.tex
 	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
 	./bin/render-template cache/dataset.yml templates/available-table.tex.epl > result-documents/available-table.tex
+	./bin/render-template cache/dataset.yml templates/source-code-table.tex.epl > result-documents/source-code-table.tex
+	./bin/render-template cache/dataset.yml templates/license-table.tex.epl > result-documents/license-table.tex
 
 charts:
 	./bin/chart-dataset -i cache/dataset.yml -o result-documents/charts/
