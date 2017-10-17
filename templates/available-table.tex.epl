@@ -1,0 +1,42 @@
+% my %yaml = @_;
+
+% my %table = ();
+% foreach my $k (sort keys %yaml) {
+%   my $year = $yaml{$k}{paper}{year};
+%   my $available = $yaml{$k}{address}{download_available};
+%   $table{$year}{total} //= 0;
+%   $table{$year}{available} //= 0;
+%   $table{$year}{unavailable} //= 0;
+%   $table{$year}{total}++;
+%   if ($available eq 'yes') {
+%     $table{$year}{available}++;
+%   }
+%   else {
+%     $table{$year}{unavailable}++;
+%   }
+% }
+
+\begin{table}[h]
+\caption{Número de projetos disponível para download por ano.}
+\centering
+\begin{tabular}{| l | c | c | c |}
+  \hline
+  {\bf Ano} & {\bf Total} & {\bf Disponível} & {\bf Indisponível} \\\
+  \hline
+% foreach my $y (sort keys %table) {
+  <%== $y %> & <%== $table{$y}{total} %> & <%== $table{$y}{available} %> & <%== $table{$y}{unavailable} %> \\\
+% }
+  \hline
+% my %total = ();
+% foreach my $year (sort keys %table) {
+%   $total{available} += $table{$year}{available};
+%   $total{unavailable} += $table{$year}{unavailable};
+%   $total{total} += $table{$year}{total};
+% }
+  {\bf Total} & <%== $total{total} %> & <%== $total{available} %> & <%== $total{unavailable} %> \\\
+  \hline
+\end{tabular}
+\label{available-table}
+\end{table}
+
+%# vim: filetype=epl
