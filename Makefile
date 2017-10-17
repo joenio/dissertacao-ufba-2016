@@ -1,7 +1,7 @@
 # DOCUMENT VARIABLES
 
 NAME= dissertacao
-CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* figure/* *.ist
+CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* *.ist *.bcf *.run.xml
 
 # PROJECT VARIABLES
 
