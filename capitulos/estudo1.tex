@@ -3,9 +3,11 @@
 software de análise estática publicados nas conferências de Engenharia de
 Software ASE e SCAM.}
 
-Este estudo caracterizou 60 projetos de software acadêmico de análise estática
-selecionados entre os artigos das conferências de Engenharia de Software ASE e
-SCAM publicados até o ano de 2015.
+Este estudo realizou uma revisão de literatura entre publicações das
+conferências de Engenharia de Software ASE e SCAM até o ano de 2015, selecionou
+60 projetos de software acadêmico de análise estática publicados nestas duas
+conferências, e caracterizou estes projetos em relação a disponibilidade de
+acesso ao código fonte.
 
 A seção \ref{estudo1:introducao} contextualiza o estudo,
 a seção \ref{estudo1:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
@@ -27,21 +29,39 @@ desconectadas e paralelas, incompatibilidades entre projetos em um mesmo
 domínio, e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it
 re-boots}).
 
+Parte deste problema tem sido atribuido a falta de treinamento em boas práticas
+de desenvolvimento de software por parte dos pesquisadores, uma vez que a maior
+parte dos cientistas nunca tiveram treinamento algum sobre como escrever
+software de forma eficiente \cite{wilson2017good}.
+
+Os cientistas da Engenharia de Software, no entando, possuem formação e acesso
+as práticas de desenvolvimento e estão inseridos de alguma forma num contexto
+voltado para compreensão e melhoria de desenvolvimento de produtos de software,
+tanto teórica, quanto prática.
+
+Sabendo disso, e atentando para o fato que a grande parte do desenvolvimento de
+software acadêmico é realizado pelos próprios cientistas \cite{hettrick2014uk,
+momcheva2015software}, questionamos o quanto os projetos de software acadêmico
+desenvolvidos em pesquisas da Engenharia de Software sofrem deste problema.
+
 % }}}
 
 \section{Fundamentação} \label{estudo1:fundamentacao} % {{{
 
-\subsection{Projeto de software acadêmico de análise estática}
+\subsection{Software acadêmico}
 
 São projetos de software desenvolvidos durante pesquisas científicas publicados
 na literatura acadêmica, normalmente utilizados para coleta ou análise de
-dados, mas podendo ser também a principal contribuição do estudo.
+dados, podendo ser feito com objetivo de ser utilizado por outros
+pesquisadores, e em algumas ocasiões sendo o software uma contribuição primária
+para a Ciência \cite{howison2011scientific}.
 
 \subsection{Disponibilidade de acesso}
 
 Disponibilidade neste estudo está relacionada a URL do projeto de software,
 indicando se o software está disponível na URL indicada pelos seus autores e de
-que forma os projetos estão disponíveis, binários ou código fonte.
+que forma os projetos estão disponíveis, binários ou código fonte, quais
+licenças são utilizadas, entre outras questões relacionadas à distribuição.
 
 % }}}
 
@@ -64,7 +84,7 @@ O propósito é caracterizar.
 A perspectiva considerada é a do cientista usuário final.
 
 \item{\bf Foco de qualidade.} 
-O principal aspecto de qualidade estudado é a disponibilidade de acesso.
+O principal aspecto de qualidade estudado é a disponibilidade de acesso ao código fonte.
 
 \item{\bf Contexto.} 
 O estudo foi conduzido com publicações das conferências de Engenharia de Software ASE e SCAM.
@@ -75,7 +95,7 @@ O estudo foi conduzido com publicações das conferências de Engenharia de Soft
 
 Analisar os \textit{projetos de software acadêmico de análise estática}
 com o propósito de \textit{caracterizar}
-com respeito a \textit{disponibilidade}
+com respeito a \textit{disponibilidade de código fonte}
 na perspectiva de \textit{cientistas usuários finais}
 no contexto de \textit{conferências de Engenharia de Software ASE e SCAM}.
 
@@ -390,10 +410,10 @@ revisão de literatura com as seguintes colunas:
 
 \begin{description}
   \item[Evento] Nome e ano da conferência de Engenharia de Software.
-  \item[Escopo] Título do artigo incluído na Passo 1: Escopo.
-  \item[Triagem] 'SIM' se o artigo foi incluído na Passo 2: Triagem.
+  \item[Escopo] Título do artigo incluído no Passo 1: Escopo.
+  \item[Triagem] 'SIM' se o artigo foi incluído no Passo 2: Triagem Automática.
   \item[Extração] 'SIM' se o artigo foi incluído na Passo 3: Extração.
-  \item[Software] Nome do projeto de software identificado no artigo.
+  \item[Software] Nome do software identificado no artigo.
   \item[Anotações] Observações sobre o contexto em que o software é mencionado.
 \end{description}
 
@@ -500,15 +520,18 @@ Coletamos 1873 artigos publicados nas conferências de Engenharia de Software
 ASE e SCAM, selecionamos 61 artigos com publicação de software acadêmico de
 análise estática, entre estes artigos caracterizamos 60 projetos de software,
 coletamos para cada um ao menos nome e URL do projeto, e para cada projeto
-informaçoes adicionais foram coletadas em fontes docmentais diversas à respeito
+informaçoes adicionais foram coletadas em fontes documentais diversas à respeito
 do projeto, à seguir apresentamos a análise destes dados.
 
 \subsection{Revisão de literatura com publicação de software de análise estática}
 
 \subsubsection{Passo 1: Escopo}
 
-A Figura \ref{artigos-por-ano} apresenta este total distribuídos ao longo de
-cada edição.
+A conferência ASE publica quase 4 vezes mais do que a conferência SCAM, a
+edição com o maior número de publicações foi 2011 com 112 artigos publicados,
+seguido de 2014 com 104, e 2007 com 102, a edição com o menor número foi 1996
+com apenas 15 artigos publicados, A Figura \ref{artigos-por-ano} apresenta este
+total distribuídos ao longo de cada edição.
 
 \begin{figure}[h]
   \center
@@ -517,10 +540,6 @@ cada edição.
   \label{artigos-por-ano}
 \end{figure}
 
-No geral, a conferência ASE publica quase 4 vezes mais do que a conferência
-SCAM, a edição com o maior número de publicações foi 2011 com 112 artigos
-publicados, seguido de 2014 com 104, e 2007 com 102, a edição com o menor
-número foi 1996 com apenas 15 artigos publicados.
 
 \subsubsection{Passo 2: Triagem Automática}
 
@@ -530,7 +549,10 @@ temos ocorrência dos termos pesquisados nas publicações desta conferência.
 
 \subsubsection{Passo 3: Extração}
 
-A Figura \ref{artigos-com-software-por-ano} resultados distribuídos por ano.
+Considerando todo o período incluído na revisão de literatura encontramos uma
+média de 2 artigos por ano com publicação de software acadêmico, a Figura
+\ref{artigos-com-software-por-ano} apresenta os resultados distribuídos por
+ano.
 
 \begin{figure}[h]
   \center
@@ -539,26 +561,21 @@ A Figura \ref{artigos-com-software-por-ano} resultados distribuídos por ano.
   \label{artigos-com-software-por-ano}
 \end{figure}
 
-Média de 2 artigos por ano com publicação de software acadêmico.
+A revisão de literatura teve como critério primordial encontrar publicação de
+software com indicação de URL para download, ainda assim, no processo de
+revisão encontramos 51 projetos sem indicação de URL para download, 30 projetos
+na conferência ASE e 21 projetos na conferência SCAM.
 
-A revisão de literatura teve como critério primordial encontrar publicação
-de projeto de software com indicação de URL para download do projeto, mas
-ainda assim no processo detectamos um conujunto substancial de projetos
-identificados com nome pelos seus autores, indicados como contribuição dos
-estudos, mas sem indicação de URL para download do projeto, ou mesmo qualquer
-outra presença oficial com informações do projeto, 51 projetos ao total
-encontrados sem indicação de URL, 30 da conferência ASE e 21 da conferência SCAM.
+%Os 30 projetos sem indicação de URL encontrados no ASE são:
+%AGENDA, Rostra, VisAXSM, Jink, AMNESIA, ISIS4J, Decor, Smack, CBFA, iMaus,
+%CPPCHECKER, Tikanga, Doc2Spec, Drails, ClassSplitter, UMGAR, Secoria,
+%Impendulo, BEST, DC2, WAIVE+, COPES, Ranger, ProgramCutter, Scoria, Relda,
+%CONBOL, SymCrash, CodeHow, SAFEWApp.
 
-30 projetos sem indicação de URL encontrados no ASE:
-AGENDA, Rostra, VisAXSM, Jink, AMNESIA, ISIS4J, Decor, Smack, CBFA, iMaus,
-CPPCHECKER, Tikanga, Doc2Spec, Drails, ClassSplitter, UMGAR, Secoria,
-Impendulo, BEST, DC2, WAIVE+, COPES, Ranger, ProgramCutter, Scoria, Relda,
-CONBOL, SymCrash, CodeHow, SAFEWApp.
-
-21 projetos sem indicação de URL encontrados no SCAM:
-ReWeb, DMS, EMBER, VADA, ADiMat, AMOEBA, JSysDG, MAGIC, SCATR, ELAN, HaRe,
-X-DEVELOP, SUDS, Goanna, Parfait, Templar, MemSafe, CAWDOR, LIBCROOS, GASR,
-PtrTracker.
+%Os 21 projetos sem indicação de URL encontrados no SCAM são:
+%ReWeb, DMS, EMBER, VADA, ADiMat, AMOEBA, JSysDG, MAGIC, SCATR, ELAN, HaRe,
+%X-DEVELOP, SUDS, Goanna, Parfait, Templar, MemSafe, CAWDOR, LIBCROOS, GASR,
+%PtrTracker.
 
 % Hypothesis rejection
 \section{Interpretação dos Resultados} \label{estudo1:interpretacao}
@@ -566,8 +583,7 @@ PtrTracker.
 \subsection{Q1 - \EstudoUmQuestaoUm} % presença online
 
 Dos 60 projetos de software estudados neste trabalho, 15 não tem presença
-oficial online no endereço de URL informado pelos seus autores nos artigos
-selecionados na revisão de literatura, 45 projetos estão presentes através da
+oficial online no endereço de URL informado pelos seus autores, 45 projetos estão presentes através da
 URL informada de alguma forma, significando que a URL informada pelos autores
 estão ativas e online. %, alguns destes projetos ...
 
@@ -587,17 +603,17 @@ Tabela \ref{available-table}.
 
 \input{result-documents/available-table.tex}
 
-Existe uma leve tendência, ao longo dos anos,  para a indisponibilidade das
-fontes informadas e páginas web.  É possível notar que, em 2006, 80\% de todos
-os softwares de análise estática publicados nas conferências ASE e SCAM ainda
-estão disponíveis.  Este número cresce em 2014, chegando a 90\%, e cai no ano
-seguinte para 85\%.  Apesar de não estar sempre crescente, e da  amostra
-pequena usada neste estudo -- apenas 60 projetos de software acadêmico, este
-leve indício confirma a afirmação de \citeonline{robles2010replicating}.
+%Existe uma leve tendência, ao longo dos anos,  para a indisponibilidade das
+%fontes informadas e páginas web.  É possível notar que, em 2006, 80\% de todos
+%os softwares de análise estática publicados nas conferências ASE e SCAM ainda
+%estão disponíveis.  Este número cresce em 2014, chegando a 90\%, e cai no ano
+%seguinte para 85\%.  Apesar de não estar sempre crescente, e da  amostra
+%pequena usada neste estudo -- apenas 60 projetos de software acadêmico, este
+%leve indício confirma a afirmação de \citeonline{robles2010replicating}.
 
 \subsection{Q3 - \EstudoUmQuestaoTres} % codigo fonte
 
-Do conjunto de 34 projetos de software disponível para download, apenas 2 não
+Do conjunto de 36 projetos de software disponível para download, apenas 2 não
 disponibilizam o código fonte, estão disponíveis apenas em formato binário, são
 FaultBuster e Loopfrog, ambos disponibilizados gratuitamente mas apenas em
 formato binário. A Tabela \ref{source-code-table} traz um resumo de quais
@@ -611,7 +627,7 @@ linguagens de programação estes softwares são escritos.
 
 \subsection{Q4 - \EstudoUmQuestaoQuatro} % licença
 
-Dentre os 32 projetos que disponibilizaram o código fonte, 13 não informaram
+Dentre os 34 projetos que disponibilizaram o código fonte, 13 não informaram
 licença alguma e 19 informaram licenças de FOSS ({\it free and open source
 software}), a Tabela \ref{license-table} resume as licenças utilizadas e o
 número de projetos em cada uma.
@@ -624,37 +640,67 @@ licença definida impedem eventuais cientistas a publicar suas modificações e
 redistribuir qualquer melhoria sem prévia solicitação aos autores originais.
 
 Considerando o total de 60 projetos selecionados neste estudo, apenas 32\% (19
-projetos) podem ser adaptados, os demais, 68\% (41 projetos) não podem ser
-adaptados para novas necessidades.
+projetos) podem ser adaptados, os demais, 68\% (41 projetos) podem ser
+adaptados mas as melhorias ou correções não podem ser redistribuídas sem
+autorização prévia dos autores.
 
 \section{Ameaças à validade}
 
-(pendente)
+O passo de triagem automática dos artigos no processo de revisão de literatura
+pode ter excluído do processo de revisão algumas publicações com software
+acadêmico de análise estática, fazendo o conjunto total de projetos
+selecionados escapar algum projeto, apesar disso, o estudo tem como objetivo
+caaracterizar os projetos e não as conferências em sí, de forma que esta ameaça
+não causa impacto nas conclusões finais do estudo.
 
-%% Validade de construção.
-%% A leitura dos artigos na revisão estruturada para identificar se publicam
-%% softwares de análise estática de código fonte, se disponibilizam fonte para
-%% obtenção de tais softwares, e se os softwares são mesmo do domínio de aplicação
-%% de análise estática de código fonte podem ter maior validade se feitos em
-%% par e revisados por outros pesquisadores.
-%% Neste estudo, estas atividades foram realizadas pelo autor desta dissertação e 
-%% não houve revisão por pesquisadores independentes.
-%% %% A ameaça não foi tratada.
-%% 
-%% Validade externa. Apenas duas conferências. Apenas duas bases. Apenas um domínio de software acadêmico / uma área do conhecimento em que pesquisadores também programam.
-%% %% A ameaça não foi tratada.
-%% 
-%% etapa busca: Sabemos que no subconjunto excluído, por ser automático, poderá existir artigos
-%% dentro dos critérios mencionados, com publicação de software, mas 
+O escopo do estudo foi reduzido ao domínio de análise estática, portanto as
+conclusões e interpretações estão limitadas neste contexto, acreditamos que
+outros domínios de aplicação possui características semelhantes, mas é
+conhecido que o domínio de aplicação é um fator de influência relevante nas
+características dos produtos de software.
+
+A leitura dos artigos na revisão, na fase final de Extração, foi realizado
+apenas pelo autor deste trabalho, é certo que poderíamos aumentar a validade
+realizando a revisão em par e revisados por outros pesquisadores.
+
+O contexto selecionado com apenas duas conferências nos leva a possibilidade de
+ter resultados com viés atrelado a estes dois eventos, é possível que as
+características dos projetos publicados em outras conferências da Engenharia de
+Software apresentem situação diferentes.
 
 \section{Conclusões} \label{estudo1:conclusoes}
 
-(pendente)
+Este estudo selecionou 60 projetos de software de análise estática de código
+fonte publicados nas conferências ASE e SCAM, todos identificados com nome do
+projeto e URL para download, os autores afirmam que os projetos estão
+disponíveis para obtenção na URL indicada, mas os resultados da caracterização
+feita mostra que apenas uma parcela destes projetos continuam disponíveis.
 
-%% FALTA uma síntese aqui. 
-%% Este estudo ...
-%% Resultados mostram que ...
-%% Algumas tendências emergiram a partir da leitura ...
+Entre os 60 projetos selecionados, 15 não tem qualquer presença oficial online,
+estando a URL indicada pelos autores indisponível, as únicas informações
+disponíveis destes 15 projetos são aquelas encontradas nos artigos onde foram
+publicados.
+
+Os outros 45 projetos com presença online através da URL informada nos artigos
+9 não disponibilizam qualquer artefato relacionado ao software, estando estes
+projetos com a URL informada apenas com informações ... mas não é possível
+encontrar o software para download.
+
+Os 36 restantes com URL disponível estão disponível para download, a maior
+parte com o código fonte disponível na URL informada, 2 estão disponíveis
+apenas em formato binário. Entre os projetos com código fonte disponível
+uma parcela deixa explícito qual licença e de que forma o software é
+distribuído.
+
+Uma parte dos 34 projetos com código fonte disponível não informa qualquer
+licença, de uso,13 ao total, e dessa forma impedem que melhorias e correções
+sejam distribuídas sem antes haver uma solicitação prévia aos autores destes
+projetos. Os demais projetos, 19 utilizam licenças de software livre e dão
+prévia autorização para receber melhorias em código fonte.
+
+%Percebemos também que existe uma grande quantidade de projetos de software
+%publicados nestas duas sem indicação alguma de URL para obtenção do software,
+%indicando que a ...
 
 %detalhes sobre o formato YAML, estrutura utilizada para armazenamento e
 %instalação estão documentados no Apêndice \ref{reproducibilidade-do-estudo}.
@@ -670,52 +716,4 @@ adaptados para novas necessidades.
 %e suas dependências são documentados no Apêndice
 %\ref{reproducibilidade-do-estudo}.
 
-
 %% Planejamos fazer outro estudo ... 
-
-% página 47 do artigo que chris vai me passar me ajuda a definir questões
-% derivando do propósito, questoes sao refinamento do goals num nivel operacional
-% ao responder as questões podem definir se o goal foi alcançado, verificar se
-% as questões tem capacidade de responder, a questoes sao mais operacionais que
-% as propostas, na capacidade de permitir a discussão se o goal foi acalçado
-% ou não, se as questoes forem abstratas a interpretacao dos dados para responder
-% sera dificil de entender, se sao muito detalhadas uma interpretacao clara
-% nao sera possivel, para um interpretacao otima, as questoes devem ser
-% definidas em um nivel intermediario de abstracao entre as metricas e o goal
-% (eh util documentar as questoes formuladas) agrupar questoes similares
-% vai tormar claro se a questao esta apropriada
-
-% o core de GQM esta na parte 2 comecando no capitulo 5 (livro novo)
-% ler GQM -> uso
-% gqm eh generico, apesar de ser muito batido em relacao ao experimento
-% ele eh util para ... melhoria de processo
-% livro sobre GQM \cite{van1999goal}
-
-%caracteriza o objeto
-%  em respeito a um aspecto de qualidade
-%    para determinar sua qualidade
-%      sob um determinado ponto de vista
-
-% chris: consultar artigo de perterson para se apoiar no processo de mapeamento ou revisao sistemativa
-%        tem a fase de screeming \cite{petersen2008systematic}
-%        esta fase de filtro parece com a fase de screeming, ....
-%        esse filtro é o screeming
-% a revisao vai em profundidade lendo os artigos o mapeamento vai em largura ou abrangencia
-
-% usar termos do mapeamento e revisao, se inspirar, nao preciso me amarrar mas vou me inspirar
-% o meu método vai na diagonal algo entre o mapeamento e a revisão
-
-%Situação similar ocorreu com o {\it Augmenting
-%Counterexample-Guided Abstraction Refinement with Proof Templates} e o {\it
-%PtYasm: Software Model Checking with Proof Templates} publicados no ASE 2008,
-%fazem referência ao software PtYasm. 
-%Por conta disso, entre os 107 artigos, 
-
-%\citeonline{robles2010replicating} afirma que existe uma tendência das páginas
-%web onde os softwares estão disponíveis tem uma grande chance de se tornarem
-%indisponíveis ao passar do tempo, investigamos esta tendência 
-%cruzando a informação de acesso ao software com a data de publicação do paper
-%onde o software foi selecionado.
-%a Figura \ref{softwares-disponivel-por-ano} apresenta em cada ano quantos
-%porcentos do total de softwares publicados ainda continuam
-%disponíveis hoje.
