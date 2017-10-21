@@ -1,0 +1,38 @@
+% my %yaml = @_;
+
+\begin{longtable}{ l c c c }
+\caption{Número total de resultados da busca nas bases da ACM e IEEE.}
+\label{search-strings-table} \\\
+  \hline
+  \hhline{ l c c c |}
+  \endfirsthead
+  \hhline{ l c c c |}
+  \hline
+  \textbf{Nome do software} & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} \\\
+  \hline
+  \hhline{ l c c c |}
+  \endhead
+  \hhline{----}
+  \multicolumn{4}{c}{continua na próxima página} \\\
+  \hhline{----} \endfoot
+  \hhline{----} \endlastfoot
+     \multirow{2}{*}{\textbf{Nome do software}}  & \multicolumn{3}{c}{{\bf Resultados}} \\\
+   & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} \\\
+  \hline
+% foreach my $k (sort keys %yaml) {
+%   my $acm = $yaml{$k}{citations}{acm}{results};
+%   my $ieee = $yaml{$k}{citations}{ieeexplore}{results};
+%   my $total = $acm + $ieee;
+   <%== $yaml{$k}{software}{short_name} %> & <%== $acm %> & <%== $ieee %> & <%== $total %> \\\
+% }
+  \hline
+% my %total = ();
+% foreach my $k (sort keys %yaml) {
+%   $total{acm} += $yaml{$k}{citations}{acm}{results};
+%   $total{ieee} += $yaml{$k}{citations}{ieeexplore}{results};
+%   $total{total} += ($yaml{$k}{citations}{acm}{results} + $yaml{$k}{citations}{ieeexplore}{results});
+% }
+  {\bf Total} & <%== $total{acm} %> & <%== $total{ieee} %> & <%== $total{total} %> \\\
+\end{longtable}
+
+%# vim: filetype=epl
