@@ -1,29 +1,31 @@
 % my %yaml = @_;
 
-\begin{longtable}{ l c c c }
+\begin{longtable}{ l c c c c }
 \caption{Número total de resultados da busca nas bases da ACM e IEEE.}
 \label{search-strings-table} \\\
   \hline
-  \hhline{ l c c c |}
+  \hhline{ l c c c c |}
   \endfirsthead
-  \hhline{ l c c c |}
+  \hhline{ l c c c c |}
   \hline
-  \textbf{Nome do software} & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} \\\
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{3}{c}{{\bf Resultados}} & \multirow{2}{*}{\textbf{Menções}} \\\
+   & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} & \\\
   \hline
-  \hhline{ l c c c |}
+  \hhline{ l c c c c |}
   \endhead
-  \hhline{----}
-  \multicolumn{4}{c}{continua na próxima página} \\\
-  \hhline{----} \endfoot
-  \hhline{----} \endlastfoot
-     \multirow{2}{*}{\textbf{Nome do software}}  & \multicolumn{3}{c}{{\bf Resultados}} \\\
-   & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} \\\
+  \hhline{-----}
+  \multicolumn{5}{c}{continua na próxima página} \\\
+  \hhline{-----} \endfoot
+  \hhline{-----} \endlastfoot
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{3}{c}{{\bf Resultados}} & \multirow{2}{*}{\textbf{Menções}} \\\
+   & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} & \\\
   \hline
 % foreach my $k (sort keys %yaml) {
 %   my $acm = $yaml{$k}{citations}{acm}{results};
 %   my $ieee = $yaml{$k}{citations}{ieeexplore}{results};
 %   my $total = $acm + $ieee;
-   <%== $yaml{$k}{software}{short_name} %> & <%== $acm %> & <%== $ieee %> & <%== $total %> \\\
+%   my $mentions = $yaml{$k}{citations}{really_refers_to_software_count};
+   <%== $yaml{$k}{software}{short_name} %> & <%== $acm %> & <%== $ieee %> & <%== $total %> & <%== $mentions %> \\\
 % }
   \hline
 % my %total = ();
@@ -31,8 +33,9 @@
 %   $total{acm} += $yaml{$k}{citations}{acm}{results};
 %   $total{ieee} += $yaml{$k}{citations}{ieeexplore}{results};
 %   $total{total} += ($yaml{$k}{citations}{acm}{results} + $yaml{$k}{citations}{ieeexplore}{results});
+%   $total{mentions} += $yaml{$k}{citations}{really_refers_to_software_count};
 % }
-  {\bf Total} & <%== $total{acm} %> & <%== $total{ieee} %> & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{acm} %> & <%== $total{ieee} %> & <%== $total{total} %> & <%== $total{mentions} %> \\\
 \end{longtable}
 
 %# vim: filetype=epl

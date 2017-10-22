@@ -4,30 +4,54 @@ use Text::BibTeX ':subs';
 use open ':locale';
 use utf8;
 
+=head1 NAME
+
+merge-bibtex - merge bibtex files and print uniq entries
+
+=head1 DESCRIPTION
+
+Verify each entry for all bibtex files passed as argument by comparing title,
+doi and isbn. If any field is equal then the bibtex entry is assumed as equal.
+
+=cut
+
 if (@ARGV < 1) {
   warn "E: missing options!";
-  say "Usage: $0 <bibtex-file> [<bibtex-file> [<bibtex-file>]] > <output-file>";
+  say "Usage: $0 <input-file> [<input-file> [<input-file>]]";
   exit 1;
 }
 
+sub equal {
+  my ($a, $b) = @_;
+  my $title = $a->get('title');
+  my $doi = $a->get('doi') // undef;
+  my $isbn = $a->get('isbn') // undef;
+  if ($title && $b->get('title') && lc($b->get('title')) eq lc($title)) {
+    return 1;
+  }
+  elsif ($doi && $b->get('doi') && $doi eq $b->get('doi')) {
+    return 1;
+  }
+  elsif ($isbn && $b->get('isbn') && $isbn eq $b->get('isbn')) {
+    return 1;
+  }
+  return 0;
+}
+
 my @FILES = @ARGV;
-my $total= 0;
 my %uniq = ();
 
 while (my $filename = shift @FILES) {
+  next if -z $filename;
   if (my $bib = Text::BibTeX::File->new($filename)) {
     while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
       next unless $entry->parse_ok;
-      $total++;
-      my $title = $entry->get('title');
-      my $doi = $entry->get('doi') // undef;
-      if (grep { $title && $uniq{$_}->get('title') && lc($uniq{$_}->get('title')) eq lc($title) } keys %uniq) {
+      if (grep { equal($entry, $uniq{$_}) } keys %uniq) {
         next;
       }
-      elsif (grep { $doi && $uniq{$_}->get('doi') && $doi eq $uniq{$_}->get('doi') } keys %uniq) {
-        next;
+      else {
+        $uniq{$entry->key} = $entry;
       }
-      $uniq{$entry->key} = $entry;
     }
   }
 }

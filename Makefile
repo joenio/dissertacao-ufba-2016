@@ -19,6 +19,7 @@ analyze:
 summary:
 	@mkdir -p cache
 	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
+	./bin/merge-bibtex dataset/software/*/citations.bib > cache/citations.bib
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md

@@ -76,6 +76,9 @@ sub compact_citations {
     elsif (grep { $citations{$entry_key}{doi} && $uniq{$_}{doi} && $citations{$entry_key}{doi} eq $uniq{$_}{doi} } keys %uniq) {
       next;
     }
+    elsif (grep { $citations{$entry_key}{isbn} && $uniq{$_}{isbn} && $citations{$entry_key}{isbn} eq $uniq{$_}{isbn} } keys %uniq) {
+      next;
+    }
     $uniq{$entry_key} = $citations{$entry_key};
   }
   return %uniq;
@@ -174,17 +177,14 @@ sub sum_weight_by {
 
 sub count_mentions_by_type {
   my $type = shift;
-  my %citations_by_year = @_;
-  my %count = ();
-  foreach my $year (keys %citations_by_year) {
-    $count{$year} = {};
-    foreach (keys %{ $citations_by_year{$year} }) {
-      if ($citations_by_year{$year}{$_}{contribution_weight} == $type) {
-        $count{$year}++;
-      }
+  my %mentions = @_;
+  my $count = 0;
+  foreach (keys %mentions) {
+    if ($mentions{$_}{contribution_weight} == $type) {
+      $count++;
     }
   }
-  return %count;
+  return $count;
 }
 
 sub measure_authorship_weight {
@@ -289,15 +289,10 @@ sub load_collected_data($software_dir) {
   #my %count = count_mentions_by_type %citations_by_year;
   #$software{citations}{count} = \%count;
 
-  my %count = ();
-  %count = count_mentions_by_type 0.1, %citations_by_year;
-  $software{citations}{mention_count} = \%count;
-  %count = count_mentions_by_type 0.25, %citations_by_year;
-  $software{citations}{use_count} = \%count;
-  %count = count_mentions_by_type 0.5, %citations_by_year;
-  $software{citations}{contribute_count} = \%count;
-  %count = count_mentions_by_type 1, %citations_by_year;
-  $software{citations}{create_count} = \%count;
+  $software{citations}{mention_count} = count_mentions_by_type 0.1, %uniq;
+  $software{citations}{use_count} = count_mentions_by_type 0.25, %uniq;
+  $software{citations}{contribute_count} = count_mentions_by_type 0.5, %uniq;
+  $software{citations}{create_count} = count_mentions_by_type 1, %uniq;
 
   # sum contribution weight by year
   my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);

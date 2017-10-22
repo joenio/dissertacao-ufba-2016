@@ -1,0 +1,44 @@
+% my %yaml = @_;
+
+\begin{longtable}{ l c c c c c }
+\caption{Número total de menções por tipo aos projetos de software.}
+\label{search-strings-table} \\\
+  \hline
+  \hhline{ l c c c c c |}
+  \endfirsthead
+  \hhline{ l c c c c c |}
+  \hline
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
+  \hline
+  \hhline{ l c c c c c |}
+  \endhead
+  \hhline{------}
+  \multicolumn{6}{c}{continua na próxima página} \\\
+  \hhline{------} \endfoot
+  \hhline{------} \endlastfoot
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
+  \hline
+% foreach my $k (sort keys %yaml) {
+%   my $mention = $yaml{$k}{citations}{mention_count};
+%   my $use = $yaml{$k}{citations}{use_count};
+%   my $contribute = $yaml{$k}{citations}{contribute_count};
+%   my $create = $yaml{$k}{citations}{create_count};
+%   my $total = $mention + $use + $contribute + $create;
+%#   my $mentions = $yaml{$k}{citations}{really_refers_to_software_count};
+   <%== $yaml{$k}{software}{short_name} %> & <%== $mention %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
+% }
+  \hline
+% my %total = ();
+% foreach my $k (sort keys %yaml) {
+%   $total{mention} += $yaml{$k}{citations}{mention_count};
+%   $total{use} += $yaml{$k}{citations}{use_count};
+%   $total{contribute} += $yaml{$k}{citations}{contribute_count};
+%   $total{create} += $yaml{$k}{citations}{create_count};
+%   $total{total} += ($yaml{$k}{citations}{mention_count} + $yaml{$k}{citations}{use_count} + $yaml{$k}{citations}{contribute_count} + $yaml{$k}{citations}{create_count});
+% }
+  {\bf Total} & <%== $total{mention} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
+\end{longtable}
+
+%# vim: filetype=epl
