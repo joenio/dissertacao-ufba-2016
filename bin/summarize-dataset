@@ -30,58 +30,6 @@ sub load_bibtex {
   return %references;
 }
 
-# normalize author names using format "Last F.", eg:
-#  * Bajaj, Kon          = Bajaj K.
-#  * Costa, Kim A.       = Costa K. A.
-#  * Rajan, Sreeranga P. = Rajan S. P.
-#  * Pol, Jaco van de    = Pol J. van de
-#  * Zijiang Yang        = Yang Z.
-#  * Chao Wang           = Wang C.
-sub normalize_author_names {
-  my %entry = @_;
-  my @names = @{ $entry{authors} };
-  my @normalized_names = ();
-  for (my $i = 0; $i <= $#names; $i++) {
-    my @normalized_name = ();
-    if ($names[$i] =~ /,/) {
-      my ($last, $first) = split /\s*,\s*/, $names[$i];
-      foreach my $name (split /\s+/, $first) {
-        if ($name =~ /^[[:upper:]]/) {
-          $name =~ s/(.).*/$1./;
-        }
-        push @normalized_name, $name;
-      }
-      if ($last =~ /\s+/) {
-        my @last_name = split /\s+/, $last;
-        $last = pop @last_name;
-        map { $_ =~ s/(.).*/$1./ } @last_name;
-        $last = join(' ', @last_name, $last);
-      }
-      push @normalized_name, $last;
-    }
-    else {
-      @normalized_name = split /\s+/, $names[$i];
-      for (my $j = 0; $j < $#normalized_name; $j++) {
-        if ($normalized_name[$j] =~ /^[[:upper:]]/) {
-          $normalized_name[$j] =~ s/(.).*/$1./;
-        }
-      }
-    }
-    push @normalized_names, join(' ', reverse @normalized_name);
-  }
-  $entry{authors} = \@normalized_names;
-  return %entry;
-}
-
-sub normalize_citations {
-  my %citations = @_;
-  foreach (keys %citations) {
-    my %normalized = normalize_author_names %{ $citations{$_} };
-    $citations{$_} = \%normalized;
-  }
-  return %citations;
-}
-
 sub count_mentions_by_type {
   my $type = shift;
   my %mentions = @_;
