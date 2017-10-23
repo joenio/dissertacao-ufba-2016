@@ -1,16 +1,15 @@
 #!/usr/bin/perl
 use Modern::Perl '2014';
-use experimental 'signatures';
 use File::Basename;
 use YAML qw( LoadFile Dump );
 use Text::BibTeX;
-use DateTime::Format::HTTP;
-use List::Util qw( uniq max min );
+use List::Util qw( uniq );
 use Set::Tiny;
 use open ':locale';
 use utf8;
 
-sub read_paper_file($filepath) {
+sub read_paper_file {
+  my $filepath = shift;
   my %paper = ();
   unless (-z $filepath) {
     if (my $bib = Text::BibTeX::File->new($filepath)) {
@@ -38,7 +37,8 @@ sub read_paper_file($filepath) {
   return %paper;
 }
 
-sub read_citations_file($filepath) {
+sub read_citations_file {
+  my $filepath = shift;
   my %citations = ();
   unless (-z $filepath) {
     if (my $bib = Text::BibTeX::File->new($filepath)) {
@@ -195,89 +195,36 @@ sub measure_authorship_weight {
     my $authors_these_year = Set::Tiny->new();
     foreach (keys %{ $citations_by_year{$year} }) {
       $authors_these_year->insert(@{ $citations{$_}{authors} });
-      # são os primeiros autores a publicar sobre o software
-      if ($past_years_authors->is_empty) {
-        $citations{$_}{authorship_weight} = 0;
-      }
-      # todos os autores já publicaram sobre o software em anos anteriores
-      elsif ($authors_these_year->is_subset($past_years_authors)) {
-        $citations{$_}{authorship_weight} = 0.1;
-      }
-      # uma parte dos autores já publicou sobre o software em anos anteriores
-      elsif ($authors_these_year->is_properly_intersecting($past_years_authors)) {
-        $citations{$_}{authorship_weight} = 0.25;
-      }
-      # nenhum dos autores jamais publicou sobre o software
-      elsif ($authors_these_year->is_disjoint($past_years_authors)) {
-        $citations{$_}{authorship_weight} = 0.5;
-      }
-      else {
-        $citations{$_}{authorship_weight} = 0;
-      }
+      my $new_authors = $authors_these_year->difference($past_years_authors);
+      $citations{$_}{new_authors_count} = $new_authors->size;
     }
     $past_years_authors->insert($authors_these_year->members);
   }
   return %citations;
 }
 
-sub measure_final_weight {
-  my %citations = @_;
-  foreach (keys %citations) {
-    my $weight = $citations{$_}{contribution_weight}
-                   + $citations{$_}{contribution_weight}
-                     * $citations{$_}{authorship_weight};
-    $citations{$_}{final_weight} = $weight > 1 ? 1 : $weight;
-  }
-  return %citations;
-}
-
-# calculate the max value for each year
-sub measure_technical_sustainnability {
-  my %software = @_;
-  my %technical_sustainnability_by_year = ();
-  my @releases_years = map { m/^(\d{4})-\d{2}-\d{2}.*$/; $1 } @{ $software{releases}{dates} };
-  foreach my $year (uniq grep { $_ } @releases_years) {
-    $technical_sustainnability_by_year{$year} = 1.0;
-  }
-  foreach my $year (keys %{ $software{citations}{by_year} }) {
-    $technical_sustainnability_by_year{$year} //= max map {
-      $software{citations}{by_year}{$year}{$_}{final_weight}
-    } keys %{ $software{citations}{by_year}{$year} };
-  }
-  return \%technical_sustainnability_by_year;
-}
-
-sub forecast_technical_sustainnability_until {
-  my $until_year = shift;
-  my %software = @_;
-  my $year = max keys %{ $software{technical_sustainability_by_year} };
-  my $technical_sustainability = $software{technical_sustainability_by_year}{$year};
-  while ($year < $until_year) {
-    $technical_sustainability -= (0.15 * $technical_sustainability);
-    $year++;
-  }
-  return $technical_sustainability;
-}
-
-sub load_collected_data($software_dir) {
+sub load_collected_data {
+  my $dir = shift;
   # read YAML: software.yml
-  my $yaml = LoadFile("$software_dir/software.yml");
+  my $yaml = LoadFile("$dir/software.yml");
   my %software = %{ $yaml };
   ($software{software}{short_name}) = split ' - ', $software{software}{name};
+
   # read BIBTEX: paper.bib
-  my %paper = read_paper_file("$software_dir/paper.bib");
+  my %paper = read_paper_file("$dir/paper.bib");
   $software{paper} = \%paper;
+
   # read BIBTEX: citations/ieeexplore.bib
-  my %ieeexplore = read_citations_file("$software_dir/citations/ieeexplore.bib");
+  my %ieeexplore = read_citations_file("$dir/citations/ieeexplore.bib");
+
   # read BIBTEX: citations/acm.bib
-  my %acm = read_citations_file("$software_dir/citations/acm.bib");
+  my %acm = read_citations_file("$dir/citations/acm.bib");
 
   # summarize in a uniq citation list
   my %uniq = normalize_citations compact_citations(%ieeexplore, %acm, $paper{entry_key} => \%paper);
 
   # measure weights
   %uniq = measure_authorship_weight %uniq;
-  %uniq = measure_final_weight %uniq;
 
   $software{citations}{bibfile} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
@@ -285,9 +232,6 @@ sub load_collected_data($software_dir) {
   # group citations by year
   my %citations_by_year = group_citations_by_year(%uniq);
   $software{citations}{by_year} = \%citations_by_year;
-
-  #my %count = count_mentions_by_type %citations_by_year;
-  #$software{citations}{count} = \%count;
 
   $software{citations}{mention_count} = count_mentions_by_type 0.1, %uniq;
   $software{citations}{use_count} = count_mentions_by_type 0.25, %uniq;
@@ -298,97 +242,21 @@ sub load_collected_data($software_dir) {
   my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);
   $software{citations}{contribution_weight_by_year_sum} = \%contribution_weight_by_year;
 
-  # sum authorship weight by year
-  my %authorship_weight_by_year = sum_weight_by('authorship_weight', %citations_by_year);
-  $software{citations}{authorship_weight_by_year_sum} = \%authorship_weight_by_year;
-
-  # sum final weight by year
-  my %final_weight_by_year = sum_weight_by('final_weight', %citations_by_year);
-  $software{citations}{final_weight_by_year_sum} = \%final_weight_by_year;
-
-  # check if collected data miss something
-  if ($software{address}{download_available} eq 'yes') {
-    if ($software{software}{distribution} =~ /^gratis|foss$/) {
-      unless (-d "$software_dir/source-code") {
-        $software{debug}{source_code_missing} = 1;
-      }
-      else {
-        $software{debug}{source_code_missing} = 0;
-      }
-    }
-  }
-  unless (-l "$software_dir/paper.pdf") {
-    $software{debug}{symlink_to_paper_missing} = 1;
-  }
-  else {
-    $software{debug}{symlink_to_paper_missing} = 0;
-  }
-  # set {address}{url} as {address}{urls}[0]
-  unless ($software{address}{url}) {
-    $software{address}{url} = $software{address}{urls}->[0];
-  }
-  # set {releases}{source} as {releases}{sources}[0]
-  unless ($software{releases}{source}) {
-    $software{releases}{source} = $software{releases}{sources}->[0];
-  }
-  # set {releases}{first_date} and {releases}{last_date}
-  if ($software{releases}{dates}) {
-    ($software{releases}{first_date}) = split(' ', $software{releases}{dates}->[-1]);
-    ($software{releases}{last_date}) = split(' ', $software{releases}{dates}->[0]);
-  }
   # quantos autores distintos cita o software
   my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
   $software{citations}{authors} = \@all_citations_authors;
 
-  # measure software technical sustainnability metric by year
-  $software{technical_sustainability_by_year} = measure_technical_sustainnability %software;
-
-  # see the future!
-  $software{technical_sustainability_prospective} = forecast_technical_sustainnability_until '2017', %software;
-
   return %software;
 }
 
-sub load_all_collected_data($softwares_dir) {
-  my %softwares = ();
-  foreach my $dir (grep { -d $_ } glob("$softwares_dir/*")) {
-    my %software_data = load_collected_data($dir);
-    my $software_key = basename $dir;
-    $softwares{$software_key} = \%software_data;
-
+sub load_all_collected_data {
+  my $dir = shift;
+  my %yaml = ();
+  foreach my $d (grep { -d $_ } glob("$dir/*")) {
+    my %data = load_collected_data($d);
+    $yaml{basename $d} = \%data;
   }
-  return %softwares;
-}
-
-sub format_collected_data {
-  my $softwares = shift;
-  foreach (keys %$softwares) {
-    my ($searched_at, $date);
-    # format IEEEXPLORE searched_at as dd/mm/yyyy
-    $searched_at = $softwares->{$_}{citations}{ieeexplore}{searched_at};
-    $date = DateTime::Format::HTTP->parse_datetime($searched_at);
-    $softwares->{$_}{citations}{ieeexplore}{searched_at} = $date->dmy('/');
-    # format ACM searched_at as dd/mm/yyyy
-    $searched_at = $softwares->{$_}{citations}{acm}{searched_at};
-    $date = DateTime::Format::HTTP->parse_datetime($searched_at);
-    $softwares->{$_}{citations}{acm}{searched_at} = $date->dmy('/');
-    # format address checked_at as dd/mm/yyyy
-    my $checked_at = $softwares->{$_}{address}{checked_at};
-    $date = DateTime::Format::HTTP->parse_datetime($checked_at);
-    $softwares->{$_}{address}{checked_at} = $date->dmy('/');
-    # format first release date as yyyy
-    if ($softwares->{$_}{releases}{first_date} && $softwares->{$_}{releases}{first_date} !~ /undefined/) {
-      my $first_date = $softwares->{$_}{releases}{first_date};
-      $date = DateTime::Format::HTTP->parse_datetime($first_date);
-      $softwares->{$_}{releases}{first_date} = $date->year;
-    }
-    # format last release date as yyyy
-    if ($softwares->{$_}{releases}{last_date} && $softwares->{$_}{releases}{last_date} !~ /undefined/) {
-      my $last_date = $softwares->{$_}{releases}{last_date};
-      $date = DateTime::Format::HTTP->parse_datetime($last_date);
-      $softwares->{$_}{releases}{last_date} = $date->year;
-    }
-  }
+  return %yaml;
 }
 
 if (@ARGV < 1) {
@@ -397,7 +265,5 @@ if (@ARGV < 1) {
   exit 1;
 }
 our $DATASET_DIR = shift @ARGV;
-
-my %softwares = load_all_collected_data($DATASET_DIR);
-format_collected_data \%softwares;
-print Dump(%softwares);
+my %yaml = load_all_collected_data($DATASET_DIR);
+print Dump(%yaml);

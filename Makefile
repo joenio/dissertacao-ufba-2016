@@ -26,7 +26,6 @@ filter:
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
 render-templates: summary
-	./bin/render-template cache/dataset.yml templates/dataset-summary.tex.epl > result-documents/dataset-summary.tex
 	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
 	./bin/render-template cache/dataset.yml templates/available-table.tex.epl > result-documents/available-table.tex
 	./bin/render-template cache/dataset.yml templates/source-code-table.tex.epl > result-documents/source-code-table.tex
