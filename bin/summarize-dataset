@@ -65,39 +65,6 @@ sub read_citations_file {
   return %citations;
 }
 
-# returns a uniq list of entries that really refers to software
-sub compact_citations {
-  my %citations = @_;
-  my %uniq = ();
-  foreach my $entry_key (grep { $citations{$_}{really_refers_to_software} eq 'yes' } keys %citations) {
-    if (grep { lc($uniq{$_}{title}) eq lc($citations{$entry_key}{title}) } keys %uniq) {
-      next;
-    }
-    elsif (grep { $citations{$entry_key}{doi} && $uniq{$_}{doi} && $citations{$entry_key}{doi} eq $uniq{$_}{doi} } keys %uniq) {
-      next;
-    }
-    elsif (grep { $citations{$entry_key}{isbn} && $uniq{$_}{isbn} && $citations{$entry_key}{isbn} eq $uniq{$_}{isbn} } keys %uniq) {
-      next;
-    }
-    $uniq{$entry_key} = $citations{$entry_key};
-  }
-  return %uniq;
-}
-
-sub authors_are_the_same {
-  my @citation_authors = @{ $_[0]->{authors} };
-  my @paper_authors = @{ $_[1]->{authors} };
-  my @same_authors = ();
-  foreach my $paper_author (@paper_authors) {
-    foreach my $citation_author (@citation_authors) {
-      if ($paper_author eq $citation_author) {
-        push @same_authors, $paper_author;
-      }
-    }
-  }
-  return @same_authors == @paper_authors;
-}
-
 # normalize author names using format "Last F.", eg:
 #  * Bajaj, Kon          = Bajaj K.
 #  * Costa, Kim A.       = Costa K. A.
@@ -150,16 +117,6 @@ sub normalize_citations {
   return %citations;
 }
 
-sub group_citations_by_year {
-  my %citations = @_;
-  my %citations_by_year = ();
-  foreach (keys %citations) {
-    my $year = $citations{$_}{year};
-    $citations_by_year{$year}{$_} = $citations{$_};
-  }
-  return %citations_by_year;
-}
-
 sub sum_weight_by {
   my $key = shift;
   my %citations_by_year = @_;
@@ -187,24 +144,9 @@ sub count_mentions_by_type {
   return $count;
 }
 
-sub measure_authorship_weight {
-  my %citations = @_;
-  my %citations_by_year = group_citations_by_year(@_);
-  my $past_years_authors = Set::Tiny->new();
-  foreach my $year (sort keys %citations_by_year) {
-    my $authors_these_year = Set::Tiny->new();
-    foreach (keys %{ $citations_by_year{$year} }) {
-      $authors_these_year->insert(@{ $citations{$_}{authors} });
-      my $new_authors = $authors_these_year->difference($past_years_authors);
-      $citations{$_}{new_authors_count} = $new_authors->size;
-    }
-    $past_years_authors->insert($authors_these_year->members);
-  }
-  return %citations;
-}
-
 sub load_collected_data {
   my $dir = shift;
+
   # read YAML: software.yml
   my $yaml = LoadFile("$dir/software.yml");
   my %software = %{ $yaml };
@@ -214,37 +156,23 @@ sub load_collected_data {
   my %paper = read_paper_file("$dir/paper.bib");
   $software{paper} = \%paper;
 
-  # read BIBTEX: citations/ieeexplore.bib
-  my %ieeexplore = read_citations_file("$dir/citations/ieeexplore.bib");
-
-  # read BIBTEX: citations/acm.bib
-  my %acm = read_citations_file("$dir/citations/acm.bib");
+  # read BIBTEX: citations.bib
+  my %mentions = read_citations_file("$dir/citations.bib");
 
   # summarize in a uniq citation list
-  my %uniq = normalize_citations compact_citations(%ieeexplore, %acm, $paper{entry_key} => \%paper);
-
-  # measure weights
-  %uniq = measure_authorship_weight %uniq;
+  my %uniq = normalize_citations %mentions, $paper{entry_key} => \%paper;
 
   $software{citations}{bibfile} = \%uniq;
   $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
 
-  # group citations by year
-  my %citations_by_year = group_citations_by_year(%uniq);
-  $software{citations}{by_year} = \%citations_by_year;
+  # quantos autores distintos cita o software
+  my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
+  $software{citations}{author_count} = scalar @all_citations_authors;
 
   $software{citations}{mention_count} = count_mentions_by_type 0.1, %uniq;
   $software{citations}{use_count} = count_mentions_by_type 0.25, %uniq;
   $software{citations}{contribute_count} = count_mentions_by_type 0.5, %uniq;
   $software{citations}{create_count} = count_mentions_by_type 1, %uniq;
-
-  # sum contribution weight by year
-  my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);
-  $software{citations}{contribution_weight_by_year_sum} = \%contribution_weight_by_year;
-
-  # quantos autores distintos cita o software
-  my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
-  $software{citations}{authors} = \@all_citations_authors;
 
   return %software;
 }
