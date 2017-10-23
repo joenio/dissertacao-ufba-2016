@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use open ':locale';
+use List::Util qw( all );
+use YAML qw( LoadFile );
+use Text::BibTeX;
+
+sub projects {
+  my $filename = shift;
+  my %yaml = LoadFile($filename);
+  my $count = 0;
+  foreach my $k (sort keys %yaml) {
+    say $yaml{$k}->{software}{short_name};
+    $count++;
+  }
+  return $count;
+}
+
+sub mentions {
+  my $filename = shift;
+  my %constraints = map { my @tuple = split(/=/, $_); $tuple[0] => $tuple[1] } @_;
+  my $count = 0;
+  unless (-z $filename) {
+    if (my $bib = Text::BibTeX::File->new($filename)) {
+      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
+        next unless $entry->parse_ok && $entry->get('title');
+        next unless all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints;
+        say $entry->get('title');
+        $count++;
+      }
+      $bib->close;
+    }
+  }
+  return $count;
+}
+
+my $database = shift @ARGV // 'projects';
+if ($database eq 'projects') {
+  say 'total: ', projects('cache/dataset.yml', @ARGV);
+}
+elsif ($database eq 'mentions') {
+  say 'total: ', mentions('cache/citations.bib', @ARGV);
+}
