@@ -13,6 +13,13 @@ Agenda:
 | Qualificação | 12 de Julho de 2016                           |
 | Defesa       | _proposta: primeira semana de fevereiro/2017_ |
 
+Banca examinadora:
+
+* Sandro Andrade (titular externo)
+* Rodrigo Rocha (titular interno)
+* Ivan Machado (suplente interno)
+* Igor Steinmacher (suplente externo)
+
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
