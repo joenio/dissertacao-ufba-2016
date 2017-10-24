@@ -58,7 +58,7 @@ sub load_collected_data {
 
   # count how many papers mention the software
   my %_mentions = (%mentions, %paper);
-  $dataset{screening}{results} = scalar keys %_mentions;
+  $dataset{screening}{results} = scalar grep { $_mentions{$_}{really_refers_to_software} eq 'yes' } keys %_mentions;
 
   # count mentions by type
   $dataset{literature_review}{mention_count} = count_mentions_by_type 0.1, %_mentions;

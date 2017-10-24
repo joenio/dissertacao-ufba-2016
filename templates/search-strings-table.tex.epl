@@ -21,19 +21,19 @@
    & \textbf{ACM} & \textbf{IEEE} & \textbf{Total} & \\\
   \hline
 % foreach my $k (sort keys %yaml) {
-%   my $acm = $yaml{$k}{citations}{acm}{results};
-%   my $ieee = $yaml{$k}{citations}{ieeexplore}{results};
+%   my $acm = $yaml{$k}{search}{acm}{results};
+%   my $ieee = $yaml{$k}{search}{ieeexplore}{results};
 %   my $total = $acm + $ieee;
-%   my $mentions = $yaml{$k}{citations}{really_refers_to_software_count};
+%   my $mentions = $yaml{$k}{screening}{results};
    <%== $yaml{$k}{software}{short_name} %> & <%== $acm %> & <%== $ieee %> & <%== $total %> & <%== $mentions %> \\\
 % }
   \hline
 % my %total = ();
 % foreach my $k (sort keys %yaml) {
-%   $total{acm} += $yaml{$k}{citations}{acm}{results};
-%   $total{ieee} += $yaml{$k}{citations}{ieeexplore}{results};
-%   $total{total} += ($yaml{$k}{citations}{acm}{results} + $yaml{$k}{citations}{ieeexplore}{results});
-%   $total{mentions} += $yaml{$k}{citations}{really_refers_to_software_count};
+%   $total{acm} += $yaml{$k}{search}{acm}{results};
+%   $total{ieee} += $yaml{$k}{search}{ieeexplore}{results};
+%   $total{total} += ($yaml{$k}{search}{acm}{results} + $yaml{$k}{search}{ieeexplore}{results});
+%   $total{mentions} += $yaml{$k}{screening}{results};
 % }
   {\bf Total} & <%== $total{acm} %> & <%== $total{ieee} %> & <%== $total{total} %> & <%== $total{mentions} %> \\\
 \end{longtable}
