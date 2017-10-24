@@ -4,175 +4,30 @@ use File::Basename;
 use YAML qw( LoadFile Dump );
 use Text::BibTeX;
 use List::Util qw( uniq );
-use Set::Tiny;
 use open ':locale';
 use utf8;
 
-sub read_paper_file {
+sub load_bibtex {
   my $filepath = shift;
-  my %paper = ();
+  my %references = ();
   unless (-z $filepath) {
     if (my $bib = Text::BibTeX::File->new($filepath)) {
       while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
         next unless $entry->parse_ok;
-        my ($first_author) = $entry->split('author');
-        $paper{author} = $first_author;
-        $paper{title} = $entry->get('title');
-        $paper{review} = $entry->get('review');
-        $paper{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
-        my @authors = $entry->split('author');
-        $paper{authors} = \@authors;
-        $paper{year} = $entry->get('year');
-        $paper{contribution_weight} = $entry->get('contribution_weight');
-        if (my $weightless_contributions = $entry->get('weightless_contributions')) {
-          $paper{weightless_contributions} = $weightless_contributions;
-        }
-        $paper{entry_key} = $entry->key;
-        $paper{step} = $entry->get('step') // 'structred-review';
-        $paper{conference} = $entry->get('conference');
+        my $k = $entry->key;
+        $references{$k}{filepath} = $filepath;
+        $references{$k}{title} = $entry->get('title');
+        $references{$k}{review} = $entry->get('review');
+        $references{$k}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
+        $references{$k}{year} = $entry->get('year');
+        $references{$k}{contribution_weight} = $entry->get('contribution_weight');
+        $references{$k}{step} = $entry->get('step') // 'undefined';
+        $references{$k}{conference} = $entry->get('conference') // 'undefined';
       }
       $bib->close;
     }
   }
-  return %paper;
-}
-
-sub read_citations_file {
-  my $filepath = shift;
-  my %citations = ();
-  unless (-z $filepath) {
-    if (my $bib = Text::BibTeX::File->new($filepath)) {
-      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
-        next unless $entry->parse_ok;
-        my $key = $entry->key;
-        my ($first_author) = $entry->split('author');
-        $citations{$key}{author} = $first_author;
-        $citations{$key}{title} = $entry->get('title');
-        $citations{$key}{review} = $entry->get('review');
-        $citations{$key}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
-        my @authors = $entry->split('author');
-        $citations{$key}{authors} = \@authors;
-        $citations{$key}{year} = $entry->get('year');
-        $citations{$key}{contribution_weight} = $entry->get('contribution_weight');
-        if (my $weightless_contributions = $entry->get('weightless_contributions')) {
-          $citations{$key}{weightless_contributions} = $weightless_contributions;
-        }
-        $citations{$key}{step} = $entry->get('step') // 'review-citations';
-      }
-      $bib->close;
-    }
-  }
-  return %citations;
-}
-
-# returns a uniq list of entries that really refers to software
-sub compact_citations {
-  my %citations = @_;
-  my %uniq = ();
-  foreach my $entry_key (grep { $citations{$_}{really_refers_to_software} eq 'yes' } keys %citations) {
-    if (grep { lc($uniq{$_}{title}) eq lc($citations{$entry_key}{title}) } keys %uniq) {
-      next;
-    }
-    elsif (grep { $citations{$entry_key}{doi} && $uniq{$_}{doi} && $citations{$entry_key}{doi} eq $uniq{$_}{doi} } keys %uniq) {
-      next;
-    }
-    elsif (grep { $citations{$entry_key}{isbn} && $uniq{$_}{isbn} && $citations{$entry_key}{isbn} eq $uniq{$_}{isbn} } keys %uniq) {
-      next;
-    }
-    $uniq{$entry_key} = $citations{$entry_key};
-  }
-  return %uniq;
-}
-
-sub authors_are_the_same {
-  my @citation_authors = @{ $_[0]->{authors} };
-  my @paper_authors = @{ $_[1]->{authors} };
-  my @same_authors = ();
-  foreach my $paper_author (@paper_authors) {
-    foreach my $citation_author (@citation_authors) {
-      if ($paper_author eq $citation_author) {
-        push @same_authors, $paper_author;
-      }
-    }
-  }
-  return @same_authors == @paper_authors;
-}
-
-# normalize author names using format "Last F.", eg:
-#  * Bajaj, Kon          = Bajaj K.
-#  * Costa, Kim A.       = Costa K. A.
-#  * Rajan, Sreeranga P. = Rajan S. P.
-#  * Pol, Jaco van de    = Pol J. van de
-#  * Zijiang Yang        = Yang Z.
-#  * Chao Wang           = Wang C.
-sub normalize_author_names {
-  my %entry = @_;
-  my @names = @{ $entry{authors} };
-  my @normalized_names = ();
-  for (my $i = 0; $i <= $#names; $i++) {
-    my @normalized_name = ();
-    if ($names[$i] =~ /,/) {
-      my ($last, $first) = split /\s*,\s*/, $names[$i];
-      foreach my $name (split /\s+/, $first) {
-        if ($name =~ /^[[:upper:]]/) {
-          $name =~ s/(.).*/$1./;
-        }
-        push @normalized_name, $name;
-      }
-      if ($last =~ /\s+/) {
-        my @last_name = split /\s+/, $last;
-        $last = pop @last_name;
-        map { $_ =~ s/(.).*/$1./ } @last_name;
-        $last = join(' ', @last_name, $last);
-      }
-      push @normalized_name, $last;
-    }
-    else {
-      @normalized_name = split /\s+/, $names[$i];
-      for (my $j = 0; $j < $#normalized_name; $j++) {
-        if ($normalized_name[$j] =~ /^[[:upper:]]/) {
-          $normalized_name[$j] =~ s/(.).*/$1./;
-        }
-      }
-    }
-    push @normalized_names, join(' ', reverse @normalized_name);
-  }
-  $entry{authors} = \@normalized_names;
-  return %entry;
-}
-
-sub normalize_citations {
-  my %citations = @_;
-  foreach (keys %citations) {
-    my %normalized = normalize_author_names %{ $citations{$_} };
-    $citations{$_} = \%normalized;
-  }
-  return %citations;
-}
-
-sub group_citations_by_year {
-  my %citations = @_;
-  my %citations_by_year = ();
-  foreach (keys %citations) {
-    my $year = $citations{$_}{year};
-    $citations_by_year{$year}{$_} = $citations{$_};
-  }
-  return %citations_by_year;
-}
-
-sub sum_weight_by {
-  my $key = shift;
-  my %citations_by_year = @_;
-  my %weight_by_year_sum = ();
-  foreach my $year (keys %citations_by_year) {
-    $weight_by_year_sum{$year} = 0;
-    foreach (keys %{ $citations_by_year{$year} }) {
-      $citations_by_year{$year}{$_}{$key} //= 0;
-      $weight_by_year_sum{$year} += $citations_by_year{$year}{$_}{$key};
-    }
-    $weight_by_year_sum{$year} = sprintf("%.02f", $weight_by_year_sum{$year});
-  }
-  return %weight_by_year_sum;
+  return %references;
 }
 
 sub count_mentions_by_type {
@@ -180,83 +35,48 @@ sub count_mentions_by_type {
   my %mentions = @_;
   my $count = 0;
   foreach (keys %mentions) {
-    if ($mentions{$_}{contribution_weight} == $type) {
+    if ($mentions{$_}{contribution_weight} && $mentions{$_}{contribution_weight} == $type) {
       $count++;
     }
   }
   return $count;
 }
 
-sub measure_authorship_weight {
-  my %citations = @_;
-  my %citations_by_year = group_citations_by_year(@_);
-  my $past_years_authors = Set::Tiny->new();
-  foreach my $year (sort keys %citations_by_year) {
-    my $authors_these_year = Set::Tiny->new();
-    foreach (keys %{ $citations_by_year{$year} }) {
-      $authors_these_year->insert(@{ $citations{$_}{authors} });
-      my $new_authors = $authors_these_year->difference($past_years_authors);
-      $citations{$_}{new_authors_count} = $new_authors->size;
-    }
-    $past_years_authors->insert($authors_these_year->members);
-  }
-  return %citations;
-}
-
 sub load_collected_data {
   my $dir = shift;
+
   # read YAML: software.yml
-  my $yaml = LoadFile("$dir/software.yml");
-  my %software = %{ $yaml };
-  ($software{software}{short_name}) = split ' - ', $software{software}{name};
+  my %dataset = %{ LoadFile("$dir/software.yml") };
+  ($dataset{software}{short_name}) = split ' - ', $dataset{software}{name};
 
   # read BIBTEX: paper.bib
-  my %paper = read_paper_file("$dir/paper.bib");
-  $software{paper} = \%paper;
+  my %paper = load_bibtex("$dir/paper.bib");
+  $dataset{papers} = \%paper;
 
-  # read BIBTEX: citations/ieeexplore.bib
-  my %ieeexplore = read_citations_file("$dir/citations/ieeexplore.bib");
+  # read BIBTEX: citations.bib
+  my %mentions = load_bibtex("$dir/citations.bib");
 
-  # read BIBTEX: citations/acm.bib
-  my %acm = read_citations_file("$dir/citations/acm.bib");
+  # count how many papers mention the software
+  my %_mentions = (%mentions, %paper);
+  $dataset{screening}{results} = scalar grep { $_mentions{$_}{really_refers_to_software} eq 'yes' } keys %_mentions;
 
-  # summarize in a uniq citation list
-  my %uniq = normalize_citations compact_citations(%ieeexplore, %acm, $paper{entry_key} => \%paper);
+  # count mentions by type
+  $dataset{literature_review}{mention_count} = count_mentions_by_type 0.1, %_mentions;
+  $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %_mentions;
+  $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %_mentions;
+  $dataset{literature_review}{create_count} = count_mentions_by_type 1, %_mentions;
 
-  # measure weights
-  %uniq = measure_authorship_weight %uniq;
-
-  $software{citations}{bibfile} = \%uniq;
-  $software{citations}{really_refers_to_software_count} = scalar keys %uniq;
-
-  # group citations by year
-  my %citations_by_year = group_citations_by_year(%uniq);
-  $software{citations}{by_year} = \%citations_by_year;
-
-  $software{citations}{mention_count} = count_mentions_by_type 0.1, %uniq;
-  $software{citations}{use_count} = count_mentions_by_type 0.25, %uniq;
-  $software{citations}{contribute_count} = count_mentions_by_type 0.5, %uniq;
-  $software{citations}{create_count} = count_mentions_by_type 1, %uniq;
-
-  # sum contribution weight by year
-  my %contribution_weight_by_year = sum_weight_by('contribution_weight', %citations_by_year);
-  $software{citations}{contribution_weight_by_year_sum} = \%contribution_weight_by_year;
-
-  # quantos autores distintos cita o software
-  my @all_citations_authors = uniq map { @{$software{citations}{bibfile}{$_}{authors}} } keys %{$software{citations}{bibfile}};
-  $software{citations}{authors} = \@all_citations_authors;
-
-  return %software;
+  return %dataset;
 }
 
-sub load_all_collected_data {
+sub load_projects_dataset {
   my $dir = shift;
-  my %yaml = ();
+  my %dataset = ();
   foreach my $d (grep { -d $_ } glob("$dir/*")) {
     my %data = load_collected_data($d);
-    $yaml{basename $d} = \%data;
+    $dataset{basename $d} = \%data;
   }
-  return %yaml;
+  return %dataset;
 }
 
 if (@ARGV < 1) {
@@ -265,5 +85,5 @@ if (@ARGV < 1) {
   exit 1;
 }
 our $DATASET_DIR = shift @ARGV;
-my %yaml = load_all_collected_data($DATASET_DIR);
-print Dump(%yaml);
+my %dataset = load_projects_dataset($DATASET_DIR);
+print Dump(%dataset);
