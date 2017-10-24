@@ -9,7 +9,7 @@ use List::Util qw( uniq );
 
 =head1 NAME
 
-summarize-dataset - read all data files and summarize into one single YAML
+summarize-dataset - read dataset and summarize into one single YAML structure
 
 =head1 SYNOPSIS
 
@@ -39,6 +39,8 @@ sub load_bibtex {
         $references{$k}{contribution_weight} = $entry->get('contribution_weight');
         $references{$k}{step} = $entry->get('step') // 'undefined';
         $references{$k}{conference} = $entry->get('conference') // 'undefined';
+        my @authors = $entry->split('author');
+        $references{$k}{authors} = \@authors;
       }
       $bib->close;
     }
@@ -58,6 +60,60 @@ sub count_mentions_by_type {
   return $count;
 }
 
+# normalize author names to the format: "Last F."
+#
+# examples:
+#
+#    Bajaj, Kon           =>  Bajaj K.
+#    Costa, Kim A.        =>  Costa K. A.
+#    Rajan, Sreeranga P.  =>  Rajan S. P.
+#    Pol, Jaco van de     =>  Pol J. van de
+#    Zijiang Yang         =>  Yang Z.
+#    Chao Wang            =>  Wang C.
+#
+sub normalize_authors_names {
+  my @names = @_;
+  my @normalized_names = ();
+  for (my $i = 0; $i <= $#names; $i++) {
+    my @normalized_name = ();
+    if ($names[$i] =~ /,/) {
+      my ($last, $first) = split /\s*,\s*/, $names[$i];
+      foreach my $name (split /\s+/, $first) {
+        if ($name =~ /^[[:upper:]]/) {
+          $name =~ s/(.).*/$1./;
+        }
+        push @normalized_name, $name;
+      }
+      if ($last =~ /\s+/) {
+        my @last_name = split /\s+/, $last;
+        $last = pop @last_name;
+        map { $_ =~ s/(.).*/$1./ } @last_name;
+        $last = join(' ', @last_name, $last);
+      }
+      push @normalized_name, $last;
+    }
+    else {
+      @normalized_name = split /\s+/, $names[$i];
+      for (my $j = 0; $j < $#normalized_name; $j++) {
+        if ($normalized_name[$j] =~ /^[[:upper:]]/) {
+          $normalized_name[$j] =~ s/(.).*/$1./;
+        }
+      }
+    }
+    push @normalized_names, join(' ', reverse @normalized_name);
+  }
+  return @normalized_names;
+}
+
+sub unique_authors {
+  my %references = @_;
+  my @authors = ();
+  foreach my $k (keys %references) {
+    push @authors, normalize_authors_names(@{ $references{$k}{authors} });
+  }
+  return uniq @authors;
+}
+
 sub load_project_data {
   my $dir = shift;
 
@@ -70,17 +126,22 @@ sub load_project_data {
   $dataset{papers} = \%paper;
 
   # read BIBTEX: citations.bib
-  my %mentions = load_bibtex("$dir/citations.bib");
+  my %references = load_bibtex("$dir/citations.bib");
+
+  my %_references = (%paper, %references);
+  my %mentions = map { $_ => $_references{$_} } grep { $_references{$_}{really_refers_to_software} eq 'yes' } keys %_references;
 
   # count how many papers mention the software
-  my %_mentions = (%mentions, %paper);
-  $dataset{screening}{results} = scalar grep { $_mentions{$_}{really_refers_to_software} eq 'yes' } keys %_mentions;
+  $dataset{screening}{results} = scalar keys %mentions;
 
   # count mentions by type
-  $dataset{literature_review}{mention_count} = count_mentions_by_type 0.1, %_mentions;
-  $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %_mentions;
-  $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %_mentions;
-  $dataset{literature_review}{create_count} = count_mentions_by_type 1, %_mentions;
+  $dataset{literature_review}{mention_count} = count_mentions_by_type 0.1, %mentions;
+  $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %mentions;
+  $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %mentions;
+  $dataset{literature_review}{create_count} = count_mentions_by_type 1, %mentions;
+
+  # count unique authors found in mentions
+  $dataset{literature_review}{author_count} = scalar unique_authors %mentions;
 
   return %dataset;
 }
