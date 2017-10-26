@@ -14,9 +14,7 @@ Estudar o software acadêmico trazido pelo estudo 1 (mais citados? outro?)
 SERIA UM ESTUDO na linha dos estudos de  ATTRACTIVENESS.
 Nesse caso, o aspecto de adoção para uso e adoção para contribuição.
 
-
 \section{Motivação}
-
 
 %\section{Análise da complexidade estrutural dos softwares científicos}
 %\label{complexidade-ferramentas}
@@ -92,7 +90,6 @@ O estudo foi conduzido com um subconjunto dos projetos de software acadêmico de
 publicados nas conferências ASE e SCAM, e avaliados como sustentáveis.
 \end{description}
 
-
 \subsection{Sumário da Definição}
 
 %% GQM template
@@ -103,7 +100,6 @@ com respeito a \textit{complexidade estrutural (manutenibilidade)}  % quality fo
 na perspectiva do \textit{pesquisador} e do \textit{cientista}% perspective
 no contexto de \textit{software acadêmico de análise estática publicado nas conferências ASE e SCAM
 e referenciado por artigos publicados nas bases da ACM e IEEE}. % context
-%
 
 Os mais citados / referenciados?
 
@@ -175,6 +171,21 @@ características influenciam em sua manutenabilidade.
 
 \section{Operação} 
 
+\subsection{Métricas de software}
+
+Ao final, coletamos também algumas métricas do software em relação ao seu
+ecossistema de software e em relação a sua qualidade interna: número
+total de lançamentos, data e número de versão de cada lançamento, número de
+commits e a complexidade estrutural do código fonte.
+
+As informações sobre lançamentos foram coletadas manualmente em arquivos de
+changelog, no site do projeto, ou em tags no próprio repositório de código
+fonter. O número de commits foi coletado com o uso do git via linha de comando,
+o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
+coletada com software de análise estática Analizo.
+Os dados sobre complexidade estrutural do código fonte não foram utilizados
+neste estudo.
+% Coloquei a FRASE acima para discutirmos depois.
 
 \subsection{Execução}
 
@@ -193,7 +204,6 @@ auto-documentadas e podem ser consultadas como páginas de manual UNIX.
 Analizo é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
 foi a versão utilizada neste estudo.
 
-
 \subsection{Coleta de dados} \label{analise}
 
 Os dados coletados incluem a caracterização das ferramentas de análise
@@ -201,15 +211,8 @@ estática, bem como, os valores das métricas de código-fonte de complexidade
 estrutural para cada ferramenta. A coleta das métricas de
 código-fonte foi realizada pelo Analizo com o auxílio do script {\em
 analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}. 
-%A caracterização será feita a partir dos artigos selecionados na revisão estruturada, documentação, site do projeto e repositório das ferramentas.
-%
+
 Todos os dados foram agregados numa planilha.
-%, a análise exploratória será
-%realizada comparando pares de ferramentas de tamanhos similares, o tamanho das
-%ferramentas será dado pelo número de módulos. O tamanho deve ser
-%levado em conta pois sabe-se que ele influencia nos valores de métricas de
-%código-fonte, complexidade estrutural, por exemplo, sofrem
-%de tal infuência.
 
 %% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
 %% 
@@ -274,145 +277,12 @@ Todos os dados foram agregados numa planilha.
 
 (pendente)
 
-%% \subsection{Ferramentas da indústria}
-%% 
-%% Em paralelo à revisão estruturada para seleção de ferramentas da academia será
-%% realizada uma seleção manual não estruturada para busca de ferramentas da
-%% indústria. O objetivo é aumentar o conjunto de objetos de estudo bem como ter
-%% ferramentas de outros contextos além da academia, isto irá proporcionar uma
-%% nova dimensão na caracterzação das ferramentas e permitirá realizar comparação
-%% entre ferramentas de contextos distintos.
-%% 
-%% ==============================
-%% 
-%% Dentre estas ferramentas as seguintes foram selecionadas para análise evolutiva:
-%% 
-%% \begin{itemize}
-%%   \item Closure Compiler         
-%%   \item FindBugs                 
-%%   \item PMD                      
-%%   \item WALA                    
-%%   \item error-prone
-%%   \item JastAdd
-%%   \item SPARTA
-%%   \item Cppcheck
-%%   \item FindSecurityBugs
-%%   \item Smatch
-%% \end{itemize}
-%% 
-%% o clang foi removido pois a analise dele demorou muito, ficou rodando 1 semana q não
-%% terminou, o analizo metrics que demorou tanto assim.
-%% 
-%% \begin{table}[H]
-%% \caption{Métricas da ferramenta PMD}
-%%   \centering
-%% \begin{tabular}{|l|r|r|r|r|r|}
-%% \hline
-%% \multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-%% 4.2.5 & 844 & 0,06 & 6 & 15 & 28 \\ \hline
-%% 4.3 & 852 & 0,06 & 6 & 15 & 28 \\ \hline
-%% 5.0.0 & 1043 & 0,03 & 6 & 14 & 25 \\ \hline
-%% 5.0.4 & 1052 & 0,02 & 6 & 12 & 24 \\ \hline
-%% 5.1.0 & 1238 & 0,02 & 6 & 12 & 24 \\ \hline
-%% 5.1.3 & 1254 & 0,02 & 6 & 12 & 25 \\ \hline
-%% 5.2.0 & 1295 & 0,02 & 6 & 12 & 25 \\ \hline
-%% 5.3.0 & 1341 & 0,01 & 6 & 12 & 25 \\ \hline
-%% 5.3.3 & 1342 & 0,02 & 6 & 12 & 25 \\ \hline
-%% 5.3.7 & 1374 & 0,01 & 6 & 12 & 25 \\ \hline
-%% 5.4.0 & 1332 & 0,02 & 6 & 12 & 26 \\ \hline
-%% 5.4.2 & 1366 & 0,02 & 6 & 12 & 26 \\ \hline
-%% 5.5.2 & 1530 & 0,01 & 6 & 12 & 25 \\ \hline
-%% \multicolumn{6}{l}{\texttt{Notas:}} \\
-%% \multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-%% \multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-%% \end{tabular}
-%% \label{metricas-pmd}
-%% \end{table}
-%% 
-%% \begin{table}[H]
-%% \caption{Métricas da ferramenta WALA}
-%%   \centering
-%% \begin{tabular}{|l|r|r|r|r|r|}
-%% \hline
-%% \multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-%% 1.0 & 1223 & 0,02 & 8 & 27 & 45 \\ \hline
-%% 1.0.02 & 1685 & 0,02 & 8 & 25 & 48 \\ \hline
-%% 1.1 & 1872 & 0,02 & 7 & 24 & 48 \\ \hline
-%% 1.1.2 & 1720 & 0,02 & 8 & 24 & 50 \\ \hline
-%% 1.2 & 1734 & 0,02 & 7 & 25 & 49 \\ \hline
-%% 1.2.1.1 & 1901 & 0,02 & 6 & 24 & 48 \\ \hline
-%% 1.2.2 & 1903 & 0,02 & 6 & 24 & 48 \\ \hline
-%% 1.3 & 1945 & 0,02 & 6 & 24 & 52 \\ \hline
-%% 1.3.3 & 2092 & 0,01 & 6 & 24 & 50 \\ \hline
-%% 1.3.5 & 2143 & 0,02 & 6 & 22 & 49 \\ \hline
-%% 1.3.6 & 2154 & 0,02 & 6 & 22 & 49 \\ \hline
-%% 1.3.8 & 2626 & 0,02 & 7 & 24 & 54 \\ \hline
-%% 1.3.9 & 2636 & 0,02 & 7 & 24 & 54 \\ \hline
-%% \multicolumn{6}{l}{\texttt{Notas:}} \\
-%% \multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-%% \multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-%% \end{tabular}
-%% \label{metricas-wala}
-%% \end{table}
-%% 
-%% \begin{table}[H]
-%% \caption{Métricas da ferramenta FindBugs}
-%%   \centering
-%% \begin{tabular}{|l|r|r|r|r|r|}
-%% \hline
-%% \multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-%% 1.2.1 & 1044 & 0,05 & 7 & 20 & 36 \\ \hline
-%% 1.3.4 & 1216 & 0,06 & 7 & 21 & 42 \\ \hline
-%% 1.3.5 & 1257 & 0,05 & 7 & 21 & 40 \\ \hline
-%% 1.3.6 & 1258 & 0,05 & 8 & 21 & 42 \\ \hline
-%% 1.3.7 & 1261 & 0,05 & 7 & 22 & 42 \\ \hline
-%% 1.3.8 & 1275 & 0,05 & 7 & 22 & 42 \\ \hline
-%% 1.3.9 & 1354 & 0,06 & 7 & 24 & 48 \\ \hline
-%% 2.0.0 & 1459 & 0,06 & 7 & 24 & 52 \\ \hline
-%% 2.0.1 & 1465 & 0,06 & 7 & 24 & 54 \\ \hline
-%% 2.0.2 & 1469 & 0,06 & 7 & 24 & 56 \\ \hline
-%% 2.0.3 & 1489 & 0,06 & 7 & 24 & 56 \\ \hline
-%% 3.0.0 & 1438 & 0,07 & 7 & 24 & 56 \\ \hline
-%% 3.0.1 & 1486 & 0,07 & 8 & 25 & 56 \\ \hline
-%% \multicolumn{6}{l}{\texttt{Notas:}} \\
-%% \multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-%% \multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-%% \end{tabular}
-%% \label{metricas-findbugs}
-%% \end{table}
-%% 
-%% \begin{table}[H]
-%% \caption{Métricas da ferramenta Closure Compiler}
-%%   \centering
-%% \begin{tabular}{|l|r|r|r|r|r|}
-%% \hline
-%% \multicolumn{1}{|c|}{\textbf{Release}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{CC}} & \multicolumn{1}{c|}{\textbf{SC 75}} & \multicolumn{1}{c|}{\textbf{SC 90}} & \multicolumn{1}{c|}{\textbf{SC 95}} \\ \hline
-%% 20110119 & 1122 & 0,05 & 4 & 17 & 42 \\ \hline
-%% 20110811 & 1730 & 0,1 & 5 & 20 & 40 \\ \hline
-%% 20120305 & 1802 & 0,1 & 5 & 20 & 42 \\ \hline
-%% 20120917 & 1836 & 0,1 & 6 & 20 & 42 \\ \hline
-%% 20130227 & 1759 & 0,11 & 6 & 20 & 48 \\ \hline
-%% 20130722 & 1806 & 0,1 & 6 & 20 & 48 \\ \hline
-%% 20140110 & 2004 & 0,08 & 5 & 20 & 45 \\ \hline
-%% 20140730 & 1573 & 0,04 & 4 & 20 & 48 \\ \hline
-%% 20150126 & 1596 & 0,04 & 5 & 22 & 56 \\ \hline
-%% 20150729 & 1649 & 0,04 & 6 & 26 & 65 \\ \hline
-%% 20160125 & 1724 & 0,04 & 5 & 28 & 68 \\ \hline
-%% 20160713 & 1860 & 0,04 & 6 & 30 & 70 \\ \hline
-%% \multicolumn{6}{l}{\texttt{Notas:}} \\
-%% \multicolumn{6}{l}{\texttt{CC = Custo de mudança}} \\
-%% \multicolumn{6}{l}{\texttt{SC = Complexidade estrutural}} \\ \hline
-%% \end{tabular}
-%% \label{metricas-closurecompiler}
-%% \end{table}
-%% 
 %% As ferramentas com poucas linhas de código foram excluidas, estas
 %% apreentam Change Cost alto, já é conhecido que a definição desta métrica
 %% sofre deste problema, apresenta valores altos em projetos muito pequenos,
 %% tambem removemos da analise aquelas ferramentas que nao tiveram valor
 %% no percentil 75\%, pois a comparacao e analise se dará neste percentil
 %% principalmente.
-%% 
 
 %% Com isso temos 11 projetos, destes iremos analisar longitudalmente
 %% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
@@ -637,240 +507,6 @@ Todos os dados foram agregados numa planilha.
 %% %%   \label{total-de-ferramentas}
 %% %% \end{table}
 %% 
-%% % \subsection{AccessAnalysis}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{AccessAnalysis-1.2-src.zip}.
-%% % 
-%% % \subsection{Kiasan/Bogor}
-%% % 
-%% % O código-fonte utilizado em
-%% % nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{bogor-src-1.2.20061023.1.zip}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{composite}
-%% % 
-%% % O código-fonte utilizado em
-%% % nosso estudo obtido no site da ferramenta foi o \texttt{composite-0.4.tar.gz}.
-%% % 
-%% % \subsection{CSeq}
-%% % 
-%% % \O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{cseq-0.5.zip}.
-%% % 
-%% % \subsection{EJB}
-%% % 
-%% % \subsection{error-prone}
-%% % 
-%% % O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{error-prone-2.0.9.tar.gz}.
-%% % 
-%% % \subsection{GUIZMO}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{guizmo-master.zip}. Aceita como entrada um formato baseado em
-%% % XML\footnote{\url{http://wireframesketcher.com/help/xmlformat.html}} e gera
-%% % código GUI em Java Swing / ZK.
-%% % 
-%% % \subsection{GumTree}
-%% % 
-%% % código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{gumtree-2.0.0.tar.gz}.
-%% % 
-%% % \subsection{Indus}
-%% % 
-%% % O projeto está organizado em três
-%% % módulos, os seguintes arquivos, contendo o código-fonte dos três módulos,
-%% % foram copiados localmente para análise:
-%% % \texttt{indus.indus-src-20091220.zip},
-%% % \texttt{indus.javaslicer-src-20091220.zip} e
-%% % \texttt{indus.staticanalyses-src-20070305.zip}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{JastAdd}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{jastadd2-src.zip}.
-%% % 
-%% % \subsection{JFlow}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{vazexqi-JFlow-7cd7eaf.tar.gz}.
-%% % 
-%% % \subsection{Lotrack}
-%% % 
-%% % O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{Lotrack-master.zip}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{MPAnalyzer}
-%% % 
-%% % O código-fonte utilizado em
-%% % nosso estudo obtido no site da ferramenta foi o \texttt{MPAnalyzer-master.zip}.
-%% % 
-%% % \subsection{PtYasm}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{ptyasm.april2008.tgz}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{ReAssert}
-%% % 
-%% % O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{ReAssert\_0.4.1-src.zip}.
-%% % 
-%% % \subsection{Sonar Qube Plug-in}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{SonarQube-plug-in-master.zip}.
-%% % 
-%% % \subsection{SPARTA}
-%% % 
-%% % O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{sparta-sparta-1.0.2.tar.gz}.
-%% % 
-%% % \subsection{srcML}
-%% % 
-%% % \url{http://www.sdml.info/projects/srcml/trunk}\footnote{este endereço
-%% % retornou "not found" em contato com os autores por email indicaram que o
-%% % projeto foi movido para http://www.srcML.org}. O código-fonte utilizado em
-%% % nosso estudo obtido no site da ferramenta foi o \texttt{srcML-src.tar.gz}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{TACLE}
-%% % 
-%% % disponível em
-%% % \url{http://presto.cse.ohio-state.edu/tacle}\footnote{este link está
-%% % indisponível, por email os autores indicaram o endereço
-%% % http://web.cse.ohio-state.edu/~rountev/presto/tacle/TACLE\_Download/tacle.html}.
-%% % O código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{tacle\_1\_2\_1\_src.zip}.
-%% % 
-%% % \subsection{WALA}
-%% % 
-%% % O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{WALA-R\_1.3.8.tar.gz}.
-%% % 
-%% % Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-%% % em número de classes na média.
-%% 
-%% 
-%% % \subsection{Closure Compiler}
-%% % 
-%% % Compilador que traduz código JavaScript em outro
-%% % JavaScript melhor e mais otimizado, está disponível em
-%% % \url{https://developers.google.com/closure/compiler}\footnote{O código fonte do
-%% % Closure Compiler pode ser obtido em:
-%% % http://github.com/google/closure-compiler} e foi utilizado em nosso estudo o
-%% % seguinte lançamento
-%% % \texttt{closure-compiler-closure-compiler-parent-v20160619.tar.gz}.
-%% % 
-%% % Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-%% % em número de classes na média.
-%% % 
-%% % \subsection{Cppcheck}
-%% % 
-%% % Ferramenta de análise estática de código C/C++ para checagem de vazamento de
-%% % memória, erros de alocação, entre outras falhas. Disponível em
-%% % \url{http://sourceforge.net/projects/cppcheck}. Em nosso estudo utilizamos o
-%% % código em \texttt{cppcheck-1.72.tar.bz2}.
-%% % 
-%% % \subsection{CQual}
-%% % 
-%% % Ferramenta de análise de typo ({\it type-based analysis}) que fornece um
-%% % mecanismo leve e prático para especificação e verificação de propriedades de
-%% % programas C. Disponível em \url{http://www.cs.umd.edu/~jfoster/cqual}. Em
-%% % nosso estudo utilizamos o código em \texttt{cqual-0.981.tar.gz}.
-%% % 
-%% % \subsection{FindBugs}
-%% % 
-%% % Uma ferramenta para localização de bugs em código Java disponível em
-%% % \url{http://findbugs.sourceforge.net}. Em nosso estudo utilizamos o código em
-%% % \texttt{findbugs-3.0.1-source.zip}.
-%% % 
-%% % Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-%% % em número de classes na média.
-%% % 
-%% % \subsection{FindSecurityBugs}
-%% % 
-%% % Plugin do FindBugs para auditoria de segurança em aplicações web Java,
-%% % disponível em \url{http://find-sec-bugs.github.io}. O código-fonte utilizado
-%% % em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{findsecbugs-plugin-1.4.5-sources.jar}.
-%% % 
-%% % \subsection{Jlint}
-%% % 
-%% % Uma ferramenta para verificaçao de código Java em busca de bugs,
-%% % inconsistências e problemas de sincronização disponível em
-%% % \url{http://sourceforge.net/projects/jlint}.  O código-fonte utilizado em
-%% % nosso estudo obtido no site da ferramenta foi o \texttt{jlint-3.1.2.zip}.
-%% % 
-%% % \subsection{Pixy}
-%% % 
-%% % Ferramenta de análise estática de código PHP para verificação de
-%% % vulnerabilidades de segurança. Disponível em
-%% % \url{http://github.com/oliverklee/pixy}. O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{pixy-master.zip}.
-%% % 
-%% % \subsection{PMD}
-%% % 
-%% % Ferramenta de análise de código-fonte para localização falhas comuns de
-%% % programação com suporte a várias linguagens, disponível em
-%% % \url{http://pmd.github.io}. O código-fonte utilizado em nosso estudo obtido
-%% % no site da ferramenta foi o \texttt{pmd-src-5.4.1.zip}.
-%% % 
-%% % Ferramenta selecionada para análise evolutiva, possui muitos releases e tem tamanho
-%% % em número de classes na média.
-%% % 
-%% % \subsection{RATS}
-%% % 
-%% % Ferramenta de análise estática para auditoria de segurança 
-%% % de códigos C, C++, Perl, PHP e Python disponível em
-%% % \url{http://code.google.com/archive/p/rough-auditing-tool-for-security}. O
-%% % código-fonte utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{rats-2.4.tgz}.
-%% % 
-%% % \subsection{Smatch}
-%% % 
-%% % Ferramenta de análise estática para detecção de erros no Kernel disponível em
-%% % \url{http://smatch.sourceforge.net}. O código-fonte utilizado em nosso estudo
-%% % obtido no site da ferramenta foi o \texttt{smatch.git}.
-%% % 
-%% % \subsection{Splint}
-%% % 
-%% % Ferramenta para verificação de programas em C por vulnerabilidades de segurança e
-%% % erros de código. Disponível em \url{http://www.splint.org}. O código-fonte
-%% % utilizado em nosso estudo obtido no site da ferramenta foi o
-%% % \texttt{splint-3.1.2.src.tgz}.
-%% % 
-%% % Não possui número suficiente de releases para ser usado na análise evolutiva.
-%% % 
-%% % \subsection{UNO}
-%% % 
-%% % Uma ferramenta de análise de código-fonte C para detecção de defeitos.
-%% % Disponível em \url{http://spinroot.com/uno}. O código-fonte utilizado em nosso
-%% % estudo obtido no site da ferramenta foi o \texttt{uno\_v213.tar.gz}.
-%% % 
-%% % \subsection{WAP}
-%% % 
-%% % Ferramenta para análise estática de código-fonte PHP e mineraçao de dados para
-%% % detectar e corrigir vulnerabilidades em aplicações web. Disponível em
-%% % \url{http://awap.sourceforge.net}. O código-fonte utilizado em nosso estudo
-%% % obtido no site da ferramenta foi o \texttt{wap-2.1.tar.gz}.
 
 %Os valores encontrados serão avaliados sempre tendo em vista os intervalos
 %sugeridos na Tabela \ref{valores-frequentes}, esta tabela traz os valores encontrados
@@ -923,3 +559,16 @@ Todos os dados foram agregados numa planilha.
 %dessas ferramentas serão documentadas, neste ponto a análise e interpretação
 %dos dados se iniciará, o objetivo será compreender quais características
 %implicam na manutenabilidade.
+
+% * fugir de valores de referencia
+% * avaliar evolucao de grupos de ferramentas, ex: plugins eclipse academia VS plugins eclipse industria
+% * agregar um pouco dos protocolos da revisao estruturada na revisao estruturada
+% * mostrar graficos com evolucao de SC de cada grupo/ferramenta
+% * discutir essa evolucao em cada grupo/ferramenta, mostrando que aqui esta evoluindo pra melhor, aqui pra pior, etc
+% * essas ferramentas fezem da fato o que o autor informa que faz? é válida? é possível validar isso de que forma?
+%   verificar quais estudos tem validacao cientifica, ou seja, fazem estudo de caso? experimento? etc...?
+
+%outro fator de peso para definir o valor final do peso é se houve lençamentos
+%de novas versões do software naquele ano, se houve ao menos 1 versão lançada,
+%isso leva o final\_weight para o valor máximo 1.0 (que representa 100\%)
+
