@@ -1,9 +1,9 @@
-% my %yaml = @_;
+% my %dataset = @_;
 
 % my %table = ();
-% foreach my $k (grep { $yaml{$_}{address}{download_available} eq 'yes' } sort keys %yaml) {
-%   next if $yaml{$k}{features}{source_code} eq 'undefined';
-%   my $license = $yaml{$k}{software}{license};
+% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } sort keys %dataset) {
+%   next if $dataset{$k}{features}{source_code} eq 'undefined';
+%   my $license = $dataset{$k}{software}{license};
 %   $table{$license}{total} //= 0;
 %   $table{$license}{total}++;
 % }
