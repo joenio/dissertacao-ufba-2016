@@ -11,7 +11,7 @@ VIEWPDF= @true
 
 include /usr/share/latex-mk/latex.gmk
 
-rebuild: clean summary charts render-templates all
+rebuild: clean summary render-templates all
 
 analyze:
 	./bin/analyze-softwares -o dataset/metrics.csv
@@ -31,9 +31,8 @@ render-templates: summary
 	./bin/render-template cache/dataset.yml templates/source-code-table.tex.epl > result-documents/source-code-table.tex
 	./bin/render-template cache/dataset.yml templates/license-table.tex.epl > result-documents/license-table.tex
 	./bin/render-template cache/dataset.yml templates/search-strings-table.tex.epl > result-documents/search-strings-table.tex
-
-charts:
-	./bin/chart-dataset -i cache/dataset.yml -o result-documents/charts/
+	./bin/render-template cache/dataset.yml templates/authorship-table.tex.epl > result-documents/authorship-table.tex
+	./bin/render-template cache/dataset.yml templates/mention-table.tex.epl > result-documents/mention-table.tex
 
 citations=$(wildcard dataset/software/*)
 merge-bibtex: $(citations)

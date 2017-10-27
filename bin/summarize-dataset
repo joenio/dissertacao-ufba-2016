@@ -128,7 +128,8 @@ sub load_project_data {
   # read BIBTEX: citations.bib
   my %references = load_bibtex("$dir/citations.bib");
 
-  my %_references = (%paper, %references);
+  # %paper must have precedence over %references
+  my %_references = (%references, %paper);
   my %mentions = map { $_ => $_references{$_} } grep { $_references{$_}{really_refers_to_software} eq 'yes' } keys %_references;
 
   # count how many papers mention the software
@@ -141,7 +142,8 @@ sub load_project_data {
   $dataset{literature_review}{create_count} = count_mentions_by_type 1, %mentions;
 
   # count unique authors found in mentions
-  $dataset{literature_review}{author_count} = scalar unique_authors %mentions;
+  my @authors = unique_authors %mentions;
+  $dataset{literature_review}{authors} = \@authors;
 
   return %dataset;
 }
