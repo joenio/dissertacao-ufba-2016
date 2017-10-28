@@ -6,6 +6,8 @@ use File::Basename;
 use YAML qw( LoadFile Dump );
 use Text::BibTeX;
 use List::Util qw( uniq );
+use lib 'lib';
+use Dissertacao qw( equal );
 
 =head1 NAME
 
@@ -114,6 +116,16 @@ sub unique_authors {
   return uniq @authors;
 }
 
+sub count_mentions_by_year {
+  my %mentions = @_;
+  my %mentions_by_year = ();
+  foreach my $y (map { $mentions{$_}{year} } keys %mentions) {
+    $mentions_by_year{$y} //= 0;
+    $mentions_by_year{$y}++;
+  }
+  return %mentions_by_year;
+}
+
 sub load_project_data {
   my $dir = shift;
 
@@ -136,7 +148,7 @@ sub load_project_data {
   $dataset{screening}{results} = scalar keys %mentions;
 
   # count mentions by type
-  $dataset{literature_review}{mention_count} = count_mentions_by_type 0.1, %mentions;
+  $dataset{literature_review}{cite_count} = count_mentions_by_type 0.1, %mentions;
   $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %mentions;
   $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %mentions;
   $dataset{literature_review}{create_count} = count_mentions_by_type 1, %mentions;
@@ -144,6 +156,10 @@ sub load_project_data {
   # count unique authors found in mentions
   my @authors = unique_authors %mentions;
   $dataset{literature_review}{authors} = \@authors;
+
+  # count total mentions by year (including citations.bib and paper.bib)
+  my %mentions_by_year = count_mentions_by_year %mentions;
+  $dataset{mentions_by_year} = \%mentions_by_year;
 
   return %dataset;
 }

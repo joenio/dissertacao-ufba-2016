@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+use utf8;
+use open ':locale';
+use Modern::Perl '2014';
+use Text::BibTeX ':subs';
+use List::Util qw( all );
+use lib 'lib';
+use Dissertacao qw( equal );
+
+=head1 NAME
+
+mentions - select articles mentioning projects by the contribution weight
+
+=cut
+
+sub each_file {
+  my $block = pop;
+  my @FILES = @_;
+  while (my $filename = shift @FILES) {
+    next if -z $filename;
+    if (my $bib = Text::BibTeX::File->new($filename)) {
+      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
+        next unless $entry->parse_ok;
+        &$block($entry);
+      }
+    }
+  }
+}
+
+my %constraints = split(/=/, pop @ARGV);
+my @FILES = @ARGV;
+my %uniq = ();
+
+each_file(@FILES, sub {
+  my $entry = shift;
+  unless (grep { equal($entry, $uniq{$_}) } keys %uniq) {
+    if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
+      $uniq{$entry->key} = $entry;
+    }
+  }
+});
+
+foreach (keys %uniq) {
+  print $uniq{$_}->print_s;
+}
+say 'unique articles: ', scalar keys %uniq;

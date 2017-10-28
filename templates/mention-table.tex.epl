@@ -21,24 +21,23 @@
    & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
   \hline
 % foreach my $k (sort keys %dataset) {
-%   my $mention = $dataset{$k}{literature_review}{mention_count};
+%   my $cite = $dataset{$k}{literature_review}{cite_count};
 %   my $use = $dataset{$k}{literature_review}{use_count};
 %   my $contribute = $dataset{$k}{literature_review}{contribute_count};
 %   my $create = $dataset{$k}{literature_review}{create_count};
-%   my $total = $mention + $use + $contribute + $create;
-%#   my $mentions = $dataset{$k}{literature_review}{really_refers_to_software_count};
-   <%== $dataset{$k}{software}{short_name} %> & <%== $mention %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
+%   my $total = $cite + $use + $contribute + $create;
+   <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
 % }
   \hline
 % my %total = ();
 % foreach my $k (sort keys %dataset) {
-%   $total{mention} += $dataset{$k}{literature_review}{mention_count};
+%   $total{cite} += $dataset{$k}{literature_review}{cite_count};
 %   $total{use} += $dataset{$k}{literature_review}{use_count};
 %   $total{contribute} += $dataset{$k}{literature_review}{contribute_count};
 %   $total{create} += $dataset{$k}{literature_review}{create_count};
-%   $total{total} += ($dataset{$k}{literature_review}{mention_count} + $dataset{$k}{literature_review}{use_count} + $dataset{$k}{literature_review}{contribute_count} + $dataset{$k}{literature_review}{create_count});
+%   $total{total} += ($dataset{$k}{literature_review}{cite_count} + $dataset{$k}{literature_review}{use_count} + $dataset{$k}{literature_review}{contribute_count} + $dataset{$k}{literature_review}{create_count});
 % }
-  {\bf Total} & <%== $total{mention} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
 \end{longtable}
 
 %# vim: filetype=epl

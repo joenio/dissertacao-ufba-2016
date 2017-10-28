@@ -80,27 +80,34 @@ no contexto de \textit{software acadêmico de análise estática publicado nas c
 Neste estudo as seguintes questões de pesquisa, a respeito dos projetos de
 software acadêmico de análise estática, serão investigadas:
 
-\newcommand{\EstudoDoisQuestaoUm}{Como os projetos de software acadêmico de
+\newcommand{\EstudoDoisQuestaoUm}{Quantos projetos de software acadêmico de
 análise estática publicados nas conferências ASE e SCAM são mencionados em
-publicações das bases ACM e IEEE?}
+publicações nas bases ACM e IEEE?}
 
 \newcommand{\EstudoDoisQuestaoDois}{Os projetos de software acadêmico de
-análise estática publicados nas conferências ASE e SCAM são avaliados em
-estudos encontrados nas bases ACM e IEEE?}
+análise estática publicados nas conferências ASE e SCAM são utilizados e
+avaliados em estudos encontrados nas bases ACM e IEEE?}
+
 
 \newcommand{\EstudoDoisQuestaoTres}{Os projetos de software acadêmico de
 análise estática publicados nas conferências ASE e SCAM recebem contribuições
-advindas de outros pesquisadores além dos autores originais?}
+advindas de estudos encontrados nas bases ACM e IEEE?}
 
-\newcommand{\EstudoDoisQuestaoQuatro}{
-...
-}
+\newcommand{\EstudoDoisQuestaoQuatro}{Os projetos de software acadêmico de
+análise estática publicados nas conferências ASE e SCAM recebem contribuições
+relevantes (mudar esta pergunta) advindas de estudos encontrados nas bases ACM
+e IEEE?}
+
+\newcommand{\EstudoDoisQuestaoCinco}{Os projetos de software acadêmico de
+análise estática publicados nas conferências ASE e SCAM tiveram aumento no
+número de cientistas mencionando os projetos nas bases ACM e IEEE?}
 
 \begin{description}
   \item [Q1:] \EstudoDoisQuestaoUm
   \item [Q2:] \EstudoDoisQuestaoDois
   \item [Q3:] \EstudoDoisQuestaoTres
   \item [Q4:] \EstudoDoisQuestaoQuatro
+  \item [Q5:] \EstudoDoisQuestaoCinco
 \end{description}
 
 \subsection{Métricas}
@@ -200,11 +207,11 @@ software, um valor nesta escala de tipos de menção. Tabela
   \hline
   Tipo de menção           & Explicação \\
   \hline
-  Não menciona o software  & Não menciona o nome do software em nenhum contexto \\
-  Menciona o software      & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros \\
-  Usa o software           & Avalia ou caracteriza o software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o software como parte de uma solução, implementação, etc; Cria um software derivado mas não disponibiliza as contribuições \\
-  Contribui ou integra     & Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados \\
-  Contribui ou cria        & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado \\
+%  Não menciona o software  & Não menciona o nome do software em nenhum contexto \\
+  Cita      & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros. \\
+  Usa       & Avalia ou caracteriza o software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o software como parte de uma solução, implementação, etc; Cria um software derivado mas não disponibiliza as contribuições. \\
+  Contribui & Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados. \\
+  Cria      & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado. \\
   \hline
 \end{tabular}
 \label{esquema-de-mencao}
@@ -373,7 +380,13 @@ encontrados.
 
 \input{result-documents/mention-table.tex}
 
+... a Tabela \ref{visibility-table} ...
+
+\input{result-documents/visibility-table.tex}
+
 \subsection{Autoria das menções aos projetos de software de análise estática}
+
+... a Tabela \ref{authorship-table} ...
 
 \input{result-documents/authorship-table.tex}
 
@@ -390,15 +403,89 @@ o número de autores mencionando o software ao longo do tempo.
 
 % Demográfica.
 
+
+Entre os 60 projetos de software estudados 14 não foram encontrados na revisão
+de literatura em publicações após a publicação inicial, tendo apenas uma
+publicação cada um, alguns tendo duas publicações na mesma época sendo uma
+publicação específica numa trilha de ferramenta, ou senndo 2 artigos
+semelhantes publicados na mesma época em conferências distintas, mas sendo os
+mesmos autores.
+
+\begin{enumerate}
+  \item 2LS
+  \item AccessAnalysis
+  \item Diagnosys
+  \item e-munity
+  \item ETXL
+  \item FaultBuster
+  \item GUIZMO
+  \item MPAnalyzer
+  \item protopurity
+  \item Pseudogen
+  \item PtYasm
+  \item Rêve
+  \item SonarQube Plugin
+  \item TEBA
+\end{enumerate}
+
+Nenhum destes projetos tiveram menção após a publicação inicial do projeto,
+entre estes 14 projetos, apenas três (Diagnosys, ETXL e Rêve) estão
+indisponíveis para download, os outros 11 estão disponíveis, todos com código
+fonte, exceto o FaultBuster que está disponível apenas em formato binário.
+
+46 projetos são mencionados após a publicação inicial encontrada na literatura.
+
+Ao todo foram encontradas 465 menções aos 60 projetos de software, estas
+menções estão num conjunto de 334 artigos selecionados na revisão de literatura
+nas bases ACM e IEEE.
+
+Entre todas as menções a maior parte (222) apenas cita os projetos de software
+como exemplo de implementação, apenas cita o software ou é o mesmo artigo onde
+o software selecionado; É um artigo com “mesmo” conteúdo publicado na “mesma”
+época; O artigo apenas descreve o software; Menciona o software numa tabela com
+outros, classifica; Menciona o software como exemplo; Menciona o software como
+trabalho relacionado; Menciona o software em trabalhos futuros.
+
+% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.1 | grep " title = " | wc -l
+
+AS 222 menções foram encontradas em 204 artigos distintos.
+
 \subsection{Q2 - \EstudoDoisQuestaoDois}
 
+Entre as 465 menções encontradas, 130 são menções que avalia ou caracteriza o
+software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o
+software como parte de uma solução, implementação, etc; Cria um software
+derivado mas não disponibiliza as contribuições.
+
+Entre os 60 projetos de software, 27 são mencionados entre estas 130 menções
+encontradas.
+
+% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.25
+
+Entre as 130 menções, foram encontradas entre 125 artigos distintos.
 
 \subsection{Q3 - \EstudoDoisQuestaoTres}
 
 Número de menções a cada software acadêmico e qual o contexto e tipo de menção
 é feita, quem e quantos são os autores de cada menção.
 
+% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.5
+
+40 menções contribuindo com os projetos foram encontrados, cada menção
+encontrado num artigo distinto. Estas 40 menções são em relação a apenas
+16 projetos entre os 60 do conjunto total, apenas 16 projetos receberam
+contribuções advindas de pesquisas publicadas nas bases ACM e IEEE.
+
 \subsection{Q4 - \EstudoDoisQuestaoQuatro}
+
+Entre os 60 projetos de software selecionados no estudo anterior, a grande maioria
+foi encontrado em artigos 
+
+O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
+é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
+no paper original publicando o projeto pela primeira vez.
+
+\subsection{Q5 - \EstudoDoisQuestaoCinco}
 
 A comparação entre os nomes do autores passou antes pela normalização
 no formato de representação, visto que cada artigo utiliza um formato

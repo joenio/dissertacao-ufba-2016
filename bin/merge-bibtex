@@ -3,6 +3,8 @@ use utf8;
 use open ':locale';
 use Modern::Perl '2014';
 use Text::BibTeX ':subs';
+use lib 'lib';
+use Dissertacao qw( equal );
 
 =head1 NAME
 
@@ -23,23 +25,6 @@ if (@ARGV < 1) {
   warn "E: missing options!";
   say "Usage: $0 <input-file> [<input-file> [<input-file>]]";
   exit 1;
-}
-
-sub equal {
-  my ($a, $b) = @_;
-  my $title = $a->get('title');
-  my $doi = $a->get('doi') // undef;
-  my $isbn = $a->get('isbn') // undef;
-  if ($title && $b->get('title') && lc($b->get('title')) eq lc($title)) {
-    return 1;
-  }
-  elsif ($doi && $b->get('doi') && $doi eq $b->get('doi')) {
-    return 1;
-  }
-  elsif ($isbn && $b->get('isbn') && $isbn eq $b->get('isbn')) {
-    return 1;
-  }
-  return 0;
 }
 
 my @FILES = @ARGV;
