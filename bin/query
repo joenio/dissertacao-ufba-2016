@@ -1,43 +1,30 @@
 #!/usr/bin/perl
-use Modern::Perl '2014';
+use utf8;
 use open ':locale';
+use Modern::Perl '2014';
+use Text::BibTeX ':subs';
 use List::Util qw( all );
-use YAML qw( LoadFile );
-use Text::BibTeX;
+use lib 'lib';
+use Dissertacao qw( equal foreach_bibtex_file );
 
-sub projects {
-  my $filename = shift;
-  my %yaml = LoadFile($filename);
-  my $count = 0;
-  foreach my $k (sort keys %yaml) {
-    say $yaml{$k}->{software}{short_name};
-    $count++;
-  }
-  return $count;
-}
+=head1 NAME
 
-sub mentions {
-  my $filename = shift;
-  my %constraints = map { my @tuple = split(/=/, $_); $tuple[0] => $tuple[1] } @_;
-  my $count = 0;
-  unless (-z $filename) {
-    if (my $bib = Text::BibTeX::File->new($filename)) {
-      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
-        next unless $entry->parse_ok && $entry->get('title');
-        next unless all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints;
-        say $entry->get('title');
-        $count++;
-      }
-      $bib->close;
+query - count unique references satisfying some constraint
+
+=cut
+
+my %constraints = split(/=/, pop @ARGV);
+my @FILES = @ARGV;
+my %uniq = ();
+
+foreach_bibtex_file(@FILES, sub {
+  my $entry = shift;
+  unless (grep { equal($entry, $uniq{$_}) } keys %uniq) {
+    if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
+      $uniq{$entry->key} = $entry;
+      #print $entry->print_s;
     }
   }
-  return $count;
-}
+});
 
-my $database = shift @ARGV // 'projects';
-if ($database eq 'projects') {
-  say 'total: ', projects('cache/dataset.yml', @ARGV);
-}
-elsif ($database eq 'mentions') {
-  say 'total: ', mentions('cache/citations.bib', @ARGV);
-}
+say scalar keys %uniq;

@@ -1,0 +1,31 @@
+% use List::Util qw( uniq );
+% my %dataset = @_;
+
+% my @years = uniq map { keys %{ $dataset{$_}{mentions_by_year} } } keys %dataset;
+% @years = sort @years;
+
+\begin{longtable}{ l *{17}{c} }
+\caption{Número de menções por ano (de <%== $years[0] %> até <%== $years[-1] %>).}
+\label{authorship-table} \\\
+  \hline
+  \hhline{ l *{17}{c} |}
+  \endfirsthead
+  \hhline{ l *{17}{c} |}
+  \hline
+  \textbf{Projeto} & <%== join(' & ', map { $_ + 1 } keys @years) %> \\\
+  \hline
+  \hhline{ l *{17}{c} |}
+  \endhead
+  \hhline{------------------}
+  \multicolumn{17}{c}{continua na próxima página} \\\
+  \hhline{------------------} \endfoot
+  \hhline{------------------} \endlastfoot
+  \textbf{Projeto} & <%== join(' & ', map { $_ + 1 } keys @years) %> \\\
+  \hline
+% foreach my $k (sort keys %dataset) {
+    <%== $dataset{$k}{software}{short_name} %> & <%== join(' & ', map { $dataset{$k}{mentions_by_year}{$_} // '-' } @years) %> \\\
+% }
+  \hline
+\end{longtable}
+
+%# vim: filetype=epl
