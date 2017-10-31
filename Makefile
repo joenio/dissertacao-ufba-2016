@@ -11,7 +11,7 @@ VIEWPDF= @true
 
 include /usr/share/latex-mk/latex.gmk
 
-rebuild: clean summary render-templates all
+rebuild: clean summary documents all
 
 analyze:
 	./bin/analyze-softwares -o dataset/metrics.csv
