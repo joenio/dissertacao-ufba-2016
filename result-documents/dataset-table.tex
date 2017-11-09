@@ -1,0 +1,12 @@
+Can't use an undefined value as an ARRAY reference at /HOLODEV/dissertacao-ufba-2016/templates/dataset-table.tex.epl line 20.
+15:   Software & Versões & Citações & [cita] & [usa] & [contribui] & [cria] \\\
+16:   \hline
+17: % foreach my $software_key (sort keys %softwares) {
+18:   <%== $software_key %>
+19:   &
+20:   <%== @{ $softwares{$software_key}{releases}{dates} } %>
+21:   &
+22:   <%== $softwares{$software_key}{citations}{really_refers_to_software_count} %>
+23:   &
+24:   <%== grep { $softwares{$software_key}{citations}{bibfile}{$_}{contribution_weight} == 0.1 } keys %{ $softwares{$software_key}{citations}{bibfile} } %>
+25:   &

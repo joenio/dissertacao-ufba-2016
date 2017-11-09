@@ -1,0 +1,39 @@
+% my %dataset = @_;
+% my @projetos = (
+%   'apiexample',
+%   'ccjava',
+%   'codeboost',
+%   'cpa+',
+%   'dompletion',
+%   'drc',
+%   'ejb',
+%   'esbmc',
+%   'gumtree',
+%   'indus',
+%   'jflow',
+%   'mpanalyzer',
+%   'pseudogen',
+%   'sonarqube-plugin',
+%   'sparta',
+%   'wrangler',
+%   'xogastan'
+% );
+
+\begin{table}[h]
+\caption{Strings de busca e número de resultados nas bases ACM e IEEE.}
+\centering
+\begin{tabular}{l p{10cm} c}
+  \hline
+  {\bf Projeto} & {\bf Strings de busca (\texttt{a}) ACM e (\texttt{b}) IEEE} \\\
+  \hline
+% foreach my $k (sort @projetos) {
+  \multirow{2}{*}{<%== $dataset{$k}{software}{short_name} %>}
+            & \texttt{a:} \texttt{<%== $dataset{$k}{search}{acm}{string} %>} \\\
+            & \texttt{b:} \texttt{<%== $dataset{$k}{search}{ieee}{string} %>} \\\
+  \hline
+% }
+\end{tabular}
+\label{search-string-table}
+\end{table}
+
+%# vim: filetype=epl

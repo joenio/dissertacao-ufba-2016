@@ -25,15 +25,9 @@ filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
-documents: summary
-	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
-	./bin/render-template cache/dataset.yml templates/available-table.tex.epl > result-documents/available-table.tex
-	./bin/render-template cache/dataset.yml templates/source-code-table.tex.epl > result-documents/source-code-table.tex
-	./bin/render-template cache/dataset.yml templates/license-table.tex.epl > result-documents/license-table.tex
-	./bin/render-template cache/dataset.yml templates/macros.tex.epl > result-documents/macros.tex
-	./bin/render-template cache/dataset.yml templates/literature-review-table.tex.epl > result-documents/literature-review-table.tex
-#	./bin/render-template cache/dataset.yml templates/mention-table.tex.epl > result-documents/mention-table.tex
-#	./bin/render-template cache/dataset.yml templates/contributors-table.tex.epl > result-documents/contributors-table.tex
+templates=$(wildcard templates/*.epl)
+documents: $(templates) summary
+	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > result-documents/$(basename $(notdir $(t)));)
 
 citations=$(wildcard dataset/software/*)
 merge-bibtex: $(citations)
