@@ -1,39 +1,46 @@
 % my %dataset = @_;
 % my @projetos = (
-%   'apiexample',
 %   'ccjava',
 %   'codeboost',
 %   'cpa+',
-%   'dompletion',
 %   'drc',
 %   'ejb',
-%   'esbmc',
 %   'gumtree',
 %   'indus',
 %   'jflow',
-%   'mpanalyzer',
-%   'pseudogen',
 %   'sonarqube-plugin',
-%   'sparta',
 %   'wrangler',
 %   'xogastan'
 % );
 
 \begin{table}[h]
-\caption{Strings de busca e número de resultados nas bases ACM e IEEE.}
+\caption{Alguns exemplos de strings de busca na base ACM.}
 \centering
-\begin{tabular}{l p{10cm} c}
+\begin{tabular}{l p{10cm}}
   \hline
-  {\bf Projeto} & {\bf Strings de busca (\texttt{a}) ACM e (\texttt{b}) IEEE} \\\
+  {\bf Projeto} & {\bf Strings de busca ACM} \\\
   \hline
 % foreach my $k (sort @projetos) {
-  \multirow{2}{*}{<%== $dataset{$k}{software}{short_name} %>}
-            & \texttt{a:} \texttt{<%== $dataset{$k}{search}{acm}{string} %>} \\\
-            & \texttt{b:} \texttt{<%== $dataset{$k}{search}{ieee}{string} %>} \\\
-  \hline
+  <%== $dataset{$k}{software}{short_name} %> & \texttt{<%== $dataset{$k}{search}{acm}{string} %>} \\\
 % }
+  \hline
 \end{tabular}
-\label{search-string-table}
+\label{search-string-table-acm}
+\end{table}
+
+\begin{table}[h]
+\caption{Alguns exemplos de string de busca na base IEEE.}
+\centering
+\begin{tabular}{l p{10cm}}
+  \hline
+  {\bf Projeto} & {\bf Strings de busca IEEE} \\\
+  \hline
+% foreach my $k (sort @projetos) {
+  <%== $dataset{$k}{software}{short_name} %> & \texttt{<%== $dataset{$k}{search}{ieee}{string} %>} \\\
+% }
+  \hline
+\end{tabular}
+\label{search-string-table-ieee}
 \end{table}
 
 %# vim: filetype=epl
