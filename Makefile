@@ -27,7 +27,7 @@ filter:
 
 templates=$(wildcard templates/*.epl)
 documents: $(templates) summary
-	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > result-documents/$(basename $(notdir $(t)));)
+	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > documents/$(basename $(notdir $(t)));)
 
 citations=$(wildcard dataset/software/*)
 merge-bibtex: $(citations)
