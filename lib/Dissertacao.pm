@@ -1,20 +1,18 @@
 package Dissertacao;
+use strict;
 use Exporter 'import';
+use Text::BibTeX ':subs';
 use vars qw(@EXPORT_OK);
-@EXPORT_OK = qw( equal unique foreach_bibtex_file ); # symbols to export on request
+@EXPORT_OK = qw( equal unique foreach_bibtex_entry ); # symbols to export on request
 
 sub equal {
   my ($a, $b) = @_;
   my $title = $a->get('title');
   my $doi = $a->get('doi') // undef;
-  my $isbn = $a->get('isbn') // undef;
   if ($title && $b->get('title') && lc($b->get('title')) eq lc($title)) {
     return 1;
   }
   elsif ($doi && $b->get('doi') && $doi eq $b->get('doi')) {
-    return 1;
-  }
-  elsif ($isbn && $b->get('isbn') && $isbn eq $b->get('isbn')) {
     return 1;
   }
   return 0;
@@ -25,10 +23,7 @@ sub _equal {
   if ($a->{title} && $b->{title} && lc($a->{title}) eq lc($b->{title})) {
     return 1;
   }
-  elsif ($a{doi} && $b{doi} && $a{doi} eq $b{doi}) {
-    return 1;
-  }
-  elsif ($a{isbn} && $b{isbn} && $a{isbn} eq $b{isbn}) {
+  elsif ($a->{doi} && $b->{doi} && $a->{doi} eq $b->{doi}) {
     return 1;
   }
   return 0;
@@ -45,7 +40,7 @@ sub unique {
   return %uniq;
 }
 
-sub foreach_bibtex_file {
+sub foreach_bibtex_entry {
   my $block = pop;
   my @FILES = @_;
   while (my $filename = shift @FILES) {
