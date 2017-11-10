@@ -19,7 +19,6 @@ analyze:
 summary:
 	@mkdir -p cache
 	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
-	./bin/merge dataset/software/*/citations.bib > cache/citations.bib
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
@@ -27,8 +26,9 @@ filter:
 
 templates=$(wildcard templates/*.epl)
 documents: $(templates) summary
+	./bin/merge dataset/software/*/references.bib > documents/references.bib
 	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > documents/$(basename $(notdir $(t)));)
 
-citations=$(wildcard dataset/software/*)
-merge-bibtex: $(citations)
-	@$(foreach citation,$(citations),./bin/merge-bibtex $(citation)/citations/*.bib > $(citation)/citations.bib;)
+references=$(wildcard dataset/software/*)
+merge-bibtex: $(references)
+	@$(foreach r,$(references),./bin/merge-bibtex $(r)/references/*.bib > $(r)/references.bib;)

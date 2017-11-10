@@ -10,10 +10,10 @@
 \newcommand{\SearchIEEECount}{<%== $total{ieee} %>}
 \newcommand{\SearchCount}{<%== $total{total} %>}
 %# TODO a macro \SearchUniqueCount abaixo não deveria acessar o arquivo
-%#      cache/citations.bib, é necessário refatorar o render-template
+%#      cache/references.bib, é necessário refatorar o render-template
 %#      para evitar isto, ou incluir as informaçoes no próprio dataset.yml
 %#      de alguma forma
-\newcommand{\SearchUniqueCount}{<%== `cat cache/citations.bib | grep " title = " | wc -l` %>}
+\newcommand{\SearchUniqueCount}{<%== `cat documents/references.bib | grep " title = " | wc -l` %>}
 \newcommand{\ScreeningCount}{<%== $total{mentions} %>}
-\newcommand{\ScreeningUniqueCount}{<%== `./bin/query dataset/software/*/citations.bib really_refers_to_software=yes` %>}
+\newcommand{\ScreeningUniqueCount}{<%== `./bin/query dataset/software/*/references.bib really_refers_to_software=yes` %>}
 %# vim: filetype=epl

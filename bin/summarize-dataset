@@ -21,7 +21,7 @@ summarize-dataset - read dataset and summarize into one single YAML structure
 =head1 DESCRIPTION
 
 Write to the stdout a multi-document YAML composed by all data for each
-project, each software.yml and citations.bib file are read and loaded in
+project, each software.yml and references.bib file are read and loaded in
 a YAML structure.
 
 =cut
@@ -161,8 +161,8 @@ sub load_project_data {
   my %paper = load_bibtex("$dir/paper.bib");
   $dataset{papers} = \%paper;
 
-  # read BIBTEX: citations.bib
-  my %references = load_bibtex("$dir/citations.bib");
+  # read BIBTEX: references.bib
+  my %references = load_bibtex("$dir/references.bib");
 
   # %paper must have precedence over %references
   my %_references = unique %references, %paper;
@@ -182,7 +182,7 @@ sub load_project_data {
   my @authors = unique_authors %mentions;
   $dataset{literature_review}{authors} = \@authors;
 
-  # count total mentions by year (including citations.bib and paper.bib)
+  # count total mentions by year (including references.bib and paper.bib)
   my %mentions_by_year = mentions_by_year %mentions;
   $dataset{mentions_by_year} = \%mentions_by_year;
 
