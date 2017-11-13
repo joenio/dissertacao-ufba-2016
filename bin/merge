@@ -1,10 +1,9 @@
 #!/usr/bin/perl
+use Modern::Perl '2014';
 use utf8;
 use open ':locale';
-use Modern::Perl '2014';
-use Text::BibTeX ':subs';
 use lib 'lib';
-use Dissertacao qw( equal foreach_bibtex_file );
+use Dissertacao qw( equal foreach_bibtex_entry );
 
 =head1 NAME
 
@@ -16,8 +15,8 @@ merge - merge bibtex files and print unique entries to the stdout
 
 =head1 DESCRIPTION
 
-Verify each entry for all bibtex files passed as argument by comparing title,
-doi and isbn. If any field is equal then the bibtex entry is assumed as equal.
+Verify each entry for all bibtex files passed as argument by comparing title
+and doi. If any field is equal then the bibtex entry is assumed as equal.
 
 =cut
 
@@ -30,7 +29,7 @@ if (@ARGV < 1) {
 my @FILES = @ARGV;
 my %uniq = ();
 
-foreach_bibtex_file(@FILES, sub {
+foreach_bibtex_entry(@FILES, sub {
   my $entry = shift;
   unless (grep { equal($entry, $uniq{$_}) } keys %uniq) {
     $uniq{$entry->key} = $entry;
