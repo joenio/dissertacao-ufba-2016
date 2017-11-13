@@ -22,7 +22,6 @@ foreach_bibtex_file(@FILES, sub {
   unless (grep { equal($entry, $uniq{$_}) } keys %uniq) {
     if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
       $uniq{$entry->key} = $entry;
-      #print $entry->print_s;
     }
   }
 });
