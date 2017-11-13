@@ -24,11 +24,15 @@ filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
+screening:
+	./bin/merge dataset/software/*/references.bib > cache/references.bib
+	./bin/clean cache/references.bib > cache/screening.bib
+	./bin/ids cache/screening.bib > dataset/screening.bib
+
 templates=$(wildcard templates/*.epl)
 documents: $(templates) summary
-	./bin/merge dataset/software/*/references.bib > documents/references.bib
 	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > documents/$(basename $(notdir $(t)));)
 
 references=$(wildcard dataset/software/*)
-merge-bibtex: $(references)
-	@$(foreach r,$(references),./bin/merge-bibtex $(r)/references/*.bib > $(r)/references.bib;)
+merge: $(references)
+	@$(foreach r,$(references),./bin/merge $(r)/references/*.bib > $(r)/references.bib;)
