@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use utf8;
+use open ':locale';
+use lib 'lib';
+use Dissertacao qw( foreach_bibtex_entry );
+
+=head1 NAME
+
+ids - add autoincrement field id to each bibtex entries
+
+=head1 SYNOPSIS
+
+  ./bin/ids <input-file> [<input-file> [<input-file>]]
+
+=head1 DESCRIPTION
+
+Add an autoincrement field "id" with values like "p1", "p2", ... "p231", "p232"
+to each entry.
+
+=cut
+
+if (@ARGV < 1) {
+  warn "E: missing options!";
+  say "Usage: $0 <input-file> [<input-file> [<input-file>]]";
+  exit 1;
+}
+
+my $id = 1;
+foreach_bibtex_entry(@ARGV, sub {
+  my $entry = shift;
+  $entry->set('id', "p$id");
+  print $entry->print_s;
+  $id++;
+});
