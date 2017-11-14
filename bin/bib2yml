@@ -8,7 +8,7 @@ use Dissertacao qw( unique bibtex_load equal );
 my $dir = shift @ARGV || die "informe o diretório do software";
 my %ids = bibtex_load("documents/references.bib");
 
-my %references = unique bibtex_load("$dir/paper.bib", "$dir/references.bib");
+my %references = unique bibtex_load("$dir/search/acm.bib", "$dir/search/ieee.bib", "$dir/paper.bib");
 say "references:";
 foreach my $k (sort keys %references) {
   foreach my $i (sort keys %ids) {
