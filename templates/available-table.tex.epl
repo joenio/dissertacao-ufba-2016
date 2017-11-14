@@ -1,9 +1,15 @@
 % my %dataset = %{ $_[0] };
-
+% my %references = %{ $_[1] };
 % my %table = ();
 % foreach my $k (sort keys %dataset) {
-%   my $first_paper = (keys %{ $dataset{$k}{papers} })[0];
-%   my $year = $dataset{$k}{papers}{$first_paper}{year};
+%   my @papers = ();
+%   foreach (keys %{ $dataset{$k}{references} }) {
+%     if ($dataset{$k}{references}{$_}{step} && $dataset{$k}{references}{$_}{step} eq 'study1') {
+%       push @papers, $_;
+%     }
+%   }
+%   my $first_paper = $papers[0];
+%   my $year = $references{$first_paper}->get('year');
 %   my $available = $dataset{$k}{address}{download_available};
 %   $table{$year}{total} //= 0;
 %   $table{$year}{available} //= 0;
@@ -16,7 +22,6 @@
 %     $table{$year}{unavailable}++;
 %   }
 % }
-
 \begin{table}[h]
 \caption{Número de projetos disponível para download por ano.}
 \centering
@@ -39,5 +44,4 @@
 \end{tabular}
 \label{available-table}
 \end{table}
-
 %# vim: filetype=epl
