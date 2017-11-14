@@ -4,18 +4,25 @@ use open ':locale';
 use Modern::Perl '2014';
 use YAML qw( LoadFile );
 use Mojo::Template;
+use lib 'lib';
+use Dissertacao qw( bibtex_load );
 
-if (@ARGV < 2) {
+if (@ARGV < 1) {
   warn "E: missing options!";
-  say "Usage: $0 <dataset-summary-filename> <template-filename>";
+  say "Usage: $0 <template-filename>";
   exit 1;
 }
-our $INPUT_FILENAME = shift @ARGV;
 our $TEMPLATE_FILENAME = shift @ARGV;
-
-die "input file not found: $INPUT_FILENAME, please run bin/summarize-softwares-data first." unless -e $INPUT_FILENAME;
 die "template file not found: $TEMPLATE_FILENAME." unless -e $TEMPLATE_FILENAME;
 
-my %yaml = LoadFile("$ENV{PWD}/$INPUT_FILENAME");
+my $DATASET_FILENAME = 'cache/dataset.yml';
+my $REFERENCES_FILENAME = 'documents/references.bib';
+die "dataset file not found: $DATASET_FILENAME." unless -e $DATASET_FILENAME;
+die "references file not found: $REFERENCES_FILENAME." unless -e $REFERENCES_FILENAME;
+
+my %dataset = LoadFile "$ENV{PWD}/$DATASET_FILENAME";
+my %bib = bibtex_load "$ENV{PWD}/$REFERENCES_FILENAME";
+
+my %references = map { $bib{$_}->get('id') => $bib{$_}->get('title') } keys %bib;
 my $t = Mojo::Template->new(auto_escape => 1);
-print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", %yaml);
+print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", \%dataset, \%references);
