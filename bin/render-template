@@ -23,6 +23,6 @@ die "references file not found: $REFERENCES_FILENAME." unless -e $REFERENCES_FIL
 my %dataset = LoadFile "$ENV{PWD}/$DATASET_FILENAME";
 my %bib = bibtex_load "$ENV{PWD}/$REFERENCES_FILENAME";
 
-my %references = map { $bib{$_}->get('id') => $bib{$_}->get('title') } keys %bib;
+my %references = map { $bib{$_}->get('id') => $bib{$_} } keys %bib;
 my $t = Mojo::Template->new(auto_escape => 1);
 print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", \%dataset, \%references);
