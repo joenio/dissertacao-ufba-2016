@@ -14,9 +14,9 @@ conut - count unique references satisfying some constraint
 my %results = ();
 if ($ARGV[-1] =~ m/^.+=.+$/) {
   my %constraints = split(/=/, pop @ARGV);
-  my %results = unique query(%constraints, bibtex_load @ARGV);
+  %results = unique query(%constraints, bibtex_load @ARGV);
 }
 else {
-  my %results = unique bibtex_load @ARGV;
+  %results = unique bibtex_load @ARGV;
 }
 print scalar keys %results;
