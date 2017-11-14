@@ -264,16 +264,16 @@ Além do nome do software pesquisado, as strings de busca incluíram outras
 características do software sempre que necessário.
 
 Encontramos um total de \SearchCount \ resultados usando as strings de busca
-para cada projeto nas bases ACM e IEEE, deste total \SearchACMCount \
-resultados foram encontrados na base ACM e \SearchIEEECount \ foram encontrados
-no IEEE.  Dentre o resultado total, \SearchUniqueCount \ são únicos.
+para cada projeto nas bases ACM e IEEE, deste total \SearchACMCount \ resultados
+foram encontrados na base ACM e \SearchIEEECount \ foram encontrados
+no IEEE. Dentre o resultado total, \SearchUniqueCount \ são únicos.
 
 Alguns artigos fazem menção a mais de 1 projeto, fizemos o download de cada
 artigo e armazenamos os metadados em formato BibTeX.
 
 Um documento CSV com todas as strings de busca pode ser encontrado no
 repositório\footnote{\url{https://github.com/joenio/dissertacao-ufba-2016}}
-desta dissertaçao no arquivo \texttt{documents/search-string-table.csv}.
+desta dissertaçao no arquivo \texttt{documents/search-strings.csv}.
 
 \subsubsection{Passo 2: Triagem}
 
@@ -290,8 +290,20 @@ mencionam o software, ainda sem caracterizar o tipo de menção, apenas se
 realmente menciona, ao total selecionamos \ScreeningCount \ menções.
 Este total de menções foram encontrados ao meio a \ScreeningUniqueCount \ artigos.
 
-%334 artigos fazem menção aos 60 projetos
-%350 não faz menção aos projetos
+Uma tabela no formato CSV com todas as referências pode ser encontrada no repositório
+desta dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
+os artigos e todos os projetos são representados e a relação entre eles é marcada com
+um x sempre que houver menção de um artigo para um software.
+
+Merge único de todos os arquivos references.bib de cada software:
+Remvendo os campos adicionados nos arquivos para na sequencia adicionar os IDs:
+cria o arquivo dataset/screening.bib, este arquivo tem os artigos
+encontrados fazendo menção aos projetos, eles receberam ids, estes
+ids serão utilizados para relacionar o projeto ao artigo.
+make screening
+
+334 artigos fazem menção aos 60 projetos.
+350 não faz menção aos projetos.
 
 \subsubsection{Passo 3: Keywording}
 
@@ -414,7 +426,7 @@ o software selecionado; É um artigo com “mesmo” conteúdo publicado na “m
 outros, classifica; Menciona o software como exemplo; Menciona o software como
 trabalho relacionado; Menciona o software em trabalhos futuros.
 
-% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.1 | grep " title = " | wc -l
+% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.1 | grep " title = " | wc -l
 
 AS 222 menções foram encontradas em 204 artigos distintos.
 
@@ -428,7 +440,7 @@ derivado mas não disponibiliza as contribuições.
 Entre os 60 projetos de software, 27 são mencionados entre estas 130 menções
 encontradas.
 
-% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.25
+% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.25
 
 Entre as 130 menções, foram encontradas entre 125 artigos distintos.
 
@@ -437,7 +449,7 @@ Entre as 130 menções, foram encontradas entre 125 artigos distintos.
 Número de menções a cada software acadêmico e qual o contexto e tipo de menção
 é feita, quem e quantos são os autores de cada menção.
 
-% ./bin/mentions dataset/software/*/citations.bib contribution_weight=0.5
+% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.5
 
 40 menções contribuindo com os projetos foram encontrados, cada menção
 encontrado num artigo distinto. Estas 40 menções são em relação a apenas
