@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+use utf8;
+use open ':locale';
+use Modern::Perl '2014';
+use lib 'lib';
+use Dissertacao qw( query unique bibtex_load );
+
+=head1 NAME
+
+conut - count unique references satisfying some constraint
+
+=cut
+
+my %results = ();
+if ($ARGV[-1] =~ m/^.+=.+$/) {
+  my %constraints = split(/=/, pop @ARGV);
+  my %results = unique query(%constraints, bibtex_load @ARGV);
+}
+else {
+  my %results = unique bibtex_load @ARGV;
+}
+print scalar keys %results;

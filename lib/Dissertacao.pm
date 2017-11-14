@@ -2,8 +2,9 @@ package Dissertacao;
 use strict;
 use Exporter 'import';
 use Text::BibTeX ':subs';
+use List::Util qw( all );
 use vars qw(@EXPORT_OK);
-@EXPORT_OK = qw( equal unique foreach_bibtex_entry ); # symbols to export on request
+@EXPORT_OK = qw( equal unique foreach_bibtex_entry query bibtex_load clean ); # symbols to export on request
 
 sub equal {
   my ($a, $b) = @_;
@@ -18,22 +19,11 @@ sub equal {
   return 0;
 }
 
-sub _equal {
-  my ($a, $b) = @_;
-  if ($a->{title} && $b->{title} && lc($a->{title}) eq lc($b->{title})) {
-    return 1;
-  }
-  elsif ($a->{doi} && $b->{doi} && $a->{doi} eq $b->{doi}) {
-    return 1;
-  }
-  return 0;
-}
-
 sub unique {
   my %references = @_;
   my %uniq = ();
   foreach my $k (sort keys %references) {
-    unless (grep { _equal($references{$k}, $uniq{$_}) } keys %uniq) {
+    unless (grep { equal($references{$k}, $uniq{$_}) } keys %uniq) {
       $uniq{$k} = $references{$k};
     }
   }
@@ -52,6 +42,45 @@ sub foreach_bibtex_entry {
       }
     }
   }
+}
+
+# discard entries with no title
+sub bibtex_load {
+  my @FILES = @_;
+  my %references = ();
+  foreach_bibtex_entry(@FILES, sub {
+    my $entry = shift;
+    $references{$entry->key} = $entry if $entry->get('title');
+  });
+  return %references;
+}
+
+sub query {
+  my %constraints = (shift, shift);
+  my %references = @_;
+  my %results = ();
+  foreach my $k (sort keys %references) {
+    my $entry = $references{$k};
+    if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
+      $results{$entry->key} = $entry;
+    }
+  }
+  return %results;
+}
+
+sub clean {
+  my %references = @_;
+  foreach my $k (sort keys %references) {
+    $references{$k}->delete(
+      'review',
+      'really_refers_to_software',
+      'contribution_weight',
+      'weightless_contributions',
+      'conference',
+      'step',
+    );
+  }
+  return %references;
 }
 
 return 1;

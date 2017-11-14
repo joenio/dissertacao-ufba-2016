@@ -1,9 +1,9 @@
 #!/usr/bin/perl
-use Modern::Perl '2014';
 use utf8;
 use open ':locale';
+use Modern::Perl '2014';
 use lib 'lib';
-use Dissertacao qw( foreach_bibtex_entry );
+use Dissertacao qw( bibtex_load clean );
 
 =head1 NAME
 
@@ -19,8 +19,6 @@ Remove fields (really_refers_to_software, contribution_weight,
 weightless_contributions, conference, step) from each entry and prints results
 to the standard output.
 
-Also remove all entries with has no title.
-    
 =cut
 
 if (@ARGV < 1) {
@@ -29,15 +27,7 @@ if (@ARGV < 1) {
   exit 1;
 }
 
-foreach_bibtex_entry(@ARGV, sub {
-  my $entry = shift;
-  $entry->delete(
-    'review',
-    'really_refers_to_software',
-    'contribution_weight',
-    'weightless_contributions',
-    'conference',
-    'step',
-  );
-  print $entry->print_s if $entry->get('title');
-});
+my %references = clean bibtex_load @ARGV;
+foreach (sort keys %references) {
+  print $references{$_}->print_s;
+}

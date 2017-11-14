@@ -25,8 +25,8 @@ filter:
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
 screening:
-	./bin/merge dataset/software/*/references.bib > cache/references.bib
-	./bin/clean cache/references.bib > cache/screening.bib
+	./bin/query dataset/software/*/references.bib really_refers_to_software=yes > cache/_screening.bib
+	./bin/clean cache/_screening.bib > cache/screening.bib
 	./bin/ids cache/screening.bib > dataset/screening.bib
 
 templates=$(wildcard templates/*.epl)

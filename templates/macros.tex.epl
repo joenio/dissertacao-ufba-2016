@@ -13,7 +13,7 @@
 %#      cache/references.bib, é necessário refatorar o render-template
 %#      para evitar isto, ou incluir as informaçoes no próprio dataset.yml
 %#      de alguma forma
-\newcommand{\SearchUniqueCount}{<%== `cat dataset/screening.bib | grep " title = " | wc -l` %>}
+\newcommand{\SearchUniqueCount}{<%== `./bin/count dataset/software/*/references.bib` %>}
 \newcommand{\ScreeningCount}{<%== $total{mentions} %>}
-\newcommand{\ScreeningUniqueCount}{<%== `./bin/query dataset/software/*/references.bib really_refers_to_software=yes` %>}
+\newcommand{\ScreeningUniqueCount}{<%== `./bin/count dataset/software/*/references.bib really_refers_to_software=yes` %>}
 %# vim: filetype=epl
