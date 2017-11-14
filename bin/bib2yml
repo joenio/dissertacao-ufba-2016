@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use utf8;
+use open ':locale';
+use Modern::Perl '2014';
+use lib 'lib';
+use Dissertacao qw( unique bibtex_load equal );
+
+my $dir = shift @ARGV || die "informe o diretório do software";
+my %ids = bibtex_load("documents/references.bib");
+
+my %references = unique bibtex_load("$dir/paper.bib", "$dir/references.bib");
+say "+ $dir/software.yml";
+say "references:";
+foreach my $k (sort keys %references) {
+  foreach my $i (sort keys %ids) {
+    if (equal $references{$k}, $ids{$i}) {
+      my $id = $ids{$i}->get('id');
+      my $r = $references{$k}->get('review');
+      my $rrs = $references{$k}->get('really_refers_to_software');
+      my $c = $references{$k}->get('contribution_weight') // undef;
+      my $w = $references{$k}->get('weightless_contributions') // undef;
+      my $conf = $references{$k}->get('conference') // undef;
+      my $step = $references{$k}->get('step') // undef;
+      say "  $id:";
+      say "    review: $r";
+      say "    really_refers_to_software: $rrs";
+      say "    contribution_weight: $c" if $c;
+      say "    weightless_contributions: $w" if $w;
+      say "    conference: $conf" if $conf;
+      say "    step: $step" if $step;
+    }
+  }
+}
