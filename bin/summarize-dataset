@@ -4,8 +4,6 @@ use open ':locale';
 use Modern::Perl '2014';
 use File::Basename;
 use YAML qw( LoadFile Dump );
-use lib 'lib';
-use Dissertacao qw( unique bibtex_load query );
 
 =head1 NAME
 
@@ -23,38 +21,10 @@ a YAML structure.
 
 =cut
 
-sub count_mentions_by_type {
-  my $type = shift;
-  my %mentions = @_;
-  my $count = 0;
-  foreach (keys %mentions) {
-    if ($mentions{$_}->get('contribution_weight') && $mentions{$_}->get('contribution_weight') == $type) {
-      $count++;
-    }
-  }
-  return $count;
-}
-
 sub load_project_data {
   my $dir = shift;
-
-  # read YAML: software.yml
   my %dataset = %{ LoadFile("$dir/software.yml") };
   ($dataset{software}{short_name}) = split ' - ', $dataset{software}{name};
-
-  # read BIBTEX: paper.bib and references.bib
-  my %references = unique bibtex_load("$dir/paper.bib", "$dir/references.bib");
-  my %mentions = query(really_refers_to_software => 'yes', %references);
-
-  # count how many papers mention the software
-  $dataset{screening}{results} = scalar keys %mentions;
-
-  # count mentions by type
-  $dataset{literature_review}{cite_count} = count_mentions_by_type 0.1, %mentions;
-  $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %mentions;
-  $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %mentions;
-  $dataset{literature_review}{create_count} = count_mentions_by_type 1, %mentions;
-
   return %dataset;
 }
 
