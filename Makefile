@@ -25,7 +25,7 @@ filter:
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
 references:
-	./bin/query dataset/software/*/references/*.bib > cache/references.bib
+	./bin/query dataset/software/*/search/*.bib > cache/references.bib
 	./bin/clean cache/references.bib > cache/_references.bib
 	./bin/ids cache/_references.bib > documents/references.bib
 	@rm cache/_references.bib cache/references.bib
@@ -33,7 +33,3 @@ references:
 templates=$(wildcard templates/*.epl)
 documents: $(templates) summary
 	@$(foreach t,$(templates),./bin/render-template cache/dataset.yml $(t) > documents/$(basename $(notdir $(t)));)
-
-references=$(wildcard dataset/software/*)
-merge: $(references)
-	@$(foreach r,$(references),./bin/query $(r)/references/*.bib > $(r)/references.bib;)
