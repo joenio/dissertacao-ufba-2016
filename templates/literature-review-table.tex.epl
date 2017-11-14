@@ -22,24 +22,21 @@
    \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
    & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
   \hline
+% my %total = ();
 % foreach my $k (sort keys %dataset) {
 %   my $cite = count_mentions_by_type 0.1, %{ $dataset{$k}{references} };
 %   my $use = count_mentions_by_type 0.25, %{ $dataset{$k}{references} };
 %   my $contribute = count_mentions_by_type 0.5, %{ $dataset{$k}{references} };
 %   my $create = count_mentions_by_type 1, %{ $dataset{$k}{references} };
 %   my $total = $cite + $use + $contribute + $create;
+%   $total{cite} += $cite;
+%   $total{use} += $use;
+%   $total{contribute} += $contribute;
+%   $total{create} += $create;
+%   $total{total} += $total;
    <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
 % }
   \hline
-%# my %total = ();
-%# foreach my $k (sort keys %dataset) {
-%#   $total{cite} += $dataset{$k}{literature_review}{cite_count};
-%#   $total{use} += $dataset{$k}{literature_review}{use_count};
-%#   $total{contribute} += $dataset{$k}{literature_review}{contribute_count};
-%#   $total{create} += $dataset{$k}{literature_review}{create_count};
-%#   $total{total} += ($dataset{$k}{literature_review}{cite_count} + $dataset{$k}{literature_review}{use_count} + $dataset{$k}{literature_review}{contribute_count} + $dataset{$k}{literature_review}{create_count});
-%# }
-%#  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
 \end{longtable}
-
 %# vim: filetype=epl
