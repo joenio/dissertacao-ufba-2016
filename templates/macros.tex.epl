@@ -1,5 +1,6 @@
 % use List::Util qw ( uniq );
 % my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
 % my %total = ();
 % my @mentions = ();
 % foreach my $k (sort keys %dataset) {
@@ -13,11 +14,7 @@
 \newcommand{\SearchACMCount}{<%== $total{acm} %>}
 \newcommand{\SearchIEEECount}{<%== $total{ieee} %>}
 \newcommand{\SearchCount}{<%== $total{total} %>}
-%# TODO a macro \SearchUniqueCount abaixo não deveria acessar o arquivo
-%#      cache/references.bib, é necessário refatorar o render-template
-%#      para evitar isto, ou incluir as informaçoes no próprio dataset.yml
-%#      de alguma forma
-\newcommand{\SearchUniqueCount}{<%== `./bin/count documents/references.bib` %>}
+\newcommand{\SearchUniqueCount}{<%== scalar keys %references %>}
 \newcommand{\ScreeningCount}{<%== scalar @mentions %>}
 \newcommand{\ScreeningUniqueCount}{<%== scalar uniq @mentions %>}
 %# vim: filetype=epl
