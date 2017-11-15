@@ -32,8 +32,7 @@ de software minimamente com o nome.
 
 Quantas menções a projetos de software acadêmico de análise estática são
 encontradas em publicações nas bases da ACM e IEEE? Como estes projetos são
-mencionados? Encontramos estudos nestas duas bases contribuindo com os
-projetos?
+mencionados? Existem estudos contribuindo com os projetos?
 
 \subsection{Definição do Objetivo}
 
@@ -90,9 +89,9 @@ de estudos encontrados nas bases ACM e IEEE?}
 Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \begin{enumerate}
-  \item Número de publicações nas bases ACM e IEEE mencionando os projetos de software
-  \item Número de publicações nas bases ACM e IEEE mencionando uso aos projetos de software
-  \item Número de publicações nas bases ACM e IEEE mencionando contribuição aos projetos de software
+  \item Número de publicações nas bases ACM e IEEE mencionando os projetos de software.
+  \item Número de publicações nas bases ACM e IEEE mencionando uso aos projetos de software.
+  \item Número de publicações nas bases ACM e IEEE mencionando contribuição aos projetos de software.
 %  \item Número de menções aos projetos de software nas bases ACM e IEEE
 %  \item Número de autores publicando sobre os projetos nas bases da ACM e IEEE
 \end{enumerate}
@@ -140,10 +139,18 @@ outros dados além do nome do projeto.
 Os resultados trazidos pela string final são armazenados localmente em formato
 BibTeX e pdf, estes resultados devem incluir ao menos os artigos selecionados
 no estudo anterior onde os projetos foram encontrados, já que tais artigos são
-o caso mínimo de resultado desejado nesta fase de busca. Serão armezados 3
-arquivos BibTeX para cada software, um com o resultado da busca na ACM, outro
-no IEEE, e um com um merge destes dois mantendo resultados únicos sem
-duplicidade.
+o caso mínimo de resultado desejado nesta fase de busca. Serão armezados 2
+arquivos BibTeX para cada software, um com o resultado da busca na ACM
+(\texttt{acm.bib}), outro no IEEE (\texttt{ieee.bib}).
+
+Os resultados da busca de todos os projetos serão agragados ao final num
+arquivo único sem duplicação num arquivo \texttt{documents/references.bib},
+este arquivo contém os metadados de todos os artigos encontrados na busca
+de cada projeto, sem duplicidade, cada artigo receberá um ID único, este ID
+será utilizado nas etapas seguintes.
+
+%, e um com um merge destes dois mantendo resultados únicos sem
+%duplicidade.
 
 %Para cada software, os resultados foram agrupados
 %num arquivo único, sem duplicidade entre os resultados trazidos por cada base
@@ -156,16 +163,19 @@ duplicidade.
 
 % leitura dos pdf > apenas os papers relevantes que mencionam o nome do software
 
+A primeira ação neste passo é fazer o download de cada artigo no formato pdf
+para inspeção manual.
 Os artigos encontrados no passo anterior serão inspecionados manualmente em
 busca de confirmar se fazem referência de fato aos projetos de software,
-os dados gerados neste passo são armazenados no próprio arquivo BibTeX criado
-no passo anterior contendo os resultados únicos encontrados.
+os dados gerados neste passo são armazenados no arquivo \texttt{software.yml},
+fazendo referência sempre ao ID do artigo definido no passo anterior.
 
 A inspeção tem como objetivo selecionar os artigos relevantes para este estudo,
 mantendo apenas aqueles com menção ao nome do software, seja a menção em
-formato de citação formal ou informal, cada resultado do arquivo BibTeX deve
-ser atualizado com o resultado da triagem, indicando se faz referência ao
-nome do projeto ou não.
+formato de citação formal ou informal, cada resultado é armazenado no yml
+através do campo \texttt{really\_refers\_to\_software}, recebendo os valores
+\texttt{yes} ou \texttt{no}, ser atualizado com o resultado da triagem,
+indicando se faz referência ao nome do projeto ou não.
 
 %de cada artigo é realizada com o auxílio da funcionalidade de busca
 %do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
@@ -190,7 +200,8 @@ toma-se nota sobre como o software é mencionado naquele artigo.
 As notas são comentários livres resumindo as menções encontradas no artigo
 sobre um determinado software, um artigo científico pode mencionar um software
 diversas vezes, de diversas formas, desde uma simples menção nos trabalhos
-relacionados até uma grande contribuição ao software.
+relacionados até uma grande contribuição ao software, este dado é coletado no
+campo texto livre \texttt{review} no yml de cada software.
 
 O conjunto final de todas as notas são agrupadas e analisadas individualmente
 com o objetivo de criar a partir dessas notas um conjunto mínimo de códigos
@@ -216,7 +227,7 @@ menores estão incluídos.
 %A partir da classificação , Tabela \ref{esquema-de-mencao}, extraímos de cada
 %artigo mencionando os projetos de acordo com o esquema de codificação criado no
 
-A extração desses dados devem ser armazenadas no próprio arquivo BibTeX, sendo
+A extração desses dados devem ser armazenadas no próprio arquivo yml, sendo
 atualizado com a inclusão de um novo campo indicando o tipo de menção do artigo
 ao software.
 
@@ -341,10 +352,10 @@ como o projeto é mencionado, encontramos \ScreeningCount \ menções aos
 projetos neste conjunto de artigos.
 
 Os dados coletados na revisão de literatura durante os quatro passos são
-apresentados em resumo na Tabela ... indicando o
+apresentados em resumo na Tabela \ref{literature-review-table} indicando o
 número de resultados encontrados para cada projeto de software.
-%\ref{literature-review-table}
-%\input{documents/literature-review-table.tex}
+
+\input{documents/literature-review-table.tex}
 
 \section{Análise dos Dados} % Raw results from the analysis
 
