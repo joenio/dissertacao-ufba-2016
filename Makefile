@@ -16,19 +16,19 @@ rebuild: clean summary documents all
 analyze:
 	./bin/analyze-softwares -o dataset/metrics.csv
 
-summary:
+cache:
 	@mkdir -p cache
+
+summary: cache
 	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
-references:
+references: cache
 	./bin/query dataset/software/*/paper.bib dataset/software/*/search/*.bib > cache/references.bib
-	./bin/clean cache/references.bib > cache/_references.bib
-	./bin/ids cache/_references.bib > documents/references.bib
-	@rm cache/_references.bib cache/references.bib
+	./bin/ids cache/references.bib > documents/references.bib
 
 templates=$(wildcard templates/*.epl)
 documents: $(templates) summary

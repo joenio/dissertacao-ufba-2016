@@ -12,7 +12,6 @@ use vars qw(@EXPORT_OK);
   foreach_bibtex_entry
   query
   bibtex_load
-  clean
   count_mentions_by_type
 );
 
@@ -76,21 +75,6 @@ sub query {
     }
   }
   return %results;
-}
-
-sub clean {
-  my %references = @_;
-  foreach my $k (sort keys %references) {
-    $references{$k}->delete(
-      'review',
-      'really_refers_to_software',
-      'contribution_weight',
-      'weightless_contributions',
-      'conference',
-      'step',
-    );
-  }
-  return %references;
 }
 
 sub count_mentions_by_type {
