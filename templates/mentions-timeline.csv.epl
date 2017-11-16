@@ -1,0 +1,24 @@
+% use List::Util qw( uniq );
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my @ids = ();
+% foreach my $k (keys %dataset) {
+%   push @ids, grep { $dataset{$k}{references}{$_}{really_refers_to_software} eq 'yes' } keys %{ $dataset{$k}{references} };
+% }
+% @ids = uniq @ids;
+% my @years = ();
+% foreach my $k (keys %references) {
+%   if (grep { $references{$k}->get('id') eq $_ } @ids) {
+%     push @years, $references{$k}->get('year');
+%   }
+% }
+% @years = uniq sort @years;
+projeto,<%== join(',', @years) %>
+% foreach my $k (sort keys %dataset) {
+%   my %mentions_by_year = map { $_ => {cite => 0, use => 0, contribute => 0} } @years;
+%   foreach my $r (grep { $dataset{$k}{references}{$_}{really_refers_to_software} eq 'yes' } keys %{ $dataset{$k}{references} }) {
+%     $mentions_by_year{$references{$r}->get('year')}{$dataset{$k}{references}{$r}{mention_type}}++;
+%   }
+<%== $dataset{$k}{software}{id} %>,<%== join(',', map { "$mentions_by_year{$_}{cite}-$mentions_by_year{$_}{use}-$mentions_by_year{$_}{contribute}" } keys %mentions_by_year) %>
+% }
+%# vim: filetype=epl
