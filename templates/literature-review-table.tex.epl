@@ -2,41 +2,39 @@
 % use Dissertacao qw( count_mentions_by_type );
 % my %dataset = %{ $_[0] };
 
-\begin{longtable}{ l c c c c c }
+\begin{longtable}{ l c c c c }
 \caption{Resumo dos resultados encontrados na revisão de literatura.}
 \label{literature-review-table} \\\
   \hline
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \endfirsthead
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \hline
-   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
-   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{4}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Total} \\\
   \hline
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \endhead
-  \hhline{------}
-  \multicolumn{6}{c}{continua na próxima página} \\\
-  \hhline{------} \endfoot
-  \hhline{------} \endlastfoot
-   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
-   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
+  \hhline{-----}
+  \multicolumn{5}{c}{continua na próxima página} \\\
+  \hhline{-----} \endfoot
+  \hhline{-----} \endlastfoot
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{4}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Total} \\\
   \hline
 % my %total = ();
 % foreach my $k (sort keys %dataset) {
-%   my $cite = count_mentions_by_type 0.1, %{ $dataset{$k}{references} };
-%   my $use = count_mentions_by_type 0.25, %{ $dataset{$k}{references} };
-%   my $contribute = count_mentions_by_type 0.5, %{ $dataset{$k}{references} };
-%   my $create = count_mentions_by_type 1, %{ $dataset{$k}{references} };
-%   my $total = $cite + $use + $contribute + $create;
+%   my $cite = count_mentions_by_type 'cite', %{ $dataset{$k}{references} };
+%   my $use = count_mentions_by_type 'use', %{ $dataset{$k}{references} };
+%   my $contribute = count_mentions_by_type 'contribute', %{ $dataset{$k}{references} };
+%   my $total = $cite + $use + $contribute;
 %   $total{cite} += $cite;
 %   $total{use} += $use;
 %   $total{contribute} += $contribute;
-%   $total{create} += $create;
 %   $total{total} += $total;
-   <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
+   <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $total %> \\\
 % }
   \hline
-  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{total} %> \\\
 \end{longtable}
 %# vim: filetype=epl

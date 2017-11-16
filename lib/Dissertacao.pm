@@ -4,7 +4,17 @@ use Exporter 'import';
 use Text::BibTeX ':subs';
 use List::Util qw( all );
 use vars qw(@EXPORT_OK);
-@EXPORT_OK = qw( equal unique foreach_bibtex_entry query bibtex_load clean count_mentions_by_type ); # symbols to export on request
+
+# symbols to export on request
+@EXPORT_OK = qw(
+  equal
+  unique
+  foreach_bibtex_entry
+  query
+  bibtex_load
+  clean
+  count_mentions_by_type
+);
 
 sub equal {
   my ($a, $b) = @_;
@@ -88,7 +98,7 @@ sub count_mentions_by_type {
   my %references = @_;
   my $count = 0;
   foreach (keys %references) {
-    if ($references{$_}{contribution_weight} && $references{$_}{contribution_weight} == $type) {
+    if ($references{$_}{mention_type} && $references{$_}{mention_type} == $type) {
       $count++;
     }
   }
