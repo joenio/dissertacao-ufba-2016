@@ -7,7 +7,7 @@
 % }
 % @ids = uniq @ids;
 % my @years = ();
-% foreach my $k (keys %references) {
+% foreach my $k (sort keys %references) {
 %   if (grep { $references{$k}->get('id') eq $_ } @ids) {
 %     push @years, $references{$k}->get('year');
 %   }
@@ -19,6 +19,6 @@ projeto,<%== join(',', @years) %>
 %   foreach my $r (grep { $dataset{$k}{references}{$_}{really_refers_to_software} eq 'yes' } keys %{ $dataset{$k}{references} }) {
 %     $mentions_by_year{$references{$r}->get('year')}{$dataset{$k}{references}{$r}{mention_type}}++;
 %   }
-<%== $dataset{$k}{software}{id} %>,<%== join(',', map { "$mentions_by_year{$_}{cite}-$mentions_by_year{$_}{use}-$mentions_by_year{$_}{contribute}" } keys %mentions_by_year) %>
+<%== $dataset{$k}{software}{id} %>,<%== join(',', map { "$mentions_by_year{$_}{cite}-$mentions_by_year{$_}{use}-$mentions_by_year{$_}{contribute}" } sort keys %mentions_by_year) %>
 % }
 %# vim: filetype=epl

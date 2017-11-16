@@ -82,7 +82,7 @@ sub count_mentions_by_type {
   my %references = @_;
   my $count = 0;
   foreach (keys %references) {
-    if ($references{$_}{mention_type} && $references{$_}{mention_type} == $type) {
+    if ($references{$_}{mention_type} && $references{$_}{mention_type} eq $type) {
       $count++;
     }
   }
