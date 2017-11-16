@@ -245,16 +245,13 @@ conjunto de projetos utilizados como objeto de estudo neste trabalho.
 
 \section{Preparação} \label{estudo2:preparacao} % {{{
 
-Criamos as strings de busca. A Tabela \ref{search-string-table-acm} apresenta a
-string de busca de alguns projetos de software na base ACM e a Tabela
-\ref{search-string-table-ieee} apresenta a string de busca de alguns projetos
-na base IEEE.
-
-\input{documents/search-string-table.tex}
-
+Criamos as strings de busca. A Tabela \ref{search-string-table} apresenta a
+string de busca de alguns projetos de software na base ACM e na base IEEE.
 Um documento CSV com todas as strings de busca pode ser encontrado no
 repositório\footnote{\url{https://github.com/joenio/dissertacao-ufba-2016}}
 desta dissertaçao no arquivo \texttt{documents/search-strings.csv}.
+
+\input{documents/search-string-table.tex}
 
 Implementamos scripts para análise dos dados. Os dados armazenados em arquivos
 YAML e BibTeX são carregados em estruturas em memória através de um script
@@ -269,7 +266,29 @@ apresenta o fluxo de coleta, análise e transformação dos dados.
   \label{estudo2-fluxograma}
 \end{figure}
 
-Implementamos scripts para plotar dados.
+Implementamos os scripts \texttt{bin/summarize-dataset}, \texttt{bin/query},
+\texttt{bin/clean}, \texttt{bin/ids} e \texttt{bin/render-template} indicados
+no fluxograma da Figura \ref{estudo2-fluxograma} utilizando a linguagem de
+programação Perl\footnote{\url{http://perl.org}} com o auxílio dos seguintes
+módulos CPAN: Modern::Perl\footnote{\url{http://metacpan.org/pod/Modern::Perl}},
+YAML\footnote{\url{http://metacpan.org/pod/YAML}},
+Mojo::Template\footnote{\url{http://metacpan.org/pod/Mojo::Template}},
+Text::BibTeX\footnote{\url{http://metacpan.org/pod/Text::BibTeX}} e
+List::Util\footnote{\url{http://metacpan.org/pod/List::Util}}. A maior parte da
+lógica de implementação destes scripts foram movidas para o arquivo
+\texttt{lib/Dissertacao.pm} com objetivo de reduzir repetição de código e
+aumentar o reuso.
+
+Definimos uma identificação única para cada um dos 60 projetos de software
+utilizando o próprio arquivo \texttt{software.yml} através do campo
+\texttt{id:} seguindo o padrão \texttt{s + número}, exemplo, \texttt{s1},
+\texttt{s2}, \texttt{s3}, \texttt{s4}, ..., \texttt{s60}, cada projeto de software
+recebeu um id.
+
+Definimos um novo campo neste mesmo arquivo para coleta das menções, fazendo
+referência ao ID do artigo mencionando o software, com os campos ... cada artigo
+encontrado na revisão de literatura também receberá um ID, desta forma será possível
+relacionar projetos e artigos através das menções.
 
 % }}}
 
@@ -295,7 +314,8 @@ foram encontrados na base ACM e \SearchIEEECount \ foram encontrados
 no IEEE. Dentre o resultado total, \SearchUniqueCount \ são únicos.
 
 Alguns artigos fazem menção a mais de 1 projeto, fizemos o download de cada
-artigo e armazenamos os metadados em formato BibTeX.
+artigo e armazenamos os metadados em formato BibTeX nos arquivos \texttt{acm.bib}
+e \texttt{ieee.bib} para cada projeto de software.
 
 \subsubsection{Passo 2: Triagem}
 
@@ -315,14 +335,21 @@ Este total de menções foram encontrados ao meio a \ScreeningUniqueCount \ arti
 Uma tabela no formato CSV com todas as referências pode ser encontrada no repositório
 desta dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
 os artigos e todos os projetos são representados e a relação entre eles é marcada com
-um x sempre que houver menção de um artigo para um software.
+um \texttt{x} sempre que houver menção de um artigo para um software.
 
-Merge único de todos os arquivos references.bib de cada software:
-Remvendo os campos adicionados nos arquivos para na sequencia adicionar os IDs:
-cria o arquivo dataset/screening.bib, este arquivo tem os artigos
-encontrados fazendo menção aos projetos, eles receberam ids, estes
-ids serão utilizados para relacionar o projeto ao artigo.
-make screening
+Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
+cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
+arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
+a todos os projetos, referências únicas.
+
+Na sequencia adicionamos o \texttt{id} a cada artigo do
+\texttt{documents/references.bib}, este arquivo tem os metadados dos artigos
+encontrados fazendo menção aos projetos, eles receberam ids, estes ids serão
+utilizados para relacionar o projeto ao artigo.
+
+Os scripts \texttt{bin/query}, \texttt{bin/clean}, \texttt{bin/ids} foram
+utilizados para gerar o \texttt{documents/references.bib} a partir dos arquivos
+\texttt{acm.bib}, \texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
 
 334 artigos fazem menção aos 60 projetos.
 350 não faz menção aos projetos.
@@ -330,7 +357,7 @@ make screening
 \subsubsection{Passo 3: Keywording}
 
 A avaliação das \ScreeningCount \ menções gerou uma escala de tipos de menção
-ao software, detalhado na Tabela \ref{esquema-de-mencao}, com quatro valores
+ao software, detalhado na Tabela \ref{esquema-de-mencao}, com três valores
 distintos, onde o último tipo de menção com maior valor inclui todos os demais.
 Um tipo de menção com maior peso inclui implicitamente o tipo de menção de
 menor peso, e assim sucessivamente.
@@ -344,12 +371,22 @@ menor peso, e assim sucessivamente.
   \hline
   Cita      & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros. \\
   Usa       & Avalia ou caracteriza o software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o software como parte de uma solução, implementação, etc; Cria um software derivado mas não disponibiliza as contribuições. \\
-  Contribui & Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados. \\
-  Cria      & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado. \\
+  Contribui & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado; Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados. \\
   \hline
 \end{tabular}
 \label{esquema-de-mencao}
 \end{table}
+
+A definição deste esquema foi feito através de anotações sobre onde
+e como o projeto de software é mencionado em cada artigo, anotamos no campo
+\texttt{review:} um comentário textual livre resumindo de que forma o projeto
+é mencionado, caso várias menções seja encontrado num mesmo artigo para um dado
+projeto de software é feito um resumo total.
+
+Esta anotação foi feita no arquivo \texttt{software.yml} de cada projeto, nele
+foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
+menção foi adicionada. É importante lembrar que um mesmo artigo pode mencionar
+mais de um software.
 
 %também o tipo de menção que é feita ao software: se apenas cita como exemplo,
 %se contribui com novos algoritmos e técnicas, se avalia, ou apenas descreve o
@@ -361,6 +398,11 @@ Coletamos as informações relacionadas a cada menção encontrada, cada um dos
 \ScreeningUniqueCount \ artigos encontrados mencionando os projetos, coletamos
 como o projeto é mencionado, encontramos \ScreeningCount \ menções aos
 projetos neste conjunto de artigos.
+
+A partir do esquema para caracterização das menções adicionamos para
+cada projeto de software os campos \texttt{really\_refers\_to\_software:}
+com o valor \texttt{yes}, o campo \texttt{contribution\_weight:} assumindo
+os valores: 0.1 (cita), 0.25 (usa), 0.5 (contribui), 1 (contribui).
 
 Os dados coletados na revisão de literatura durante os quatro passos são
 apresentados em resumo na Tabela \ref{literature-review-table} indicando o
