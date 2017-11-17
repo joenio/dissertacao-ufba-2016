@@ -4,11 +4,6 @@ use open ':locale';
 use Modern::Perl '2014';
 use File::Basename;
 use YAML qw( LoadFile Dump );
-use Text::BibTeX;
-use List::Util qw( uniq );
-use lib 'lib';
-use Dissertacao qw( unique );
-use Set::Tiny;
 
 =head1 NAME
 
@@ -21,174 +16,15 @@ summarize-dataset - read dataset and summarize into one single YAML structure
 =head1 DESCRIPTION
 
 Write to the stdout a multi-document YAML composed by all data for each
-project, each software.yml and citations.bib file are read and loaded in
+project, each software.yml and references.bib file are read and loaded in
 a YAML structure.
 
 =cut
 
-# normalize author names to the format: "Last F."
-#
-# examples:
-#
-#    Bajaj, Kon           =>  Bajaj K.
-#    Costa, Kim A.        =>  Costa K. A.
-#    Rajan, Sreeranga P.  =>  Rajan S. P.
-#    Pol, Jaco van de     =>  Pol J. van de
-#    Zijiang Yang         =>  Yang Z.
-#    Chao Wang            =>  Wang C.
-#
-sub normalize_authors_names {
-  my @names = @_;
-  my @normalized_names = ();
-  for (my $i = 0; $i <= $#names; $i++) {
-    my @normalized_name = ();
-    if ($names[$i] =~ /,/) {
-      my ($last, $first) = split /\s*,\s*/, $names[$i];
-      foreach my $name (split /\s+/, $first) {
-        if ($name =~ /^[[:upper:]]/) {
-          $name =~ s/(.).*/$1./;
-        }
-        push @normalized_name, $name;
-      }
-      if ($last =~ /\s+/) {
-        my @last_name = split /\s+/, $last;
-        $last = pop @last_name;
-        map { $_ =~ s/(.).*/$1./ } @last_name;
-        $last = join(' ', @last_name, $last);
-      }
-      push @normalized_name, $last;
-    }
-    else {
-      @normalized_name = split /\s+/, $names[$i];
-      for (my $j = 0; $j < $#normalized_name; $j++) {
-        if ($normalized_name[$j] =~ /^[[:upper:]]/) {
-          $normalized_name[$j] =~ s/(.).*/$1./;
-        }
-      }
-    }
-    push @normalized_names, join(' ', reverse @normalized_name);
-  }
-  return @normalized_names;
-}
-
-sub load_bibtex {
-  my $filepath = shift;
-  my %references = ();
-  unless (-z $filepath) {
-    if (my $bib = Text::BibTeX::File->new($filepath)) {
-      while (my $entry = Text::BibTeX::Entry->new({binmode => 'utf-8'}, $bib)) {
-        next unless $entry->parse_ok;
-        my $k = $entry->key;
-        $references{$k}{filepath} = $filepath;
-        $references{$k}{title} = $entry->get('title');
-        $references{$k}{review} = $entry->get('review');
-        $references{$k}{really_refers_to_software} = $entry->get('really_refers_to_software') // 'undefined';
-        $references{$k}{year} = $entry->get('year');
-        $references{$k}{contribution_weight} = $entry->get('contribution_weight');
-        $references{$k}{step} = $entry->get('step') if $entry->get('step');
-        $references{$k}{conference} = $entry->get('conference') if $entry->get('conference');
-        my @authors = normalize_authors_names $entry->split('author');
-        $references{$k}{authors} = \@authors;
-        $references{$k}{doi} = $entry->get('doi') if $entry->get('doi');
-        $references{$k}{isbn} = $entry->get('isbn') if $entry->get('isbn');
-      }
-      $bib->close;
-    }
-  }
-  return %references;
-}
-
-sub count_mentions_by_type {
-  my $type = shift;
-  my %mentions = @_;
-  my $count = 0;
-  foreach (keys %mentions) {
-    if ($mentions{$_}{contribution_weight} && $mentions{$_}{contribution_weight} == $type) {
-      $count++;
-    }
-  }
-  return $count;
-}
-
-sub unique_authors {
-  my %references = @_;
-  my @authors = ();
-  foreach my $k (keys %references) {
-    push @authors, @{ $references{$k}{authors} };
-  }
-  return uniq @authors;
-}
-
-my %mention_type = (
-  0.1  => 'cite',
-  0.25 => 'use',
-  0.5  => 'contribute',
-  1    => 'create',
-);
-
-sub mentions_by_year {
-  my %mentions = @_;
-  my %mentions_by_year = ();
-  foreach my $k (sort keys %mentions) {
-    my $y = $mentions{$k}{year};
-    if ($mentions{$k}{contribution_weight}) {
-      my $type = $mention_type{ $mentions{$k}{contribution_weight} };
-      $mentions_by_year{$y}{$type}{count} //= 0;
-      $mentions_by_year{$y}{$type}{count}++;
-      push @{ $mentions_by_year{$y}{$type}{authors} }, @{ $mentions{$k}{authors} };
-    }
-  }
-  my $past_authors = Set::Tiny->new;
-  foreach my $y (sort keys %mentions_by_year) {
-    foreach my $type (keys %{ $mentions_by_year{$y} }) {
-      my $authors_this_year = Set::Tiny->new( uniq @{ delete $mentions_by_year{$y}{$type}{authors} } );
-      my $new_authors = $authors_this_year->difference($past_authors);
-      $mentions_by_year{$y}{$type}{author_count} = $new_authors->size;
-      $past_authors->insert($new_authors->elements);
-    }
-  }
-  return %mentions_by_year;
-}
-
 sub load_project_data {
   my $dir = shift;
-
-  # read YAML: software.yml
   my %dataset = %{ LoadFile("$dir/software.yml") };
   ($dataset{software}{short_name}) = split ' - ', $dataset{software}{name};
-
-  # read BIBTEX: paper.bib
-  my %paper = load_bibtex("$dir/paper.bib");
-  $dataset{papers} = \%paper;
-
-  # read BIBTEX: citations.bib
-  my %references = load_bibtex("$dir/citations.bib");
-
-  # %paper must have precedence over %references
-  my %_references = unique %references, %paper;
-  my %mentions = map { $_ => $_references{$_} }
-    grep { $_references{$_}{really_refers_to_software} eq 'yes' } keys %_references;
-
-  # count how many papers mention the software
-  $dataset{screening}{results} = scalar keys %mentions;
-
-  # count mentions by type
-  $dataset{literature_review}{cite_count} = count_mentions_by_type 0.1, %mentions;
-  $dataset{literature_review}{use_count} = count_mentions_by_type 0.25, %mentions;
-  $dataset{literature_review}{contribute_count} = count_mentions_by_type 0.5, %mentions;
-  $dataset{literature_review}{create_count} = count_mentions_by_type 1, %mentions;
-
-  # count unique authors found in mentions
-  my @authors = unique_authors %mentions;
-  $dataset{literature_review}{authors} = \@authors;
-
-  # count total mentions by year (including citations.bib and paper.bib)
-  my %mentions_by_year = mentions_by_year %mentions;
-  $dataset{mentions_by_year} = \%mentions_by_year;
-
-  # write mentions to the model, will be useful on templates
-  $dataset{mentions} = \%mentions;
-
   return %dataset;
 }
 

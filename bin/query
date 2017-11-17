@@ -2,29 +2,34 @@
 use utf8;
 use open ':locale';
 use Modern::Perl '2014';
-use Text::BibTeX ':subs';
-use List::Util qw( all );
 use lib 'lib';
-use Dissertacao qw( equal foreach_bibtex_file );
+use Dissertacao qw( query unique bibtex_load );
 
 =head1 NAME
 
-query - count unique references satisfying some constraint
+query - print unique references satisfying some constraint
+
+=head1 SYNOPSIS
+
+  ./bin/query <input-file> [<input-file> [<input-file>]] [is_software_mentioned=yes]
+
+=head1 DESCRIPTION
+
+Verify each entry for all bibtex files passed as argument by comparing title
+and doi. If any field is equal then the bibtex entry is assumed as equal.
+
+constraint is optional.
 
 =cut
 
-my %constraints = split(/=/, pop @ARGV);
-my @FILES = @ARGV;
-my %uniq = ();
-
-foreach_bibtex_file(@FILES, sub {
-  my $entry = shift;
-  unless (grep { equal($entry, $uniq{$_}) } keys %uniq) {
-    if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
-      $uniq{$entry->key} = $entry;
-      #print $entry->print_s;
-    }
-  }
-});
-
-say scalar keys %uniq;
+my %results = ();
+if ($ARGV[-1] =~ m/^.+=.+$/) {
+  my %constraints = split(/=/, pop @ARGV);
+  %results = unique query(%constraints, bibtex_load @ARGV);
+}
+else {
+  %results = unique bibtex_load @ARGV;
+}
+foreach (sort keys %results) {
+  print $results{$_}->print_s;
+}

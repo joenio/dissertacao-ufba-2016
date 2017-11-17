@@ -1,34 +1,28 @@
 package Dissertacao;
+use strict;
 use Exporter 'import';
+use Text::BibTeX ':subs';
+use List::Util qw( all );
 use vars qw(@EXPORT_OK);
-@EXPORT_OK = qw( equal unique foreach_bibtex_file ); # symbols to export on request
+
+# symbols to export on request
+@EXPORT_OK = qw(
+  equal
+  unique
+  foreach_bibtex_entry
+  query
+  bibtex_load
+  count_mentions_by_type
+);
 
 sub equal {
   my ($a, $b) = @_;
   my $title = $a->get('title');
   my $doi = $a->get('doi') // undef;
-  my $isbn = $a->get('isbn') // undef;
   if ($title && $b->get('title') && lc($b->get('title')) eq lc($title)) {
     return 1;
   }
   elsif ($doi && $b->get('doi') && $doi eq $b->get('doi')) {
-    return 1;
-  }
-  elsif ($isbn && $b->get('isbn') && $isbn eq $b->get('isbn')) {
-    return 1;
-  }
-  return 0;
-}
-
-sub _equal {
-  my ($a, $b) = @_;
-  if ($a->{title} && $b->{title} && lc($a->{title}) eq lc($b->{title})) {
-    return 1;
-  }
-  elsif ($a{doi} && $b{doi} && $a{doi} eq $b{doi}) {
-    return 1;
-  }
-  elsif ($a{isbn} && $b{isbn} && $a{isbn} eq $b{isbn}) {
     return 1;
   }
   return 0;
@@ -38,14 +32,14 @@ sub unique {
   my %references = @_;
   my %uniq = ();
   foreach my $k (sort keys %references) {
-    unless (grep { _equal($references{$k}, $uniq{$_}) } keys %uniq) {
+    unless (grep { equal($references{$k}, $uniq{$_}) } keys %uniq) {
       $uniq{$k} = $references{$k};
     }
   }
   return %uniq;
 }
 
-sub foreach_bibtex_file {
+sub foreach_bibtex_entry {
   my $block = pop;
   my @FILES = @_;
   while (my $filename = shift @FILES) {
@@ -57,6 +51,42 @@ sub foreach_bibtex_file {
       }
     }
   }
+}
+
+# discard entries with no title
+sub bibtex_load {
+  my @FILES = @_;
+  my %references = ();
+  foreach_bibtex_entry(@FILES, sub {
+    my $entry = shift;
+    $references{$entry->key} = $entry if $entry->get('title');
+  });
+  return %references;
+}
+
+sub query {
+  my %constraints = (shift, shift);
+  my %references = @_;
+  my %results = ();
+  foreach my $k (sort keys %references) {
+    my $entry = $references{$k};
+    if (all { $entry->get($_) && $entry->get($_) eq $constraints{$_} } keys %constraints) {
+      $results{$entry->key} = $entry;
+    }
+  }
+  return %results;
+}
+
+sub count_mentions_by_type {
+  my $type = shift;
+  my %references = @_;
+  my $count = 0;
+  foreach (keys %references) {
+    if ($references{$_}{mention_type} && $references{$_}{mention_type} eq $type) {
+      $count++;
+    }
+  }
+  return $count;
 }
 
 return 1;

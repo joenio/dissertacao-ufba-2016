@@ -15,10 +15,14 @@ Agenda:
 
 Banca examinadora:
 
-* Sandro Andrade (titular externo)
-* Rodrigo Rocha (titular interno)
-* Ivan Machado (suplente interno)
-* Igor Steinmacher (suplente externo)
+* Sandro Santos Andrade (titular externo)
+  * http://lattes.cnpq.br/0177714301545658
+* Rodrigo Rocha Gomes e Souza (titular interno)
+  * http://lattes.cnpq.br/7697794806460975
+* Ivan do Carmo Machado (suplente interno)
+  * http://lattes.cnpq.br/4430958315746203
+* Igor Fabio Steinmacher (suplente externo)
+  * http://lattes.cnpq.br/5529725593221391
 
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
