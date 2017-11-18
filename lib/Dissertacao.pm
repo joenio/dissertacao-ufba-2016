@@ -2,7 +2,7 @@ package Dissertacao;
 use strict;
 use Exporter 'import';
 use Text::BibTeX ':subs';
-use List::Util qw( all );
+use List::Util qw( all uniq );
 use vars qw(@EXPORT_OK);
 
 # symbols to export on request
@@ -13,6 +13,7 @@ use vars qw(@EXPORT_OK);
   query
   bibtex_load
   count_mentions_by_type
+  find_references
 );
 
 sub equal {
@@ -87,6 +88,23 @@ sub count_mentions_by_type {
     }
   }
   return $count;
+}
+
+sub find_references {
+  my %bib = %{ $_[0] };
+  my %references = %{ $_[1] };
+  my @ids = ();
+  foreach my $b (keys %bib) {
+    foreach my $r (keys %references) {
+      if ($bib{$b}{title} && lc($references{$r}->get('title')) eq lc($bib{$b}{title})) {
+        push @ids, $references{$r}->get('id');
+      }
+      elsif ($bib{$b}{doi} && $references{$r}->get('doi') eq $bib{$b}{doi}) {
+        push @ids, $references{$r}->get('id');
+      }
+    }
+  }
+  return uniq @ids;
 }
 
 return 1;

@@ -4,6 +4,8 @@ use open ':locale';
 use Modern::Perl '2014';
 use File::Basename;
 use YAML qw( LoadFile Dump );
+use lib 'lib';
+use Dissertacao qw( unique bibtex_load );
 
 =head1 NAME
 
@@ -16,15 +18,26 @@ summarize-dataset - read dataset and summarize into one single YAML structure
 =head1 DESCRIPTION
 
 Write to the stdout a multi-document YAML composed by all data for each
-project, each software.yml and references.bib file are read and loaded in
+project, each software.yml and search/*.bib file are read and loaded in
 a YAML structure.
 
 =cut
+
+sub bibtex_project_load {
+  my $file = shift;
+  my %bib = bibtex_load $file;
+  my %data = map { $_ => {title => $bib{$_}->get('title'), doi => $bib{$_}->get('doi')} } keys %bib;
+  return \%data;
+}
 
 sub load_project_data {
   my $dir = shift;
   my %dataset = %{ LoadFile("$dir/software.yml") };
   ($dataset{software}{short_name}) = split ' - ', $dataset{software}{name};
+  $dataset{files}{'paper.bib'} = bibtex_project_load "$dir/paper.bib";
+  $dataset{files}{'search/acm.bib'} = bibtex_project_load "$dir/search/acm.bib";
+  $dataset{files}{'search/ieee.bib'} = bibtex_project_load "$dir/search/ieee.bib";
+  $dataset{references} = \%{ LoadFile("$dir/references.yml") };
   return %dataset;
 }
 
