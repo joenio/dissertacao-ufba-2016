@@ -214,9 +214,10 @@ resultados da base IEEE -- \texttt{ieee.bib}.
 O resultado final da busca de todos os projetos, armazenados nos arquivos
 \texttt{acm.bib} e \texttt{ieee.bib}, são agregados sem duplicação de resultado
 num arquivo único ainda em formato BibTeX localizado em
-\texttt{documents/references.bib},
-este arquivo contém os metadados de todos os artigos encontrados pelas strings
-de busca de cada projeto nas bases ACM e IEEE.
+\texttt{documents/references.bib}, este arquivo contém os metadados de todos os
+artigos encontrados pelas strings de busca de cada projeto nas bases ACM e IEEE
+com um id único no formato \texttt{p + NUM}, exemplo \texttt{p1}, \texttt{p2},
+\texttt{p3}, etc.
 
 Este arquivo além de eliminar as duplicidades de resultados recebe também para
 cada item uma identificação única, esta identificação será utilizada nas etapas
@@ -240,23 +241,21 @@ artigos através das menções.
 
 % leitura dos pdf > apenas os papers relevantes que mencionam o nome do software
 
-Neste passo selecionamos os artigos relevantes para cada projeto, identificando
-nos resultados da busca avançada de cada string, através de inspeção manual do
-artigo, se ele faz menção ao projeto realmente. A primeira ação neste passo é
-fazer o download de cada artigo em formato pdf presente no arquivo
-\texttt{documents/references.bib} para inspeção manual.
+Neste passo selecionamos os artigos relevantes para cada projeto entre os
+resultados da busca avançada realizada para cada string, os artigos são
+inspecionados manualmente em busca de confirmar se fazem realmente menção ao
+projeto.
 
-Os artigos encontrados no passo anterior serão inspecionados manualmente em
-busca de confirmar se fazem referência de fato aos projetos de software,
-os dados gerados neste passo são armazenados no arquivo \texttt{software.yml} de cada projeto,
-fazendo referência sempre ao ID do artigo definido no passo anterior.
+A primeira ação neste passo é fazer o download de cada artigo em formato pdf,
+cada artigo presente no arquivo \texttt{documents/references.bib} será
+inspecionado, os dados coletados neste passo serão armazenados no arquivo
+\texttt{references.yml} de cada projeto, um campo chamado
+\texttt{is\_software\_mentioned} deve ser criado com os valores \texttt{yes} ou
+\texttt{no} indicando se o artigo menciona ou não o projeto.
 
 A inspeção tem como objetivo selecionar os artigos relevantes para este estudo,
 mantendo apenas aqueles com menção ao nome do software, seja a menção em
-formato de citação formal ou informal, cada resultado é armazenado no yml
-através do campo \texttt{really\_refers\_to\_software}, recebendo os valores
-\texttt{yes} ou \texttt{no}, ser atualizado com o resultado da triagem,
-indicando se faz referência ao nome do projeto ou não.
+formato de citação formal ou informal.
 
 %de cada artigo é realizada com o auxílio da funcionalidade de busca
 %do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
@@ -273,22 +272,25 @@ indicando se faz referência ao nome do projeto ou não.
 
 % papers relevantes > esquema de tipos de menção
 
-Nesta fase da revisão de literatura criamos o esquema de codificação para
-classificação das menções, o esquema é criado a partir da identificação do
-contexto em que os projetos são mencionados em cada artigo, para cada menção
-toma-se nota sobre como o software é mencionado naquele artigo.
+Neste passo será criado o esquema de codificação para classificação das
+menções, o esquema é criado a partir da identificação do contexto em que os
+projetos são mencionados, para cada menção toma-se nota no arquivo
+\texttt{references.yml} no campo \texttt{review} sobre como o software é
+mencionado naquele artigo.
 
 As notas são comentários livres resumindo as menções encontradas no artigo
 sobre um determinado software, um artigo científico pode mencionar um software
 diversas vezes, de diversas formas, desde uma simples menção nos trabalhos
-relacionados até uma grande contribuição ao software, este dado é coletado no
-campo texto livre \texttt{review} no yml de cada software.
+relacionados até uma grande contribuição ao software.
 
-O conjunto final de todas as notas são agrupadas e analisadas individualmente
-com o objetivo de criar a partir dessas notas um conjunto mínimo de códigos
-para classificação de menções a software acadêmico. Este esquema deve ser construído
-como uma escala de pesos, onde o último tipo de menção inclui implicitamente os
-tipos de menor peso.
+O conjunto final de todas as notas serão agrupadas e analisadas em conjunto com
+o objetivo de criar um esquema de codificação para classificar as menções.
+Este esquema deve ser construído como uma escala de pesos, onde o último tipo
+de menção inclui implicitamente os tipos de menor peso, este peso é pensado em
+relação a contribuição da menção ao ecossistema do projeto de software, cada
+menção representa uma entrada em forma de contribução ao ecossistema, seja
+fazendo o projeto de software ser visível na literatura acadêmica, seja com
+contribuição direta em código ao projeto.
 
 %Esta leitura irá gerar
 %uma escala de tipos de menção ao software. Cada artigo assume, em relação ao
@@ -300,17 +302,20 @@ tipos de menor peso.
 
 \subsection{Passo 4: Extração}
 
-A partir do esquema para classificação das menções extraímos para cada artigo
-qual o tipo de menção ele faz ao software, quando o artigo menciona o software
-diversas vezes adotamos o tipo de menção com maior peso, indicando que os pesos
-menores estão incluídos.
+No último passo da revisão utiliza-se o esquema criado no passo anterior para
+classificação das menções encontradas, para cada artigo será extraído qual o
+tipo de menção é feito ao software, quando o artigo menciona o software
+diversas vezes deve ser adotado o tipo de menção de maior relevância para este
+estudo, onde o tipo de menção de maior peso inclui implicitamente os tipos
+menores.
 
 %A partir da classificação , Tabela \ref{esquema-de-mencao}, extraímos de cada
 %artigo mencionando os projetos de acordo com o esquema de codificação criado no
 
-A extração desses dados devem ser armazenadas no próprio arquivo yml, sendo
-atualizado com a inclusão de um novo campo indicando o tipo de menção do artigo
-ao software.
+Os dados extraídos são armazenados no arquivo \texttt{references.yml} de
+cada projeto, sendo atualizado com a inclusão de um novo campo indicando o tipo
+de menção do artigo ao software, \texttt{mention\_type}, este campo assume um dos
+valores do esquema de classificação criado no passo anterior.
 
 Ao final da revisão de literatura teremos para cada projeto de software um
 conjunto de artigos com menções classificadas por tipo e contexto, estando
@@ -364,7 +369,28 @@ para armazenar os dados da busca, Figura \ref{software-yml-exemplo}.
 
 \subsection{Passo 3: Keywording}
 
-...
+A Listagem \ref{software-yml-references} apresenta um exemplo do trecho
+do YML para armazenar a extração dessas informações.
+
+\begin{figure}[h]
+  \begin{verbatim}
+  references:
+    p12:
+      review: é apenas um índice com nomes de artigos do workwhop SCAM 2003
+      is_software_mentioned: no
+    p34:
+      review: cita o software como trabalho relacionado
+      is_software_mentioned: yes
+      mention_type: cite
+    p40:
+      review: cita o software como trabalho relacionado
+      is_software_mentioned: yes
+      mention_type: cite
+  \end{verbatim}
+  \caption{Trecho do arquivo software.yml (seção para armazenar as referências e menções).}
+  \label{software-yml-references}
+\end{figure}
+
 
 \subsection{Passo 4: Extração}
 
@@ -384,7 +410,7 @@ apresenta o fluxo de coleta, análise e transformação dos dados.
 \end{figure}
 
 Implementamos os scripts \texttt{bin/summarize-dataset}, \texttt{bin/query},
-\texttt{bin/clean}, \texttt{bin/ids} e \texttt{bin/render-template} indicados
+\texttt{bin/ids} e \texttt{bin/render-template} indicados
 no fluxograma da Figura \ref{estudo2-fluxograma} utilizando a linguagem de
 programação Perl\footnote{\url{http://perl.org}} com o auxílio dos seguintes
 módulos CPAN: Modern::Perl\footnote{\url{http://metacpan.org/pod/Modern::Perl}},
