@@ -1,0 +1,16 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+id,<%== join(',', map { $dataset{$_}{software}{id} } sort keys %dataset) %>
+% foreach my $id (map { "p$_" } sort { $a <=> $b } map { s/^p//; $_ } keys %references) {
+%   my @line = ($id);
+%   foreach my $k (sort keys %dataset) {
+%     if (grep /^$id$/, keys %{ $dataset{$k}{references} }) {
+%       push @line, 'x';
+%     }
+%     else {
+%       push @line, '-';
+%     }
+%   }
+<%== join(',', @line) %>
+% }
+%# vim: filetype=epl

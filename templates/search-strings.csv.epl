@@ -1,0 +1,14 @@
+% my %dataset = %{ $_[0] };
+id,software,string de busca ACM,data da busca,resultados,string de busca IEEE,data da busca,resultados
+% foreach my $k (sort keys %dataset) {
+<%== sprintf("%s,%s,%s,%s,%d,%s,%s,%d",
+               $dataset{$k}{software}{id},
+               $dataset{$k}{software}{short_name},
+               $dataset{$k}{search}{acm}{string},
+               $dataset{$k}{search}{acm}{searched_at},
+               $dataset{$k}{search}{acm}{results},
+               $dataset{$k}{search}{ieee}{string},
+               $dataset{$k}{search}{ieee}{searched_at},
+               $dataset{$k}{search}{ieee}{results}) %>
+% }
+%# vim: filetype=epl

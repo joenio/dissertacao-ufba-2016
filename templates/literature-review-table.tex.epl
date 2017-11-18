@@ -1,43 +1,39 @@
-% my %dataset = @_;
-
-\begin{longtable}{ l c c c c c }
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type );
+% my %dataset = %{ $_[0] };
+\begin{longtable}{ l c c c c }
 \caption{Resumo dos resultados encontrados na revisão de literatura.}
 \label{literature-review-table} \\\
   \hline
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \endfirsthead
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \hline
-   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
-   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{4}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Total} \\\
   \hline
-  \hhline{ l c c c c c |}
+  \hhline{ l c c c c |}
   \endhead
-  \hhline{------}
-  \multicolumn{6}{c}{continua na próxima página} \\\
-  \hhline{------} \endfoot
-  \hhline{------} \endlastfoot
-   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{5}{c}{{\bf Menções}} \\\
-   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Cria} & \textbf{Total} \\\
-  \hline
-% foreach my $k (sort keys %dataset) {
-%   my $cite = $dataset{$k}{literature_review}{cite_count};
-%   my $use = $dataset{$k}{literature_review}{use_count};
-%   my $contribute = $dataset{$k}{literature_review}{contribute_count};
-%   my $create = $dataset{$k}{literature_review}{create_count};
-%   my $total = $cite + $use + $contribute + $create;
-   <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $create %> & <%== $total %> \\\
-% }
+  \hhline{-----}
+  \multicolumn{5}{c}{continua na próxima página} \\\
+  \hhline{-----} \endfoot
+  \hhline{-----} \endlastfoot
+   \multirow{2}{*}{\textbf{Nome do software}} & \multicolumn{4}{c}{{\bf Menções}} \\\
+   & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} & \textbf{Total} \\\
   \hline
 % my %total = ();
 % foreach my $k (sort keys %dataset) {
-%   $total{cite} += $dataset{$k}{literature_review}{cite_count};
-%   $total{use} += $dataset{$k}{literature_review}{use_count};
-%   $total{contribute} += $dataset{$k}{literature_review}{contribute_count};
-%   $total{create} += $dataset{$k}{literature_review}{create_count};
-%   $total{total} += ($dataset{$k}{literature_review}{cite_count} + $dataset{$k}{literature_review}{use_count} + $dataset{$k}{literature_review}{contribute_count} + $dataset{$k}{literature_review}{create_count});
+%   my $cite = count_mentions_by_type 'cite', %{ $dataset{$k}{references} };
+%   my $use = count_mentions_by_type 'use', %{ $dataset{$k}{references} };
+%   my $contribute = count_mentions_by_type 'contribute', %{ $dataset{$k}{references} };
+%   my $total = $cite + $use + $contribute;
+%   $total{cite} += $cite;
+%   $total{use} += $use;
+%   $total{contribute} += $contribute;
+%   $total{total} += $total;
+   <%== $dataset{$k}{software}{short_name} %> & <%== $cite %> & <%== $use %> & <%== $contribute %> & <%== $total %> \\\
 % }
-  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{create} %> & <%== $total{total} %> \\\
+  \hline
+  {\bf Total} & <%== $total{cite} %> & <%== $total{use} %> & <%== $total{contribute} %> & <%== $total{total} %> \\\
 \end{longtable}
-
 %# vim: filetype=epl

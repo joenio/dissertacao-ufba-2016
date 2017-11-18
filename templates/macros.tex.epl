@@ -1,19 +1,20 @@
-% my %dataset = @_;
+% use List::Util qw ( uniq );
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
 % my %total = ();
+% my @mentions = ();
 % foreach my $k (sort keys %dataset) {
 %   $total{acm} += $dataset{$k}{search}{acm}{results};
 %   $total{ieee} += $dataset{$k}{search}{ieee}{results};
 %   $total{total} += ($dataset{$k}{search}{acm}{results} + $dataset{$k}{search}{ieee}{results});
-%   $total{mentions} += $dataset{$k}{screening}{results};
+%   foreach my $id (keys %{ $dataset{$k}{references} }) {
+%     push(@mentions, $id) if $dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes';
+%   }
 % }
 \newcommand{\SearchACMCount}{<%== $total{acm} %>}
 \newcommand{\SearchIEEECount}{<%== $total{ieee} %>}
 \newcommand{\SearchCount}{<%== $total{total} %>}
-%# TODO a macro \SearchUniqueCount abaixo não deveria acessar o arquivo
-%#      cache/citations.bib, é necessário refatorar o render-template
-%#      para evitar isto, ou incluir as informaçoes no próprio dataset.yml
-%#      de alguma forma
-\newcommand{\SearchUniqueCount}{<%== `cat cache/citations.bib | grep " title = " | wc -l` %>}
-\newcommand{\ScreeningCount}{<%== $total{mentions} %>}
-\newcommand{\ScreeningUniqueCount}{<%== `./bin/query dataset/software/*/citations.bib really_refers_to_software=yes` %>}
+\newcommand{\SearchUniqueCount}{<%== scalar keys %references %>}
+\newcommand{\ScreeningCount}{<%== scalar @mentions %>}
+\newcommand{\ScreeningUniqueCount}{<%== scalar uniq @mentions %>}
 %# vim: filetype=epl

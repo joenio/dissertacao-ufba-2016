@@ -16,25 +16,20 @@ rebuild: clean summary documents all
 analyze:
 	./bin/analyze-softwares -o dataset/metrics.csv
 
-summary:
+cache:
 	@mkdir -p cache
+
+summary: cache
 	./bin/summarize-dataset dataset/software/ > cache/dataset.yml
-	./bin/merge dataset/software/*/citations.bib > cache/citations.bib
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
 	./bin/filter-papers "dataset/papers/SCAM Papers/" > dataset/papers/filter-papers-scam.md
 
-documents: summary
-	./bin/render-template cache/dataset.yml templates/software-table.tex.epl > result-documents/software-table.tex
-	./bin/render-template cache/dataset.yml templates/available-table.tex.epl > result-documents/available-table.tex
-	./bin/render-template cache/dataset.yml templates/source-code-table.tex.epl > result-documents/source-code-table.tex
-	./bin/render-template cache/dataset.yml templates/license-table.tex.epl > result-documents/license-table.tex
-	./bin/render-template cache/dataset.yml templates/macros.tex.epl > result-documents/macros.tex
-	./bin/render-template cache/dataset.yml templates/literature-review-table.tex.epl > result-documents/literature-review-table.tex
-#	./bin/render-template cache/dataset.yml templates/mention-table.tex.epl > result-documents/mention-table.tex
-#	./bin/render-template cache/dataset.yml templates/contributors-table.tex.epl > result-documents/contributors-table.tex
+references: cache
+	./bin/query dataset/software/*/paper.bib dataset/software/*/search/*.bib > cache/references.bib
+	./bin/ids cache/references.bib > documents/references.bib
 
-citations=$(wildcard dataset/software/*)
-merge-bibtex: $(citations)
-	@$(foreach citation,$(citations),./bin/merge-bibtex $(citation)/citations/*.bib > $(citation)/citations.bib;)
+templates=$(wildcard templates/*.epl)
+documents: $(templates) summary
+	@$(foreach t,$(templates),./bin/render-template $(t) > documents/$(basename $(notdir $(t)));)
