@@ -37,7 +37,12 @@
 %   $total{total} += $total;
 %   push @{ $multicolumn[$column] }, [$id, $cite, $use, $contribute, $total];
 % }
-% push @{ $multicolumn[$column] }, [undef, undef, undef, undef, undef];
+% my %mean = ();
+% $mean{cite} = sprintf("%.1f", $total{cite} / scalar keys %dataset);
+% $mean{use} = sprintf("%.1f", $total{use} / scalar keys %dataset);
+% $mean{contribute} = sprintf("%.1f", $total{contribute} / scalar keys %dataset);
+% $mean{total} = sprintf("%.1f", $total{total} / scalar keys %dataset);
+% push @{ $multicolumn[$column] }, ['{\bf Média}', "{\\bf $mean{cite}}", "{\\bf $mean{use}}", "{\\bf $mean{contribute}}", "{\\bf $mean{total}}"];
 % push @{ $multicolumn[$column] }, ['{\bf Total}', "{\\bf $total{cite}}", "{\\bf $total{use}}", "{\\bf $total{contribute}}", "{\\bf $total{total}}"];
 % foreach my $i (0 .. $#{ $multicolumn[1] }) {
 %   my $c1 = $multicolumn[1]->[$i];

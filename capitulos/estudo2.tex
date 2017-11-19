@@ -508,42 +508,47 @@ A lista completa com autores, título e ano de publicação com todos os
 %artigo e armazenamos os metadados em formato BibTeX nos arquivos \texttt{acm.bib}
 %e \texttt{ieee.bib} para cada projeto de software.
 
+Na sequencia adicionamos o \texttt{id} a cada artigo do
+\texttt{documents/references.bib}, este arquivo tem os metadados dos artigos
+encontrados, eles receberam ids, estes ids serão
+utilizados para relacionar o projeto ao artigo, o script \texttt{bin/ids}
+foi utilizado para automatizar esta função.
+
+A Tabela \ref{search-table} ...
+
+\input{documents/search-table.tex}
+
+%Os scripts \texttt{bin/merge},  foram utilizados para gerar o
+%\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
+%\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
+
 \subsection{Passo 2: Triagem}
 
 Os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
 projetos de software, para cada projeto foi analisado o conjunto de artigos
-retornado pela string de busca daquele projeto.
-
-O critério da inspeção considerou qualquer ocorrencia ao nome do projeto de
+retornado pela string de busca daquele projeto. O critério da inspeção considerou qualquer ocorrencia ao nome do projeto de
 software nos artigos do conjunto da busca do projeto, alguns projetos de
 software possui nomes comuns que foram encontrados nos artigos mas não faziam
 referencia ao software, em alguns casos os nomes apareciam em fórmulas
 matemáticas ou como parte de um outra palavra.
 
-Ao final da triagem foi selecionado para cada projeto um conjunto de artigos
+Ao final da triagem foi selecionado para cada um dos \SoftwareCount \ projetos um conjunto de artigos
 que de fato mencionam o software, ainda sem caracterizar o tipo de menção,
 apenas se realmente menciona, ao total selecionamos \ScreeningCount \ menções.
 Este total de menções foram encontrados ao meio a \ScreeningUniqueCount \
 artigos.
 
-Uma tabela no formato CSV com todas as referências pode ser encontrada no repositório
-desta dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
-os artigos e todos os projetos são representados e a relação entre eles é marcada com
-um \texttt{x} sempre que houver menção de um artigo para um software.
+Uma tabela no formato CSV com todos os artigos e projetos, indicando quando há
+relação entre eles através de menção pode ser encontrada no repositório desta
+dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
+os artigos e todos os projetos são representados e a relação entre eles é
+marcada com um \texttt{x} sempre que houver menção de um artigo para um
+software.
 
 %Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
 %cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
 %arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
 %a todos os projetos, referências únicas.
-
-Na sequencia adicionamos o \texttt{id} a cada artigo do
-\texttt{documents/references.bib}, este arquivo tem os metadados dos artigos
-encontrados fazendo menção aos projetos, eles receberam ids, estes ids serão
-utilizados para relacionar o projeto ao artigo.
-
-Os scripts \texttt{bin/merge}, \texttt{bin/ids} foram utilizados para gerar o
-\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
-\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
 
 %334 artigos fazem menção aos 60 projetos.
 %350 não faz menção aos projetos.
@@ -569,15 +574,18 @@ distintos, onde o último tipo de menção com maior valor inclui todos os demai
 \label{esquema-de-mencao}
 \end{table}
 
-A definição deste esquema foi feito através de anotações sobre onde
-e como o projeto de software é mencionado em cada artigo, anotamos no campo
-\texttt{review:} um comentário textual livre resumindo de que forma o projeto
-é mencionado, caso várias menções seja encontrado num mesmo artigo para um dado
-projeto de software é feito um resumo total.
+A definição deste esquema foi feito através de anotações sobre onde e como o
+projeto de software é mencionado em cada artigo, anotamos no campo
+\texttt{review} do arquivo \texttt{references.yml} um comentário textual livre
+resumindo de que forma o projeto de software é mencionado, caso várias menções
+seja encontrado num mesmo artigo para um dado projeto de software é feito um
+resumo total.
 
-Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
-foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
-menção foi adicionada. É importante lembrar que um mesmo artigo pode mencionar
+%Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
+%foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
+%menção foi adicionada.
+
+É importante lembrar que um mesmo artigo pode mencionar
 mais de um software.
 
 %também o tipo de menção que é feita ao software: se apenas cita como exemplo,
@@ -586,15 +594,17 @@ mais de um software.
 
 \subsection{Passo 4: Extração}
 
-Coletamos as informações relacionadas a cada menção encontrada, cada um dos
-\ScreeningUniqueCount \ artigos encontrados mencionando os projetos, coletamos
-como o projeto é mencionado, encontramos \ScreeningCount \ menções aos
-projetos neste conjunto de artigos.
+%Coletamos as informações relacionadas a cada menção encontrada, cada um dos
+%\ScreeningUniqueCount \ artigos encontrados mencionando os projetos, coletamos
+%como o projeto é mencionado, encontramos \ScreeningCount \ menções aos
+%projetos neste conjunto de artigos.
 
-A partir do esquema para caracterização das menções adicionamos para
-cada projeto de software os campos \texttt{is\_software\_mentioned}
-com o valor \texttt{yes} e o campo \texttt{mention\_type} assumindo
-um valor entre: \texttt{cite}, \texttt{use}, \texttt{contribute}.
+A partir do esquema para caracterização das menções coletamos os valores para o
+campo \texttt{mention\_type} assumindo um dos valores da Tabela
+\ref{esquema-de-mencao}: \texttt{cite} (Cita), \texttt{use} (Usa) ou
+\texttt{contribute} (Contribui). Encontramos \CiteCount \ menções do tipo Cita,
+\UseCount \ menções do tipo Usa e
+\ContributeCount \ menções do tipo Contribui.
 
 Os dados coletados na revisão de literatura durante os quatro passos são
 apresentados em resumo na Tabela \ref{mentions-table} indicando o
@@ -602,6 +612,196 @@ número de resultados encontrados para cada projeto de software.
 
 \input{documents/mentions-table.tex}
 
+% }}}
+
+% Raw results from the analysis
+\section{Análise dos Dados} \label{estudo2:analise} % {{{
+
+Dados de 60 projetos de software acadêmico de análise estática desenvolvidos e
+publicados na literatura acadêmica de engenharia de software, informações sobre
+diversas formas de menção ao nome destes projetos na literatura acadêmica nas
+bases ACM e IEEE entre \SearchUniqueCount \ artigos distintos.
+%o número de autores mencionando o software ao longo do tempo.
+
+\subsection{Passo 1: Busca}
+
+Dentre todos os projetos dois não encontrou nenhuma ocorrência na busca --
+\texttt{s24} (GUIZMO) e \texttt{s41} (protopurity) -- as strings de busca
+destes dois projetos não encontrou nenhum resultado, tanto na base ACM quanto
+na base IEEE.
+
+A média de resultados por projeto foi de \SearchUniqueMean \ artigos. Entre os
+projetos com maior número de resultados (acima da média) a maioria está entre
+os projetos disponível para download, 11 com acesso e 7 sem acesso.
+Entre os projetos com número de resultados abaixo da média 25 estão entre os
+projetos com acesso a download e 16 sem acesso a download.
+
+%projetos com resultado da busca acima da média
+% resultados  acesso
+% s1  38      s
+% s3  15      n
+% s7  25      s
+% s10 14      s
+% s15 16      n
+% s18 47      s
+% s19 45      n
+% s25 34      s
+% s28 50      s
+% s29 15      s
+% s32 32      s
+% s36 34      n
+% s38 42      n
+% s45 14      n
+% s46 24      s
+% s52 41      s
+% s56 38      n
+% s59 36      s
+% s = 11
+% n = 7
+
+%projetos com resultado da busca abaixo da média
+%resultados acesso
+%s2  8      s
+%s4  9      n
+%s5  6      n
+%s6  7      s
+%s8  13     s
+%s9  8      n
+%s11 3      n
+%s12 6      s
+%s13 9      n
+%s14 2      s
+%s16 5      s
+%s17 1      s
+%s20 10     n
+%s21 3      s
+%s22 5      s
+%s23 12     n
+%s24 1      s
+%s26 7      s
+%s27 5      s
+%s30 10     n
+%s31 3      n
+%s33 5      s
+%s34 4      s
+%s35 2      s
+%s37 7      s
+%s39 11     n
+%s40 11     s
+%s41 1      s
+%s42 5      s
+%s43 2      s
+%s44 3      n
+%s48 4      n
+%s49 5      n
+%s50 2      s
+%s51 7      s
+%s53 13     n
+%s54 4      s
+%s55 12     s
+%s57 8      n
+%s58 11     s
+%s60 7      n
+
+\subsection{Passo 2: Triagem}
+
+Total de \ScreeningCount \ menções, média de \ScreeningMean \ menções por
+projeto.  Entre os projetos com menções acima da média total, 9 com acesso a
+download e 6 sem acesso a download, entre os projetos com menções abaixo da
+média, 25 com acesso, 20 sem acesso.
+
+% acima da média de menções
+%          acesso
+%s4  = 9   n
+%s7  = 10  s
+%s19 = 40  n
+%s23 = 8   n
+%s25 = 19  s
+%s28 = 40  s
+%s30 = 8   n
+%s32 = 14  s
+%s38 = 18  n
+%s40 = 9   s
+%s46 = 13  s
+%s52 = 40  s
+%s56 = 21  n
+%s58 = 11  s
+%s59 = 33  s
+
+% abaixo da média de menções
+%         acesso
+%s1  = 1  s
+%s2  = 2  s
+%s3  = 4  n
+%s5  = 5  n
+%s6  = 5  s
+%s8  = 6  s
+%s9  = 5  n
+%s10 = 5  s
+%s11 = 3  n
+%s12 = 2  s
+%s13 = 1  n
+%s14 = 2  s
+%s15 = 5  n
+%s16 = 4  n
+%s17 = 1  s
+%s18 = 2  s
+%s20 = 1  n
+%s21 = 1  s
+%s22 = 3  s
+%s24 = 1  s
+%s26 = 7  s
+%s27 = 3  s
+%s29 = 7  s
+%s31 = 2  n
+%s33 = 5  s
+%s34 = 2  s
+%s35 = 1  s
+%s36 = 2  n
+%s37 = 7  s
+%s39 = 2  n
+%s41 = 1  s
+%s43 = 2  s
+%s44 = 2  n
+%s45 = 2  n
+%s47 = 1  n
+%s48 = 2  n
+%s49 = 5  n
+%s50 = 1  s
+%s51 = 4  s
+%s53 = 4  n
+%s54 = 3  s
+%s55 = 1  s
+%s57 = 5  n
+%s60 = 5  n
+
+\subsection{Passo 3: Keywording}
+
+\CiteCount \ Cita,
+\UseCount \ Usa e
+\ContributeCount \ Contribui.
+
+\subsection{Passo 4: Extração}
+
+Entre os \SoftwareCount \ projetos de software estudados
+\SoftwareNotMentionedCount \ não foram encontrados na revisão de literatura em
+publicações após a publicação inicial
+(\input{documents/software-not-mentioned.tex}), tendo apenas a publicação
+inicial onde o software foi selecionado no estudo apresentado no Capítulo
+\ref{estudo1}.
+
+%cada um, alguns tendo duas publicações na mesma época sendo uma
+%publicação específica numa trilha de ferramenta, ou senndo 2 artigos
+%semelhantes publicados na mesma época em conferências distintas, mas sendo os
+%mesmos autores.
+
+%Nenhum destes projetos tiveram menção após a publicação inicial do projeto,
+%entre estes 14 projetos, apenas três (Diagnosys, ETXL e Rêve) estão
+%indisponíveis para download, os outros 11 estão disponíveis, todos com código
+%fonte, exceto o FaultBuster que está disponível apenas em formato binário.
+
+Entre os \MentionsStudyDois \
+projetos mencionados após a publicação inicial encontrada na literatura.
 A Figura \ref{mentions-timeline} apresenta uma visualização da linha do tempo
 de cada software em relação a menções encontradas nas bases ACM e IEEE através
 da revisão de literatura.
@@ -613,91 +813,32 @@ da revisão de literatura.
   \label{mentions-timeline}
 \end{figure}
 
-% }}}
+%Ao todo foram encontradas 465 menções aos 60 projetos de software, estas
+%menções estão num conjunto de 334 artigos selecionados na revisão de literatura
+%nas bases ACM e IEEE.
 
-% Raw results from the analysis
-\section{Análise dos Dados} \label{estudo2:analise} % {{{
+%Entre todas as menções a maior parte (222) apenas cita os projetos de software
+%como exemplo de implementação, apenas cita o software ou é o mesmo artigo onde
+%o software selecionado; É um artigo com “mesmo” conteúdo publicado na “mesma”
+%época; O artigo apenas descreve o software; Menciona o software numa tabela com
+%outros, classifica; Menciona o software como exemplo; Menciona o software como
+%trabalho relacionado; Menciona o software em trabalhos futuros.
 
-Dados de 60 projetos de software acadêmico de análise estática desenvolvidos e
-publicados na literatura acadêmica de engenharia de software, informações sobre
-diversas formas de menção ao nome destes projetos na literatura acadêmica.
-%o número de autores mencionando o software ao longo do tempo.
+% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.1 | grep " title = " | wc -l
+%AS 222 menções foram encontradas em 204 artigos distintos.
 
-\subsection{Passo 1: Busca}
-
-...
-
-\subsection{Passo 2: Triagem}
-
-...
-
-\subsection{Passo 3: Keywording}
-
-...
-
-\subsection{Passo 4: Extração}
-
-...
+\ContributeStudyDoisCount \ menções com contribuição a
+\ContributeStudyDoisSoftware \ projetos de software
+(\input{documents/contributions-found.tex}).
 
 % }}}
 
 % Hypothesis rejection
 \section{Interpretação dos Resultados} \label{estudo2:interpretacao} % {{{
 
-... a Tabela \ref{visibility-table} ...
-
-%\input{documents/visibility-table.tex}
-
 \subsection{Q1 - \EstudoDoisQuestaoUm}
 
 % Demográfica.
-
-
-Entre os 60 projetos de software estudados 14 não foram encontrados na revisão
-de literatura em publicações após a publicação inicial, tendo apenas uma
-publicação cada um, alguns tendo duas publicações na mesma época sendo uma
-publicação específica numa trilha de ferramenta, ou senndo 2 artigos
-semelhantes publicados na mesma época em conferências distintas, mas sendo os
-mesmos autores.
-
-\begin{enumerate}
-  \item 2LS
-  \item AccessAnalysis
-  \item Diagnosys
-  \item e-munity
-  \item ETXL
-  \item FaultBuster
-  \item GUIZMO
-  \item MPAnalyzer
-  \item protopurity
-  \item Pseudogen
-  \item PtYasm
-  \item Rêve
-  \item SonarQube Plugin
-  \item TEBA
-\end{enumerate}
-
-Nenhum destes projetos tiveram menção após a publicação inicial do projeto,
-entre estes 14 projetos, apenas três (Diagnosys, ETXL e Rêve) estão
-indisponíveis para download, os outros 11 estão disponíveis, todos com código
-fonte, exceto o FaultBuster que está disponível apenas em formato binário.
-
-46 projetos são mencionados após a publicação inicial encontrada na literatura.
-
-Ao todo foram encontradas 465 menções aos 60 projetos de software, estas
-menções estão num conjunto de 334 artigos selecionados na revisão de literatura
-nas bases ACM e IEEE.
-
-Entre todas as menções a maior parte (222) apenas cita os projetos de software
-como exemplo de implementação, apenas cita o software ou é o mesmo artigo onde
-o software selecionado; É um artigo com “mesmo” conteúdo publicado na “mesma”
-época; O artigo apenas descreve o software; Menciona o software numa tabela com
-outros, classifica; Menciona o software como exemplo; Menciona o software como
-trabalho relacionado; Menciona o software em trabalhos futuros.
-
-% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.1 | grep " title = " | wc -l
-
-AS 222 menções foram encontradas em 204 artigos distintos.
 
 \subsection{Q2 - \EstudoDoisQuestaoDois}
 
@@ -725,8 +866,6 @@ encontrado num artigo distinto. Estas 40 menções são em relação a apenas
 16 projetos entre os 60 do conjunto total, apenas 16 projetos receberam
 contribuções advindas de pesquisas publicadas nas bases ACM e IEEE.
 
-\subsection{Q4 - ???}
-
 Entre os 60 projetos de software selecionados no estudo anterior, a grande maioria
 foi encontrado em artigos 
 
@@ -734,23 +873,21 @@ O GRT recebe uma grande contribuição além da publicação inicial criando o p
 é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
 no paper original publicando o projeto pela primeira vez.
 
-\subsection{Q5 - ???}
-
 Os projetos tiveram contribuições em código em publicações posteriores aos
 artigos inicias publicando o software?
 
-Quantos autores novos além dos autores originais/iniciais do projeto
-foram encontrados contribuindo com os projetos?
+%Quantos autores novos além dos autores originais/iniciais do projeto
+%foram encontrados contribuindo com os projetos?
 
 %\input{documents/contributors-table.tex}
 
-A comparação entre os nomes do autores passou antes pela normalização
-no formato de representação, visto que cada artigo utiliza um formato
-de nome diferente, transformamos, por exemplo, ``Bajaj, Kon'' em ``Bajaj K.'',
-``Costa, Kim A.'' em ``Costa K. A.'', ``Rajan, Sreeranga P.'' em ``Rajan S. P.'',
-``Pol, Jaco van de'' em ``Pol J. van de'', ``Zijiang Yang'' em ``Yang Z.'',
-e assim comparamos dois nomes considerando que cada um destes nomes representa,
-de forma única, um autor.
+%A comparação entre os nomes do autores passou antes pela normalização
+%no formato de representação, visto que cada artigo utiliza um formato
+%de nome diferente, transformamos, por exemplo, ``Bajaj, Kon'' em ``Bajaj K.'',
+%``Costa, Kim A.'' em ``Costa K. A.'', ``Rajan, Sreeranga P.'' em ``Rajan S. P.'',
+%``Pol, Jaco van de'' em ``Pol J. van de'', ``Zijiang Yang'' em ``Yang Z.'',
+%e assim comparamos dois nomes considerando que cada um destes nomes representa,
+%de forma única, um autor.
 
 % }}}
 
@@ -793,7 +930,6 @@ Planejamos fazer outro estudo ...
 %\cite{smith2016software}
 %
 %5. Accessibility: Software citations should facilitate access to the software itself and to its
-
 
 %\subsection{Autoria das menções aos projetos de software de análise estática}
 
@@ -858,8 +994,6 @@ Planejamos fazer outro estudo ...
 %arquivos BibTeX.
 
 %\subsection{Autoria das menções aos projetos de software de análise estática}
-%
 
 % nao vou mais analisar nenhum dado de autoria, apenas numero de citacoes e tipo!!!
 %\input{documents/authorship-table.tex}
-

@@ -1,14 +1,38 @@
-% use List::Util qw ( uniq );
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type );
+% use List::Util qw ( uniq sum );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
+%= "\% dados do estudo1"
+\newcommand{\SoftwareCount}{<%== keys %dataset %>}
+%= "\% dados do estudo2"
 % my %total = ();
 % my @mentions = ();
-% foreach my $k (sort keys %dataset) {
+% my %mentions_by_study = ();
+% my %contribute_study2 = ();
+% foreach my $k (keys %dataset) {
 %   $total{acm} += $dataset{$k}{search}{acm}{results};
 %   $total{ieee} += $dataset{$k}{search}{ieee}{results};
 %   $total{total} += ($dataset{$k}{search}{acm}{results} + $dataset{$k}{search}{ieee}{results});
+%   $total{cite} += count_mentions_by_type('cite', %{ $dataset{$k}{references} });
+%   $total{use} += count_mentions_by_type('use', %{ $dataset{$k}{references} });
+%   $total{contribute} += count_mentions_by_type('contribute', %{ $dataset{$k}{references} });
+%   $mentions_by_study{1}{$k} //= 0;
+%   $mentions_by_study{2}{$k} //= 0;
+%   $contribute_study2{$k} = 0;
 %   foreach my $id (keys %{ $dataset{$k}{references} }) {
-%     push(@mentions, $id) if $dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes';
+%     if ($dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes') {
+%       push @mentions, $id;
+%       if ($dataset{$k}{references}{$id}{step} && $dataset{$k}{references}{$id}{step} eq 'study1') {
+%         $mentions_by_study{1}{$k}++;
+%       }
+%       else {
+%         $mentions_by_study{2}{$k}++;
+%         if ($dataset{$k}{references}{$id}{mention_type} eq 'contribute') {
+%           $contribute_study2{$k}++;
+%         }
+%       }
+%     }
 %   }
 % }
 \newcommand{\SearchACMCount}{<%== $total{acm} %>}
@@ -17,4 +41,14 @@
 \newcommand{\SearchUniqueCount}{<%== scalar keys %references %>}
 \newcommand{\ScreeningCount}{<%== scalar @mentions %>}
 \newcommand{\ScreeningUniqueCount}{<%== scalar uniq @mentions %>}
+\newcommand{\CiteCount}{<%== $total{cite} %>}
+\newcommand{\UseCount}{<%== $total{use} %>}
+\newcommand{\ContributeCount}{<%== $total{contribute} %>}
+\newcommand{\SearchUniqueMean}{<%== sprintf("%.1f", scalar(keys %references) / scalar(keys %dataset)) %>}
+\newcommand{\ScreeningMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(keys %dataset)) %>}
+\newcommand{\MentionsStudyUm}{<%== grep { $mentions_by_study{1}{$_} > 0 } keys %{ $mentions_by_study{1} } %>}
+\newcommand{\MentionsStudyDois}{<%== grep { $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} } %>}
+\newcommand{\SoftwareNotMentionedCount}{<%== keys(%dataset) - grep({ $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} }) %>}
+\newcommand{\ContributeStudyDoisCount}{<%== sum map { $contribute_study2{$_} } keys %contribute_study2 %>}
+\newcommand{\ContributeStudyDoisSoftware}{<%== grep { $contribute_study2{$_} > 0 } keys %contribute_study2 %>}
 %# vim: filetype=epl
