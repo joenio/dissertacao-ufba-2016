@@ -287,6 +287,9 @@ Este esquema deve ser construído como uma escala de pesos, onde o último tipo
 de menção inclui implicitamente os tipos de menor peso, este peso representa
 o nível de contribuição da menção ao ecossistema do projeto de software.
 
+%Um tipo de menção com maior peso inclui implicitamente o tipo de menção de
+%menor peso, e assim sucessivamente.
+
 %, cada
 %menção representa uma entrada em forma de contribução ao ecossistema, seja
 %fazendo o projeto de software ser visível na literatura acadêmica, seja com
@@ -497,54 +500,59 @@ um mesmo artigo foi encontrado nas duas bases, e também um mesmo artigo foi
 encontrado em busca de projetos distintos, dentre o resultado total,
 \SearchUniqueCount \ são únicos, ou seja, encontramos \SearchUniqueCount \ artigos.
 
-Alguns artigos fazem menção a mais de 1 projeto, fizemos o download de cada
-artigo e armazenamos os metadados em formato BibTeX nos arquivos \texttt{acm.bib}
-e \texttt{ieee.bib} para cada projeto de software.
+A lista completa com autores, título e ano de publicação com todos os
+\SearchUniqueCount \ resultados pode ser consultado no arquivo
+\texttt{documents/search.md} no repositório desta dissertação.
+
+%Alguns artigos fazem menção a mais de 1 projeto, fizemos o download de cada
+%artigo e armazenamos os metadados em formato BibTeX nos arquivos \texttt{acm.bib}
+%e \texttt{ieee.bib} para cada projeto de software.
 
 \subsection{Passo 2: Triagem}
 
-Inspecionamos cada um dos \SearchUniqueCount \ artigos em busca de menções ao
-nome do projeto de software associado com a busca que retornou estes artigos,
-nesta busca utilizamos como critério qualquer ocorrencia ao nome do projeto de
-software mas que seja realmente referente ao software em sí, alguns projetos de
-software do nosso conjunto possui nomes comuns que foram encontrados nos
-artigos mas não faziam referencia ao software, em alguns casos os nomes
-apareciam em fórmulas matemáticas ou como parte de um outra palavra.
+Os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
+projetos de software, para cada projeto foi analisado o conjunto de artigos
+retornado pela string de busca daquele projeto.
 
-Ao final selecionamos para cada projeto um conjunto de artigos que de fato
-mencionam o software, ainda sem caracterizar o tipo de menção, apenas se
-realmente menciona, ao total selecionamos \ScreeningCount \ menções.
-Este total de menções foram encontrados ao meio a \ScreeningUniqueCount \ artigos.
+O critério da inspeção considerou qualquer ocorrencia ao nome do projeto de
+software nos artigos do conjunto da busca do projeto, alguns projetos de
+software possui nomes comuns que foram encontrados nos artigos mas não faziam
+referencia ao software, em alguns casos os nomes apareciam em fórmulas
+matemáticas ou como parte de um outra palavra.
+
+Ao final da triagem foi selecionado para cada projeto um conjunto de artigos
+que de fato mencionam o software, ainda sem caracterizar o tipo de menção,
+apenas se realmente menciona, ao total selecionamos \ScreeningCount \ menções.
+Este total de menções foram encontrados ao meio a \ScreeningUniqueCount \
+artigos.
 
 Uma tabela no formato CSV com todas as referências pode ser encontrada no repositório
 desta dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
 os artigos e todos os projetos são representados e a relação entre eles é marcada com
 um \texttt{x} sempre que houver menção de um artigo para um software.
 
-Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
-cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
-arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
-a todos os projetos, referências únicas.
+%Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
+%cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
+%arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
+%a todos os projetos, referências únicas.
 
 Na sequencia adicionamos o \texttt{id} a cada artigo do
 \texttt{documents/references.bib}, este arquivo tem os metadados dos artigos
 encontrados fazendo menção aos projetos, eles receberam ids, estes ids serão
 utilizados para relacionar o projeto ao artigo.
 
-Os scripts \texttt{bin/query}, \texttt{bin/clean}, \texttt{bin/ids} foram
-utilizados para gerar o \texttt{documents/references.bib} a partir dos arquivos
-\texttt{acm.bib}, \texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
+Os scripts \texttt{bin/merge}, \texttt{bin/ids} foram utilizados para gerar o
+\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
+\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
 
-334 artigos fazem menção aos 60 projetos.
-350 não faz menção aos projetos.
+%334 artigos fazem menção aos 60 projetos.
+%350 não faz menção aos projetos.
 
 \subsection{Passo 3: Keywording}
 
 A avaliação das \ScreeningCount \ menções gerou uma escala de tipos de menção
-ao software, detalhado na Tabela \ref{esquema-de-mencao}, com três valores
+aos projetos de software, detalhado na Tabela \ref{esquema-de-mencao}, com três valores
 distintos, onde o último tipo de menção com maior valor inclui todos os demais.
-Um tipo de menção com maior peso inclui implicitamente o tipo de menção de
-menor peso, e assim sucessivamente.
 
 \begin{table}[h]
 \caption{Esquema para classificação de menções aos projetos software acadêmico.}
@@ -555,7 +563,7 @@ menor peso, e assim sucessivamente.
   \hline
   Cita      & Apenas cita o software ou é o mesmo artigo onde o software selecionado; É um artigo com ``mesmo'' conteúdo publicado na ``mesma'' época; O artigo apenas descreve o software; Menciona o software numa tabela com outros, classifica; Menciona o software como exemplo; Menciona o software como trabalho relacionado; Menciona o software em trabalhos futuros. \\
   Usa       & Avalia ou caracteriza o software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o software como parte de uma solução, implementação, etc; Cria um software derivado mas não disponibiliza as contribuições. \\
-  Contribui & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado; Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc (seja implementando suporte no software ou do outro lado); Refatora parte do software; Implementa parte do software em outro projeto e compara resultados. \\
+  Contribui & Cria; Contribuição inicial criando o projeto; Faz uma grande contribuição; Refatora todo o software; Abre o código de um software que antes era de código fechado; Contribuição pequena ou moderada; Extende o software; Integra o software a outros sistemas, formatos de entrada/saída, APIs, etc; Refatora parte do software; Implementa parte do software em outro projeto e compara resultados. \\
   \hline
 \end{tabular}
 \label{esquema-de-mencao}
@@ -567,7 +575,7 @@ e como o projeto de software é mencionado em cada artigo, anotamos no campo
 é mencionado, caso várias menções seja encontrado num mesmo artigo para um dado
 projeto de software é feito um resumo total.
 
-Esta anotação foi feita no arquivo \texttt{software.yml} de cada projeto, nele
+Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
 foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
 menção foi adicionada. É importante lembrar que um mesmo artigo pode mencionar
 mais de um software.
@@ -584,15 +592,15 @@ como o projeto é mencionado, encontramos \ScreeningCount \ menções aos
 projetos neste conjunto de artigos.
 
 A partir do esquema para caracterização das menções adicionamos para
-cada projeto de software os campos \texttt{really\_refers\_to\_software:}
-com o valor \texttt{yes}, o campo \texttt{contribution\_weight:} assumindo
-os valores: 0.1 (cita), 0.25 (usa), 0.5 (contribui), 1 (contribui).
+cada projeto de software os campos \texttt{is\_software\_mentioned}
+com o valor \texttt{yes} e o campo \texttt{mention\_type} assumindo
+um valor entre: \texttt{cite}, \texttt{use}, \texttt{contribute}.
 
 Os dados coletados na revisão de literatura durante os quatro passos são
-apresentados em resumo na Tabela ... indicando o
+apresentados em resumo na Tabela \ref{mentions-table} indicando o
 número de resultados encontrados para cada projeto de software.
 
-%\input{documents/literature-review-table.tex}
+\input{documents/mentions-table.tex}
 
 A Figura \ref{mentions-timeline} apresenta uma visualização da linha do tempo
 de cada software em relação a menções encontradas nas bases ACM e IEEE através
