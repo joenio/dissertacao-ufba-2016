@@ -103,7 +103,7 @@ software acadêmico de análise estática, serão investigadas:
 
 \newcommand{\EstudoDoisQuestaoUm}{Como os projetos de software acadêmico de
 análise estática publicados nas conferências ASE e SCAM são mencionados em
-publicações encontradas nas bases ACM e IEEE ao longo dos anos?}
+publicações encontradas nas bases ACM e IEEE?}
 
 \newcommand{\EstudoDoisQuestaoDois}{Os projetos de software acadêmico de
 análise estática publicados nas conferências ASE e SCAM são utilizados,
@@ -838,43 +838,67 @@ da revisão de literatura.
 
 \subsection{Q1 - \EstudoDoisQuestaoUm}
 
+Os \SoftwareCount \ projetos de software acadêmico de análise estática
+publicados nas conferências ASE e SCAM são mencionados \ScreeningCount \ vezes
+entre \ScreeningUniqueCount \ artigos distintos, estas menções foram encontradas
+em buscas nas bases ACM e IEEE realizadas entre os meses de Julho e Agosto de
+2017.
+
+Entre todas as menções encontradas a distribuição entre os tipos de menção
+foram as seguintes:
+
+\begin{description}
+  \item[\CiteCount]
+    Menções citando os projetos como exemplo de implementação, como trabalho
+    relacionado ou como trabalho futuro.
+
+  \item[\UseCount]
+    Menções em artigos utilizando os projetos para coleta ou análise, avaliando
+    ou caracterizando os projetos, comparando com outros projetos, como objeto
+    de estudo, como parte de uma solução proposta, ou derivando em outros
+    projetos mas sem devolver as contribuições.
+
+  \item[\ContributeCount]
+    Menções contribuindo com os projetos, refatorando parte do software,
+    criando estensões, integrando a outros sistemas, ou implementando parte do
+    software em outros projetos e comparando os resultados.
+\end{description}
+
 % Demográfica.
 
 \subsection{Q2 - \EstudoDoisQuestaoDois}
 
-Entre as 465 menções encontradas, 130 são menções que avalia ou caracteriza o
-software; Usa para coleta ou análise de dados; Usa como objeto de estudo; Usa o
-software como parte de uma solução, implementação, etc; Cria um software
-derivado mas não disponibiliza as contribuições.
+Encontramos \UseCount \ menções usando os projetos como apoio metodológico para
+coleta ou análise de dados, como objeto de estudo, ou como ponto de partida
+para implementação de outras soluções de pesquisa.
 
-Entre os 60 projetos de software, 27 são mencionados entre estas 130 menções
-encontradas.
-
-% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.25
-
-Entre as 130 menções, foram encontradas entre 125 artigos distintos.
+Estas menções do tipo Uso estão associadas a 26 dos \SoftwareCount \ projetos
+de software.  Menos da metade dos projetos de software acadêmico de análise
+estática publicados nas conferências ASE e SCAM são utilizados em pesquisas nas
+bases ACM e IEEE.
 
 \subsection{Q3 - \EstudoDoisQuestaoTres}
 
-Número de menções a cada software acadêmico e qual o contexto e tipo de menção
-é feita, quem e quantos são os autores de cada menção.
+Encontramos \ContributeCount \ menções contribuindo com os projetos,
+este total inclui os artigos publicando os projetos de software pela
+primeira vez, ou seja, inclui os artigos que deram origem ao nosso
+conjunto de \SoftwareCount \ projetos de software.
 
-% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.5
+Ao analisar apenas contribuições posteriores a publicação inicial
+do projeto, ou seja, artigos e estudos contribuindo com código
+fonte aos projetos após a sua publicação inicial, encontramos
+\ContributeStudyDoisCount \ menções a um conjunto de
+\ContributeStudyDoisSoftware \ projetos de software.
 
-40 menções contribuindo com os projetos foram encontrados, cada menção
-encontrado num artigo distinto. Estas 40 menções são em relação a apenas
-16 projetos entre os 60 do conjunto total, apenas 16 projetos receberam
-contribuções advindas de pesquisas publicadas nas bases ACM e IEEE.
+Apenas 28\% dos projetos recebem contribuição em estudos após a sua
+publicação de pesquisa encontradas nas bases ACM e IEEE.
 
-Entre os 60 projetos de software selecionados no estudo anterior, a grande maioria
-foi encontrado em artigos 
+%O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
+%é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
+%no paper original publicando o projeto pela primeira vez.
 
-O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
-é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
-no paper original publicando o projeto pela primeira vez.
-
-Os projetos tiveram contribuições em código em publicações posteriores aos
-artigos inicias publicando o software?
+%Os projetos tiveram contribuições em código em publicações posteriores aos
+%artigos inicias publicando o software?
 
 %Quantos autores novos além dos autores originais/iniciais do projeto
 %foram encontrados contribuindo com os projetos?
@@ -891,16 +915,71 @@ artigos inicias publicando o software?
 
 % }}}
 
-\section{Ameaças à validade}
+\section{Ameaças à validade} % {{{
+
+A inspeção manual dos artigos na revisão de literatura em busca de caracterizar
+as menções e seus tipos foi realizada apenas pelo autor desta dissertação, isto
+pode causar erros na coleta dos dados.
+
+A busca nas bases da ACM e IEEE pode causar um certo grau de enviesamento
+nos resultados, uma vez que é possível que alguns estudos não encontráveis nestas
+bases pode ter ficado de fora da revisão de literatura. Apesar disso, estas duas
+bases possuem grande relevância para a área de Engenharia de Software, e como
+nosso estudo busca dar uma visão neste recorte esta ameaça não prejudica as
+conclusões do estudo.
+
+% }}}
 
 \section{Conclusões} \label{estudo2:conclusoes} % {{{
 
-FALTA uma síntese aqui. 
-Este estudo ...
-Resultados mostram que ...
-Algumas tendências emergiram a partir da leitura ...
+Este estudo inspecionou \SearchUniqueCount \ artigos encontrados nas bases ACM
+e IEEE através de busca avançada usando características de \SoftwareCount \ projetos de software
+acadêmico de análise estática. Durante a inspeção destes artigos foi encontrado
+\ScreeningCount \ menções aos \SoftwareCount \ projetos entre
+\ScreeningUniqueCount \ artigos.
 
-Planejamos fazer outro estudo ... 
+As menções encontradas foram analisadas e um esquema de caracterização emergiu com
+três tipos de menção distintos, Cita, Usa ou Contribui. As menções foram então
+classificadas em relação a este esquema e foi encontrado
+\CiteCount \ menções do tipo Cita,
+\UseCount \ menções do tipo Uso e
+\ContributeCount \ menções do tipo Contribui.
+
+Identificou-se que uma quantidade mínima de artigos contribui com código fonte aos
+projetos estudados nesta pesquisa, apenas 28\% dos projetos recebem contribuições
+após a contribuição inicial publicada pelos seus autores. Este pequeno conjunto
+recebeu \ContributeStudyDoisCount \ contribuições em código fonte, indicando que
+não parece haver uma prática de contribuição entre os pesquisadores em relação
+a código fonte dos seus projetos de software acadêmico, ao menos no contexto de análise
+estática, entre os projetos publicados nas conferências ASE e SCAM.
+
+Não encontramos relação entre a disponibilidade de download dos projetos de software
+e o número de menções, seja de uso ou contribuição. Também não encontramos relação
+entre a linguagem de programação e o número de contribuições, entre os projetos com
+maior contribuição temos Java, C, Erlang e Rascal.
+
+Acreditamos que estes números sofrem principal influencia da relevância do
+projeto e da sua utilidade, atributos de qualidade externa como usabilidade,
+facilidade de instalação, portabilidade, entre outros estão entre os atributos
+que acreditamos influência no uso e contribuição a estes projetos, no entando
+não investigamos estes atributos aqui.
+
+Entretanto, acredita-se que um atributo de qualidade externa, como
+manutenibilidade por exemplo, tem relação com o número de contribuição, uma vez
+que a facilidade de contribuição está diretamente relacionada a facilidade de
+intervenção e manutenção no código fonte destes projetos.
+
+Desta forma, planejamos um terceiro estudo para investigar a manutenibilidade
+deste conjunto de \SoftwareCount \ projetos de software acadêmico estudados aqui,
+ou ao menos um subconjunto deles, já que uma parte não está disponível em
+código fonte e o estudo que faremos será através da análise deste artefato.
+
+%FALTA uma síntese aqui. 
+%Este estudo ...
+%Resultados mostram que ...
+%Algumas tendências emergiram a partir da leitura ...
+%
+%Planejamos fazer outro estudo ... 
 
 % }}}
 
