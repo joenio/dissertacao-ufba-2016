@@ -1,0 +1,8 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+# Revisão de literatura, Passo 1: Busca
+
+% foreach my $id (map { "p$_" } sort { $a <=> $b } map { s/^p//; $_ } keys %references) {
+* <%== $references{$id}->get('author') // '(??)' %>. **<%== $references{$id}->get('title') %>**. <%== $references{$id}->get('year') %>.
+% }
+%# vim: filetype=epl
