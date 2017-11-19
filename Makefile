@@ -34,6 +34,6 @@ references: cache
 	@$(foreach p,$(projects),./bin/render templates/software/references.yml.epl --software=$(notdir $(p)) > $(p)/references.yml;)
 
 templates=$(wildcard templates/*.epl)
-documents: $(templates) summary
-	@echo rendering files templates/*.epl to directory documents/...
+render: $(templates) summary
+	@echo rendering templates...
 	@$(foreach t,$(templates),./bin/render $(t) > documents/$(basename $(notdir $(t)));)
