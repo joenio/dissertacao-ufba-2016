@@ -172,7 +172,8 @@ utilizados na busca avançada nestas bases.
 
 A busca avançada na base ACM (Figura \ref{advanced-search-acm}) não necessita
 marcar nenhum campo adicional além do próprio campo texto onde deve-se entrar
-com a string de busca de cada projeto.
+com a string de busca de cada projeto. Para cada projeto de software são construídas duas strings, uma para busca na
+base da ACM, outra para busca na base IEEE.
 
 \begin{figure}[h]
   \center
@@ -181,18 +182,14 @@ com a string de busca de cada projeto.
   \label{advanced-search-acm}
 \end{figure}
 
-Para cada projeto de software são construídas duas strings, uma para busca na
-base da ACM, outra para busca na base IEEE, os resultados da busca de cada
-string são armazenados localmente em arquivos no formato BibTeX, ambas as bases
-exportam os resultados neste formato.
-
 As strings de busca são elaboradas a partir dos dados coletados no estudo
 anterior, como, nome do projeto, descrição, nome do autor da publicação
 original, entre outros dados. A elaboração das strings é realizada num processo
 incremental e iterativo, iniciando por uma busca utilizando apenas o nome do
 projeto, avaliando os resultados, inspecionando o título de cada resultado,
 refinando a string através de outras características do projeto quando os
-resultados trazem muitos estudos sem relação com o projeto de software.
+resultados trazem muitos estudos sem relação com o projeto de software. Estas
+strings são registradas no arquivo \texttt{search.yml} de cada projeto.
 
 %buscamos inicialmente usando apenas o nome do software, analisamos o número total
 %de resultados e os títulos destes resultados, quando o número de resultados for
@@ -200,29 +197,30 @@ resultados trazem muitos estudos sem relação com o projeto de software.
 %aos projetos, incluímos mais características, como por exemplo, parte da descrição
 %do software, ou parte da URL, autores, etc.
 
-%% Cuidado que ACM cita IEEE.
-Os resultados trazidos pela string final são armazenados localmente em formato
-BibTeX, são dois arquivos para cada projeto de software, um contendo os
-resultados da busca na base ACM -- \texttt{acm.bib} -- e outro contendo os
-resultados da base IEEE -- \texttt{ieee.bib}.
+Os resultados trazidos pela string final são armazenados localmente em arquivos
+no formato BibTeX, ambas as bases exportam os resultados neste formato, são
+dois arquivos para cada projeto de software, um contendo os resultados da busca
+na base ACM -- \texttt{acm.bib} -- e outro contendo os resultados da base IEEE
+-- \texttt{ieee.bib}. O resultado final de todos estes arquivos serão
+combinados e agregados num arquivo único sem duplicação de resultados contendo
+os metadados de todos os artigos encontrados pelas strings de busca.
+
+%
+%, este arquivo contém os metadados de todos os
+%artigos encontrados pelas strings de busca de cada projeto nas bases ACM e IEEE
+%com um id único no formato \texttt{p + NUM}, exemplo \texttt{p1}, \texttt{p2},
+%\texttt{p3}, etc.
+
+Este arquivo único, localizado em \texttt{documents/references.bib},
+além de eliminar as duplicidades de resultados, receberá também para
+cada item uma identificação única, esta identificação será utilizada nas etapas
+seguintes da revisão de literatura para relacionar os projeto com os
+artigos através das menções identificadas.
 
 %e pdf,
 %estes resultados devem incluir ao menos os artigos selecionados
 %no estudo anterior onde os projetos foram encontrados, já que tais artigos são
 %o caso mínimo de resultado desejado nesta fase de busca. 
-
-O resultado final da busca de todos os projetos, armazenados nos arquivos
-\texttt{acm.bib} e \texttt{ieee.bib}, são agregados sem duplicação de resultado
-num arquivo único ainda em formato BibTeX localizado em
-\texttt{documents/references.bib}, este arquivo contém os metadados de todos os
-artigos encontrados pelas strings de busca de cada projeto nas bases ACM e IEEE
-com um id único no formato \texttt{p + NUM}, exemplo \texttt{p1}, \texttt{p2},
-\texttt{p3}, etc.
-
-Este arquivo além de eliminar as duplicidades de resultados recebe também para
-cada item uma identificação única, esta identificação será utilizada nas etapas
-seguintes da revisão de literatura para fazer relacionar os projeto com os
-artigos através das menções.
 
 %de cada projeto, sem duplicidade, cada artigo receberá um ID único, este ID
 %será utilizado nas etapas seguintes.
@@ -286,11 +284,13 @@ relacionados até uma grande contribuição ao software.
 O conjunto final de todas as notas serão agrupadas e analisadas em conjunto com
 o objetivo de criar um esquema de codificação para classificar as menções.
 Este esquema deve ser construído como uma escala de pesos, onde o último tipo
-de menção inclui implicitamente os tipos de menor peso, este peso é pensado em
-relação a contribuição da menção ao ecossistema do projeto de software, cada
-menção representa uma entrada em forma de contribução ao ecossistema, seja
-fazendo o projeto de software ser visível na literatura acadêmica, seja com
-contribuição direta em código ao projeto.
+de menção inclui implicitamente os tipos de menor peso, este peso representa
+o nível de contribuição da menção ao ecossistema do projeto de software.
+
+%, cada
+%menção representa uma entrada em forma de contribução ao ecossistema, seja
+%fazendo o projeto de software ser visível na literatura acadêmica, seja com
+%contribuição direta em código ao projeto.
 
 %Esta leitura irá gerar
 %uma escala de tipos de menção ao software. Cada artigo assume, em relação ao
@@ -318,9 +318,11 @@ de menção do artigo ao software, \texttt{mention\_type}, este campo assume um 
 valores do esquema de classificação criado no passo anterior.
 
 Ao final da revisão de literatura teremos para cada projeto de software um
-conjunto de artigos com menções classificadas por tipo e contexto, estando
-incluído nestes conjuntos ao menos os próprios artigos que deram origem ao
-conjunto de projetos utilizados como objeto de estudo neste trabalho.
+conjunto de artigos com menções classificadas por tipo e contexto.
+
+%, estando
+%incluído nestes conjuntos ao menos os próprios artigos que deram origem ao
+%conjunto de projetos utilizados como objeto de estudo neste trabalho.
 
 %menções a eles nas bases do ACM e IEEE, temos o tipo de cada menção, se
 %contribuiu com o projeto, se foi avaliado, ou apenas citado como referência, os
@@ -331,128 +333,169 @@ conjunto de projetos utilizados como objeto de estudo neste trabalho.
 
 \section{Preparação} \label{estudo2:preparacao} % {{{
 
+Nesta seção apresentamos a preparação do estudo para a realização da coleta de
+dados.
+
 \subsection{Passo 1: Busca}
 
-Criamos as strings de busca. A Tabela ... apresenta a
-string de busca de alguns projetos de software na base ACM e na base IEEE.
-Um documento CSV com todas as strings de busca pode ser encontrado no
-repositório\footnote{\url{https://github.com/joenio/dissertacao-ufba-2016}}
-desta dissertaçao no arquivo \texttt{documents/search-strings.csv}.
+Seguindo o planejamento descrito em \ref{estudo2:planejamento}, criamos as
+strings de busca para as bases ACM e IEEE de cada projeto. As strings foram
+criadas buscando diretamente nessas duas bases e refinando os critérios quando
+necessário. Foram registradas no arquivo \texttt{search.yml} de cada software,
+além da própria string será registrado também o número de resultados e a data
+em que a busca foi realizada.
 
-As strings foram registradas no arquivo \texttt{software.yml} de cada software,
-foram criados também campos para registrar o número de resultados da busca
-e a data em que a busca foi realizada registrada no formato UTC.
+%foram criados também campos para registrar o número de resultados da busca
+%e a data em que a busca foi realizada registrada no formato UTC.
 
-Segue abaixo um exemplo do trecho do arquivo \texttt{software.yml} com os campos
-para armazenar os dados da busca, Figura \ref{software-yml-exemplo}.
+Segue abaixo a estrutura do arquivo \texttt{search.yml} com os campos para
+armazenar os dados da busca, Listagem \ref{search-yml}.  Um documento
+CSV com todas as strings de busca pode ser encontrado no repositório desta
+dissertaçao no arquivo \texttt{documents/search-strings.csv}.
 
-\begin{figure}[h]
-  \begin{verbatim}
-  search:
-    acm:
-      string: content.ftsec:(+AccessAnalysis +Tool +Java +Modifiers)
-      searched_at: Sun Aug  6 21:45:40 UTC 2017
-      results: 5
-    ieee:
-      string: (AccessAnalysis)
-      searched_at: Sun Jul 30 15:46:57 UTC 2017
-      results: 3
-  \end{verbatim}
-  \caption{Trecho do arquivo software.yml do projeto AccessAnalysis.}
-  \label{software-yml-exemplo}
-\end{figure}
+%Além do nome do software pesquisado, as strings de busca incluíram outras
+%características do software sempre que necessário.
 
+\begin{lstlisting}[
+caption={Arquivo search.yml.},
+label={search-yml},
+frame=single,
+numbers=left
+]
+  acm:
+    string:
+    searched_at:
+    results:
+  ieee:
+    string:
+    searched_at:
+    results:
+\end{lstlisting}
 
 \subsection{Passo 2: Triagem}
 
-...
+Implementamos scripts para transformar os dados da busca em formato BibTeX para
+arquivos no formato YML pois a coleta e inspeção dos artigos serão registrados
+em arquivos YML para cada projeto de software. Estes scripts recebem como entrada
+os resultados da busca de todos os projetos e geram como saída os arquivos \texttt{references.bib}
+e \texttt{references.yml} para cada projeto.
 
-\subsection{Passo 3: Keywording}
+\begin{description}
 
-A Listagem \ref{software-yml-references} apresenta um exemplo do trecho
-do YML para armazenar a extração dessas informações.
+  \item[\texttt{bin/merge}]
+    Agrega os arquivos \texttt{acm.bib}, \texttt{ieee.bib} e \texttt{paper.bib}
+    de cada projeto em um único arquivo no formato BibTeX removendo
+    duplicidades dos resultados.
 
-\begin{figure}[h]
-  \begin{verbatim}
-  references:
-    p12:
-      review: é apenas um índice com nomes de artigos do workwhop SCAM 2003
-      is_software_mentioned: no
-    p34:
-      review: cita o software como trabalho relacionado
-      is_software_mentioned: yes
-      mention_type: cite
-    p40:
-      review: cita o software como trabalho relacionado
-      is_software_mentioned: yes
-      mention_type: cite
-  \end{verbatim}
-  \caption{Trecho do arquivo software.yml (seção para armazenar as referências e menções).}
-  \label{software-yml-references}
-\end{figure}
+  \item[\texttt{bin/ids}]
+    Recebe a saída do script \texttt{bin/merge} e atribui a cada artigo um
+    identificador único.
 
+  \item[\texttt{bin/cache}]
+    Cria um arquivo -- \texttt{cache/dataset.yml} -- no formato YAML agregando todos os dados coletados de todos
+    os projetos a partir dos arquivos \texttt{software.yml}, \texttt{acm.bib},
+    \texttt{ieee.bib}, \texttt{paper.bib}, \texttt{references.yml} e
+    \texttt{search.yml}.
 
-\subsection{Passo 4: Extração}
+  \item[\texttt{bin/render}]
+    Lê o arquivo de cache, carrega os dados em memória e passa estes dados como
+    parâmetro para os arquivos templates.
 
-...
+\end{description}
 
-Implementamos scripts para análise dos dados. Os dados armazenados em arquivos
-YAML e BibTeX são carregados em estruturas em memória através de um script
-escrito em linguagem Perl e repassados para templates processados para exibir
-os dados neste texto, em arquivos TeX, CSV, etc. A Figura \ref{estudo2-fluxograma}
-apresenta o fluxo de coleta, análise e transformação dos dados.
-
-\begin{figure}[h]
-  \center
-  \includegraphics[scale=0.4]{imagens/estudo2-fluxograma.png}
-  \caption{Fluxo de coleta, análise e transformação dos dados.}
-  \label{estudo2-fluxograma}
-\end{figure}
-
-Implementamos os scripts \texttt{bin/summarize-dataset}, \texttt{bin/query},
-\texttt{bin/ids} e \texttt{bin/render-template} indicados
-no fluxograma da Figura \ref{estudo2-fluxograma} utilizando a linguagem de
-programação Perl\footnote{\url{http://perl.org}} com o auxílio dos seguintes
+Todos estes scripts estão disponíveis no repositório desta dissertação e foram desenvolvidos
+utilizando a a linguagem de
+programação Perl\footnote{\url{http://perl.org}} com o auxílio dos
 módulos CPAN: Modern::Perl\footnote{\url{http://metacpan.org/pod/Modern::Perl}},
 YAML\footnote{\url{http://metacpan.org/pod/YAML}},
 Mojo::Template\footnote{\url{http://metacpan.org/pod/Mojo::Template}},
 Text::BibTeX\footnote{\url{http://metacpan.org/pod/Text::BibTeX}} e
-List::Util\footnote{\url{http://metacpan.org/pod/List::Util}}. A maior parte da
-lógica de implementação destes scripts foram movidas para o arquivo
+List::Util\footnote{\url{http://metacpan.org/pod/List::Util}}.
+
+A maior parte da lógica destes scripts foram implementadas no arquivo
 \texttt{lib/Dissertacao.pm} com objetivo de reduzir repetição de código e
-aumentar o reuso.
+proporcionar reuso. O fluxo de informações entre estes scripts e os arquivos
+utilizados como entrada e saída estão representados em resumo no fluxograma da
+Figura \ref{estudo2-fluxograma}.
 
-Definimos uma identificação única para cada um dos 60 projetos de software
-utilizando o próprio arquivo \texttt{software.yml} através do campo
-\texttt{id:} seguindo o padrão \texttt{s + número}, exemplo, \texttt{s1},
-\texttt{s2}, \texttt{s3}, \texttt{s4}, ..., \texttt{s60}, cada projeto de software
-recebeu um id.
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.35]{imagens/estudo2-fluxograma.png}
+  \caption{Fluxo de coleta, análise e transformação dos dados.}
+  \label{estudo2-fluxograma}
+\end{figure}
 
-Definimos um novo campo neste mesmo arquivo para coleta das menções, fazendo
-referência ao ID do artigo mencionando o software, com os campos ... cada artigo
-encontrado na revisão de literatura também receberá um ID, desta forma será possível
-relacionar projetos e artigos através das menções.
+%Definimos uma identificação única para cada um dos 60 projetos de software
+%utilizando o próprio arquivo \texttt{software.yml} através do campo
+%\texttt{id:} seguindo o padrão \texttt{s + número}, exemplo, \texttt{s1},
+%\texttt{s2}, \texttt{s3}, \texttt{s4}, ..., \texttt{s60}, cada projeto de software
+%recebeu um id.
+
+%Definimos um novo campo neste mesmo arquivo para coleta das menções, fazendo
+%referência ao ID do artigo mencionando o software, com os campos ... cada artigo
+%encontrado na revisão de literatura também receberá um ID, desta forma será possível
+%relacionar projetos e artigos através das menções.
+%
+%...
+
+\subsection{Passo 3: Keywording}
+
+Preparamos o template para criar os arquivos inicials \texttt{references.yml}
+para cada projeto, a Listagem \ref{references-yml} apresenta um exemplo do
+trecho do YML para armazenar a extração dessas informações.
+
+\begin{lstlisting}[
+caption={Arquivo references.yml.},
+label={references-yml},
+frame=single,
+numbers=left
+]
+  p1:
+    review:
+    is_software_mentioned:
+  p2:
+    review:
+    is_software_mentioned:
+  p3:
+    review:
+    is_software_mentioned:
+\end{lstlisting}
+
+\subsection{Passo 4: Extração}
+
+Criamos os templates para representação dos dados coletados em formato CSV
+para utilizar na etapa de análise. Implementamos também templates para gerar arquivos em
+formato TeX para posterior inclusão na seção de coleta onde apresentaremos os dados
+coletados.
+
+%Os dados armazenados em arquivos
+%YAML e BibTeX são carregados em estruturas em memória através de um script
+%escrito em linguagem Perl e repassados para templates processados para exibir
+%os dados neste texto, em arquivos TeX, CSV, etc. A Figura \ref{estudo2-fluxograma}
+%apresenta o fluxo de coleta, análise e transformação dos dados.
 
 % }}}
 
-\section{Coleta de dados}
+\section{Coleta de dados} \label{estudo2:coleta} % {{{
 
 Seguindo o planejamento e preparação descritos nas seções
 \ref{estudo2:planejamento} e \ref{estudo2:preparacao} iniciamos a coleta dos
-dados através da revisão de literatura nas bases ACM e IEEE.
+dados através de uma revisão de literatura nas bases ACM e IEEE.
 
 \input{documents/macros.tex}
 
 \subsection{Passo 1: Busca}
 
-Uma string de busca foi definida para cada software acadêmico selecionado.
-Além do nome do software pesquisado, as strings de busca incluíram outras
-características do software sempre que necessário.
+As strings de busca foram definidas e a busca nas bases foi realizada para cada
+software acadêmico do conjunto, encontramos um total de \SearchCount \
+resultados ao somar o número de resultados de cada software nas bases ACM e
+IEEE, deste total, \SearchACMCount \ foi encontrado na base ACM e
+\SearchIEEECount \ foi encontrado na base IEEE.
 
-Encontramos um total de \SearchCount \ resultados usando as strings de busca
-para cada projeto nas bases ACM e IEEE, deste total \SearchACMCount \ resultados
-foram encontrados na base ACM e \SearchIEEECount \ foram encontrados
-no IEEE. Dentre o resultado total, \SearchUniqueCount \ são únicos.
+Este resultado total inclui duplicação entre as buscas dos projetos, ou seja,
+um mesmo artigo foi encontrado nas duas bases, e também um mesmo artigo foi
+encontrado em busca de projetos distintos, dentre o resultado total,
+\SearchUniqueCount \ são únicos, ou seja, encontramos \SearchUniqueCount \ artigos.
 
 Alguns artigos fazem menção a mais de 1 projeto, fizemos o download de cada
 artigo e armazenamos os metadados em formato BibTeX nos arquivos \texttt{acm.bib}
@@ -557,12 +600,15 @@ da revisão de literatura.
 
 \begin{figure}[h]
   \center
-  \includegraphics[scale=0.7]{imagens/mentions-timeline.png}
+  \includegraphics[scale=0.6]{imagens/mentions-timeline.png}
   \caption{Linha do tempo de menções (uso e contribuição) aos projetos nas bases ACM e IEEE.}
   \label{mentions-timeline}
 \end{figure}
 
-\section{Análise dos Dados} % Raw results from the analysis
+% }}}
+
+% Raw results from the analysis
+\section{Análise dos Dados} \label{estudo2:analise} % {{{
 
 Dados de 60 projetos de software acadêmico de análise estática desenvolvidos e
 publicados na literatura acadêmica de engenharia de software, informações sobre
@@ -585,7 +631,10 @@ diversas formas de menção ao nome destes projetos na literatura acadêmica.
 
 ...
 
-\section{Interpretação dos Resultados} % Hypothesis rejection
+% }}}
+
+% Hypothesis rejection
+\section{Interpretação dos Resultados} \label{estudo2:interpretacao} % {{{
 
 ... a Tabela \ref{visibility-table} ...
 
@@ -695,9 +744,11 @@ de nome diferente, transformamos, por exemplo, ``Bajaj, Kon'' em ``Bajaj K.'',
 e assim comparamos dois nomes considerando que cada um destes nomes representa,
 de forma única, um autor.
 
-\subsection{Ameaças à validade}
+% }}}
 
-\section{Conclusões}
+\section{Ameaças à validade}
+
+\section{Conclusões} \label{estudo2:conclusoes} % {{{
 
 FALTA uma síntese aqui. 
 Este estudo ...
@@ -706,6 +757,7 @@ Algumas tendências emergiram a partir da leitura ...
 
 Planejamos fazer outro estudo ... 
 
+% }}}
 
 % o artigo com resumo do RESER 2011 diz \cite{knutson2010report}:
 % 4) Re-
