@@ -1,0 +1,50 @@
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type );
+% my %dataset = %{ $_[0] };
+\begin{longtable}{ l c c c | l c c c }
+\caption{Resultado da busca nas bases ACM e IEEE.}
+\label{search-table} \\\
+  \hline
+  \hhline{ l c c c | l c c c |}
+  \endfirsthead
+  \hhline{ l c c c | l c c c |}
+  \hline
+   \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Total}} & \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Total}} \\\
+   & \textbf{ACM} & \textbf{IEEE} & & & \textbf{ACM} & \textbf{IEEE} & \\\
+  \hline
+  \hhline{ l c c c | l c c c |}
+  \endhead
+  \hhline{----|----}
+  \multicolumn{8}{c}{continua na próxima página} \\\
+  \hhline{----|----} \endfoot
+  \hhline{----|----} \endlastfoot
+   \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Total}} & \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Total}} \\\
+   & \textbf{ACM} & \textbf{IEEE} & & & \textbf{ACM} & \textbf{IEEE} & \\\
+  \hline
+% my %total = ();
+% my @multicolumn = (undef, [], []);
+% my $column = 1;
+% foreach my $k (sort keys %dataset) {
+%   my $id = $dataset{$k}{software}{id};
+%   $column = 2 if $id eq 's32';
+%   my $acm = $dataset{$k}{search}{acm}{results};
+%   my $ieee = $dataset{$k}{search}{ieee}{results};
+%   my $total = scalar keys %{ $dataset{$k}{references} };
+%   $total{acm} += $acm;
+%   $total{ieee} += $ieee;
+%   $total{total} += $total;
+%   push @{ $multicolumn[$column] }, [$id, $acm, $ieee, $total];
+% }
+% my %mean = ();
+% $mean{acm} = sprintf("%.1f", $total{acm} / scalar keys %dataset);
+% $mean{ieee} = sprintf("%.1f", $total{ieee} / scalar keys %dataset);
+% $mean{total} = sprintf("%.1f", $total{total} / scalar keys %dataset);
+% push @{ $multicolumn[$column] }, ['{\bf Média}', "{\\bf $mean{acm}}", "{\\bf $mean{ieee}}", "{\\bf $mean{total}}"];
+% push @{ $multicolumn[$column] }, ['{\bf Total}', "{\\bf $total{acm}}", "{\\bf $total{ieee}}", "{\\bf $total{total}}"];
+% foreach my $i (0 .. $#{ $multicolumn[1] }) {
+%   my $c1 = $multicolumn[1]->[$i];
+%   my $c2 = $multicolumn[2]->[$i];
+\texttt{<%== $c1->[0] %>} & <%== $c1->[1] || '-' %> & <%== $c1->[2] || '-' %> & <%== $c1->[3] || '-' %> & \texttt{<%== $c2->[0] %>} & <%== $c2->[1] || '-' %> & <%== $c2->[2] || '-' %> & <%== $c2->[3] || '-' %> \\\
+% }
+\end{longtable}
+%# vim: filetype=epl
