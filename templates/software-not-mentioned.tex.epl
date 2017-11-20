@@ -1,0 +1,19 @@
+% my %dataset = %{ $_[0] };
+% my @mentioned = ();
+% foreach my $k (keys %dataset) {
+%   foreach my $id (keys %{ $dataset{$k}{references} }) {
+%     if ($dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes') {
+%       unless ($dataset{$k}{references}{$id}{step} && $dataset{$k}{references}{$id}{step} eq 'study1') {
+%         push @mentioned, $k;
+%       }
+%     }
+%   }
+% }
+% my @not_mentioned = ();
+% foreach my $k (sort keys %dataset) {
+%   unless (grep { $k eq $_ } @mentioned) {
+%     push @not_mentioned, $k;
+%   }
+% }
+<%== join(', ', map { "\\texttt{$dataset{$_}{software}{id}}" } @not_mentioned) %>
+%# vim: filetype=epl

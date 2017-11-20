@@ -9,8 +9,12 @@ use Dissertacao qw( bibtex_load );
 
 if (@ARGV < 1) {
   warn "E: missing options!";
-  say "Usage: $0 <template-filename>";
+  say "Usage: $0 <template-filename> [--software=<software>]";
   exit 1;
+}
+my $software = undef;
+if ($ARGV[-1] =~ m/^--software=(\S+)/) {
+  $software = $1;
 }
 our $TEMPLATE_FILENAME = shift @ARGV;
 die "template file not found: $TEMPLATE_FILENAME." unless -e $TEMPLATE_FILENAME;
@@ -25,4 +29,9 @@ my %bib = bibtex_load "$ENV{PWD}/$REFERENCES_FILENAME";
 
 my %references = map { $bib{$_}->get('id') => $bib{$_} } keys %bib;
 my $t = Mojo::Template->new(auto_escape => 1);
-print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", \%dataset, \%references);
+if ($software) {
+  print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", $dataset{$software}, \%references);
+}
+else {
+  print $t->render_file("$ENV{PWD}/$TEMPLATE_FILENAME", \%dataset, \%references);
+}

@@ -1,0 +1,12 @@
+% use lib 'lib';
+% use Dissertacao qw( find_references );
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my %bib = (%{ $dataset{files}{'paper.bib'} }, %{ $dataset{files}{'search/acm.bib'} }, %{ $dataset{files}{'search/ieee.bib'} });
+% my @ids = find_references(\%bib, \%references);
+% foreach my $id (map { "p$_" } sort { $a <=> $b } map { s/^p//; $_ } @ids) {
+<%== $id %>:
+  review:
+  is_software_mentioned:
+% }
+%# vim: filetype=epl

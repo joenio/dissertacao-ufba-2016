@@ -1,0 +1,20 @@
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type );
+% use List::Util qw ( uniq sum );
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my %contribute_study2 = ();
+% foreach my $k (keys %dataset) {
+%   $contribute_study2{$k} = 0;
+%   foreach my $id (keys %{ $dataset{$k}{references} }) {
+%     if ($dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes') {
+%       unless ($dataset{$k}{references}{$id}{step} && $dataset{$k}{references}{$id}{step} eq 'study1') {
+%         if ($dataset{$k}{references}{$id}{mention_type} eq 'contribute') {
+%           $contribute_study2{$k}++;
+%         }
+%       }
+%     }
+%   }
+% }
+<%== join(', ', map { "\\texttt{$dataset{$_}{software}{id}}" } grep { $contribute_study2{$_} > 0 } sort keys %contribute_study2) %>
+%# vim: filetype=epl
