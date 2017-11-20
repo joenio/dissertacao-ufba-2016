@@ -46,6 +46,7 @@
 \newcommand{\ContributeCount}{<%== $total{contribute} %>}
 \newcommand{\SearchUniqueMean}{<%== sprintf("%.1f", scalar(keys %references) / scalar(keys %dataset)) %>}
 \newcommand{\ScreeningMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(keys %dataset)) %>}
+\newcommand{\ScreeningUniqueMean}{<%== sprintf("%.1f", scalar(uniq @mentions) / scalar(keys %dataset)) %>}
 \newcommand{\MentionsStudyUm}{<%== grep { $mentions_by_study{1}{$_} > 0 } keys %{ $mentions_by_study{1} } %>}
 \newcommand{\MentionsStudyDois}{<%== grep { $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} } %>}
 \newcommand{\SoftwareNotMentionedCount}{<%== keys(%dataset) - grep({ $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} }) %>}

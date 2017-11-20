@@ -550,10 +550,13 @@ disponíveis.
 
 \subsection{Passo 2: Triagem}
 
-Total de \ScreeningCount \ menções, média de \ScreeningMean \ menções por
-projeto.  Entre os projetos com menções acima da média total, 9 com acesso a
-download e 6 sem acesso a download, entre os projetos com menções abaixo da
-média, 25 com acesso, 20 sem acesso.
+Entre os resultados da busca apenas 51\% dos artigos são relevantes e fazem
+menção aos projetos. Numa média de \ScreeningUniqueMean \ artigos por projeto
+e \ScreeningMean \ menções por projeto.
+
+Entre os projetos com menções acima da média, 9 estão disponíveis para download
+e 6 não estão disponíveis, entre os projetos com menções abaixo da média, 25
+possuem download disponível e 20 não.
 
 % acima da média de menções
 %          acesso
@@ -628,25 +631,17 @@ média, 25 com acesso, 20 sem acesso.
 
 \subsection{Passo 4: Extração}
 
-Entre os projetos de software
-\SoftwareNotMentionedCount \ não foram encontrados na revisão de literatura em
-publicações após a publicação inicial
-(\input{documents/software-not-mentioned.tex}), tendo apenas a publicação
-inicial onde o software foi selecionado no estudo apresentado no Capítulo
-\ref{estudo1}.
+Entre os \SoftwareCount \ projetos, \SoftwareNotMentionedCount \ projetos
+(\input{documents/software-not-mentioned.tex}) não foram encontrados em menções
+após a publicação inicial, sendo a única publicação aquela localizada no
+arquivo \texttt{paper.bib}, referente a seleção do software no estudo
+apresentado no Capítulo \ref{estudo1}.
 
-%cada um, alguns tendo duas publicações na mesma época sendo uma
-%publicação específica numa trilha de ferramenta, ou senndo 2 artigos
-%semelhantes publicados na mesma época em conferências distintas, mas sendo os
-%mesmos autores.
+Os demais \MentionsStudyDois \ projetos são mencionados em publicações nas
+bases ACM e IEEE, deste grupo apenas \ContributeStudyDoisSoftware \ projetos
+(\input{documents/contributions-found.tex}) recebem contribuições através de
+\ContributeStudyDoisCount \ menções.
 
-%Nenhum destes projetos tiveram menção após a publicação inicial do projeto,
-%entre estes 14 projetos, apenas três (Diagnosys, ETXL e Rêve) estão
-%indisponíveis para download, os outros 11 estão disponíveis, todos com código
-%fonte, exceto o FaultBuster que está disponível apenas em formato binário.
-
-Entre os \MentionsStudyDois \
-projetos mencionados após a publicação inicial encontrada na literatura.
 A Figura \ref{mentions-timeline} apresenta uma visualização da linha do tempo
 de cada software em relação a menções encontradas nas bases ACM e IEEE através
 da revisão de literatura.
@@ -658,24 +653,6 @@ da revisão de literatura.
   \label{mentions-timeline}
 \end{figure}
 
-%Ao todo foram encontradas 465 menções aos 60 projetos de software, estas
-%menções estão num conjunto de 334 artigos selecionados na revisão de literatura
-%nas bases ACM e IEEE.
-
-%Entre todas as menções a maior parte (222) apenas cita os projetos de software
-%como exemplo de implementação, apenas cita o software ou é o mesmo artigo onde
-%o software selecionado; É um artigo com “mesmo” conteúdo publicado na “mesma”
-%época; O artigo apenas descreve o software; Menciona o software numa tabela com
-%outros, classifica; Menciona o software como exemplo; Menciona o software como
-%trabalho relacionado; Menciona o software em trabalhos futuros.
-
-% ./bin/mentions dataset/software/*/references.bib contribution_weight=0.1 | grep " title = " | wc -l
-%AS 222 menções foram encontradas em 204 artigos distintos.
-
-\ContributeStudyDoisCount \ menções com contribuição a
-\ContributeStudyDoisSoftware \ projetos de software
-(\input{documents/contributions-found.tex}).
-
 % }}}
 
 % Hypothesis rejection
@@ -685,31 +662,15 @@ da revisão de literatura.
 
 Os \SoftwareCount \ projetos de software acadêmico de análise estática
 publicados nas conferências ASE e SCAM são mencionados \ScreeningCount \ vezes
-entre \ScreeningUniqueCount \ artigos distintos, estas menções foram encontradas
+em \ScreeningUniqueCount \ artigos distintos, estas menções foram encontradas
 em buscas nas bases ACM e IEEE realizadas entre os meses de Julho e Agosto de
 2017.
 
-Entre todas as menções encontradas a distribuição entre os tipos de menção
-foram as seguintes:
-
-\begin{description}
-  \item[\CiteCount]
-    Menções citando os projetos como exemplo de implementação, como trabalho
-    relacionado ou como trabalho futuro.
-
-  \item[\UseCount]
-    Menções em artigos utilizando os projetos para coleta ou análise, avaliando
-    ou caracterizando os projetos, comparando com outros projetos, como objeto
-    de estudo, como parte de uma solução proposta, ou derivando em outros
-    projetos mas sem devolver as contribuições.
-
-  \item[\ContributeCount]
-    Menções contribuindo com os projetos, refatorando parte do software,
-    criando estensões, integrando a outros sistemas, ou implementando parte do
-    software em outros projetos e comparando os resultados.
-\end{description}
-
-% Demográfica.
+Entre todas as menções emergiu três tipos distintos em relação ao nível de
+contribuição ao ecossistema dos projetos, Cita, Usa e Contribui. A maior parte
+das menções encontradas é do tipo Cita (\CiteCount \ menções), em seguida
+o tipo de menção Usa com \UseCount \ ocorrências, e por fim, com menor número,
+o tipo de menção Contribui com \ContributeCount \ ocorrências.
 
 \subsection{Q2 - \EstudoDoisQuestaoDois}
 
@@ -718,16 +679,16 @@ coleta ou análise de dados, como objeto de estudo, ou como ponto de partida
 para implementação de outras soluções de pesquisa.
 
 Estas menções do tipo Uso estão associadas a 26 dos \SoftwareCount \ projetos
-de software.  Menos da metade dos projetos de software acadêmico de análise
-estática publicados nas conferências ASE e SCAM são utilizados em pesquisas nas
-bases ACM e IEEE.
+de software, indicando que menos da metade dos projetos de software acadêmico
+de análise estática publicados nas conferências ASE e SCAM são utilizados em
+pesquisas nas bases ACM e IEEE.
 
 \subsection{Q3 - \EstudoDoisQuestaoTres}
 
-Encontramos \ContributeCount \ menções contribuindo com os projetos,
-este total inclui os artigos publicando os projetos de software pela
-primeira vez, ou seja, inclui os artigos que deram origem ao nosso
-conjunto de \SoftwareCount \ projetos de software.
+Encontramos \ContributeCount \ menções contribuindo com os projetos, este total
+inclui os artigos publicando os projetos de software pela primeira vez, ou
+seja, inclui os artigos que deram origem ao conjunto de \SoftwareCount \
+projetos de software registrados nos arquivos \texttt{paper.bib}.
 
 Ao analisar apenas contribuições posteriores a publicação inicial
 do projeto, ou seja, artigos e estudos contribuindo com código
@@ -735,8 +696,8 @@ fonte aos projetos após a sua publicação inicial, encontramos
 \ContributeStudyDoisCount \ menções a um conjunto de
 \ContributeStudyDoisSoftware \ projetos de software.
 
-Apenas 28\% dos projetos recebem contribuição em estudos após a sua
-publicação de pesquisa encontradas nas bases ACM e IEEE.
+Ou seja, apenas 28\% dos projetos (\input{documents/contributions-found.tex}) recebem contribuição em código fonte de
+estudos após a sua publicação de pesquisa encontradas nas bases ACM e IEEE.
 
 %O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
 %é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
@@ -772,6 +733,18 @@ bases pode ter ficado de fora da revisão de literatura. Apesar disso, estas dua
 bases possuem grande relevância para a área de Engenharia de Software, e como
 nosso estudo busca dar uma visão neste recorte esta ameaça não prejudica as
 conclusões do estudo.
+
+É possível que a falta de contribuição aos projetos seja um reflexo da
+relevância do estudo onde o software foi publicado, ou seja, projetos
+publicados em artigos com pouca relevância, com pouca visibilidade, atrairá
+pouca atenção, e consequentemente receberá menos contribuições. No entanto, a
+relevância do software não está necessariamente associada a relevância do
+estudo, é possível que projetos de software extremamente úteis para a
+comunidade científica tenham sido publicados em artigos com pouca ou nenhuma
+relevância. Dessa forma esta ameaça não impacta negativamente nas conclusões
+uma vez que estamos interessados em capturar quanta colaboração há entre os
+projetos, do ponto de vista de sua utilidade para o corpo científico como um
+todo.
 
 % }}}
 
@@ -1147,3 +1120,13 @@ código fonte e o estudo que faremos será através da análise deste artefato.
 %-- as strings de busca
 %destes dois projetos não encontrou nenhum resultado, tanto na base ACM quanto
 %na base IEEE.
+
+%cada um, alguns tendo duas publicações na mesma época sendo uma
+%publicação específica numa trilha de ferramenta, ou senndo 2 artigos
+%semelhantes publicados na mesma época em conferências distintas, mas sendo os
+%mesmos autores.
+
+%Nenhum destes projetos tiveram menção após a publicação inicial do projeto,
+%entre estes 14 projetos, apenas três (Diagnosys, ETXL e Rêve) estão
+%indisponíveis para download, os outros 11 estão disponíveis, todos com código
+%fonte, exceto o FaultBuster que está disponível apenas em formato binário.
