@@ -380,7 +380,15 @@ neste texto.
 
 Seguindo o planejamento e preparação descritos nas seções
 \ref{estudo2:planejamento} e \ref{estudo2:preparacao} iniciamos a coleta dos
-dados através da revisão de literatura.
+dados através da revisão de literatura, apresentado em resumo na Figura \ref{estudo2-revisao-literatura}.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[scale=0.35]{imagens/estudo2-revisao-literatura.png}
+  \caption{Passos da revisão de literatura realizada nas bases ACM e IEEE.}
+  \label{estudo2-revisao-literatura}
+\end{figure}
+
 
 \subsection{Passo 1: Busca}
 
@@ -696,8 +704,9 @@ fonte aos projetos após a sua publicação inicial, encontramos
 \ContributeStudyDoisCount \ menções a um conjunto de
 \ContributeStudyDoisSoftware \ projetos de software.
 
-Ou seja, apenas 28\% dos projetos (\input{documents/contributions-found.tex}) recebem contribuição em código fonte de
-estudos após a sua publicação de pesquisa encontradas nas bases ACM e IEEE.
+Ou seja, apenas 28\% dos projetos (\input{documents/contributions-found.tex})
+recebem contribuição em código fonte de estudos após a publicação inicial, ao
+menos entre estudos encontrados nas bases ACM e IEEE.
 
 %O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
 %é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
@@ -725,72 +734,79 @@ estudos após a sua publicação de pesquisa encontradas nas bases ACM e IEEE.
 
 A inspeção manual dos artigos na revisão de literatura em busca de caracterizar
 as menções e seus tipos foi realizada apenas pelo autor desta dissertação, isto
-pode causar erros na coleta dos dados.
+pode levar a inconsistência na interpretação das menções em relação aos projetos
+investigados, uma vez que a inspeção é realizada num processo estritamente
+subjetivo, esta ameaça não foi tratada.
 
-A busca nas bases da ACM e IEEE pode causar um certo grau de enviesamento
-nos resultados, uma vez que é possível que alguns estudos não encontráveis nestas
-bases pode ter ficado de fora da revisão de literatura. Apesar disso, estas duas
-bases possuem grande relevância para a área de Engenharia de Software, e como
-nosso estudo busca dar uma visão neste recorte esta ameaça não prejudica as
-conclusões do estudo.
+A busca realizada apenas nas bases da ACM e IEEE pode ter deixado fora dos
+resultados possíveis artigos mencionando os projetos investigados, uma vez que
+é possível que existam publicações não indexadas por estas bases, Apesar disso,
+estas duas bases possuem grande relevância para a área de Engenharia de
+Software, de forma que esta ameaça não prejudica as conclusões do estudo, uma
+vez que todas as conclusões estão estreitamente associadas a este recorte e não
+sugerimos serem generalizadas.
 
 É possível que a falta de contribuição aos projetos seja um reflexo da
-relevância do estudo onde o software foi publicado, ou seja, projetos
-publicados em artigos com pouca relevância, com pouca visibilidade, atrairá
-pouca atenção, e consequentemente receberá menos contribuições. No entanto, a
-relevância do software não está necessariamente associada a relevância do
-estudo, é possível que projetos de software extremamente úteis para a
-comunidade científica tenham sido publicados em artigos com pouca ou nenhuma
-relevância. Dessa forma esta ameaça não impacta negativamente nas conclusões
-uma vez que estamos interessados em capturar quanta colaboração há entre os
-projetos, do ponto de vista de sua utilidade para o corpo científico como um
-todo.
+relevância do estudo onde foram publicados, ou seja, projetos publicados em
+artigos com pouca relevância, com pouca visibilidade, pode, eventualmente,
+atrair pouca atenção, consequentemente receber pouca contribuição. No entanto,
+a relevância do software não está necessariamente associada a relevância do
+estudo, é possível que projetos de software extremamente úteis e relevantes
+para a comunidade científica tenham sido publicados em artigos com pouca ou
+nenhuma relevância. Dessa forma esta ameaça não impacta negativamente as nossas
+conclusões, uma vez que estamos interessados em capturar quanta colaboração há
+entre os projetos, do ponto de vista de sua utilidade para o corpo científico
+como um todo.
 
 % }}}
 
 \section{Conclusões} \label{estudo2:conclusoes} % {{{
 
 Este estudo inspecionou \SearchUniqueCount \ artigos encontrados nas bases ACM
-e IEEE através de busca avançada usando características de \SoftwareCount \ projetos de software
-acadêmico de análise estática. Durante a inspeção destes artigos foi encontrado
-\ScreeningCount \ menções aos \SoftwareCount \ projetos entre
-\ScreeningUniqueCount \ artigos.
+e IEEE através de busca avançada usando características de \SoftwareCount \
+projetos de software acadêmico de análise estática. Durante a inspeção foi
+encontrada \ScreeningCount \ menções distribuídas entre os tipos Cita, Usa ou
+Contribui.
 
-As menções encontradas foram analisadas e um esquema de caracterização emergiu com
-três tipos de menção distintos, Cita, Usa ou Contribui. As menções foram então
-classificadas em relação a este esquema e foi encontrado
-\CiteCount \ menções do tipo Cita,
-\UseCount \ menções do tipo Uso e
-\ContributeCount \ menções do tipo Contribui.
+Estes tipos emergiram da análise sobre como os projetos são mencionados nos
+artigos, entre todas as menções, \CiteCount \ são do tipo Cita, \UseCount \ Usa
+e \ContributeCount \ Contribui. As menções do tipo Contribui incluem os artigos
+iniciais publicando os projetos pela primeira vez pelos autores originais,
+ao excluir estes artigos, encontramos apenas \ContributeStudyDoisCount \ menções
+do tipo Contribui.
 
-Identificou-se que uma quantidade mínima de artigos contribui com código fonte aos
-projetos estudados nesta pesquisa, apenas 28\% dos projetos recebem contribuições
-após a contribuição inicial publicada pelos seus autores. Este pequeno conjunto
-recebeu \ContributeStudyDoisCount \ contribuições em código fonte, indicando que
-não parece haver uma prática de contribuição entre os pesquisadores em relação
-a código fonte dos seus projetos de software acadêmico, ao menos no contexto de análise
-estática, entre os projetos publicados nas conferências ASE e SCAM.
+Este número de menções está relacionada a apenas 28\% do conjunto total de
+projetos, isto indica que não parece haver uma prática de contribuição entre os
+pesquisadores em relação a código fonte dos seus projetos de software, ao menos
+no contexto de análise estática.
 
-Não encontramos relação entre a disponibilidade de download dos projetos de software
-e o número de menções, seja de uso ou contribuição. Também não encontramos relação
-entre a linguagem de programação e o número de contribuições, entre os projetos com
-maior contribuição temos Java, C, Erlang e Rascal.
+%Identificou-se que uma quantidade mínima de artigos contribui com código fonte aos
+%projetos estudados nesta pesquisa, apenas 28\% dos projetos recebem contribuições
+%após a contribuição inicial publicada pelos seus autores. Este pequeno conjunto
+%recebeu \ContributeStudyDoisCount \ contribuições em código fonte, 
 
-Acreditamos que estes números sofrem principal influencia da relevância do
-projeto e da sua utilidade, atributos de qualidade externa como usabilidade,
-facilidade de instalação, portabilidade, entre outros estão entre os atributos
-que acreditamos influência no uso e contribuição a estes projetos, no entando
-não investigamos estes atributos aqui.
+Não encontramos relação entre a disponibilidade de download, forma de
+distribuição ou linguagem de programação e o número de menções, entre os
+projetos com maior contribuição temos Java, C, Erlang e Rascal.
 
-Entretanto, acredita-se que um atributo de qualidade externa, como
-manutenibilidade por exemplo, tem relação com o número de contribuição, uma vez
-que a facilidade de contribuição está diretamente relacionada a facilidade de
-intervenção e manutenção no código fonte destes projetos.
+Acreditamos que o número de menções, seja de Uso ou Contribuição, está
+intimamente ligado a relevância prática do projeto e aos atributos de
+qualidade, como, usabilidade, portabilidade, facilidade de instalação, entre
+outros. No entando não investigamos estes atributos neste estudo.
 
-Desta forma, planejamos um terceiro estudo para investigar a manutenibilidade
-deste conjunto de \SoftwareCount \ projetos de software acadêmico estudados aqui,
-ou ao menos um subconjunto deles, já que uma parte não está disponível em
-código fonte e o estudo que faremos será através da análise deste artefato.
+Acreditamos fortemente que manutenibilidade, ou seja, o esforço necessário para
+realizar alteraçoes no código fonte de um software, está intrinsicamente
+relacionado ao número de contribuições destes projetos. Desta forma, planejamos
+um terceiro estudo para investigar este aspecto de qualidade entre os projetos
+estudados.
+
+%ou ao menos um subconjunto deles, já que uma parte não está disponível em
+%código fonte e o estudo que faremos será através da análise deste artefato.
+
+%Entretanto, acredita-se que um atributo de qualidade externa, como
+%manutenibilidade por exemplo, tem relação com o número de contribuição, uma vez
+%que a facilidade de contribuição está diretamente relacionada a facilidade de
+%intervenção e manutenção no código fonte destes projetos.
 
 %FALTA uma síntese aqui. 
 %Este estudo ...
