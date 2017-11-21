@@ -12,12 +12,12 @@ estrutural.}
 % Threats to validity
 % Conclusions
 
-Estudar o software acadêmico trazido pelo estudo 1 (mais citados? outro?)
+%Estudar o software acadêmico trazido pelo estudo 1 (mais citados? outro?)
 
 SERIA UM ESTUDO na linha dos estudos de  ATTRACTIVENESS.
 Nesse caso, o aspecto de adoção para uso e adoção para contribuição.
 
-\section{Motivação}
+\section{Introdução e Motivação} \label{estudo3:introducao}
 
 Análise da complexidade estrutural dos softwares científicos de análise
 estática de código-fonte como forma de avaliar a qualidade interna dos mesmos.
@@ -50,7 +50,11 @@ tradicionalmente os seus autores enfrentam problemas com manutenabilidade
 %
 %\cite{Metrics for Assessing a Software System’s Maintainability}
 
-\section{Definição} \label{sec:study2:definition}
+\section{Fundamentação} \label{estudo3:fundamentacao}
+
+(fundamentar manutenibilidade em termos da métrica de complexidade estrutural)
+
+\section{Definição} \label{estudo3:definicao} % {{{
 
 % Por que o estudo será realizado?
 % explore how the amount of structural complexity and available documentation may influence
@@ -78,25 +82,29 @@ publicados nas conferências ASE e SCAM, e avaliados como sustentáveis.
 
 \subsection{Sumário da Definição}
 
-%% GQM template
-
-Analisar a \textit{software acadêmico de análise estática} % object of study
+Analisar os \textit{projetos de software acadêmico}
 com o propósito de \textit{caracterizar}  % purpose  % era medir e avaliar - coloquei 'caracterizar'
 com respeito a \textit{complexidade estrutural (manutenibilidade)}  % quality focus
-na perspectiva do \textit{pesquisador} e do \textit{cientista}% perspective
-no contexto de \textit{software acadêmico de análise estática publicado nas conferências ASE e SCAM
-e referenciado por artigos publicados nas bases da ACM e IEEE}. % context
-
-%Os mais citados / referenciados?
+na perspectiva de \textit{cientistas desenvolvedores de software}% perspective
+no contexto de \textit{projetos de software de análise estática publicado nas conferências ASE e SCAM}.
 
 \subsection{Questões de Pesquisa}
 
-Neste estudo as seguintes questões de pesquisa, a respeito do ecossistema de
+Neste estudo as seguintes questões de pesquisa, a respeito dos projetos de
 software acadêmico de análise estática, serão investigadas:
 
-\newcommand{\QuestaoOne}{Existe relação entre o número de menções/usuários ao software e sua complexidade estrutural?}
-\newcommand{\QuestaoTwo}{Existe relação entre o número de contribuidores do software e sua complexidade estrutural?}
-\newcommand{\QuestaoThree}{Existe relação entre o número de contribuidores-pesquisadores do software e sua complexidade estrutural?}
+\newcommand{\EstudoTresQuestaoUm}{
+  Existe relação entre o número de menções/usuários ao software e sua
+  complexidade estrutural?
+}
+\newcommand{\EstudoTresQuestaoDois}{
+  Existe relação entre o número de contribuidores do software e sua
+  complexidade estrutural?
+}
+\newcommand{\EstudoTresQuestaoTres}{
+  Existe relação entre o número de contribuidores-pesquisadores do software e
+  sua complexidade estrutural?
+}
 
 \begin{description}
   \item [Q1:] \QuestaoOne
@@ -106,10 +114,20 @@ software acadêmico de análise estática, serão investigadas:
 
 \subsection{Métricas}
 
-• Dependent variables (attractiveness)
-– Number of Downloads: a proxy for the number of users of the project;
-– Number of Members: a proxy for the number of developers in the project.
-ETC.
+Para responder às questões de pesquisas, as seguintes métricas serão usadas:
+
+\begin{enumerate}
+  \item Métrica de complexidade estrutural dos projetos de software acadêmico de análise estática.
+  \item Número de lançamentos/releases dos projetos de software acadêmico de análise estática.
+  \item Número de autores com publicações mencionando os projetos de software acadêmico de análise estática.
+  \item Número contribuidores no repositório de código fonte dos projetos de software acadêmmico de análise estática.
+%Ao final, coletamos também algumas métricas do software em relação ao seu
+%ecossistema de software e em relação a sua qualidade interna: número
+%total de lançamentos, data e número de versão de cada lançamento, número de
+%commits e a complexidade estrutural do código fonte.
+\end{enumerate}
+
+% }}}
 
 \section{Planejamento do estudo}
 
@@ -130,18 +148,6 @@ Um fator que pode influenciar os resultados é o domínio de aplicação
 ferramentas de análise estática, consideramos este fator isolado e sem
 influência sobre o estudo.
 
-Uma vez que tenhamos o conjunto de pares de ferramentas de tamanhos similares
-iremos analisar os valores das métricas de complexidade estrutural e custo de
-mudança para cada par e interpretar qual das ferramentas possui melhor
-manutenabilidade, partimos do princípio que valores menores para cada uma
-destas métricas implicam em melhor manutenabilidade.
-
-Esta análise dos pares irá apenas nos dizer quais ferramentas tem melhor
-manutenabilidade em comparação com as demais, não é uma informação que
-pode ser interpretada de forma geral, ela não diz que a ferramenta tem
-ou não uma boa manutenabilidade, indica apenas que uma certa ferramenta
-tem melhor manutenabilidade que uma outra.
-
 Com o conhecimento de quais ferramentas tem melhor manutenabilidade iremos
 utilizar as dimensões caracterizadas para cada ferramenta para verificar se
 tais características influenciam na manutenabilidade, não apenas notar se
@@ -149,28 +155,15 @@ influenciam, mas poderemos notar quais características influenciam. Por
 exemplo, será que as ferramentas que aceitam como entrada análise da linguagem
 Java possuem melhor manutenabilidade do que aquelas que aceitam C++?
 
-Assim, iremos analisar e interpretar cada par de ferramenta de tamanho
-similar, sempre à luz de suas características a fim de compreender quais
-características influenciam em sua manutenabilidade.
-
-
 \section{Operação} 
 
 \subsection{Métricas de software}
-
-Ao final, coletamos também algumas métricas do software em relação ao seu
-ecossistema de software e em relação a sua qualidade interna: número
-total de lançamentos, data e número de versão de cada lançamento, número de
-commits e a complexidade estrutural do código fonte.
 
 As informações sobre lançamentos foram coletadas manualmente em arquivos de
 changelog, no site do projeto, ou em tags no próprio repositório de código
 fonter. O número de commits foi coletado com o uso do git via linha de comando,
 o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
 coletada com software de análise estática Analizo.
-Os dados sobre complexidade estrutural do código fonte não foram utilizados
-neste estudo.
-% Coloquei a FRASE acima para discutirmos depois.
 
 \subsection{Execução}
 
@@ -199,23 +192,6 @@ analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/bl
 
 Todos os dados foram agregados numa planilha.
 
-%% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
-%% 
-%% WALA                     13 releases
-%% error-prone              13 releases
-%% JastAdd                  13 releases
-%% SPARTA                   13 releases
-%% Indus                    (poucos releases, deixando fora da analise longitudinal)
-%% Kiasan/Bogor             (mudou a forma de distribuir ao longo dos releases, dificil obter de forma consistente as versoes)
-%% Lotrack                  (sem releases, poucos commits no github, apenas 11)
-%% PtYasm                   (nao tem releases disponivel, apenas a ultima versao)
-%% srcML                    (releases nao encontrado)
-%% GumTree                  (tem apenas 2 releases do repositorio github)
-%% Sonar Qube Plug-in       (apenas 4 releases no github)
-%% CIVL                     13 releases
-%% CodeBoost                (poucos releases, apenas 6 versoes para download no site)
-%% 2LS                      (poucos releases, apenas 7)
-%% 
 % aproveitar perte destas referencias ao justificar o uso de percentis ao inves de média
 %
 %Observar métricas de código-fonte em nível de projetos de software leva
@@ -262,241 +238,14 @@ Todos os dados foram agregados numa planilha.
 
 (pendente)
 
-%% As ferramentas com poucas linhas de código foram excluidas, estas
-%% apreentam Change Cost alto, já é conhecido que a definição desta métrica
-%% sofre deste problema, apresenta valores altos em projetos muito pequenos,
-%% tambem removemos da analise aquelas ferramentas que nao tiveram valor
-%% no percentil 75\%, pois a comparacao e analise se dará neste percentil
-%% principalmente.
-
-%% Com isso temos 11 projetos, destes iremos analisar longitudalmente
-%% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
-%% Industria:
-%%  FindBugs                 13 releases
-%%  Closure Compiler         13 releases analisados
-%%  PMD                      13 releases
-%%  Smatch                   13 releases
-%%  FindSecurityBugs         13 releases
-%%  Cppcheck                 13 releases
-%%  Splint                   (nao encontrado releases)
-%%  WAP                      (apenas 7 releases no site, estou selecionando os que tenham ao menos 13 releases)
-
-%% 
-%% Comparacao entre ferramentas de tamanho similar:
-%% 
-%% nas 5 comparações de versões distintas com tamanhos similares entre pmd e findbugs,
-%% apresentaram o mesmo resultado, pmd tem valores menos tanto para CC quanto para SC,
-%% indicando que pmd tem um design mais modular que findbugs.
-%% 
-%% pmd 5.0.0 < findbugs 1.2.1
-%% pmd 5.0.4 < findbugs 1.2.1
-%% pmd 5.1.3 < findbugs 1.3.5
-%% pmd 5.2.0 < findbugs 1.3.8
-%% pmd 5.3.3 < findbugs 1.3.9
-%% 
-%% Ao comparar as imagens da matrix DSM dá para notar que isto reflete na matrix, 
-%% pegando o findbugs 3.0.1 e o pmd 5.2.0, é possível notar na matrix que o findbugs
-%% tem mais pontos nas duas diagonais da matrix, indicando dependencias ciclicar, e
-%% design menos modular, enquanto o pmd concentra as dependencias na diagonal inferior
-%% esquerda, indicando poucas dependencias ciclicar e um design mais modular.
-%% 
-%% findbugs	 findbugs-3.0.1	1486	0,07	8	25	56
-%% pmd	 pmd-src-5.2.0	1295	0,02	6	12	25
-%% 
-%% /home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/pmd/pmd-src-5.2.0.analizo.dsm.png
-%% /home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/findbugs/findbugs-3.0.1.analizo.dsm.png
-%% 
-%% accessanalysis < findsecuritybugs
-%% indus < bogor
-%% reassert > jflow
-%% pmd-5.4.0 > pmd-5.3.0
-%% pmd-5.4.2 > pmd-5.3.7
-%% findbugs-3.0.1 > findbugs-2.0.3
-%% pmd < closure-compiler
-%% pixy > mpanalyzer
-%% ejb > mpanalyzer
-%% ejb > sparta
-%% 
-%% closure-compiler > wala
-%% closure-compiler > wala
-%% closure-compiler > wala
-%% closure-compiler[Java] ? wala[Java]     (closure tem CC maior mas SC menor)
-%% 
-%% comparar linguagens diferentes não rola, sempre dá ruim, ver:
-%% 
-%% rats[C]        ? uno[C]                 (rats tem CC menor e SC maior)
-%% cppcheck[C++]  ? wap[Java]              (cppcheck tem CC menor mas SC maior)
-%% srcml[C++]     ? ptyasm[Java]           (srcml tem CC maior mas SC menor)
-%% closure-compiler[Java] ? inputtracer[C] (closure tem CC menor mas SC diferentes nos percentis)
-%% pmd[Java] ? srcml[C++]                  (pmd tem CC maior e SC diferentes nos percentis)
-%% inputtracer[C] ? wala[Java]             (tem CC maior e SC diferentes mas no percentil 95 tem SC maior também)
-%% 
-%% fica claro que comparacao entre linguagens diferentes mesmo com tamanhos iguais não dá para chegar a conclusões nenhuma.
-%% 
-%% findbugs[Java] ? wala[Java]             (findbugs tem CC maior mas SC menor)
-%% closure-compiler ? closure-compiler     (CC menor mas SC maior)
-%% 
-%% comparacao (v3) - ordenado por eloc - comparando apenas SC 95
-%% ===============
-%% 
-%% % findsecbugs-plugin-1.4.0-sources < sparta-code-0.6
-%% % findsecbugs-plugin-1.4.1-sources < sparta-code-0.7
-%% % findsecbugs-plugin-1.4.4-sources < sparta-code-0.8
-%% 
-%% % cseq-0.5 > find-sec-bugs-version-1.0.0
-%% 
-%% % sparta-code-0.9.2 < tacle_1_2_1_src
-%% % sparta-code-0.9.4 < jastadd2-src-2.1.5
-%% % MPAnalyzer-master > sparta-toolset-0.9.8
-%% % ReAssert_0.4.1 > sparta-sparta-1.0.2
-%% % sparta-sparta-1.0.2 < uno
-%% % sparta-toolset-1.0.1-source < cppcheck-1.30
-%% % SonarQube-plug-in-master > sparta-toolset-1.0.0-source
-%% 
-%% % findsecbugs-plugin-1.4.5-sources < rats-2.4
-%% % jastadd2-src-2.1.2 > findsecbugs-plugin-1.4.6-sources
-%% % find-sec-bugs-version-1.1.0 < jastadd2-src-2.1.4
-%% % AccessAnalysis-1.2-src < jastadd2-src-2.1.9
-%% % jastadd2-src-2.1.13 > jlint-3.1.2
-%% % vazexqi-JFlow-7cd7eaf < gumtree-2.0.0
-%% % composite-0.4 < smatch-1.0
-%% % smatch-0.3 > EJB
-%% % smatch-0.4 > cppcheck-1.35
-%% % cppcheck-1.35 > guizmo-master
-%% % smatch-1.51 < cqual-0.981
-%% % pixy-master < smatch-1.52
-%% % error-prone-2.0 < smatch-1.54
-%% % smatch-1.54 > cppcheck-1.40
-%% % smatch-1.55 > error-prone-2.0.2
-%% % indus < smatch-1.56
-%% % smatch-1.56 > error-prone-2.0.4
-%% % smatch-1.59 > pmd-src-5.0.4
-%% % error-prone-2.0.6 < pmd-src-4.2.5
-%% % pmd-src-4.2.5 < smatch-1.60
-%% % smatch-1.60 < cppcheck-1.45
-%% % ptyasm > error-prone-2.0.8
-%% % error-prone-2.0.8 < bogor-core
-%% % pmd-src-5.1.0 > error-prone-2.0.9
-%% % pmd-src-5.3.7 < wap-2.1
-%% % error-prone-2.0.12 < pmd-src-5.5.2
-%% % error-prone-2.0.13 < cppcheck-1.50
-%% % cppcheck-1.50 > wala-code-4607-tags-R_1.0
-%% % findbugs-1.2.1-source > error-prone-2.0.14
-%% % cppcheck-1.55 > findbugs-1.3.4-source
-%% % findbugs-1.3.8-source < cppcheck-1.60
-%% % findbugs-1.3.9-source = wala-code-4607-tags-R_1.0.02
-%% % wala-code-4607-tags-R_1.2 < cppcheck-1.62
-%% % findbugs-2.0.2-source > wala-code-4607-tags-R_1.1
-%% % cppcheck-1.65 > wala-code-4607-tags-R_1.2.2
-%% % wala-code-4607-tags-R_1.3 < findbugs-3.0.0-source
-%% % findbugs-3.0.1 > WALA-R_1.3.3
-%% % WALA-R_1.3.3 < cppcheck-1.70
-%% % cppcheck-1.75 > WALA-R_1.3.5
-%% % WALA-R_1.3.6 > closure-compiler-20110119
-%% % closure-compiler-20110119 < cppcheck-1.77
-%% % cppcheck-1.77 < splint-3.1.2
-%% % srcML-src > closure-compiler-20140730
-%% % closure-compiler-20160713 > Lotrack-master
-%% 
 %% O percentil 75 tem muitos valores zero, os percentis 90 e 95 sao pracitamente iguais 
 %% na comparacao, os maiores sao geralmente tb maior no outro, exceto uns 2 exemplos:
 %% smatch-0.3/EJB e pmd-src-5.3.7/wap-2.1.
-%% 
-%% comparacao (v3) - ordenado por n modulos - comparando apenas SC 90 e 95
-%% ===============
-%% 
-%% rats-2.4 > uno
-%% jlint-3.1.2 > findsecbugs-1.2.0
-%% jastadd2-2.1.5 > findsecbugs-1.2.1
-%% findsecbugs-1.3.0 < jastadd2-2.1.8
-%% jastadd2-2.2.2 > findsecbugs-1.4.0
-%% findsecbugs-1.4.2 < cqual-0.981
-%% sparta-0.5 < findsecbugs-1.4.4
-%% findsecbugs-1.4.5 > AccessAnalysis-1.2
-%% AccessAnalysis-1.2 < cppcheck-1.30
-%% cppcheck-1.30 < smatch-1.0
-%% smatch-0.2 > findsecbugs-1.4.6
-%% findsecbugs-1.4.6 > sparta-0.6
-%% sparta-0.7 < smatch-0.3
-%% cseq-0.5 > findsecbugs-1.5.0
-%% smatch-0.4 > cppcheck-1.35
-%% cppcheck-1.35 > sparta-0.8
-%% cppcheck-1.40 > sparta-0.9.2
-%% sparta-0.9.2 > findsecbugs-1.0.0
-%% SonarQube-plug-in-master < smatch-1.51
-%% smatch-1.52 > ReAssert\_0.4.1
-%% smatch-1.53 > jfLow
-%% gumtree-2.0.0 < cppcheck-1.45
-%% smatch-1.54 > sparta-0.9.8
-%% sparta-0.9.8 < pixy
-%% cppcheck-1.50 > findsecbugs-1.1.0
-%% findsecbugs-1.1.0 < MPAnalyzer
-%% MPAnalyzer < EJB
-%% sparta-1.0.1 < cppcheck-1.55
-%% guizmo < cppcheck-1.60
-%% smatch-1.56 < cppcheck-1.70
-%% wap-2.1 < cppcheck-1.72
-%% cppcheck-1.75 > smatch-1.58
-%% pmd-4.3 < srcML
-%% srcML < ptyasm
-%% pmd-5.0.0 < findbugs-1.2.1
-%% pmd-5.0.4 > error-prone-2.0
-%% closure-compiler-20110119 > error-prone-2.0.2
-%% error-prone-2.0.4 < findbugs-1.3.4
-%% findbugs-1.3.4 < wala-4607-R1.0
-%% wala-4607-R1.0 > pmd-5.1.0
-%% pmd-5.1.3 < findbugs-1.3.5
-%% findbugs-1.3.8 > pmd-5.2.0
-%% pmd-5.3.3 < findbugs-1.3.9
-%% findbugs-1.3.9 > pmd-5.4.2
-%% pmd-5.3.7 < findbugs-3.0.0
-%% findbugs-2.0.3 > error-prone-2.0.5
-%% pmd-5.5.2 > error-prone-2.0.6
-%% closure-compiler-20140730 > error-prone-2.0.7
-%% error-prone-2.0.8 < closure-compiler-20150729
-%% error-prone-2.0.9 < wala-4607-R1.1.2
-%% wala-4607-R1.1.2 < closure-compiler-20160125
-%% closure-compiler-20110811 < wala-4607-R1.2
-%% error-prone-2.0.11 < closure-compiler-20160517
-%% closure-compiler-20160713 > error-prone-2.0.12
-%% error-prone-2.0.12 < wala-4607-R1.1
-%% wala-4607-R1.2.2 > error-prone-2.0.13
-%% error-prone-2.0.14 < wala-4607-R1.3
-%% error-prone-2.0.15 < closure-compiler-20140110
-%% 
-%% %% De forma que somando as ferramentas selecionadas na academia e na indústria
-%% %% temos um total de 34 ferramentas, 14 da indústria e 20 da academia.  
-%% %% 
-%% %% \begin{table}[H]
-%% %%   \caption{Resumo da caracterização das ferramentas}
-%% %%   \centering
-%% %%   \begin{tabular}{| c | l | l | c | l | l |}
-%% %%     \hline
-%% %%     \# & Ferramentas da indústria & Linguagem & Classes & Lançamentos \\
-%% %%     \hline
-%% %%     22 & Closure Compiler         & Java  & 1842  & Frequentemente \\
-%% %%     23 & Cppcheck                 & C++   & 338   & Frequentemente \\
-%% %%     24 & CQual                    & C     & 78    & Obsoleta       \\
-%% %%     25 & FindBugs                 & Java  & 1486  & Ocasionalmente \\
-%% %%     26 & FindSecurityBugs         & Java  & 91    & Frequentemente \\
-%% %%     27 & Jlint                    & C++   & 44    & Obsoleta       \\
-%% %%     28 & Pixy                     & Java  & 229   & Obsoleta       \\
-%% %%     29 & PMD                      & Java  & 1340  & Frequentemente \\
-%% %%     30 & RATS                     & C     & 19    & Obsoleta       \\
-%% %%     31 & Smatch                   & C     & 483   & Ocasionalmente \\
-%% %%     32 & Splint                   & C     & 681   & Obsoleta       \\
-%% %%     33 & UNO                      & C     & 19    & Obsoleta       \\
-%% %%     34 & WAP                      & Java  & 338   & Frequentemente \\
-%% %%     \hline
-%% %%   \end{tabular}
-%% %%   \label{total-de-ferramentas}
-%% %% \end{table}
-%% 
 
 %Os valores encontrados serão avaliados sempre tendo em vista os intervalos
 %sugeridos na Tabela \ref{valores-frequentes}, esta tabela traz os valores encontrados
 %no estudo que estamos replicando em parte \cite{Meirelles2013}.
-%
+
 %\begin{table}[H]
 %  \caption{Valores frequentes\cite{Meirelles2013}}
 %  \centering
@@ -527,11 +276,6 @@ Todos os dados foram agregados numa planilha.
 %entre ferramentas com os mesmos fatores, por exemplo, comparação entre linguagens diferentes,
 %domínio de aplicação diferentes, tamanho em número de classes.
 
-%O estudo é um experimento com um fator e mais de dois tratamentos, o fator
-%neste estudo é a manutenabilidade das ferramentas de análise estática e o
-%tratamento será uma série de comparações entre grupos distintos de ferramentas
-%com características comuns.
-
 %Para garantir o princípio de ``randomization'' irei comparar com o maior número
 %de características das ferramentas possíveis.
 %Para garantir o princípio de ``balancing'' selecionei o mesmo número de
@@ -546,14 +290,5 @@ Todos os dados foram agregados numa planilha.
 %implicam na manutenabilidade.
 
 % * fugir de valores de referencia
-% * avaliar evolucao de grupos de ferramentas, ex: plugins eclipse academia VS plugins eclipse industria
-% * agregar um pouco dos protocolos da revisao estruturada na revisao estruturada
 % * mostrar graficos com evolucao de SC de cada grupo/ferramenta
 % * discutir essa evolucao em cada grupo/ferramenta, mostrando que aqui esta evoluindo pra melhor, aqui pra pior, etc
-% * essas ferramentas fezem da fato o que o autor informa que faz? é válida? é possível validar isso de que forma?
-%   verificar quais estudos tem validacao cientifica, ou seja, fazem estudo de caso? experimento? etc...?
-
-%outro fator de peso para definir o valor final do peso é se houve lençamentos
-%de novas versões do software naquele ano, se houve ao menos 1 versão lançada,
-%isso leva o final\_weight para o valor máximo 1.0 (que representa 100\%)
-
