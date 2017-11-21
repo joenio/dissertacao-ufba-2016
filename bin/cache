@@ -18,8 +18,8 @@ cache - read dataset and summarize into one single YAML structure
 =head1 DESCRIPTION
 
 Write to the stdout a multi-document YAML composed by all data for each
-project, each software.yml and search/*.bib, search.yml, references.yml file
-are read and loaded in a YAML structure.
+project, each software.yml and search/*.bib, search.yml, references.yml,
+releases.yml file are read and loaded into a single YAML structure.
 
 =cut
 
@@ -39,6 +39,7 @@ sub load_project_data {
   $dataset{files}{'search/ieee.bib'} = bibtex_project_load "$dir/search/ieee.bib";
   $dataset{references} = \%{ LoadFile("$dir/references.yml") };
   $dataset{search} = \%{ LoadFile("$dir/search.yml") };
+  $dataset{releases} = \%{ LoadFile("$dir/releases.yml") };
   return %dataset;
 }
 
