@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use Devel::CheckBin;
+use File::Basename;
+
+if (@ARGV < 1) {
+  warn "E: missing options!";
+  say "Usage: $0 <dataset-dir>";
+  exit 1;
+}
+my $DIR = shift @ARGV;
+
+if (can_run 'analizo') {
+  foreach my $s (grep { -d $_ } glob(join('/', $DIR '*')) {
+    foreach my $release (grep { -d $_ } glob("$s/releases/source/*")) {
+      my $version = basename $release;
+      unless (-e "$s/releases/$version.metrics") {
+        say "analizo metrics $release > $s/releases/$version.metrics";
+        #`analizo metrics $release > $s/releases/$version.metrics`;
+      }
+    }
+  }
+}
+else {
+  die "E: analizo not found, please install!";
+}
