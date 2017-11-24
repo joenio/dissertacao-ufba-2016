@@ -11,12 +11,12 @@ if (@ARGV < 1) {
 my $DIR = shift @ARGV;
 
 if (can_run 'analizo') {
-  foreach my $s (grep { -d $_ } glob(join('/', $DIR '*')) {
+  foreach my $s (grep { -d $_ } glob("$DIR/*")) {
     foreach my $release (grep { -d $_ } glob("$s/releases/source/*")) {
       my $version = basename $release;
       unless (-e "$s/releases/$version.metrics") {
         say "analizo metrics $release > $s/releases/$version.metrics";
-        #`analizo metrics $release > $s/releases/$version.metrics`;
+        `analizo metrics $release > $s/releases/$version.metrics`;
       }
     }
   }
