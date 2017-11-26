@@ -43,5 +43,5 @@ references.yml: documents/references.bib
 	@$(foreach p,$(projects),./bin/render templates/software/references.yml.epl --software=$(notdir $(p)) > $(p)/references.yml;)
 
 metrics.csv: cache/dataset.yml
-	$(info creating document with metrics for each software...)
+	$(info creating metrics document for each software...)
 	@$(foreach p,$(projects),./bin/render templates/software/metrics.csv.epl --software=$(notdir $(p)) > cache/$(notdir $(p)).csv;)
