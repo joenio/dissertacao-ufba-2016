@@ -3,7 +3,7 @@ use strict;
 use Exporter 'import';
 use Text::BibTeX ':subs';
 use List::Util qw( all uniq );
-use YAML qw( LoadFile );
+use YAML::XS qw( LoadFile );
 use Statistics::Descriptive;
 use vars qw(@EXPORT_OK);
 
