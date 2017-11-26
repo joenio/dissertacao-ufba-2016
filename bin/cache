@@ -41,9 +41,8 @@ sub load_project_data {
   $dataset{search} = \%{ LoadFile("$dir/search.yml") };
   $dataset{releases} = \%{ LoadFile("$dir/releases.yml") };
   while (my $v = pop @{ $dataset{releases}{versions} }) {
-    if ($v->{source} && -e "$dir/releases/version-$v->{version}.metrics") {
+    if ($v->{source} && -s "$dir/releases/version-$v->{version}.metrics") {
       $dataset{metrics}{"version-$v->{version}"} = metrics_load "$dir/releases/version-$v->{version}.metrics";
-      last;
     }
   }
   return %dataset;
