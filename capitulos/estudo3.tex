@@ -158,26 +158,64 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \section{Planejamento do Estudo} \label{estudo3:planejamento}
 
-O estudo foi organizado em duas grandes fases, primeiro caracterizamos os
-projetos sem disponibilidade de download, ou seja, os projetos indisponíveis e
-sem presença oficial online como projetos com ciclo de vida encerrados a partir
-do modelo {\it ``Staged Model for Software Evolution''}, estes projetos serão
-caracterizados como estando na fase {\it ``Close-down''}.
+Este estudo foi organizado em duas fases, primeiro uma análise dos dados
+existentes para cada software, dados coletados nos Capítulos \ref{estudo1} e
+\ref{estudo2}, com objetivo de definir quais projetos terão mais coleta de
+dados, para num segundo momento caracterizá-los em relação ao estágio de
+evolução.
 
-Em seguida entre os demais projetos, selecionamos apenas os projetos com
-disponibilidade de código fonte para uma análise evolutiva coletando o número
-de lançamentos (versões ou releases) realizado para cada projeto, para cada
-lançamento será obtido o código fonte e será extraído métricas representando o
-número de módulos para avaliação histórica. Os projetos sem disponibilidade de
-download não serão caracterizados quanto ao seu ciclo de vida uma vez que os
-indícios para realizar este estudo está centrado na disponibilidade de código
-fonte.
+Nesta primeira fase, coletamos para os projetos com disponibilidade de
+download, ou ao menos, entre aqueles com alguma presença oficial online com
+informações do projeto, quando disponível, informações sobre os lançamentos,
+incluindo para cada lançamento:
+
+\begin{itemize}
+  \item Número da versão
+  \item Data do lançamento
+  \item URL para download do código fonte
+\end{itemize}
+
+A coleta desses dados é realizada manualmente através das informações
+disponíveis no site dos projetos, manuais, código fonte e repositórios, podendo
+compor com informações de diversas fontes para ter uma maior abrangencia de
+informações, não é raro que os projetos mudem a forma de lançamentos, passando
+de um formato para outro, de uma plataforma a outra, essas informações devem
+ser investigadas a fim de encontrar o máximo de informação possível sobre os
+lançamentos.
 
 As informações sobre lançamentos foram coletadas manualmente em arquivos de
 changelog, no site do projeto, ou em tags no próprio repositório de código
 fonter. O número de commits foi coletado com o uso do git via linha de comando,
 o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
 coletada com software de análise estática Analizo.
+
+Aqueles projetos sem disponibilidade de download, ou seja, os projetos
+indisponíveis e sem presença oficial online serão automaticamente
+caracterizados como projetos com ciclo de vida encerrados a partir do modelo
+{\it ``Staged Model for Software Evolution''}, estes projetos serão
+caracterizados como estando na fase {\it ``Closedown''}.
+
+Entre os projetos com disponibilidade de código fonte, e com código fonte
+disponível para cada lançamento, foi feito o download do código fonte para
+coleta do número de módulos através de análise estática com a ferramenta
+Analizo. Apenas os projetos escritos em linguagens suportadas pelo Analizo -- C,
+C++ e Java -- foram analizados.
+
+%Em seguida entre os demais projetos, selecionamos os projetos com
+%disponibilidade de código fonte para uma análise evolutiva entre os
+%lançamentos, para cada lançamento será obtido o código fonte e será extraído
+%métricas representando o número de módulos para avaliação histórica.
+
+Analisar historicamente (evolucao) dos projetos com maior número de releases
+(com codigo dessas releases) e que já tenha coletado as metricas (ja coletei
+varias versoes de alguns projetos), a analise individual. Projetos com poucos releases,
+digamos, abaixo de 5, não serão analisados em detalhes na avaliação histórica, mas
+terão os dados das métricas analisados para definir o estágio de evolução.
+
+%Os projetos sem disponibilidade de
+%download não serão caracterizados quanto ao seu ciclo de vida uma vez que os
+%indícios para realizar este estudo está centrado na disponibilidade de código
+%fonte.
 
 Analizo é software livre, distribuído sob a licença GNU General Public License
 versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
@@ -188,29 +226,77 @@ foi a versão utilizada neste estudo.
 
 \section{Preparação} \label{estudo3:preparacao}
 
-Analisar apenas os projetos com código fonte suportado pelo Analizo (C, C++ e Java),
-Derailer é Ruby, Flowgen é Python, PHP AiR é Rascal, protopurity é Javascript,
-Pseudogen é Python, TEBA é Perl, Wrangler é Erlang,
-o e-munity e mygcc são basicamente o código do GCC, n faz sentido coletar métricas para ele.
+Seguindo o planejamento criamos os arquivos releases.yml com a seguinte
+estrutura para coletar para cada projeto as informações de lançamentos,
+Listagem \ref{releases-yml}.
 
-Analisar historicamente (evolucao) dos projetos com maior número de releases (com codigo dessas releases)
-e que já tenha coletado as metricas (ja coletei varias versoes de alguns projetos), a analise
-individual
+\begin{lstlisting}[
+caption={Arquivo releases.yml.},
+label={releases-yml},
+frame=single,
+numbers=left
+]
+  source:
+  versions:
+    - version:
+      source:
+      released_at:
+    - version:
+      source:
+      released_at:
+\end{lstlisting}
 
-Para os outros projetos, com código fonte disponível, copiamos localmente o código fonte
-e executamos o analizo metrics para coletar a métrica de complexidade estrutural, tamanho em
-linhas de código e número de classes.
+Estes arquivos foram criados manualmente para cada projeto, quando o projeto
+não tem informação sobre lançamentos disponível criamos este arquivo com o campo
+\texttt{source} definido para \texttt{unavailable}.
+
+Definimos também a estrutura para adicionar aos arquivos \texttt{software.yml} de
+cada projeto a informação final sobre o atual estágio de evolução em relação ao
+ciclo de vida conforme Listagem \ref{software-yml-life-cycle}.
+
+\begin{lstlisting}[
+caption={Campos adicionados ao arquivo software.yml de cada projeto.},
+label={software-yml-life-cycle},
+frame=single,
+numbers=left
+]
+  life_cycle:
+    stage:
+    review:
+\end{lstlisting}
+
+O campo \texttt{review} anotamos a análise realizada para cada projeto em forma
+livre, a avaliação de cada projeto será manual e este campo nos será útil para
+anotar a análise realizada, o campo \texttt{stage} possui o resultado final da
+caracterização de cada software, este campo assumirá um dos seguintes valores
+conforme o modelo staged model:
+
+\begin{description}
+  \item [Initial development] Fase inicial de desenvolvimento
+  \item [Evolution] Evoluçao
+  \item [Servicing] Serviço
+  \item [Phaseout] Declínio
+  \item [Closedown] Encerrado
+  \item [unknown] Desconhecido
+\end{description}
+
+%Analisar apenas os projetos com código fonte suportado pelo Analizo (C, C++ e Java),
+%Derailer é Ruby, Flowgen é Python, PHP AiR é Rascal, protopurity é Javascript,
+%Pseudogen é Python, TEBA é Perl, Wrangler é Erlang,
+%o e-munity e mygcc são basicamente o código do GCC, n faz sentido coletar métricas para ele.
+
+Instalamos o Analizo e suas dependências, implementamos um pequeno script para
+automatizar a execução do Analizo em cada código fonte dos lançamentos de cada
+projeto, definimos uma estrutura de diretórios e localização dos arquivos, etc.
+O script desenvolvido \texttt{bin/run-analizo} será apresentado em mais
+detalhes no Apêndice \ref{reproducibilidade-do-estudo}.
+
+%Para os outros projetos, com código fonte disponível, copiamos localmente o código fonte
+%e executamos o analizo metrics para coletar a métrica de complexidade estrutural, tamanho em
+%linhas de código e número de classes.
 
 Para cada ferramenta de análise estática selecionada, coletamos  suas métricas de código-fonte
 com suporte da ferramenta {\it analizo metrics}. 
-Esta coleta foi automatizada pelo script {\it
-analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}
-escrito durante este estudo e  disponível no
-repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016} desta
-pesquisa.
-
-os \SoftwareCount \ projetos de software acadêmico de análise estática
-em relação a 
 
 \subsection{Execução}
 
@@ -296,12 +382,19 @@ pegamos esse numero da secao 3.3.1 do staged model adaptado a floss.
 
 \section{Ameaças à validade}
 
-(pendente)
+Toda a análise e interpretação dos resultados tomou como base apenas os dados
+coletados do site, publicações, e repositórios dos projetos de software
+acadêmico de análise estática, o fato de não incluirmos coleta de dados a
+partir das pessoas envolvidas nos projetos pode enfraquecer alguma conclusão no
+sentido de que alguns projetos podem ter definições explícitas por parte dos
+seus desenvolvedores mas que não se refletem ainda nos documentos dos projetos,
+apesar disso o nosso estudo tem um caráter exploratório, com interesse especial em
+uma figura geral do domínio de análise estática e não necessariamente trazer
+evidências sobre os projetos inidivualmente.
 
 \section{Conclusões} \label{estudo3:conclusoes}
 
 (pendente)
-
 
 
 %% O percentil 75 tem muitos valores zero, os percentis 90 e 95 sao pracitamente iguais 
