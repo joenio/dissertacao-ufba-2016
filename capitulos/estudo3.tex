@@ -11,16 +11,21 @@
 %(ber artigo original de staged e o adaptaado ao foss para costurar nas conclusoes)
 %(exemplo: manter projetos disponivel o mais tempo possivel eh importante etc...)
 
-Este capítulo apresenta um estudo sobre o estágio de evolução do ciclo de vida
-de software acadêmico de análise estática em termos de número de lançamentos e
-tamanho dos projetos em número de módulos apresentados no código fonte.
+Este capítulo apresenta
+um estudo para caracterização de software acadêmico de análise estática,
+em relação ao estágio de evolução no ciclo de vida,
+em termos de número de lançamentos e
+tamanho em número de módulos no código fonte.
 
-Este estudo caracterizou projetos de software acadêmico de análise estática em
-relação ao estágio de evolução do ciclo de vida com base no modelo {\it
-``Staged Model for Software Evolution''} através da coleta de informaçoes sobre
-lançamentos e versões dos projetos bem como da coleta através do código fonte
-do número de módulos (arquivos ou classes) destes projetos em cada versão
-disponibilizada em código fonte.
+O estudo tomou como base o modelo {\it ``Staged Model for Software Evolution''}
+e coletou dados do código fonte usando análise estática com o apoio da
+ferramenta Analizo, a análise dos dados revelou que a maior parte dos projetos
+estão em estágio inicial de desenvolvimento ou encerrados.
+
+%através da coleta de informaçoes sobre
+%lançamentos e versões dos projetos bem como da coleta através do código fonte
+%do número de módulos (arquivos ou classes) destes projetos em cada versão
+%disponibilizada em código fonte.
 
 A seção \ref{estudo3:introducao} contextualiza o estudo,
 a seção \ref{estudo3:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
@@ -32,7 +37,7 @@ a seção \ref{estudo3:conclusoes} traça as conclusões finais deste estudo.
 
 \section{Motivação} \label{estudo3:introducao}
 
-Neste estudo iremos caracterizar projetos de software acadêmico de análise
+Neste estudo caracterizamos projetos de software acadêmico de análise
 estática quanto ao seu estágio no ciclo de vida de software de acordo o modelo
 {\it ``Staged Model for Software Evolution''}
 \cite{rajlich2000staged}, neste modelo o software inicia seu ciclo de
@@ -75,70 +80,78 @@ objeto de contribuição.
 
 \section{Escopo} \label{estudo3:escopo} % {{{
 
-% Por que o estudo será realizado?
-% explore how the amount of structural complexity and available documentation may influence
-% the different levels of participation in an academic software ecosystem.
+Projetos de software acadêmico de análise estática publicados nas 
+conferências ASE e SCAM 
+são nosso principal objeto de estudo.
+Queremos saber em qual estágio de evolução estão os projetos de software
+acadêmico de análise estática publicados nas conferências ASE e SCAM.
 
 \subsection{Definição do Objetivo}
 
 \begin{description}
-\item{\bf Objeto de estudo.}
-O objeto de estudo são projetos de software acadêmico de análise estática.
 
-\item{\bf Propósito.}
-O propósito deste estudo é caracterizar 
+  \item{\bf Objeto de estudo.}
+    O objeto de estudo são projetos de software acadêmico de análise estática
+    publicados em artigos científicos e seu estágio de evolução no ciclo de
+    vida de software, conforme definido na seção~\ref{estudo3:introducao}.
 
-\item{\bf Perspectiva.}
-A perspectiva considerada é a de cientistas desenvolvedores e usuários de software acadêmico.
+  \item{\bf Propósito.}
+    O propósito do estudo é caracterizar em qual estágio de evolução
+    encontra-se cada software acadêmico de análise estática. O estudo
+    contribuirá para a análise da desordem disfuncional caótica no domínio de
+    análise estática. 
 
-\item{\bf Foco de qualidade.}
-O principal aspecto de qualidade estudado é o número de mudanças no código fonte durante o ciclo de vida.
-%evolvability and code churn.
+  \item{\bf Perspectiva.}
+    A perspectiva considerada é a do cientista desenvolvedor e usuário final, isto é, o pesquisador
+    que deseja saber em que estágio de evolução estão os projetos de software acadêmico do domínio
+    de interesse. A perspectiva a ser considerada é a do pesquisador que deseja
+    conhecer ferramentas de análise estática para uso em sua pesquisa.
 
-\item{\bf Contexto.}
-O estudo foi conduzido com um subconjunto dos projetos de software acadêmico de análise estática
-publicados nas conferências ASE e SCAM, e avaliados como sustentáveis.
+  \item{\bf Foco de qualidade.}
+    O principal foco de qualidade estudado é ciclo de vida do software
+    acadêmico de análise estática, com ênfase nos aspectos de lançamentos e
+    versões do projeto, especialmente sobre o tamanho do software em número de
+    módulos.
+
+  \item{\bf Contexto.}
+    O estudo foi conduzido com projetos de software acadêmico de análise
+    estática publicados nas conferências ASE e SCAM.
+
 \end{description}
-
 
 \subsection{Sumário da Definição}
 
-Analisar os \textit{projetos de software acadêmico}
-com o propósito de \textit{caracterizar}  % purpose  % era medir e avaliar - coloquei 'caracterizar'
-com respeito a \textit{número de mudanças no código fonte}  % quality focus
-na perspectiva de \textit{cientistas desenvolvedores de software}% perspective
-no contexto de \textit{projetos de software de análise estática publicado nas conferências ASE e SCAM}.
+Analisar os \textit{projetos de software acadêmico de análise estática} publicados
+com o propósito de \textit{caracterizá-los}
+com respeito ao seu \textit{ciclo de vida}
+na perspectiva de \textit{cientistas usuários finais e desenvolvedores de software}
+no contexto das \textit{conferências de Engenharia de Software ASE e SCAM}.
 
 \subsection{Questões de Pesquisa}
 
 Neste estudo as seguintes questões de pesquisa, a respeito dos projetos de
-software acadêmico de análise estática, serão investigadas:
+software acadêmico de análise estática publicados nas conferências ASE e SCAM,
+e seu ciclo de vida serão investigadas:
 
 \newcommand{\EstudoTresQuestaoUm}{
-  Em qual estágio de evolução estão os projetos de software acadêmico de análise
-  estática dentro do seu ciclo de vida?
+  Em qual estágio de evolução estão os projetos de software acadêmico de
+  análise estática publicados nas conferências ASE e SCAM em relação ao seu
+  ciclo de vida?
 }
 
 \begin{description}
-  \item Q1: \EstudoTresQuestaoUm
-
-  \item qqq
+  \item [Q1:] \EstudoTresQuestaoUm
 \end{description}
-
 
 \subsection{Métricas}
 
 Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \begin{enumerate}
-  \item Número de lançamentos/releases/versões dos projetos de software acadêmico de análise estática.
-  \item Número de arquivos e módulos dos projetos de software acadêmico de análise estática ao longo das versões.
-%  \item Número de autores com publicações mencionando os projetos de software acadêmico de análise estática.
+  \item Número de lançamentos de cada projeto com informações sobre versão e data
+  \item Número de lançamentos com código fonte disponível para download
+  \item Número de módulos no código fonte de cada lançamento/versão
 %  \item Número contribuidores no repositório de código fonte dos projetos de software acadêmico de análise estática.
-%Ao final, coletamos também algumas métricas do software em relação ao seu
-%ecossistema de software e em relação a sua qualidade interna: número
-%total de lançamentos, data e número de versão de cada lançamento, número de
-%commits e a complexidade estrutural do código fonte.
 \end{enumerate}
 
 % }}}
@@ -251,11 +264,29 @@ os projetos sem informação de releases foi excluído do gráfico.
 
 \begin{figure}[h]
   \centering
-% \includegraphics[scale=0.6]{imagens/releases-vs-mentions.png}
+ \includegraphics[scale=0.6]{imagens/releases-vs-mentions.png}
   \caption{Gráfico com número total de releases e número total de menções de cada projeto.}
   \label{releases-vs-mentions}
 \end{figure}
 
+...a Figura \ref{life-cycle-pie} apresenta a porporção de quantos projetos estão em
+cada estágio de evolução do ciclo de vida ....
+
+\input{documents/life-cycle-table.tex}
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[scale=0.6]{imagens/life-cycle-pie.png}
+  \caption{Gráfico com ciclo de vida dos projetos....}
+  \label{life-cycle-pie}
+\end{figure}
+
+Entre os 10 projetos com ciclo de vida sem definição, 3
+
+Iremos considerar projetos em fase de Servicing aqueles que apresentem crescimento
+pequeno no tamanho do projeto, em termos de número de módulos, abaixo de 10\% de crescimento
+ao longo das versões serão consideradas Serviving, acima disso Evolution, este número 10\%
+pegamos esse numero da secao 3.3.1 do staged model adaptado a floss.
 
 \section{Interpretação dos Resultados} \label{estudo3:interpretacao}
 
