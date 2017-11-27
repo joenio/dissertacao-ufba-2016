@@ -3,6 +3,8 @@ use strict;
 use Exporter 'import';
 use Text::BibTeX ':subs';
 use List::Util qw( all uniq );
+use YAML::XS qw( LoadFile );
+use Statistics::Descriptive;
 use vars qw(@EXPORT_OK);
 
 # symbols to export on request
@@ -14,6 +16,7 @@ use vars qw(@EXPORT_OK);
   bibtex_load
   count_mentions_by_type
   find_references
+  metrics_load
 );
 
 sub equal {
@@ -105,6 +108,24 @@ sub find_references {
     }
   }
   return uniq @ids;
+}
+
+sub metrics_load {
+  my $file = shift;
+  my ($global, @files) = LoadFile $file;
+  my $stat = Statistics::Descriptive::Full->new();
+  $stat->add_data(map { $_->{sc} } @files);
+  return {
+    sc_mean          => $global->{sc_mean} // 0,
+    sc_percentile_75 => $stat->percentile(75) // 0,
+    sc_percentile_90 => $stat->percentile(90) // 0,
+    sc_percentile_95 => $stat->percentile(95) // 0,
+    sc_lanza_low     => ($stat->mean - $stat->standard_deviation) // 0,
+    sc_lanza_medium  => $stat->mean // 0,
+    sc_lanza_high    => ($stat->mean + $stat->standard_deviation) // 0,
+    total_modules    => $global->{total_modules} // 0,
+    total_eloc       => $global->{total_eloc} // 0,
+  };
 }
 
 return 1;

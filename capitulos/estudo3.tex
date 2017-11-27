@@ -1,68 +1,79 @@
-\xchapter{Manutenibilidade de software acadêmico de análise estática}
-{Este capítulo apresenta ...}
+\xchapter{Ciclo de vida de software acadêmico de análise estática}{}
+\label{estudo3}
 
-% Introduction
-% Background
-% Experimental Setup (hipoteses / design)
-% Results (data analysis)
-% Discussion
-% Threats to validity
-% Conclusions
+%* posicionar os projetos em algum estagio do ciclo de staged model
+%* verificar a ultima mensagem (issue ou lista) e usar isso como indicio de projetos na fase "phase out"
+%  (se um projeto tem issue a muito tempo (1 ano, 2 anos) isso significa que o projeto esta em phase out
+%* se os projetos nao estao disponiveis eles estao em closedown, ou seja, vou jogar todos que estao
+%  sem disponibilidade para esta fase!
+%* coletar o numero de classes para faer grafico ao longo do tempo para 
 
-Estudar o software acadêmico trazido pelo estudo 1 (mais citados? outro?)
+%(ber artigo original de staged e o adaptaado ao foss para costurar nas conclusoes)
+%(exemplo: manter projetos disponivel o mais tempo possivel eh importante etc...)
 
-SERIA UM ESTUDO na linha dos estudos de  ATTRACTIVENESS.
-Nesse caso, o aspecto de adoção para uso e adoção para contribuição.
+Este capítulo apresenta um estudo sobre o estágio de evolução do ciclo de vida
+de software acadêmico de análise estática em termos de número de lançamentos e
+tamanho dos projetos em número de módulos apresentados no código fonte.
 
-\section{Motivação}
+Este estudo caracterizou projetos de software acadêmico de análise estática em
+relação ao estágio de evolução do ciclo de vida com base no modelo {\it
+``Staged Model for Software Evolution''} através da coleta de informaçoes sobre
+lançamentos e versões dos projetos bem como da coleta através do código fonte
+do número de módulos (arquivos ou classes) destes projetos em cada versão
+disponibilizada em código fonte.
 
-%\section{Análise da complexidade estrutural dos softwares científicos}
-%\label{complexidade-ferramentas}
+A seção \ref{estudo3:introducao} contextualiza o estudo,
+a seção \ref{estudo3:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
+a seção \ref{estudo3:escopo} descreve o objetivo e apresenta as questões de pesquisa,
+a seção \ref{estudo3:planejamento} apresenta um planejamento do estudo,
+as seções \ref{estudo3:preparacao} e \ref{estudo3:coleta} apresentam detalhes sobre a preparação e execução da coleta de dados,
+as seções \ref{estudo3:analise} e \ref{estudo3:interpretacao} apresentam a análise e interpretação dos dados e
+a seção \ref{estudo3:conclusoes} traça as conclusões finais deste estudo.
 
-Análise da complexidade estrutural dos softwares científicos de análise
-estática de código-fonte como forma de avaliar a qualidade interna dos mesmos.
+\section{Motivação} \label{estudo3:introducao}
 
-% O manifesto de Dagstuhl ao falar sobre sustentabilidade de software levanta também preocupações em relação à sua qualidade:
-%
-% \begin{quote}
-%   Como podemos garantir a qualidade do software acadêmico? Como podemos
-%   monitorar, orientar, divulgar e avaliar a qualidade do software acadêmico?
-%   Como podemos gerenciar e garantir confiança entre as equipes de pesquisa
-%   acadêmica considerando software desenvolvido para métodos de presquisa e/ou
-%   de produção?
-% \end{quote}
+Neste estudo iremos caracterizar projetos de software acadêmico de análise
+estática quanto ao seu estágio no ciclo de vida de software de acordo o modelo
+{\it ``Staged Model for Software Evolution''}
+\cite{rajlich2000staged}, neste modelo o software inicia seu ciclo de
+vida na fase {\it ``Initial development''}, passando pelas fases {\it
+``Evolution''}, {\it ``Servicing''}, {\it ``Phase-out''}, e encerrando seu ciclo
+na fase {\it ``Close-down''}, quando as empresas dedentoras do
+software o retiram do mercado.
 
-Poucos estudos sobre avaliação de qualidade interna de softwares fazem isso com
-{\it softwares científicos}, algo de extrema importância para compreender como
-tais artefatos estão contribuindo para a divulgação do conhecimento e para
-replicação dos resultados das pesquisas em engenharia de software.
+Em modelos de produção distintos e não-tradicionais, como é o modelo de
+software acadêmico ou software livre, por exemplo, este ciclo de vida pode
+variar. No modelo {\it ``Staged Model for Software Evolution''} adaptado a
+projetos software livre \cite{capiluppi2007adapting}, por exemplo, o ciclo de
+vida não se encerra na fase de {\it ``Close-down''}, uma vez que estes projetos
+não são retirados do mercado por empresas, podendo haver um caminho de retorno
+entre as diversas fases, incluindo o retorno para a fase inicial de {\it
+``Initial development''}, por exemplo.
 
-Avaliar os {\it softwares científicos} do ponto de vista de sua qualidade pode
-ajudar a compreender quanta atenção é dada ao seu desenvolvimento, uma vez que
-tradicionalmente os seus autores enfrentam problemas com manutenabilidade
-\cite{prlic2012ten}.
+Os projetos de software acadêmico caracterizados neste estudo são considerados
+como projetos de software livre sob a perspectiva do modelo proposto por
+\citeonline{capiluppi2007adapting}, uma vez que não há entre eles projetos
+comerciais de propriedade exclusiva de empresas, enquadram-se muito melhor
+neste modelo do que no modelo tradicional de software comercial não-livre
+originalmente proposto por \citeonline{rajlich2000staged}.
 
-% referencia sobre complexidade:
-% Livro: Software Metrics, A Rigorous and Practical Approach [3rd 2015]
-% 9.1.1 Structural Complexity Properties
-%
-%
-%We will also
-%investigate the maintainability measures taxonomy by
-%Oman et al where 92 measures are listed and classified [24].
-%[24] Oman, P., Hagemeister, J., and Ash, D., A Definition
-%and Taxonomy for Software Maintainability, report
-%SETL Report 91-08-TR, University of Idaho, 1991.
-%
-%\cite{Measurements of Software Maintainability}
-%
-%Taxonomia, metricas, etc ... sobre manutenabilidade de software.
-%
-%\cite{Metrics for Assessing a Software System’s Maintainability}
+A caracterização dos projetos de software acadêmico de análise estática quando
+ao ciclo de vida será feito sob a perspectiva de cientistas desenvolvedores e
+usuários finais de software interessados em compreender em que estágio de
+desenovolvimento e evolução estão os projetos do ecossistema de software
+acadêmico de análise estática uma vez que saber em que fase um software está é
+útil ao se tomar decisão de adotar um certo software como uso ou mesmo como
+objeto de contribuição.
 
+%O ideal seria eu posicionar cada projeto num dos estágios do modelo (staged model) e aí sim
+%poderia comparar projetos distintos, comparar dois projetos em fase de "manutenção" pode
+%dar alguma respostas interessante.
 
+\section{Fundamentação} \label{estudo3:fundamentacao}
 
-\section{Definição} \label{sec:study2:definition}
+(staged model, métrica para contar módulos, lançamentos/releases)
+
+\section{Escopo} \label{estudo3:escopo} % {{{
 
 % Por que o estudo será realizado?
 % explore how the amount of structural complexity and available documentation may influence
@@ -72,123 +83,110 @@ tradicionalmente os seus autores enfrentam problemas com manutenabilidade
 
 \begin{description}
 \item{\bf Objeto de estudo.}
-O objeto de estudo são projetos de software acadêmico de análise estática e sua sustentabilidade técnica.
+O objeto de estudo são projetos de software acadêmico de análise estática.
 
 \item{\bf Propósito.}
 O propósito deste estudo é caracterizar 
 
 \item{\bf Perspectiva.}
-A perspectiva considerada é a de cientistas e pesquisadores, isto é,
-o cientista ou pesquisador gostaria de conhecer ecossistemas de software acadêmico de análise estática
-em termos de ...
+A perspectiva considerada é a de cientistas desenvolvedores e usuários de software acadêmico.
 
 \item{\bf Foco de qualidade.}
-O principal aspecto de qualidade estudado é a manutenibilidade e complexidade estrutural.
+O principal aspecto de qualidade estudado é o número de mudanças no código fonte durante o ciclo de vida.
+%evolvability and code churn.
 
 \item{\bf Contexto.}
 O estudo foi conduzido com um subconjunto dos projetos de software acadêmico de análise estática
 publicados nas conferências ASE e SCAM, e avaliados como sustentáveis.
 \end{description}
 
+
 \subsection{Sumário da Definição}
 
-%% GQM template
-
-Analisar a \textit{software acadêmico de análise estática} % object of study
+Analisar os \textit{projetos de software acadêmico}
 com o propósito de \textit{caracterizar}  % purpose  % era medir e avaliar - coloquei 'caracterizar'
-com respeito a \textit{complexidade estrutural (manutenibilidade)}  % quality focus
-na perspectiva do \textit{pesquisador} e do \textit{cientista}% perspective
-no contexto de \textit{software acadêmico de análise estática publicado nas conferências ASE e SCAM
-e referenciado por artigos publicados nas bases da ACM e IEEE}. % context
-
-Os mais citados / referenciados?
-
+com respeito a \textit{número de mudanças no código fonte}  % quality focus
+na perspectiva de \textit{cientistas desenvolvedores de software}% perspective
+no contexto de \textit{projetos de software de análise estática publicado nas conferências ASE e SCAM}.
 
 \subsection{Questões de Pesquisa}
 
-Neste estudo as seguintes questões de pesquisa, a respeito do ecossistema de
+Neste estudo as seguintes questões de pesquisa, a respeito dos projetos de
 software acadêmico de análise estática, serão investigadas:
 
-
-\newcommand{\QuestaoOne}{Existe relação entre o número de menções/usuários ao software e sua complexidade estrutural?}
-\newcommand{\QuestaoTwo}{Existe relação entre o número de contribuidores do software e sua complexidade estrutural?}
-\newcommand{\QuestaoThree}{Existe relação entre o número de contribuidores-pesquisadores do software e sua complexidade estrutural?}
+\newcommand{\EstudoTresQuestaoUm}{
+  Em qual estágio de evolução estão os projetos de software acadêmico de análise
+  estática dentro do seu ciclo de vida?
+}
 
 \begin{description}
-  \item [Q1:] \QuestaoOne
-  \item [Q2:] \QuestaoTwo
-  \item [Q3:] \QuestaoThree
+  \item Q1: \EstudoTresQuestaoUm
+
+  \item qqq
 \end{description}
+
 
 \subsection{Métricas}
 
-• Dependent variables (attractiveness)
-– Number of Downloads: a proxy for the number of users of the project;
-– Number of Members: a proxy for the number of developers in the project.
-ETC.
+Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
-\section{Planejamento do estudo}
+\begin{enumerate}
+  \item Número de lançamentos/releases/versões dos projetos de software acadêmico de análise estática.
+  \item Número de arquivos e módulos dos projetos de software acadêmico de análise estática ao longo das versões.
+%  \item Número de autores com publicações mencionando os projetos de software acadêmico de análise estática.
+%  \item Número contribuidores no repositório de código fonte dos projetos de software acadêmico de análise estática.
+%Ao final, coletamos também algumas métricas do software em relação ao seu
+%ecossistema de software e em relação a sua qualidade interna: número
+%total de lançamentos, data e número de versão de cada lançamento, número de
+%commits e a complexidade estrutural do código fonte.
+\end{enumerate}
 
-\subsection{Seleção de Contexto}
+% }}}
 
-\subsection{Formulação de Hipóteses}
+\section{Planejamento do Estudo} \label{estudo3:planejamento}
 
-Hipótese: Relacionar número de menções/usuários à complexidade estrutural.
+O estudo foi organizado em duas grandes fases, primeiro caracterizamos os
+projetos sem disponibilidade de download, ou seja, os projetos indisponíveis e
+sem presença oficial online como projetos com ciclo de vida encerrados a partir
+do modelo {\it ``Staged Model for Software Evolution''}, estes projetos serão
+caracterizados como estando na fase {\it ``Close-down''}.
 
-Hipótese: Relacionar o número de contribuidores-pesquisadores à complexidade estrutural.
-
-Hipótese: Relacionar número de contribuidores (geral) à complexidade estrutural.
-
-\subsection{Design}
-
-Um fator que pode influenciar os resultados é o domínio de aplicação
-\cite{terceiro2012understanding, kumar2012survey}, porém, como estudamos apenas
-ferramentas de análise estática, consideramos este fator isolado e sem
-influência sobre o estudo.
-
-Uma vez que tenhamos o conjunto de pares de ferramentas de tamanhos similares
-iremos analisar os valores das métricas de complexidade estrutural e custo de
-mudança para cada par e interpretar qual das ferramentas possui melhor
-manutenabilidade, partimos do princípio que valores menores para cada uma
-destas métricas implicam em melhor manutenabilidade.
-
-Esta análise dos pares irá apenas nos dizer quais ferramentas tem melhor
-manutenabilidade em comparação com as demais, não é uma informação que
-pode ser interpretada de forma geral, ela não diz que a ferramenta tem
-ou não uma boa manutenabilidade, indica apenas que uma certa ferramenta
-tem melhor manutenabilidade que uma outra.
-
-Com o conhecimento de quais ferramentas tem melhor manutenabilidade iremos
-utilizar as dimensões caracterizadas para cada ferramenta para verificar se
-tais características influenciam na manutenabilidade, não apenas notar se
-influenciam, mas poderemos notar quais características influenciam. Por
-exemplo, será que as ferramentas que aceitam como entrada análise da linguagem
-Java possuem melhor manutenabilidade do que aquelas que aceitam C++?
-
-Assim, iremos analisar e interpretar cada par de ferramenta de tamanho
-similar, sempre à luz de suas características a fim de compreender quais
-características influenciam em sua manutenabilidade.
-
-
-\section{Operação} 
-
-\subsection{Métricas de software}
-
-Ao final, coletamos também algumas métricas do software em relação ao seu
-ecossistema de software e em relação a sua qualidade interna: número
-total de lançamentos, data e número de versão de cada lançamento, número de
-commits e a complexidade estrutural do código fonte.
+Em seguida entre os demais projetos, selecionamos apenas os projetos com
+disponibilidade de código fonte para uma análise evolutiva coletando o número
+de lançamentos (versões ou releases) realizado para cada projeto, para cada
+lançamento será obtido o código fonte e será extraído métricas representando o
+número de módulos para avaliação histórica. Os projetos sem disponibilidade de
+download não serão caracterizados quanto ao seu ciclo de vida uma vez que os
+indícios para realizar este estudo está centrado na disponibilidade de código
+fonte.
 
 As informações sobre lançamentos foram coletadas manualmente em arquivos de
 changelog, no site do projeto, ou em tags no próprio repositório de código
 fonter. O número de commits foi coletado com o uso do git via linha de comando,
 o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
 coletada com software de análise estática Analizo.
-Os dados sobre complexidade estrutural do código fonte não foram utilizados
-neste estudo.
-% Coloquei a FRASE acima para discutirmos depois.
 
-\subsection{Execução}
+Analizo é software livre, distribuído sob a licença GNU General Public License
+versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
+podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
+auto-documentadas e podem ser consultadas como páginas de manual UNIX. 
+Analizo é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
+foi a versão utilizada neste estudo.
+
+\section{Preparação} \label{estudo3:preparacao}
+
+Analisar apenas os projetos com código fonte suportado pelo Analizo (C, C++ e Java),
+Derailer é Ruby, Flowgen é Python, PHP AiR é Rascal, protopurity é Javascript,
+Pseudogen é Python, TEBA é Perl, Wrangler é Erlang,
+o e-munity e mygcc são basicamente o código do GCC, n faz sentido coletar métricas para ele.
+
+Analisar historicamente (evolucao) dos projetos com maior número de releases (com codigo dessas releases)
+e que já tenha coletado as metricas (ja coletei varias versoes de alguns projetos), a analise
+individual
+
+Para os outros projetos, com código fonte disponível, copiamos localmente o código fonte
+e executamos o analizo metrics para coletar a métrica de complexidade estrutural, tamanho em
+linhas de código e número de classes.
 
 Para cada ferramenta de análise estática selecionada, coletamos  suas métricas de código-fonte
 com suporte da ferramenta {\it analizo metrics}. 
@@ -198,75 +196,70 @@ escrito durante este estudo e  disponível no
 repositório\footnote{http://github.com/joenio/dissertacao-ufba-2016} desta
 pesquisa.
 
-Analizo é software livre, distribuído sob a licença GNU General Public License
-versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
-podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
-auto-documentadas e podem ser consultadas como páginas de manual UNIX. 
-Analizo é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
-foi a versão utilizada neste estudo.
+os \SoftwareCount \ projetos de software acadêmico de análise estática
+em relação a 
 
-\subsection{Coleta de dados} \label{analise}
+\subsection{Execução}
+
+\section{Coleta de Dados} \label{estudo3:coleta}
+
+Coletar para cada lançamento a data do lançamento, o endereço para download
+do código fonte da versão, e número da versão, fazer download de cada versão
+em código fonte, apenas entre os suportados pelo Analizo para coleta de métricas.
 
 Os dados coletados incluem a caracterização das ferramentas de análise
 estática, bem como, os valores das métricas de código-fonte de complexidade
-estrutural para cada ferramenta. A coleta das métricas de
-código-fonte foi realizada pelo Analizo com o auxílio do script {\em
-analyze-all-projects}\footnote{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/analyze-all-projects}. 
+estrutural para cada ferramenta.
 
 Todos os dados foram agregados numa planilha.
 
-%% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
-%% 
-%% WALA                     13 releases
-%% error-prone              13 releases
-%% JastAdd                  13 releases
-%% SPARTA                   13 releases
-%% Indus                    (poucos releases, deixando fora da analise longitudinal)
-%% Kiasan/Bogor             (mudou a forma de distribuir ao longo dos releases, dificil obter de forma consistente as versoes)
-%% Lotrack                  (sem releases, poucos commits no github, apenas 11)
-%% PtYasm                   (nao tem releases disponivel, apenas a ultima versao)
-%% srcML                    (releases nao encontrado)
-%% GumTree                  (tem apenas 2 releases do repositorio github)
-%% Sonar Qube Plug-in       (apenas 4 releases no github)
-%% CIVL                     13 releases
-%% CodeBoost                (poucos releases, apenas 6 versoes para download no site)
-%% 2LS                      (poucos releases, apenas 7)
-%% 
-% aproveitar perte destas referencias ao justificar o uso de percentis ao inves de média
-%
-%Observar métricas de código-fonte em nível de projetos de software leva
-%ao seguinte desafio: como obter valores de métricas que representem todo o projeto sendo
-%que métricas de código-fonte usualmente são calculadas para cada elemento do sistema, como arquivos ou classes?
-%
-%Este desafio tem sido amplamente discutido em estudos sobre definição de
-%intervalos de referência ({\it thresholds}) para métricas de
-%código-fonte \cite{Shatnawi2010, Kaur2013, Herbold2011}. Intervalos de
-%referência são valores conhecidos para uma dada medida
-%\cite[Chapter~2.1]{Lanza2007} com algum valor semantico, por exemplo, se
-%medirmos a altura das pessoas e definirmos até 2 metros como alto, então
-%pessoas acima de 2 metros serão classificadas como muito altas.
-%
-%Intervalos de referência podem ser definidos de diversas formas, desde
-%abordagens baseadas em modelos estatísticos \cite{Shatnawi2010, Kaur2013}
-%até aprendizado de máquina \cite{Herbold2011} e inteligência artificial.
-%Entre as inúmeras abordagens, muitas partem de estudos empíricos
-%usando softwares da indústria como objeto de estudo, geralmente com
-%softwares de domínios específicos, parte-se da coleta de dados de
-%métricas de código-fonte e com uso de uma abordagem, ou uma combinação entre
-%elas, chega-se aos intervalos.
-%
-%Estes intervalos são também continuamente avaliados a fim de saber se são
-%válidos ou não, as abordagens utilizadas para calcular os intervalos levam em
-%consideração inúmeros aspectos na tentativa de validar os valores encontrados,
-%como por exemplo a natureza dos dados, se seguem a lei de distribuição de
-%potência
-%\cite{Wheeldon2003,Potanin2005,Concas2007,Ferreira2009,Yao2009,Clauset2009} ou
-%seguem uma distribuição normal
-%\cite{Baxter2006,Lanza2007,Herraiz2011,Herraiz2012}, avaliam ainda se possuem
-%cauda longa, se são livre de escala, entre outros aspectos.
+Os projetos com poucas releases, sem informação sobre datas de lançamentos, serão
+considerados em estágio inicial de desenvolvimento.
+
+Para coletar as versões e datas dos projetos que não disponibilizam no site olhamos
+o código fonte quando disponível em arquivos NEWS, ChangeLog, etc
+
+criamos as entradas abaixono arquivo software.yml, e nele anotamos
+a avaliacao sobre o ciclo de vida e no campo stage definimos o estágio
+de cada projeto
+
+%life_cycle:
+%  stage: Initial development
+%  review: 1 versão sem data, 1 contribuicao em 2011 outra 2013, 1 uso em 2017
+
+\input{documents/releases-table.tex}
+
+Os lançamentos coletados do repositório, código fonte, sites, devem ser organizados
+em ordem de data de lançamento, os mais antigos primeiros, numa lista em ordem, sendo
+o último release o lançamento mais recente. Isto é necessário uma vez que o número de versão
+de cad projeto não segue o mesmo padrão, alterando de formatos entre releases distintos,
+a data de lançamento de cada release também nem sempre está disponível, então
+a coleta deve garantir que haja alguma ordem, então no momento da coleta deve-se
+avaliar a ordem dos lançamentos e registrar no arquivo releases.yml na ordem correta.
+
+\section{Análise dos Dados} \label{estudo3:analise}
+
+para definir entre os que não tem atualização a mais de 5 anos, verificar as
+menções, se houver menções com uso/contribuição é possível que esteja em serving,
+caso contrário está em phase-out
+
+(pendente)
+
+A Figura~\ref{releases-vs-mentions} apresenta em conjunto o número de releases total
+de cada projeto em relação ao número total de menções encontradas nas bases ACM e IEEE,
+os projetos sem informação de releases foi excluído do gráfico.
+
+\begin{figure}[h]
+  \centering
+% \includegraphics[scale=0.6]{imagens/releases-vs-mentions.png}
+  \caption{Gráfico com número total de releases e número total de menções de cada projeto.}
+  \label{releases-vs-mentions}
+\end{figure}
 
 
-\section{Análise e Interpretação de Resultados}
+\section{Interpretação dos Resultados} \label{estudo3:interpretacao}
+
+\subsection{Q1 - \EstudoDoisQuestaoUm}
 
 (pendente)
 
@@ -274,245 +267,20 @@ Todos os dados foram agregados numa planilha.
 
 (pendente)
 
-\section{Conclusões}
+\section{Conclusões} \label{estudo3:conclusoes}
 
 (pendente)
 
-%% As ferramentas com poucas linhas de código foram excluidas, estas
-%% apreentam Change Cost alto, já é conhecido que a definição desta métrica
-%% sofre deste problema, apresenta valores altos em projetos muito pequenos,
-%% tambem removemos da analise aquelas ferramentas que nao tiveram valor
-%% no percentil 75\%, pois a comparacao e analise se dará neste percentil
-%% principalmente.
 
-%% Com isso temos 11 projetos, destes iremos analisar longitudalmente
-%% as releases e a evolucao dos valores de SC e CC (Change Cost), sao elas:
-%% Industria:
-%%  FindBugs                 13 releases
-%%  Closure Compiler         13 releases analisados
-%%  PMD                      13 releases
-%%  Smatch                   13 releases
-%%  FindSecurityBugs         13 releases
-%%  Cppcheck                 13 releases
-%%  Splint                   (nao encontrado releases)
-%%  WAP                      (apenas 7 releases no site, estou selecionando os que tenham ao menos 13 releases)
 
-%% 
-%% Comparacao entre ferramentas de tamanho similar:
-%% 
-%% nas 5 comparações de versões distintas com tamanhos similares entre pmd e findbugs,
-%% apresentaram o mesmo resultado, pmd tem valores menos tanto para CC quanto para SC,
-%% indicando que pmd tem um design mais modular que findbugs.
-%% 
-%% pmd 5.0.0 < findbugs 1.2.1
-%% pmd 5.0.4 < findbugs 1.2.1
-%% pmd 5.1.3 < findbugs 1.3.5
-%% pmd 5.2.0 < findbugs 1.3.8
-%% pmd 5.3.3 < findbugs 1.3.9
-%% 
-%% Ao comparar as imagens da matrix DSM dá para notar que isto reflete na matrix, 
-%% pegando o findbugs 3.0.1 e o pmd 5.2.0, é possível notar na matrix que o findbugs
-%% tem mais pontos nas duas diagonais da matrix, indicando dependencias ciclicar, e
-%% design menos modular, enquanto o pmd concentra as dependencias na diagonal inferior
-%% esquerda, indicando poucas dependencias ciclicar e um design mais modular.
-%% 
-%% findbugs	 findbugs-3.0.1	1486	0,07	8	25	56
-%% pmd	 pmd-src-5.2.0	1295	0,02	6	12	25
-%% 
-%% /home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/pmd/pmd-src-5.2.0.analizo.dsm.png
-%% /home/joenio/src/dissertacao-ufba-2016/dataset/static-analysis-tools/findbugs/findbugs-3.0.1.analizo.dsm.png
-%% 
-%% accessanalysis < findsecuritybugs
-%% indus < bogor
-%% reassert > jflow
-%% pmd-5.4.0 > pmd-5.3.0
-%% pmd-5.4.2 > pmd-5.3.7
-%% findbugs-3.0.1 > findbugs-2.0.3
-%% pmd < closure-compiler
-%% pixy > mpanalyzer
-%% ejb > mpanalyzer
-%% ejb > sparta
-%% 
-%% closure-compiler > wala
-%% closure-compiler > wala
-%% closure-compiler > wala
-%% closure-compiler[Java] ? wala[Java]     (closure tem CC maior mas SC menor)
-%% 
-%% comparar linguagens diferentes não rola, sempre dá ruim, ver:
-%% 
-%% rats[C]        ? uno[C]                 (rats tem CC menor e SC maior)
-%% cppcheck[C++]  ? wap[Java]              (cppcheck tem CC menor mas SC maior)
-%% srcml[C++]     ? ptyasm[Java]           (srcml tem CC maior mas SC menor)
-%% closure-compiler[Java] ? inputtracer[C] (closure tem CC menor mas SC diferentes nos percentis)
-%% pmd[Java] ? srcml[C++]                  (pmd tem CC maior e SC diferentes nos percentis)
-%% inputtracer[C] ? wala[Java]             (tem CC maior e SC diferentes mas no percentil 95 tem SC maior também)
-%% 
-%% fica claro que comparacao entre linguagens diferentes mesmo com tamanhos iguais não dá para chegar a conclusões nenhuma.
-%% 
-%% findbugs[Java] ? wala[Java]             (findbugs tem CC maior mas SC menor)
-%% closure-compiler ? closure-compiler     (CC menor mas SC maior)
-%% 
-%% comparacao (v3) - ordenado por eloc - comparando apenas SC 95
-%% ===============
-%% 
-%% % findsecbugs-plugin-1.4.0-sources < sparta-code-0.6
-%% % findsecbugs-plugin-1.4.1-sources < sparta-code-0.7
-%% % findsecbugs-plugin-1.4.4-sources < sparta-code-0.8
-%% 
-%% % cseq-0.5 > find-sec-bugs-version-1.0.0
-%% 
-%% % sparta-code-0.9.2 < tacle_1_2_1_src
-%% % sparta-code-0.9.4 < jastadd2-src-2.1.5
-%% % MPAnalyzer-master > sparta-toolset-0.9.8
-%% % ReAssert_0.4.1 > sparta-sparta-1.0.2
-%% % sparta-sparta-1.0.2 < uno
-%% % sparta-toolset-1.0.1-source < cppcheck-1.30
-%% % SonarQube-plug-in-master > sparta-toolset-1.0.0-source
-%% 
-%% % findsecbugs-plugin-1.4.5-sources < rats-2.4
-%% % jastadd2-src-2.1.2 > findsecbugs-plugin-1.4.6-sources
-%% % find-sec-bugs-version-1.1.0 < jastadd2-src-2.1.4
-%% % AccessAnalysis-1.2-src < jastadd2-src-2.1.9
-%% % jastadd2-src-2.1.13 > jlint-3.1.2
-%% % vazexqi-JFlow-7cd7eaf < gumtree-2.0.0
-%% % composite-0.4 < smatch-1.0
-%% % smatch-0.3 > EJB
-%% % smatch-0.4 > cppcheck-1.35
-%% % cppcheck-1.35 > guizmo-master
-%% % smatch-1.51 < cqual-0.981
-%% % pixy-master < smatch-1.52
-%% % error-prone-2.0 < smatch-1.54
-%% % smatch-1.54 > cppcheck-1.40
-%% % smatch-1.55 > error-prone-2.0.2
-%% % indus < smatch-1.56
-%% % smatch-1.56 > error-prone-2.0.4
-%% % smatch-1.59 > pmd-src-5.0.4
-%% % error-prone-2.0.6 < pmd-src-4.2.5
-%% % pmd-src-4.2.5 < smatch-1.60
-%% % smatch-1.60 < cppcheck-1.45
-%% % ptyasm > error-prone-2.0.8
-%% % error-prone-2.0.8 < bogor-core
-%% % pmd-src-5.1.0 > error-prone-2.0.9
-%% % pmd-src-5.3.7 < wap-2.1
-%% % error-prone-2.0.12 < pmd-src-5.5.2
-%% % error-prone-2.0.13 < cppcheck-1.50
-%% % cppcheck-1.50 > wala-code-4607-tags-R_1.0
-%% % findbugs-1.2.1-source > error-prone-2.0.14
-%% % cppcheck-1.55 > findbugs-1.3.4-source
-%% % findbugs-1.3.8-source < cppcheck-1.60
-%% % findbugs-1.3.9-source = wala-code-4607-tags-R_1.0.02
-%% % wala-code-4607-tags-R_1.2 < cppcheck-1.62
-%% % findbugs-2.0.2-source > wala-code-4607-tags-R_1.1
-%% % cppcheck-1.65 > wala-code-4607-tags-R_1.2.2
-%% % wala-code-4607-tags-R_1.3 < findbugs-3.0.0-source
-%% % findbugs-3.0.1 > WALA-R_1.3.3
-%% % WALA-R_1.3.3 < cppcheck-1.70
-%% % cppcheck-1.75 > WALA-R_1.3.5
-%% % WALA-R_1.3.6 > closure-compiler-20110119
-%% % closure-compiler-20110119 < cppcheck-1.77
-%% % cppcheck-1.77 < splint-3.1.2
-%% % srcML-src > closure-compiler-20140730
-%% % closure-compiler-20160713 > Lotrack-master
-%% 
 %% O percentil 75 tem muitos valores zero, os percentis 90 e 95 sao pracitamente iguais 
 %% na comparacao, os maiores sao geralmente tb maior no outro, exceto uns 2 exemplos:
 %% smatch-0.3/EJB e pmd-src-5.3.7/wap-2.1.
-%% 
-%% comparacao (v3) - ordenado por n modulos - comparando apenas SC 90 e 95
-%% ===============
-%% 
-%% rats-2.4 > uno
-%% jlint-3.1.2 > findsecbugs-1.2.0
-%% jastadd2-2.1.5 > findsecbugs-1.2.1
-%% findsecbugs-1.3.0 < jastadd2-2.1.8
-%% jastadd2-2.2.2 > findsecbugs-1.4.0
-%% findsecbugs-1.4.2 < cqual-0.981
-%% sparta-0.5 < findsecbugs-1.4.4
-%% findsecbugs-1.4.5 > AccessAnalysis-1.2
-%% AccessAnalysis-1.2 < cppcheck-1.30
-%% cppcheck-1.30 < smatch-1.0
-%% smatch-0.2 > findsecbugs-1.4.6
-%% findsecbugs-1.4.6 > sparta-0.6
-%% sparta-0.7 < smatch-0.3
-%% cseq-0.5 > findsecbugs-1.5.0
-%% smatch-0.4 > cppcheck-1.35
-%% cppcheck-1.35 > sparta-0.8
-%% cppcheck-1.40 > sparta-0.9.2
-%% sparta-0.9.2 > findsecbugs-1.0.0
-%% SonarQube-plug-in-master < smatch-1.51
-%% smatch-1.52 > ReAssert\_0.4.1
-%% smatch-1.53 > jfLow
-%% gumtree-2.0.0 < cppcheck-1.45
-%% smatch-1.54 > sparta-0.9.8
-%% sparta-0.9.8 < pixy
-%% cppcheck-1.50 > findsecbugs-1.1.0
-%% findsecbugs-1.1.0 < MPAnalyzer
-%% MPAnalyzer < EJB
-%% sparta-1.0.1 < cppcheck-1.55
-%% guizmo < cppcheck-1.60
-%% smatch-1.56 < cppcheck-1.70
-%% wap-2.1 < cppcheck-1.72
-%% cppcheck-1.75 > smatch-1.58
-%% pmd-4.3 < srcML
-%% srcML < ptyasm
-%% pmd-5.0.0 < findbugs-1.2.1
-%% pmd-5.0.4 > error-prone-2.0
-%% closure-compiler-20110119 > error-prone-2.0.2
-%% error-prone-2.0.4 < findbugs-1.3.4
-%% findbugs-1.3.4 < wala-4607-R1.0
-%% wala-4607-R1.0 > pmd-5.1.0
-%% pmd-5.1.3 < findbugs-1.3.5
-%% findbugs-1.3.8 > pmd-5.2.0
-%% pmd-5.3.3 < findbugs-1.3.9
-%% findbugs-1.3.9 > pmd-5.4.2
-%% pmd-5.3.7 < findbugs-3.0.0
-%% findbugs-2.0.3 > error-prone-2.0.5
-%% pmd-5.5.2 > error-prone-2.0.6
-%% closure-compiler-20140730 > error-prone-2.0.7
-%% error-prone-2.0.8 < closure-compiler-20150729
-%% error-prone-2.0.9 < wala-4607-R1.1.2
-%% wala-4607-R1.1.2 < closure-compiler-20160125
-%% closure-compiler-20110811 < wala-4607-R1.2
-%% error-prone-2.0.11 < closure-compiler-20160517
-%% closure-compiler-20160713 > error-prone-2.0.12
-%% error-prone-2.0.12 < wala-4607-R1.1
-%% wala-4607-R1.2.2 > error-prone-2.0.13
-%% error-prone-2.0.14 < wala-4607-R1.3
-%% error-prone-2.0.15 < closure-compiler-20140110
-%% 
-%% %% De forma que somando as ferramentas selecionadas na academia e na indústria
-%% %% temos um total de 34 ferramentas, 14 da indústria e 20 da academia.  
-%% %% 
-%% %% \begin{table}[H]
-%% %%   \caption{Resumo da caracterização das ferramentas}
-%% %%   \centering
-%% %%   \begin{tabular}{| c | l | l | c | l | l |}
-%% %%     \hline
-%% %%     \# & Ferramentas da indústria & Linguagem & Classes & Lançamentos \\
-%% %%     \hline
-%% %%     22 & Closure Compiler         & Java  & 1842  & Frequentemente \\
-%% %%     23 & Cppcheck                 & C++   & 338   & Frequentemente \\
-%% %%     24 & CQual                    & C     & 78    & Obsoleta       \\
-%% %%     25 & FindBugs                 & Java  & 1486  & Ocasionalmente \\
-%% %%     26 & FindSecurityBugs         & Java  & 91    & Frequentemente \\
-%% %%     27 & Jlint                    & C++   & 44    & Obsoleta       \\
-%% %%     28 & Pixy                     & Java  & 229   & Obsoleta       \\
-%% %%     29 & PMD                      & Java  & 1340  & Frequentemente \\
-%% %%     30 & RATS                     & C     & 19    & Obsoleta       \\
-%% %%     31 & Smatch                   & C     & 483   & Ocasionalmente \\
-%% %%     32 & Splint                   & C     & 681   & Obsoleta       \\
-%% %%     33 & UNO                      & C     & 19    & Obsoleta       \\
-%% %%     34 & WAP                      & Java  & 338   & Frequentemente \\
-%% %%     \hline
-%% %%   \end{tabular}
-%% %%   \label{total-de-ferramentas}
-%% %% \end{table}
-%% 
 
 %Os valores encontrados serão avaliados sempre tendo em vista os intervalos
 %sugeridos na Tabela \ref{valores-frequentes}, esta tabela traz os valores encontrados
 %no estudo que estamos replicando em parte \cite{Meirelles2013}.
-%
+
 %\begin{table}[H]
 %  \caption{Valores frequentes\cite{Meirelles2013}}
 %  \centering
@@ -543,11 +311,6 @@ Todos os dados foram agregados numa planilha.
 %entre ferramentas com os mesmos fatores, por exemplo, comparação entre linguagens diferentes,
 %domínio de aplicação diferentes, tamanho em número de classes.
 
-%O estudo é um experimento com um fator e mais de dois tratamentos, o fator
-%neste estudo é a manutenabilidade das ferramentas de análise estática e o
-%tratamento será uma série de comparações entre grupos distintos de ferramentas
-%com características comuns.
-
 %Para garantir o princípio de ``randomization'' irei comparar com o maior número
 %de características das ferramentas possíveis.
 %Para garantir o princípio de ``balancing'' selecionei o mesmo número de
@@ -562,14 +325,9 @@ Todos os dados foram agregados numa planilha.
 %implicam na manutenabilidade.
 
 % * fugir de valores de referencia
-% * avaliar evolucao de grupos de ferramentas, ex: plugins eclipse academia VS plugins eclipse industria
-% * agregar um pouco dos protocolos da revisao estruturada na revisao estruturada
 % * mostrar graficos com evolucao de SC de cada grupo/ferramenta
 % * discutir essa evolucao em cada grupo/ferramenta, mostrando que aqui esta evoluindo pra melhor, aqui pra pior, etc
 % * essas ferramentas fezem da fato o que o autor informa que faz? é válida? é possível validar isso de que forma?
 %   verificar quais estudos tem validacao cientifica, ou seja, fazem estudo de caso? experimento? etc...?
 
-%outro fator de peso para definir o valor final do peso é se houve lençamentos
-%de novas versões do software naquele ano, se houve ao menos 1 versão lançada,
-%isso leva o final\_weight para o valor máximo 1.0 (que representa 100\%)
-
+% code churn: the rate of growth of the size of the software.

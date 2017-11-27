@@ -1,0 +1,13 @@
+% my %dataset = %{ $_[0] };
+id,version,released_at,total_modules,total_eloc
+% foreach my $k (sort keys %dataset) {
+%   foreach (grep { $_->{source} ne 'unavailable' } @{ $dataset{$k}{releases}{versions} }) {
+%     my $id = $dataset{$k}{software}{id};
+%     my $released_at = $_->{released_at};
+%     my $v = $_->{version};
+%     my $total_modules = $dataset{$k}{metrics}{"version-$v"}{total_modules} // 0;
+%     my $total_eloc = $dataset{$k}{metrics}{"version-$v"}{total_eloc} // 0;
+<%== sprintf("%s,%s,%s,%d,%d", $id, $v, $released_at, $total_modules, $total_eloc) %>
+%   }
+% }
+%# vim: filetype=epl

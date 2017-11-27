@@ -1,29 +1,53 @@
-\xchapter{Publicização de software acadêmico de análise estática}
-{Este capítulo apresenta um estudo sobre a publicização de software acadêmico
-de análise estática divulgados nas conferências de Engenharia de Software ASE e
-SCAM até o ano de 2015.}
+\xchapter{Publicização de software acadêmico de análise estática}{} 
 \label{estudo1}
 
-\section{Introdução e Motivação} \label{estudo1:introducao} % {{{
+Este capítulo apresenta um estudo sobre a publicização de software acadêmico
+de análise estática divulgado nas conferências ASE - Automated Software Engineering, e 
+SCAM - Working Conference on Source Code Analysis \& Manipulation, até o ano de 2015.
+Nossa revisão de literatura identificou
+60 projetos de software de análise estática
+publicados em artigos nessas duas conferências, e caracterizou estes
+projetos em relação a sua publicização, em termos de disponibilidade para
+download, acesso ao código fonte, forma de distribuição e licença.
 
-Software acadêmico (seção \ref{fundamentacao}) é o termo usado para denotar
+A seção \ref{estudo1:introducao} apresenta a motivação para realização do estudo,
+%a seção \ref{estudo1:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
+a seção \ref{estudo1:escopo} define o escopo, descreve o objetivo e apresenta as questões de pesquisa,
+a seção \ref{estudo1:planejamento} apresenta um planejamento do estudo,
+as seções \ref{estudo1:preparacao} e \ref{estudo1:coleta} apresentam detalhes sobre a preparação e execução da coleta de dados,
+as seções \ref{estudo1:analise} e \ref{estudo1:interpretacao} apresentam a análise e interpretação dos dados e
+a seção \ref{estudo1:conclusoes} apresenta as conclusões finais deste estudo.
+
+\section{Motivação} \label{estudo1:introducao} % {{{
+
+Software acadêmico é um termo usado para denotar
 projetos de software desenvolvidos durante pesquisas científicas,
 publicados na literatura acadêmica, normalmente utilizados para coleta ou
 análise de dados, possivelmente com objetivo de ser utilizado por outros
 pesquisadores e, em algumas ocasiões, sendo o próprio software uma contribuição
 primária para a Ciência \cite{howison2011scientific}.
+%
+Neste contexto, a \textit{publicização} do software acadêmico, isto é,
+a ação de tornar o software disponível 
+a partir da URL indicada no artigo científico publicado pelos seus autores,
+é fundamental.
+Características importantes do software acadêmico após a sua publicização
+incluem a forma em que os projetos são disponibilizados (binário ou código fonte),
+os tipos de licença utilizados, e outras questões relacionadas à sua distribuição.
 
-Os projetos de software desenvolvidos na academia sofrem de {\it
-``dysfunctional chaotic churn''} \cite{howison2015understanding}.
-Na prática, isso significa que há muitos projetos com características e
+Há diversos projetos de software acadêmico com características e
 funcionalidades parecidas, com poucos usuários, com ciclos de vida curtos, e
 encerrados quando o financiamento inicial termina, bem como, comunidades
-desconectadas e paralelas, incompatibilidades entre projetos em um mesmo
-domínio, e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it re-boots}). 
- 
+desconectadas e paralelas, incompatibilidades entre projetos de um mesmo
+domínio, e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it re-boots}).
+Em tais condições, diz-se que o software acadêmico sofre de 
+{\it ``dysfunctional chaotic churn''} \cite{howison2015understanding}.
+
 Parte deste problema tem sido atribuido a falta de treinamento em boas práticas
-de desenvolvimento de software por parte dos cientistas e pesquisadores
-\cite{wilson2017good}, e que, a princípio, não deveria afetar os cientistas da
+para o desenvolvimento de software de qualidade por parte dos cientistas e pesquisadores
+\cite{wilson2017good}, 
+e na publicização adequada do software acadêmico \cite{allen2017engineering}.
+A princípio, a falta de treinamento não deveria afetar os cientistas da
 Engenharia de Software, visto que estes possuem formação e acesso a práticas de
 desenvolvimento e estão inseridos num contexto voltado para a compreensão e
 melhoria dos processos de desenvolvimento de software, tanto do ponto de vista
@@ -31,101 +55,83 @@ teórico, quanto prático.
 
 Sabendo disso, e atentando para o fato de que grande parte do desenvolvimento
 de software acadêmico é realizado pelos próprios cientistas
-\cite{hettrick2014uk, momcheva2015software}, surge a preocupação de avaliar o
-quanto os projetos de software desenvolvidos nas pesquisas de Engenharia de
-Software apresentam sintomas de ``dysfunctional chaotic churn'' conforme
+\cite{hettrick2014uk, momcheva2015software}, surge a preocupação de avaliar 
+a publicização do software acadêmico desenvolvido nas pesquisas de Engenharia de
+Software e se apresenta sintomas de ``dysfunctional chaotic churn'' conforme
 percebido por \citeonline{howison2015understanding}.
 
 % }}}
 
-%\section{Fundamentação} \label{estudo1:fundamentacao} % {{{
 
-%\subsection{Software acadêmico}
+\section{Escopo} \label{estudo1:escopo} % {{{
 
-%São projetos de software desenvolvidos durante pesquisas científicas,
-%publicados na literatura acadêmica, normalmente utilizados para coleta ou
-%análise de dados, possivelmente com objetivo de ser utilizado por outros
-%pesquisadores e, em algumas ocasiões, sendo o próprio software uma contribuição
-%primária para a Ciência \cite{howison2011scientific}.
+Projetos de software acadêmico de análise estática publicados nas 
+conferências ASE e SCAM 
+são nosso principal objeto de estudo.
+Queremos saber quantos projetos de software acadêmico de análise estática publicados
+nas conferências ASE e SCAM foram publicizados adequadamente, se permanecem disponíveis e 
+quais são as informações que podem ser obtidas.
 
-%\subsection{Disponibilidade/Publicização}
-
-%Publicize your academic software
-%Divulgação; ação de fazer com algo se torne público; realizar publicidade.
-
-Neste estudo, disponibilidade/publicização está relacionada à capacidade de obter o software acadêmico
-a partir da URL indicada no artigo científico publicado pelos seus autores.
-Características importantes do software acadêmico disponível 
-incluem a forma em que os projetos estão disponíveis (binários ou código fonte), 
-os tipos de licença utilizados, e outras questões relacionadas à distribuição.
-
-% }}}
-
-Este estudo selecionou, através de uma revisão de literatura em conferências da
-Engenharia de Software, 60 projetos de software de análise estática
-desenvolvidos e publicados nas conferências ASE e SCAM, e caracterizou estes
-projetos em relação a sua publicização, em termos de disponibilidade para
-download, acesso ao código fonte, forma de distribuição e licença.
-
-A seção \ref{estudo1:introducao} contextualizou este estudo.
-%a seção \ref{estudo1:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
-A seção \ref{estudo1:definicao} descreve o objetivo e apresenta as questões de pesquisa,
-a seção \ref{estudo1:planejamento} apresenta um planejamento do estudo,
-as seções \ref{estudo1:preparacao} e \ref{estudo1:coleta} apresentam detalhes sobre a preparação e execução da coleta de dados,
-as seções \ref{estudo1:analise} e \ref{estudo1:interpretacao} apresentam a análise e interpretação dos dados e
-a seção \ref{estudo1:conclusoes} traça as conclusões finais deste estudo.
-
-
-
-\section{Escopo} \label{estudo1:definicao} % {{{
-
-Quantos projetos de software acadêmico de análise estática publicados
-nas conferências ASE e SCAM permanecem disponíveis
-hoje? Quais as informações que estão disponíveis?
+O objetivo da pesquisa está definido segundo a estrutura GQM \cite{van1999goal}.
 
 \subsection{Definição do Objetivo}
 
 \begin{description}
   \item{\bf Objeto de estudo.}
-     O objeto de estudo são projetos de software acadêmico de análise estática.
+     O objeto de estudo são projetos de software acadêmico de análise estática publicados em artigos científicos
+e sua publicização em termos de disponibilidade, licença e distribuiçao, conforme definido na seção~\ref{estudo1:introducao}.
+
   \item{\bf Propósito.}
-    O propósito é caracterizar.
+    O propósito do estudo é caracterizar a publicização de cada software acadêmico de análise estática 
+publicado nas conferências selecionadas. 
+O estudo contribuirá para a análise da desordem disfuncional caótica  no domínio de análise estática. 
+
   \item{\bf Perspectiva.}
-    A perspectiva considerada é a do cientista usuário final.
+    A perspectiva considerada é a do cientista usuário final, isto é, o pesquisador que deseja saber
+se há DDC no software acadêmico do domínio de interesse. A perspectiva a ser considerada é a do pesquisador
+que deseja conhecer ferramentas de análise estática para uso em sua pesquisa.
+
   \item{\bf Foco de qualidade.}
-    O principal aspecto de qualidade estudado é a disponibilidade/``publicização'' dos projetos.
+    O principal foco de qualidade estudado é a publicização do software acadêmico de análise estática, 
+com ênfase nos aspectos de disponibilidade de URL com infornações sobre o projeto, especialmente sobre acesso ao código fonte.
+
   \item{\bf Contexto.}
-    O estudo foi conduzido com publicações das conferências de Engenharia de Software ASE e SCAM.
+    O estudo foi conduzido com artigos que apresentam software acadêmico de análise estática,
+publicados das conferências de Engenharia de Software ASE e SCAM.
 \end{description}
 
 \subsection{Sumário da Definição}
 
-Analisar os \textit{projetos de software acadêmico de análise estática}
+Analisar os \textit{projetos de software acadêmico de análise estática} publicados
 com o propósito de \textit{caracterizá-los} 
-com respeito a sua \textit{disponibilidade/publicização}
+com respeito a sua \textit{publicização}
 na perspectiva de \textit{cientistas usuários finais}
-no contexto de \textit{conferências de Engenharia de Software ASE e SCAM}.
+no contexto das \textit{conferências de Engenharia de Software ASE e SCAM}.
 
 \subsection{Questões de Pesquisa}
 
 Neste estudo as seguintes questões de pesquisa, a respeito dos projetos de
 software acadêmico de análise estática publicados nas conferências ASE e SCAM,
-serão investigadas:
+e sua publicização serão investigadas:
 
 \newcommand{\EstudoUmQuestaoUm}{
-  Os projetos de software acadêmico de análise estática publicados nas conferências ASE e SCAM possuem alguma presença oficial online?
+  Os projetos de software acadêmico de análise estática publicados nas
+  conferências ASE e SCAM possuem alguma presença oficial online?
   %requisito para avaliar qualidade interna dos projetos
 }
 \newcommand{\EstudoUmQuestaoDois}{
-  Os projetos de software academico de análise estática publicados nas conferências ASE e SCAM estão disponíveis para download?
+  Os projetos de software academico de análise estática publicados nas
+  conferências ASE e SCAM estão disponíveis para download?
   %requisito para uso
 }
 \newcommand{\EstudoUmQuestaoTres}{
-  É possível ter acesso ao código fonte dos projetos de software de análise estática publicados nas conferências ASE e SCAM?
+  É possível ter acesso ao código fonte dos projetos de software de análise
+  estática publicados nas conferências ASE e SCAM?
   %requisito para avaliar qualidade interna dos projetos
 }
 \newcommand{\EstudoUmQuestaoQuatro}{
-  Os projetos de software com código fonte disponível podem ser adaptados para atender necessidades emergentes?
+  Os projetos de software com código fonte disponível podem ser adaptados para
+  atender necessidades emergentes?
   %requisito para usar em novas pesquisas
 }
 
@@ -157,7 +163,7 @@ Figura \ref{estudo1-etapas}. Na primeira etapa, uma revisão da literatura
 foi realizada, com o objetivo selecionar
 artigos com publicação de software acadêmico de análise estática. 
 Na segunda etapa, os projetos de software selecionados foram caracterizados
-em relação a disponibilidade de código.
+em relação à sua publicização.
 
 \begin{figure}[h]
   \center
@@ -187,16 +193,16 @@ preferencialmente conferências com bom histórico de publicações sobre o dom�
 de aplicação do estudo.
 
 É importante investigar o histórico de cada conferência com atenção ao nome do
-evento em cada edição, não é raro que conferências com muitos anos de
-existência mudem de nome ao longo do tempo, nestes casos deve-se adotar o nome
-da conferência mais recente e consider todas as edições anteriores com este
+evento em cada edição; não é raro que conferências com muitos anos de
+existência mudem de nome ao longo do tempo. Nestes casos, deve-se adotar o nome
+da conferência mais recente e considerar todas as edições anteriores com este
 mesmo nome.
 
-Uma vez definidos a data limite e as conferências deve-se fazer o download de
-todos os artigos até a data limite, os arquivos devem ser organizados em pastas
+Uma vez definidos a data limite e as conferências, deve-se fazer o download de
+todos os artigos até a data limite, e os arquivos devem ser organizados em pastas
 por nome e ano da conferência. Os títulos de todos os artigo, a correspondente
 conferência e o ano de publicação devem ser registrados e armazenados em
-arquivos ou banco de dados, neste estudo fizemos uso do
+arquivos ou banco de dados. Neste estudo fizemos uso do
 LibreOffice Calc\footnote{\url{https://www.libreoffice.org}}.
 
 \subsubsection{Passo 2: Triagem Automática} \label{estudo1:planejamento:filtro}
@@ -209,11 +215,11 @@ A triagem é realizada por meio de uma busca textual no conteúdo de cada artigo
 busca deve ser realizada de forma automática com auxilio de ferramentas de
 software para busca textual em conteúdo de arquivos pdf, com base em um
 conjunto de palavras-chave representando os critérios de inclusão da triagem.
-Apenas os artigos combinando com estes critérios serão incluídos, conforme
+Apenas os artigos combinando com todos os critérios serão incluídos, conforme
 Tabela \ref{criterios-triagem}.
 
 \begin{table}[h]
-\caption{Critérios de inclusão e palavras chave para a triagem dos artigos.}
+\caption{Critérios de inclusão e palavras-chave para a triagem de artigos.}
 \centering
 \begin{tabular}{ l l }
   \hline
@@ -228,7 +234,7 @@ Tabela \ref{criterios-triagem}.
 \label{criterios-triagem}
 \end{table}
 
-Se um determinado artigo não combinar com algum dos critérios ele será
+Se um determinado artigo não atender a algum dos critérios, ele será
 excluído. Ao final da triagem, espera-se obter um conjunto reduzido
 de artigos, contendo apenas as publicações relevantes para o objetivo
 deste estudo.
@@ -236,7 +242,7 @@ deste estudo.
 \subsubsection{Passo 3: Extração}
 
 Os artigos incluídos serão inspecionados manualmente em busca de software acadêmico de
-análise estática entre os resultados do estudo. Os critérios de inclusão têm
+análise estática entre os resultados do estudo. Os critérios de inclusão desta etapa têm
 como objetivo incluir apenas os projetos de software identificados minimamente
 pelos seus autores com nome e URL para download, conforme Tabela
 \ref{criterios-extracao}.
@@ -276,8 +282,9 @@ arquivos ou banco de dados, incluem projetos de software acadêmico de análise
 estática, identificados com nome e URL, nome e ano da conferência e
 título do artigo onde foi publicado.
 
-Estes dados deverão ser extraídos para uma nova estrutura de armazenamento
-projetada para receber informações adicionais dos projetos, conforme Tabela
+Estes dados irão compor uma nova estrutura de armazenamento
+projetada para receber informações adicionais sobre os projetos, 
+extraídas de outras fontes, conforme Tabela
 \ref{esquema-caracteristicas}. Essas informações serão coletadas em documentos
 relacionados aos projetos, como website, manuais, repositórios e código fonte.
 
@@ -335,10 +342,18 @@ ASE\footnote{\url{http://ase-conferences.org}} ({\it Automated Software
 Engineering}), ambas conferências com um grande histórico de edições. Definimos
 como data limite o ano de 2015.
 
-Os artigos estão disponíveis para download: 
+A escolha destas duas conferências baseou-se no princípio de serem conferências
+tradicionais e importantes para a área de Engenharia de Software, tendo tradição
+em estudos sobre análise de software, e dessa forma, potencializando aumentar
+o número de projetos de software acadêmico de análise estática encontrados
+entre suas publicações.
+
+Os artigos das duas conferências estão disponíveis para download:
 as publicações da conferência SCAM estão todas disponibilizadas no IEEE, e
 a conferência ASE possui algumas edições no IEEE outras na ACM. Os endereços URL
-de cada edição de cada conferência estão documentadas no Apêndice
+de cada edição de cada conferência estão documentadas no
+repositório\footnote{\url{https://github.com/joenio/dissertacao-ufba-2016}}
+dessa dissertação, apresentado em detalhes no Apêndice
 \ref{reproducibilidade-do-estudo}.
 
 Até o ano de 1996, a conferencia ASE chamava-se KBSE - Knowledge-Based Software
@@ -388,7 +403,7 @@ linguagem de programação em que o projeto está escrito.
 
 Seguindo o planejamento e preparação descritos nas seções
 \ref{estudo1:planejamento} e \ref{estudo1:preparacao}, iniciamos a coleta dos
-dados organizada em duas grandes etapas: uma de revisão de literatura, e outra
+dados, organizada em duas grandes etapas: uma de revisão de literatura, e outra
 de caracterização dos projetos de software acadêmico.
 
 \subsection{Revisão de literatura com publicação de software de análise estática}
@@ -531,6 +546,11 @@ disponíveis para download e é possível obter uma cópia destes projetos na UR
 indicada pelos seus autores. Um resumo deste total por ano é apresentado na
 Tabela \ref{available-table}.
 
+
+\textbf{E se a URL tiver mudado com o tempo, isto é, for diferente daquela do artigo original?}
+No pior caso, não houve preocupação em sinalizar isso na URL original.
+
+
 \input{documents/available-table.tex}
 
 \subsection{Q3 - \EstudoUmQuestaoTres} % codigo fonte
@@ -564,11 +584,12 @@ autorização prévia dos autores.
 
 % }}}
 
-\section{Ameaças à validade} % {{{
+\section{Ameaças à Validade} % {{{
 
 O passo de triagem automática dos artigos no processo de revisão de literatura
 pode ter excluído do processo de revisão algumas publicações com software
-acadêmico de análise estática, não incluindo algum software acadêmico publicado no conjunto total de projetos
+acadêmico de análise estática, 
+não incluindo algum software acadêmico publicado no conjunto total de projetos
 selecionados. Apesar disso, o estudo tem como objetivo
 caracterizar os projetos e não as conferências em sí, de forma que esta ameaça
 não causa impacto nas conclusões finais do estudo.
@@ -609,8 +630,9 @@ publicados.
 
 Nos 45 projetos com presença online através da URL informada nos artigos, 9 não
 disponibilizam qualquer artefato relacionado ao software, ou seja, apesar de
-ser possível acessar a URL, não é possível encontrar o software para download,
-36 estão disponíveis para download, a maior parte com código fonte, apenas 2
+ser possível acessar a URL, não é possível encontrar o software para download.
+Os outros 36 projetos estão disponíveis para download, sendo que
+a maior parte, 34 projetos, disponibiliza o código fonte, e apenas 2
 estão disponíveis em formato binário.
 
 Dentre os 34 projetos com código fonte disponível, 13 não informam qualquer
@@ -622,13 +644,13 @@ prévia autorização para receber melhorias em código fonte.
 É conhecido que os projetos de software desenvolvidos na academia não são ainda
 reconhecidos pela Ciência como cidadãos de primeira classe, mesmo quando tais
 projetos são indispensáveis para a compreensão dos estudos em que foram
-desenvolvidos, neste estudo mostramos que uma grande parte (40\%) de um
+desenvolvidos. Neste estudo mostramos que uma grande parte (40\%) de um
 conjunto de projetos de software acadêmico minimamente identificados pelos seus
-autores com nome e URL encontram-se hoje indisponíveis.
+autores com nome e URL encontra-se hoje indisponível.
 
-No entanto, nao sabemos quais fatores influenciam um projeto estar ou não
-disponível, e ainda, como tais projetos são vistos por outros pesquisadores, se
-são utilizados e referenciados por outros autores, assim planejamos dois
+No entanto, não sabemos quais os fatores que influenciam um projeto estar ou não
+disponível, e ainda, como tais projetos são vistos por outros pesquisadores, ou se
+são utilizados e referenciados por outros autores. Assim planejamos outros
 estudos para investigar tais questões, apresentados nos próximos capítulos.
 
 % }}}
@@ -695,3 +717,5 @@ estudos para investigar tais questões, apresentados nos próximos capítulos.
 %Do conjunto de 60 projetos de software estudados, %% Joenio, coloquei aqui o tempo no PRETERITO -- revisar outras partes.
 %3 não disponibilizaram seu código fonte e  %% Joenio, mudei as frases para VOZ ativa, sujeito: projeto de software.
 %34 disponibilizaram o código fonte publicamente.
+
+

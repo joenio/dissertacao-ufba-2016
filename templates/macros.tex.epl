@@ -6,7 +6,7 @@
 %= "\% dados do estudo1"
 \newcommand{\SoftwareCount}{<%== keys %dataset %>}
 %= "\% dados do estudo2"
-% my %total = ();
+% my %total = (acm => 0, ieee => 0, total => 0, cite => 0, use => 0, contribute => 0);
 % my @mentions = ();
 % my %mentions_by_study = ();
 % my %contribute_study2 = ();
@@ -46,6 +46,7 @@
 \newcommand{\ContributeCount}{<%== $total{contribute} %>}
 \newcommand{\SearchUniqueMean}{<%== sprintf("%.1f", scalar(keys %references) / scalar(keys %dataset)) %>}
 \newcommand{\ScreeningMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(keys %dataset)) %>}
+\newcommand{\ScreeningUniqueMean}{<%== sprintf("%.1f", scalar(uniq @mentions) / scalar(keys %dataset)) %>}
 \newcommand{\MentionsStudyUm}{<%== grep { $mentions_by_study{1}{$_} > 0 } keys %{ $mentions_by_study{1} } %>}
 \newcommand{\MentionsStudyDois}{<%== grep { $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} } %>}
 \newcommand{\SoftwareNotMentionedCount}{<%== keys(%dataset) - grep({ $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} }) %>}

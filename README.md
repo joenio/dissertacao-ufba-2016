@@ -84,7 +84,7 @@ Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 
 O script `bin/softwares-summary` possui as seguintes dependencias:
 
-    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl libdatetime-format-http-perl
+    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl libyaml-libyaml-perl libdatetime-format-http-perl
 
 Use o make:
 
