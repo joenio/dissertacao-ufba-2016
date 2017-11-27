@@ -203,13 +203,45 @@ em relação a
 
 \section{Coleta de Dados} \label{estudo3:coleta}
 
+Coletar para cada lançamento a data do lançamento, o endereço para download
+do código fonte da versão, e número da versão, fazer download de cada versão
+em código fonte, apenas entre os suportados pelo Analizo para coleta de métricas.
+
 Os dados coletados incluem a caracterização das ferramentas de análise
 estática, bem como, os valores das métricas de código-fonte de complexidade
 estrutural para cada ferramenta.
 
 Todos os dados foram agregados numa planilha.
 
+Os projetos com poucas releases, sem informação sobre datas de lançamentos, serão
+considerados em estágio inicial de desenvolvimento.
+
+Para coletar as versões e datas dos projetos que não disponibilizam no site olhamos
+o código fonte quando disponível em arquivos NEWS, ChangeLog, etc
+
+criamos as entradas abaixono arquivo software.yml, e nele anotamos
+a avaliacao sobre o ciclo de vida e no campo stage definimos o estágio
+de cada projeto
+
+%life_cycle:
+%  stage: Initial development
+%  review: 1 versão sem data, 1 contribuicao em 2011 outra 2013, 1 uso em 2017
+
+\input{documents/releases-table.tex}
+
+Os lançamentos coletados do repositório, código fonte, sites, devem ser organizados
+em ordem de data de lançamento, os mais antigos primeiros, numa lista em ordem, sendo
+o último release o lançamento mais recente. Isto é necessário uma vez que o número de versão
+de cad projeto não segue o mesmo padrão, alterando de formatos entre releases distintos,
+a data de lançamento de cada release também nem sempre está disponível, então
+a coleta deve garantir que haja alguma ordem, então no momento da coleta deve-se
+avaliar a ordem dos lançamentos e registrar no arquivo releases.yml na ordem correta.
+
 \section{Análise dos Dados} \label{estudo3:analise}
+
+para definir entre os que não tem atualização a mais de 5 anos, verificar as
+menções, se houver menções com uso/contribuição é possível que esteja em serving,
+caso contrário está em phase-out
 
 (pendente)
 
