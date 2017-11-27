@@ -1,0 +1,12 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my %total = ();
+% foreach my $k (sort keys %dataset) {
+%   $total{$dataset{$k}{life_cycle}{stage}} //= 0;
+%   $total{$dataset{$k}{life_cycle}{stage}}++;
+% }
+stage,total
+% foreach (sort keys %total) {
+<%== $_ %>,<%== $total{$_} %>
+% }
+%# vim: filetype=epl

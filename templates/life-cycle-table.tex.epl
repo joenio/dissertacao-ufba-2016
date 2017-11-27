@@ -1,0 +1,22 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my %total = ();
+% foreach my $k (sort keys %dataset) {
+%   $total{$dataset{$k}{life_cycle}{stage}} //= 0;
+%   $total{$dataset{$k}{life_cycle}{stage}}++;
+% }
+\begin{table}[h]
+\caption{Estágio atual no ciclo de vida dos projetos de software acadêmico.}
+\centering
+\begin{tabular}{l c}
+  \hline
+  {\bf Estágio} & {\bf Número de projetos} \\\
+  \hline
+% foreach ('Initial development', 'Evolution', 'Servicing', 'Phaseout', 'Closedown', 'unknown') {
+    <%== $_ %> & <%== $total{$_} %> \\\
+% }
+  \hline
+\end{tabular}
+\label{life-cycle-table}
+\end{table}
+%# vim: filetype=epl
