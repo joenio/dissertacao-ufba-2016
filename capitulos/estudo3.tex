@@ -158,16 +158,26 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \section{Planejamento do Estudo} \label{estudo3:planejamento}
 
-Este estudo foi organizado em duas fases, primeiro uma análise dos dados
-existentes para cada software, dados coletados nos Capítulos \ref{estudo1} e
-\ref{estudo2}, com objetivo de definir quais projetos terão mais coleta de
-dados, para num segundo momento caracterizá-los em relação ao estágio de
-evolução.
+Este estudo foi realizado a partir de uma análise inicial dos dados existentes
+de cada software, coletados previamente nos Capítulos \ref{estudo1} e
+\ref{estudo2}, a partir dessa análise define-se quais projetos são candidatos a
+terem mais dados coletados para compor a caracterização do seu ciclo de vida. Ao
+final do estudo cada projeto será caracterizado em um dos seguintes estágios
+de evolução:
 
-Nesta primeira fase, coletamos para os projetos com disponibilidade de
-download, ou ao menos, entre aqueles com alguma presença oficial online com
-informações do projeto, quando disponível, informações sobre os lançamentos,
-incluindo para cada lançamento:
+\begin{description}
+  \item [Initial development] Fase inicial de desenvolvimento
+  \item [Evolution] Evoluçao
+  \item [Servicing] Serviço
+  \item [Phaseout] Declínio
+  \item [Closedown] Encerrado
+  \item [unknown] Desconhecido
+\end{description}
+
+Nesta análise inicial deve-se identificar entre os projetos de software
+acadêmico quais possuem disponibilidade de download, ou ao menos, presença
+oficial online com informações do projeto sobre lançamentos, as seguintes
+informações serão coletadas:
 
 \begin{itemize}
   \item Número da versão
@@ -175,54 +185,71 @@ incluindo para cada lançamento:
   \item URL para download do código fonte
 \end{itemize}
 
-A coleta desses dados é realizada manualmente através das informações
-disponíveis no site dos projetos, manuais, código fonte e repositórios, podendo
-compor com informações de diversas fontes para ter uma maior abrangencia de
-informações, não é raro que os projetos mudem a forma de lançamentos, passando
-de um formato para outro, de uma plataforma a outra, essas informações devem
-ser investigadas a fim de encontrar o máximo de informação possível sobre os
-lançamentos.
+A fonte para coleta desses dados são o site do projeto, manuais, código fonte e
+repositórios, usualmente usando mais de uma fonte para compor todas as
+informações de lançamentos de um certo software. Não é raro que os projetos
+mudem a forma de lançamento, passando de um formato para outro, de uma
+plataforma a outra, essas informações devem ser investigadas a fim de encontrar
+o máximo de informação possível.
 
-As informações sobre lançamentos foram coletadas manualmente em arquivos de
-changelog, no site do projeto, ou em tags no próprio repositório de código
-fonter. O número de commits foi coletado com o uso do git via linha de comando,
-o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
-coletada com software de análise estática Analizo.
+%As informações sobre lançamentos foram coletadas manualmente em arquivos de
+%changelog, no site do projeto, ou em tags no próprio repositório de código
+%fonter. O número de commits foi coletado com o uso do git via linha de comando,
+%o cálculo e coleta da métrica de complexidade estrutural do código fonte foi
+%coletada com software de análise estática Analizo.
 
-Aqueles projetos sem disponibilidade de download, ou seja, os projetos
-indisponíveis e sem presença oficial online serão automaticamente
-caracterizados como projetos com ciclo de vida encerrados a partir do modelo
-{\it ``Staged Model for Software Evolution''}, estes projetos serão
-caracterizados como estando na fase {\it ``Closedown''}.
+Os projetos sem presença oficial online ou sem disponibilidade de download, ou
+seja, com a URL indicada pelos seus autores originais indisponível,
+consequentemente não terão informações sobre lançamentos, em nosso estudo estes
+projetos serão caracterizados como projetos com ciclo de vida encerrados ({\it
+Closedown}).
 
-Entre os projetos com disponibilidade de código fonte, e com código fonte
-disponível para cada lançamento, foi feito o download do código fonte para
-coleta do número de módulos através de análise estática com a ferramenta
-Analizo. Apenas os projetos escritos em linguagens suportadas pelo Analizo -- C,
-C++ e Java -- foram analizados.
+%{\it ``Staged Model for Software Evolution''}, estes projetos serão
+%caracterizados como estando na fase {\it ``Closedown''}.
+
+Os demais projetos, aqueles com presença online, e com código fonte disponível,
+tiveram o código fonte de cada lançamento copiado localmente para coleta da
+métrica de tamanho em número de módulos, foi feito o download do código fonte
+de cada versão e a ferramenta de análise estática Analizo foi utilizada para
+coletar esta informação do código fonte.
+
+Analizo é software livre, distribuído sob a licença GNU General Public License
+versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
+podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
+auto-documentadas e podem ser consultadas como páginas de manual UNIX.  Analizo
+é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
+foi a versão utilizada neste estudo.
+
+Apenas os projetos escritos em linguagens suportadas pelo Analizo -- C, C++ e
+Java -- foram analizados, projetos com informações de lançamentos, com código
+fonte disponível para cada lançamento, mas que sejam escritos em outras
+linguagens de programação não serão caracterizados em relação ao estágio de
+evolução no ciclo de vida.
 
 %Em seguida entre os demais projetos, selecionamos os projetos com
 %disponibilidade de código fonte para uma análise evolutiva entre os
 %lançamentos, para cada lançamento será obtido o código fonte e será extraído
 %métricas representando o número de módulos para avaliação histórica.
 
-Analisar historicamente (evolucao) dos projetos com maior número de releases
-(com codigo dessas releases) e que já tenha coletado as metricas (ja coletei
-varias versoes de alguns projetos), a analise individual. Projetos com poucos releases,
-digamos, abaixo de 5, não serão analisados em detalhes na avaliação histórica, mas
-terão os dados das métricas analisados para definir o estágio de evolução.
+%Analisar historicamente (evolucao) dos projetos com maior número de releases
+%(com codigo dessas releases) e que já tenha coletado as metricas (ja coletei
+%varias versoes de alguns projetos), a analise individual.
+
+Projetos com apenas um lançamento serão considerados projetos em estágio inicial
+de desenvolvimento, uma vez que não é possível determinar outras fases
+olhando apenas os dados coletados aqui, mesmo que sejam projetos com
+código fonte disponível, a métrica indicando o tamanho em número de módulos
+foi coletada para se ter uma dimensão do tamanho de cada projeto, mas
+será caracterizado automaticamente como {\it Initial development}.
+
+%poucos releases, digamos, abaixo de 5, não serão analisados em
+%detalhes na avaliação histórica, mas terão os dados das métricas analisados
+%para definir o estágio de evolução.
 
 %Os projetos sem disponibilidade de
 %download não serão caracterizados quanto ao seu ciclo de vida uma vez que os
 %indícios para realizar este estudo está centrado na disponibilidade de código
 %fonte.
-
-Analizo é software livre, distribuído sob a licença GNU General Public License
-versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
-podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
-auto-documentadas e podem ser consultadas como páginas de manual UNIX. 
-Analizo é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
-foi a versão utilizada neste estudo.
 
 \section{Preparação} \label{estudo3:preparacao}
 
@@ -312,6 +339,22 @@ estrutural para cada ferramenta.
 
 Todos os dados foram agregados numa planilha.
 
+...a Figura \ref{life-cycle} apresenta a porporção de quantos projetos estão em
+cada estágio de evolução do ciclo de vida ....
+
+\begin{figure}[h]
+  \begin{minipage}{0.5\textwidth}
+    \centering
+    \includegraphics[scale=0.55]{imagens/life-cycle-pie.png}
+  \end{minipage}
+  \begin{minipage}{0.5\textwidth}
+    \centering
+    \input{documents/life-cycle-table.tex}
+  \end{minipage}
+  \caption{Número total de projetos identificados em cada estágio de evolução.}
+  \label{life-cycle}
+\end{figure}
+
 Os projetos com poucas releases, sem informação sobre datas de lançamentos, serão
 considerados em estágio inicial de desenvolvimento.
 
@@ -355,17 +398,6 @@ os projetos sem informação de releases foi excluído do gráfico.
   \label{releases-vs-mentions}
 \end{figure}
 
-...a Figura \ref{life-cycle-pie} apresenta a porporção de quantos projetos estão em
-cada estágio de evolução do ciclo de vida ....
-
-\input{documents/life-cycle-table.tex}
-
-\begin{figure}[h]
-  \centering
- \includegraphics[scale=0.6]{imagens/life-cycle-pie.png}
-  \caption{Gráfico com ciclo de vida dos projetos....}
-  \label{life-cycle-pie}
-\end{figure}
 
 Entre os 10 projetos com ciclo de vida sem definição, 3
 
