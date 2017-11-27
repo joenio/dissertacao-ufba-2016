@@ -5,18 +5,13 @@
 %   $total{$dataset{$k}{life_cycle}{stage}} //= 0;
 %   $total{$dataset{$k}{life_cycle}{stage}}++;
 % }
-\begin{table}[h]
-\caption{Estágio atual no ciclo de vida dos projetos de software acadêmico.}
-\centering
 \begin{tabular}{l c}
   \hline
-  {\bf Estágio} & {\bf Número de projetos} \\\
+  {\bf Estágio} & {\bf Projetos} \\\
   \hline
 % foreach ('Initial development', 'Evolution', 'Servicing', 'Phaseout', 'Closedown', 'unknown') {
-    <%== $_ %> & <%== $total{$_} %> \\\
+    <%== $_ eq 'unknown' ? 'Desconhecido' : $_ %> & <%== $total{$_} %> \\\
 % }
   \hline
 \end{tabular}
-\label{life-cycle-table}
-\end{table}
 %# vim: filetype=epl
