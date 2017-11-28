@@ -156,7 +156,7 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 % }}}
 
-\section{Planejamento do Estudo} \label{estudo3:planejamento}
+\section{Planejamento do Estudo} \label{estudo3:planejamento} % {{{
 
 Este estudo foi realizado a partir de uma análise inicial dos dados existentes
 de cada software, coletados previamente nos Capítulos \ref{estudo1} e
@@ -251,11 +251,22 @@ será caracterizado automaticamente como {\it Initial development}.
 %indícios para realizar este estudo está centrado na disponibilidade de código
 %fonte.
 
-\section{Preparação} \label{estudo3:preparacao}
+% }}}
 
-Seguindo o planejamento criamos os arquivos releases.yml com a seguinte
-estrutura para coletar para cada projeto as informações de lançamentos,
-Listagem \ref{releases-yml}.
+\section{Preparação} \label{estudo3:preparacao} % {{{
+
+Seguindo o planejamento apresentado na seção \ref{estudo3:planejamento},
+preparamos os arquivos e templates necessários para realizar a coleta e análise
+dos dados, o conjunto de projetos de software acadêmico de análise estática e
+os dados coletados nos Capítulos \ref{estudo1} e \ref{estudo2} serão também
+utilizados aqui neste estudo.
+
+Para cada projeto foi criado um arquivo \texttt{releases.yml} com a estrutura
+apresentada na Listagem \ref{releases-yml}, nele serão registradas as
+informações sobre os lançamentos de cada software. Os arquivos foram criados
+manualmente, para os projetos sem informações sobre lançamentos o arquivo será
+criado com um único campo indicando indisponibilidade com o seguinte conteúdo
+\texttt{source: unavailable}.
 
 \begin{lstlisting}[
 caption={Arquivo releases.yml.},
@@ -273,13 +284,31 @@ numbers=left
       released_at:
 \end{lstlisting}
 
-Estes arquivos foram criados manualmente para cada projeto, quando o projeto
-não tem informação sobre lançamentos disponível criamos este arquivo com o campo
-\texttt{source} definido para \texttt{unavailable}.
+Após criar os arquivos para a coletar as informações sobre lançamentos,
+implementamos um arquivo de template em
+\texttt{templates/releases-table.tex.epl} para agregar os dados e apresentá-los
+na seção \ref{estudo3:coleta} de coleta de dados.
 
-Definimos também a estrutura para adicionar aos arquivos \texttt{software.yml} de
+%apresentados, o arquivo de template criado está em
+%, este arquivo gera o
+%\texttt{documents/releases-table.tex} 
+
+O Analizo e suas dependências foram instaladas, um script para automatizar a
+execução da ferramenta {\it analizo metrics} para coletar o número de módulos
+de cada lançamento foi desenvolvido. Este script, disponível em
+\texttt{bin/run-analizo}, foi implementado em linguagem Perl e será apresentado
+em mais detalhes no Apêndice \ref{reproducibilidade-do-estudo}.
+
+%, definimos uma estrutura de diretórios e localização dos arquivos, etc.  
+
+As métricas serão agregadas no arquivo CSV \texttt{documents/metrics.csv}
+gerado pelo template \texttt{templates/metrics.csv.epl}, este template consulta
+os arquivos de cada lançamento criado pela execução do {\it analizo metrics}
+e exibe para cada projeto todos os lançamentos e suas métricas.
+
+Por fim, definimos uma estrutura para adicionar aos arquivos \texttt{software.yml} de
 cada projeto a informação final sobre o atual estágio de evolução em relação ao
-ciclo de vida conforme Listagem \ref{software-yml-life-cycle}.
+ciclo de vida do software, conforme Listagem \ref{software-yml-life-cycle}.
 
 \begin{lstlisting}[
 caption={Campos adicionados ao arquivo software.yml de cada projeto.},
@@ -292,38 +321,24 @@ numbers=left
     review:
 \end{lstlisting}
 
-O campo \texttt{review} anotamos a análise realizada para cada projeto em forma
-livre, a avaliação de cada projeto será manual e este campo nos será útil para
-anotar a análise realizada, o campo \texttt{stage} possui o resultado final da
-caracterização de cada software, este campo assumirá um dos seguintes valores
-conforme o modelo staged model:
-
-\begin{description}
-  \item [Initial development] Fase inicial de desenvolvimento
-  \item [Evolution] Evoluçao
-  \item [Servicing] Serviço
-  \item [Phaseout] Declínio
-  \item [Closedown] Encerrado
-  \item [unknown] Desconhecido
-\end{description}
+O campo \texttt{review} foi utilizado para registrar anotações em forma livre
+sobre a análise dos dados, a avaliação de cada projeto é realizada
+inspecionando manualmente os dados coletados, incluindo dados trazidos pelos
+estudos anteriores, o campo \texttt{stage} contém o resultado final da
+caracterização do ciclo de vida de cada software, este campo assumirá um dos
+estágios de evolução conforme o modelo de evolução apresentado em
+\ref{estudo3:introducao}.
 
 %Analisar apenas os projetos com código fonte suportado pelo Analizo (C, C++ e Java),
 %Derailer é Ruby, Flowgen é Python, PHP AiR é Rascal, protopurity é Javascript,
 %Pseudogen é Python, TEBA é Perl, Wrangler é Erlang,
 %o e-munity e mygcc são basicamente o código do GCC, n faz sentido coletar métricas para ele.
 
-Instalamos o Analizo e suas dependências, implementamos um pequeno script para
-automatizar a execução do Analizo em cada código fonte dos lançamentos de cada
-projeto, definimos uma estrutura de diretórios e localização dos arquivos, etc.
-O script desenvolvido \texttt{bin/run-analizo} será apresentado em mais
-detalhes no Apêndice \ref{reproducibilidade-do-estudo}.
-
 %Para os outros projetos, com código fonte disponível, copiamos localmente o código fonte
 %e executamos o analizo metrics para coletar a métrica de complexidade estrutural, tamanho em
 %linhas de código e número de classes.
 
-Para cada ferramenta de análise estática selecionada, coletamos  suas métricas de código-fonte
-com suporte da ferramenta {\it analizo metrics}. 
+% }}}
 
 \subsection{Execução}
 
