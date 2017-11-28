@@ -1,16 +1,6 @@
 \xchapter{Ciclo de vida de software acadêmico de análise estática}{}
 \label{estudo3}
 
-%* posicionar os projetos em algum estagio do ciclo de staged model
-%* verificar a ultima mensagem (issue ou lista) e usar isso como indicio de projetos na fase "phase out"
-%  (se um projeto tem issue a muito tempo (1 ano, 2 anos) isso significa que o projeto esta em phase out
-%* se os projetos nao estao disponiveis eles estao em closedown, ou seja, vou jogar todos que estao
-%  sem disponibilidade para esta fase!
-%* coletar o numero de classes para faer grafico ao longo do tempo para 
-
-%(ber artigo original de staged e o adaptaado ao foss para costurar nas conclusoes)
-%(exemplo: manter projetos disponivel o mais tempo possivel eh importante etc...)
-
 Este capítulo apresenta
 um estudo para caracterização de software acadêmico de análise estática,
 em relação ao estágio de evolução no ciclo de vida,
@@ -21,11 +11,6 @@ O estudo tomou como base o modelo {\it ``Staged Model for Software Evolution''}
 e coletou dados do código fonte usando análise estática com o apoio da
 ferramenta Analizo, a análise dos dados revelou que a maior parte dos projetos
 estão em estágio inicial de desenvolvimento ou encerrados.
-
-%através da coleta de informaçoes sobre
-%lançamentos e versões dos projetos bem como da coleta através do código fonte
-%do número de módulos (arquivos ou classes) destes projetos em cada versão
-%disponibilizada em código fonte.
 
 A seção \ref{estudo3:introducao} contextualiza o estudo,
 a seção \ref{estudo3:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
@@ -70,13 +55,11 @@ acadêmico de análise estática uma vez que saber em que fase um software está
 útil ao se tomar decisão de adotar um certo software como uso ou mesmo como
 objeto de contribuição.
 
-%O ideal seria eu posicionar cada projeto num dos estágios do modelo (staged model) e aí sim
-%poderia comparar projetos distintos, comparar dois projetos em fase de "manutenção" pode
-%dar alguma respostas interessante.
-
 \section{Fundamentação} \label{estudo3:fundamentacao}
 
-(staged model, métrica para contar módulos, lançamentos/releases)
+\subsection{Ciclo de vida}
+
+(descrever staged model)
 
 \begin{description}
   \item [Initial development] Fase inicial de desenvolvimento
@@ -86,6 +69,18 @@ objeto de contribuição.
   \item [Closedown] Encerrado
   \item [unknown] Desconhecido
 \end{description}
+
+\subsection{Módulo}
+
+Neste estudo, módulo refere-se as partes que compõe um sistema de software.  A
+maioria dos paradigmas de desenvolvimento de software possui uma ou mais
+construções que fazem o papel de módulo -- ``classes'', ``aspectos'', ``tipos
+abstratos de dados'', ou ``arquivos-fonte'' -- para as quais serão calculadas
+para cada projeto.
+
+\subsection{Lançamentos}
+
+(breve definição para o contexto do estudo)
 
 \section{Escopo} \label{estudo3:escopo} % {{{
 
@@ -399,7 +394,7 @@ lançamentos e registrar no arquivo \texttt{releases.yml} na ordem correta.
 
 % }}}
 
-\section{Análise dos Dados} \label{estudo3:analise}
+\section{Análise dos Dados} \label{estudo3:analise} % {{{
 
 Analisamos as métricas e a variação em número de módulos entre as versões dos
 projetos com lançamentos e código fonte disponível, analisamos também as
@@ -439,6 +434,8 @@ idéia de como o código mudou mas só tem disponível binários, s32 projeto co
 histórico entre 2004 e 2006 mas com a distribuição de código fonte bastante
 confusa dificultando compreender quais pacotes fazem parte de qual versão ou
 lançamento.
+
+% }}}
 
 \section{Interpretação dos Resultados} \label{estudo3:interpretacao} % {{{
 
@@ -506,7 +503,7 @@ de lançamentos.
 
 % }}}
 
-\section{Ameaças à validade}
+\section{Ameaças à validade} % {{{
 
 Toda a análise e interpretação dos resultados tomou como base apenas os dados
 coletados do site, publicações, e repositórios dos projetos de software
@@ -517,6 +514,8 @@ seus desenvolvedores mas que não se refletem ainda nos documentos dos projetos,
 apesar disso o nosso estudo tem um caráter exploratório, com interesse especial em
 uma figura geral do domínio de análise estática e não necessariamente trazer
 evidências sobre os projetos inidivualmente.
+
+% }}}
 
 \section{Conclusões} \label{estudo3:conclusoes} % {{{
 
@@ -595,3 +594,22 @@ constantes mas com pouca variação na base de código do projeto.
 %   verificar quais estudos tem validacao cientifica, ou seja, fazem estudo de caso? experimento? etc...?
 
 % code churn: the rate of growth of the size of the software.
+
+%* posicionar os projetos em algum estagio do ciclo de staged model
+%* verificar a ultima mensagem (issue ou lista) e usar isso como indicio de projetos na fase "phase out"
+%  (se um projeto tem issue a muito tempo (1 ano, 2 anos) isso significa que o projeto esta em phase out
+%* se os projetos nao estao disponiveis eles estao em closedown, ou seja, vou jogar todos que estao
+%  sem disponibilidade para esta fase!
+%* coletar o numero de classes para faer grafico ao longo do tempo para 
+
+%(ber artigo original de staged e o adaptaado ao foss para costurar nas conclusoes)
+%(exemplo: manter projetos disponivel o mais tempo possivel eh importante etc...)
+
+%através da coleta de informaçoes sobre
+%lançamentos e versões dos projetos bem como da coleta através do código fonte
+%do número de módulos (arquivos ou classes) destes projetos em cada versão
+%disponibilizada em código fonte.
+
+%O ideal seria eu posicionar cada projeto num dos estágios do modelo (staged model) e aí sim
+%poderia comparar projetos distintos, comparar dois projetos em fase de "manutenção" pode
+%dar alguma respostas interessante.
