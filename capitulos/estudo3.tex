@@ -78,6 +78,15 @@ objeto de contribuição.
 
 (staged model, métrica para contar módulos, lançamentos/releases)
 
+\begin{description}
+  \item [Initial development] Fase inicial de desenvolvimento
+  \item [Evolution] Evoluçao
+  \item [Servicing] Serviço
+  \item [Phaseout] Declínio
+  \item [Closedown] Encerrado
+  \item [unknown] Desconhecido
+\end{description}
+
 \section{Escopo} \label{estudo3:escopo} % {{{
 
 Projetos de software acadêmico de análise estática publicados nas 
@@ -162,21 +171,12 @@ Este estudo foi realizado a partir de uma análise inicial dos dados existentes
 de cada software, coletados previamente nos Capítulos \ref{estudo1} e
 \ref{estudo2}, a partir dessa análise define-se quais projetos são candidatos a
 terem mais dados coletados para compor a caracterização do seu ciclo de vida. Ao
-final do estudo cada projeto será caracterizado em um dos seguintes estágios
-de evolução:
-
-\begin{description}
-  \item [Initial development] Fase inicial de desenvolvimento
-  \item [Evolution] Evoluçao
-  \item [Servicing] Serviço
-  \item [Phaseout] Declínio
-  \item [Closedown] Encerrado
-  \item [unknown] Desconhecido
-\end{description}
+final do estudo cada projeto será caracterizado em um dos estágios
+de evolução apresentados na seção \ref{estudo3:introducao}.
 
 Nesta análise inicial deve-se identificar entre os projetos de software
 acadêmico quais possuem disponibilidade de download, ou ao menos, presença
-oficial online com informações do projeto sobre lançamentos, as seguintes
+oficial online com informações do projeto sobre lançamentos, onde as seguintes
 informações serão coletadas:
 
 \begin{itemize}
@@ -186,11 +186,11 @@ informações serão coletadas:
 \end{itemize}
 
 A fonte para coleta desses dados são o site do projeto, manuais, código fonte e
-repositórios, usualmente usando mais de uma fonte para compor todas as
-informações de lançamentos de um certo software. Não é raro que os projetos
-mudem a forma de lançamento, passando de um formato para outro, de uma
-plataforma a outra, essas informações devem ser investigadas a fim de encontrar
-o máximo de informação possível.
+repositórios, usualmente será utilizado mais de uma fonte para compor todas as
+informações sobre os lançamentos de um certo software. Não é raro que os
+projetos mudem a forma de lançamento, passando de um formato para outro, de uma
+plataforma a outra, entre outras mudanças, essas informações devem ser
+investigadas a fim de encontrar o máximo de informação possível.
 
 %As informações sobre lançamentos foram coletadas manualmente em arquivos de
 %changelog, no site do projeto, ou em tags no próprio repositório de código
@@ -200,31 +200,42 @@ o máximo de informação possível.
 
 Os projetos sem presença oficial online ou sem disponibilidade de download, ou
 seja, com a URL indicada pelos seus autores originais indisponível,
-consequentemente não terão informações sobre lançamentos, em nosso estudo estes
-projetos serão caracterizados como projetos com ciclo de vida encerrados ({\it
-Closedown}).
+não terão, consequentemente, informações sobre os lançamentos, dessa forma, estes
+projetos serão caracterizados como software com ciclo de vida encerrado ({\it
+Closedown}), uma vez que eles estão indisponíveis e inacessíveis a qualquer
+potencial usuário interessado em utilizar o software.
 
 %{\it ``Staged Model for Software Evolution''}, estes projetos serão
 %caracterizados como estando na fase {\it ``Closedown''}.
 
 Os demais projetos, aqueles com presença online, e com código fonte disponível,
-tiveram o código fonte de cada lançamento copiado localmente para coleta da
-métrica de tamanho em número de módulos, foi feito o download do código fonte
-de cada versão e a ferramenta de análise estática Analizo foi utilizada para
-coletar esta informação do código fonte.
+tiveram o código fonte de cada lançamento copiado localmente para análise
+estática e coleta da métrica representando o tamanho do software em número de
+módulos, foi feito o download do código fonte de cada versão e a ferramenta de
+análise estática Analizo foi utilizada para extrair as informações do código
+fonte.
 
 Analizo é software livre, distribuído sob a licença GNU General Public License
 versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
-podem ser obtidos em \url{http://www.analizo.org}. Todas as ferramentas são
-auto-documentadas e podem ser consultadas como páginas de manual UNIX.  Analizo
-é escrito em Perl, sua última versão 1.19.1 lançada em 01 de Setembro de 2016
-foi a versão utilizada neste estudo.
+podem ser obtidos em \url{http://www.analizo.org}. Analizo é escrito em Perl,
+sua última versão 1.19.1 lançada em 01 de Setembro de 2016 foi a versão
+utilizada neste estudo.
 
-Apenas os projetos escritos em linguagens suportadas pelo Analizo -- C, C++ e
-Java -- foram analizados, projetos com informações de lançamentos, com código
-fonte disponível para cada lançamento, mas que sejam escritos em outras
-linguagens de programação não serão caracterizados em relação ao estágio de
-evolução no ciclo de vida.
+Apenas os projetos escritos nas linguagens suportadas pelo Analizo foram
+analisados, apenas C, C++ C\# e Java. O código fonte dos projetos escritos em
+outras linguagens de programação não serão analisados, estes projetos serão caracterizados
+com base nas outras informações disponíveis ou serão definidos como {\it Desconhecido} quando não for possível determinar o estágio de evolução com as informações disponíveis. Projetos com apenas um
+lançamento serão considerados projetos em estágio inicial de desenvolvimento
+({\it Initial development}).
+
+%não é possível determinar outras fases
+%olhando apenas os dados coletados aqui, mesmo que sejam projetos com
+%código fonte disponível, a métrica indicando o tamanho em número de módulos
+%foi coletada para se ter uma dimensão do tamanho de cada projeto, mas
+%será caracterizado automaticamente como 
+
+%caracterizados em relação ao estágio de
+%evolução no ciclo de vida.
 
 %Em seguida entre os demais projetos, selecionamos os projetos com
 %disponibilidade de código fonte para uma análise evolutiva entre os
@@ -235,12 +246,6 @@ evolução no ciclo de vida.
 %(com codigo dessas releases) e que já tenha coletado as metricas (ja coletei
 %varias versoes de alguns projetos), a analise individual.
 
-Projetos com apenas um lançamento serão considerados projetos em estágio inicial
-de desenvolvimento, uma vez que não é possível determinar outras fases
-olhando apenas os dados coletados aqui, mesmo que sejam projetos com
-código fonte disponível, a métrica indicando o tamanho em número de módulos
-foi coletada para se ter uma dimensão do tamanho de cada projeto, mas
-será caracterizado automaticamente como {\it Initial development}.
 
 %poucos releases, digamos, abaixo de 5, não serão analisados em
 %detalhes na avaliação histórica, mas terão os dados das métricas analisados
@@ -284,10 +289,10 @@ numbers=left
       released_at:
 \end{lstlisting}
 
-Após criar os arquivos para a coletar as informações sobre lançamentos,
+Após criar os arquivos para a coleta de informações sobre os lançamentos,
 implementamos um arquivo de template em
 \texttt{templates/releases-table.tex.epl} para agregar os dados e apresentá-los
-na seção \ref{estudo3:coleta} de coleta de dados.
+na seção \ref{estudo3:coleta}, Tabela \ref{releases-table}.
 
 %apresentados, o arquivo de template criado está em
 %, este arquivo gera o
@@ -303,12 +308,12 @@ em mais detalhes no Apêndice \ref{reproducibilidade-do-estudo}.
 
 As métricas serão agregadas no arquivo CSV \texttt{documents/metrics.csv}
 gerado pelo template \texttt{templates/metrics.csv.epl}, este template consulta
-os arquivos de cada lançamento criado pela execução do {\it analizo metrics}
-e exibe para cada projeto todos os lançamentos e suas métricas.
+os arquivos com os dados de cada lançamento criado pela execução do {\it analizo metrics}
+e exibe, para cada projeto, todos os lançamentos e suas métricas.
 
 Por fim, definimos uma estrutura para adicionar aos arquivos \texttt{software.yml} de
 cada projeto a informação final sobre o atual estágio de evolução em relação ao
-ciclo de vida do software, conforme Listagem \ref{software-yml-life-cycle}.
+ciclo de vida do software, conforme mostra a Listagem \ref{software-yml-life-cycle}.
 
 \begin{lstlisting}[
 caption={Campos adicionados ao arquivo software.yml de cada projeto.},
@@ -346,7 +351,9 @@ Seguindo o planejamento e preparação descritos nas seções
 \ref{estudo3:planejamento} e \ref{estudo3:preparacao}, iniciamos a coleta dos
 dados, incluindo a coleta do número de lançamentos de cada projeto, informações
 e código fonte de cada lançamento, bem como a métrica representando o número de
-módulos do software em cada versão.
+módulos do software em cada versão. Coletamos os dados sobre lançamentos,
+fizemos o download do código fonte e executamos a ferramenta \texttt{analizo
+metrics} para cada projeto, em cada versão.
 
 Foi encontrado ao todo \ReleasesCount \ lançamentos, coletamos para cada
 lançamento, quando disponível, número da versão, data de lançamento e URL para
@@ -368,15 +375,10 @@ de \ReleasesYearFirst \ e \ReleasesYearLast.
 %estática, bem como, os valores das métricas de código-fonte de complexidade
 %estrutural para cada ferramenta.
 
-Os projetos com poucas releases, sem informação sobre datas de lançamentos,
-serão considerados em estágio inicial de desenvolvimento. Para coletar as
-versões e datas dos projetos que não disponibilizam no site olhamos o código
-fonte quando disponível em arquivos NEWS, ChangeLog, etc.
-
-Analisamos as métricas e a variação em número de módulos entre as versões dos
-projetos com lançamentos e código fonte disponível, analisamos também as
-menções do tipo Uso e Contribuiçao para determinar se há atividade recente para
-os projetos sem lançamentos atuais.
+%Os projetos com poucas releases, sem informação sobre datas de lançamentos,
+%serão considerados em estágio inicial de desenvolvimento. Para coletar as
+%versões e datas dos projetos que não disponibilizam no site olhamos o código
+%fonte quando disponível em arquivos NEWS, ChangeLog, etc.
 
 %criamos as entradas abaixono arquivo software.yml, e nele anotamos
 %a avaliacao sobre o ciclo de vida e no campo stage definimos o estágio
@@ -386,19 +388,23 @@ os projetos sem lançamentos atuais.
 %  stage: Initial development
 %  review: 1 versão sem data, 1 contribuicao em 2011 outra 2013, 1 uso em 2017
 
-\input{documents/releases-table.tex}
-
-Os lançamentos coletados do repositório, código fonte, sites, devem ser organizados
-em ordem de data de lançamento, os mais antigos primeiros, numa lista em ordem, sendo
-o último release o lançamento mais recente. Isto é necessário uma vez que o número de versão
-de cada projeto não segue o mesmo padrão, alterando de formatos entre releases distintos,
-a data de lançamento de cada release também nem sempre está disponível, então
-a coleta deve garantir que haja alguma ordem, então no momento da coleta deve-se
-avaliar a ordem dos lançamentos e registrar no arquivo releases.yml na ordem correta.
+Os lançamentos coletados do repositório, código fonte, sites, devem ser
+organizados em ordem de data de lançamento, os mais antigos primeiros, numa
+lista em ordem, sendo o último release o lançamento mais recente. Isto é
+necessário uma vez que o número de versão de cada projeto não segue o mesmo
+padrão, alterando de formatos entre releases distintos, a data de lançamento de
+cada release também nem sempre está disponível, então a coleta deve garantir
+que haja alguma ordem, então no momento da coleta deve-se avaliar a ordem dos
+lançamentos e registrar no arquivo \texttt{releases.yml} na ordem correta.
 
 % }}}
 
 \section{Análise dos Dados} \label{estudo3:analise}
+
+Analisamos as métricas e a variação em número de módulos entre as versões dos
+projetos com lançamentos e código fonte disponível, analisamos também as
+menções do tipo Uso e Contribuiçao para determinar se há atividade recente para
+os projetos sem lançamentos atuais.
 
 para definir entre os que não tem atualização a mais de 5 anos, verificar as
 menções, se houver menções com uso/contribuição é possível que esteja em serving,
@@ -408,6 +414,10 @@ A ... apresenta em conjunto o número de releases total
 de cada projeto em relação ao número total de menções encontradas nas bases ACM e IEEE,
 os projetos sem informação de releases foi excluído do gráfico.
 
+...a Tabela \ref{releases-table} apreseta a caracterização final de cada projeto junto
+ao número total de lançamentos e o período em que estes lançamentos foram lançados (rss)...
+
+\input{documents/releases-table.tex}
 
 ...a Figura \ref{life-cycle} apresenta a porporção de quantos projetos estão em
 cada estágio de evolução do ciclo de vida ....
@@ -435,7 +445,7 @@ pegamos esse numero da secao 3.3.1 do staged model adaptado a floss.
 
 \section{Interpretação dos Resultados} \label{estudo3:interpretacao}
 
-\subsection{Q1 - \EstudoDoisQuestaoUm}
+\subsection{Q1 - \EstudoTresQuestaoUm}
 
 (pendente)
 
