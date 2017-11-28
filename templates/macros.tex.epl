@@ -53,7 +53,7 @@
 \newcommand{\ContributeStudyDoisCount}{<%== sum map { $contribute_study2{$_} } keys %contribute_study2 %>}
 \newcommand{\ContributeStudyDoisSoftware}{<%== grep { $contribute_study2{$_} > 0 } keys %contribute_study2 %>}
 %= "\% dados do estudo3"
-% my %releases = (total => 0, available => 0, projects_analized => 0);
+% my %releases = (total => 0, available => 0, projects => 0, projects_analized => 0);
 % my @years = ();
 % foreach my $k (keys %dataset) {
 %   $releases{total} += @{ $dataset{$k}{releases}{versions} };
@@ -64,12 +64,16 @@
 %   if (keys %{ $dataset{$k}{metrics} } > 0) {
 %     $releases{projects_analized}++;
 %   }
+%   if (@{ $dataset{$k}{releases}{versions} }) {
+%     $releases{projects}++;
+%   }
 %   push @years, map { $_->{released_at} =~ /^(\d{4})/ ? $1 : undef } @{ $dataset{$k}{releases}{versions} };
 % }
 % @years = uniq sort grep { $_ } @years;
 \newcommand{\ReleasesCount}{<%== $releases{total} %>}
 \newcommand{\ReleasesAvailableCount}{<%== $releases{available} %>}
 \newcommand{\ReleasesMetricsCount}{<%== $releases{metrics} %>}
+\newcommand{\ProjectsWithReleasesCount}{<%== $releases{projects} %>}
 \newcommand{\ProjectsAnalizedCount}{<%== $releases{projects_analized} %>}
 \newcommand{\ReleasesYearFirst}{<%== $years[0] %>}
 \newcommand{\ReleasesYearLast}{<%== $years[-1] %>}
