@@ -340,19 +340,74 @@ estágios de evolução conforme o modelo de evolução apresentado em
 
 % }}}
 
-\subsection{Execução}
+\section{Coleta de Dados} \label{estudo3:coleta} % {{{
 
-\section{Coleta de Dados} \label{estudo3:coleta}
+Seguindo o planejamento e preparação descritos nas seções
+\ref{estudo3:planejamento} e \ref{estudo3:preparacao}, iniciamos a coleta dos
+dados, incluindo a coleta do número de lançamentos de cada projeto, informações
+e código fonte de cada lançamento, bem como a métrica representando o número de
+módulos do software em cada versão.
 
-Coletar para cada lançamento a data do lançamento, o endereço para download
-do código fonte da versão, e número da versão, fazer download de cada versão
-em código fonte, apenas entre os suportados pelo Analizo para coleta de métricas.
+Foi encontrado ao todo \ReleasesCount \ lançamentos, coletamos para cada
+lançamento, quando disponível, número da versão, data de lançamento e URL para
+download do código fonte. Destes lançamentos, \ReleasesAvailableCount \ possui
+informação para download, 5 destes releases não tem código fonte, apenas
+binários do software \texttt{s33}. Assim, deste total extraímos métricas
+de código fonte de \ReleasesMetricsCount \ lançamentos.
 
-Os dados coletados incluem a caracterização das ferramentas de análise
-estática, bem como, os valores das métricas de código-fonte de complexidade
-estrutural para cada ferramenta.
+Este total de métricas foi extraído de um conjunto de \ProjectsAnalizedCount \
+projetos, os demais projetos não possuem código fonte disponível ou são
+escritos em linguagem de programação não suportada pelo Analizo. Entre os anos
+de \ReleasesYearFirst \ e \ReleasesYearLast.
 
-Todos os dados foram agregados numa planilha.
+%a data do lançamento, o endereço para download
+%do código fonte da versão, e número da versão, fazer download de cada versão
+%em código fonte, apenas entre os suportados pelo Analizo para coleta de métricas.
+
+%Os dados coletados incluem a caracterização das ferramentas de análise
+%estática, bem como, os valores das métricas de código-fonte de complexidade
+%estrutural para cada ferramenta.
+
+Os projetos com poucas releases, sem informação sobre datas de lançamentos,
+serão considerados em estágio inicial de desenvolvimento. Para coletar as
+versões e datas dos projetos que não disponibilizam no site olhamos o código
+fonte quando disponível em arquivos NEWS, ChangeLog, etc.
+
+Analisamos as métricas e a variação em número de módulos entre as versões dos
+projetos com lançamentos e código fonte disponível, analisamos também as
+menções do tipo Uso e Contribuiçao para determinar se há atividade recente para
+os projetos sem lançamentos atuais.
+
+%criamos as entradas abaixono arquivo software.yml, e nele anotamos
+%a avaliacao sobre o ciclo de vida e no campo stage definimos o estágio
+%de cada projeto
+
+%life_cycle:
+%  stage: Initial development
+%  review: 1 versão sem data, 1 contribuicao em 2011 outra 2013, 1 uso em 2017
+
+\input{documents/releases-table.tex}
+
+Os lançamentos coletados do repositório, código fonte, sites, devem ser organizados
+em ordem de data de lançamento, os mais antigos primeiros, numa lista em ordem, sendo
+o último release o lançamento mais recente. Isto é necessário uma vez que o número de versão
+de cada projeto não segue o mesmo padrão, alterando de formatos entre releases distintos,
+a data de lançamento de cada release também nem sempre está disponível, então
+a coleta deve garantir que haja alguma ordem, então no momento da coleta deve-se
+avaliar a ordem dos lançamentos e registrar no arquivo releases.yml na ordem correta.
+
+% }}}
+
+\section{Análise dos Dados} \label{estudo3:analise}
+
+para definir entre os que não tem atualização a mais de 5 anos, verificar as
+menções, se houver menções com uso/contribuição é possível que esteja em serving,
+caso contrário está em phase-out
+
+A ... apresenta em conjunto o número de releases total
+de cada projeto em relação ao número total de menções encontradas nas bases ACM e IEEE,
+os projetos sem informação de releases foi excluído do gráfico.
+
 
 ...a Figura \ref{life-cycle} apresenta a porporção de quantos projetos estão em
 cada estágio de evolução do ciclo de vida ....
@@ -368,49 +423,6 @@ cada estágio de evolução do ciclo de vida ....
   \end{minipage}
   \caption{Número total de projetos identificados em cada estágio de evolução.}
   \label{life-cycle}
-\end{figure}
-
-Os projetos com poucas releases, sem informação sobre datas de lançamentos, serão
-considerados em estágio inicial de desenvolvimento.
-
-Para coletar as versões e datas dos projetos que não disponibilizam no site olhamos
-o código fonte quando disponível em arquivos NEWS, ChangeLog, etc
-
-criamos as entradas abaixono arquivo software.yml, e nele anotamos
-a avaliacao sobre o ciclo de vida e no campo stage definimos o estágio
-de cada projeto
-
-%life_cycle:
-%  stage: Initial development
-%  review: 1 versão sem data, 1 contribuicao em 2011 outra 2013, 1 uso em 2017
-
-\input{documents/releases-table.tex}
-
-Os lançamentos coletados do repositório, código fonte, sites, devem ser organizados
-em ordem de data de lançamento, os mais antigos primeiros, numa lista em ordem, sendo
-o último release o lançamento mais recente. Isto é necessário uma vez que o número de versão
-de cad projeto não segue o mesmo padrão, alterando de formatos entre releases distintos,
-a data de lançamento de cada release também nem sempre está disponível, então
-a coleta deve garantir que haja alguma ordem, então no momento da coleta deve-se
-avaliar a ordem dos lançamentos e registrar no arquivo releases.yml na ordem correta.
-
-\section{Análise dos Dados} \label{estudo3:analise}
-
-para definir entre os que não tem atualização a mais de 5 anos, verificar as
-menções, se houver menções com uso/contribuição é possível que esteja em serving,
-caso contrário está em phase-out
-
-(pendente)
-
-A Figura~\ref{releases-vs-mentions} apresenta em conjunto o número de releases total
-de cada projeto em relação ao número total de menções encontradas nas bases ACM e IEEE,
-os projetos sem informação de releases foi excluído do gráfico.
-
-\begin{figure}[h]
-  \centering
- \includegraphics[scale=0.6]{imagens/releases-vs-mentions.png}
-  \caption{Gráfico com número total de releases e número total de menções de cada projeto.}
-  \label{releases-vs-mentions}
 \end{figure}
 
 
