@@ -1,0 +1,20 @@
+% use List::Util qw( uniq );
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my @data = ();
+% foreach my $k (sort keys %dataset) {
+%   my $id = $dataset{$k}{software}{id};
+%   my $stage = $dataset{$k}{life_cycle}{stage};
+%   my $releases = @{ $dataset{$k}{releases}{versions} } // 0;
+%   my @releases = map { m/^(\d{4})-/; $1 } grep { /^\d{4}-/ } map { $_->{released_at} } @{ $dataset{$k}{releases}{versions} };
+%   my @years = uniq sort @releases;
+%   my $year = @years > 1 ? "$years[0]-$years[-1]" : ($years[0] // 0);
+%   my $download = $dataset{$k}{address}{download_available};
+%   my $source = $dataset{$k}{features}{source_code};
+%   push @data, {id => $id, stage => $stage, releases => $releases, years => $year, download => $download, source => $source};
+% }
+id,download,stage,releases,years,source_code
+% foreach (@data) {
+<%== $_->{id} %>,<%== $_->{download} %>,<%== $_->{stage} %>,<%== $_->{releases} %>,<%== $_->{years} %>,<%== $_->{source} %>
+% }
+%# vim: filetype=epl

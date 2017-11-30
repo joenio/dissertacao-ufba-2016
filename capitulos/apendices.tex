@@ -1,6 +1,133 @@
 \xchapter{Reproducibilidade do estudo}
-{Este capítulo apresenta ....}
+{}
 \label{reproducibilidade-do-estudo}
+
+Este trabalho de pesquisa, incluindo textos, imagens, dados e códigos estão
+disponíveis publicamente sob a
+licença CC BY-SA 4.0\footnote{\url{http://creativecommons.org/licenses/by-sa/4.0}}
+(Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons)
+no seguinte endereço:
+
+\begin{itemize}
+  \item \url{https://github.com/joenio/dissertacao-ufba-2016}
+\end{itemize}
+
+A maior parte das atividades de comunicação e reuniões de orientação realizadas
+durante a pesquisa estão documentadas em {\it issues} no repositório acima ou na wiki do
+grupo de pesquisa aSide, em:
+
+\begin{itemize}
+  \item \url{http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta}
+\end{itemize}
+
+O texto foi escrito em \LaTeX, códigos, scripts e templates foram desenvolvidos
+em Perl, os dados foram coletados em arquivos de texto plano nos formatos CSV,
+YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Tabela
+\ref{arquivos-repositorio} apresenta uma visão geral.
+
+% versão de cada software utilizado, ambiente, Debian, Perl, Analizo
+% libre office, Evince, YAML, BibTeX, navegador, etc
+
+\begin{table}[h]
+\caption{Organização de arquivos e pastas do repositório.}
+\centering
+\begin{tabular}{ l p{10cm} }
+  \hline
+  Arquivo ou pasta            & Descrição           \\
+  \hline
+  \texttt{bibliografia.bib}   & Arquivo BibTeX com as referências bibliográficas utilizadas no texto. \\
+  \texttt{bin/}               & Pasta contendo os scripts desenvolvidos para coleta, transformação e análise de dados. \\
+  \texttt{capitulos/}         & Arquivos \LaTeX \ com o conteúdo/texto de cada capítulo da dissertação. \\
+  \texttt{dataset/}           & Dados coletados durante os estudos apresentados nos Capítulos \ref{estudo1}, \ref{estudo2} e \ref{estudo3}. \\
+  \texttt{dissertacao.tex}    & Arquivo \LaTeX \ principal com inclusão dos capítulos, título e resumo do texto. \\
+  \texttt{documents/}         & Documentos gerados pelos templates com apresentação dos dados coletados. \\
+  \texttt{imagens/}           & Imagens, gráficos e demais elementos visuais utilizados no texto. \\
+  \texttt{lib/}               & ...                 \\
+  \texttt{Makefile}           & Conujunto de regras para execução dos scripts e compilação do código fonte \LaTeX \ em PDF.                 \\
+  \texttt{README.md}          & Documento com descrição do repositório, informaçoes de contato, e instruções para compilação dos fontes \LaTeX \ e execução dos scripts. \\
+  \texttt{templates/}         & Templates (modelos) para leitura dos dados coletados e transformação em documentos. \\
+  \texttt{ufbathesis.cls}     & Arquivo de estilo do \LaTeX \ com definições e padrão de formatação deacordo as regras de publicação da UFBA. \\
+  \hline
+\end{tabular}
+\label{arquivos-repositorio}
+\end{table}
+
+\section{Organização do repositório}
+
+\subsection{\texttt{bin/}}
+
+(detalhes de implementação e descrição de cada script, instruções de uso)
+
+\begin{description}
+  \item [\texttt{bin/cache}] Script para ...
+  \item [\texttt{bin/chart-dataset}] (remover este script)
+  \item [\texttt{bin/filter-papers}] (refatorar, renomear)
+  \item [\texttt{bin/ids}] ...
+  \item [\texttt{bin/merge}] ...
+  \item [\texttt{bin/render}] ...
+  \item [\texttt{bin/run-analizo}] ...
+\end{description}
+
+\subsection{\texttt{dataset/}}
+
+(falar da planilha de revisao de literatura do estudo1,
+apresentar a estrutura de diretórios e arquivos para cada software)
+
+\begin{description}
+  \item [\texttt{dataset/software/}] Estrutura de diretório utilizado para coleta de dados em arquivos do tipo YAML e BibTeX.
+  \item [\texttt{dataset/literature-review.ods}] Planilha LibreOffice Calc\footnote{\url{https://www.libreoffice.org}} ...
+
+Os artigos analisados na revisão estruturada estão todos documentados arquivo
+{\it
+dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/dataset.ods}},
+uma planilha no formato aberto {\it Open Document Format for Office
+Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
+
+%Os dados extraídos são armazenados no arquivo \texttt{references.yml} de
+%cada projeto, sendo atualizado com a inclusão de um novo campo indicando o tipo
+%de menção do artigo ao software, \texttt{mention\_type},
+
+%para utilizar na etapa de análise. Implementamos também templates para gerar arquivos em
+%formato TeX para posterior inclusão na seção de coleta onde apresentaremos os dados
+%coletados.
+
+%Os dados armazenados em arquivos
+%YAML e BibTeX são carregados em estruturas em memória através de um script
+%escrito em linguagem Perl e repassados para templates processados para exibir
+%os dados neste texto, em arquivos TeX, CSV, etc. A Figura \ref{estudo2-fluxograma}
+%apresenta o fluxo de coleta, análise e transformação dos dados.
+
+Nesta planilha está documentada cada etapa da revisão estruturada, indicando em
+cada artigo analisado qual o estado do mesmo, se foi ou não incluído na
+execução da atividade.  Nesta planilha é possível encontrar também o nome de
+cada ferramenta e uma caracterização completa.
+
+%Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
+%foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
+%menção foi adicionada.
+
+
+%Os scripts \texttt{bin/merge},  foram utilizados para gerar o
+%\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
+%\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
+
+
+%Uma tabela no formato CSV com todos os artigos e projetos, indicando quando há
+%relação entre eles através de menção pode ser encontrada no repositório desta
+%dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
+%os artigos e todos os projetos são representados e a relação entre eles é
+%marcada com um \texttt{x} sempre que houver menção de um artigo para um
+%software.
+
+%Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
+%cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
+%arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
+%a todos os projetos, referências únicas.
+
+
+\end{description}
+
+\subsection{\texttt{templates/}}
 
 % TODO
 % documentar instalação das dependencias do script para filtro
@@ -10,29 +137,80 @@
 %produz um resultado indicando todas as linguagens e
 %quanto do código total é escrito em cada uma delas.
 
+%detalhes sobre o formato YAML, estrutura utilizada para armazenamento e
+%instalação estão documentados no Apêndice \ref{reproducibilidade-do-estudo}.
+
+%Detalhes sobre o funcionamento do script de fitro, código fonte e instruções
+%de uso podem ser consultados no Apêndice \ref{reproducibilidade-do-estudo}.
+
+%Instruções de uso do sloccount e como ele foi utilizado neste estudo está
+%documentado no Apêndice \ref{reproducibilidade-do-estudo}.
+
+%com estas palavras num script, instalamos todas as suas
+%dependências de execução, os detalhes de instalação e forma de uso deste script
+%e suas dependências são documentados no Apêndice
+%\ref{reproducibilidade-do-estudo}.
+
+%O formato desta planilha , sobre a estrutura de pastas utilizadas
+%para armazenar os artigos, e onde encontrar o arquivo utilizado neste estudo
+%para a coleta destes dados pode ser consultado em detalhes no Apêndice
+%\ref{reproducibilidade-do-estudo}.
+
+%Todos estes scripts estão disponíveis no repositório desta dissertação e foram desenvolvidos
+%utilizando a a linguagem de
+%programação Perl\footnote{\url{http://perl.org}} com o auxílio dos
+%módulos Modern::Perl\footnote{\url{http://metacpan.org/pod/Modern::Perl}},
+%YAML\footnote{\url{http://metacpan.org/pod/YAML}},
+%Mojo::Template\footnote{\url{http://metacpan.org/pod/Mojo::Template}},
+%Text::BibTeX\footnote{\url{http://metacpan.org/pod/Text::BibTeX}} e
+%List::Util\footnote{\url{http://metacpan.org/pod/List::Util}}.
+%A maior parte da lógica foi implementada no arquivo
+%\texttt{lib/Dissertacao.pm} com objetivo de reduzir repetição de código e
+%proporcionar reuso.
+
+%Um documento
+%CSV com todas as strings de busca pode ser encontrado no repositório desta
+%dissertaçao no arquivo \texttt{documents/search-strings.csv}.
+
+%Para auxiliar a definição da identificação para cada artigo implementamos o script \texttt{bin/ids}, este script
+
+
+Apresentar detalhes de implementação, execução e uso do script bin/run-analizo, bem como detalhes para instalação do Analizo.
+
+%\texttt{references.yml} de cada projeto onde iremos anotar e coletar os dados
+%da triagem, além do template utilizado como modelo para estes arquivos
+%implementamos também 
+
+%cada artigo presente no arquivo \texttt{documents/references.bib} será
+%inspecionado, os dados coletados neste passo serão armazenados no arquivo
+%\texttt{is\_software\_mentioned} deve ser criado com os valores \texttt{yes} ou
+%\texttt{no} indicando se o artigo menciona ou não o projeto.
+
+%Implementamos scripts para transformar os dados da busca em formato BibTeX para
+%arquivos no formato YML pois a coleta e inspeção dos artigos serão registrados
+%em arquivos YML para cada projeto de software. Estes scripts recebem como entrada
+%os resultados da busca de todos os projetos e geram como saída os arquivos \texttt{references.bib}
+%e \texttt{references.yml} para cada projeto.
+
+%no arquivo
+%\texttt{references.yml} no campo \texttt{review} sobre como o software é
+%mencionado naquele artigo.
+
+%para cada projeto, a Listagem \ref{references-yml} apresenta um exemplo do
+%trecho do YML para armazenar a extração dessas informações.
+
+
 Apresentar e detalhar os arquivos scam-links.md e ase-link.md (citado no estudo1:preparacao).
 
-Os artigos analisados na revisão estruturada estão todos documentados arquivo
-{\it
-dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/dataset.ods}},
-uma planilha no formato aberto {\it Open Document Format for Office
-Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
-
-Nesta planilha está documentada cada etapa da revisão estruturada, indicando em
-cada artigo analisado qual o estado do mesmo, se foi ou não incluído na
-execução da atividade.  Nesta planilha é possível encontrar também o nome de
-cada ferramenta e uma caracterização completa.
 
 O script utilizado na segunda atividade da revisão estruturada -- {\it (2)
 Filtro} -- também está neste mesmo repositório no arquivo {\it
 dataset/revisao-estruturada/filter}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}}
 escrito em linguagem Perl especialmente para este estudo.
 
-A maior parte das atividades de pesquisa, reuniões de orientação e comunicação
-realizadas neste estudo estão também documentadas em {\it issues} neste
-repositório e na wiki do grupo de pesquisa aSide.
+%de cada artigo é realizada com o auxílio da funcionalidade de busca
+%do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
+%utilizado para leitura dos artigos, com o auxílio da busca encontramos cada
+%ocorrência ao nome do software tomando nota a confirmação sobre a menção
+%encontrada.
 
-\begin{itemize}
-  \item \url{http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta}
-  \item \url{https://github.com/joenio/dissertacao-ufba-2016/issues}
-\end{itemize}

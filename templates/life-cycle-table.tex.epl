@@ -1,0 +1,17 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+% my %total = ();
+% foreach my $k (sort keys %dataset) {
+%   $total{$dataset{$k}{life_cycle}{stage}} //= 0;
+%   $total{$dataset{$k}{life_cycle}{stage}}++;
+% }
+\begin{tabular}{l c}
+  \hline
+  {\bf Estágio} & {\bf Projetos} \\\
+  \hline
+% foreach ('Initial development', 'Evolution', 'Servicing', 'Phaseout', 'Closedown', 'unknown') {
+    <%== $_ eq 'unknown' ? 'Desconhecido' : $_ %> & <%== $total{$_} %> \\\
+% }
+  \hline
+\end{tabular}
+%# vim: filetype=epl

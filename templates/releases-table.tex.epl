@@ -6,34 +6,38 @@
 % foreach my $k (sort keys %dataset) {
 %   my $id = $dataset{$k}{software}{id};
 %   $column = 2 if $id eq 's31';
-%   my $versions = @{ $dataset{$k}{releases}{versions} } // 0;
+%   my $versions = @{ $dataset{$k}{releases}{versions} } || '-';
 %   my @releases = map { m/^(\d{4})-/; $1 } grep { /^\d{4}-/ } map { $_->{released_at} } @{ $dataset{$k}{releases}{versions} };
 %   my @years = uniq sort @releases;
-%   my $acesso = $dataset{$k}{address}{download_available} eq 'yes' ? 'Gratuito' : 'Sem Acesso';
-%   push @{ $multicolumn[$column] }, [$id, $acesso, $versions, (@years > 1 ? "$years[0]-$years[-1]" : ($years[0] // 0))];
+%   my $stage = $dataset{$k}{life_cycle}{stage};
+%   $stage = 'Desconhecido' if $stage eq 'unknown';
+%   push @{ $multicolumn[$column] }, [$id, $versions, (@years > 1 ? "$years[0]-$years[-1]" : ($years[0] // '-')), $stage];
 % }
-\begin{longtable}{ l c c c | l c c c }
-\caption{Número de releases/lançamentos/versões dos projetos de software acadêmico de análise estática.}
+\begin{longtable}{ l c c l | l c c l }
+\caption{Número e período dos lançamentos de software acadêmico de análise estática.}
 \label{releases-table} \\\
   \hline
-  \hhline{ l c c c | l c c c |}
+  \hhline{ l c c l | l c c l |}
   \endfirsthead
-  \hhline{ l c c c | l c c c |}
+  \hhline{ l c c l | l c c l |}
   \hline
-  \textbf{ID} & \textbf{Acesso} & \textbf{Versões} & \textbf{Período} & \textbf{ID} & \textbf{Acesso} & \textbf{Versões} & \textbf{Período} \\\
+  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Evolução}} & \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Evolução}} \\\
+           & \textbf{\#} & \textbf{Período} &                &            & \textbf{\#} & \textbf{Período} &  \\\
   \hline
-  \hhline{ l c c c | l c c c |}
+  \hhline{ l c c l | l c c l |}
   \endhead
   \hhline{----|----}
   \multicolumn{8}{c}{continua na próxima página} \\\
   \hhline{----|----} \endfoot
   \hhline{----|----} \endlastfoot
-  \textbf{ID} & \textbf{Acesso} & \textbf{Versões} & \textbf{Período} & \textbf{ID} & \textbf{Acesso} & \textbf{Versões} & \textbf{Período} \\\
+  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Evolução}} & \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{c}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Evolução}} \\\
+           & \textbf{\#} & \textbf{Período} &                &            & \textbf{\#} & \textbf{Período} &  \\\
   \hline
 % foreach my $i (0 .. $#{ $multicolumn[1] }) {
 %   my $c1 = $multicolumn[1]->[$i];
 %   my $c2 = $multicolumn[2]->[$i];
-\texttt{<%== $c1->[0] %>} & <%== $c1->[1] %> & <%== $c1->[2] || '-' %> & <%== $c1->[3] || '-' %> & \texttt{<%== $c2->[0] %>} & <%== $c2->[1] %> & <%== $c2->[2] || '-' %> & <%== $c2->[3] || '-' %> \\\
+      \texttt{<%== $c1->[0] %>} & <%== $c1->[1] %> & <%== $c1->[2] %> & <%== $c1->[3] %> &
+        \texttt{<%== $c2->[0] %>} & <%== $c2->[1] %> & <%== $c2->[2] %> & <%== $c2->[3] %>  \\\
 % }
 \end{longtable}
 %# vim: filetype=epl
