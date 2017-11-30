@@ -83,10 +83,47 @@ dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-201
 uma planilha no formato aberto {\it Open Document Format for Office
 Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
 
+%Os dados extraídos são armazenados no arquivo \texttt{references.yml} de
+%cada projeto, sendo atualizado com a inclusão de um novo campo indicando o tipo
+%de menção do artigo ao software, \texttt{mention\_type},
+
+%para utilizar na etapa de análise. Implementamos também templates para gerar arquivos em
+%formato TeX para posterior inclusão na seção de coleta onde apresentaremos os dados
+%coletados.
+
+%Os dados armazenados em arquivos
+%YAML e BibTeX são carregados em estruturas em memória através de um script
+%escrito em linguagem Perl e repassados para templates processados para exibir
+%os dados neste texto, em arquivos TeX, CSV, etc. A Figura \ref{estudo2-fluxograma}
+%apresenta o fluxo de coleta, análise e transformação dos dados.
+
 Nesta planilha está documentada cada etapa da revisão estruturada, indicando em
 cada artigo analisado qual o estado do mesmo, se foi ou não incluído na
 execução da atividade.  Nesta planilha é possível encontrar também o nome de
 cada ferramenta e uma caracterização completa.
+
+%Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
+%foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
+%menção foi adicionada.
+
+
+%Os scripts \texttt{bin/merge},  foram utilizados para gerar o
+%\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
+%\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
+
+
+%Uma tabela no formato CSV com todos os artigos e projetos, indicando quando há
+%relação entre eles através de menção pode ser encontrada no repositório desta
+%dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
+%os artigos e todos os projetos são representados e a relação entre eles é
+%marcada com um \texttt{x} sempre que houver menção de um artigo para um
+%software.
+
+%Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
+%cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
+%arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
+%a todos os projetos, referências únicas.
+
 
 \end{description}
 
@@ -140,6 +177,29 @@ cada ferramenta e uma caracterização completa.
 
 Apresentar detalhes de implementação, execução e uso do script bin/run-analizo, bem como detalhes para instalação do Analizo.
 
+%\texttt{references.yml} de cada projeto onde iremos anotar e coletar os dados
+%da triagem, além do template utilizado como modelo para estes arquivos
+%implementamos também 
+
+%cada artigo presente no arquivo \texttt{documents/references.bib} será
+%inspecionado, os dados coletados neste passo serão armazenados no arquivo
+%\texttt{is\_software\_mentioned} deve ser criado com os valores \texttt{yes} ou
+%\texttt{no} indicando se o artigo menciona ou não o projeto.
+
+%Implementamos scripts para transformar os dados da busca em formato BibTeX para
+%arquivos no formato YML pois a coleta e inspeção dos artigos serão registrados
+%em arquivos YML para cada projeto de software. Estes scripts recebem como entrada
+%os resultados da busca de todos os projetos e geram como saída os arquivos \texttt{references.bib}
+%e \texttt{references.yml} para cada projeto.
+
+%no arquivo
+%\texttt{references.yml} no campo \texttt{review} sobre como o software é
+%mencionado naquele artigo.
+
+%para cada projeto, a Listagem \ref{references-yml} apresenta um exemplo do
+%trecho do YML para armazenar a extração dessas informações.
+
+
 Apresentar e detalhar os arquivos scam-links.md e ase-link.md (citado no estudo1:preparacao).
 
 
@@ -147,4 +207,10 @@ O script utilizado na segunda atividade da revisão estruturada -- {\it (2)
 Filtro} -- também está neste mesmo repositório no arquivo {\it
 dataset/revisao-estruturada/filter}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}}
 escrito em linguagem Perl especialmente para este estudo.
+
+%de cada artigo é realizada com o auxílio da funcionalidade de busca
+%do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
+%utilizado para leitura dos artigos, com o auxílio da busca encontramos cada
+%ocorrência ao nome do software tomando nota a confirmação sobre a menção
+%encontrada.
 
