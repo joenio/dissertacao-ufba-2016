@@ -17,6 +17,7 @@ use vars qw(@EXPORT_OK);
   count_mentions_by_type
   find_references
   metrics_load
+  years_mentioned
 );
 
 sub equal {
@@ -126,6 +127,17 @@ sub metrics_load {
     total_modules    => $global->{total_modules} // 0,
     total_eloc       => $global->{total_eloc} // 0,
   };
+}
+
+sub years_mentioned {
+  my $k = $_[0];
+  my %dataset = %{ $_[1] };
+  my %references = %{ $_[2] };
+  my @years = ();
+  foreach my $r (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
+    push @years, $references{$r}->get('year');
+  }
+  return uniq sort @years;
 }
 
 return 1;
