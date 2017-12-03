@@ -21,7 +21,7 @@ die "template file not found: $TEMPLATE_FILENAME." unless -e $TEMPLATE_FILENAME;
 
 my $DATASET_FILENAME = 'cache/dataset.yml';
 my $REFERENCES_FILENAME = 'documents/references.bib';
-die "dataset file not found: $DATASET_FILENAME." unless -e $DATASET_FILENAME;
+die "dataset file not found: $DATASET_FILENAME, please run `make $DATASET_FILENAME` first!" unless -e $DATASET_FILENAME;
 die "references file not found: $REFERENCES_FILENAME." unless -e $REFERENCES_FILENAME;
 
 my %dataset = LoadFile "$ENV{PWD}/$DATASET_FILENAME";
