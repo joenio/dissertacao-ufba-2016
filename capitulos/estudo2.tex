@@ -1,104 +1,31 @@
 \xchapter{Reconhecimento de software acadêmico de análise estática}
 {}\label{estudo2}
 
-Este capítulo apresenta 
-um estudo para caracterização de software acadêmico de análise estática,
-em termos de 
-menções e citações (formais e informais) ao software,  %chris: ver se formal / informal faz sentido
-uso do software no contexto de outras pesquisas,
-e contribuições ao software acadêmico.
+Este capítulo apresenta
+um estudo de caracterização do reconhecimento de software acadêmico de análise estática,
+com base em informações sobre
+citações formais e informais ao software %%chris: ver se formal / informal faz sentido
+extraídas de um conjunto de artigos científicos publicados em periódicos ou conferências.
 
-O estudo realizado teve como ponto de partida 
-o conjunto de projetos de software identificado 
-no estudo sobre publicização do software acadêmico (capítulo~\ref{estudo1}).
-Uma revisão da literatura nas bases da ACM e IEEE 
-encontrou \SearchUniqueCount \ artigos com menções ao  
-software acadêmico de análise estática 
-desse conjunto.
-
-A seção \ref{estudo2:introducao} contextualiza o estudo,
-a seção \ref{estudo2:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
-a seção \ref{estudo2:escopo} descreve o objetivo e apresenta as questões de pesquisa,
-a seção \ref{estudo2:planejamento} apresenta o planejamento do estudo,
-as seções \ref{estudo2:preparacao} e \ref{estudo2:coleta} apresentam detalhes sobre a preparação e execução da coleta de dados,
-as seções \ref{estudo2:analise} e \ref{estudo2:interpretacao} apresentam a análise e interpretação dos dados e
-a seção \ref{estudo2:conclusoes} traça as conclusões finais deste estudo.
+A seção \ref{estudo2:introducao} contextualiza o estudo
+%a seção \ref{estudo2:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
+e a seção \ref{estudo2:escopo} apresenta seu objetivo e questões de pesquisa.
+A seção \ref{estudo2:planejamento} apresenta o planejamento do estudo, e
+as seções \ref{estudo2:preparacao} e \ref{estudo2:coleta} descrevem a preparação e execução da coleta de dados.
+As seções \ref{estudo2:analise}, \ref{estudo2:interpretacao} e \ref{estudo2:ameacas}
+apresentam a análise de dados, interpretação de resultados e ameaças à validade, respectivamente.
+Finalmente, a seção \ref{estudo2:conclusoes} traça as conclusões do estudo.
 
 \section{Motivação} \label{estudo2:introducao} % {{{
 
-%Ao longo da história, a citação formal foi para autenticação e autoridade, em
-%vez de de crédito e reconhecimento ou atribuição. A  científico citação na
-%história ocidental aparece no final dos anos 1500. No início dos anos 1700, a
-%citação também aparece no sistema legal como método de compreensão dos
-%precedentes \cite{katz2014transitive}.
-
-%A ideia de direitos autorais como reconhecendo aos direitos dos seus autores
-%também surge nesse tempo, 1710, talvez devido a uma lenta tendência social
-%societária de reconhecer a propriedade intelectual, uma idéia que parece ter se
-%desenvolvido ao lado da imprensa]. Observe que a autoria de papers é realmente
-%usado para notar os autores reais do artigo quanto para notar os contribuidores
-%do projeto.
-%Para muitos desses, o
-%identificador que deve ser citado - um "nome" que se refere a um produto único
-%não é claro.
-
-%Additionally, if a cited library depends
-%on another library, the contribution of this second library
-%is not captured. Citation of a dataset should perhaps give
-%credit to the people who gathered the data, as well as
-%those who curated it, but the paper author may not know
-%or be able to find these details.
-
-%Mas independente de como seja calculado o impacto científico de uma determinada
-%pesquisa o impacto causado se reverte potencialmente em mais recursos que
-%poderão ser reinvestidos no próprio ecossistema onde o software está inserido.
-
-%citações formais facilitam e promovem o avanço
-%da ciência, mesmo diante da falta de um padrão para citar artefatos digitais
-%\cite{allen2014credit}.
-
-%Um estudo recente com 90 artigos de diversas áreas da biologia, selecionados
-%aleatoriamente entre publicações usando softwares como método, mostrou que
-%apenas 59 mencionavam o uso de softwares de alguma forma, os demais 31 artigos,
-%apesar de usar software acadêmico, não mencionavam nada a respeito
-%\cite{howison2016software}, apenas entre 31\% e 43\% das menções aos softwares
-%acadêmicos envolvem citação formal.
-
-%Não existe ainda amadurecimento suficiente sobre como citar softwares e
-%outros artefatos digitais em pesquisas científicas, não temos um padrão de como fazê-lo,
-%cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
-%específicas sobre a implementação do software, nem semprem informam onde
-%encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
-%é distribuído, ou se é de alguma forma distribuído ao público.
-
-%Entre os softwares acadêmicos desenvolvidos por cientistas como apoio em suas
-%pesquisas, não é raro que pesquisadores deixem de disponibilizar estes artefatos,
-%assim como outros desdobramentos da pesquisa, como dados e outros. Ou ainda,
-%mesmo disponibilizando tais artefatos em locais de público acesso, com o tempo,
-%tais locais se tornam indisponíveis inviabilizando a obtenção de tais
-%artefatos.
-
-%A comunidade tem refletido sobre os problemas relacionados ao
-%desenvolvimento, promoção e sustentabilidade desses softwares, e o
-%impacto que tais problemas causam no meio científico \cite{allen2017engineering}.
-
-
-%Recursos são devotados para a produção de software acadêmico. Usuários finais
-%cientistas (diretamente ou indiretamente) usam softwares acadêmicos para fazer
-%ciência, resultando em impacto científico. 
-
-%historia da citacao na ciencia, como isso promove o avanço, problemas para
-%citacao em artefatos digitais, solucao para identificador unico de autores de
-%artigos, orcid.org resolve este problema, o mesmo para identificar artefatos
-%digitais é o doi.org
-
-Os projetos de software desenvolvidos na academia sofrem de {\it
-``dysfunctional chaotic churn''} \cite{howison2015understanding}.
-Na prática, isso significa que há muitos projetos com características e
-funcionalidades parecidas, com poucos usuários, com ciclos de vida curtos, e
-encerrados quando o financiamento inicial termina, bem como, comunidades
-desconectadas e paralelas, incompatibilidades entre projetos em um mesmo
-domínio, e tentativas aparentemente não coordenadas de ``reiniciar'' tudo ({\it re-boots}). 
+Um dos sintomas de 
+{\it ``dysfunctional chaotic churn''} \cite{howison2015understanding}
+em software acadêmico é a quantidade elevada de projetos 
+com características e funcionalidades parecidas, 
+e comunidades
+desconectadas e paralelas.
+Neste cenários, alguns projetos podem se destacar e obter o reconhecimento
+de seus pares.
 
 O desenvolvimento de sotware acadêmico é uma atividade que consome recursos
 (tempo, dinheiro e atenção) e afeta a conduta da Ciência, tanto no geral como
@@ -113,29 +40,30 @@ pesquisas da Engenharia de Software, onde, a princípio os cientistas possuem
 acesso ao conhecimento e práticas necessárias para o trabalho em colaboração.
 %Dessa forma, n
 Neste estudo, investigamos como os projetos de software acadêmico
-de análise estática são mencionados em publicações nas bases da ACM e IEEE e se
-há colaboração entre eles.
+de análise estática são mencionados em publicações nas bases da ACM e IEEEi %e se
+% há colaboração entre eles.
 
 % }}}
 
-\section{Fundamentação} \label{estudo2:fundamentacao} % {{{
-
-\subsection{Menção}
+%\section{Fundamentação} \label{estudo2:fundamentacao} % {{{
+%\subsection{Menção}
 
 A prática científica de citação formal entre publicações, amplamente
 adotada e praticada entre cientistas de todas as áreas, não é realidade quando
 se trata de artefatos digitais, como dados ou código.
-
 Em geral, software é citado na literatura acadêmica %, na maior parte das ocorrências, de
 de maneira informal: em notas de rodapé, seções de agradecimentos, e outras
 seções ao longo do texto. Usualmente se faz referência ao nome, ocasionalmente
 cita-se o número da versão, e raramente usa-se citação formal.
+%E o reconhecimento?
 
 Neste estudo,
-o termo \textit{menção} refere-se a qualquer ocorrência de 
-nome de projeto de software acadêmico de análise estática em artigo científico, 
+O termo \textit{menção} é usado para tratar, genericamente, qualquer ocorrência de
+nome de projeto de software acadêmico de análise estática em artigo científico,
 incluindo tanto citação formal, quanto informal.
-
+Uma menção pode estar associada ao uso do software no contexto de outras pesquisas,
+e até mesmo a contribuições ao projeto de software acadêmico.
+%extraídas de artigos científicos publicados em periódicos e conferências.
 
 % }}}
 
@@ -161,11 +89,22 @@ O propósito deste estudo é caracterizar menções aos projetos.
 A perspectiva considerada é a de cientista preocupado com o funcionamento do ecossistema de software acadêmico.
 
 \item{\bf Foco de qualidade.} 
-O principal aspecto de qualidade estudado é a contribuição ao ecossistema de software acadêmico de análise estática.
+O principal aspecto de qualidade estudado é % o reconhecimento?
+a contribuição ao ecossistema de software acadêmico de análise estática.
 
 \item{\bf Contexto.} 
 O estudo foi conduzido com publicações das bases ACM e IEEE.
 \end{description}
+
+
+O estudo realizado teve como ponto de partida
+o conjunto de projetos de software identificado
+no estudo sobre publicização do software acadêmico (capítulo~\ref{estudo1}).
+Uma revisão da literatura nas bases da ACM e IEEE
+encontrou \SearchUniqueCount \ artigos com menções ao
+software acadêmico de análise estática
+desse conjunto.
+
 
 \subsection{Sumário da Definição}
 
@@ -809,7 +748,7 @@ menos entre estudos encontrados nas bases ACM e IEEE.
 
 % }}}
 
-\section{Ameaças à Validade} % {{{
+\section{Ameaças à Validade}  \label{estudo2:ameacas} % {{{
 
 A inspeção manual dos artigos na revisão de literatura em busca de caracterizar
 as menções e seus tipos foi realizada apenas pelo autor desta dissertação, isto
@@ -956,3 +895,74 @@ estudados.
 %projeto de software é mencionado em cada artigo.
 %É importante lembrar que um mesmo artigo pode mencionar
 %mais de um software.
+
+
+%%-----------------------------------------------------------%%
+
+%Ao longo da história, a citação formal foi para autenticação e autoridade, em
+%vez de de crédito e reconhecimento ou atribuição. A  científico citação na
+%história ocidental aparece no final dos anos 1500. No início dos anos 1700, a
+%citação também aparece no sistema legal como método de compreensão dos
+%precedentes \cite{katz2014transitive}.
+
+%A ideia de direitos autorais como reconhecendo aos direitos dos seus autores
+%também surge nesse tempo, 1710, talvez devido a uma lenta tendência social
+%societária de reconhecer a propriedade intelectual, uma idéia que parece ter se
+%desenvolvido ao lado da imprensa]. Observe que a autoria de papers é realmente
+%usado para notar os autores reais do artigo quanto para notar os contribuidores
+%do projeto.
+%Para muitos desses, o
+%identificador que deve ser citado - um "nome" que se refere a um produto único
+%não é claro.
+
+%Additionally, if a cited library depends
+%on another library, the contribution of this second library
+%is not captured. Citation of a dataset should perhaps give
+%credit to the people who gathered the data, as well as
+%those who curated it, but the paper author may not know
+%or be able to find these details.
+
+%Mas independente de como seja calculado o impacto científico de uma determinada
+%pesquisa o impacto causado se reverte potencialmente em mais recursos que
+%poderão ser reinvestidos no próprio ecossistema onde o software está inserido.
+
+%citações formais facilitam e promovem o avanço
+%da ciência, mesmo diante da falta de um padrão para citar artefatos digitais
+%\cite{allen2014credit}.
+
+%Um estudo recente com 90 artigos de diversas áreas da biologia, selecionados
+%aleatoriamente entre publicações usando softwares como método, mostrou que
+%apenas 59 mencionavam o uso de softwares de alguma forma, os demais 31 artigos,
+%apesar de usar software acadêmico, não mencionavam nada a respeito
+%\cite{howison2016software}, apenas entre 31\% e 43\% das menções aos softwares
+%acadêmicos envolvem citação formal.
+
+%Não existe ainda amadurecimento suficiente sobre como citar softwares e
+%outros artefatos digitais em pesquisas científicas, não temos um padrão de como fazê-lo,
+%cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
+%específicas sobre a implementação do software, nem semprem informam onde
+%encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
+%é distribuído, ou se é de alguma forma distribuído ao público.
+
+%Entre os softwares acadêmicos desenvolvidos por cientistas como apoio em suas
+%pesquisas, não é raro que pesquisadores deixem de disponibilizar estes artefatos,
+%assim como outros desdobramentos da pesquisa, como dados e outros. Ou ainda,
+%mesmo disponibilizando tais artefatos em locais de público acesso, com o tempo,
+%tais locais se tornam indisponíveis inviabilizando a obtenção de tais
+%artefatos.
+
+%A comunidade tem refletido sobre os problemas relacionados ao
+%desenvolvimento, promoção e sustentabilidade desses softwares, e o
+%impacto que tais problemas causam no meio científico \cite{allen2017engineering}.
+
+
+%Recursos são devotados para a produção de software acadêmico. Usuários finais
+%cientistas (diretamente ou indiretamente) usam softwares acadêmicos para fazer
+%ciência, resultando em impacto científico.
+
+%historia da citacao na ciencia, como isso promove o avanço, problemas para
+%citacao em artefatos digitais, solucao para identificador unico de autores de
+%artigos, orcid.org resolve este problema, o mesmo para identificar artefatos
+%digitais é o doi.org
+
+
