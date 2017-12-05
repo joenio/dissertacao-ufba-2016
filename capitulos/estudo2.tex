@@ -165,8 +165,9 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 O estudo foi realizado a partir de uma revisão de literatura nas bases ACM e
 IEEE em busca de menções aos \SoftwareCount \ projetos de software acadêmico de
-análise estática selecionados no Capítulo \ref{estudo1}. Um esquema de
-caracterização para classificação das menções emergiu dessa revisão; 
+análise estática caracterizados pelo estudo apresentado no Capítulo \ref{estudo1}. 
+Durante a revisão da literatura, 
+um esquema de caracterização para classificação das menções emergiu e foi documentado;
 os artigos foram então inspecionados e as menções encontradas foram classificadas segundo
 este esquema.
 
@@ -174,7 +175,7 @@ A revisão de literatura foi organizada em quatro passos, detalhados a seguir.
 
 \subsection{Passo 1: Busca}
 
-Este passo teve como objetivo encontrar artigos nas bases
+Este passo tem como objetivo encontrar artigos nas bases
 ACM\footnote{\url{http://dl.acm.org}} e
 IEEE\footnote{\url{http://ieeexplore.ieee.org}} a partir das características
 dos projetos de software acadêmico de análise estática.
@@ -191,7 +192,8 @@ atingir resultados dentro dos critérios desejados.
 
 Estes critérios são definidos principalmente pelo
 número de resultados obtidos na busca.
-Sabemos, por experiência prática, que o número de referências a cada projeto na
+Sabemos, por experiência prática adquirida em buscas exploratórias, 
+que o número de referências a cada projeto na
 literatura acadêmica não chega a casa da centena; dessa forma, o critério de
 aceitação adotado para parada do processo de elaboração e refinamento das strings é
 quando os resultados apresentem um número inferior ou próximo a esta realidade.
@@ -232,16 +234,19 @@ artigo em formato pdf para inspeção manual na etapa seguinte.
 
 \subsection{Passo 2: Triagem}
 
-Neste passo selecionamos os artigos relevantes para cada projeto entre os
-resultados da busca realizada no passo anterior. A seleção é realizada através
-de inspeção manual de cada artigo entre os resultados de cada projeto. O
-critério de inclusão para a seleção dos artigos relevantes é a simples
-ocorrência do nome do projeto no artigo.
-
-Entre os resultados de cada projeto, um artigo deverá ser identificado como
+No passo 2, uma triagem de artigos relevantes é realizada por meio 
+de inspeção manual de cada artigo associado aos projetos de software acadêmico
+que foi identificado no passo 1.
+O critério de inclusão para a seleção de artigos relevantes é a simples
+ocorrência do nome do projeto de software acadêmico no artigo.
+%
+Entre os resultados de cada projeto,
+um artigo deverá ser identificado como
 relevante para o projeto caso o critério de inclusão seja satisfeito durante a
-inspeção manual do artigo. Ao final deste passo, teremos, para cada projeto
-de software, um conjunto de artigos identificados como relevantes que fazem
+inspeção manual do artigo.
+
+Ao final deste passo, teremos, para cada projeto
+de software acadêmico, um conjunto de artigos identificados como relevantes que fazem
 menção ao nome do projeto.
 
 \subsection{Passo 3: Keywording}
@@ -252,13 +257,14 @@ projetos são mencionados. Para cada menção, toma-se nota sobre como o projeto
 software é mencionado no artigo.
 
 As notas são comentários livres descrevendo as menções encontradas no artigo
-sobre um determinado software, um artigo científico pode mencionar um software
+sobre um determinado software.
+Um artigo científico pode mencionar um software
 diversas vezes, de diversas formas, desde uma simples menção nos trabalhos
 relacionados até uma grande contribuição ao software.
 
-O conjunto final de todas as anotações são agrupadas e analisadas em conjunto
-para definição do esquema de codificação para caracterização das menções. Este
-esquema deve ser construído com o objetivo de agrupar e caracterizar os tipos
+O conjunto final de todas as anotações é analisado
+para definição do esquema de codificação para caracterização das menções. 
+Este esquema deve ser construído com o objetivo de agrupar e caracterizar os tipos
 de menção encontrados para cada projeto de software em termos da contribuição
 que a menção traz ao ecossistema de software daquele projeto acadêmico.
 
@@ -269,18 +275,18 @@ que a menção traz ao ecossistema de software daquele projeto acadêmico.
 
 \subsection{Passo 4: Extração}
 
-Neste último passo da revisão de literatura utiliza-se o esquema de codificação
-para caracterização de menções criado no passo anterior para classificar as
+Neste último passo da revisão de literatura, utiliza-se o esquema de codificação
+para caracterização de menções criado no Passo 3 (keywording) para classificar as
 menções de cada projeto de software encontradas nos artigos relevantes
-selecionados no Passo 2: Triagem.
+selecionados no Passo 2 (Triagem).
 
-Para cada artigo mencionando um certo projeto de software será atribuído uma
-informação indicando o tipo de menção entre as opções do esquema de codificação
+Para cada artigo que menciona um certo projeto de software será associada uma
+informação que indique o tipo de menção entre as opções do esquema de codificação
 para caracterização das menções.
 
-Ao final da revisão de literatura teremos para cada projeto de software um
+Ao final da revisão de literatura, teremos, para cada projeto de software, um
 conjunto de artigos relevantes mencionando o software, com indicação do tipo de menção
-através do esquema de codificação para caracterização de menções elaboradas no Passo 3: Keywording.
+através do esquema de codificação para caracterização de menções elaboradas no Passo 3 (Keywording).
 
 % }}}
 
@@ -303,11 +309,11 @@ e da relação entre os passos da revisão de literatura, detalhados a seguir.
 %os dados coletados visando a facilidade e transparência ao acesso aos dados
 %por
 
-\subsection{Passo 1: Busca}
+\subsection{Busca}
 
 Seguindo o planejamento descrito na seção \ref{estudo2:planejamento} criamos as
 strings de busca e as registramos nos arquivos \texttt{search.yml} de cada
-projeto, este arquivo irá registrar também o número de resultados e a data de
+projeto. Este arquivo irá registrar também o número de resultados e a data de
 execução da busca. A Listagem \ref{search-yml} apresenta um exemplo deste
 arquivo com campos utilizados para registrar os resultados da busca.
 
@@ -327,21 +333,21 @@ numbers=left
     results:
 \end{lstlisting}
 
-Além deste arquivo, será criado também para cada projeto os arquivos
-\texttt{acm.bib} e \texttt{ieee.bib} para armazenar os dados dos artigos
+Para cada projeto de software acadêmico, outros dois arquivos,
+\texttt{acm.bib} e \texttt{ieee.bib}, serão criados para armazenar os dados dos artigos
 retornados pela busca. Estes dados, de todos os projetos, serão agregados no
 arquivo \texttt{documents/references.bib} e identificados com
 o campo \texttt{id} recebendo valores no formato \texttt{p + NÚMERO},
 exemplo, \texttt{p1}, \texttt{p2}, \texttt{p3}, ..., \texttt{p806}.
 
 Foi implementado o script \texttt{bin/ids} para automatizar a
-definição deste novo campo para cada artigo, ele recebe como entrada um arquivo
+definição deste novo campo para cada artigo; ele recebe como entrada um arquivo
 no formato BibTeX e gera sequencialmente o campo \texttt{id} para cada item.
 
-\subsection{Passo 2: Triagem}
+\subsection{Triagem}
 
 Definimos a estrutura do arquivo \texttt{references.yml} onde será registrada a
-informação dos artigos relevantes para cada projeto, a Listagem
+informação dos artigos relevantes para cada projeto. A Listagem
 \ref{references-yml} apresenta um exemplo deste arquivo e de sua estrutura.
 
 \begin{lstlisting}[
@@ -362,11 +368,13 @@ numbers=left
 \end{lstlisting}
 
 Em paralelo a definição deste arquivo, implementamos um mecanismo de templates,
-através dos scripts \texttt{bin/cache} e \texttt{bin/render}, para criação
-automática desses arquivos para cada projeto. Este mecanismo de templates será
-utilizado em outros pontos de estudo para automatizar e produzir documentos a
-partir dos dados coletados, este mecanismo é apresentado em resumo na Figura
+por meio dos scripts \texttt{bin/cache} e \texttt{bin/render}, para criação
+automática desses arquivos para cada projeto. 
+Este mecanismo é apresentado em resumo na Figura
 \ref{template-fluxograma}.
+O mecanismo de templates será
+utilizado em outros pontos de estudo para automatizar e produzir documentos a
+partir dos dados coletados, 
 
 \begin{figure}[h]
   \center
@@ -388,13 +396,13 @@ O script \texttt{bin/render} lê este arquivo \texttt{cache/dataset.yml},
 carrega os dados em memória e passa estes dados como parâmetro para os arquivos
 templates.
 
-\subsection{Passo 3: Keywording}
+\subsection{Keywording}
 
 Adicionamos aos arquivos \texttt{references.yml} um novo campo para coletar o
-tipo de menção feita em cada artigo aos projetos, \texttt{mention\_type}, este
-campo assume um dos valores do esquema de classificação criado neste passo.
+tipo de menção feita em cada artigo aos projetos, \texttt{mention\_type}. Este
+campo assume um dos valores do esquema de classificação de menções criado neste passo.
 
-\subsection{Passo 4: Extração}
+\subsection{Extração}
 
 Implementamos arquivos de template para representar os dados coletados em
 outros formatos para visualização e análise, incluindo documentos em formatos
@@ -406,8 +414,10 @@ neste texto.
 \section{Coleta de Dados} \label{estudo2:coleta} % {{{
 
 Seguindo o planejamento e preparação descritos nas seções
-\ref{estudo2:planejamento} e \ref{estudo2:preparacao} iniciamos a coleta dos
-dados através da revisão de literatura, apresentado em resumo na Figura \ref{estudo2-revisao-literatura}.
+\ref{estudo2:planejamento} e \ref{estudo2:preparacao}, iniciamos a atividade de coleta de
+dados através da revisão de literatura.
+A Figura \ref{estudo2-revisao-literatura} apresenta um resumo dos passos da revisão da literatura
+realizada nas bases ACM e IEEE.
 
 \begin{figure}[h]
   \center
@@ -417,7 +427,7 @@ dados através da revisão de literatura, apresentado em resumo na Figura \ref{e
 \end{figure}
 
 
-\subsection{Passo 1: Busca}
+%\subsection{Busca}
 
 A busca de todos os projetos retornou \SearchCount \ resultados,
 \SearchACMCount \ na base ACM e \SearchIEEECount \ na base IEEE.
@@ -427,42 +437,45 @@ encontrado em relação a mais de um projeto, dentre o resultado total.
 
 Ao remover as duplicidades temos um conjunto de \SearchUniqueCount \ artigos
 únicos.  A Tabela \ref{search-table} apresenta o total de resultados para cada
-um dos projetos pesquisados, a coluna {\bf Total} inclui os artigos do arquivo
+um dos projetos pesquisados; a coluna {\bf Total} inclui os artigos do arquivo
 \texttt{paper.bib} e apresenta apenas resultados únicos.
 
 \input{documents/search-table.tex}
 
-\subsection{Passo 2: Triagem}
+%\subsection{Triagem}
 
-Os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
-projetos de software, encontramos \ScreeningCount \ menções entre
+Durante a triagem, 
+os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
+projetos de software. Encontramos \ScreeningCount \ menções entre
 \ScreeningUniqueCount \ artigos.
-Alguns projetos de software possui nomes comuns que foram encontrados nos
-artigos mas não faziam referencia ao software, em alguns casos os nomes
+Alguns projetos de software possuem nomes comuns que foram encontrados nos
+artigos mas que não faziam referencia ao software; em alguns casos, os nomes
 apareciam em fórmulas matemáticas ou como parte do texto em contextos não
-relacionados ao projeto.
+relacionados ao projeto de software acadêmico.
 
-A Figura \ref{screenshot-paper-p148-2ls} apresenta um destes casos, o nome do
+A Figura \ref{screenshot-paper-p148-2ls} apresenta um destes casos. O nome do
 projeto \texttt{s1} (2LS) foi encontrado no artigo \texttt{p148} (Statistical
 Design Framework of Submicron Flip-Flop Circuits Considering Process
-Variations) num contexto sem relação alguma com o projeto em sí.
+Variations) em contexto sem relação alguma com o projeto em sí.
+
+Ao final da triagem, temos, para cada projeto, um conjunto de artigos que, de
+fato, mencionam o software acadêmico, mas sem caracterizar o tipo de menção.
 
 \begin{figure}[h]
   \center
   \frame{\includegraphics[scale=0.45]{imagens/screenshot-paper-p148-2ls.png}}
-  \caption{Exemplo de ocorrencia do nome do projeto de software em fórmula matemática.}
+  \caption{Exemplo de ocorrência do nome do projeto de software em fórmula matemática.}
   \label{screenshot-paper-p148-2ls}
 \end{figure}
 
-Ao final da triagem temos, para cada projeto, um conjunto de artigos que de
-fato mencionam o software, sem ainda caracterizar o tipo de menção.
 
-\subsection{Passo 3: Keywording}
+%\subsection{Keywording}
 
-A anotação de cada uma das \ScreeningCount \ menções foram analisadas e o
-esquema para caracterização foi criado com três valores distintos indicando o
-nível de contribuição da menção ao ecossistema de software do projeto,
-apresentados na Tabela \ref{esquema-de-mencao}.
+Na execução do passo de Keywording, 
+a anotação de cada uma das \ScreeningCount \ menções foram analisadas e o
+esquema para caracterização foi criado, com três valores distintos que
+indicam o nível de contribuição da menção ao ecossistema de software do projeto,
+conforme Tabela \ref{esquema-de-mencao}.
 
 \begin{table}[h]
 \caption{Esquema para classificação de menções aos projetos software acadêmico.}
@@ -479,10 +492,10 @@ apresentados na Tabela \ref{esquema-de-mencao}.
 \label{esquema-de-mencao}
 \end{table}
 
-\subsection{Passo 4: Extração}
+%\subsection{Extração}
 
-A partir do esquema para caracterização das menções coletamos os valores
-assumindo um dos valores da Tabela \ref{esquema-de-mencao}, encontramos
+A partir do esquema para caracterização das menções, coletamos os valores
+assumindo um dos valores da Tabela \ref{esquema-de-mencao}. Encontramos
 \CiteCount \ menções do tipo Cita, \UseCount \ menções do tipo Usa e
 \ContributeCount \ menções do tipo Contribui. Estes dados são
 apresentados em resumo na Tabela \ref{mentions-table}.
@@ -493,27 +506,34 @@ apresentados em resumo na Tabela \ref{mentions-table}.
 selecionados no arquivo \texttt{paper.bib}, independente de terem sido
 encontrados na busca das bases ACM e IEEE.
 
+NÃO ME LEMBRO BEM DISSO.
+
+
 % }}}
 
 \section{Análise dos Dados} \label{estudo2:analise} % {{{
 
-Dados de \SoftwareCount \ projetos desenvolvidos e publicados na literatura
+A análise de dados foi realizada considerando
+dados de \SoftwareCount \ projetos desenvolvidos e publicados na literatura
 acadêmica de Engenharia de Software, informações sobre diversas formas de
-menção ao nome destes projetos, \ScreeningUniqueCount \ artigos distintos
+menção ao nome destes projetos, e \ScreeningUniqueCount \ artigos distintos
 encontrados nas bases ACM e IEEE mencionando estes projetos.
 
-\subsection{Passo 1: Busca}
+\subsection{Busca}
 
 A busca nas bases ACM e IEEE retornou uma média de \SearchUniqueMean \ artigos
-por projeto. Os projetos \texttt{s24} (GUIZMO) e \texttt{s41} (protopurity)
+por projeto de software acadêmico. 
+Os projetos \texttt{s24} (GUIZMO) e \texttt{s41} (protopurity)
 não foram encontrados em nenhuma das bases.
 Os projetos \texttt{s17} (e-munity), \texttt{s43} (PtYasm) e \texttt{s60} (XOgastan)
 não foram encontrados na base ACM.
 
-Entre os projetos com resultados acima da média a maior parte está disponível
-para download, 11 com acesso e 7 sem acesso.  Entre os projetos com resultados
-abaixo da média, 25 está disponível para download e apenas 16 não estão
-disponíveis.
+Entre os projetos com resultados acima da média, 
+a maior parte está disponível para download, 
+sendo 11 com acesso e 7 sem acesso.  
+Do mesmo modo, entre os projetos com resultados abaixo da média, 
+a maior parte, 25 projetos, está disponível para download, 
+e 16 não estão disponíveis para download.
 
 %projetos com resultado da busca acima da média
 % resultados  acesso
@@ -582,15 +602,15 @@ disponíveis.
 %s58 11     s
 %s60 7      n
 
-\subsection{Passo 2: Triagem}
+\subsection{Triagem}
 
-Entre os resultados da busca apenas 51\% dos artigos são relevantes e fazem
-menção aos projetos. Numa média de \ScreeningUniqueMean \ artigos por projeto
+Entre os resultados da busca, apenas 51\% dos artigos são relevantes e fazem
+menção aos projetos, com uma média de \ScreeningUniqueMean \ artigos por projeto
 e \ScreeningMean \ menções por projeto.
 
 Entre os projetos com menções acima da média, 9 estão disponíveis para download
-e 6 não estão disponíveis, entre os projetos com menções abaixo da média, 25
-possuem download disponível e 20 não.
+e 6 não estão disponíveis. Entre os projetos com menções abaixo da média, 25
+possuem download disponível e 20 não estão disponíveis.
 
 % acima da média de menções
 %          acesso
@@ -657,13 +677,15 @@ possuem download disponível e 20 não.
 %s57 = 5  n
 %s60 = 5  n
 
-\subsection{Passo 3: Keywording}
+\subsection{Keywording}
 
 \CiteCount \ Cita,
 \UseCount \ Usa e
 \ContributeCount \ Contribui.
 
-\subsection{Passo 4: Extração}
+COMPLETAR.
+
+\subsection{Extração}
 
 Entre os \SoftwareCount \ projetos, \SoftwareNotMentionedCount \ projetos
 (\input{documents/software-not-mentioned.tex}) não foram encontrados em menções
@@ -672,13 +694,13 @@ arquivo \texttt{paper.bib}, referente a seleção do software no estudo
 apresentado no Capítulo \ref{estudo1}.
 
 Os demais \MentionsStudyDois \ projetos são mencionados em publicações nas
-bases ACM e IEEE, deste grupo apenas \ContributeStudyDoisSoftware \ projetos
+bases ACM e IEEE. Deste grupo, apenas \ContributeStudyDoisSoftware \ projetos
 (\input{documents/contributions-found.tex}) recebem contribuições através de
 \ContributeStudyDoisCount \ menções.
 
 A Figura \ref{mentions-timeline} apresenta uma visualização da linha do tempo
-de cada software em relação a menções encontradas nas bases ACM e IEEE através
-da revisão de literatura.
+de cada software acadêmico em relação a menções encontradas nas bases ACM e IEEE.
+% através da revisão de literatura.
 
 \begin{figure}[h]
   \center
