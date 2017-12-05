@@ -70,7 +70,7 @@ Queremos saber quantos projetos de software acadêmico de análise estática pub
 nas conferências ASE e SCAM foram publicizados adequadamente, se permanecem disponíveis e 
 quais são as informações que podem ser obtidas.
 
-O objetivo da pesquisa está definido segundo a estrutura GQM \cite{van1999goal}.
+O objetivo da pesquisa está definido segundo a estrutura GQM \cite{basili1994goal}.
 
 \subsection{Definição do Objetivo}
 
@@ -128,15 +128,39 @@ e sua publicização serão investigadas:
   estática publicados nas conferências ASE e SCAM?
 }
 \newcommand{\EstudoUmQuestaoQuatro}{
-  Os projetos de software com código fonte disponível podem ser adaptados para
-  atender necessidades emergentes?
+  Os projetos de software com código fonte disponível usam licenças de software
+  livre ou código aberto?
 }
 
 \begin{description}
   \item [Q1:] \EstudoUmQuestaoUm
+
+    Por presença oficial online entende-se site ou repositório oficial do
+    projeto, um endereço URL com informações do software, geralmente mantido
+    pelos próprios autores do software.
+
   \item [Q2:] \EstudoUmQuestaoDois
+
+    Com esta questão queremos saber se é possível obter uma cópia online do
+    software de forma que autores independentes possam utilizar e avaliar
+    o software, seja com fins de reprodutibilidade de estudos utilizando o
+    software, seja para fins de novas pesquisas com o apoio do software.
+
   \item [Q3:] \EstudoUmQuestaoTres
+
+    Com esta questão queremos saber se pesquisadores e interessados no conhecimento
+    empregado na construção do software e presente no próprio código fonte terá acesso
+    a este conhecimento, que usualmente faz parte da própria pesquisa, o acesso
+    ao código fonte é útil também para aqueles que tenham interesse no uso, eventuais
+    adaptações ou correções pode ser necessário para executar em outros ambientes
+    ou sistemas operacionais.
+
   \item [Q4:] \EstudoUmQuestaoQuatro
+
+    Com esta questão queremos saber se os projetos possuem permissão explícita
+    para contribuição via código fonte de forma que possam ser adaptados para
+    atender necessidades emergentes e que estas adaptações possam também ser
+    distribuídas livremente.
 \end{description}
 
 \subsection{Métricas}
@@ -148,7 +172,7 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
   \item Número de projetos com URL disponível
   \item Número de projetos disponíveis para download
   \item Número de projetos com código fonte disponível
-  \item Número de projetos com permissão explícita de contribuição via código fonte
+  \item Número de projetos usando licenças de software livre ou código aberto
 \end{enumerate}
 
 % }}}
@@ -175,7 +199,9 @@ O objetivo da revisão de literatura realizada foi encontrar artigos mencionando
 software de análise estática entre os resultados do estudo. A revisão foi
 organizada em três passos, detalhados a seguir.
 
-\subsubsection{Passo 1: Escopo}
+\begin{description}
+
+  \item [Passo 1: Escopo]
 
 Este passo teve como objetivo a seleção das conferências a serem utilizadas como fonte dos
 artigos para a revisão de literatura. 
@@ -202,7 +228,7 @@ conferência e o ano de publicação devem ser registrados e armazenados em
 arquivos ou banco de dados. Neste estudo fizemos uso do
 LibreOffice Calc\footnote{\url{https://www.libreoffice.org}}.
 
-\subsubsection{Passo 2: Triagem Automática} \label{estudo1:planejamento:filtro}
+  \item [Passo 2: Triagem Automática]
 
 O escopo definido no passo anterior irá, potencialmente, resultar num enorme
 conjunto de artigos para revisão. Assim, o objetivo da triagem automática é reduzir o tamanho deste
@@ -236,7 +262,7 @@ excluído. Ao final da triagem, espera-se obter um conjunto reduzido
 de artigos, contendo apenas as publicações relevantes para o objetivo
 deste estudo.
 
-\subsubsection{Passo 3: Extração}
+  \item [Passo 3: Extração]
 
 Os artigos incluídos serão inspecionados manualmente em busca de software acadêmico de
 análise estática entre os resultados do estudo. Os critérios de inclusão desta etapa têm
@@ -272,7 +298,9 @@ dados de um conjunto de projetos de software acadêmico de análise estática,
 incluindo nome do projeto e URL para download. Estes dados extraídos devem ser
 atualizados nos arquivos ou banco de dados já utilizados nos passos anteriores.
 
-\subsection{Caracterização dos projetos de software acadêmico de análise estática}
+\end{description}
+
+\subsection{Caracterização de software acadêmico de análise estática}
 
 Os dados coletados na revisão de literatura, devidamente armazenados em
 arquivos ou banco de dados, incluem projetos de software acadêmico de análise
@@ -328,7 +356,9 @@ dados.
 
 \subsection{Revisão de literatura com publicação de software de análise estática}
 
-\subsubsection{Passo 1: Escopo}
+\begin{description}
+
+  \item [Passo 1: Escopo]
 
 Seguindo o planejamento descrito em \ref{estudo1:planejamento}, definimos como
 fonte de busca as conferências SCAM\footnote{\url{http://www.ieee-scam.org}}
@@ -356,16 +386,16 @@ Engineering Conference. Teve sua primeira edição no ano de 1991 e, a partir de
 passou a se chamar  ASE - Automated Software Engineering Conference.
 A conferência SCAM, teve sua primeira edição no ano de 2001.
 
-\subsubsection{Passo 2: Triagem Automática}
+  \item [Passo 2: Triagem Automática]
 
 Implementamos um script para execução da triagem automática a partir dos
-critérios definidos no planejamento, Seção \ref{estudo1:planejamento:filtro}.
+critérios definidos no planejamento, Seção \ref{estudo1:planejamento}.
 Este script utiliza como base o software livre
 \texttt{pdftotext}\footnote{\url{https://en.wikipedia.org/wiki/Pdftotext}} para
 converter o conteúdo pdf dos arquivos em texto antes de realizar o filtro pelas
 palavras-chave.
 
-\subsubsection{Passo 3: Extração}
+  \item [Passo 3: Extração]
 
 Criamos uma planilha LibreOffice Calc para coletar os dados de cada passo da
 revisão de literatura com as seguintes colunas:
@@ -379,7 +409,9 @@ revisão de literatura com as seguintes colunas:
   \item[Anotações] Observações sobre o contexto em que o software é mencionado.
 \end{description}
 
-\subsection{Caracterização dos projetos de software acadêmico de análise estática}
+\end{description}
+
+\subsection{Caracterização de software acadêmico de análise estática}
 
 Nesta fase de preparação para a caracterização dos projetos, definimos a
 estrutura de diretórios e nomes e formatos de arquivos utilizados para
@@ -416,25 +448,29 @@ são representadas na Figura \ref{revisao-literatura}.
 \end{figure}
 % figura feita com base no artigo Nicolli Alves 2016, Fig 2
 
-\subsubsection{Passo 1: Escopo}
+\begin{description}
+
+  \item [Passo 1: Escopo]
 
 A busca realizada nas conferências ASE e SCAM até o ano de 2015 resultou em
 1873 artigos; deste total, 346 artigos são do SCAM e 1527 artigos do ASE.
 
-\subsubsection{Passo 2: Triagem Automática}
+  \item [Passo 2: Triagem Automática]
 
 O filtro executado automaticamente usando os critérios definidos na fase de
 preparação reduziu o conjunto de 1873 para 441 artigos, sendo 155 artigos do SCAM e
 286 artigos do ASE selecionados para posterior inspeção manual.
 
-\subsubsection{Passo 3: Extração}
+  \item [Passo 3: Extração]
 
 Os 441 artigos selecionados pela triagem automática foram inspecionados manualmente, tendo como guia
 os critérios descritos na Tabela \ref{criterios-extracao} na fase de
 planejamento. Ao final da inspeção manual, selecionamos, 61 artigos com publicação de
 software acadêmico de análise estática.
 
-\subsection{Caracterização dos projetos de software acadêmico de análise estática}
+\end{description}
+
+\subsection{Caracterização de software acadêmico de análise estática}
 
 Conforme planejado, coletamos informações adicionais 
 para cada projeto de software, descritas na Tabela
@@ -463,7 +499,9 @@ A seguir apresentamos a análise dos dados coletados.
 
 \subsection{Revisão de literatura com publicação de software de análise estática}
 
-\subsubsection{Passo 1: Escopo}
+\begin{description}
+
+  \item [Passo 1: Escopo]
 
 Até 2015, a conferência ASE publicou quase 4 vezes mais do que a conferência SCAM.
 A edição com o maior número de publicações foi a de 2011, com 112 artigos publicados,
@@ -478,13 +516,13 @@ totais distribuídos ao longo de cada edição.
   \label{artigos-por-ano}
 \end{figure}
 
-\subsubsection{Passo 2: Triagem Automática}
+  \item [Passo 2: Triagem Automática]
 
 Até o ano de 1996, nenhum artigo foi encontrado na conferência ASE com
 ocorrência das palavras-chave utilizadas no filtro. Apenas a partir de 1997
 temos ocorrência dos termos pesquisados nas publicações desta conferência.
 
-\subsubsection{Passo 3: Extração}
+  \item [Passo 3: Extração]
 
 Considerando todo o período incluído na revisão de literatura, encontramos uma
 média de 2 artigos por ano com publicação de software acadêmico. A Figura
@@ -513,6 +551,8 @@ na conferência ASE e 21 projetos na conferência SCAM.
 %ReWeb, DMS, EMBER, VADA, ADiMat, AMOEBA, JSysDG, MAGIC, SCATR, ELAN, HaRe,
 %X-DEVELOP, SUDS, Goanna, Parfait, Templar, MemSafe, CAWDOR, LIBCROOS, GASR,
 %PtrTracker.
+
+\end{description}
 
 % }}}
 
@@ -559,7 +599,7 @@ linguagens de programação usadas para a implementação dos projetos de softwa
 \subsection{Q4 - \EstudoUmQuestaoQuatro} % licença
 
 Dentre os 34 projetos que disponibilizaram o código fonte, 13 não informaram
-licença alguma e 19 informaram licenças de FOSS ({\it free and open source
+licença alguma e 21 informaram licenças de FOSS ({\it free and open source
 software}). A Tabela \ref{license-table} resume as licenças utilizadas e o
 número de projetos em cada uma.
 
@@ -570,8 +610,8 @@ sem qualquer restrição prévia pelos seus autores, mas os 13 projetos sem
 licença definida impedem eventuais cientistas a publicar suas modificações e
 redistribuir qualquer melhoria sem prévia solicitação aos autores originais.
 
-Considerando o total de 60 projetos selecionados neste estudo, apenas 32\% (19
-projetos) podem ser adaptados; os demais, 68\% (41 projetos) podem ser
+Considerando o total de 60 projetos selecionados neste estudo, apenas 35\% (21
+projetos) podem ser adaptados; os demais com código fonte disponível, 21\% (13 projetos) podem ser
 adaptados, mas as melhorias ou correções não podem ser redistribuídas sem
 autorização prévia dos autores.
 
@@ -655,30 +695,10 @@ estudos para investigar tais questões, apresentados nos próximos capítulos.
 %publicados nestas duas sem indicação alguma de URL para obtenção do software,
 %indicando que a ...
 
-%acadêmico define-se quantos e quais são os projetos encontrados no conjunto de
-%artigos selecionados na revisão de literatura, realizamos a verificação de
-%quais são os projetos consultando a planilha LibreOffice Calc e para cada
-%projeto criamos um diretório com o nome do software, o nome do software é antes
-%transformado em minúsculas e removemos caracteres especiais, acentos, espaços
-%em branco, este nome é utilizado para fazer referência ao software no restante
-%do estudo.
-
-%A planilha LibreOffice Calc utilizada como apoio
-%na revisão foi atualizada com o nome do software publicado no artigo
-%correspondente.
-%de artigos com publicação de
-
 %Os critérios de seleção da Tabela \ref{criterios-selecao} foram adaptados do
 %trabalho de \citeonline{howison2016software}, que fez uma revisão de literatura
 %da Biologia em busca de menções a software acadêmico para evidenciar problemas
 %de visibilidade e de uso.
-
-%e documentos para download no
-%site, estes documentos, quando disponíveis, também foram consultados, estes
-%documentos estão normalmente disponíveis em formato txt, pdf ou doc.
-%Quando disponível, o código fonte também foi inspecionado em busca de
-%informações, alguns projetos distribuem junto ao código fonte documentos e
-%manuais, outros documentam informações sobre o projeto no próprio código.
 
 %Existe uma leve tendência, ao longo dos anos,  para a indisponibilidade das
 %fontes informadas e páginas web.  É possível notar que, em 2006, 80\% de todos

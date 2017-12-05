@@ -1,20 +1,43 @@
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type years_mentioned );
 % use List::Util qw( uniq );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
 % my @data = ();
 % foreach my $k (sort keys %dataset) {
 %   my $id = $dataset{$k}{software}{id};
+%   my $name = $dataset{$k}{software}{short_name};
 %   my $stage = $dataset{$k}{life_cycle}{stage};
 %   my $releases = @{ $dataset{$k}{releases}{versions} } // 0;
 %   my @releases = map { m/^(\d{4})-/; $1 } grep { /^\d{4}-/ } map { $_->{released_at} } @{ $dataset{$k}{releases}{versions} };
 %   my @years = uniq sort @releases;
 %   my $year = @years > 1 ? "$years[0]-$years[-1]" : ($years[0] // 0);
+%   my $delta = @years > 1 ? $years[-1]-$years[0] : ($years[0] ? 1 : 0);
 %   my $download = $dataset{$k}{address}{download_available};
+%   my $url = $dataset{$k}{address}{url_available};
 %   my $source = $dataset{$k}{features}{source_code};
-%   push @data, {id => $id, stage => $stage, releases => $releases, years => $year, download => $download, source => $source};
+%   my $mentions = grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} };
+%   my $license = $dataset{$k}{software}{license};
+%   my $cite = count_mentions_by_type 'cite', %{ $dataset{$k}{references} };
+%   my $use = count_mentions_by_type 'use', %{ $dataset{$k}{references} };
+%   my $contribute = count_mentions_by_type 'contribute', %{ $dataset{$k}{references} };
+%   my @years_mentions = years_mentioned $k, \%dataset, \%references;
+%   my $year_m = @years_mentions > 1 ? "$years_mentions[0]-$years_mentions[-1]" : ($years_mentions[0] // 0);
+%   my $delta_m = @years_mentions > 1 ? $years_mentions[-1]-$years_mentions[0] : ($years_mentions[0] ? 1 : 0);
+%   my @years_all = uniq sort (@years, @years_mentions);
+%   my $delta_a = @years_all > 1 ? $years_all[-1]-$years_all[0] : ($years_all[0] ? 1 : 0);
+%   my $age = @years_all > 0 ? 2017-$years_all[0] : 0;
+%   my $modules = 0;
+%   while (my $r = pop @{ $dataset{$k}{releases}{versions} }) {
+%     next if $r->{source} =~ m/unavailable|unknown/;
+%     my $v = $r->{version};
+%     $modules = $dataset{$k}{metrics}{"version-$v"}{total_modules} // 0;
+%     last if $modules;
+%   }
+%   push @data, {id => $id, name => $name, url => $url, stage => $stage, mentions => $mentions, releases => $releases, years => $year, download => $download, source => $source, license => $license, cite => $cite, use => $use, contribute => $contribute, years_mentions => $year_m, delta_mentions => $delta_m, delta => $delta, delta_all => $delta_a, age => $age, birth => $years_all[0] // 0, modules => $modules};
 % }
-id,download,stage,releases,years,source_code
+id,name,url,download,mentions,cite,use,contribute,years_mentions,delta_mentions,stage,releases,years_releases,delta_releases,source_code,license,delta_all,birth,age,modules
 % foreach (@data) {
-<%== $_->{id} %>,<%== $_->{download} %>,<%== $_->{stage} %>,<%== $_->{releases} %>,<%== $_->{years} %>,<%== $_->{source} %>
+<%== $_->{id} %>,<%== $_->{name} %>,<%== $_->{url} %>,<%== $_->{download} %>,<%== $_->{mentions} %>,<%== $_->{cite} %>,<%== $_->{use} %>,<%== $_->{contribute} %>,<%== $_->{years_mentions} %>,<%== $_->{delta_mentions} %>,<%== $_->{stage} %>,<%== $_->{releases} %>,<%== $_->{years} %>,<%== $_->{delta} %>,<%== $_->{source} %>,<%== $_->{license} %>,<%== $_->{delta_all} %>,<%== $_->{birth} %>,<%== $_->{age} %>,<%== $_->{modules} %>
 % }
 %# vim: filetype=epl
