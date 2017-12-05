@@ -309,11 +309,12 @@ e da relação entre os passos da revisão de literatura, detalhados a seguir.
 %os dados coletados visando a facilidade e transparência ao acesso aos dados
 %por
 
-\subsection{Busca}
+%\subsection{Busca}
 
-Seguindo o planejamento descrito na seção \ref{estudo2:planejamento} criamos as
-strings de busca e as registramos nos arquivos \texttt{search.yml} de cada
-projeto. Este arquivo irá registrar também o número de resultados e a data de
+Seguindo o planejamento descrito na seção \ref{estudo2:planejamento},
+no passo de busca, 
+criamos as strings de busca e as registramos nos arquivos \texttt{search.yml} de cada
+projeto. Este arquivo também registra o número de resultados e a data de
 execução da busca. A Listagem \ref{search-yml} apresenta um exemplo deste
 arquivo com campos utilizados para registrar os resultados da busca.
 
@@ -344,9 +345,10 @@ Foi implementado o script \texttt{bin/ids} para automatizar a
 definição deste novo campo para cada artigo; ele recebe como entrada um arquivo
 no formato BibTeX e gera sequencialmente o campo \texttt{id} para cada item.
 
-\subsection{Triagem}
+%\subsection{Triagem}
 
-Definimos a estrutura do arquivo \texttt{references.yml} onde será registrada a
+Na preparação para a Triagem,
+definimos a estrutura do arquivo \texttt{references.yml} onde será registrada a
 informação dos artigos relevantes para cada projeto. A Listagem
 \ref{references-yml} apresenta um exemplo deste arquivo e de sua estrutura.
 
@@ -391,15 +393,18 @@ O script \texttt{bin/render} lê este arquivo \texttt{cache/dataset.yml},
 carrega os dados em memória e passa estes dados como parâmetro para os arquivos
 templates.
 
-\subsection{Keywording}
+%\subsection{Keywording}
 
-Adicionamos aos arquivos \texttt{references.yml} um novo campo para coletar o
-tipo de menção feita em cada artigo aos projetos, \texttt{mention\_type}. Este
-campo assume um dos valores do esquema de classificação de menções criado neste passo.
+Para apoiar o passo de Keywording, 
+adicionamos aos arquivos \texttt{references.yml} um novo campo para coletar o
+tipo de menção feita em cada artigo aos projetos, \texttt{mention\_type}. 
+Este campo assume um dos valores do esquema de classificação de menções 
+a ser criado durante a execução desse passo.
 
-\subsection{Extração}
+%\subsection{Extração}
 
-Implementamos arquivos de template para representar os dados coletados em
+Finalmente, para apoiar o passo de extração, 
+implementamos arquivos de template para representar os dados coletados em
 outros formatos para visualização e análise, incluindo documentos em formatos
 CSV, Markdown e \LaTeX. Alguns destes documentos são incluídos automaticamente
 neste texto.
@@ -514,7 +519,7 @@ acadêmica de Engenharia de Software, informações sobre diversas formas de
 menção ao nome destes projetos, e \ScreeningUniqueCount \ artigos distintos
 encontrados nas bases ACM e IEEE mencionando estes projetos.
 
-\subsection{Busca}
+%\subsection{Busca}
 
 A busca nas bases ACM e IEEE retornou uma média de \SearchUniqueMean \ artigos
 por projeto de software acadêmico. 
@@ -597,15 +602,18 @@ e 16 não estão disponíveis para download.
 %s58 11     s
 %s60 7      n
 
-\subsection{Triagem}
+%\subsection{Triagem}
 
-Entre os resultados da busca, apenas 51\% dos artigos são relevantes e fazem
+Na triagem, observou-se que:
+\begin{itemize}
+\item entre os resultados da busca, apenas 51\% dos artigos são relevantes e fazem
 menção aos projetos, com uma média de \ScreeningUniqueMean \ artigos por projeto
-e \ScreeningMean \ menções por projeto.
+e \ScreeningMean \ menções por projeto;
 
-Entre os projetos com menções acima da média, 9 estão disponíveis para download
+\item entre os projetos com menções acima da média, 9 estão disponíveis para download
 e 6 não estão disponíveis. Entre os projetos com menções abaixo da média, 25
 possuem download disponível e 20 não estão disponíveis.
+\end{itemize}
 
 % acima da média de menções
 %          acesso
@@ -672,7 +680,9 @@ possuem download disponível e 20 não estão disponíveis.
 %s57 = 5  n
 %s60 = 5  n
 
-\subsection{Keywording}
+%\subsection{Keywording}
+
+Durante o Keywording ...
 
 \CiteCount \ Cita,
 \UseCount \ Usa e
@@ -680,14 +690,16 @@ possuem download disponível e 20 não estão disponíveis.
 
 COMPLETAR.
 
-\subsection{Extração}
+%\subsection{Extração}
 
-Entre os \SoftwareCount \ projetos, \SoftwareNotMentionedCount \ projetos
+
+Durante a extração, observou-se que, 
+entre os \SoftwareCount \ projetos, \SoftwareNotMentionedCount \ projetos
 (\input{documents/software-not-mentioned.tex}) não foram encontrados em menções
 após a publicação inicial, sendo a única publicação aquela localizada no
 arquivo \texttt{paper.bib}, referente a seleção do software no estudo
 apresentado no Capítulo \ref{estudo1}.
-
+%
 Os demais \MentionsStudyDois \ projetos são mencionados em publicações nas
 bases ACM e IEEE. Deste grupo, apenas \ContributeStudyDoisSoftware \ projetos
 (\input{documents/contributions-found.tex}) recebem contribuições através de
