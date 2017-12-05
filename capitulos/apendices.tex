@@ -56,32 +56,62 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
 
 \subsection{\texttt{bin/}}
 
-(detalhes de implementação e descrição de cada script, instruções de uso)
-
 \begin{description}
-  \item [\texttt{bin/cache}] Script para ...
-  \item [\texttt{bin/chart-dataset}] (remover este script)
-  \item [\texttt{bin/filter-papers}] (refatorar, renomear)
-  \item [\texttt{bin/ids}] ...
-  \item [\texttt{bin/merge}] ...
-  \item [\texttt{bin/render}] ...
-  \item [\texttt{bin/run-analizo}] ...
+  \item [\texttt{bin/cache}] Script utilizado para agregar todos os dados
+  de todos os projetos num arquivo único em formato YML em \texttt{cache/dataset.yml}.
+
+%agregar todos os dados coletados de todos os projetos a partir dos arquivos
+%\texttt{software.yml}, \texttt{acm.bib}, \texttt{ieee.bib}, \texttt{paper.bib},
+%\texttt{references.yml} e \texttt{search.yml}.
+%O script \texttt{bin/render} lê este arquivo \texttt{cache/dataset.yml},
+%carrega os dados em memória e passa estes dados como parâmetro para os arquivos
+%templates.
+
+%  \item [\texttt{bin/filter-papers}] (refatorar, renomear)
+
+  \item [\texttt{bin/ids}]
+    Script utilizado para criar o campo \texttt{id} com valor autoincremento
+    para cada referência no arquivo \texttt{documents/references.bib}
+
+  \item [\texttt{bin/merge}]
+    Combina os arquivos \texttt{acm.bib}, \texttt{ieee.bib} e
+    \texttt{paper.bib} de cada projeto em um único arquivo no formato BibTeX
+    removendo duplicidades dos resultados.
+
+  \item [\texttt{bin/render}]
+    Este script lê o arquivo \texttt{cache/dataset.yml}, carrega os dados em
+    memória e passa estes dados como parâmetro para os arquivos templates
+    localizados em \texttt{templates/}.
+
+  \item [\texttt{bin/run-analizo}] 
+    Script utilizado para automatizar a execução da ferramenta {\it analizo
+    metrics} para coletar o número de módulos de cada lançamento foi
+    desenvolvido.
+
 \end{description}
 
 \subsection{\texttt{dataset/}}
 
-(falar da planilha de revisao de literatura do estudo1,
-apresentar a estrutura de diretórios e arquivos para cada software)
+%(falar da planilha de revisao de literatura do estudo1,
+%apresentar a estrutura de diretórios e arquivos para cada software)
 
 \begin{description}
-  \item [\texttt{dataset/software/}] Estrutura de diretório utilizado para coleta de dados em arquivos do tipo YAML e BibTeX.
-  \item [\texttt{dataset/literature-review.ods}] Planilha LibreOffice Calc\footnote{\url{https://www.libreoffice.org}} ...
 
-Os artigos analisados na revisão estruturada estão todos documentados arquivo
-{\it
-dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/dataset.ods}},
-uma planilha no formato aberto {\it Open Document Format for Office
-Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
+  \item [\texttt{dataset/software/}]
+    Estrutura de diretório utilizado para coleta de dados em arquivos do tipo
+    YAML e BibTeX, cada projeto de software selecionado possui um diretório
+    nesta estrutura.
+
+  \item [\texttt{dataset/literature-review.ods}]
+    Planilha LibreOffice Calc\footnote{\url{https://www.libreoffice.org}} com
+    os dados coletados no estudo do Capítulo \ref{estudo1} resultando na
+    seleção de \SoftwareCount \ projetos de software acadêmico.
+
+%Os artigos analisados na revisão estruturada estão todos documentados arquivo
+%{\it
+%dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/dataset.ods}},
+%uma planilha no formato aberto {\it Open Document Format for Office
+%Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
 
 %Os dados extraídos são armazenados no arquivo \texttt{references.yml} de
 %cada projeto, sendo atualizado com a inclusão de um novo campo indicando o tipo
@@ -174,7 +204,6 @@ cada ferramenta e uma caracterização completa.
 
 %Para auxiliar a definição da identificação para cada artigo implementamos o script \texttt{bin/ids}, este script
 
-
 Apresentar detalhes de implementação, execução e uso do script bin/run-analizo, bem como detalhes para instalação do Analizo.
 
 %\texttt{references.yml} de cada projeto onde iremos anotar e coletar os dados
@@ -199,9 +228,7 @@ Apresentar detalhes de implementação, execução e uso do script bin/run-anali
 %para cada projeto, a Listagem \ref{references-yml} apresenta um exemplo do
 %trecho do YML para armazenar a extração dessas informações.
 
-
 Apresentar e detalhar os arquivos scam-links.md e ase-link.md (citado no estudo1:preparacao).
-
 
 O script utilizado na segunda atividade da revisão estruturada -- {\it (2)
 Filtro} -- também está neste mesmo repositório no arquivo {\it
@@ -213,4 +240,3 @@ escrito em linguagem Perl especialmente para este estudo.
 %utilizado para leitura dos artigos, com o auxílio da busca encontramos cada
 %ocorrência ao nome do software tomando nota a confirmação sobre a menção
 %encontrada.
-
