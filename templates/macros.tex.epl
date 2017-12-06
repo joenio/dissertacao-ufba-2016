@@ -5,6 +5,10 @@
 % my %references = %{ $_[1] };
 %= "\% dados do estudo1"
 \newcommand{\SoftwareCount}{<%== keys %dataset %>}
+\newcommand{\SoftwareUrlNotAvailableCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'no' } keys %dataset %>}
+\newcommand{\SoftwareUrlAvailableCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'yes' } keys %dataset %>}
+\newcommand{\SoftwareDownloadNotAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'no' } keys %dataset %>}
+\newcommand{\SoftwareDownloadAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset %>}
 %= "\% dados do estudo2"
 % my %total = (acm => 0, ieee => 0, total => 0, cite => 0, use => 0, contribute => 0);
 % my @mentions = ();
