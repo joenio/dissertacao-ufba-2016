@@ -1,9 +1,9 @@
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
 digraph references {
-% foreach my $p (map { "p$_" } sort { $a <=> $b } map { s/^p//; $_ } keys %references) {
-%   foreach my $k (keys %dataset) {
-%     foreach my $ref (grep /^$p$/, keys %{ $dataset{$k}{references} }) {
+% foreach my $p (map { "p$_" } sort { $a <=> $b } map { s/^p//; $_ } sort keys %references) {
+%   foreach my $k (sort keys %dataset) {
+%     foreach my $ref (grep /^$p$/, sort keys %{ $dataset{$k}{references} }) {
 %       if ($dataset{$k}{references}{$ref}{is_software_mentioned} eq 'yes') {
 %         if ($dataset{$k}{references}{$ref}{mention_type} eq 'cite') {
   <%== $p %> -> <%== $dataset{$k}{software}{id} %> [label=cite];
