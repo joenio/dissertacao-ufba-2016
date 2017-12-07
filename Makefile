@@ -13,8 +13,8 @@ include /usr/share/latex-mk/latex.gmk
 
 rebuild: clean cache documents all
 
-analyze:
-	./bin/analyze-softwares -o dataset/metrics.csv
+metrics:
+	./bin/run-analizo dataset/software
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
