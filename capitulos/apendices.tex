@@ -46,8 +46,8 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
   \texttt{dissertacao.tex}    & Arquivo \LaTeX \ principal com inclusão dos capítulos, título e resumo do texto. \\
   \texttt{documents/}         & Documentos gerados pelos templates com apresentação dos dados coletados. \\
   \texttt{imagens/}           & Imagens, gráficos e demais elementos visuais utilizados no texto. \\
-  \texttt{lib/}               & ...                 \\
-  \texttt{Makefile}           & Conujunto de regras para execução dos scripts e compilação do código fonte \LaTeX \ em PDF.                 \\
+  \texttt{lib/}               & Diretório contendo implementação de métodos para leitura análise e transformação dos dados utilizado nos scripts. \\
+  \texttt{Makefile}           & Conjunto de regras para execução dos scripts e compilação do código fonte \LaTeX \ em PDF.                 \\
   \texttt{README.md}          & Documento com descrição do repositório, informaçoes de contato, e instruções para compilação dos fontes \LaTeX \ e execução dos scripts. \\
   \texttt{templates/}         & Templates (modelos) para leitura dos dados coletados e transformação em documentos. \\
   \texttt{ufbathesis.cls}     & Arquivo de estilo do \LaTeX \ com definições e padrão de formatação deacordo as regras de publicação da UFBA. \\
@@ -122,14 +122,17 @@ cada ferramenta e uma caracterização completa.
     nesta estrutura.
 
   \item [\texttt{dataset/software/<nome>/software.yml}]
-    ... TODO ...
+    Arquivo contendo os dados básicos de cada software, como: nome, descrição, url,
+    licença, disponibilidade para download, entre outros dados.
 
   \item [\texttt{dataset/software/<nome>/references.yml}]
     Arquivo YAML para armazenar dados coletados sobre as menções a cada software
     acadêmico.
 
   \item [\texttt{dataset/software/<nome>/releases.yml}]
-    ... TODO ...
+    Arquivo para armazenar os dados de cada lançamento do software cotendo o
+    número da versão, a data do lançamento e a url para download do software
+    ne versão específica.
 
   \item [\texttt{dataset/software/<nome>/paper.bib}]
     Arquivo BibTeX contendo os metadados do artigo inicial onde o software foi
@@ -165,11 +168,19 @@ no diretório \texttt{documents/} sem a extenção \texttt{.epl}.
     Gera um documento CSV com todas as strings de busca no arquivo
     \texttt{documents/search-strings.csv}.
 
+  \item [\texttt{templates/dataset.csv.epl}]
+    Este template gera o arquivo \texttt{documents/dataset.csv} com um resumo de
+    dados coletados durante todos os estudos da pesquisa, incluindo número de lançamentos,
+    número de menções, número de menções por tipo, métrica de código fonte da última
+    versão, entre outros dados para cada software estudado.
+
+  \item [\texttt{templates/metrics.csv.epl}]
+    Este arquivo agrega as métricas de código fonte coletadas para cada lançamento
+    de cada software numa tabela em formato CSV.
+
 %dataset-by-year.csv.epl
-%dataset.csv.epl
 %life-cycle.csv.epl
 %mentions-timeline.csv.epl
-%metrics.csv.epl
 
 \end{description}
 
