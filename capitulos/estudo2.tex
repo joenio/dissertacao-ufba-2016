@@ -4,14 +4,13 @@
 Este capítulo apresenta
 um estudo de caracterização do reconhecimento de software acadêmico de análise estática.
 Com base em informações sobre
-citações formais e informais ao software acadêmico de análise estática %%chris: ver se formal / informal faz sentido
+citações formais e informais ao software acadêmico de análise estática
 extraídas de um conjunto de artigos científicos publicados em periódicos ou conferências,
 as relações entre software acadêmico e artigos científicos
 são identificadas e classificadas % em níveis de colaboração 
 para caracterizar o grau de reconhecimento do software acadêmico.
 
 A seção \ref{estudo2:introducao} contextualiza o estudo
-%a seção \ref{estudo2:fundamentacao} apresenta os conceitos teóricos necessários para compreensão do trabalho,
 e a seção \ref{estudo2:escopo} apresenta seu objetivo e questões de pesquisa.
 A seção \ref{estudo2:planejamento} apresenta o planejamento do estudo, e
 as seções \ref{estudo2:preparacao} e \ref{estudo2:coleta} descrevem a preparação e execução da coleta de dados.
@@ -40,8 +39,8 @@ cita-se o número da versão, e raramente usa-se citação formal.
 
 Qualquer um que trabalha com software acadêmico saberá que o nível de
 reconhecimento e retribuição para o software e para quem revisa ou desenvolve
-não é proporcional a sua importância, o sistema de recompensa é quase que
-exclusivamente baseado em publicação científica, e infelizmente, compartilhar
+não é proporcional a sua importância para a Ciência, o sistema de recompensa científico é quase que
+exclusivamente baseado em publicação, e infelizmente, compartilhar
 software ainda provê pouco mérito, mesmo que seja realmente útil para outros
 pesquisadores \cite{goble2014better}.
 
@@ -59,7 +58,6 @@ cientistas e da alta rotatividade entre os grupos de pesquisa.
 Esta estratégia de colaboração se torna especialmente interessante entre as
 pesquisas da Engenharia de Software, onde, a princípio os cientistas possuem
 acesso ao conhecimento e práticas necessárias para o trabalho em colaboração.
-%Dessa forma, n
 Neste estudo, investigamos como os projetos de software acadêmico
 de análise estática são mencionados em publicações nas bases da ACM e IEEE e se
 há colaboração entre eles.
@@ -67,15 +65,13 @@ há colaboração entre eles.
 % }}}
 
 \section{Fundamentação} \label{estudo2:fundamentacao}
-%\subsection{Menção}
 
 Neste estudo,
-O termo \textit{menção} é usado para tratar, genericamente, qualquer ocorrência de
+o termo \textit{menção} é usado para tratar, genericamente, qualquer ocorrência de
 nome de projeto de software acadêmico de análise estática em artigo científico,
 incluindo tanto citação formal, quanto informal.
 Uma menção pode estar associada ao uso do software no contexto de outras pesquisas,
 e até mesmo a contribuições ao projeto de software acadêmico.
-%extraídas de artigos científicos publicados em periódicos e conferências.
 Desse modo, uma menção define uma relação entre um artigo científico e 
 um software acadêmico.
 
@@ -126,11 +122,6 @@ na perspectiva de \textit{cientistas}
 no contexto de \textit{publicações nas bases ACM e IEEE}.
 
 \subsection{Questões de Pesquisa}
-
-%Quantas menções a projetos de software acadêmico de análise estática são
-%encontradas em publicações nas bases da ACM e IEEE? Quais são os tipos de
-%menções? Existe contribuição em código fonte aos projetos entre as publicações
-%encontradas?
 
 Neste estudo, três questões de pesquisa a respeito dos projetos de
 software acadêmico de análise estática serão investigadas:
@@ -277,15 +268,10 @@ Este esquema deve ser construído com o objetivo de agrupar e caracterizar os ti
 de menção encontrados para cada projeto de software em termos da contribuição
 que a menção traz ao ecossistema de software daquele projeto acadêmico.
 
-%, cada
-%menção representa uma entrada em forma de contribução ao ecossistema, seja
-%fazendo o projeto de software ser visível na literatura acadêmica, seja com
-%contribuição direta em código ao projeto.
-
 \subsection{Passo 4: Extração}
 
 Neste último passo da revisão de literatura, utiliza-se o esquema de codificação
-para caracterização de menções criado no Passo 3 (keywording) para classificar as
+para caracterização de menções criado no Passo 3 (Keywording) para classificar as
 menções de cada projeto de software encontradas nos artigos relevantes
 selecionados no Passo 2 (Triagem).
 
@@ -313,12 +299,6 @@ e da relação entre os passos da revisão de literatura, detalhados a seguir.
   \caption{Fluxo de coleta, análise e transformação dos dados.}
   \label{estudo2-fluxograma}
 \end{figure}
-
-%Definimos em linhas gerais utilizar arquivos em texto plano para armazenar
-%os dados coletados visando a facilidade e transparência ao acesso aos dados
-%por
-
-%\subsection{Busca}
 
 Seguindo o planejamento descrito na seção \ref{estudo2:planejamento},
 no passo de busca, 
@@ -354,8 +334,6 @@ Foi implementado o script \texttt{bin/ids} para automatizar a
 definição deste novo campo para cada artigo; ele recebe como entrada um arquivo
 no formato BibTeX e gera sequencialmente o campo \texttt{id} para cada item.
 
-%\subsection{Triagem}
-
 Na preparação para a Triagem,
 definimos a estrutura do arquivo \texttt{references.yml} onde será registrada a
 informação dos artigos relevantes para cada projeto. A Listagem
@@ -385,7 +363,7 @@ Este mecanismo é apresentado em resumo na Figura
 \ref{template-fluxograma}.
 O mecanismo de templates será
 utilizado em outros pontos de estudo para automatizar e produzir documentos a
-partir dos dados coletados, 
+partir dos dados coletados.
 
 \begin{figure}[h]
   \center
@@ -402,15 +380,11 @@ O script \texttt{bin/render} lê este arquivo \texttt{cache/dataset.yml},
 carrega os dados em memória e passa estes dados como parâmetro para os arquivos
 templates.
 
-%\subsection{Keywording}
-
 Para apoiar o passo de Keywording, 
 adicionamos aos arquivos \texttt{references.yml} um novo campo para coletar o
 tipo de menção feita em cada artigo aos projetos, \texttt{mention\_type}. 
 Este campo assume um dos valores do esquema de classificação de menções 
 a ser criado durante a execução desse passo.
-
-%\subsection{Extração}
 
 Finalmente, para apoiar o passo de extração, 
 implementamos arquivos de template para representar os dados coletados em
@@ -435,9 +409,6 @@ realizada nas bases ACM e IEEE.
   \label{estudo2-revisao-literatura}
 \end{figure}
 
-
-%\subsection{Busca}
-
 A busca de todos os projetos retornou \SearchCount \ resultados,
 \SearchACMCount \ na base ACM e \SearchIEEECount \ na base IEEE.
 Estes resultados incluem duplicação de artigos, ou seja,
@@ -450,8 +421,6 @@ um dos projetos pesquisados; a coluna {\bf Total} inclui os artigos do arquivo
 \texttt{paper.bib} e apresenta apenas resultados únicos.
 
 \input{documents/search-table.tex}
-
-%\subsection{Triagem}
 
 Durante a triagem, 
 os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
@@ -477,9 +446,6 @@ fato, mencionam o software acadêmico, mas sem caracterizar o tipo de menção.
   \label{screenshot-paper-p148-2ls}
 \end{figure}
 
-
-%\subsection{Keywording}
-
 Na execução do passo de Keywording, 
 a anotação de cada uma das \ScreeningCount \ menções foram analisadas e o
 esquema para caracterização foi criado, com três valores distintos que
@@ -501,8 +467,6 @@ conforme Tabela \ref{esquema-de-mencao}.
 \label{esquema-de-mencao}
 \end{table}
 
-%\subsection{Extração}
-
 A partir do esquema para caracterização das menções, coletamos os valores
 assumindo um dos valores da Tabela \ref{esquema-de-mencao}. Encontramos
 \CiteCount \ menções do tipo Cita, \UseCount \ menções do tipo Usa e
@@ -517,7 +481,6 @@ encontrados na busca das bases ACM e IEEE.
 
 NÃO ME LEMBRO BEM DISSO.
 
-
 % }}}
 
 \section{Análise dos Dados} \label{estudo2:analise} % {{{
@@ -527,8 +490,6 @@ dados de \SoftwareCount \ projetos desenvolvidos e publicados na literatura
 acadêmica de Engenharia de Software, informações sobre diversas formas de
 menção ao nome destes projetos, e \ScreeningUniqueCount \ artigos distintos
 encontrados nas bases ACM e IEEE mencionando estes projetos.
-
-%\subsection{Busca}
 
 A busca nas bases ACM e IEEE retornou uma média de \SearchUniqueMean \ artigos
 por projeto de software acadêmico. 
@@ -544,75 +505,6 @@ Do mesmo modo, entre os projetos com resultados abaixo da média,
 a maior parte, 25 projetos, está disponível para download, 
 e 16 não estão disponíveis para download.
 
-%projetos com resultado da busca acima da média
-% resultados  acesso
-% s1  38      s
-% s3  15      n
-% s7  25      s
-% s10 14      s
-% s15 16      n
-% s18 47      s
-% s19 45      n
-% s25 34      s
-% s28 50      s
-% s29 15      s
-% s32 32      s
-% s36 34      n
-% s38 42      n
-% s45 14      n
-% s46 24      s
-% s52 41      s
-% s56 38      n
-% s59 36      s
-% s = 11
-% n = 7
-
-%projetos com resultado da busca abaixo da média
-%resultados acesso
-%s2  8      s
-%s4  9      n
-%s5  6      n
-%s6  7      s
-%s8  13     s
-%s9  8      n
-%s11 3      n
-%s12 6      s
-%s13 9      n
-%s14 2      s
-%s16 5      s
-%s17 1      s
-%s20 10     n
-%s21 3      s
-%s22 5      s
-%s23 12     n
-%s24 1      s
-%s26 7      s
-%s27 5      s
-%s30 10     n
-%s31 3      n
-%s33 5      s
-%s34 4      s
-%s35 2      s
-%s37 7      s
-%s39 11     n
-%s40 11     s
-%s41 1      s
-%s42 5      s
-%s43 2      s
-%s44 3      n
-%s48 4      n
-%s49 5      n
-%s50 2      s
-%s51 7      s
-%s53 13     n
-%s54 4      s
-%s55 12     s
-%s57 8      n
-%s58 11     s
-%s60 7      n
-
-%\subsection{Triagem}
-
 Na triagem, observou-se que:
 \begin{itemize}
 \item entre os resultados da busca, apenas 51\% dos artigos são relevantes e fazem
@@ -624,71 +516,6 @@ e 6 não estão disponíveis. Entre os projetos com menções abaixo da média, 
 possuem download disponível e 20 não estão disponíveis.
 \end{itemize}
 
-% acima da média de menções
-%          acesso
-%s4  = 9   n
-%s7  = 10  s
-%s19 = 40  n
-%s23 = 8   n
-%s25 = 19  s
-%s28 = 40  s
-%s30 = 8   n
-%s32 = 14  s
-%s38 = 18  n
-%s40 = 9   s
-%s46 = 13  s
-%s52 = 40  s
-%s56 = 21  n
-%s58 = 11  s
-%s59 = 33  s
-
-% abaixo da média de menções
-%         acesso
-%s1  = 1  s
-%s2  = 2  s
-%s3  = 4  n
-%s5  = 5  n
-%s6  = 5  s
-%s8  = 6  s
-%s9  = 5  n
-%s10 = 5  s
-%s11 = 3  n
-%s12 = 2  s
-%s13 = 1  n
-%s14 = 2  s
-%s15 = 5  n
-%s16 = 4  n
-%s17 = 1  s
-%s18 = 2  s
-%s20 = 1  n
-%s21 = 1  s
-%s22 = 3  s
-%s24 = 1  s
-%s26 = 7  s
-%s27 = 3  s
-%s29 = 7  s
-%s31 = 2  n
-%s33 = 5  s
-%s34 = 2  s
-%s35 = 1  s
-%s36 = 2  n
-%s37 = 7  s
-%s39 = 2  n
-%s41 = 1  s
-%s43 = 2  s
-%s44 = 2  n
-%s45 = 2  n
-%s47 = 1  n
-%s48 = 2  n
-%s49 = 5  n
-%s50 = 1  s
-%s51 = 4  s
-%s53 = 4  n
-%s54 = 3  s
-%s55 = 1  s
-%s57 = 5  n
-%s60 = 5  n
-
 %\subsection{Keywording}
 
 Durante o Keywording ...
@@ -698,9 +525,6 @@ Durante o Keywording ...
 \ContributeCount \ Contribui.
 
 COMPLETAR.
-
-%\subsection{Extração}
-
 
 Durante a extração, observou-se que, 
 entre os \SoftwareCount \ projetos, \SoftwareNotMentionedCount \ projetos
@@ -716,7 +540,6 @@ bases ACM e IEEE. Deste grupo, apenas \ContributeStudyDoisSoftware \ projetos
 
 A Figura \ref{mentions-timeline} apresenta uma visualização da linha do tempo
 de cada software acadêmico em relação a menções encontradas nas bases ACM e IEEE.
-% através da revisão de literatura.
 
 \begin{figure}[h]
   \center
@@ -771,26 +594,6 @@ Ou seja, apenas 28\% dos projetos (\input{documents/contributions-found.tex})
 recebem contribuição em código fonte de estudos após a publicação inicial, ao
 menos entre estudos encontrados nas bases ACM e IEEE.
 
-%O GRT recebe uma grande contribuição além da publicação inicial criando o projeto,
-%é o único, todos os outros recebem contribuições de peso apenas na criação, ou seja,
-%no paper original publicando o projeto pela primeira vez.
-
-%Os projetos tiveram contribuições em código em publicações posteriores aos
-%artigos inicias publicando o software?
-
-%Quantos autores novos além dos autores originais/iniciais do projeto
-%foram encontrados contribuindo com os projetos?
-
-%\input{documents/contributors-table.tex}
-
-%A comparação entre os nomes do autores passou antes pela normalização
-%no formato de representação, visto que cada artigo utiliza um formato
-%de nome diferente, transformamos, por exemplo, ``Bajaj, Kon'' em ``Bajaj K.'',
-%``Costa, Kim A.'' em ``Costa K. A.'', ``Rajan, Sreeranga P.'' em ``Rajan S. P.'',
-%``Pol, Jaco van de'' em ``Pol J. van de'', ``Zijiang Yang'' em ``Yang Z.'',
-%e assim comparamos dois nomes considerando que cada um destes nomes representa,
-%de forma única, um autor.
-
 % }}}
 
 \section{Ameaças à Validade}  \label{estudo2:ameacas} % {{{
@@ -843,11 +646,6 @@ projetos. Isto indica que não parece haver uma prática de contribuição entre
 pesquisadores em relação a código fonte dos seus projetos de software, ao menos
 no contexto de análise estática.
 
-%Identificou-se que uma quantidade mínima de artigos contribui com código fonte aos
-%projetos estudados nesta pesquisa, apenas 28\% dos projetos recebem contribuições
-%após a contribuição inicial publicada pelos seus autores. Este pequeno conjunto
-%recebeu \ContributeStudyDoisCount \ contribuições em código fonte, 
-
 Não encontramos relação entre a disponibilidade de download, forma de
 distribuição ou linguagem de programação e o número de menções, entre os
 projetos com maior contribuição temos Java, C, Erlang e Rascal.
@@ -863,50 +661,7 @@ relacionado ao número de contribuições destes projetos. Desta forma, planejam
 um terceiro estudo para investigar este aspecto de qualidade entre os projetos
 estudados.
 
-
-%%------------------------------------------------%%
-%ou ao menos um subconjunto deles, já que uma parte não está disponível em
-%código fonte e o estudo que faremos será através da análise deste artefato.
-
-%Entretanto, acredita-se que um atributo de qualidade externa, como
-%manutenibilidade por exemplo, tem relação com o número de contribuição, uma vez
-%que a facilidade de contribuição está diretamente relacionada a facilidade de
-%intervenção e manutenção no código fonte destes projetos.
-
-%FALTA uma síntese aqui. 
-%Este estudo ...
-%Resultados mostram que ...
-%Algumas tendências emergiram a partir da leitura ...
-%
-%Planejamos fazer outro estudo ... 
-
 % }}}
-
-%Para cada software, os resultados foram agrupados
-%num arquivo único, sem duplicidade entre os resultados trazidos por cada base
-%bibliográfica. O arquivo de metadados de cada software contém informações sobre
-%o artigo, autores, ano de publicação, conferência, jornal, etc. Os artigos
-%também foram armazenados localmente, no formato pdf para serem analisados na
-%triagem.
-
-%A busca avançada na base ACM (Figura \ref{advanced-search-acm}) não necessita
-%marcar nenhum campo adicional além do próprio campo texto onde deve-se entrar
-%com a string de busca de cada projeto. Para cada projeto de software são construídas duas strings, uma para busca na
-%base da ACM, outra para busca na base IEEE.
-
-%buscamos inicialmente usando apenas o nome do software, analisamos o número total
-%de resultados e os títulos destes resultados, quando o número de resultados for
-%muito grande, acima de XXX, e os títulos não aparentavam ser estudos com relação
-%aos projetos, incluímos mais características, como por exemplo, parte da descrição
-%do software, ou parte da URL, autores, etc.
-
-%Neste estudo as menções  pesquisadas nas bases ACM e IEEE teve como critério
-%mínimo a identificação do projeto de software através do nome, ou seja, não
-%buscamos publicações que não fizessem menção ao nome do software.
-
-%A inspeção tem como objetivo selecionar os artigos relevantes para este estudo,
-%mantendo apenas aqueles com menção ao nome do software, seja a menção em
-%formato de citação formal ou informal.
 
 %o uma escala de pesos, onde o último tipo
 %de menção inclui implicitamente os tipos de menor peso, este peso representa
@@ -915,17 +670,6 @@ estudados.
 %Um tipo de menção com maior peso inclui implicitamente o tipo de menção de
 %menor peso, e assim sucessivamente.
 
-%Definimos uma identificação única para cada um dos 60 projetos de software
-%utilizando o próprio arquivo \texttt{software.yml} através do campo
-%\texttt{id:} seguindo o padrão \texttt{s + número}, exemplo, \texttt{s1},
-%\texttt{s2}, \texttt{s3}, \texttt{s4}, ..., \texttt{s60}, cada projeto de software
-%recebeu um id.
-
-%Definimos um novo campo neste mesmo arquivo para coleta das menções, fazendo
-%referência ao ID do artigo mencionando o software, com os campos ... cada artigo
-%encontrado na revisão de literatura também receberá um ID, desta forma será possível
-%relacionar projetos e artigos através das menções.
-
 %esquema
 %para cada artigo será extraído qual o
 %tipo de menção é feito ao software, quando o artigo menciona o software
@@ -933,41 +677,7 @@ estudados.
 %estudo, onde o tipo de menção de maior peso inclui implicitamente os tipos
 %menores.
 
-%tipos gerou uma escala de tipos de menção
-%aos projetos de software, detalhado na 
-%, com três valores
-%distintos, onde o último tipo de menção com maior valor inclui todos os demais.
-
-%A definição deste esquema foi feito através de anotações sobre onde e como o
-%projeto de software é mencionado em cada artigo.
-%É importante lembrar que um mesmo artigo pode mencionar
-%mais de um software.
-
-
 %%-----------------------------------------------------------%%
-
-%Ao longo da história, a citação formal foi para autenticação e autoridade, em
-%vez de de crédito e reconhecimento ou atribuição. A  científico citação na
-%história ocidental aparece no final dos anos 1500. No início dos anos 1700, a
-%citação também aparece no sistema legal como método de compreensão dos
-%precedentes \cite{katz2014transitive}.
-
-%A ideia de direitos autorais como reconhecendo aos direitos dos seus autores
-%também surge nesse tempo, 1710, talvez devido a uma lenta tendência social
-%societária de reconhecer a propriedade intelectual, uma idéia que parece ter se
-%desenvolvido ao lado da imprensa]. Observe que a autoria de papers é realmente
-%usado para notar os autores reais do artigo quanto para notar os contribuidores
-%do projeto.
-%Para muitos desses, o
-%identificador que deve ser citado - um "nome" que se refere a um produto único
-%não é claro.
-
-%Additionally, if a cited library depends
-%on another library, the contribution of this second library
-%is not captured. Citation of a dataset should perhaps give
-%credit to the people who gathered the data, as well as
-%those who curated it, but the paper author may not know
-%or be able to find these details.
 
 %Mas independente de como seja calculado o impacto científico de uma determinada
 %pesquisa o impacto causado se reverte potencialmente em mais recursos que
@@ -976,40 +686,3 @@ estudados.
 %citações formais facilitam e promovem o avanço
 %da ciência, mesmo diante da falta de um padrão para citar artefatos digitais
 %\cite{allen2014credit}.
-
-%Um estudo recente com 90 artigos de diversas áreas da biologia, selecionados
-%aleatoriamente entre publicações usando softwares como método, mostrou que
-%apenas 59 mencionavam o uso de softwares de alguma forma, os demais 31 artigos,
-%apesar de usar software acadêmico, não mencionavam nada a respeito
-%\cite{howison2016software}, apenas entre 31\% e 43\% das menções aos softwares
-%acadêmicos envolvem citação formal.
-
-%Não existe ainda amadurecimento suficiente sobre como citar softwares e
-%outros artefatos digitais em pesquisas científicas, não temos um padrão de como fazê-lo,
-%cada autor cita à sua maneira, muitas vezes ao longo do texto, outras em seções
-%específicas sobre a implementação do software, nem semprem informam onde
-%encontrar uma cópia do software, ou ainda nem sobre o modelo em que o software
-%é distribuído, ou se é de alguma forma distribuído ao público.
-
-%Entre os softwares acadêmicos desenvolvidos por cientistas como apoio em suas
-%pesquisas, não é raro que pesquisadores deixem de disponibilizar estes artefatos,
-%assim como outros desdobramentos da pesquisa, como dados e outros. Ou ainda,
-%mesmo disponibilizando tais artefatos em locais de público acesso, com o tempo,
-%tais locais se tornam indisponíveis inviabilizando a obtenção de tais
-%artefatos.
-
-%A comunidade tem refletido sobre os problemas relacionados ao
-%desenvolvimento, promoção e sustentabilidade desses softwares, e o
-%impacto que tais problemas causam no meio científico \cite{allen2017engineering}.
-
-
-%Recursos são devotados para a produção de software acadêmico. Usuários finais
-%cientistas (diretamente ou indiretamente) usam softwares acadêmicos para fazer
-%ciência, resultando em impacto científico.
-
-%historia da citacao na ciencia, como isso promove o avanço, problemas para
-%citacao em artefatos digitais, solucao para identificador unico de autores de
-%artigos, orcid.org resolve este problema, o mesmo para identificar artefatos
-%digitais é o doi.org
-
-
