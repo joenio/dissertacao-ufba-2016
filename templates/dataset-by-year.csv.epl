@@ -17,7 +17,6 @@ year,projects,releases,mentions,cite,use,contribute
 %   foreach my $y (map { m/^(\d{4})-/;$1 } grep {/^\d{4}-/} map {$_->{released_at}} @{$dataset{$k}{releases}{versions}}) {
 %     $sum_by_year{$y}{releases}++;
 %   }
-%   last if $sum_by_year{$years[0]}{projects} >= 2; #corte em no maximo 3 projetos ao ano
 % }
 % foreach my $y (sort keys %sum_by_year) {
 <%== $y %>,<%== $sum_by_year{$y}{projects} %>,<%== $sum_by_year{$y}{releases} %>,<%== $sum_by_year{$y}{mentions} %>,<%== $sum_by_year{$y}{cite} %>,<%== $sum_by_year{$y}{use} %>,<%== $sum_by_year{$y}{contribute} %>

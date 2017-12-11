@@ -1,6 +1,11 @@
 \xchapter{Publicização de software acadêmico de análise estática}{} 
 \label{estudo1}
 
+\newcommand{\changelocaltocdepth}[1]{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{#1}}%
+  \setcounter{tocdepth}{#1}%
+}
+
 Este capítulo apresenta um estudo sobre a publicização de software acadêmico
 de análise estática divulgado nas conferências ASE - Automated Software Engineering, e 
 SCAM - Working Conference on Source Code Analysis \& Manipulation, até o ano de 2015.
@@ -18,6 +23,7 @@ as seções \ref{estudo1:analise} e \ref{estudo1:interpretacao} apresentam a an�
 a seção \ref{estudo1:conclusoes} apresenta as conclusões finais deste estudo.
 
 \section{Motivação} \label{estudo1:introducao} % {{{
+%Sets the scope of the work and encourages readers to read the rest of the chapter
 
 Software acadêmico é um termo usado para denotar
 projetos de software desenvolvidos durante pesquisas científicas,
@@ -351,13 +357,14 @@ código fonte, como por exemplo, o software livre
 
 \section{Preparação} \label{estudo1:preparacao} % {{{
 
-Nesta seção apresentamos a preparação do estudo para a realização da coleta de
+Nesta seção apresentamos a preparação do estudo para a revisão da literatura
+e realização da coleta de
 dados.
 
+\changelocaltocdepth{1}
 \subsection{Revisão de literatura com publicação de software de análise estática}
 
 \begin{description}
-
   \item [Passo 1: Escopo]
 
 Seguindo o planejamento descrito em \ref{estudo1:planejamento}, definimos como
@@ -367,11 +374,12 @@ ASE\footnote{\url{http://ase-conferences.org}} ({\it Automated Software
 Engineering}), ambas conferências com um grande histórico de edições. Definimos
 como data limite o ano de 2015.
 
-A escolha destas duas conferências baseou-se no princípio de serem conferências
-tradicionais e importantes para a área de Engenharia de Software, tendo tradição
-em estudos sobre análise de software, e dessa forma, potencializando aumentar
-o número de projetos de software acadêmico de análise estática encontrados
-entre suas publicações.
+%trecho abaixo foi movido para introducao: estrategia de pesquisa
+%A escolha destas duas conferências baseou-se no princípio de serem conferências
+%tradicionais e importantes para a área de Engenharia de Software, tendo tradição
+%em estudos sobre análise de software, e dessa forma, potencializando aumentar
+%o número de projetos de software acadêmico de análise estática encontrados
+%entre suas publicações.
 
 Os artigos das duas conferências estão disponíveis para download:
 as publicações da conferência SCAM estão todas disponibilizadas no IEEE, e
@@ -388,16 +396,16 @@ A conferência SCAM, teve sua primeira edição no ano de 2001.
 
   \item [Passo 2: Triagem Automática]
 
-Implementamos um script para execução da triagem automática a partir dos
-critérios definidos no planejamento, Seção \ref{estudo1:planejamento}.
-Este script utiliza como base o software livre
-\texttt{pdftotext}\footnote{\url{https://en.wikipedia.org/wiki/Pdftotext}} para
+Para a execução da triagem automática a partir dos
+critérios definidos no planejamento (Seção \ref{estudo1:planejamento}),
+implementamos um script, que utiliza como base o software livre
+\texttt{pdftotext}\footnote{\url{https://en.wikipedia.org/wiki/Pdftotext}}, para
 converter o conteúdo pdf dos arquivos em texto antes de realizar o filtro pelas
 palavras-chave.
 
   \item [Passo 3: Extração]
 
-Criamos uma planilha LibreOffice Calc para coletar os dados de cada passo da
+Para a execução da extração, criamos uma planilha LibreOffice Calc para coletar os dados de cada passo da
 revisão de literatura com as seguintes colunas:
 
 \begin{description}
@@ -541,17 +549,6 @@ software com indicação de URL para download; ainda assim, no processo de
 revisão, encontramos 51 projetos sem indicação de URL para download, sendo 30 projetos
 na conferência ASE e 21 projetos na conferência SCAM.
 
-%Os 30 projetos sem indicação de URL encontrados no ASE são:
-%AGENDA, Rostra, VisAXSM, Jink, AMNESIA, ISIS4J, Decor, Smack, CBFA, iMaus,
-%CPPCHECKER, Tikanga, Doc2Spec, Drails, ClassSplitter, UMGAR, Secoria,
-%Impendulo, BEST, DC2, WAIVE+, COPES, Ranger, ProgramCutter, Scoria, Relda,
-%CONBOL, SymCrash, CodeHow, SAFEWApp.
-
-%Os 21 projetos sem indicação de URL encontrados no SCAM são:
-%ReWeb, DMS, EMBER, VADA, ADiMat, AMOEBA, JSysDG, MAGIC, SCATR, ELAN, HaRe,
-%X-DEVELOP, SUDS, Goanna, Parfait, Templar, MemSafe, CAWDOR, LIBCROOS, GASR,
-%PtrTracker.
-
 \end{description}
 
 % }}}
@@ -560,14 +557,14 @@ na conferência ASE e 21 projetos na conferência SCAM.
 
 \subsection{Q1 - \EstudoUmQuestaoUm} % presença online
 
-Dos 60 projetos de software estudados neste trabalho, 15 não têm presença
-oficial online no endereço de URL informado pelos seus autores, 45 projetos
+Dos \SoftwareCount \ projetos de software estudados neste trabalho, \SoftwareUrlNotAvailableCount \ não têm presença
+oficial online no endereço de URL informado pelos seus autores, \SoftwareUrlAvailableCount \ projetos
 estão presentes através da URL informada de alguma forma, significando que as
 URL informada pelos autores estão ativas e online.
 
 \subsection{Q2 - \EstudoUmQuestaoDois} % download
 
-Entre os 60 projetos selecionados, 24 não estão disponíveis para download, ou
+Entre os \SoftwareCount \ projetos selecionados, 24 não estão disponíveis para download, ou
 seja, apesar dos autores informarem no estudo uma URL, indicarem que o software
 está disponível nesta URL para download, a URL não mais está disponível e o
 software não pode ser encontrado. Isso significa que 40\% dos projetos de software
@@ -578,11 +575,6 @@ Os demais 36 projetos, que equivalem a 60\% do conjunto total, estão
 disponíveis para download e é possível obter uma cópia destes projetos na URL
 indicada pelos seus autores. Um resumo deste total por ano é apresentado na
 Tabela \ref{available-table}.
-
-
-\textbf{E se a URL tiver mudado com o tempo, isto é, for diferente daquela do artigo original?}
-No pior caso, não houve preocupação em sinalizar isso na URL original.
-
 
 \input{documents/available-table.tex}
 
@@ -646,6 +638,12 @@ ter resultados com viés atrelado a estes dois eventos; é possível que as
 características dos projetos publicados em outras conferências da Engenharia de
 Software apresentem situação diferentes.
 
+A avaliação da disponibilidade do software para download usando apenas a URL
+informada pelos seus autores pode levar a falso-negativos, uma vez que é
+possível a URL mudar com o tempo, esta ameaça apesar de não ter sido
+tratada não invalida nossas conclusões, uma vez que o estudo teve como objetivo
+inicial avaliar primariamente a própria URL indicada pelos autores originais.
+
 % }}}
 
 \section{Conclusões} \label{estudo1:conclusoes} % {{{
@@ -686,24 +684,6 @@ disponível, e ainda, como tais projetos são vistos por outros pesquisadores, o
 são utilizados e referenciados por outros autores. Assim planejamos outros
 estudos para investigar tais questões, apresentados nos próximos capítulos.
 
+\changelocaltocdepth{2}
+
 % }}}
-
-% Is sustainability a good predictor of citation rates for the software?
-%"sustainability - turn out to be excellent predictors of citation rates for the software. Even the citations themselves will be different. "Another cool method also exists (Weasel et al. 2008)." versus "We used Weasel et al. (2008) to do amazing things" - which is a huge difference for us as programmers, I think! And when we are on hiring committees, we can very easily see how often your papers are getting cited."
-
-%Percebemos também que existe uma grande quantidade de projetos de software
-%publicados nestas duas sem indicação alguma de URL para obtenção do software,
-%indicando que a ...
-
-%Os critérios de seleção da Tabela \ref{criterios-selecao} foram adaptados do
-%trabalho de \citeonline{howison2016software}, que fez uma revisão de literatura
-%da Biologia em busca de menções a software acadêmico para evidenciar problemas
-%de visibilidade e de uso.
-
-%Existe uma leve tendência, ao longo dos anos,  para a indisponibilidade das
-%fontes informadas e páginas web.  É possível notar que, em 2006, 80\% de todos
-%os softwares de análise estática publicados nas conferências ASE e SCAM ainda
-%estão disponíveis.  Este número cresce em 2014, chegando a 90\%, e cai no ano
-%seguinte para 85\%.  Apesar de não estar sempre crescente, e da  amostra
-%pequena usada neste estudo -- apenas 60 projetos de software acadêmico, este
-%leve indício confirma a afirmação de \citeonline{robles2010replicating}.

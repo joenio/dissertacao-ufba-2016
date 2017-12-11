@@ -11,20 +11,22 @@ pelo menos metade dos cientistas de todas as áreas do conhecimento
 os seus principais desenvolvedores
 \cite{goble2014better}.
 
-Pesquisadores, no entanto, ao desenvolver software raramente publicam o
+Entretanto, ao desenvolver software, pesquisadores raramente publicam o
 seu código fonte \cite{robles2010replicating, amann2015software}, ferindo um dos
 princípios da Ciência, de que novas descobertas sejam reproduzidas antes de
 serem consideradas parte da base de conhecimento \cite{stodden2009enabling}.
-
-Isso, além de desacelerar o progresso geral da Ciência, torna praticamente
-impossível aplicar o método mais comum e cientificamente produtivo de produzir
-conhecimento novo a partir de pesquisas anteriores, a replicação
-\cite{king1995replication, stodden2010reproducible}, gerando retrabalho e
-consumindo de maneira ineficiente os limitados recursos da Ciência
+%
+Além de desacelerar o progresso geral da Ciência, a indisponibilidade 
+do software acadêmico pode inviabilizar a replicação, considerado
+um  método comum e cientificamente produtivo de produzir
+conhecimento novo a partir de pesquisas anteriores
+\cite{king1995replication, stodden2010reproducible}, 
+gerando retrabalho e consumindo de maneira ineficiente os limitados recursos da Ciência
 \cite{howison2013incentives, katz2014transitive}.
 
-Levando ao fenômeno de desordem caótica disfuncional ({\it ``dysfunctional
-chaotic churn''}), com a existência de muitos projetos, com poucos
+Este cenário remete ao fenômeno de desordem caótica disfuncional ({\it ``dysfunctional
+chaotic churn''}) mencionado por \citeonline{howison2015understanding}, 
+caracterizado pela existência de muitos projetos, com poucos
 usuários, com ciclos de vida curtos, que terminam em paralelo ao financiamento
 inicial, comunidades desconectadas e paralelas, incompatibilidades entre
 projetos, e tentativas aparentemente não coordenadas de ``reiniciar'' tudo
@@ -36,17 +38,13 @@ eficiência que poderiam ter ao trabalhar com software
 \cite{wilson2017good},
 ocasionando graves erros em conclusões centrais da Ciência \cite{merali2010computational}.
 
-%especialmente quando grande parte dos pesquisadores não sabem o quão
-%confiável seu software é,
-%Neste cenário tem surgido questionamentos sobre conclusões centrais da Ciência,
-
 Isto tem motivado a realização de conferências específicas sobre o tema,
 como por exemplo o {\it RSE (Conference of Research
 Software Engineers)}\footnote{ \url{http://rse.ac.uk/conf2017}}, {\it WSSSPE
 (Workshop on Sustainable Software for Science: Practice and
 Experiences)}\footnote{ \url{http://wssspe.researchcomputing.org.uk}} e {\it
 RESER (Workshop on Replication in Empirical Software Engineering
-Research)}\footnote{ \url{http://sequoia.cs.byu.edu/reser}}, contribuido para
+Research)}\footnote{ \url{http://sequoia.cs.byu.edu/reser}}, algo que tem contribuido para
 a compreensão dos problemas, abordando questões sobre desenvolvimento,
 qualidade e sustentabilidade, sobre como citar software, como promover e
 reconhecer o papel do pesquisador engenheiro desenvolvedor de software ({\it
@@ -78,12 +76,10 @@ geral do software e da própria pesquisa científica, proporcionando um
 ambiente de compartilhamento e colaboração em oposição ao tradicional modelo de
 competição que permeia o sistema de reputação e crédito científico.
 
-%, resultando assim na melhoria da
-%qualidade geral da própria Ciência, reduzindo custos e evitando retrabalho.
-
 Dessa forma, neste trabalho investigamos como o software acadêmico do domínio
 de análise estática, desenvolvido e publicado em duas importantes conferências
-de Engenharia de Software, ASE e SCAM, se apresenta em termos de
+de Engenharia de Software, ASE (Automated Software Engineering) e SCAM (Working
+Conference on Source Code Analysis \& Manipulation), se apresenta em termos de
 sustentabilidade técnica, identificando problemas e abrindo caminho para a
 melhoria geral da qualidade das ferramentas e das pesquisas neste campo.
 
@@ -188,7 +184,7 @@ São objetivos específicos deste trabalho:
     Caracterizar o software acadêmico de análise estática com respeito ao
     seu ciclo de vida.
     A caracterização será feita em um conjunto de software acadêmico de análise
-    estática, com base nas informaçoes sobre lançamentos e métricas de código
+    estática, com base nas informaçoes sobre lançamentos ({\it releases}) e métricas de código
     fonte.
 \end{description}
 
@@ -196,65 +192,19 @@ São objetivos específicos deste trabalho:
 %análise estática desenvolvido na academia, especialmente sobre a capacidade de serem 
 %encontrados, compartilhados e co-desenvolvidos.
 
-\subsection{Questões de Pesquisa}
+\subsection{Questão de Pesquisa}
 
-Neste estudo as seguintes questões de pesquisa, a respeito do software
-acadêmico de análise estática, serão investigadas:
+\newcommand{\QuestaoGeralUm}{
+  Como a desordem caótica disfuncional (DCD) pode explicar a sustentabilidade técnica
+  dos projetos do ecossistema de software acadêmico de análise estática em
+  termos de publicização, reconhecimento e estágio de evolução?
+}
 
-% Quão sustentável é o software acadêmico de análise estática?
-\newcommand{\QuestaoUm}{
-  Como evolui o reconhecimento ao software acadêmico de análise estática
-  publicado nas conferências de Engenharia de Software ASE e SCAM?
-  %Qual a taxa de crescimento no número de menções a software acadêmico de
-  %análise estática publicado nas conferências de Engenharia de Software ASE e
-  %SCAM?
-}
-\newcommand{\QuestaoDois}{
-  A publicização do software acadêmico de análise estática publicado nas
-  conferências de Engenharia de Software ASE e SCAM influencia o seu
-  reconhecimento?
-}
-\newcommand{\QuestaoTres}{
-  O ciclo de vida do software acadêmico de análise estática publicado nas
-  conferências de Engenharia de Software ASE e SCAM influencia o seu
-  reconhecimento?
-  %Qual a idade média do software acadêmico de análise estática publicado nas conferências de
-  %Engenharia de Software ASE e SCAM?
-}
-\newcommand{\QuestaoQuatro}{
-  Qual o tamanho do software acadêmico de análise estática publicado nas
-  conferências de Engenharia de Software ASE e SCAM?
-  %e qual a relação com o seu estágio de evolução no ciclo de vida?
-}
-\newcommand{\QuestaoCinco}{
-  Como evolui o tamanho do software acadêmico de análise estática publicado nas
-  conferências de Engenharia de Software ASE e SCAM?
-  %O software acadêmico de análise estática publicado nas conferências de
-  %Engenharia de Software ASE e SCAM em estágio mais avançado de evolução
-  %no ciclo de vida possui maior reconhecimento?
-}
-\newcommand{\QuestaoSeis}{
-  É possível replicar ou reproduzir pesquisas que mencionam software
-  acadêmico de análise estática publicado nas conferências de Engenharia de
-  Software ASE e SCAM?
-}
-\newcommand{\QuestaoSete}{
-  O software acadêmico de análise estática publicado nas conferências de
-  Engenharia de Software ASE e SCAM é sustentável tecnicamente?
-}
-\newcommand{\QuestaoOito}{
-  O software acadêmico de análise estática publicado nas conferências de
-  Engenharia de Software ASE e SCAM é útil e maduro suficiente para ser
-  utilizado em outras pesquisas?
-}
+Neste estudo a seguinte questão de pesquisa, a respeito do software acadêmico
+de análise estática, será investigada:
 
 \begin{description}
-  \item [Q1] \QuestaoUm
-  \item [Q2] \QuestaoDois
-  \item [Q3] \QuestaoTres
-  \item [Q4] \QuestaoQuatro
-  \item [Q5] \QuestaoCinco
-  \item [Q6] \QuestaoSeis
+  \item [Questão] \QuestaoGeralUm
 \end{description}
 
 % * mais da metade desenvolvem seus próprios softwares
@@ -280,10 +230,10 @@ acadêmico de análise estática, serão investigadas:
 
 \subsection{Métricas}
 
-Para responder às questões de pesquisas, as seguintes métricas serão usadas:
+Para responder à questão de pesquisa, as seguintes métricas serão usadas:
 
 \begin{enumerate}
-  \item Métricas relacionadas a publicização do software (número de projetos
+  \item Métricas relacionadas à publicização do software (número de projetos
   disponível para download, disponível em código fonte, tipo de licença);
 
   \item Métricas relacionadas ao reconhecimento do software (número de
@@ -299,10 +249,9 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 Este trabalho apresenta um estudo de caso exploratório ({\it exploratory case
 study}) sobre a sustentabilidade técnica do software acadêmico de análise
 estática, o estudo é conduzido através de uma estratégia de pesquisa de
-trabalho de campo ({\it Field Studies}) e configuração natural ({\it Natural
+trabalho de campo ({\it Field Studies}) em ambiente natural ({\it Natural
 Settings}) \cite{stol2015holistic}, com as seguintes características
 principais:
-%segundo o framework apresentado em \citeonline{stol2015holistic}, de
 
 \begin{itemize}
   \item Com o foco num fenômeno, organização ou sistema em particular;
@@ -318,84 +267,44 @@ principais:
 Foram realizados três estudos sobre o software acadêmico de análise estática em
 termos de sua publicização, reconhecimento e ciclo de vida.
 
-No primeiro estudo selecionou-se um conjunto de projetos de software publicados
-nas conferências de Engenharia de Software ASE e SCAM, os projetos foram
+No primeiro estudo, sobre publicização, um conjunto de projetos de software publicados
+nas conferências de Engenharia de Software ASE e SCAM foi selecionado. Os projetos foram
 caracterizados em termos de disponibilidade de download, código fonte, forma de
 distribuição e licença.
 
-No segundo estudo, os projetos selecionados foram caracterizados em relação ao
-reconhecimento acadêmico em termos de menções encontradas em publicações nas
-bases ACM e IEEE, essas menções foram classificadas por tipo, e cada artigo
-mencionando software foi caracterizado segundo os tipos encontrados.
+A escolha destas duas conferências baseou-se no princípio de serem conferências
+tradicionais e importantes para a área de Engenharia de Software, tendo tradição
+em estudos sobre análise de software, e dessa forma, potencializando aumentar
+o número de projetos de software acadêmico de análise estática encontrados
+entre suas publicações.
 
-No terceiro estudo, os projetos de software acadêmico foram caracterizados em
-relação ao ciclo de vida em termos de lançamentos, versões, disponibilidade de
-download, disponibilidade de código fonte, e tamanho em termos de módulos no
-código fonte para cada versão com código fonte disponível.
+No segundo estudo, sobre reconhecimento, os projetos selecionados pelo primeiro estudo
+foram caracterizados em relação ao
+reconhecimento acadêmico em termos de menções encontradas em publicações nas
+bases ACM e IEEE. As menções encontradas foram classificadas por tipo, e cada artigo
+mencionando o software selecionado foi caracterizado segundo os tipos encontrados.
+
+No terceiro estudo, sobre ciclo de vida, os projetos de software acadêmico foram caracterizados em
+relação ao estágio de ciclo de vida em que se encontram, em termos de lançamentos, versões, disponibilidade de
+download, disponibilidade de código fonte, e número de módulos
+para cada versão com código fonte disponível.
 
 \section{Organização do texto}
 
 O capítulo \ref{fundamentacao} apresenta os fundamentos teóricos necessários
 para a compreensão deste trabalho.
-
 O capítulo \ref{estudo1} traz um estudo sobre a publicização de software
 acadêmico de análise estática nas conferências de Engenharia de Software ASE e
 SCAM.
-
 O capítulo \ref{estudo2} descreve um estudo sobre o reconhecimento de software
 acadêmico de análise estática em publicações nas bases ACM e IEEE.
-
 O capítulo \ref{estudo3} apresenta um estudo sobre o estágio de evolução e o
 ciclo de vida de software acadêmico de análise estática.
-
 O capítulo \ref{discussao} discute os resultados em termos da sustentabilidade
-técnica do ecossistema de software acadêmico de análise estática e traça
+técnica do software acadêmico de análise estática e traça
 paralelos com trabalhos relacionados.
-
 O capítulo \ref{conclusoes} apresenta as considerações finais da pesquisa e
 aponta trabalhos futuros.
-
-%No entanto, parece ser regra geral não testar ou não documentar o próprio
-%software, pesquisadores geralmente não testam ou documentam seus softwares
-%acadêmicos, a maioria também não sabe o quão confiável seu software é,
-%ocasionando graves erros em conclusões centrais da literatura,
-%gerando retrabalho nas mais diversas áreas da ciência \cite{merali2010computational},
-
-%Isto gera um impacto negativo na visibilidade dos softwares acadêmicos e faz
-%surgir questionamentos sobre a sua qualidade, não apenas técnica, mas também a
-%capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
-%importantes para a evolução do próprio software, mas também extremamente útil
-%para um uso eficiente dos limitados recursos da ciência \cite{howison2013incentives,
-%katz2014transitive}.
-
-%Mas, apesar da grande participação dos cientistas no desenvolvimento de
-%software \cite{hettrick2014uk}, 
-
-%O software utilizado na Ciência, ou {\it software acadêmico}
-%\cite{allen2017engineering}, além de ser utilizado para coleta e análise de
-%dados, pode, em algumas pesquisas, ser o principal resultado do processo científico.
-
-%, carregando neste caso uma grande parte do conhecimento obtido durante a pesquisa.
-
-%monografias, livros ou teses), incluindo desde protótipos escritos pelos
-%próprios cientistas, a produtos completos desenvolvidos profissionalmente
-%\cite{allen2017engineering}.
-
-%A maior parte dos cientistas (90\%) no entretanto nunca tiveram treinamento
-%algum de como escrever software de forma eficiente, faltam práticas básicas de
-%desenvolvimento, como escrever código legível, revisão de código, controle de
-%versão, testes unitários, entre outros, como resultado, dados são perdidos,
-%análises levam mais tempo que o necessário e os pesquisadores não conseguem a
-%eficiência que poderiam ter ao trabalhar com softwares acadêmicos
-%\cite{wilson2017good}.
-
-%Independente da finalidade, tamanho ou motivação, todo software tem o potencial
-%de voltar a ser útil em outros momentos ou lugares, para o autor original,
-%ou para pesquisadores enfrentando problemas semelhantes aos dos autores originais.
-%Não é difícil imaginar que o problema enfrentado por um pesquisador pode, em
-%algum momento, ser enfrentado por outros pesquisadores, criando assim uma ótima
-%oportunidade de colaboração entre pesquisas e pesquisadores, sendo o software
-%um excelente vetor de ajuda mútua em ambas as direções.
 
 % papel pesquisador no ecossistema de soft academico
 %
@@ -411,25 +320,4 @@ aponta trabalhos futuros.
 %geralmente é usado em conjunto; são os projetos e as pessoas que produzem esses
 %componentes se comunicando adequadamente? Como podemos sustentar o software
 %crítico?
-%
-%Aqui há uma clara tensão entre um desejo de flexibilidade e liberdade, ligado
-%às expectativas de inovação científica e desejos de estruturas de autoridade e
-%controle de coordenação. As questões de influência incluem: como os programas
-%de financiamento e quais os requisitos em suas chamadas, resultaram em software
-%amplamente utilizado e impacto científico substancial? Quais são as
-%características dos campos que alcançaram maior coalescência? Quais jornais e
-%conferências têm políticas exemplares? Como o trabalho de software é visto
-%dentro das práticas de contratação e avaliação, como os casos de posse?
-%
 %\cite{howison2015understanding}
-
-%Isto gera um impacto negativo na visibilidade dos softwares acadêmicos e faz
-%surgir questionamentos sobre a sua qualidade, não apenas técnica, mas também a
-%capacidade de ser encontrado, compartilhado e co-desenvolvido, qualidades
-%importantes para a evolução do próprio software, mas também extremamente útil
-%para um uso eficiente dos limitados recursos da ciência \cite{howison2013incentives,
-%katz2014transitive}.
-
-%A comunidade tem refletido sobre os problemas relacionados ao
-%desenvolvimento, promoção e sustentabilidade desses softwares, e o
-%impacto que tais problemas causam no meio científico \cite{allen2017engineering}.

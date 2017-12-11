@@ -1,6 +1,6 @@
 # DOCUMENT VARIABLES
 
-NAME= dissertacao
+NAME= dissertacao apendices
 CLEAN_FILES+= *.sigla* *symbols* imagens/*~ *.nav *.snm cache/* *.ist *.bcf *.run.xml
 
 # PROJECT VARIABLES
@@ -13,8 +13,8 @@ include /usr/share/latex-mk/latex.gmk
 
 rebuild: clean cache documents all
 
-analyze:
-	./bin/analyze-softwares -o dataset/metrics.csv
+metrics:
+	./bin/run-analizo dataset/software
 
 filter:
 	./bin/filter-papers "dataset/papers/ASE Papers/" > dataset/papers/filter-papers-ase.md
@@ -27,6 +27,11 @@ cache: cache/dataset.yml cache/references.bib
 documents: documents/references.bib documents/*.csv documents/*.md documents/*.tex
 	$(info rendering templates...)
 	@$(foreach t,$(templates),./bin/render $(t) > documents/$(basename $(notdir $(t)));)
+
+appendices=$(wildcard templates/appendix/*.epl)
+appendix: documents/appendix/*.tex
+	$(info rendering appendix templates...)
+	@$(foreach t,$(appendices),./bin/render $(t) > documents/appendix/$(basename $(notdir $(t)));)
 
 cache/dataset.yml:
 	@mkdir -p cache

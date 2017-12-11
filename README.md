@@ -11,7 +11,7 @@ Agenda:
 | Aividade     | Data                                          |
 | ------------ | --------------------------------------------- |
 | Qualificação | 12 de Julho de 2016                           |
-| Defesa       | _proposta: primeira semana de fevereiro/2017_ |
+| Defesa       | 19 de Dezembro de 2017                        |
 
 Banca examinadora:
 
@@ -27,7 +27,7 @@ Banca examinadora:
 Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
-Slides:
+Slides da Qualificação:
 * http://joenio.me/slides/caracterizacao-analise-estatica.html
 
 (todas as instruções abaixo consideram que você está rodando o sistema
@@ -62,13 +62,13 @@ Tenha o cuidado de instalar a versão `1.19.1` do Analizo corretamente:
 
 Para executar use o make:
 
-    make analyze
+    make metrics
 
-O arquivo `dataset/metrics.csv` contém o resultado da execução deste
-script, ele contém as métricas coletadas pelo Analizo para cada software
-analisado.
+Os arquivos em `dataset/software/<nome>/releases/*.metrics` contém os resultados
+da execução deste script, ele contém as métricas coletadas pelo Analizo para
+cada software analisado.
 
-## Script para revisão estruturada semi-automatizada
+## Script para filtro semi-automatizado da revisão de literatura
 
 O script `bin/filter-papers` depende do comando `pdftotext`.
 
@@ -82,16 +82,17 @@ Irá gerar como saída um arquivo chamado `dataset/papers.txt`.
 
 ## Script para reportar os dados dos softwares acadêmicos coletados
 
-O script `bin/softwares-summary` possui as seguintes dependencias:
+Os scripts `bin/cache`, `bin/merge` e `bin/render` possuem as seguintes dependencias:
 
-    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl libyaml-libyaml-perl libdatetime-format-http-perl
+    apt-get install libtext-bibtex-perl libmojolicious-perl libyaml-perl \
+                    libyaml-libyaml-perl libdatetime-format-http-perl
 
 Use o make:
 
-    make softwares-summary
+    make documents
 
-O resultado do comando acima é gravado no arquivo
-`capitulos/softwares-summary.tex`.
+Os resultados do comando acima são gravados em arquivos no diretório
+`documents/*.{csv,dot,tex,yml}`.
 
 ## Referências sobre estatística
 
@@ -126,6 +127,7 @@ O resultado do comando acima é gravado no arquivo
 * Jonei Costa
 * José Flávio
 * Jannine (IBICT)
+* Sandro Andrade
 
 ## Contato
 

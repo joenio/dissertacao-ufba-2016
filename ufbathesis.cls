@@ -1218,7 +1218,6 @@ grau de \@degree\ em \@majorfield.}
 
 \setcounter{tocdepth}{3}
 
-
 \renewcommand\listoffigures{%
    \chapter*{\listfigurename}
    \@starttoc{lof}}

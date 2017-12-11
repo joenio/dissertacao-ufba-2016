@@ -2,6 +2,10 @@
 {}
 \label{reproducibilidade-do-estudo}
 
+%Definimos em linhas gerais utilizar arquivos em texto plano para armazenar
+%os dados coletados visando a facilidade e transparência ao acesso aos dados
+%por
+
 Este trabalho de pesquisa, incluindo textos, imagens, dados e códigos estão
 disponíveis publicamente sob a
 licença CC BY-SA 4.0\footnote{\url{http://creativecommons.org/licenses/by-sa/4.0}}
@@ -28,7 +32,7 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
 % versão de cada software utilizado, ambiente, Debian, Perl, Analizo
 % libre office, Evince, YAML, BibTeX, navegador, etc
 
-\begin{table}[h]
+\begin{table}[ht]
 \caption{Organização de arquivos e pastas do repositório.}
 \centering
 \begin{tabular}{ l p{10cm} }
@@ -42,8 +46,8 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
   \texttt{dissertacao.tex}    & Arquivo \LaTeX \ principal com inclusão dos capítulos, título e resumo do texto. \\
   \texttt{documents/}         & Documentos gerados pelos templates com apresentação dos dados coletados. \\
   \texttt{imagens/}           & Imagens, gráficos e demais elementos visuais utilizados no texto. \\
-  \texttt{lib/}               & ...                 \\
-  \texttt{Makefile}           & Conujunto de regras para execução dos scripts e compilação do código fonte \LaTeX \ em PDF.                 \\
+  \texttt{lib/}               & Diretório contendo implementação de métodos para leitura análise e transformação dos dados utilizado nos scripts. \\
+  \texttt{Makefile}           & Conjunto de regras para execução dos scripts e compilação do código fonte \LaTeX \ em PDF.                 \\
   \texttt{README.md}          & Documento com descrição do repositório, informaçoes de contato, e instruções para compilação dos fontes \LaTeX \ e execução dos scripts. \\
   \texttt{templates/}         & Templates (modelos) para leitura dos dados coletados e transformação em documentos. \\
   \texttt{ufbathesis.cls}     & Arquivo de estilo do \LaTeX \ com definições e padrão de formatação deacordo as regras de publicação da UFBA. \\
@@ -68,6 +72,11 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
 %templates.
 
 %  \item [\texttt{bin/filter-papers}] (refatorar, renomear)
+%O script utilizado na segunda atividade da revisão estruturada -- {\it (2)
+%Filtro} -- também está neste mesmo repositório no arquivo {\it
+%dataset/revisao-estruturada/filter}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}}
+%escrito em linguagem Perl especialmente para este estudo.
+
 
   \item [\texttt{bin/ids}]
     Script utilizado para criar o campo \texttt{id} com valor autoincremento
@@ -97,123 +106,111 @@ YAML e BibTeX. Alguns elementos do repositório serão detalhados a seguir, a Ta
 
 \begin{description}
 
-  \item [\texttt{dataset/software/}]
-    Estrutura de diretório utilizado para coleta de dados em arquivos do tipo
-    YAML e BibTeX, cada projeto de software selecionado possui um diretório
-    nesta estrutura.
-
   \item [\texttt{dataset/literature-review.ods}]
     Planilha LibreOffice Calc\footnote{\url{https://www.libreoffice.org}} com
     os dados coletados no estudo do Capítulo \ref{estudo1} resultando na
     seleção de \SoftwareCount \ projetos de software acadêmico.
-
-%Os artigos analisados na revisão estruturada estão todos documentados arquivo
-%{\it
-%dataset/dataset.ods}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/dataset/dataset.ods}},
-%uma planilha no formato aberto {\it Open Document Format for Office
-%Applications}\footnote{\url{http://www.oasis-open.org/committees/office}}.
-
-%Os dados extraídos são armazenados no arquivo \texttt{references.yml} de
-%cada projeto, sendo atualizado com a inclusão de um novo campo indicando o tipo
-%de menção do artigo ao software, \texttt{mention\_type},
-
-%para utilizar na etapa de análise. Implementamos também templates para gerar arquivos em
-%formato TeX para posterior inclusão na seção de coleta onde apresentaremos os dados
-%coletados.
-
-%Os dados armazenados em arquivos
-%YAML e BibTeX são carregados em estruturas em memória através de um script
-%escrito em linguagem Perl e repassados para templates processados para exibir
-%os dados neste texto, em arquivos TeX, CSV, etc. A Figura \ref{estudo2-fluxograma}
-%apresenta o fluxo de coleta, análise e transformação dos dados.
 
 Nesta planilha está documentada cada etapa da revisão estruturada, indicando em
 cada artigo analisado qual o estado do mesmo, se foi ou não incluído na
 execução da atividade.  Nesta planilha é possível encontrar também o nome de
 cada ferramenta e uma caracterização completa.
 
-%Esta anotação foi feita no arquivo \texttt{references.yml} de cada projeto, nele
-%foi adicionado um novo registro para cada artigo que faz menção e notas sobre a
-%menção foi adicionada.
+  \item [\texttt{dataset/software/}]
+    Estrutura de diretório utilizado para coleta de dados em arquivos do tipo
+    YAML e BibTeX, cada projeto de software selecionado possui um diretório
+    nesta estrutura.
 
+  \item [\texttt{dataset/software/<nome>/software.yml}]
+    Arquivo contendo os dados básicos de cada software, como: nome, descrição, url,
+    licença, disponibilidade para download, entre outros dados.
 
-%Os scripts \texttt{bin/merge},  foram utilizados para gerar o
-%\texttt{documents/references.bib} a partir dos arquivos \texttt{acm.bib},
-%\texttt{ieee.bib} e \texttt{paper.bib} de cada projeto.
+  \item [\texttt{dataset/software/<nome>/references.yml}]
+    Arquivo YAML para armazenar dados coletados sobre as menções a cada software
+    acadêmico.
 
+  \item [\texttt{dataset/software/<nome>/releases.yml}]
+    Arquivo para armazenar os dados de cada lançamento do software cotendo o
+    número da versão, a data do lançamento e a url para download do software
+    ne versão específica.
 
-%Uma tabela no formato CSV com todos os artigos e projetos, indicando quando há
-%relação entre eles através de menção pode ser encontrada no repositório desta
-%dissertação no arquivo \texttt{documents/references.csv}, neste arquivo todos
-%os artigos e todos os projetos são representados e a relação entre eles é
-%marcada com um \texttt{x} sempre que houver menção de um artigo para um
-%software.
+  \item [\texttt{dataset/software/<nome>/paper.bib}]
+    Arquivo BibTeX contendo os metadados do artigo inicial onde o software foi
+    selecionado.
 
-%Merge único de todos os arquivos BibTeX, incluindo o arquivo \texttt{paper.bib} de
-%cada projeto gerado no estudo anterior apresentado no Capítulo \ref{estudo1}, um
-%arquivo \texttt{documents/references.bib} foi criado contendo todas as referências
-%a todos os projetos, referências únicas.
+  \item [\texttt{dataset/software/<nome>/search/acm.bib}]
+    Metadados dos artigos obtidos como resultado da busca na base ACM.
 
+  \item [\texttt{dataset/software/<nome>/search/ieee.bib}]
+    Metadados dos artigos obtidos como resultado da busca na base IEEE.
 
 \end{description}
 
+\subsection{\texttt{lib/Dissertacao.pm}}
+
+A maior parte da lógica dos scripts foi implementada no arquivo
+\texttt{lib/Dissertacao.pm} com objetivo de reduzir repetição de código e
+proporcionar reuso.
+
 \subsection{\texttt{templates/}}
+
+O resultado de cada arquivo de template é armazenado num arquivo de mesmo nome
+no diretório \texttt{documents/} sem a extenção \texttt{.epl}.
+
+\begin{description}
+
+  \item [\texttt{templates/references.csv.epl}]
+    Cria o arquivo \texttt{documents/references.csv} com todos os artigos e
+    projetos, indicando quando há relação entre eles através de menção marcada
+    com um \texttt{x} sempre que houver menção de um artigo para um software.
+
+  \item [\texttt{templates/search-strings.csv.epl}]
+    Gera um documento CSV com todas as strings de busca no arquivo
+    \texttt{documents/search-strings.csv}.
+
+  \item [\texttt{templates/dataset.csv.epl}]
+    Este template gera o arquivo \texttt{documents/dataset.csv} com um resumo de
+    dados coletados durante todos os estudos da pesquisa, incluindo número de lançamentos,
+    número de menções, número de menções por tipo, métrica de código fonte da última
+    versão, entre outros dados para cada software estudado.
+
+  \item [\texttt{templates/metrics.csv.epl}]
+    Este arquivo agrega as métricas de código fonte coletadas para cada lançamento
+    de cada software numa tabela em formato CSV.
+
+%dataset-by-year.csv.epl
+%life-cycle.csv.epl
+%mentions-timeline.csv.epl
+
+\end{description}
+
+\section{Detalhes de implementação}
 
 % TODO
 % documentar instalação das dependencias do script para filtro
 % documentar a instaação do sloccount
-% descrever o formato YAML utilizado para caracterização dos projetos
 
-%produz um resultado indicando todas as linguagens e
-%quanto do código total é escrito em cada uma delas.
+Todos os scripts e templates foram desenvolvidos utilizando a linguagem de
+programação Perl\footnote{\url{http://perl.org}} com o auxílio dos seguintes
+módulos CPAN\footnote{\url{http://cpan.org}}:
 
-%detalhes sobre o formato YAML, estrutura utilizada para armazenamento e
-%instalação estão documentados no Apêndice \ref{reproducibilidade-do-estudo}.
+\begin{itemize}
+  \item Devel::CheckBin \url{http://metacpan.org/pod/Devel::CheckBin}
+  \item List::Util \url{http://metacpan.org/pod/List::Util}
+  \item Modern::Perl \url{http://metacpan.org/pod/Modern::Perl}
+  \item Mojo::Template \url{http://metacpan.org/pod/Mojo::Template}
+  \item Text::BibTeX \url{http://metacpan.org/pod/Text::BibTeX}
+  \item YAML \url{http://metacpan.org/pod/YAML}
+  \item YAML::XS \url{http://metacpan.org/pod/YAML::XS}
+\end{itemize}
 
-%Detalhes sobre o funcionamento do script de fitro, código fonte e instruções
-%de uso podem ser consultados no Apêndice \ref{reproducibilidade-do-estudo}.
+%Apresentar e detalhar os arquivos scam-links.md e ase-link.md (citado no estudo1:preparacao).
 
-%Instruções de uso do sloccount e como ele foi utilizado neste estudo está
-%documentado no Apêndice \ref{reproducibilidade-do-estudo}.
-
-%com estas palavras num script, instalamos todas as suas
-%dependências de execução, os detalhes de instalação e forma de uso deste script
-%e suas dependências são documentados no Apêndice
-%\ref{reproducibilidade-do-estudo}.
-
-%O formato desta planilha , sobre a estrutura de pastas utilizadas
-%para armazenar os artigos, e onde encontrar o arquivo utilizado neste estudo
-%para a coleta destes dados pode ser consultado em detalhes no Apêndice
-%\ref{reproducibilidade-do-estudo}.
-
-%Todos estes scripts estão disponíveis no repositório desta dissertação e foram desenvolvidos
-%utilizando a a linguagem de
-%programação Perl\footnote{\url{http://perl.org}} com o auxílio dos
-%módulos Modern::Perl\footnote{\url{http://metacpan.org/pod/Modern::Perl}},
-%YAML\footnote{\url{http://metacpan.org/pod/YAML}},
-%Mojo::Template\footnote{\url{http://metacpan.org/pod/Mojo::Template}},
-%Text::BibTeX\footnote{\url{http://metacpan.org/pod/Text::BibTeX}} e
-%List::Util\footnote{\url{http://metacpan.org/pod/List::Util}}.
-%A maior parte da lógica foi implementada no arquivo
-%\texttt{lib/Dissertacao.pm} com objetivo de reduzir repetição de código e
-%proporcionar reuso.
-
-%Um documento
-%CSV com todas as strings de busca pode ser encontrado no repositório desta
-%dissertaçao no arquivo \texttt{documents/search-strings.csv}.
-
-%Para auxiliar a definição da identificação para cada artigo implementamos o script \texttt{bin/ids}, este script
-
-Apresentar detalhes de implementação, execução e uso do script bin/run-analizo, bem como detalhes para instalação do Analizo.
-
-%\texttt{references.yml} de cada projeto onde iremos anotar e coletar os dados
-%da triagem, além do template utilizado como modelo para estes arquivos
-%implementamos também 
-
-%cada artigo presente no arquivo \texttt{documents/references.bib} será
-%inspecionado, os dados coletados neste passo serão armazenados no arquivo
-%\texttt{is\_software\_mentioned} deve ser criado com os valores \texttt{yes} ou
-%\texttt{no} indicando se o artigo menciona ou não o projeto.
+%de cada artigo é realizada com o auxílio da funcionalidade de busca
+%do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
+%utilizado para leitura dos artigos, com o auxílio da busca encontramos cada
+%ocorrência ao nome do software tomando nota a confirmação sobre a menção
+%encontrada.
 
 %Implementamos scripts para transformar os dados da busca em formato BibTeX para
 %arquivos no formato YML pois a coleta e inspeção dos artigos serão registrados
@@ -221,22 +218,42 @@ Apresentar detalhes de implementação, execução e uso do script bin/run-anali
 %os resultados da busca de todos os projetos e geram como saída os arquivos \texttt{references.bib}
 %e \texttt{references.yml} para cada projeto.
 
-%no arquivo
-%\texttt{references.yml} no campo \texttt{review} sobre como o software é
-%mencionado naquele artigo.
+\section{Dados do software AccessAnalysis}
 
-%para cada projeto, a Listagem \ref{references-yml} apresenta um exemplo do
-%trecho do YML para armazenar a extração dessas informações.
+Listamos aqui, a título de exemplo, os dados coletados para o projeto
+\texttt{s2} (AccessAnalysis), armazenados nos seguintes arquivos:
 
-Apresentar e detalhar os arquivos scam-links.md e ase-link.md (citado no estudo1:preparacao).
+\begin{itemize}
+  \item \texttt{dataset/software/accessanalysis/paper.bib}
+  \item \texttt{dataset/software/accessanalysis/software.yml}
+  \item \texttt{dataset/software/accessanalysis/search.yml}
+  \item \texttt{dataset/software/accessanalysis/references.yml}
+  \item \texttt{dataset/software/accessanalysis/releases.yml}
+\end{itemize}
 
-O script utilizado na segunda atividade da revisão estruturada -- {\it (2)
-Filtro} -- também está neste mesmo repositório no arquivo {\it
-dataset/revisao-estruturada/filter}\footnote{\url{http://github.com/joenio/dissertacao-ufba-2016/blob/master/revisao-estruturada/filter}}
-escrito em linguagem Perl especialmente para este estudo.
+\lstset{breaklines=true, extendedchars=true, frame=single, numbers=left, literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+  {õ}{{\~o}}1 {ã}{{\~a}}1
+}
 
-%de cada artigo é realizada com o auxílio da funcionalidade de busca
-%do leitor de pdf utilizado neste estudo\footnote{Utilizamos software Evince v3.22.1}
-%utilizado para leitura dos artigos, com o auxílio da busca encontramos cada
-%ocorrência ao nome do software tomando nota a confirmação sobre a menção
-%encontrada.
+\lstinputlisting[caption={Arquivo paper.bib do software AccessAnalysis.},label={accessanalysis-paper-bib}]{dataset/software/accessanalysis/paper.bib}
+
+\lstinputlisting[caption={Arquivo software.yml do software AccessAnalysis.},label={accessanalysis-yml}]{dataset/software/accessanalysis/software.yml}
+
+\lstinputlisting[caption={Arquivo search.yml do software AccessAnalysis.},label={accessanalysis-search-yml}]{dataset/software/accessanalysis/search.yml}
+
+\lstinputlisting[caption={Arquivo references.yml do software AccessAnalysis.},label={accessanalysis-references-yml}]{dataset/software/accessanalysis/references.yml}
+
+\lstinputlisting[caption={Arquivo releases.yml do software AccessAnalysis.},label={accessanalysis-releases-yml}]{dataset/software/accessanalysis/releases.yml}
