@@ -1,0 +1,49 @@
+% my %dataset = %{ $_[0] };
+% my %references = %{ $_[1] };
+\begin{longtable}{| l | l | l | l | c | c | c | c | l |}
+  \caption{Lista completa com a caracterização dos projetos de software acadêmico de análise estática.}
+  \label{dataset-table} \\\
+  \hline
+  \endfirsthead
+  \hline
+  \textbf{ID} & \textbf{Conferência} & \textbf{Ano} & \textbf{Artigo} & \textbf{Menções} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
+  \hline
+  \endhead
+  \multicolumn{9}{c}{\textbf{continua na próxima página}} \\\
+  \hhline{---------} \endfoot
+  \endlastfoot
+  \textbf{ID} & \textbf{Conferência} & \textbf{Ano} & \textbf{Artigo} & \textbf{Menções} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
+  \hline
+% foreach my $k (sort keys %dataset) {
+%   my $id = $dataset{$k}{software}{id};
+%   my @releases = @{ $dataset{$k}{releases}{versions} };
+%   my $stage = $dataset{$k}{life_cycle}{stage};
+%   my $releases = @releases || '-';
+%   my $version = $releases[0]->{version} // '-';
+%   $version =~ s/_/./g;
+%   my $modules = 0;
+%   while (my $r = pop @{ $dataset{$k}{releases}{versions} }) {
+%     next if $r->{source} =~ m/unavailable|unknown/;
+%     my $v = $r->{version};
+%     $modules = $dataset{$k}{metrics}{"version-$v"}{total_modules} // 0;
+%     last if $modules;
+%   }
+%   $modules ||= '-';
+%   my $mentions = 0;
+%   my $conf = '-';
+%   my $year = '-';
+%   my $paper = '-';
+%   foreach my $r (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
+%     if ($dataset{$k}{references}{$r}{step} && $dataset{$k}{references}{$r}{step} eq 'study1') {
+%       $paper //= $r;
+%       $conf //= $dataset{$k}{references}{$r}{conference};
+%       $year //= $references{$r}->get('year');
+%     }
+%     $mentions++;
+%   }
+<%== $id %> & <%== $conf %> & <%== $year %> & <%== $paper %> & <%== $mentions %> & <%== $releases %> & <%== $version %> & <%== $modules %> & <%== $stage %> \\\
+    \hline
+% }
+  \hline
+\end{longtable}
+%# vim: filetype=epl
