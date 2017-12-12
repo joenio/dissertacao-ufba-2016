@@ -118,9 +118,9 @@ O objetivo de pesquisa está definido segundo a estrutura GQM \cite{basili1994go
 
 \begin{description}
   \item{\bf Objeto de estudo.}
-    O objeto de estudo são os projetos de software de análise estática
+    O objeto de estudo são os 60 projetos de software de análise estática
     publicados nas conferências ASE e SCAM, identificados no estudo sobre
-    publicização do software acadêmico (capítulo~\ref{estudo1}).
+    publicização do software acadêmico (Capítulo~\ref{estudo1}).
   \item{\bf Propósito.}
     O propósito deste estudo é caracterizar as menções feitas a projetos de
     software acadêmico de análise estática.
@@ -321,7 +321,7 @@ selecionados no Passo 2 (Triagem).
 Para cada artigo que menciona um certo projeto de software será associada uma
 informação que indique o tipo de menção entre as opções do esquema de
 codificação para caracterização das menções. Os artigos selecionados no estudo
-anterior (capítulo~\ref{estudo1}) devem também ser adicionados aqui, já que
+anterior (Capítulo~\ref{estudo1}) devem também ser adicionados aqui, já que
 sabe-se que eles mencionam os projetos de software acadêmico estudados.
 
 Ao final da revisão de literatura, teremos, para cada projeto de software, um
@@ -332,7 +332,7 @@ através do esquema de codificação para caracterização de menções elaborad
 
 \section{Preparação} \label{estudo2:preparacao} % {{{
 
-Nesta seção apresentamos a preparação do estudo para a realização da coleta de
+Nesta seção, apresentamos a preparação do estudo para a realização da coleta de
 dados, incluindo a definição de arquivos e formatos de armazenamento, bem como
 a implementação de scripts para coleta, análise e transformação.
 A Figura \ref{estudo2-fluxograma} apresenta uma visão geral da solução adotada
@@ -349,24 +349,7 @@ Seguindo o planejamento descrito na seção \ref{estudo2:planejamento},
 no passo de busca, 
 criamos as strings de busca e as registramos nos arquivos \texttt{search.yml} de cada
 projeto. Este arquivo também registra o número de resultados e a data de
-execução da busca. A Listagem \ref{search-yml} apresenta um exemplo deste
-arquivo com campos utilizados para registrar os resultados da busca.
-
-\begin{lstlisting}[
-caption={Arquivo search.yml.},
-label={search-yml},
-frame=single,
-numbers=left
-]
-  acm:
-    string:
-    searched_at:
-    results:
-  ieee:
-    string:
-    searched_at:
-    results:
-\end{lstlisting}
+execução da busca.
 
 Para cada projeto de software acadêmico, outros dois arquivos,
 \texttt{acm.bib} e \texttt{ieee.bib}, serão criados para armazenar os dados dos artigos
@@ -381,25 +364,7 @@ no formato BibTeX e gera sequencialmente o campo \texttt{id} para cada item.
 
 Na preparação para a Triagem,
 definimos a estrutura do arquivo \texttt{references.yml} onde será registrada a
-informação dos artigos relevantes para cada projeto. A Listagem
-\ref{references-yml} apresenta um exemplo deste arquivo e de sua estrutura.
-
-\begin{lstlisting}[
-caption={Arquivo references.yml.},
-label={references-yml},
-frame=single,
-numbers=left
-]
-  p1:
-    review:
-    is_software_mentioned:
-  p2:
-    review:
-    is_software_mentioned:
-  p3:
-    review:
-    is_software_mentioned:
-\end{lstlisting}
+informação dos artigos relevantes para cada projeto.
 
 Em paralelo a definição deste arquivo, implementamos um mecanismo de templates,
 por meio dos scripts \texttt{bin/cache} e \texttt{bin/render}, para criação
@@ -420,10 +385,9 @@ partir dos dados coletados.
 O script \texttt{bin/cache} cria o arquivo \texttt{cache/dataset.yml} ao
 agregar todos os dados coletados de todos os projetos a partir dos arquivos
 \texttt{software.yml}, \texttt{acm.bib}, \texttt{ieee.bib}, \texttt{paper.bib},
-\texttt{references.yml} e \texttt{search.yml}.
-O script \texttt{bin/render} lê este arquivo \texttt{cache/dataset.yml},
-carrega os dados em memória e passa estes dados como parâmetro para os arquivos
-templates.
+\texttt{references.yml} e \texttt{search.yml}. O script \texttt{bin/render} lê
+este arquivo \\ \texttt{cache/dataset.yml}, carrega os dados em memória e passa
+estes dados como parâmetro para os arquivos de template.
 
 Para apoiar o passo de Keywording, 
 adicionamos aos arquivos \texttt{references.yml} um novo campo para coletar o
@@ -461,36 +425,21 @@ um mesmo artigo encontrado nas duas bases, ou, um mesmo artigo
 encontrado em relação a mais de um projeto, dentre o resultado total.
 
 Ao remover as duplicidades temos um conjunto de \SearchUniqueCount \ artigos
-únicos. A Tabela \ref{search-table} apresenta o total de resultados para cada
-um dos projetos pesquisados; a coluna {\bf Total} inclui os artigos do arquivo
-\texttt{paper.bib} e apresenta apenas resultados únicos.
-
-\input{documents/search-table.tex}
-
-Durante a triagem, 
+únicos. Durante a triagem, 
 os \SearchUniqueCount \ artigos foram inspecionados em busca de menções aos
 projetos de software. Encontramos \ScreeningCount \ menções entre
 \ScreeningUniqueCount \ artigos.
+
 Alguns projetos de software possuem nomes comuns que foram encontrados nos
 artigos mas que não faziam referencia ao software; em alguns casos, os nomes
 apareciam em fórmulas matemáticas ou como parte do texto em contextos não
-relacionados ao projeto de software acadêmico.
-
-A Figura \ref{screenshot-paper-p148-2ls} apresenta um destes casos. O nome do
-projeto \texttt{s1} (2LS) foi encontrado no artigo \texttt{p148} (Statistical
-Design Framework of Submicron Flip-Flop Circuits Considering Process
-Variations) em contexto sem relação alguma com o projeto em sí.
+relacionados ao projeto de software acadêmico. O nome do projeto \texttt{s1}
+(2LS), por exemplo, foi encontrado no artigo \texttt{p148} ({\it Statistical Design
+Framework of Submicron Flip-Flop Circuits Considering Process Variations}) em
+contexto sem relação alguma com o projeto em sí.
 
 Ao final da triagem, temos, para cada projeto, um conjunto de artigos que, de
 fato, mencionam o software acadêmico, mas sem caracterizar o tipo de menção.
-
-\begin{figure}[h]
-  \center
-  \frame{\includegraphics[scale=0.45]{imagens/screenshot-paper-p148-2ls.png}}
-  \caption{Exemplo de ocorrência do nome do projeto de software em fórmula matemática.}
-  \label{screenshot-paper-p148-2ls}
-\end{figure}
-
 Na execução do passo de Keywording, 
 a anotação de cada uma das \ScreeningCount \ menções foram analisadas e o
 esquema para caracterização foi criado, com três valores distintos que
@@ -516,14 +465,26 @@ A partir do esquema para caracterização das menções, coletamos os valores
 assumindo um dos valores da Tabela \ref{esquema-de-mencao}. Encontramos
 \CiteCount \ menções do tipo Cita, \UseCount \ menções do tipo Usa e
 \ContributeCount \ menções do tipo Contribui. Estes dados são
-apresentados em resumo na Tabela \ref{mentions-table}.
+apresentados em resumo na Tabela \ref{references-table};
+a coluna {\bf Seleção} apresenta os artigos
+selecionados no estudo anterior (Capítulo \ref{estudo1}), a coluna {\bf ACM} e
+{\bf IEEE} o número de resultados das strings de busca em cada uma das bases, e
+a coluna {\bf Artigos} contabiliza o número de artigos, excluindo
+repetições, para cada software.
 
-\input{documents/mentions-table.tex}
+%\input{documents/mentions-table.tex}
 
-É importante lembrar que as menções do tipo Contribui incluem os artigos
-selecionados no arquivo \texttt{paper.bib}, independente de terem sido
-encontrados na busca das bases ACM e IEEE, mas ao discutir e interpretar os
-dados saberemos distinguir e separar estes dois grupos quando necessário.
+%É importante lembrar que as menções do tipo Contribui incluem os artigos
+%selecionados no arquivo \texttt{paper.bib}, independente de terem sido
+%encontrados na busca das bases ACM e IEEE, mas ao discutir e interpretar os
+%dados saberemos distinguir e separar estes dois grupos quando necessário.
+
+%A Tabela \ref{references-table} apresenta o total de resultados para cada
+%um dos projetos pesquisados
+
+%, incluin os artigos do arquivo \texttt{paper.bib}.
+
+\input{documents/references-table.tex}
 
 % }}}
 
@@ -654,17 +615,17 @@ Software, de forma que esta ameaça não prejudica as conclusões do estudo, uma
 vez que todas as conclusões estão estreitamente associadas a este recorte e não
 sugerimos serem generalizadas.
 
-É possível que a falta de contribuição aos projetos seja um reflexo da
-relevância do estudo onde foram publicados, ou seja, projetos publicados em
-artigos com pouca relevância, com pouca visibilidade, pode, eventualmente,
-atrair pouca atenção, consequentemente receber pouca contribuição. No entanto,
-a relevância do software não está necessariamente associada a relevância do
-estudo, é possível que projetos de software extremamente úteis e relevantes
-para a comunidade científica tenham sido publicados em artigos com pouca ou
-nenhuma relevância. Dessa forma esta ameaça não impacta negativamente as nossas
-conclusões, uma vez que estamos interessados em capturar quanta colaboração há
-entre os projetos, do ponto de vista de sua utilidade para o corpo científico
-como um todo.
+%É possível que a falta de contribuição aos projetos seja um reflexo da
+%relevância do estudo onde foram publicados, ou seja, projetos publicados em
+%artigos com pouca relevância, com pouca visibilidade, pode, eventualmente,
+%atrair pouca atenção, consequentemente receber pouca contribuição. No entanto,
+%a relevância do software não está necessariamente associada a relevância do
+%estudo, é possível que projetos de software extremamente úteis e relevantes
+%para a comunidade científica tenham sido publicados em artigos com pouca ou
+%nenhuma relevância. Dessa forma esta ameaça não impacta negativamente as nossas
+%conclusões, uma vez que estamos interessados em capturar quanta colaboração há
+%entre os projetos, do ponto de vista de sua utilidade para o corpo científico
+%como um todo.
 
 % }}}
 
@@ -697,7 +658,7 @@ intimamente ligado a relevância prática do projeto e aos atributos de
 qualidade, como, usabilidade, portabilidade, facilidade de instalação, entre
 outros. No entanto, não investigamos estes atributos neste estudo.
 
-Acreditamos fortemente que manutenibilidade, ou seja, o esforço necessário para
+Manutenibilidade, ou seja, o esforço necessário para
 realizar alteraçoes no código fonte de um software, está intrinsicamente
 relacionado ao número de contribuições destes projetos. Desta forma, planejamos
 um terceiro estudo para investigar este aspecto de qualidade entre os projetos
