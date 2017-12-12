@@ -1,0 +1,58 @@
+% use lib 'lib';
+% use Dissertacao qw( count_mentions_by_type );
+% my %dataset = %{ $_[0] };
+\begin{longtable}{ l c c c c c c c }
+\caption{Número de resultados obtidos na busca de cada projeto de software.}
+\label{references-table} \\\
+  \hline
+  \hhline{ l c c c c c c c |}
+  \endfirsthead
+  \hhline{ l c c c c c c c |}
+  \hline
+   \multirow{2}{*}{\textbf{ID}} & \multirow{2}{*}{\textbf{Seleção}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Artigos}} & \multicolumn{3}{c}{{\bf Menções}} \\\
+   & & \textbf{ACM} & \textbf{IEEE} & & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} \\\
+  \hline
+  \hhline{ l c c c c c c c |}
+  \endhead
+  \hhline{--------}
+  \multicolumn{8}{c}{continua na próxima página} \\\
+  \hhline{--------} \endfoot
+  \hhline{--------} \endlastfoot
+   \multirow{2}{*}{\textbf{ID}} & \multirow{2}{*}{\textbf{Seleção}} & \multicolumn{2}{c}{{\bf Busca}} & \multirow{2}{*}{\textbf{Artigos}} & \multicolumn{3}{c}{{\bf Menções}} \\\
+   & & \textbf{ACM} & \textbf{IEEE} & & \textbf{Cita} & \textbf{Usa} & \textbf{Contribui} \\\
+  \hline
+% my %total = (acm => 0, ieee => 0, total => 0);
+% my @rows = ();
+% foreach my $k (sort keys %dataset) {
+%   my $id = $dataset{$k}{software}{id};
+%   my $acm = $dataset{$k}{search}{acm}{results};
+%   my $ieee = $dataset{$k}{search}{ieee}{results};
+%   my $total = scalar keys %{ $dataset{$k}{references} };
+%   my $paper = keys %{ $dataset{$k}{files}{'paper.bib'} };
+%   my $cite = count_mentions_by_type 'cite', %{ $dataset{$k}{references} };
+%   my $use = count_mentions_by_type 'use', %{ $dataset{$k}{references} };
+%   my $contribute = count_mentions_by_type 'contribute', %{ $dataset{$k}{references} };
+%   $total{acm} += $acm;
+%   $total{ieee} += $ieee;
+%   $total{total} += $total;
+%   $total{paper} += $paper;
+%   $total{cite} += $cite;
+%   $total{use} += $use;
+%   $total{contribute} += $contribute;
+%   push @rows, [$id, $paper, $acm, $ieee, $total, $cite, $use, $contribute];
+% }
+% my %mean = ();
+% $mean{acm} = sprintf("%.1f", $total{acm} / scalar keys %dataset);
+% $mean{ieee} = sprintf("%.1f", $total{ieee} / scalar keys %dataset);
+% $mean{total} = sprintf("%.1f", $total{total} / scalar keys %dataset);
+% $mean{paper} = sprintf("%.1f", $total{paper} / scalar keys %dataset);
+% $mean{cite} = sprintf("%.1f", $total{cite} / scalar keys %dataset);
+% $mean{use} = sprintf("%.1f", $total{use} / scalar keys %dataset);
+% $mean{contribute} = sprintf("%.1f", $total{contribute} / scalar keys %dataset);
+% push @rows, ['{\bf Média}', "{\\bf $mean{paper}}", "{\\bf $mean{acm}}", "{\\bf $mean{ieee}}", "{\\bf $mean{total}}", "{\\bf $mean{cite}}", "{\\bf $mean{use}}", "{\\bf $mean{contribute}}"];
+% push @rows, ['{\bf Total}', "{\\bf $total{paper}}", "{\\bf $total{acm}}", "{\\bf $total{ieee}}", "{\\bf $total{total}}", "{\\bf $total{cite}}", "{\\bf $total{use}}", "{\\bf $total{contribute}}"];
+% foreach my $r (@rows) {
+\texttt{<%== $r->[0] %>} & <%== $r->[1] || '-' %> & <%== $r->[2] || '-' %> & <%== $r->[3] || '-' %> & <%== $r->[4] || '-' %> & <%== $r->[5] || '-' %> & <%== $r->[6] || '-' %> & <%== $r->[7] || '-' %> \\\
+% }
+\end{longtable}
+%# vim: filetype=epl
