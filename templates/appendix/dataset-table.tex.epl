@@ -35,9 +35,9 @@
 %   my $paper = '-';
 %   foreach my $r (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
 %     if ($dataset{$k}{references}{$r}{step} && $dataset{$k}{references}{$r}{step} eq 'study1') {
-%       $paper //= $r;
-%       $conf //= $dataset{$k}{references}{$r}{conference};
-%       $year //= $references{$r}->get('year');
+%       $paper = $r;
+%       $conf = $dataset{$k}{references}{$r}{conference};
+%       $year = $references{$r}->get('year');
 %     }
 %     $mentions++;
 %   }
