@@ -1,0 +1,52 @@
+% use DateTime::Format::HTTP;
+% my %dataset = %{ $_[0] };
+\begin{longtable}{| l | p{13cm} | l | c |}
+  \caption{String de busca aos projetos de software acadêmico de análise estática na base ACM.}
+  \label{search-strings-table-acm} \\\
+  \hline
+  \endfirsthead
+  \hline
+  \textbf{ID} & \textbf{String de busca na base ACM} & \textbf{Data} & \textbf{Resultado} \\\
+  \hline
+  \endhead
+  \multicolumn{4}{c}{\textbf{continua na próxima página}} \\\
+  \hhline{----} \endfoot
+  \endlastfoot
+  \textbf{ID} & \textbf{String de busca na base ACM} & \textbf{Data} & \textbf{Resultado} \\\
+  \hline
+% foreach my $k (sort keys %dataset) {
+<%== sprintf("\\texttt{%s} & %s & %s & %s",
+               $dataset{$k}{software}{id},
+               $dataset{$k}{search}{acm}{string},
+               DateTime::Format::HTTP->parse_datetime($dataset{$k}{search}{acm}{searched_at})->dmy('-'),
+               $dataset{$k}{search}{acm}{results}) %> \\\
+    \hline
+% }
+  \hline
+\end{longtable}
+
+\begin{longtable}{| l | p{13cm} | l | c |}
+  \caption{String de busca aos projetos de software acadêmico de análise estática na base IEEE.}
+  \label{search-strings-table-ieee} \\\
+  \hline
+  \endfirsthead
+  \hline
+  \textbf{ID} & \textbf{String de busca na base IEEE} & \textbf{Data} & \textbf{Resultado} \\\
+  \hline
+  \endhead
+  \multicolumn{4}{c}{\textbf{continua na próxima página}} \\\
+  \hhline{----} \endfoot
+  \endlastfoot
+  \textbf{ID} & \textbf{String de busca na base IEEE} & \textbf{Data} & \textbf{Resultado} \\\
+  \hline
+% foreach my $k (sort keys %dataset) {
+<%== sprintf("\\texttt{%s} & %s & %s & %s",
+               $dataset{$k}{software}{id},
+               $dataset{$k}{search}{ieee}{string},
+               DateTime::Format::HTTP->parse_datetime($dataset{$k}{search}{ieee}{searched_at})->dmy('-'),
+               $dataset{$k}{search}{ieee}{results}) %> \\\
+    \hline
+% }
+  \hline
+\end{longtable}
+%# vim: filetype=epl
