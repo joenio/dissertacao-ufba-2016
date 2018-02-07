@@ -3,15 +3,18 @@
 
 Este capítulo apresenta um estudo para caracterização do estágio de evolução de
 software acadêmico de análise estática em termos de número de lançamentos
-(releases) e módulos no código fonte.
+(releases) e módulos no código-fonte.
 
 O estudo avaliou o ciclo de vida de software acadêmico coletando
-dados do código fonte através de análise estática com o apoio da
-ferramenta Analizo \cite{terceiro2010analizo}.
+dados do código-fonte através de análise estática com o apoio da
+ferramenta Analizo, que é um software acadêmico de análise estática que não
+aparece neste estudo uma vez que não foi publicado em nenhuma das
+conferências ASE ou SCAM \cite{terceiro2010analizo}.
 Esta análise revelou que a maior parte dos projetos
 estão em estágio inicial de desenvolvimento ou encerrados.
 
 A seção \ref{estudo3:introducao} contextualiza o estudo,
+a seção \ref{estudo3:fundamentacao} apresenta os conceitos necessários para compreensão do estudo,
 a seção \ref{estudo3:escopo} descreve o objetivo e apresenta as questões de pesquisa,
 a seção \ref{estudo3:planejamento} apresenta um planejamento do estudo,
 as seções \ref{estudo3:preparacao} e \ref{estudo3:coleta} apresentam detalhes sobre a preparação e execução da coleta de dados,
@@ -20,28 +23,28 @@ a seção \ref{estudo3:conclusoes} traça as conclusões finais deste estudo.
 
 \section{Motivação} \label{estudo3:introducao} % {{{
 
-%Segundo o {\it ``Staged Model for Software Evolution''} \cite{rajlich2000staged},
+%Segundo o {\it ``Staged Model for Software Evolução''} \cite{rajlich2000staged},
 %o ciclo de vida de um produto de software tem início no estágio
 %de evolução chamado {\it ``Initial development''}, no qual a primeira versão funcional
 %do software é desenvolvida. A partir daí, ao longo de sua vida,
 %o software em evolução pode passar pelos estágios de 
-%{\it``Evolution''}, {\it ``Servicing''}, {\it ``Phaseout''}, até o encerramento de seu ciclo
-%no estágio de {\it ``Closedown''}, quando as empresas detentoras do
+%{\it``Evolução''}, {\it ``Manutenção''}, {\it ``Descontinuado''}, até o encerramento de seu ciclo
+%no estágio de {\it ``Encerrado''}, quando as empresas detentoras do
 %software o retiram do mercado \cite{rajlich2000staged}.
 
 %Em modelos de produção distintos e não-tradicionais, como é o modelo de desenvolvimento de
 %software acadêmico ou o modelo de software livre, por exemplo, o ciclo de vida do software pode
-%variar. No modelo {\it ``Staged Model for Software Evolution''} adaptado a
+%variar. No modelo {\it ``Staged Model for Software Evolução''} adaptado a
 %projetos software livre \cite{capiluppi2007adapting}, por exemplo, o ciclo de
-%vida do software não se encerra na fase de {\it ``Closedown''}, uma vez que estes projetos
+%vida do software não se encerra na fase de {\it ``Encerrado''}, uma vez que estes projetos
 %não são retirados do mercado por empresas, podendo haver um caminho de retorno
 %entre as diversas fases, incluindo o retorno para a fase {\it
 %``Initial development''}, por exemplo.
 
 Os projetos de software acadêmico caracterizados neste estudo são considerados
-como projetos de software livre sob a perspectiva do modelo proposto por
-\citeonline{capiluppi2007adapting}; uma vez que não há entre eles projetos
-comerciais de propriedade exclusiva de empresas.
+como projetos de software livre sob a perspectiva do modelo de ciclo de vida proposto por
+\citeonline{capiluppi2007adapting}; uma vez que não há entre eles projetos com
+ciclos de vida típicos de produtos de software comerciais de propriedade exclusiva de empresas.
 
 %, enquadram-se muito melhor
 %neste modelo do que no modelo tradicional de software comercial não-livre
@@ -62,6 +65,32 @@ abstratos de dados'', ou ``arquivos-fonte'' -- com propriedades que poderão
 servir para caracterização do software acadêmico.
 
 % }}}
+
+\section{Fundamentação} \label{estudo3:fundamentacao}
+
+Neste estudo, {\it modularidade} será utilizado como fator de avaliação do
+estágio de evolução do software acadêmico, será medida através do número de
+módulos que o código-fonte de um projeto apresenta. Estudos apontam que o
+número de módulos de um software possui a tendência de estabilizar com o tempo
+e dessa forma esta medida pode ser utilizada para caracterizar o seu estágio de
+evolução \cite{capiluppi2007adapting}.
+
+%a evolução, ver trabalhos de Andrea Capiluppi
+%Evidences in the evolution of OS projects through
+%Changelog Analyses
+%
+%The initial results of this analysis, especially growth in
+%code size and tendency to stability in modularity, seem to
+%be in line with traditional close source development.
+%
+%2.8 Modularity
+%When analyzing the evolution of the 12 chosen projects,
+%we refine the above definition as follows: modularity is the
+%number of modules (as a proxy we use the number of di-
+%rectories the source code is split into). We further define
+%the average size of module (= code size/number of mod-
+%ules).
+
 
 \section{Escopo} \label{estudo3:escopo} % {{{
 
@@ -121,7 +150,7 @@ software acadêmico de análise estática publicados nas conferências ASE e SCA
 e seu ciclo de vida serão investigadas:
 
 \newcommand{\EstudoTresQuestaoUm}{
-  Em qual estágio de evolução estão os projetos de software acadêmico de
+  Em qual estágio de evolução, segundo o modelo proposto por \citeonline{capiluppi2007adapting}, estão os projetos de software acadêmico de
   análise estática publicados nas conferências ASE e SCAM em relação ao seu
   ciclo de vida?
 }
@@ -130,7 +159,7 @@ e seu ciclo de vida serão investigadas:
   \item [Q1:] \EstudoTresQuestaoUm
 
     Queremos saber com esta questão quais projetos de software acadêmico de
-    análise estática continuam evoluindo após a sua publicação e em que nível
+    análise estática continuam evoluindo após a sua publicação e em qual estágio
     de evolução se encontram.
 \end{description}
 
@@ -140,36 +169,11 @@ Para responder às questões de pesquisas, as seguintes métricas serão usadas:
 
 \begin{enumerate}
   \item Número de lançamentos de cada projeto com informações sobre versão e data
-  \item Número de lançamentos com código fonte disponível para download
-  \item Número de módulos no código fonte de cada lançamento/versão
+  \item Número de lançamentos com código-fonte disponível para download
+  \item Número de módulos no código-fonte de cada lançamento/versão
 \end{enumerate}
 
 % }}}
-
-\section{Fundamentação} \label{estudo3:fundamentacao}
-
-Neste estudo, {\it modularidade} será utilizado como fator de avaliação do
-estágio de evolução do software acadêmico, será medida através do número de
-módulos que o código fonte de um projeto apresenta, estudos apontam que o
-número de módulos de um software possui a tendência de estabilizar com o tempo
-e dessa forma esta medida pode ser utilizada para caracterizar o seu estágio de
-evolução \cite{capiluppi2007adapting}.
-
-%a evolução, ver trabalhos de Andrea Capiluppi
-%Evidences in the evolution of OS projects through
-%Changelog Analyses
-%
-%The initial results of this analysis, especially growth in
-%code size and tendency to stability in modularity, seem to
-%be in line with traditional close source development.
-%
-%2.8 Modularity
-%When analyzing the evolution of the 12 chosen projects,
-%we refine the above definition as follows: modularity is the
-%number of modules (as a proxy we use the number of di-
-%rectories the source code is split into). We further define
-%the average size of module (= code size/number of mod-
-%ules).
 
 \section{Planejamento do Estudo} \label{estudo3:planejamento} % {{{
 
@@ -188,10 +192,10 @@ dos seguintes dados:
 \begin{itemize}
   \item Número da versão
   \item Data do lançamento
-  \item URL para download do código fonte
+  \item URL para download do código-fonte
 \end{itemize}
 
-As fontes para coleta de dados são o site do projeto, manuais, código fonte e
+As fontes para coleta de dados são o site do projeto, manuais, código-fonte e
 repositórios. Usualmente será utilizada mais de uma fonte para compor todas as
 informações sobre os lançamentos de um certo software. Não é raro que os
 projetos mudem a forma de lançamento, passando de um formato para outro, de uma
@@ -202,15 +206,14 @@ Os projetos sem presença oficial online ou sem disponibilidade de download, ou
 seja, com a URL indicada pelos seus autores originais indisponível,
 não terão, consequentemente, informações sobre os lançamentos; dessa forma, estes
 projetos serão caracterizados como software com ciclo de vida encerrado ({\it
-Closedown}), uma vez que eles estão indisponíveis e inacessíveis a qualquer
+Encerrado}), uma vez que eles estão indisponíveis e inacessíveis a qualquer
 potencial usuário interessado em utilizar o software.
 
-Os demais projetos, aqueles com presença online, e com código fonte disponível,
-tiveram o código fonte de cada lançamento copiado localmente para análise
+Os demais projetos, aqueles com presença online, e com código-fonte disponível,
+tiveram o código-fonte de cada lançamento copiado localmente para análise
 estática e coleta da métrica representando o tamanho do software em número de
-módulos. Foi feito o download do código fonte de cada versão e a ferramenta de
-análise estática Analizo foi utilizada para extrair as informações do código
-fonte.
+módulos. Foi feito o download do código-fonte de cada versão e a ferramenta de
+análise estática Analizo foi utilizada para extrair as informações do código-fonte.
 
 Analizo é software livre, distribuído sob a licença GNU General Public License
 versão 3. Seu código-fonte, bem como pacotes binários, manuais e tutoriais
@@ -220,7 +223,7 @@ utilizada neste estudo.
 
 Apenas os projetos escritos nas linguagens de programação suportadas pelo Analizo 
 -- C, C++ C\# e Java -- serão analisados.
-O código fonte dos projetos escritos em
+O código-fonte dos projetos escritos em
 outras linguagens de programação não serão analisados; 
 estes projetos serão caracterizados com base em informações disponíveis ou 
 serão definidos como {\it Desconhecido} quando não for possível determinar 
@@ -241,7 +244,7 @@ utilizados aqui neste estudo.
 Para cada projeto foi criado um arquivo \texttt{releases.yml}
 onde serão registradas as
 informações sobre os lançamentos de cada software. Os arquivos foram criados
-manualmente, para os projetos sem informações sobre lançamentos o arquivo será
+manualmente. Para os projetos sem informações sobre lançamentos o arquivo será
 criado com um único campo indicando indisponibilidade com o seguinte conteúdo
 \texttt{source: unavailable}.
 
@@ -280,25 +283,25 @@ estágios de evolução conforme o modelo de evolução apresentado em
 Seguindo o planejamento e preparação descritos nas Seções
 \ref{estudo3:planejamento} e \ref{estudo3:preparacao}, iniciamos a coleta dos
 dados, incluindo a coleta do número de lançamentos de cada projeto, informações
-e código fonte de cada lançamento, bem como a métrica representando o número de
+e código-fonte de cada lançamento, bem como a métrica representando o número de
 módulos do software em cada versão. Coletamos os dados sobre lançamentos,
-fizemos o download do código fonte e executamos a ferramenta \texttt{analizo
+fizemos o download do código-fonte e executamos a ferramenta \texttt{analizo
 metrics} para cada projeto, em cada versão.
 
-Foi encontrado ao todo \ReleasesCount \ lançamentos, coletamos para cada
+Foram encontrados ao todo \ReleasesCount \ lançamentos. Coletamos para cada
 lançamento, quando disponível, número da versão, data de lançamento e URL para
-download do código fonte. Destes lançamentos, \ReleasesAvailableCount \ possui
-informação para download, 5 destes releases não tem código fonte, apenas
+download do código-fonte. Destes lançamentos, \ReleasesAvailableCount \ possuem
+informação para download, 5 destes releases não têm código-fonte, apenas
 binários do software \texttt{s33}. Assim, deste total extraímos métricas
-de código fonte de \ReleasesMetricsCount \ lançamentos.
+de código-fonte de \ReleasesMetricsCount \ lançamentos.
 
 Este total de métricas foi extraído de um conjunto de \ProjectsAnalizedCount \
 projetos com lançamentos entre os anos de \ReleasesYearFirst \ e \ReleasesYearLast.
-Os demais projetos não possuem código fonte disponível ou são
+Os demais projetos não possuem código-fonte disponível ou são
 escritos em linguagem de programação não suportada pelo Analizo.
 
-Os lançamentos coletados do repositório, código fonte, sites, devem ser
-organizados em ordem de data de lançamento, os mais antigos primeiros, numa
+Os lançamentos coletados do repositório, código-fonte, sites, devem ser
+organizados em ordem de data de lançamento, os mais antigos primeiro, numa
 lista em ordem, sendo o último release o lançamento mais recente. Isto é
 necessário uma vez que o número de versão de cada projeto não segue o mesmo
 padrão, alterando de formatos entre releases distintos, a data de lançamento de
@@ -310,20 +313,21 @@ lançamentos e registrar no arquivo \texttt{releases.yml} na ordem correta.
 
 \section{Análise dos Dados} \label{estudo3:analise} % {{{
 
-Analisamos as métricas e a variação em número de módulos entre as versões dos
-projetos com lançamentos e código fonte disponível, analisamos também as
+Analisamos as métricas número de lançamentos, lançamentos com código-fonte disponível
+e número de módulos de cada lançamento, 
+analisamos também as
 menções do tipo Uso e Contribuiçao para determinar se há atividade recente para
 os projetos sem lançamentos atuais.
 
-Consideramos projetos em fase de serviço ({\it Servicing}) aqueles que
+Consideramos projetos em fase de serviço ou estagnação ({\it Manutenção}) aqueles que
 apresentem variação pequena entre os lançamentos em relação ao tamanho do
-projeto, em termos de número de módulos, abaixo de 10\% de variação ao longo
-das versões será considerado {\it Servicing}, acima de 10\% está em evolução
-({\it Evolution}), este número 10\% foi baseado no trabalho de
+projeto. Em termos de número de módulos, abaixo de 10\% de variação ao longo
+das versões será considerado {\it Manutenção}, acima de 10\% está em evolução
+({\it Evolução}). Este número 10\% foi baseado no trabalho de
 \citeonline{capiluppi2007adapting}.
 
 Cinco projetos não puderam ser caracterizados em relação ao estágio de
-evolução, a Tabela \ref{releases-table} apreseta a caracterização final de
+evolução. A Tabela \ref{releases-table} apresenta a caracterização final de
 todos os projetos incluindo o número total de lançamentos e o período em que
 estes lançamentos aconteceram; a coluna {\bf Módulos} apresenta o número de
 módulos da versão mais recente.
@@ -331,9 +335,9 @@ módulos da versão mais recente.
 \input{documents/releases-table.tex}
 
 O projeto \texttt{s59} não foi caracterizado em relação ao estágio de evolução
-apesar possuir muitas versões entre 2013 e 2015 por ser escrito em Erlang e
+apesar de possuir muitas versões entre 2013 e 2015 por ser escrito em Erlang e
 esta linguagem não ser suportada pelo Analizo. O mesmo ocorre com os projetos
-\texttt{s55} escrito em Perl, e \texttt{s40} escrito em Rascal.  O projeto
+\texttt{s55}, escrito em Perl, e \texttt{s40}, escrito em Rascal. O projeto
 \texttt{s33} disponível apenas em binários não possível ser analisado e o
 projeto \texttt{s32} possui um histórico de lançamentos bastante confuso,
 dificultando compreender quais pacotes fazem parte de qual versão ou
@@ -345,10 +349,12 @@ lançamento.
 
 \subsection{Q1 - \EstudoTresQuestaoUm}
 
-Os \SoftwareCount \ projetos de software acadêmico de análise estática estão em
-sua maioria em estágio inicial de desenvolvimento ou encerrados, representando
-76\% de todos os projetos. Os demais 24\% dos projetos estão distribuídos entre
-projetos em evolução, serviço, encerrando ou não puderam ser determinados,
+A maior parte dos \SoftwareCount \ projetos de software acadêmico de análise estão em
+em estágio inicial de desenvolvimento ou encerrados, isto equivale a
+73\% de todos os projetos. Os demais 22\% dos projetos estão distribuídos entre
+projetos em evolução, manutenção ou descontinuado, 5\% dos projetos não puderam
+ser determinados uma vez que não encontrou-se informação suficiente para
+caracterizar o estágio de evolução,
 conforme Figura \ref{life-cycle}.
 
 \begin{figure}[h]
@@ -364,14 +370,13 @@ conforme Figura \ref{life-cycle}.
   \label{life-cycle}
 \end{figure}
 
-Entre os projetos em fase de evolução ou serviço estão aqueles com maior número
-de lançamentos. Os projetos em estágio {\it Initial development} possuem
+Os projetos em estágio de {\it Desenvolvimento inicial} possuem
 características de ser software acadêmico do tipo Software Incidental ({\it
 Incidental software}) e ter sido feito puramente para apoiar e facilitar
-pesquisas, enquanto os projetos em estágio {\it Evolution} e {\it Servicing}
-possi características de ser software acadêmico do tipo Prática de software
+pesquisas, enquanto os projetos em estágio {\it Evolução} e {\it Manutenção}
+possuem características de ser software acadêmico do tipo Prática de software
 paralela ({\it A parallel software practice}) feito com objetivo de ser
-utilizado por outros pesquisadores ou Um subcampo de software ({\it A Software
+utilizado por outros pesquisadores ou do tipo Um subcampo de software ({\it A Software
 Sub-field}) onde o próprio software é considerado uma contribuição primária
 para a Ciência.
 
@@ -409,7 +414,7 @@ para a Ciência.
 %    \includegraphics[scale=0.32]{imagens/evolution-s58.png}
 %    \texttt{s58}
 %  \end{minipage}
-%  \caption{Variação no número de módulos dos projetos em fase de {\it Servicing}.}
+%  \caption{Variação no número de módulos dos projetos em fase de {\it Manutenção}.}
 %  \label{evolution-graph}
 %\end{figure}
 
@@ -418,7 +423,7 @@ para a Ciência.
 \section{Ameaças à validade} % {{{
 
 Toda a análise e interpretação dos resultados tomou como base apenas os dados
-coletados do site, publicações, e repositórios dos projetos de software
+coletados do site, publicações e repositórios dos projetos de software
 acadêmico de análise estática, o fato de não incluirmos coleta de dados a
 partir das pessoas envolvidas nos projetos pode enfraquecer alguma conclusão no
 sentido de que alguns projetos podem ter definições explícitas por parte dos
@@ -433,13 +438,13 @@ evidências sobre os projetos inidivualmente.
 
 Este estudo coletou informações de \ReleasesCount \ lançamentos em relação a
 \ProjectsWithReleasesCount \ projetos de software acadêmico de análise
-estática. Analisou e extraiu o número de módulos do código fonte de
+estática. Analisou e extraiu o número de módulos do código-fonte de
 \ReleasesMetricsCount \ versões distintas destes projetos.
 
 A partir destes dados caracterizou cada um dos \SoftwareCount \ projetos
 estudados em relação ao estágio de evolução do ciclo de vida do software e
 identificou que a grande maioria encontra-se em estado inicial de
-desenvolvimento ou encerrados (76\%).
+desenvolvimento ou encerrados (73\%).
 
 Apenas 2 projetos encontram-se em evoluçao atualmente, com variação no número
 de módulos nos últimos lançamentos recentes superior a 10\%. E 6 projetos em
@@ -452,7 +457,7 @@ analisados em conjunto e discutidos no capítulo seguinte sob uma mesma
 perspectiva em relação à sustentabilidade técnica do ecossistema de software
 acadêmico de análise estática, no recorte de projetos selecionados nas
 conferências de Engenharia de Software ASE e SCAM, entre menções encontradas
-nas bases ACM e IEEE, e com análise ao nível de código fonte dos projetos
+nas bases ACM e IEEE, e com análise ao nível de código-fonte dos projetos
 escritos em C, C++ e Java.
 
 % }}}

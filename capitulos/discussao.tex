@@ -90,7 +90,7 @@ Figura \ref{mentions-by-year}.
   \label{mentions-by-year}
 \end{figure}
 
-Este crescimento, no entanto, pode estar sofrendo influencia do aumento de
+Este crescimento, no entanto, pode estar sofrendo influência do aumento de
 projetos, uma vez que há também crescimento no número de projetos a cada ano.
 Entretanto, ao isolar os dados, mantendo o número de projetos constante ao longo
 do tempo, há um crescimento de 38\% ao ano, conforme Figura
@@ -116,10 +116,10 @@ diferentes da primeira publicação.
 
 \subsection{Q2 - \QuestaoDois} % reconhecimento
 
-Há uma evidente relação entre o número de menções e o uso de licenças de
+Há suspeitas de correlação entre o número de menções e o uso de licenças de
 software livre. 
 Há 201 menções aos 38 projetos software acadêmico de análise estática sem licença definida, 
-enquanto há 228 menções ao 22 projetos com licença, ou seja, 
+enquanto há 228 menções aos 22 projetos com licença, ou seja, 
 mesmo com um número menor de projetos, o número de menções encontradas foi 14\% maior, 
 conforme Figura \ref{license-vs-mentions}.
 
@@ -137,28 +137,31 @@ de lançamentos.
 
 \subsection{Q3 - \QuestaoTres} % idade média
 
-Os projetos em estágio de {\it Initial development} possuem menos menções em %não deveria haver lançamento, certo?
-comparação com o tempo de vida. 
-Diferentemente, projetos em estágio de {\it Evolution} ou de {\it Servicing} 
-possuem mais lançamentos do que a idade, porém
-sendo que o número de menções neste estágio de evolução não é mais disperso. % ou esparso?
+%não deveria haver lançamento, certo?
+Os projetos em estágio de {\it Desenvolvimento inicial} possuem menos menções em
+comparação com o tempo de vida do que os
+projetos em estágio de {\it Evolução} ou de {\it Manutenção} que
+possuem mais lançamentos do que o tempo de vida do projeto.
 
-A maior parte dos projetos em estágio de {\it Closedown} possui idade superior ao número
-de menções, exceto pelos projetos \texttt{s19}, \texttt{s38} e
-\texttt{s56} que possuem número de menções bem acima da média geral.
-Em especial, o software \texttt{s19} se destaca dentre os projetos com maior número de menções.
+%A maior parte dos projetos em estágio de {\it Encerrado} possui idade superior ao número
+%de menções, exceto pelos projetos \texttt{s19}, \texttt{s38} e
+%\texttt{s56} que possuem número de menções bem acima da média geral.
+%Em especial, o software \texttt{s19} se destaca dentre os projetos com maior número de menções.
 
-Foram encontradas 160 menções para projetos em estágio {\it Closedown},
+Foram encontradas 160 menções para projetos em estágio {\it Encerrado},
 possivelmente indicando artigos publicados antes do projeto entrar nesta fase ou indicando que o projeto está acessível apenas para os autores destes artigos mas não para o público em geral,
-71 menções para projetos em estágio de {\it Evolution} ou {\it Servicing} e 
-131 menções para projetos em estágio de {\it Initial development}.
+71 menções para projetos em estágio de {\it Evolução} ou {\it Manutenção} e 
+131 menções para projetos em estágio de {\it Desenvolvimento inicial}.
 
 Os projetos \texttt{s19}, \texttt{s38} e \texttt{s56} foram encontrados em um
 grande número de menções, incluindo publicações recentes entre os anos de 2016
-e 2017, no entanto o fato de serem projetos em estágio {\it Closedown} chama
+e 2017, no entanto o fato de serem projetos em estágio {\it Encerrado} chama
 atenção, uma vez que não estão disponíveis publicamente mas continuam recebendo
 atenção da academia, este fato não foi investigado, mas estes projetos são
 objetos de estudo interessantes para compreender este fenômeno.
+
+Não encontramos relação entre o ciclo de vida do software acadêmico e o reconhecimento
+medido através de menções na literatura acadêmica nas bases ACM e IEEE.
 
 %são os com maior número de
 %menções entre os projetos em estágio de
@@ -168,18 +171,21 @@ objetos de estudo interessantes para compreender este fenômeno.
 \subsection{Q4 - \QuestaoQuatro} % tamanho médio
 
 O tamanho médio do software acadêmico de análise estática publicado nas
-conferências ASE e SCAM é de 820 módulos. 
-Esta média considera a última versão disponível em código fonte de cada projeto.
+conferências ASE e SCAM é de 820 módulos, neste contexto módulo refere-se às
+unidades que compõem um sistema de software.  Paradigmas e linguagens de
+programação possuem uma ou mais construções que fazem o papel de módulo --
+``classes'', ``aspectos'', ``tipos abstratos de dados'', ou ``arquivos-fonte''.
+Esta média considera a última versão disponível em código-fonte de cada projeto.
 
 %paulo: também teria usado LOC
 %joenio: quando a análise foi feita eloc foi utilizada mas não apresentou
 %        tendência diferente em relação ao número de módulos, crescendo, reduzindo,
 %        juntamente ao número de módulos, algo que comprova o que capiluppi2007adapting
 %        fala em trabalho anterior
-O tamanho médio dos projetos em estágio de {\it Initial development} é de 595
-módulos. Estes projetos são muito menores que os projetos em estágio de {\it Evolution} 
-ou  {\it Servicing} que possuem 1261 módulos, em média. 
-Os projetos em estágio de {\it Phaseout} ou {\it Closedown} não possuem código disponível e,
+O tamanho médio dos projetos em estágio de {\it Desenvolvimento inicial} é de 595
+módulos. Estes projetos são muito menores que os projetos em estágio de {\it Evolução} 
+ou  {\it Manutenção} que possuem 1261 módulos, em média. 
+Os projetos em estágio de {\it Descontinuado} ou {\it Encerrado} não possuem código disponível e,
 portanto, não sabemos seu tamanho.
 A Figura \ref{modules-average} apresenta estes números.
 
@@ -191,20 +197,20 @@ A Figura \ref{modules-average} apresenta estes números.
   \label{modules-average}
 \end{figure}
 
-De 20 projetos em estágio de {\it Initial development}, 
-12 projetos tiveram o código fonte analisado. 
-Todos os 8 projetos em estágio de {\it Evolution} ou {\it Servicing}
-tiveram seu código fonte analisado.
+De 20 projetos em estágio de {\it Desenvolvimento inicial}, 
+12 projetos tiveram o código-fonte analisado. 
+Todos os 8 projetos em estágio de {\it Evolução} ou {\it Manutenção}
+tiveram seu código-fonte analisado.
 Vale destacar que estes dois estágios foram agregados num único conjunto 
 pois possuem características próximas: 
-os 2 projetos em estágio de {\it Evolution} estão
-muito mais próximos dos projetos em estágio de {\it Servicing} do que 
-do projetos em {\it Initial development}. 
+os 2 projetos em estágio de {\it Evolução} estão
+muito mais próximos dos projetos em estágio de {\it Manutenção} do que 
+do projetos em {\it Desenvolvimento inicial}. 
 
 \subsection{Q5 - \QuestaoCinco} % evolução no tamanho
 
 Ao analisar a evolução no tamanho (em número de módulos) 
-dos projetos em estágio de {\it Servicing}, apresentados na Figura \ref{modules-evolution-servicing},
+dos projetos em estágio de {\it Manutenção}, apresentados na Figura \ref{modules-evolution-servicing},
 nota-se um crescimento no número total e médio de módulos
 em todos os projetos ao longo dos anos.
 
@@ -212,18 +218,19 @@ em todos os projetos ao longo dos anos.
   \center
   \includegraphics[scale=0.6]{imagens/modules-evolution-servicing.png}
   \includegraphics[scale=0.6]{imagens/modules-evolution-average.png}
-  \caption{Evolução no número de módulos dos projetos em \textit{Servicing}.}
+  \caption{Evolução no número de módulos dos projetos em \textit{Manutenção}.
+           Os picos de queda do projeto \texttt{s58} estão associados a lançamentos
+           de versões intermediárias ou de pré-lançamento identificadas como:
+           1.0M, dilla\_0.0.2-RC2, X10\_2.1.1 e X10\_2.1.2}
   \label{modules-evolution-servicing}
 \end{figure}
 
 Ao analisar os projetos individualmente, em busca de relação entre
-menções e a evolução no tamanho do código fonte (em número de módulos), 
+menções e a evolução no tamanho do código-fonte (em número de módulos), 
 observamos que, para alguns projetos, existe tal relação.
 Especulamos que outros projetos podem ter surgido na academia mas 
 tiveram seu desenvolvimento posterior externo ao meio científico, 
 ao menos para os que foram publicados e indexados nas bases da ACM e do IEEE.
-
-% ACHEI CONFUSO; TENTEI REESCREVER MAS NAO SEI SE FICOU BOM.
 
 \begin{description}
 
@@ -236,7 +243,7 @@ ao menos para os que foram publicados e indexados nas bases da ACM e do IEEE.
 
   \item[Software \texttt{s18} (Error Prone).]
     Este projeto foi mencionado em apenas 1 artigo em 2012, sendo que o
-    primeiro lançamento da versão 2.0 foi em 2015. Este projeto é claramente um
+    primeiro lançamento da versão 2.0 foi em 2015. Este projeto aparenta ser um
     projeto que ganhou vida própria e seguiu fora da academia.
 
   \item[Software \texttt{s26} (HUSACCT).]
@@ -275,17 +282,20 @@ não tem publicado artigos científicos que os mencionam.
 
 \subsection{Q6 - \QuestaoSeis}
 
-Projetos de software acadêmico de análise estática em estágio de {\it Closedown} 
+Projetos de software acadêmico de análise estática em estágio de {\it Encerrado} 
 foram encontrados em menções do tipo Usa em 38 artigos 
 e em menções do tipo Contribui em 42 artigos.
-Estes projetos não estão disponíveis para download, seja binário ou código fonte, 
+Estes projetos não estão disponíveis para download, seja binário ou código-fonte, 
 e a URL indicada pelos autores não permanece acessível, 
 indicando que os resultados de tais artigos não podem ser reproduzidos.
 %uma vez que acesso aos artefatos do estudo é requisito necessário para esta tarefa.
 
 Em resumo, as pesquisas reportadas em 80 artigos com menção de Uso ou Contribuição em 
 software acadêmico de análise estática publicados nas conferências ASE e SCAM 
-não podem ser replicadas ou reproduzidas.
+não podem ser replicadas ou reproduzidas por conta da ausência do software,
+caso o software seja disponibilizado outros fatores podem levar a dificuldades
+de replicação, como o acesso aos dados, instruções e detalhes sobre coleta e
+análise de dados, entre outros fatores.
 
 %\subsection{Q7 - \QuestaoSete} % é sustentável?
 
@@ -326,9 +336,9 @@ são bastante simples mas muito efetivas.
 Recomendações aos desenvolvedores de software acadêmico \cite{jimenez_four_2017}:
 
 \begin{description}
-  \item [Torne o código fonte do software público o mais cedo possível.]
+  \item [Torne o código-fonte do software público o mais cedo possível.]
 
-    Desenvolva o código fonte de maneira pública e acessível; utilizar
+    Desenvolva o código-fonte de maneira pública e acessível; utilizar
     repositórios de controle de versão (exemplos, GitHub, Gitlab ou Savannah)
     desde o início do projeto. Quanto mais tempo o projeto seguir um modelo
     fechado, mais difícil se torna abrir. Evite publicar o software em
@@ -339,12 +349,12 @@ Recomendações aos desenvolvedores de software acadêmico \cite{jimenez_four_20
 
     Forneça metadados a respeito do software através de registros comumente
     adotados pela sua comunidade. Facilitar a descoberta do projeto de software
-    e seu código fonte registrando os metadados a respeito do software em
+    e seu código-fonte registrando os metadados a respeito do software em
     locais de registro populares e conhecidos pela comunidade. Metadados devem
-    incluir informações de localização do código fonte, contribuidores,
+    incluir informações de localização do código-fonte, contribuidores,
     licença, versão, identificados, referências e como citar o software.
 
-    Boas opções são jornais específicos para software e ferramentas, exemplos:
+    Boas opções são periódicos específicos para software e ferramentas, exemplos:
     JOSS, JORS e SoftwareX. Fornecer instrução sobre como citar o software
     adequadamente, se possível incluir no repositório do projeto um arquivo
     BibTeX com os metadados de como deve ser citado.
@@ -352,15 +362,15 @@ Recomendações aos desenvolvedores de software acadêmico \cite{jimenez_four_20
   \item [Adote uma licença e respeite as licenças de outros pacotes de software.]
 
     Adote uma licença de software livre adequada para deixar claro como usar,
-    modificar e redistribuir o código fonte em termos e condições claros e bem
-    definidos. Define a licença de maneira pública e acessível no repositório
-    de código fonte, e garanta que o software está em conformidade com as
+    modificar e redistribuir o código-fonte em termos e condições claros e bem
+    definidos. Defina a licença de maneira pública e acessível no repositório
+    de código-fonte e garanta que o software está em conformidade com as
     licenças de todas as dependências do software.
 
     Sugestão, preferir especialmente licenças com mecanismo de copyleft, como
     por exemplo: GPL.
 
-  \item [Defina processos claros e transparentes de contribuição, governança e comunicação.]
+  \item [Defina processos claros de contribuição, governança e comunicação.]
 
     Abrir o código do software não significa que o software será desenvolvido
     de maneira pública e colaborativa. Apesar de ser algo desejável,
@@ -384,8 +394,8 @@ Recomendações aos desenvolvedores de software acadêmico \cite{jimenez_four_20
 
 Inevitavelmente alguns projetos de software acadêmico irão continuar sendo
 úteis após o primeiro lançamento, alguns terão algumas gerações de melhorias,
-outros serão usados na sua versão original sem atualização ou manutenção, e
-alguns outros serão lançados e nunca utilizados. Isto é natural, e 
+outros serão usados na sua versão original sem atualização ou manutenção e
+alguns outros serão lançados e nunca utilizados. Isto é natural e 
 a comunidade ao redor do software irá decidir qual é o melhor caminho a se
 tomar num processo evolutivo \cite{weiner2009astronomical}.
 
@@ -395,10 +405,10 @@ gerações. Dessa forma, realizar estudos desta natureza, refletindo sobre
 o papel do software e evidenciando o quanto ele é tratado em termos
 de publicização e reconhecimento é primordial.
 
-No entanto, algumas lições aprendidas na realização deste estudo nos diz que
-atividades de revisão de literatura em busca de menções a software representa
+No entanto, algumas lições aprendidas na realização deste estudo nos dizem que
+atividades de revisão de literatura em busca de menções a software representam
 um alto grau de dificuldade e volume de trabalho ``braçal''. Este tipo de trabalho seria
-simplificada enormemente caso fosse dado ao software um maior reconhecimento e
+simplificado enormemente caso fosse dado ao software um maior reconhecimento e
 incentivos a citação formal destes artefatos digitais, ou ao menos, que haja
 alguma padronização sobre como citar software. Tal padronização permitiria automatizar e
 recuperar, de forma segura, a relação entre os projetos, entre artigos e o
@@ -430,13 +440,13 @@ a produção de literatura.
 %de qualquer atividade acadêmica, com atualizações constantes e lançamentos de
 %novas versões ao longo do tempo mas sem nenhuma menção recente na literatura
 %acadêmica a respeito do software, 78\% dos projetos estão em estágio inicial de
-%desenvolvimento ({\it Initial development}), encerrados ({\it Closedown}) ou
-%sendo encerrados ({\it Phaseout}), apenas 13\% dos projetos estão em evolução
-%({\it Evolution}) ou provendo serviços ({\it Servicing}).
+%desenvolvimento ({\it Desenvolvimento inicial}), encerrados ({\it Encerrado}) ou
+%sendo encerrados ({\it Descontinuado}), apenas 13\% dos projetos estão em evolução
+%({\it Evolução}) ou provendo serviços ({\it Manutenção}).
 %
 %O tamanho médio do software acadêmico de análise estática em termos de número
-%de módulos em estágio {\it Evolution} e {\it Servicing} é duas vezes maior que
-%os projetos em {\it Initial development}, a evolução dos projetos mostra um crescimento
+%de módulos em estágio {\it Evolução} e {\it Manutenção} é duas vezes maior que
+%os projetos em {\it Desenvolvimento inicial}, a evolução dos projetos mostra um crescimento
 %constante no número de módulos no código fonte, confirmando a lei de Lehman de ``Crescimento Contínuo'' do software
 %\cite{lehman1997metrics}.
 
@@ -446,8 +456,8 @@ a produção de literatura.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Observamos que 78\% dos projetos de software acadêmico de análise estática
-%encontram-se em estágio inicial de desenvolvimento ({\it Initial development})
-%sendo encerrados ({\it Phaseout}) ou já encerrados ({\it Closedown}). Indicando
+%encontram-se em estágio inicial de desenvolvimento ({\it Desenvolvimento inicial})
+%sendo encerrados ({\it Descontinuado}) ou já encerrados ({\it Encerrado}). Indicando
 %que temos neste domínio muitos projetos sem atividade de evolução após a sua
 %criação e publicação.
 
@@ -490,7 +500,7 @@ sobre boas práticas de desenvolvimento até
 questões relacionadas reproducibilidade científica.
 
 Em 2013, \citeonline{barnes2013science}
-criaram o manifesto {\it Science Code Manifesto} que enfatiza que todo código fonte
+criaram o manifesto {\it Science Code Manifesto} que enfatiza que todo código-fonte
 escrito especificamente para processar dados de publicações deve estar
 disponível aos revisores e leitores da publicação.
 
@@ -518,12 +528,12 @@ outros materiais necessários tanto para humanos quanto para máquinas''.
 \citeonline{howison2016software},
 por meio de uma  revisão de literatura, mostraram que,
 em  publicações usando software como
-método, apenas 59 mencionavam o uso de software de alguma forma;
+método, apenas 59 de um total de 90 artigos mencionavam o uso de software de alguma forma;
 os demais 31 artigos, apesar de usar software acadêmico, não mencionavam nada a
 respeito.
 
 \citeonline{wilson2017good} apresentaram um conjunto de boas práticas que todo
-pesquisador pode adotar, independentemente do seu nível de habilidade em
+pesquisador pode adotar, independente do seu nível de habilidade em
 computação. Essas práticas passam por gerenciamento de dados, programação,
 colaboração com colegas, organização de projetos, {\it tracking work}, e escrita da
 manuscritos.

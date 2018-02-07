@@ -8,7 +8,12 @@
 %   my @releases = map { m/^(\d{4})-/; $1 } grep { /^\d{4}-/ } map { $_->{released_at} } @{ $dataset{$k}{releases}{versions} };
 %   my @years = uniq sort @releases;
 %   my $stage = $dataset{$k}{life_cycle}{stage};
-%   $stage = 'Desconhecido' if $stage eq 'unknown';
+%   $stage =~ s/Initial development/Desenvolvimento inicial/sgo;
+%   $stage =~ s/Evolution/Evolução/sgo;
+%   $stage =~ s/Servicing/Manutenção/sgo;
+%   $stage =~ s/Phaseout/Desconinuado/sgo;
+%   $stage =~ s/Closedown/Encerrado/sgo;
+%   $stage =~ s/unknown/Desconhecido/sgo;
 %   my $modules = 0;
 %   while (my $r = pop @{ $dataset{$k}{releases}{versions} }) {
 %     next if $r->{source} =~ m/unavailable|unknown/;
