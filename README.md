@@ -3,8 +3,11 @@ Ciência da Computação ([PGCOMP](http://pgcomp.dcc.ufba.br)) da Universidade
 Federal da Bahia ([UFBA](http://www.ufba.br)).
 
 * Autor: Joenio Marques da Costa
+  * http://lattes.cnpq.br/6773346025855005
 * Orientadora: Christina von Flach G. Chavez
+  * http://lattes.cnpq.br/1827829018668226
 * Co-orientador: Paulo Roberto Miranda Meirelles
+  * http://lattes.cnpq.br/2193972715230641
 
 Agenda:
 
@@ -28,7 +31,13 @@ Mais detalhes em:
 * http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
 Slides da Qualificação:
-* http://joenio.me/slides/caracterizacao-analise-estatica.html
+* http://joenio.me/caracterizacao-analise-estatica
+
+Notícia sobre a defesa no site do PGCOMP:
+* http://wiki.dcc.ufba.br/PGComp/Noticia20171222140028
+
+Slides da Defesa:
+* http://joenio.me/sustentabilidade-software-academico
 
 (todas as instruções abaixo consideram que você está rodando o sistema
 operacional Debian GNU/Linux testing/stretch)
@@ -126,7 +135,6 @@ Os resultados do comando acima são gravados em arquivos no diretório
 * Talita Gentil
 * Jonei Costa
 * José Flávio
-* Jannine (IBICT)
 * Sandro Andrade
 
 ## Contato
