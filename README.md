@@ -117,26 +117,6 @@ Os resultados do comando acima são gravados em arquivos no diretório
 
 * https://www.youtube.com/watch?v=TLlzToeIpGc
 
-## Agradecimentos
-
-* Rodrigo Rocha
-* Daniela Feitosa
-* Paulo Meirelles
-* Christina von Flach
-* Ivan Machado
-* Claudio Sant'ana
-* Marcos Ronaldo
-* Fabiana Goa
-* Lucas Kanashiro
-* Antonio Terceiro
-* Crescêncio Lima
-* Mariel Zasso
-* Hilmer Neri
-* Talita Gentil
-* Jonei Costa
-* José Flávio
-* Sandro Andrade
-
 ## Contato
 
 joenio EM joenio.me
