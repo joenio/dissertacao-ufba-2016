@@ -11,7 +11,7 @@ VIEWPDF= @true
 
 include /usr/share/latex-mk/latex.gmk
 
-rebuild: clean cache documents all
+rebuild: clean cache documents appendix all
 
 metrics:
 	./bin/run-analizo dataset/software
