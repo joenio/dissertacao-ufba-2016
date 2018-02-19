@@ -9,8 +9,15 @@
   \hline
   {\bf Estágio} & {\bf Projetos} \\\
   \hline
-% foreach ('Initial development', 'Evolution', 'Servicing', 'Phaseout', 'Closedown', 'unknown') {
-    <%== $_ eq 'unknown' ? 'Desconhecido' : $_ %> & <%== $total{$_} %> \\\
+% foreach my $stage ('Initial development', 'Evolution', 'Servicing', 'Phaseout', 'Closedown', 'unknown') {
+%   my $estagio = $stage;
+%   $estagio =~ s/Initial development/Desenvolvimento inicial/sgo;
+%   $estagio =~ s/Evolution/Evolução/sgo;
+%   $estagio =~ s/Servicing/Manutenção/sgo;
+%   $estagio =~ s/Phaseout/Descontinuado/sgo;
+%   $estagio =~ s/Closedown/Encerrado/sgo;
+%   $estagio =~ s/unknown/Desconhecido/sgo;
+    <%== $estagio %> & <%== $total{$stage} %> \\\
 % }
   \hline
 \end{tabular}
