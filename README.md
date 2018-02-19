@@ -2,42 +2,29 @@ Dissertação para obtenção do título de mestre no Programa de Pós-graduaç�
 Ciência da Computação ([PGCOMP](http://pgcomp.dcc.ufba.br)) da Universidade
 Federal da Bahia ([UFBA](http://www.ufba.br)).
 
-* Autor: Joenio Marques da Costa
-  * http://lattes.cnpq.br/6773346025855005
-* Orientadora: Christina von Flach G. Chavez
-  * http://lattes.cnpq.br/1827829018668226
-* Co-orientador: Paulo Roberto Miranda Meirelles
-  * http://lattes.cnpq.br/2193972715230641
+* Autor: [Joenio Marques da Costa](http://lattes.cnpq.br/6773346025855005)
+* Orientadora: [Christina von Flach G. Chavez](http://lattes.cnpq.br/1827829018668226)
+* Co-orientador: [Paulo Roberto Miranda Meirelles](http://lattes.cnpq.br/2193972715230641)
 
 Agenda:
 
-| Aividade     | Data                                          |
-| ------------ | --------------------------------------------- |
-| Qualificação | 12 de Julho de 2016                           |
-| Defesa       | 19 de Dezembro de 2017                        |
+| Aividade     | Data                      | Slides                                               |
+| ------------ | ------------------------- | ---------------------------------------------------- |
+| Qualificação | 12 de Julho de 2016       | http://joenio.me/caracterizacao-analise-estatica     |
+| Defesa       | 19 de Dezembro de 2017    | http://joenio.me/sustentabilidade-software-academico |
 
 Banca examinadora:
 
-* Sandro Santos Andrade (titular externo)
-  * http://lattes.cnpq.br/0177714301545658
-* Rodrigo Rocha Gomes e Souza (titular interno)
-  * http://lattes.cnpq.br/7697794806460975
-* Ivan do Carmo Machado (suplente interno)
-  * http://lattes.cnpq.br/4430958315746203
-* Igor Fabio Steinmacher (suplente externo)
-  * http://lattes.cnpq.br/5529725593221391
-
-Mais detalhes em:
-* http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
-
-Slides da Qualificação:
-* http://joenio.me/caracterizacao-analise-estatica
+* Titular interno: [Rodrigo Rocha Gomes e Souza](http://lattes.cnpq.br/7697794806460975)
+* Titular externo: [Sandro Santos Andrade](http://lattes.cnpq.br/0177714301545658)
+* Suplente interno: [Ivan do Carmo Machado](http://lattes.cnpq.br/4430958315746203)
+* Suplente externo: [Igor Fabio Steinmacher](http://lattes.cnpq.br/5529725593221391)
 
 Notícia sobre a defesa no site do PGCOMP:
 * http://wiki.dcc.ufba.br/PGComp/Noticia20171222140028
 
-Slides da Defesa:
-* http://joenio.me/sustentabilidade-software-academico
+Mais detalhes em:
+* http://wiki.dcc.ufba.br/Aside/Orientacao2014JoenioCosta
 
 (todas as instruções abaixo consideram que você está rodando o sistema
 operacional Debian GNU/Linux testing/stretch)
