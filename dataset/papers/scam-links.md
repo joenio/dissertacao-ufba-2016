@@ -17,3 +17,5 @@ http://www.ieee-scam.org
 1. SCAM 2013 - http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6636284
 1. SCAM 2014 - http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6970367
 1. SCAM 2015 - http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=7321933
+1. SCAM 2016 - http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=7781136
+1. SCAM 2017 - http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=8089459
