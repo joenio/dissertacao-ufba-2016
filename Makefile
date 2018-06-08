@@ -41,7 +41,7 @@ cache/references.bib:
 	./bin/merge dataset/software/*/paper.bib dataset/software/*/search/*.bib > cache/references.bib
 
 documents/references.bib: cache/dataset.yml cache/references.bib
-	./bin/ids cache/references.bib > documents/references.bib
+	./bin/ids documents/references.bib cache/references.bib
 
 references.yml: documents/references.bib
 	$(info creating references.yml file for each software...)

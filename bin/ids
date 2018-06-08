@@ -3,7 +3,8 @@ use utf8;
 use open ':locale';
 use Modern::Perl '2014';
 use lib 'lib';
-use Dissertacao qw( foreach_bibtex_entry );
+use Dissertacao qw( foreach_bibtex_entry bibtex_load equal );
+use List::Util qw( max );
 
 =head1 NAME
 
@@ -11,25 +12,35 @@ ids - add autoincrement field id to each bibtex entries
 
 =head1 SYNOPSIS
 
-  ./bin/ids <input-file> [<input-file> [<input-file>]]
+  ./bin/ids <output-file> <input-file> [<input-file> [<input-file>]]
 
 =head1 DESCRIPTION
 
 Add an autoincrement field "id" with values like "p1", "p2", ... "p231", "p232"
-to each entry.
+to each entry. Add only entries that is missing in the <output-file>.
 
 =cut
 
-if (@ARGV < 1) {
+if (@ARGV < 2) {
   warn "E: missing options!";
   say "Usage: $0 <input-file> [<input-file> [<input-file>]]";
   exit 1;
 }
 
-my $id = 1;
+my $output_filename = shift(@ARGV);
+my %entries = bibtex_load $output_filename;
+my @ids = map { $entries{$_}->get('id') } keys %entries;
+my $lastid = max map { $_ =~ s/^p//; $_ } @ids;
+
+open my $OUTPUT, '>>', $output_filename;
+my $nextid = $lastid + 1;
 foreach_bibtex_entry(@ARGV, sub {
   my $entry = shift;
-  $entry->set('id', "p$id");
-  print $entry->print_s;
-  $id++;
+  unless (grep { equal($entries{$_}, $entry) } keys %entries) {
+    $entry->set('id', "p$nextid");
+    $entries{$entry->key} = $entry;
+    print $OUTPUT $entry->print_s;
+    $nextid++;
+  }
 });
+close $OUTPUT;
