@@ -6,13 +6,13 @@
   \hline
   \endfirsthead
   \hline
-  \textbf{ID} & \textbf{Busca ACM} & \textbf{Busca IEEE} & \textbf{Artigo} & \textbf{Menções} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
+  \textbf{ID} & \textbf{Busca ACM} & \textbf{Busca IEEE} & \textbf{Menções} & \textbf{Contribute} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
   \hline
   \endhead
   \multicolumn{9}{c}{\textbf{continua na próxima página}} \\\
   \hhline{---------} \endfoot
   \endlastfoot
-  \textbf{ID} & \textbf{Busca ACM} & \textbf{Busca IEEE} & \textbf{Artigo} & \textbf{Menções} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
+  \textbf{ID} & \textbf{Busca ACM} & \textbf{Busca IEEE} & \textbf{Menções} & \textbf{Contribute} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
   \hline
 % my %sum = (search_ieee => 0, search_acm => 0);
 % foreach my $k (sort keys %dataset) {
@@ -31,6 +31,7 @@
 %   }
 %   $modules ||= '-';
 %   my $mentions = 0;
+%   my $contribute = 0;
 %   my $conf = '-';
 %   my $year = '-';
 %   my $paper = '-';
@@ -41,6 +42,7 @@
 %       $year = $references{$r}->get('year');
 %     }
 %     $mentions++;
+%     $contribute++ if $dataset{$k}{references}{$r}{mention_type} eq 'contribute';
 %   }
 %   next unless $conf eq 'SCAM';
 %   my $search_acm = $dataset{$k}{search}{acm}{results} || '-';
@@ -48,11 +50,12 @@
 %   $sum{search_acm} += $dataset{$k}{search}{acm}{results};
 %   $sum{search_ieee} += $dataset{$k}{search}{ieee}{results};
 %   $sum{mentions} += $mentions;
-<%== $id %> & <%== $search_acm %> & <%== $search_ieee %> & <%== $paper %> & <%== $mentions %> & <%== $releases %> & <%== $version %> & <%== $modules %> & <%== $stage %> \\\
+%   $sum{contribute} += $contribute;
+<%== $id %> & <%== $search_acm %> & <%== $search_ieee %> & <%== $mentions %> & <%== $contribute %> & <%== $releases %> & <%== $version %> & <%== $modules %> & <%== $stage %> \\\
     \hline
 % }
   \hline
-{\bf Total} & <%== $sum{search_acm} %> & <%== $sum{search_ieee} %> & <%== '' %> & <%== $sum{mentions} %> & <%== '' %> & <%== '' %> & <%== '' %> & <%== '' %> \\\
+{\bf Total} & <%== $sum{search_acm} %> & <%== $sum{search_ieee} %> & <%== $sum{mentions} %> & <%== $sum{contribute} %> & <%== '' %> & <%== '' %> & <%== '' %> & <%== '' %> \\\
   \hline
 \end{longtable}
 %# vim: filetype=epl
