@@ -18,6 +18,9 @@ use vars qw(@EXPORT_OK);
   find_references
   metrics_load
   years_mentioned
+  count_total
+  count_included
+  sort_ids
 );
 
 sub equal {
@@ -138,6 +141,29 @@ sub years_mentioned {
     push @years, $references{$r}->get('year');
   }
   return uniq sort @years;
+}
+
+sub count_total {
+  my $file = shift;
+  open my $FILE, '<', $file;
+  local $/ = undef;
+  my $content = <$FILE>;
+  close $FILE;
+  $content =~ m/PAPERS TOTAL = (\d+)/ ? $1 : 0;
+}
+
+sub count_included {
+  my $file = shift;
+  open my $FILE, '<', $file;
+  local $/ = undef;
+  my $content = <$FILE>;
+  close $FILE;
+  $content =~ m/INCLUDED = (\d+)/ ? $1 : 0;
+}
+
+sub sort_ids {
+  my %dataset = @_;
+  sort { substr($a, 1) <=> substr($b, 1) } keys %dataset;
 }
 
 return 1;
