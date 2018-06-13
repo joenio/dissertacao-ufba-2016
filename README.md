@@ -90,6 +90,17 @@ Use o make:
 Os resultados do comando acima são gravados em arquivos no diretório
 `documents/*.{csv,dot,tex,yml}`.
 
+## Artigos da revisão de literatura
+
+Arquivos em formato PDF para cada artigo encontra-se em `dataset/papers/`,
+os arquivos são mantidos num repositório privado no gitlab em:
+
+* https://gitlab.com/joenio/papers
+
+Para fazer o download a partir do repositório da dissertação execute:
+
+    make papers-download
+
 ## Referências sobre estatística
 
 ### Vídeo: FGV / IBRE – Estatística com R: 16 Quantis e Percentis

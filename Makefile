@@ -24,7 +24,7 @@ projects=$(wildcard dataset/software/*)
 templates=$(wildcard templates/*.epl)
 
 cache: cache/dataset.yml cache/references.bib
-documents: documents/references.bib documents/*.csv documents/*.md documents/*.tex
+documents: documents/references.bib documents/*.csv documents/*.md documents/software-table.tex documents/*.tex
 	$(info rendering templates...)
 	@$(foreach t,$(templates),./bin/render $(t) > documents/$(basename $(notdir $(t)));)
 
@@ -46,3 +46,7 @@ documents/references.bib: cache/dataset.yml cache/references.bib
 references.yml: documents/references.bib
 	$(info creating references.yml file for each software...)
 	@$(foreach p,$(projects),./bin/render templates/software/references.yml.epl --software=$(notdir $(p)) > $(p)/references.yml;)
+
+papers-download: dataset/papers/references
+	cd dataset/papers
+	git clone git@gitlab.com:joenio/papers.git .
