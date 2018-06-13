@@ -45,6 +45,12 @@ sub load_project_data {
       $dataset{metrics}{"version-$v->{version}"} = metrics_load "$dir/releases/version-$v->{version}.metrics";
     }
   }
+  foreach my $r (grep { $dataset{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{references} }) {
+    if ($dataset{references}{$r}{step} && $dataset{references}{$r}{step} eq 'study1') {
+      $dataset{conference} = $dataset{references}{$r}{conference};
+      last;
+    }
+  }
   return %dataset;
 }
 
