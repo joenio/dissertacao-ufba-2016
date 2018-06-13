@@ -430,18 +430,20 @@ são representadas na Figura \ref{revisao-literatura}.
 
   \item [Passo 1: Escopo]
 
+% TODO atualizar a data a partir dos dados e evitar incluir de forma hardecoded como atualmente
 A busca realizada nas conferências ASE e SCAM até o ano de 2015 resultou em
-1873 artigos; deste total, 346 artigos são do SCAM e 1527 artigos do ASE.
+\PapersCount \ artigos; deste total, \PapersSCAMCount \ artigos são do SCAM e \PapersASECount \ artigos do ASE.
+A busca para a conferência SCAM foi atualizada até o ano de 2017.
 
   \item [Passo 2: Triagem Automática]
 
 O filtro executado automaticamente usando os critérios definidos na fase de
-preparação reduziu o conjunto de 1873 para 441 artigos, sendo 155 artigos do SCAM e
-286 artigos do ASE selecionados para posterior inspeção manual.
+preparação reduziu o conjunto de \PapersCount \ para  \PapersFilterCount \ artigos, sendo \PapersFilterSCAMCount \ artigos do SCAM e
+\PapersFilterASECount \ artigos do ASE selecionados para posterior inspeção manual.
 
   \item [Passo 3: Extração]
 
-Os 441 artigos selecionados pela triagem automática foram inspecionados manualmente, tendo como guia
+Os \PapersFilterCount \ artigos selecionados pela triagem automática foram inspecionados manualmente, tendo como guia
 os critérios descritos na Tabela \ref{criterios-extracao} na fase de
 planejamento. Ao final da inspeção manual, selecionamos 61 artigos com publicação de
 software acadêmico de análise estática.
@@ -458,9 +460,10 @@ resumida, na Tabela \ref{software-table}.
 
 \input{documents/software-table.tex}
 
+% TODO trocar esse valor 61 hardcoded abaixo
 Dentre os 61 artigos selecionados, dois artigos faziam referência a um mesmo software e,
 portanto, um deles não foi contabilizado, 
-resultando em um total 60 projetos de software selecionados. Para cada projeto foi criado um
+resultando em um total \SoftwareCount \ projetos de software selecionados. Para cada projeto foi criado um
 diretório contendo o nome do software e um arquivo chamado
 \texttt{software.yml} com os dados coletados.
 
@@ -468,10 +471,11 @@ diretório contendo o nome do software e um arquivo chamado
 
 \section{Análise dos Dados} \label{estudo1:analise} % {{{
 
-Coletamos 1873 artigos publicados nas conferências de Engenharia de Software
+Coletamos \PapersCount \ artigos publicados nas conferências de Engenharia de Software
 ASE e SCAM, selecionamos 61 artigos com publicação de software acadêmico de
-análise estática, e entre estes artigos caracterizamos 60 projetos de software.
-Para cada um dos 60 projetos de software, coletamos ao menos o nome e a URL do projeto;
+análise estática, e entre estes artigos caracterizamos \SoftwareCount \ projetos de software
+(\SoftwareASECount \ da conferência ASE, \SoftwareSCAMCount \ da conferência SCAM).
+Para cada um dos \SoftwareCount \ projetos de software, coletamos ao menos o nome e a URL do projeto;
 informaçoes adicionais a respeito do projeto foram coletadas em fontes documentais diversas.
 A seguir apresentamos a análise dos dados coletados.
 
@@ -534,14 +538,14 @@ URL informada pelos autores estão ativas e online.
 
 \subsection{Q2 - \EstudoUmQuestaoDois} % download
 
-Entre os \SoftwareCount \ projetos selecionados, 24 não estão disponíveis para download, ou
+Entre os \SoftwareCount \ projetos selecionados, \SoftwareDownloadNotAvailableCount \ não estão disponíveis para download, ou
 seja, apesar dos autores informarem no estudo uma URL, indicarem que o software
 está disponível nesta URL para download, a URL não mais está disponível e o
 software não pode ser encontrado. Isso significa que 40\% dos projetos de software
 acadêmico de análise estática publicados nas conferências de Engenharia de
 Software ASE e SCAM não estão disponíveis ou estão disponíveis em outra URL.
 
-Os demais 36 projetos, que equivalem a 60\% do conjunto total, estão
+Os demais \SoftwareDownloadAvailableCount \ projetos, que equivalem a 60\% do conjunto total, estão
 disponíveis para download e é possível obter uma cópia destes projetos na URL
 indicada pelos seus autores. Um resumo deste total por ano é apresentado na
 Tabela \ref{available-table}.
@@ -550,7 +554,7 @@ Tabela \ref{available-table}.
 
 \subsection{Q3 - \EstudoUmQuestaoTres} % codigo fonte
 
-Do conjunto de 36 projetos de software disponíveis para download, apenas 2 não
+Do conjunto de \SoftwareDownloadAvailableCount \ projetos de software disponíveis para download, apenas 2 não
 disponibilizam o código-fonte. Tais projetos -- FaultBuster e Loopfrog --
 são disponibilizados gratuitamente mas apenas em
 formato binário. A Tabela \ref{source-code-table} traz um resumo das
@@ -572,7 +576,7 @@ sem qualquer restrição prévia pelos seus autores, mas os 13 projetos sem
 licença definida impedem eventuais cientistas a publicar suas modificações e
 redistribuir qualquer melhoria sem prévia solicitação aos autores originais.
 
-Considerando o total de 60 projetos selecionados neste estudo, apenas 35\% (21
+Considerando o total de \SoftwareCount \ projetos selecionados neste estudo, apenas 35\% (21
 projetos) podem ser adaptados; os demais com código-fonte disponível, 21\% (13 projetos) podem ser
 adaptados, mas as melhorias ou correções não podem ser redistribuídas sem
 autorização prévia dos autores.
@@ -616,19 +620,19 @@ inicial avaliar primariamente a própria URL indicada pelos autores originais.
 
 \section{Conclusões} \label{estudo1:conclusoes} % {{{
 
-Este estudo selecionou 60 projetos de software de análise estática de
+Este estudo selecionou \SoftwareCount \ projetos de software de análise estática de
 código-fonte publicados nas conferências ASE e SCAM.
 Os autores afirmam que os projetos estão disponíveis para obtenção na URL
 indicada, mas os resultados da caracterização feita mostram que apenas uma
 parcela destes projetos continuam disponíveis.
 
-Entre os projetos selecionados, 15 não têm qualquer presença oficial online,
+Entre os projetos selecionados, \SoftwareUrlNotAvailableCount \ não têm qualquer presença oficial online,
 com a URL indicada pelos autores indisponível.
-Nos 45 projetos com presença online através da URL informada nos artigos, 9 não
+Nos \SoftwareUrlAvailableCount \ projetos com presença online através da URL informada nos artigos, 9 não
 disponibilizam qualquer artefato relacionado ao software, ou seja, apesar de
 ser possível acessar a URL, não é possível encontrar o software para download.
 
-Os outros 36 projetos estão disponíveis para download, sendo que
+Os outros \SoftwareDownloadAvailableCount \ projetos estão disponíveis para download, sendo que
 a maior parte, 34 projetos, disponibiliza o código-fonte, e apenas 2
 estão disponíveis em formato binário.
 Dentre os 34 projetos com código-fonte disponível, 13 não informam qualquer
