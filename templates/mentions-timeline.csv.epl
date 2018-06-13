@@ -1,3 +1,5 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
 % use List::Util qw( uniq );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
@@ -14,7 +16,7 @@
 % }
 % @years = uniq sort @years;
 projeto,<%== join(',', @years) %>
-% foreach my $k (sort keys %dataset) {
+% foreach my $k (sort_ids %dataset) {
 %   my %mentions_by_year = map { $_ => {cite => 0, use => 0, contribute => 0} } @years;
 %   foreach my $r (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
 %     $mentions_by_year{$references{$r}->get('year')}{$dataset{$k}{references}{$r}{mention_type}}++;

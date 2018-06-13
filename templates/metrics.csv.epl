@@ -1,6 +1,8 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
 % my %dataset = %{ $_[0] };
 id,version,released_at,total_modules,total_eloc
-% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } sort keys %dataset) {
+% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } sort_ids %dataset) {
 %   next if $dataset{$k}{features}{source_code} =~ m/^(?:undefined|Python|Ruby|Erlang|Perl|Javascript|Rascal)$/o;
 %   foreach (grep { $_->{source} !~ m/unavailable|unknown/ } @{ $dataset{$k}{releases}{versions} }) {
 %     my $id = $dataset{$k}{software}{id};

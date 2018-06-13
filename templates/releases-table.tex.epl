@@ -1,8 +1,10 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
 % use List::Util qw( uniq );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
 % my @rows = ();
-% foreach my $k (sort keys %dataset) {
+% foreach my $k (sort_ids %dataset) {
 %   my $id = $dataset{$k}{software}{id};
 %   my $versions = @{ $dataset{$k}{releases}{versions} } || '-';
 %   my @releases = map { m/^(\d{4})-/; $1 } grep { /^\d{4}-/ } map { $_->{released_at} } @{ $dataset{$k}{releases}{versions} };
