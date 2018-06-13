@@ -1,27 +1,28 @@
 % use lib 'lib';
 % use Dissertacao qw( sort_ids );
 % my %dataset = %{ $_[0] };
-\begin{longtable}{l l l p{3cm} l}
+\begin{longtable}{l l l l p{3cm} l}
 \caption{Software acadêmico para análise estática.}
 \label{software-table} \\\
-  \hhline{l l l p{3cm} l |}
+  \hhline{l l l l p{3cm} l |}
   \hline
   \endfirsthead
-  \hhline{l l l p{3cm} l |}
+  \hhline{l l l l p{3cm} l |}
   \hline
-  \textbf{ID} & \textbf{Nome do software} & \textbf{Acesso} & \textbf{Linguagem de programação} & \textbf{Distribuição} \\\
+  \textbf{ID} & \textbf{Nome do software} & \textbf{Conferência} & \textbf{Acesso} & \textbf{Linguagem de programação} & \textbf{Distribuição} \\\
   \hline
-  \hhline{l l l l p{3cm} |}
+  \hhline{l l l l l p{3cm} |}
   \endhead
-  \hhline{-----}
-  \multicolumn{5}{c}{continua na próxima página} \\\
-  \hhline{-----} \endfoot
+  \hhline{------}
+  \multicolumn{6}{c}{continua na próxima página} \\\
+  \hhline{------} \endfoot
   \endlastfoot
-  \textbf{ID} & \textbf{Nome do software} & \textbf{Acesso} & \textbf{Linguagem de programação} & \textbf{Distribuição} \\\
+  \textbf{ID} & \textbf{Nome do software} & \textbf{Conferência} & \textbf{Acesso} & \textbf{Linguagem de programação} & \textbf{Distribuição} \\\
   \hline
 % foreach my $k (sort_ids %dataset) {
     \texttt{<%== $dataset{$k}{software}{id} %>} &
       <%== $dataset{$k}{software}{short_name} %> &
+      <%== $dataset{$k}{conference} %> &
       <%== $dataset{$k}{address}{download_available} eq 'yes' ? 'Gratuito' : 'Sem Acesso' %> &
       <%== $dataset{$k}{features}{source_code} eq 'undefined' ? '-' : $dataset{$k}{features}{source_code} %> &
       <%== $dataset{$k}{software}{distribution} eq 'undefined' ? '-' : ($dataset{$k}{software}{distribution} eq 'foss' ? 'Livre' : 'Grátis') %> \\\

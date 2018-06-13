@@ -11,35 +11,61 @@
 %   my $first_paper = $papers[0];
 %   my $year = $references{$first_paper}->get('year');
 %   my $available = $dataset{$k}{address}{download_available};
-%   $table{$year}{total} //= 0;
-%   $table{$year}{available} //= 0;
-%   $table{$year}{unavailable} //= 0;
-%   $table{$year}{total}++;
+%   $table{$year}{total}{total} //= 0;
+%   $table{$year}{total}{available} //= 0;
+%   $table{$year}{total}{unavailable} //= 0;
+%   $table{$year}{total}{total}++;
+%   $table{$year}{$dataset{$k}{conference}}{total} //= 0;
+%   $table{$year}{$dataset{$k}{conference}}{available} //= 0;
+%   $table{$year}{$dataset{$k}{conference}}{unavailable} //= 0;
+%   $table{$year}{$dataset{$k}{conference}}{total}++;
 %   if ($available eq 'yes') {
-%     $table{$year}{available}++;
+%     $table{$year}{total}{available}++;
+%     $table{$year}{$dataset{$k}{conference}}{available}++;
 %   }
 %   else {
-%     $table{$year}{unavailable}++;
+%     $table{$year}{total}{unavailable}++;
+%     $table{$year}{$dataset{$k}{conference}}{unavailable}++;
 %   }
 % }
 \begin{table}[h]
 \caption{Número de projetos disponível para download por ano.}
 \centering
-\begin{tabular}{l c c c}
+\begin{tabular}{l c c c c c c}
   \hline
-  {\bf Ano} & {\bf Total} & {\bf Disponível} & {\bf Indisponível} \\\
+\multirow{2}{*}{\textbf{Ano}} & \multicolumn{2}{c}{\textbf{Total}} & \multicolumn{2}{c}{\textbf{Disponível}} & \multicolumn{2}{c}{\textbf{Indisponível}} \\\
+                              &  \textbf{ASE}   &   \textbf{SCAM}  &    \textbf{ASE}   &   \textbf{SCAM}     &   \textbf{ASE}   &   \textbf{SCAM}        \\\
   \hline
 % foreach my $y (sort keys %table) {
-  <%== $y %> & <%== $table{$y}{total} %> & <%== $table{$y}{available} %> & <%== $table{$y}{unavailable} %> \\\
+  <%== $y %> &
+    <%== $table{$y}{ASE}{total} || '-' %> &
+    <%== $table{$y}{SCAM}{total} || '-' %> &
+%#    <%== $table{$y}{total}{total} %> &
+    <%== $table{$y}{ASE}{available} || '-' %> &
+    <%== $table{$y}{SCAM}{available} || '-' %> &
+%#    <%== $table{$y}{total}{available} %> &
+    <%== $table{$y}{ASE}{unavailable} || '-' %> &
+    <%== $table{$y}{SCAM}{unavailable} || '-' %> \\\
+%#    <%== $table{$y}{total}{unavailable} %> \\\
 % }
   \hline
-% my %total = (available => 0, unavailable=> 0, total => 0);
-% foreach my $year (sort keys %table) {
-%   $total{available} += $table{$year}{available};
-%   $total{unavailable} += $table{$year}{unavailable};
-%   $total{total} += $table{$year}{total};
+% my %total = ();
+% $total{ASE}{available} = $total{SCAM}{available} = $total{ASE}{unavailable} = $total{SCAM}{unavailable} = $total{ASE}{total} = $total{SCAM}{total} = 0;
+% foreach my $y (sort keys %table) {
+%   $total{ASE}{available} += $table{$y}{ASE}{available} // 0;
+%   $total{SCAM}{available} += $table{$y}{SCAM}{available} // 0;
+%   $total{ASE}{unavailable} += $table{$y}{ASE}{unavailable} // 0;
+%   $total{SCAM}{unavailable} += $table{$y}{SCAM}{unavailable} // 0;
+%   $total{ASE}{total} += $table{$y}{ASE}{total} // 0;
+%   $total{SCAM}{total} += $table{$y}{SCAM}{total} // 0;
 % }
-  {\bf Total} & <%== $total{total} %> & <%== $total{available} %> & <%== $total{unavailable} %> \\\
+  {\bf Total} &
+    <%== $total{ASE}{total} %> &
+    <%== $total{SCAM}{total} %> &
+    <%== $total{ASE}{available} %> &
+    <%== $total{SCAM}{available} %> &
+    <%== $total{ASE}{unavailable} %> &
+    <%== $total{SCAM}{unavailable} %> \\\
   \hline
 \end{tabular}
 \label{available-table}
