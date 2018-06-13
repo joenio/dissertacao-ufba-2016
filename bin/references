@@ -1,0 +1,58 @@
+#!/usr/bin/perl
+use utf8;
+use open ':locale';
+use Modern::Perl '2014';
+use lib 'lib';
+use Dissertacao qw( foreach_bibtex_entry );
+use File::Spec::Functions;
+use File::Basename;
+
+=head1 NAME
+
+references - check if all bibtex entries in a bibtex file already downloaded
+
+=head1 SYNOPSIS
+
+  ./bin/references <bibtex-file> <references-folder>
+
+=head1 DESCRIPTION
+
+Read a bibtex file (expected that this file have an extra field called `id`)
+and check each entry in this file if the pdf file already downloaded at <references-folder>.
+The pdf files should named as `id.pdf`.
+
+=cut
+
+sub download_paper {
+  my $entry = shift;
+  my $id = $entry->get('id');
+  say "I: download_paper not implemented yet, you should download $id manually: ",
+    $entry->get('doi') // $entry->get('url') // $entry->get('title');
+}
+
+if (@ARGV < 2) {
+  warn "E: missing options!";
+  say "Usage: $0 <bibtex-file> <references-folder>";
+  exit 1;
+}
+
+my $bibtex_filename = shift @ARGV;
+my $references_folder = shift @ARGV;
+
+if (! -e $bibtex_filename || ! -e $references_folder) {
+  warn "E: <bibtex-file> or <references-folder> not found";
+  exit 1;
+}
+
+my @references_files = map { basename $_, ".pdf" } glob catfile($references_folder, '*.pdf');
+
+my $missing_count = 0;
+foreach_bibtex_entry($bibtex_filename, sub {
+  my $entry = shift;
+  my $id = $entry->get('id');
+  unless (grep { $id eq $_ } @references_files) {
+    download_paper $entry;
+    $missing_count++;
+  }
+});
+say "missing $missing_count papers" if $missing_count;
