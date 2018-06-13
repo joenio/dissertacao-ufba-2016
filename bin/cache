@@ -59,7 +59,7 @@ sub load_projects_dataset {
   my %dataset = ();
   foreach my $d (grep { -d $_ } glob("$dir/*")) {
     my %data = load_project_data($d);
-    $dataset{basename $d} = \%data;
+    $dataset{$data{software}{id}} = \%data;
   }
   return %dataset;
 }
