@@ -806,3 +806,129 @@
 * van den Brand, Mark G. J. and Klint, Paul and Vinju, Jurgen J.. **Term Rewriting with Traversal Functions**. 2003.
 * van den Brand, M. G. J. and van der Meer, A. P. and Serebrenik, A. and Hofkamp, A. T.. **Formally Specified Type Checkers for Domain Specific Languages: Experience Report**. 2010.
 * von Hof, Vincent and F\"{o}gen, Konrad and Kuchen, Herbert. **Detecting Spring Configurations Errors**. 2017.
+* Won Jay Song and Byung Ha Ahn. **Bending loss analysis of TE and TM polarized fields in planar lightwave circuits**. 2002.
+* Won Jay Song and Byung Ha Ahn. **Wavelength shift analysis of TE and TM polarized fields in planar lightwave circuits**. 2002.
+* Z. Aziz and W. Clegg and R. Pickard. **Bubble dynamics in T-bar-type circuits**. 1975.
+* P. T. R. Wang and N. Tene and L. Wojcik. **Relationship between airport congestion and at-gate delay**. 2002.
+* . **[Back cover]**. 1969.
+* D. A. Gross. **Quench propagation analysis in large solenoidal magnets**. 1988.
+* L. Zhou and D. P. Twitchell and Tiantian Qin and J. K. Burgoon and J. F. Nunamaker. **An exploratory study into deception detection in text-based computer-mediated communication**. 2003.
+* T. K. Sarkar and Zhong Ji and Kyungjung Kim and A. Medouri and M. Salazar-Palma. **A survey of various propagation models for mobile communication**. 2003.
+* Er Ping Li and Hing Fang Jin and Wei Liang Yuan and LeWei Li. **Parallelized computational technique for signal propagation analysis at very high speed differential transmission lines**. 2003.
+* . **2003 IEEE LEOS Annual Meeting Conference Proceedings (IEEE Cat. No.03CH37460)**. 2003.
+* D. Carter and A. Brown. **Automated geolocation network for use in GPS-degraded environments**. 2004.
+* D. C. Jenn and Lim Wee Pin and P. Sumagaysay. **Propagation modeling of wireless networks for interceptibility assessment**. 2004.
+* N. Nimpitiwan and G. Heydt and R. Ayyanar and J. Blevins and K. Koellner and K. Kittredge and M. Chandler. **The propagation of disturbances in power distribution systems**. 2003.
+* A. Ballato and T. Lukaszek. **A Novel Frequency Selective Device: The Stacked-Crystal Filter**. 1973.
+* R. B. Topolevsky and M. Redwood. **A General Perturbation Theory for Elastic Resonators and Its Application to the Monolithic Crystal Filter**. 1975.
+* J. F. Werner and A. J. Dyer. **The Relationship Between Plateback, Mass Loading and Electrode Dimensions for AT-Cut Quartz Crystals Having Rectangular Resonators Operating at Fundamental and Overtone Modes**. 1976.
+* A. M. McCalmont. **Multiple access discrete address concepts for vehicular communications**. 1965.
+* A. Gamst and R. Beck and R. Simon and E. G. Zinn. **An integrated approach to cellular radio network planning**. 1985.
+* K. Masrani and N. G. Riley. **Use of passive monitoring techniques in HF radio systems**. 1991.
+* D. L. Jones. **Learning characteristics of transpose-form LMS adaptive filters**. 1992.
+* F. Moll and A. Rubio. **Spurious signals in digital CMOS VLSI circuits: a propagation analysis**. 1992.
+* Z. Weissman and A. Hardy. **Modes of periodically segmented waveguides**. 1993.
+* H. C. Huang and T. C. Lo. **Simulation and analysis of silicon guided-wave electro-optic modulators**. 1993.
+* J. M. Voas and K. W. Miller. **Software testability: the new verification**. 1995.
+* M. Hamada and H. Adachi. **Recording software design processes for maintaining the software**. 1993.
+* J. Pantos and A. Beszedes and P. Gyenizse and T. Gyimothy. **Experiences in Adapting a Source Code-Based Quality Assessment Technology**. 2008.
+* N. Sadegh and K. Guglielmo. **A New Learning Controller For Mechanical Manipulator**. 1989.
+* Ching-Fuh Lin and Chaur-Shiuann Juang. **Superluminescent diodes with bent waveguide**. 1996.
+* K. Tokuda and Y. Shiraki and E. Kawakami. **Burst error reduction method of a CDMA multimedia system**. 1996.
+* G. D. Wilkins. **Eye-safe free-space laser communications**. 1996.
+* J. Yamauchi and S. Kikuchi and T. Hirooka and H. Nakano. **Beam-propagation analysis of bent step-index slab waveguides**. 1990.
+* J. Shimizu and T. Suzaki and T. Terakado and S. Fujita and K. Kasahara and T. Itoh and A. Suzuki. **High sensitivity, high gain, long wavelength OEIC receiver with monolithically integrated three-stage preamplifier**. 1990.
+* B. Faure and S. Bozinoski and P. Gounon and F. Verniol and F. Vial. **Acoustic propagation analysis near the first Central Atlantic convergence area**. 1995.
+* A. Louzir and A. Aemamra and D. Harrison and C. Howson. **Spatial characterisation of single room indoor propagation at 5.8 GHz**. 1995.
+* G. Hanssen and A. F. Yamashita and R. Conradi and L. Moonen. **Software Entropy in Agile Product Evolution**. 2010.
+* R. Nair and Chujen Lin and L. Haynes and B. Kelley and R. Levy and P. Prasad. **Automatic dependency model generation using SPICE event driven simulation**. 1996.
+* S. A. Wegener. **Diagnostic information models: a practical approach to verticality, fault accountability, and diagnostic maturation of hierarchical systems**. 1996.
+* K. Prete and N. Rachatasumrit and N. Sudan and M. Kim. **Template-based reconstruction of complex refactorings**. 2010.
+* Huy Nguyen and R. Roy and A. Chatterjee. **Impact of partial reset on fault independent testing and BIST**. 1997.
+* P. T. R. Wang and L. A. Schaefer and L. A. Wojcik. **Flight connections and their impacts on delay propagation**. 2003.
+* N. Gode and J. Harder. **Clone Stability**. 2011.
+* L. R. Sampaio and A. Perkusich and L. D. da Silva. **Ladder programs validation through model-code traceability**. 2011.
+* Tai-Wu Kao. **The development of a computer aided instruction in electromagnetic wave propagation**. 1994.
+* K. De. **Test methodology for embedded cores which protects intellectual property**. 1997.
+* S. L. Abebe and S. Haiduc and P. Tonella and A. Marcus. **The Effect of Lexicon Bad Smells on Concept Location in Source Code**. 2011.
+* E. Murphy-Hill and C. Parnin and A. P. Black. **How We Refactor, and How We Know It**. 2012.
+* Nghia Van Vo and Hua Kun Liu and Shi Xue Dou. **Construction and normal zone propagation analysis of high-T/sub c/ superconducting Bi(Pb)-2223/Ag class II coils and magnets**. 1997.
+* M. Hashimoto and A. Mori. **Enhancing History-Based Concern Mining with Fine-Grained Change Analysis**. 2012.
+* X. Ge and Q. L. DuBose and E. Murphy-Hill. **Reconciling manual and automatic refactoring**. 2012.
+* M. B. Dwyer. **Modular flow analysis for concurrent software**. 1997.
+* S. L. Abebe and V. Arnaoudova and P. Tonella and G. Antoniol and Y. G. Guéhéneuc. **Can Lexicon Bad Smells Improve Fault Prediction?**. 2012.
+* Huy Nguyen and R. Roy and A. Chatterjee. **Partial reset methodologies for improving random-pattern testability and BIST of sequential circuits**. 1998.
+* M. Koshiba and Y. Tsuji. **Design and modeling of microwave photonic devices**. 1996.
+* C. Maffort and M. T. Valente and M. Bigonha and N. Anquetil and A. Hora. **Heuristics for discovering architectural violations**. 2013.
+* W. Qian and X. Peng and Z. Xing and S. Jarzabek and W. Zhao. **Mining Logical Clones in Software: Revealing High-Level Business and Programming Rules**. 2013.
+* R. K. Saha and C. K. Roy and K. A. Schneider. **gCad: A Near-Miss Clone Genealogy Extractor to Support Clone Evolution Analysis**. 2013.
+* C. K. Roy and M. F. Zibran and R. Koschke. **The vision of software clone management: Past, present, and future (Keynote paper)**. 2014.
+* J. Voas and F. Charron and L. Beltracchi. **Error propagation analysis studies in a nuclear research code**. 1998.
+* T. Taga. **Coverage prediction for 5-GHz-band high-speed digital signal transmission in urban street microcells**. 1998.
+* D. Marchese and M. De Sario and M. Bozzetti. **Pr3+-doped 1.3 mu;m optical fibre amplifiers in new GeS 2-based chalcogenide glasses**. 1998.
+* S. V. Yulianto and I. Liem. **Automatic grader for programming assignment using source code analyzer**. 2014.
+* O. Zimmermann. **Metrics for Architectural Synthesis and Evaluation -- Requirements and Compilation by Viewpoint. An Industrial Experience Report**. 2015.
+* A. Waheed and G. Rasool and S. Ubaid and F. Ghaffar. **Discovery of design patterns variants for quality software development**. 2016.
+* S. Wagner and A. Abdulkhaleq and K. Kaya and A. Paar. **On the Relationship of Inconsistent Software Clones and Faults: An Empirical Study**. 2016.
+* Y. Yamagata and Y. Nakada and K. Nojima and M. Kosakada and J. Ozawa and I. Ishigaki. **Very fast transients in 1000 kV gas insulated switchgear**. 1999.
+* R. Lamedica and A. Prudenzi and E. Tironi and D. Zaninelli. **Harmonic analysis procedures: a comparison between IEEE and IEC guidelines**. 1998.
+* D. Ndzi and J. Austin and E. Vilar. **Wideband transhorizon channel characterization**. 2001.
+* A. R. D’Souza and D. Yang and C. V. Lopes. **Collective Intelligence for Smarter API Recommendations in Python**. 2016.
+* B. Holland and G. R. Santhanam and P. Awadhutkar and S. Kothari. **Statically-Informed Dynamic Analysis Tools to Detect Algorithmic Complexity Vulnerabilities**. 2016.
+* V. Musco and M. Monperrus and P. Preux. **Mutation-Based Graph Inference for Fault Localization**. 2016.
+* M. Aniche and G. Bavota and C. Treude and A. V. Deursen and M. A. Gerosa. **A Validated Set of Smells in Model-View-Controller Architectures**. 2016.
+* F. Palomba and D. Di Nucci and A. Panichella and A. Zaidman and A. De Lucia. **Lightweight detection of Android-specific code smells: The aDoctor project**. 2017.
+* J. Pati and B. Kumar and D. Manjhi and K. K. Shukla. **A Comparison Among ARIMA, BP-NN, and MOGA-NN for Software Clone Evolution Prediction**. 2017.
+* P. Behnamghader and R. Alfayez and K. Srisopha and B. Boehm. **Towards Better Understanding of Software Quality Evolution through Commit-Impact Analysis**. 2017.
+* Stefan Poslad. **Human - Computer Interaction**. 2009.
+* G. B. d. Pádua and W. Shang. **Revisiting Exception Handling Practices with Exception Flow Analysis**. 2017.
+* G. Liva and M. T. Khan and M. Pinzger. **Extracting Timed Automata from Java Methods**. 2017.
+* C. Nagy and A. Cleve. **A Static Code Smell Detector for SQL Queries Embedded in Java Code**. 2017.
+* D. Anderson and M. Hills. **Supporting Analysis of SQL Queries in PHP AiR**. 2017.
+* P. H. de Andrade Gomes and R. E. Garcia and G. Spadon and D. M. Eler and C. Olivete and R. C. M. Correia. **Teaching software quality via source code inspection tool**. 2017.
+* M. R. Islam and M. F. Zibran. **On the characteristics of buggy code clones: A code quality perspective**. 2018.
+* J. Lau and C. Chang and S. W. R. Lee. **Solder joint crack propagation analysis of wafer-level chip scale package on printed circuit board assemblies**. 2000.
+* M. Kappes and R. P. Klemm and C. M. R. Kintala. **Formal limits on determining reliabilities of component-based software systems**. 2000.
+* U. Kiencke. **Future perspectives of automotive control**. 2001.
+* Althaus, Ernst and Altmeyer, Sebastian and Naujoks, Rouven. **Precise and Efficient Parametric Path Analysis**. 2011.
+* Bohannon, Philip and Elnahrawy, Eiman and Fan, Wenfei and Flaster, Michael. **Putting Context into Schema Matching**. 2006.
+* Cedrim, Diego and Sousa, Leonardo and Garcia, Alessandro and Gheyi, Rohit. **Does Refactoring Improve Software Structural Quality? A Longitudinal Study of 25 Projects**. 2016.
+* Cong, Gao and Fan, Wenfei and Geerts, Floris. **Annotation Propagation Revisited for Key Preserving Views**. 2006.
+* Cui, Peng. **Frontiers of Multimedia Research**. 2018.
+* Distefano, Salvatore and Filieri, Antonio and Ghezzi, Carlo and Mirandola, Raffaela. **A Compositional Method for Reliability Analysis of Workflows Affected by Multiple Failure Modes**. 2011.
+* Duesterwald, Evelyn and Gupta, Rajiv and Soffa, Mary Lou. **A Practical Framework for Demand-driven Interprocedural Data Flow Analysis**. 1997.
+* Dwyer, Matthew B. and Clarke, Lori A.. **Data Flow Analysis for Verifying Properties of Concurrent Programs**. 1994.
+* Dwyer, Matthew B. and Clarke, Lori A. and Cobleigh, Jamieson M. and Naumovich, Gleb. **Flow Analysis for Verifying Properties of Concurrent Software Systems**. 2004.
+* Fdhila, Walid and Rinderle-Ma, Stefanie. **Predicting Change Propagation Impacts in Collaborative Business Processes**. 2014.
+* Ghaffarian, Seyed Mohammad and Shahriari, Hamid Reza. **Software Vulnerability Analysis and Discovery Using Machine-Learning and Data-Mining Techniques: A Survey**. 2017.
+* Hajisheykhi, Reza and Ebnenasir, Ali and Kulkarni, Sandeep. **Modeling and Analyzing Timing Faults in Transaction Level SystemC Programs**. 2013.
+* Ichimura, Tsuyoshi and Fujita, Kohei and Quinay, Pher Errol Balde and Maddegedara, Lalith and Hori, Muneo and Tanaka, Seizo and Shizawa, Yoshihisa and Kobayashi, Hiroshi and Minami, Kazuo. **Implicit Nonlinear Wave Simulation with 1.08T DOF and 0.270T Unstructured Finite Elements to Enhance Comprehensive Earthquake Simulation**. 2015.
+* Kochte, Michael A. and Schaal, Marcel and Wunderlich, Hans-Joachim and Zoellin, Christian G.. **Efficient Fault Simulation on Many-core Processors**. 2010.
+* Kohlhase, Andrea and Kohlhase, Michael. **Maintaining Islands of Consistency via Versioned Links**. 2011.
+* Lee, Eva K. and Pietz, Ferdinand H. and Chen, Chien-Hung and Liu, Yifan. **An Interactive Web-based Decision Support System for Mass Dispensing, Emergency Preparedness, and Biosurveillance**. 2017.
+* Lhot\'{a}k, Ondrej and Chung, Kwok-Chiang Andrew. **Points-to Analysis with Efficient Strong Updates**. 2011.
+* Lickly, Ben and Shelton, Charles and Latronico, Elizabeth and Lee, Edward A.. **A Practical Ontology Framework for Static Model Analysis**. 2011.
+* Marzolla, Moreno. **Optimizing the Energy Consumption of Large-scale Applications**. 2012.
+* Midtgaard, Jan and Brabrand, Claus and Wasowski, Andrzej. **Systematic Derivation of Static Analyses for Software Product Lines**. 2014.
+* Morozov, Andrey and Janschek, Klaus and Kr\"{u}ger, Thomas and Schiele, Andr{\'e}. **Stochastic Error Propagation Analysis of Model-driven Space Robotic Software Implemented in Simulink**. 2016.
+* Mougouei, Davoud and Powers, David M. W. and Moeini, Asghar. **Dependency-aware Software Release Planning**. 2017.
+* Pan, Liuxuan and Tomlinson, Allan and Koloydenko, Alexey A.. **Time Pattern Analysis of Malware by Circular Statistics**. 2017.
+* Pomeranz, Irith. **Diagnosis of Transition Fault Clusters**. 2011.
+* Ruf, Erik. **Optimizing Sparse Representations for Dataflow Analysis**. 1995.
+* Sangoboye, Fisayo Caleb and Kj{\ae}rgaard, Mikkel Baun. **PLCount: A Probabilistic Fusion Algorithm for Accurately Estimating Occupancy from 3D Camera Counts**. 2016.
+* Santini, Thiago and Rech, Paolo and Carro, Luigi and Wagner, Fl\'{a}vio Rech. **Exploiting Cache Conflicts to Reduce Radiation Sensitivity of Operating Systems on Embedded Systems**. 2015.
+* Scherrer, Bruno and Ghavamzadeh, Mohammad and Gabillon, Victor and Lesner, Boris and Geist, Matthieu. **Approximate Modified Policy Iteration and Its Application to the Game of Tetris**. 2015.
+* Schlickling, Marc and Pister, Markus. **Semi-automatic Derivation of Timing Models for WCET Analysis**. 2010.
+* Schoeberl, Martin and Preu\sser, Thomas B. and Uhrig, Sascha. **The Embedded Java Benchmark Suite JemBench**. 2010.
+* Schugerl, Philipp. **Scalable Clone Detection Using Description Logic**. 2011.
+* Souza, Priscila P. and Sousa, Bruno L. and Ferreira, Kecia A. M. and Bigonha, Mariza A. S.. **Applying Software Metric Thresholds for Detection of Bad Smells**. 2017.
+* Sti{\'e}venart, Quentin and Nicolay, Jens and De Meuter, Wolfgang and De Roover, Coen. **Building a Modular Static Analysis Framework in Scala (Tool Paper)**. 2016.
+* Tseng, Ken and Kariat, Vinod. **Static Noise Analysis with Noise Windows**. 2003.
+* Ukkonen, Tomas and Sarjakoski, Tapani and Oksanen, Juha. **Distributed Computation of Drainage Basin Delineations from Uncertain Digital Elevation Models**. 2007.
+* Vandercammen, Maarten and De Roover, Coen. **Improving Trace-based JIT Optimisation Using Whole-program Information**. 2016.
+* Voas, J. and Payne, J. and Mills, R. and McManus, J.. **Software Testability: An Experiment in Measuring Simulation Reusability**. 1995.
+* Wagner, Arno and D\"{u}bendorfer, Thomas and Plattner, Bernhard and Hiestand, Roman. **Experiences with Worm Propagation Simulations**. 2003.
+* Wang, Kai and Hussain, Aftab and Zuo, Zhiqiang and Xu, Guoqing and Amiri Sani, Ardalan. **Graspan: A Single-machine Disk-based Graph System for Interprocedural Static Analyses of Large-scale Systems Code**. 2017.
+* Weiss, Cathrin and Rubio-Gonz\'{a}lez, Cindy and Liblit, Ben. **Database-backed Program Analysis for Scalable Error Propagation**. 2015.
+* Xu, Guoqing and Mitchell, Nick and Arnold, Matthew and Rountev, Atanas and Schonberg, Edith and Sevitsky, Gary. **Scalable Runtime Bloat Detection Using Abstract Dynamic Slicing**. 2014.
+* Zhang, Sai and Ernst, Michael D.. **Automated Diagnosis of Software Configuration Errors**. 2013.
