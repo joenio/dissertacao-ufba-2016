@@ -21,6 +21,8 @@ use vars qw(@EXPORT_OK);
   count_total
   count_included
   sort_ids
+  count_software_mentioned_by_type_and_conf
+  count_software_mentioned_by_type
 );
 
 sub equal {
@@ -95,6 +97,35 @@ sub count_mentions_by_type {
     }
   }
   return $count;
+}
+
+sub count_software_mentioned_by_type {
+  my $type = shift;
+  my %dataset = @_;
+  my @software_mentioned = ();
+  foreach my $k (keys %dataset) {
+    foreach (keys %{ $dataset{$k}{references} }) {
+      if ($dataset{$k}{references}{$_}{mention_type} && $dataset{$k}{references}{$_}{mention_type} eq $type) {
+        push @software_mentioned, $k;
+      }
+    }
+  }
+  return scalar uniq @software_mentioned;
+}
+
+sub count_software_mentioned_by_type_and_conf {
+  my $type = shift;
+  my $conference = shift;
+  my %dataset = @_;
+  my @software_mentioned = ();
+  foreach my $k (grep { $dataset{$_}{conference} eq $conference } keys %dataset) {
+    foreach (keys %{ $dataset{$k}{references} }) {
+      if ($dataset{$k}{references}{$_}{mention_type} && $dataset{$k}{references}{$_}{mention_type} eq $type) {
+        push @software_mentioned, $k;
+      }
+    }
+  }
+  return scalar uniq @software_mentioned;
 }
 
 sub find_references {
