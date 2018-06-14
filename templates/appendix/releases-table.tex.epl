@@ -1,0 +1,42 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
+% use List::Util qw( uniq );
+% my %dataset = %{ $_[0] };
+\begin{longtable}{ l l l }
+\caption{Lançamentos de software acadêmico de análise estática, número de versão e url para download do código-fonte.}
+\label{releases-table-urls} \\\
+  \hline
+  \hhline{ l l l |}
+  \endfirsthead
+  \hhline{ l l l |}
+  \hline
+  \textbf{ID} & \textbf{Versão} & \textbf{Módulos} \\\
+  \hline
+  \hhline{ l l l |}
+  \endhead
+  \hhline{---}
+  \multicolumn{3}{c}{continua na próxima página} \\\
+  \hhline{---} \endfoot
+  \hhline{---} \endlastfoot
+  \textbf{ID} & \textbf{Versão} & \textbf{Módulos} \\\
+  \hline
+% foreach my $k (sort_ids %dataset) {
+%   my $id = $dataset{$k}{software}{id};
+%   if ($dataset{$k}{releases}{source} ne 'unavailable') {
+%     while (my $r = pop @{ $dataset{$k}{releases}{versions} }) {
+%       if ($r->{source} =~ m/unavailable|unknown/) {
+          \texttt{<%== $id %>} & \texttt{\detokenize{<%== $r->{version} %>}} & - \\\
+%       }
+%       else {
+%         my $modules = $dataset{$k}{metrics}{"version-$r->{version}"}{total_modules} // '-';
+          \texttt{<%== $id %>} & \href{<%== $r->{source} %>}{\texttt{\detokenize{<%== $r->{version} %>}}} & <%== $modules %> \\\
+%       }
+%     }
+%   }
+%   else {
+      \texttt{<%== $id %>} & Indisponível & - \\\
+%   }
+  \hline
+% }
+\end{longtable}
+%# vim: filetype=epl
