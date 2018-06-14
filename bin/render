@@ -2,10 +2,9 @@
 use utf8;
 use open ':locale';
 use Modern::Perl '2014';
-use YAML::XS qw( LoadFile );
 use Mojo::Template;
 use lib 'lib';
-use Dissertacao qw( bibtex_load );
+use Dissertacao qw( bibtex_load load_dataset_cache_file );
 
 if (@ARGV < 1) {
   warn "E: missing options!";
@@ -19,13 +18,12 @@ if ($ARGV[-1] =~ m/^--software=(\S+)/) {
 our $TEMPLATE_FILENAME = shift @ARGV;
 die "template file not found: $TEMPLATE_FILENAME." unless -e $TEMPLATE_FILENAME;
 
-my $DATASET_FILENAME = 'cache/dataset.yml';
 my $REFERENCES_FILENAME = 'documents/references.bib';
-die "dataset file not found: $DATASET_FILENAME, please run `make $DATASET_FILENAME` first!" unless -e $DATASET_FILENAME;
 die "references file not found: $REFERENCES_FILENAME." unless -e $REFERENCES_FILENAME;
 
-my %dataset = LoadFile "$ENV{PWD}/$DATASET_FILENAME";
 my %bib = bibtex_load "$ENV{PWD}/$REFERENCES_FILENAME";
+
+my %dataset = load_dataset_cache_file;
 
 my %references = map { $bib{$_}->get('id') => $bib{$_} } keys %bib;
 my $t = Mojo::Template->new(auto_escape => 1);

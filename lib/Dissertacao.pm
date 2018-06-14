@@ -5,7 +5,8 @@ use Text::BibTeX ':subs';
 use List::Util qw( all uniq );
 use YAML::XS qw( LoadFile );
 use Statistics::Descriptive;
-use vars qw(@EXPORT_OK);
+use File::Spec::Functions;
+use vars qw(@EXPORT_OK @EXPORT);
 
 # symbols to export on request
 @EXPORT_OK = qw(
@@ -23,7 +24,22 @@ use vars qw(@EXPORT_OK);
   sort_ids
   count_software_mentioned_by_type_and_conf
   count_software_mentioned_by_type
+  load_dataset_cache_file
 );
+
+use constant ROOT => $ENV{PWD};
+
+@EXPORT = qw(
+  ROOT
+);
+
+sub load_dataset_cache_file {
+  my $DATASET_FILENAME = catfile(ROOT, 'cache', 'dataset.yml');
+  unless (-e $DATASET_FILENAME) {
+    die "dataset file not found: $DATASET_FILENAME, please run `make cache` first!";
+  }
+  LoadFile $DATASET_FILENAME;
+}
 
 sub equal {
   my ($a, $b) = @_;
