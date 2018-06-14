@@ -18,17 +18,10 @@
 \newcommand{\SoftwareDownloadNotAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'no' } keys %dataset %>}
 \newcommand{\SoftwareDownloadAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset %>}
 %= "\% dados do estudo2"
-% my %total = (acm => 0, ieee => 0, total => 0, cite => 0, use => 0, contribute => 0);
 % my @mentions = ();
 % my %mentions_by_study = ();
 % my %contribute_study2 = ();
 % foreach my $k (keys %dataset) {
-%   $total{acm} += $dataset{$k}{search}{acm}{results};
-%   $total{ieee} += $dataset{$k}{search}{ieee}{results};
-%   $total{total} += ($dataset{$k}{search}{acm}{results} + $dataset{$k}{search}{ieee}{results});
-%   $total{cite} += count_mentions_by_type('cite', %{ $dataset{$k}{references} });
-%   $total{use} += count_mentions_by_type('use', %{ $dataset{$k}{references} });
-%   $total{contribute} += count_mentions_by_type('contribute', %{ $dataset{$k}{references} });
 %   $mentions_by_study{1}{$k} //= 0;
 %   $mentions_by_study{2}{$k} //= 0;
 %   $contribute_study2{$k} = 0;
@@ -47,23 +40,42 @@
 %     }
 %   }
 % }
-\newcommand{\SearchACMCount}{<%== $total{acm} %>}
-\newcommand{\SearchIEEECount}{<%== $total{ieee} %>}
-\newcommand{\SearchCount}{<%== $total{total} %>}
+\newcommand{\SearchACMCount}{<%== sum map { $dataset{$_}{search}{acm}{results} } keys %dataset %>}
+\newcommand{\SearchIEEECount}{<%== sum map { $dataset{$_}{search}{ieee}{results} } keys %dataset %>}
+\newcommand{\SearchCount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } keys %dataset %>}
+\newcommand{\SearchSCAMCount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\SearchASECount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
 \newcommand{\SearchUniqueCount}{<%== scalar keys %references %>}
+\newcommand{\SearchUniqueSCAMCount}{<%== scalar uniq map { keys %{ $dataset{$_}{references} } } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\SearchUniqueASECount}{<%== scalar uniq map { keys %{ $dataset{$_}{references} } } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
 \newcommand{\ScreeningCount}{<%== scalar @mentions %>}
 \newcommand{\ScreeningUniqueCount}{<%== scalar uniq @mentions %>}
-\newcommand{\CiteCount}{<%== $total{cite} %>}
-\newcommand{\UseCount}{<%== $total{use} %>}
-\newcommand{\ContributeCount}{<%== $total{contribute} %>}
+\newcommand{\CiteCount}{<%== sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys %dataset %>}
+\newcommand{\UseCount}{<%== sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } keys %dataset %>}
+\newcommand{\ContributeCount}{<%== sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } keys %dataset %>}
+\newcommand{\CiteSCAMCount}{<%== sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\UseSCAMCount}{<%== sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\ContributeSCAMCount}{<%== sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\CiteASECount}{<%== sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
+\newcommand{\UseASECount}{<%== sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
+\newcommand{\ContributeASECount}{<%== sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
 \newcommand{\SearchUniqueMean}{<%== sprintf("%.1f", scalar(keys %references) / scalar(keys %dataset)) %>}
 \newcommand{\ScreeningMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(keys %dataset)) %>}
+\newcommand{\ScreeningSCAMMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset)) %>}
+\newcommand{\ScreeningASEMean}{<%== sprintf("%.1f", scalar(@mentions) / scalar(grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset)) %>}
 \newcommand{\ScreeningUniqueMean}{<%== sprintf("%.1f", scalar(uniq @mentions) / scalar(keys %dataset)) %>}
+\newcommand{\ScreeningUniqueSCAMMean}{<%== sprintf("%.1f", scalar(uniq @mentions) / scalar(grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset)) %>}
+\newcommand{\ScreeningUniqueASEMean}{<%== sprintf("%.1f", scalar(uniq @mentions) / scalar(grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset)) %>}
 \newcommand{\MentionsStudyUm}{<%== grep { $mentions_by_study{1}{$_} > 0 } keys %{ $mentions_by_study{1} } %>}
 \newcommand{\MentionsStudyDois}{<%== grep { $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} } %>}
+\newcommand{\MentionsStudyDoisASE}{<%== grep { $mentions_by_study{2}{$_} > 0 } grep { $dataset{$_}{conference} eq 'ASE' } keys %{ $mentions_by_study{2} } %>}
+\newcommand{\MentionsStudyDoisSCAM}{<%== grep { $mentions_by_study{2}{$_} > 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %{ $mentions_by_study{2} } %>}
 \newcommand{\SoftwareNotMentionedCount}{<%== keys(%dataset) - grep({ $mentions_by_study{2}{$_} > 0 } keys %{ $mentions_by_study{2} }) %>}
+\newcommand{\SoftwareNotMentionedSCAMCount}{<%== (grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset) - grep({ $mentions_by_study{2}{$_} > 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %{ $mentions_by_study{2} }) %>}
 \newcommand{\ContributeStudyDoisCount}{<%== sum map { $contribute_study2{$_} } keys %contribute_study2 %>}
+\newcommand{\ContributeStudyDoisSCAMCount}{<%== sum map { $contribute_study2{$_} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %contribute_study2 %>}
 \newcommand{\ContributeStudyDoisSoftware}{<%== grep { $contribute_study2{$_} > 0 } keys %contribute_study2 %>}
+\newcommand{\ContributeStudyDoisSoftwareSCAM}{<%== grep { $contribute_study2{$_} > 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %contribute_study2 %>}
 \newcommand{\SoftwareNotFoundOnSearch}{<%== grep { ($dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results}) == 0 } keys %dataset %>}
 %= "\% dados do estudo3"
 % my %releases = (total => 0, available => 0, projects => 0, projects_analized => 0);
