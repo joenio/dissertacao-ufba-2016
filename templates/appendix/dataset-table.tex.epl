@@ -1,3 +1,5 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
 \begin{longtable}{| l | l | l | l | c | c | c | c | l |}
@@ -14,7 +16,7 @@
   \endlastfoot
   \textbf{ID} & \textbf{Conferência} & \textbf{Ano} & \textbf{Artigo} & \textbf{Menções} & \textbf{Lançamentos} & \textbf{Versão} & \textbf{Módulos} & \textbf{Estágio} \\\
   \hline
-% foreach my $k (sort keys %dataset) {
+% foreach my $k (sort_ids %dataset) {
 %   my $id = $dataset{$k}{software}{id};
 %   my @releases = @{ $dataset{$k}{releases}{versions} };
 %   my $stage = $dataset{$k}{life_cycle}{stage};
@@ -41,7 +43,7 @@
 %     }
 %     $mentions++;
 %   }
-<%== $id %> & <%== $conf %> & <%== $year %> & <%== $paper %> & <%== $mentions %> & <%== $releases %> & <%== $version %> & <%== $modules %> & <%== $stage %> \\\
+<%== $id %> & <%== $conf %> & <%== $year %> & <%== $paper %> & <%== $mentions %> & <%== $releases %> & <%== $version %> & <%== $modules %> & <%== $stage // '-' %> \\\
     \hline
 % }
   \hline

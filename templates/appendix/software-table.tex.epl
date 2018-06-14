@@ -1,3 +1,5 @@
+% use lib 'lib';
+% use Dissertacao qw( sort_ids );
 % my %dataset = %{ $_[0] };
 \begin{longtable}{| l | p{4.5cm} | p{7cm} | p{2.5cm} | p{2.5cm} |}
   \caption{Lista completa com os dados dos projetos de software acadêmico de análise estática.}
@@ -13,7 +15,7 @@
   \endlastfoot
   \textbf{ID} & \textbf{Nome} & \textbf{Descrição} & \textbf{Linguagem de programação} & \textbf{Licença} \\\
   \hline
-% foreach my $k (sort keys %dataset) {
+% foreach my $k (sort_ids %dataset) {
     \texttt{<%== $dataset{$k}{software}{id} %>} &
       <%== $dataset{$k}{software}{name} %> &
       <%== $dataset{$k}{software}{description} %> &
