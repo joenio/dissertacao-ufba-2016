@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+use Modern::Perl '2014';
+use Devel::CheckBin;
+use File::Basename;
+use File::Fetch;
+use lib 'lib';
+use Dissertacao qw( load_dataset_cache_file );
+
+my %dataset = load_dataset_cache_file;
+
+foreach my $k (keys %dataset) {
+  foreach my $v (@{ $dataset{$k}{releases}{versions} }) {
+    unless ($v->{source} eq 'unavailable') {
+      unless (-e catfile(ROOT, $dataset{$k}{path}, 'releases', "version-$v->{version}.metrics")) {
+        my $script = catfile(ROOT, $dataset{$k}{path}, 'releases', 'source', 'download');
+        chdir catfile(ROOT, $dataset{$k}{path}, 'releases', 'source');
+        if (-x $script) {
+          `$script $v->{source} $v->{version}`;
+        }
+        else {
+          my $ff = File::Fetch->new(uri => $v->{source});
+          my $where = $ff->fetch() or die $ff->error;
+        }
+        say $k . ' - ' . $v->{version};
+      }
+    }
+  }
+}
+
+#if (@ARGV < 1) {
+#  warn "E: missing options!";
+#  say "Usage: $0 <dataset-cache-file>";
+#  exit 1;
+#}
+#my $DATASET_FILE = shift @ARGV;
+#
+#foreach my $s (grep { -d $_ } glob("$DIR/*")) {
+#say $s;
+#  foreach my $release (grep { -d $_ } glob("$s/releases/source/*")) {
+#    my $version = basename $release;
+#    unless (-e "$s/releases/$version.metrics") {
+#      say "analizo metrics $release > $s/releases/$version.metrics";
+#      `analizo metrics $release > $s/releases/$version.metrics`;
+#    }
+#  }
+#}
