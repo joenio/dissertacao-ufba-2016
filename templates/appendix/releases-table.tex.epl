@@ -2,39 +2,39 @@
 % use Dissertacao qw( sort_ids );
 % use List::Util qw( uniq );
 % my %dataset = %{ $_[0] };
-\begin{longtable}{ l l l }
+\begin{longtable}{ l l l l }
 \caption{Lançamentos de software acadêmico de análise estática, número de versão e url para download do código-fonte.}
 \label{releases-table-urls} \\\
   \hline
-  \hhline{ l l l |}
+  \hhline{ l l l l |}
   \endfirsthead
-  \hhline{ l l l |}
+  \hhline{ l l l l |}
   \hline
-  \textbf{ID} & \textbf{Versão} & \textbf{Módulos} \\\
+  \textbf{ID} & \textbf{Versão} & \textbf{Data} & \textbf{Módulos} \\\
   \hline
-  \hhline{ l l l |}
+  \hhline{ l l l l |}
   \endhead
-  \hhline{---}
-  \multicolumn{3}{c}{continua na próxima página} \\\
-  \hhline{---} \endfoot
-  \hhline{---} \endlastfoot
-  \textbf{ID} & \textbf{Versão} & \textbf{Módulos} \\\
+  \hhline{----}
+  \multicolumn{4}{c}{continua na próxima página} \\\
+  \hhline{----} \endfoot
+  \hhline{----} \endlastfoot
+  \textbf{ID} & \textbf{Versão} & \textbf{Data} & \textbf{Módulos} \\\
   \hline
 % foreach my $k (sort_ids %dataset) {
 %   my $id = $dataset{$k}{software}{id};
 %   if ($dataset{$k}{releases}{source} ne 'unavailable') {
 %     while (my $r = pop @{ $dataset{$k}{releases}{versions} }) {
 %       if ($r->{source} =~ m/unavailable|unknown/) {
-          \texttt{<%== $id %>} & \texttt{\detokenize{<%== $r->{version} %>}} & - \\\
+          \texttt{<%== $id %>} & \texttt{\detokenize{<%== $r->{version} %>}} & <%== $r->{released_at} %> & - \\\
 %       }
 %       else {
 %         my $modules = $dataset{$k}{metrics}{"version-$r->{version}"}{total_modules} // '-';
-          \texttt{<%== $id %>} & \href{<%== $r->{source} %>}{\texttt{\detokenize{<%== $r->{version} %>}}} & <%== $modules %> \\\
+          \texttt{<%== $id %>} & \href{<%== $r->{source} %>}{\texttt{\detokenize{<%== $r->{version} %>}}} & <%== $r->{released_at} %> & <%== $modules %> \\\
 %       }
 %     }
 %   }
 %   else {
-      \texttt{<%== $id %>} & Indisponível & - \\\
+      \texttt{<%== $id %>} & Indisponível & - & - \\\
 %   }
   \hline
 % }
