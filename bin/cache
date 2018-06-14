@@ -4,6 +4,7 @@ use open ':locale';
 use Modern::Perl '2014';
 use File::Basename;
 use YAML qw( LoadFile Dump );
+use File::Spec::Functions;
 use lib 'lib';
 use Dissertacao qw( unique bibtex_load metrics_load );
 
@@ -57,8 +58,9 @@ sub load_project_data {
 sub load_projects_dataset {
   my $dir = shift;
   my %dataset = ();
-  foreach my $d (grep { -d $_ } glob("$dir/*")) {
+  foreach my $d (grep { -d $_ } glob( catfile($dir, '*'))) {
     my %data = load_project_data($d);
+    $data{path} = $d;
     $dataset{$data{software}{id}} = \%data;
   }
   return %dataset;
