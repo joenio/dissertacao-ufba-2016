@@ -24,7 +24,7 @@ projects=$(wildcard dataset/software/*)
 templates=$(wildcard templates/*.epl)
 
 cache: cache/dataset.yml cache/references.bib
-documents: documents/references.bib documents/*.csv documents/*.md documents/software-table.tex documents/*.tex
+documents: documents/*.csv documents/*.md documents/software-table.tex documents/*.tex
 	$(info rendering templates...)
 	@$(foreach t,$(templates),./bin/render $(t) > documents/$(basename $(notdir $(t)));)
 
