@@ -33,6 +33,12 @@ appendix: documents/appendix/*.tex
 	$(info rendering appendix templates...)
 	@$(foreach t,$(appendices),./bin/render $(t) > documents/appendix/$(basename $(notdir $(t)));)
 
+images_epl=$(wildcard templates/images/*.epl)
+images: documents/images/*.svg
+	$(info rendering images templates...)
+	@$(foreach t,$(images_epl),./bin/render $(t) > documents/images/$(basename $(notdir $(t)));)
+	@$(foreach t,$(wildcard documents/images/*.svg),inkscape $(t) --export-png=documents/images/$(basename $(notdir $(t))).png;)
+
 cache/dataset.yml:
 	@mkdir -p cache
 	./bin/cache dataset/software/ > cache/dataset.yml
