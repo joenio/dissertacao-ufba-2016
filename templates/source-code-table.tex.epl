@@ -1,27 +1,37 @@
-% my %yaml = %{ $_[0] };
+% my %dataset = %{ $_[0] };
 % my %table = ();
-% foreach my $k (grep { $yaml{$_}{address}{download_available} eq 'yes' } sort keys %yaml) {
-%   my $source_code = $yaml{$k}{features}{source_code};
+% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } sort keys %dataset) {
+%   my $source_code = $dataset{$k}{features}{source_code};
 %   next if $source_code eq 'undefined';
 %   $table{$source_code}{total} //= 0;
 %   $table{$source_code}{total}++;
+%   $table{$source_code}{SCAM} //= 0;
+%   $table{$source_code}{SCAM}++ if $dataset{$k}{conference} eq 'SCAM';
+%   $table{$source_code}{ASE} //= 0;
+%   $table{$source_code}{ASE}++ if $dataset{$k}{conference} eq 'ASE';
 % }
 \begin{table}[h]
 \caption{Linguagem de programação dos projetos com código-fonte disponível.}
 \centering
-\begin{tabular}{l c}
+\begin{tabular}{l c c c}
   \hline
-  {\bf Linguagem de programação} & {\bf Número de projetos} \\\
+  \multirow{2}{*}{{\bf Linguagem de programação}} & \multicolumn{3}{c}{{\bf Número de projetos}} \\\
+                                             & {\bf SCAM} & {\bf ASE} & {\bf Total} \\\
   \hline
 % foreach my $source_code (sort keys %table) {
-  <%== $source_code %> & <%== $table{$source_code}{total} %> \\\
+  <%== $source_code %> &
+    <%== $table{$source_code}{SCAM} %> &
+    <%== $table{$source_code}{ASE} %> &
+    <%== $table{$source_code}{total} %> \\\
 % }
   \hline
 % my %total = (total => 0);
 % foreach my $source_code (sort keys %table) {
 %   $total{total} += $table{$source_code}{total};
+%   $total{SCAM} += $table{$source_code}{SCAM};
+%   $total{ASE} += $table{$source_code}{ASE};
 % }
-  {\bf Total} & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{SCAM} %> & <%== $total{ASE} %> & <%== $total{total} %> \\\
   \hline
 \end{tabular}
 \label{source-code-table}

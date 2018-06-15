@@ -5,23 +5,33 @@
 %   my $license = $dataset{$k}{software}{license};
 %   $table{$license}{total} //= 0;
 %   $table{$license}{total}++;
+%   $table{$license}{SCAM} //= 0;
+%   $table{$license}{SCAM}++ if $dataset{$k}{conference} eq 'SCAM';
+%   $table{$license}{ASE} //= 0;
+%   $table{$license}{ASE}++ if $dataset{$k}{conference} eq 'ASE';
 % }
 \begin{table}[h]
 \caption{Licenças de software dos projetos com código-fonte disponível.}
 \centering
-\begin{tabular}{l c}
+\begin{tabular}{l c c c}
   \hline
-  {\bf Licença de software} & {\bf Número de projetos} \\\
+  \multirow{2}{*}{{\bf Licença de software}} & \multicolumn{3}{c}{{\bf Número de projetos}} \\\
+                                             & {\bf SCAM} & {\bf ASE} & {\bf Total} \\\
   \hline
 % foreach my $license (sort keys %table) {
-  <%== $license eq 'undefined' ? '(sem licença)' : $license %> & <%== $table{$license}{total} %> \\\
+  <%== $license eq 'undefined' ? '(sem licença)' : $license %> &
+    <%== $table{$license}{SCAM} || '-' %> &
+    <%== $table{$license}{ASE} || '-' %> &
+    <%== $table{$license}{total} %> \\\
 % }
   \hline
 % my %total = (total => 0);
 % foreach my $license (sort keys %table) {
 %   $total{total} += $table{$license}{total};
+%   $total{SCAM} += $table{$license}{SCAM};
+%   $total{ASE} += $table{$license}{ASE};
 % }
-  {\bf Total} & <%== $total{total} %> \\\
+  {\bf Total} & <%== $total{SCAM} %> & <%== $total{ASE} %> & <%== $total{total} %> \\\
   \hline
 \end{tabular}
 \label{license-table}
