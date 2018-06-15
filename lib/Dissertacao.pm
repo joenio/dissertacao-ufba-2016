@@ -2,14 +2,17 @@ package Dissertacao;
 use strict;
 use Exporter 'import';
 use Text::BibTeX ':subs';
-use List::Util qw( all uniq );
+use List::Util qw( all uniq sum );
 use YAML::XS qw( LoadFile );
 use Statistics::Descriptive;
 use File::Spec::Functions;
-use vars qw(@EXPORT_OK @EXPORT);
+use vars qw(@EXPORT);
 
-# symbols to export on request
-@EXPORT_OK = qw(
+use constant ROOT => $ENV{PWD};
+
+# symbols to export by default
+@EXPORT = qw(
+  ROOT
   equal
   unique
   foreach_bibtex_entry
@@ -28,13 +31,67 @@ use vars qw(@EXPORT_OK @EXPORT);
   papers_count
   papers_filter_count
   papers_extraction_count
+  search_count
+  search_unique_count
+  screening_unique_count
+  mentions_count
+  cite_count
+  use_count
+  contribute_count
 );
 
-use constant ROOT => $ENV{PWD};
+sub cite_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys %dataset;
+}
 
-@EXPORT = qw(
-  ROOT
-);
+sub use_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } keys %dataset;
+}
+
+sub contribute_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } keys %dataset;
+}
+
+sub mentions_count {
+  my %dataset = @_;
+  #sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys
+  my $count = 0;
+  foreach my $k (keys %dataset) {
+    foreach my $id (keys %{ $dataset{$k}{references} }) {
+      if ($dataset{$k}{references}{$id}{mention_type}) {
+        $count++;
+      }
+    }
+  }
+  return $count;
+}
+
+sub search_count {
+  my %dataset = @_;
+  sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } keys %dataset;
+}
+
+sub search_unique_count {
+  my %dataset = @_;
+  ## scalar keys %references
+  scalar uniq map { keys %{ $dataset{$_}{references} } } keys %dataset;
+}
+
+sub screening_unique_count {
+  my %dataset = @_;
+  my @mentions = ();
+  foreach my $k (keys %dataset) {
+    foreach my $id (keys %{ $dataset{$k}{references} }) {
+      if ($dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes') {
+        push @mentions, $id;
+      }
+    }
+  }
+  scalar uniq @mentions;
+}
 
 sub papers_count {
   count_total(catfile(ROOT, 'dataset', 'papers', 'filter-papers-ase.md')) +

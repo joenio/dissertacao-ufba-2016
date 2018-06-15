@@ -1,5 +1,5 @@
 % use lib 'lib';
-% use Dissertacao qw( count_mentions_by_type count_total count_included count_software_mentioned_by_type_and_conf count_software_mentioned_by_type papers_extraction_count papers_count papers_filter_count );
+% use Dissertacao;
 % use List::Util qw ( uniq sum );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
@@ -52,10 +52,10 @@
 % }
 \newcommand{\SearchACMCount}{<%== sum map { $dataset{$_}{search}{acm}{results} } keys %dataset %>}
 \newcommand{\SearchIEEECount}{<%== sum map { $dataset{$_}{search}{ieee}{results} } keys %dataset %>}
-\newcommand{\SearchCount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } keys %dataset %>}
+\newcommand{\SearchCount}{<%== search_count %dataset %>}
 \newcommand{\SearchSCAMCount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SearchASECount}{<%== sum map { $dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results} } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
-\newcommand{\SearchUniqueCount}{<%== scalar keys %references %>}
+\newcommand{\SearchUniqueCount}{<%== search_unique_count %dataset %>}
 \newcommand{\SearchUniqueSCAMCount}{<%== scalar uniq map { keys %{ $dataset{$_}{references} } } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SearchUniqueASECount}{<%== scalar uniq map { keys %{ $dataset{$_}{references} } } grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
 \newcommand{\ScreeningCount}{<%== scalar @mentions %>}
@@ -70,11 +70,12 @@
 %   }
 % }
 \newcommand{\ScreeningSCAMCount}{<%== scalar @mentions_scam %>}
-\newcommand{\ScreeningUniqueCount}{<%== scalar uniq @mentions %>}
+\newcommand{\ScreeningUniqueCount}{<%== screening_unique_count %dataset %>}
 \newcommand{\ScreeningUniqueSCAMCount}{<%== scalar uniq @mentions_scam %>}
-\newcommand{\CiteCount}{<%== sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys %dataset %>}
-\newcommand{\UseCount}{<%== sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } keys %dataset %>}
-\newcommand{\ContributeCount}{<%== sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } keys %dataset %>}
+\newcommand{\MentionsCount}{<%== mentions_count %dataset %>}
+\newcommand{\CiteCount}{<%== cite_count %dataset %>}
+\newcommand{\UseCount}{<%== use_count %dataset %>}
+\newcommand{\ContributeCount}{<%== contribute_count %dataset %>}
 \newcommand{\CiteSCAMCount}{<%== sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\UseSCAMCount}{<%== sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SoftwareSCAMUseCount}{<%== count_software_mentioned_by_type_and_conf 'use', 'SCAM', %dataset %>}
