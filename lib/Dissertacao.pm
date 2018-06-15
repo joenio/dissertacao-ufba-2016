@@ -25,6 +25,9 @@ use vars qw(@EXPORT_OK @EXPORT);
   count_software_mentioned_by_type_and_conf
   count_software_mentioned_by_type
   load_dataset_cache_file
+  papers_count
+  papers_filter_count
+  papers_extraction_count
 );
 
 use constant ROOT => $ENV{PWD};
@@ -32,6 +35,31 @@ use constant ROOT => $ENV{PWD};
 @EXPORT = qw(
   ROOT
 );
+
+sub papers_count {
+  count_total(catfile(ROOT, 'dataset', 'papers', 'filter-papers-ase.md')) +
+    count_total(catfile(ROOT, 'dataset', 'papers', 'filter-papers-scam.md'));
+}
+
+sub papers_filter_count {
+  count_included(catfile(ROOT, 'dataset', 'papers', 'filter-papers-ase.md')) +
+    count_included(catfile(ROOT, 'dataset', 'papers', 'filter-papers-scam.md'));
+}
+
+sub papers_extraction_count {
+  my %dataset = @_;
+  my @papers = ();
+  foreach my $k (keys %dataset) {
+    foreach my $id (keys %{ $dataset{$k}{references} }) {
+      if ($dataset{$k}{references}{$id}{is_software_mentioned} eq 'yes') {
+        if ($dataset{$k}{references}{$id}{step} && $dataset{$k}{references}{$id}{step} eq 'study1') {
+          push @papers, $id;
+        }
+      }
+    }
+  }
+  uniq @papers;
+}
 
 sub load_dataset_cache_file {
   my $DATASET_FILENAME = catfile(ROOT, 'cache', 'dataset.yml');
