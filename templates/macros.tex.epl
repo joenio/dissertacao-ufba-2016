@@ -1,22 +1,32 @@
 % use lib 'lib';
-% use Dissertacao qw( count_mentions_by_type count_total count_included count_software_mentioned_by_type_and_conf count_software_mentioned_by_type );
+% use Dissertacao qw( count_mentions_by_type count_total count_included count_software_mentioned_by_type_and_conf count_software_mentioned_by_type papers_extraction_count papers_count papers_filter_count );
 % use List::Util qw ( uniq sum );
 % my %dataset = %{ $_[0] };
 % my %references = %{ $_[1] };
 %= "\% dados do estudo1"
-\newcommand{\PapersCount}{<%== count_total('dataset/papers/filter-papers-ase.md') + count_total('dataset/papers/filter-papers-scam.md') %>}
+\newcommand{\PapersCount}{<%== papers_count %>}
 \newcommand{\PapersASECount}{<%== count_total 'dataset/papers/filter-papers-ase.md' %>}
 \newcommand{\PapersSCAMCount}{<%== count_total 'dataset/papers/filter-papers-scam.md' %>}
-\newcommand{\PapersFilterCount}{<%== count_included('dataset/papers/filter-papers-ase.md') + count_included('dataset/papers/filter-papers-scam.md') %>}
+\newcommand{\PapersFilterCount}{<%== papers_filter_count %dataset %>}
 \newcommand{\PapersFilterASECount}{<%== count_included 'dataset/papers/filter-papers-ase.md' %>}
 \newcommand{\PapersFilterSCAMCount}{<%== count_included 'dataset/papers/filter-papers-scam.md' %>}
+\newcommand{\PapersExtractionCount}{<%== papers_extraction_count %dataset %>}
 \newcommand{\SoftwareCount}{<%== keys %dataset %>}
 \newcommand{\SoftwareASECount}{<%== grep { $dataset{$_}{conference} eq 'ASE' } keys %dataset %>}
 \newcommand{\SoftwareSCAMCount}{<%== grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SoftwareUrlNotAvailableCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'no' } keys %dataset %>}
-\newcommand{\SoftwareUrlAvailableCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'yes' } keys %dataset %>}
+\newcommand{\SoftwareUrlNotAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'no' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\UrlAvailableCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'yes' } keys %dataset %>}
+\newcommand{\SoftwareUrlAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{url_available} eq 'yes' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SoftwareDownloadNotAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'no' } keys %dataset %>}
-\newcommand{\SoftwareDownloadAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset %>}
+\newcommand{\SoftwareDownloadNotAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'no' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\DownloadAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset %>}
+\newcommand{\SoftwareDownloadAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\SourceCodeAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} ne 'undefined' } keys %dataset %>}
+\newcommand{\SoftwareSourceCodeNotAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} eq 'undefined' } keys %dataset %>}
+\newcommand{\SoftwareSourceCodeNotAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} eq 'undefined' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\FreeSoftwareCount}{<%== grep { $dataset{$_}{software}{distribution} eq 'foss' } keys %dataset %>}
+\newcommand{\LicenseUndefinedCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} ne 'undefined' && $dataset{$_}{software}{license} eq 'undefined' } keys %dataset %>}
 %= "\% dados do estudo2"
 % my @mentions = ();
 % my %mentions_by_study = ();
