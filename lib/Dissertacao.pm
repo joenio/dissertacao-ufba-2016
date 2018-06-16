@@ -38,21 +38,63 @@ use constant ROOT => $ENV{PWD};
   cite_count
   use_count
   contribute_count
+  releases_available_count
+  releases_years
+  releases_scam_count
+  releases_available_scam_count
+  releases_years_scam
+  mentions_closedown_count
+  mentions_servicing_count
+  mentions_evolution_count
+  mentions_phaseout_count
+  mentions_initialdevelopment_count
+  mentions_closedown_scam_count
+  mentions_servicing_scam_count
+  mentions_evolution_scam_count
+  mentions_phaseout_scam_count
+  mentions_initialdevelopment_scam_count
 );
 
-sub cite_count {
+sub count_mentions_by_stage {
+  my $stage = shift;
   my %dataset = @_;
-  sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys %dataset;
+  my $count = 0;
+  foreach my $k (grep { $dataset{$_}{life_cycle}{stage} eq $stage } keys %dataset) {
+    foreach  my $id (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
+      $count++;
+    }
+  }
+  return $count;
 }
 
-sub use_count {
-  my %dataset = @_;
-  sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } keys %dataset;
+sub mentions_closedown_count {
+  return count_mentions_by_stage 'Closedown', @_;
 }
 
-sub contribute_count {
+sub mentions_closedown_scam_count {
   my %dataset = @_;
-  sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } keys %dataset;
+  foreach (keys %dataset) {
+    delete $dataset{$_} if $dataset{$_}{conference} ne 'SCAM';
+  }
+  mentions_closedown_count %dataset;
+}
+
+sub filter_by_stage {
+  my $stage = shift;
+  my %dataset = @_;
+  foreach (keys %dataset) {
+    delete $dataset{$_} if $dataset{$_}{life_cycle}{stage} ne $stage;
+  }
+  return %dataset;
+}
+
+sub filter_by_conference {
+  my $conference = shift;
+  my %dataset = @_;
+  foreach (keys %dataset) {
+    delete $dataset{$_} if $dataset{$_}{conference} ne $conference;
+  }
+  return %dataset;
 }
 
 sub mentions_count {
@@ -67,6 +109,102 @@ sub mentions_count {
     }
   }
   return $count;
+}
+
+sub mentions_servicing_scam_count {
+  mentions_count filter_by_stage('Servicing', filter_by_conference('SCAM', @_));
+}
+
+sub mentions_servicing_count {
+  return count_mentions_by_stage 'Servicing', @_;
+}
+
+sub mentions_evolution_scam_count {
+  mentions_count filter_by_stage('Evolution', filter_by_conference('SCAM', @_));
+}
+
+sub mentions_evolution_count {
+  return count_mentions_by_stage 'Evolution', @_;
+}
+
+sub mentions_phaseout_scam_count {
+  mentions_count filter_by_stage('Phaseout', filter_by_conference('SCAM', @_));
+}
+
+sub mentions_phaseout_count {
+  return count_mentions_by_stage 'Phaseout', @_;
+}
+
+sub mentions_initialdevelopment_scam_count {
+  mentions_count filter_by_stage('Initial development', filter_by_conference('SCAM', @_));
+}
+
+sub mentions_initialdevelopment_count {
+  return count_mentions_by_stage 'Initial development', @_;
+}
+
+sub releases_scam_count {
+  my %dataset = @_;
+  sum map {
+      scalar @{ $dataset{$_}{releases}{versions} }
+    } grep {
+      $dataset{$_}{conference} eq 'SCAM'
+      } keys %dataset;
+}
+
+sub releases_years_scam {
+  my %dataset = @_;
+  my @years = ();
+  foreach my $k (grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset) {
+    push @years, map { $_->{released_at} =~ /^(\d{4})/ ? $1 : undef } @{ $dataset{$k}{releases}{versions} };
+  }
+  uniq sort grep { $_ } @years;
+}
+
+sub releases_years {
+  my %dataset = @_;
+  my @years = ();
+  foreach my $k (keys %dataset) {
+    push @years, map { $_->{released_at} =~ /^(\d{4})/ ? $1 : undef } @{ $dataset{$k}{releases}{versions} };
+  }
+  uniq sort grep { $_ } @years;
+}
+
+sub releases_available_scam_count {
+  my %dataset = @_;
+  my $count = 0;
+  foreach my $k (grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset) {
+    if ($dataset{$k}{features}{source_code} ne 'undefined') {
+      $count += grep { $_->{source} !~ m/unavailable|unknown/ } @{ $dataset{$k}{releases}{versions} };
+    }
+  }
+  return $count;
+}
+
+sub releases_available_count {
+  my %dataset = @_;
+  my $count = 0;
+  foreach my $k (keys %dataset) {
+    if ($dataset{$k}{features}{source_code} ne 'undefined') {
+      $count += grep { $_->{source} !~ m/unavailable|unknown/ } @{ $dataset{$k}{releases}{versions} };
+    }
+  }
+  return $count;
+}
+
+sub cite_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('cite', %{ $dataset{$_}{references} }) } keys %dataset;
+}
+
+sub use_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('use', %{ $dataset{$_}{references} }) } keys %dataset;
+}
+
+sub contribute_count {
+  my %dataset = @_;
+  sum map { count_mentions_by_type('contribute', %{ $dataset{$_}{references} }) } keys %dataset;
 }
 
 sub search_count {

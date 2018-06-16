@@ -104,28 +104,32 @@
 \newcommand{\SoftwareNotFoundOnSearch}{<%== grep { ($dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results}) == 0 } keys %dataset %>}
 \newcommand{\SoftwareNotFoundOnSearchSCAM}{<%== grep { ($dataset{$_}{search}{acm}{results} + $dataset{$_}{search}{ieee}{results}) == 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 %= "\% dados do estudo3"
-% my %releases = (total => 0, available => 0, projects => 0, projects_analized => 0);
-% my @years = ();
-% foreach my $k (keys %dataset) {
-%   $releases{total} += @{ $dataset{$k}{releases}{versions} };
-%   if ($dataset{$k}{features}{source_code} ne 'undefined') {
-%     $releases{available} += grep { $_->{source} !~ m/unavailable|unknown/ } @{ $dataset{$k}{releases}{versions} };
-%   }
-%   $releases{metrics} += keys %{ $dataset{$k}{metrics} };
-%   if (keys %{ $dataset{$k}{metrics} } > 0) {
-%     $releases{projects_analized}++;
-%   }
-%   if (@{ $dataset{$k}{releases}{versions} }) {
-%     $releases{projects}++;
-%   }
-%   push @years, map { $_->{released_at} =~ /^(\d{4})/ ? $1 : undef } @{ $dataset{$k}{releases}{versions} };
-% }
-% @years = uniq sort grep { $_ } @years;
-\newcommand{\ReleasesCount}{<%== $releases{total} %>}
-\newcommand{\ReleasesAvailableCount}{<%== $releases{available} %>}
-\newcommand{\ReleasesMetricsCount}{<%== $releases{metrics} %>}
-\newcommand{\ProjectsWithReleasesCount}{<%== $releases{projects} %>}
-\newcommand{\ProjectsAnalizedCount}{<%== $releases{projects_analized} %>}
-\newcommand{\ReleasesYearFirst}{<%== $years[0] %>}
-\newcommand{\ReleasesYearLast}{<%== $years[-1] %>}
+\newcommand{\ReleasesCount}{<%== sum map { scalar @{ $dataset{$_}{releases}{versions} } } keys %dataset %>}
+\newcommand{\ReleasesSCAMCount}{<%== releases_scam_count %dataset %>}
+\newcommand{\ReleasesAvailableCount}{<%== releases_available_count %dataset %>}
+\newcommand{\ReleasesAvailableSCAMCount}{<%== releases_available_scam_count %dataset %>}
+\newcommand{\ReleasesMetricsCount}{<%== sum map { scalar keys %{ $dataset{$_}{metrics} } } keys %dataset %>}
+\newcommand{\ReleasesMetricsSCAMCount}{<%== sum map { scalar keys %{ $dataset{$_}{metrics} } } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\ProjectsWithReleasesCount}{<%== grep { @{ $dataset{$_}{releases}{versions} } > 0 } keys %dataset %>}
+\newcommand{\ProjectsWithReleasesSCAMCount}{<%== grep { @{ $dataset{$_}{releases}{versions} } > 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\ProjectsAnalizedCount}{<%== grep { keys %{ $dataset{$_}{metrics} } > 0 } keys %dataset %>}
+\newcommand{\ProjectsAnalizedSCAMCount}{<%== grep { keys %{ $dataset{$_}{metrics} } > 0 } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+% my @years = releases_years %dataset;
+\newcommand{\ReleasesYearFirst}{<%== shift @years %>}
+\newcommand{\ReleasesYearLast}{<%== pop @years %>}
+% my @years_scam = releases_years_scam %dataset;
+\newcommand{\ReleasesYearFirstSCAM}{<%== shift @years_scam %>}
+\newcommand{\ReleasesYearLastSCAM}{<%== pop @years_scam %>}
+\newcommand{\EvolutionCount}{<%== grep { $dataset{$_}{life_cycle}{stage} eq 'Evolution' } keys %dataset %>}
+\newcommand{\EvolutionSCAMCount}{<%== grep { $dataset{$_}{life_cycle}{stage} eq 'Evolution' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\ServicingCount}{<%== grep { $dataset{$_}{life_cycle}{stage} eq 'Servicing' } keys %dataset %>}
+\newcommand{\ServicingSCAMCount}{<%== grep { $dataset{$_}{life_cycle}{stage} eq 'Servicing' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
+\newcommand{\MentionsToClosedownCount}{<%== mentions_closedown_count %dataset %>}
+\newcommand{\MentionsToEvolutionCount}{<%== mentions_evolution_count %dataset %>}
+\newcommand{\MentionsToServicingCount}{<%== mentions_servicing_count %dataset %>}
+\newcommand{\MentionsToInitialDevelopmentCount}{<%== mentions_initialdevelopment_count %dataset %>}
+\newcommand{\MentionsToClosedownSCAMCount}{<%== mentions_closedown_scam_count %dataset %>}
+\newcommand{\MentionsToEvolutionSCAMCount}{<%== mentions_evolution_scam_count %dataset %>}
+\newcommand{\MentionsToServicingSCAMCount}{<%== mentions_servicing_scam_count %dataset %>}
+\newcommand{\MentionsToInitialDevelopmentSCAMCount}{<%== mentions_initialdevelopment_scam_count %dataset %>}
 %# vim: filetype=epl
