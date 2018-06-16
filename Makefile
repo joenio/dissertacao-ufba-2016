@@ -34,7 +34,7 @@ appendix: documents/appendix/*.tex
 	@$(foreach t,$(appendices),./bin/render $(t) > documents/appendix/$(basename $(notdir $(t)));)
 
 images_epl=$(wildcard templates/images/*.epl)
-images: documents/images/*.svg
+images:
 	$(info rendering images templates...)
 	@$(foreach t,$(images_epl),./bin/render $(t) > documents/images/$(basename $(notdir $(t)));)
 	@$(foreach t,$(wildcard documents/images/*.svg),inkscape $(t) --export-png=documents/images/$(basename $(notdir $(t))).png;)
