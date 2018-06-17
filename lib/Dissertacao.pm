@@ -55,7 +55,16 @@ use constant ROOT => $ENV{PWD};
   mentions_initialdevelopment_scam_count
   filter_by_conference
   filter_by_stage
+  stage_percnt
 );
+
+sub stage_percnt {
+  my $stage = shift;
+  my %dataset = @_;
+  my $total = keys %dataset;
+  my $stage_count = grep { $dataset{$_}{life_cycle}{stage} eq $stage } keys %dataset;
+  $stage_count * 100 / $total;
+}
 
 sub search_unique_scam_count {
   my %dataset = @_;

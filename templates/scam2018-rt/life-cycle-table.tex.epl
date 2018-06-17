@@ -1,0 +1,29 @@
+% use lib 'lib';
+% use Dissertacao;
+% use List::Util qw ( sum );
+% my %dataset = filter_by_conference('SCAM', %{ $_[0] });
+% my %sum = ();
+% foreach my $k (keys %dataset) {
+%   $sum{$dataset{$k}{life_cycle}{stage}} //= 0;
+%   $sum{$dataset{$k}{life_cycle}{stage}}++;
+% }
+\begin{table}[htb]
+  \caption{Number of projects in each identified evolution stage on software life cycle.}
+  \centering
+  \begin{tabular}{l c c}
+    \hline
+    {\bf Stage} & {\bf Academic Software} & {\bf \%} \\\
+    \hline
+    Initial development & <%== $sum{'Initial development'} %> & <%== stage_percnt('Initial development', %dataset) %> \\\
+    Evolution & <%== $sum{'Evolution'} %> & - \\\
+    Servicing & <%== $sum{'Servicing'} %> & - \\\
+    Phaseout & <%== $sum{'Phaseout'} %> & - \\\
+    Closedown & <%== $sum{'Closedown'} %> & - \\\
+    Unknown & <%== $sum{'unknown'} %> & - \\\
+    \hline
+      {\bf Total}         & <%== sum values %sum %> & -\% \\\
+    \hline
+    \label{life-cycle-table}
+  \end{tabular}
+\end{table}
+%# vim: filetype=epl
