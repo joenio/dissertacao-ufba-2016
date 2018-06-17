@@ -63,7 +63,7 @@ sub stage_percnt {
   my %dataset = @_;
   my $total = keys %dataset;
   my $stage_count = grep { $dataset{$_}{life_cycle}{stage} eq $stage } keys %dataset;
-  $stage_count * 100 / $total;
+  sprintf("%.1f", $stage_count * 100 / $total);
 }
 
 sub search_unique_scam_count {
