@@ -18,7 +18,12 @@
 %     $mentions{$k}{$dataset{$k}{references}{$r}{mention_type}}++;
 %   }
 <%== $dataset{$k}{software}{id} %> &
+%   if ($dataset{$k}{address}{url}) {
+  \href{<%== $dataset{$k}{address}{url} %>}{<%== $dataset{$k}{software}{short_name} %>} &
+%   }
+%   else {
   <%== $dataset{$k}{software}{short_name} %> &
+%   }
   <%== $dataset{$k}{search}{acm}{results} || '-' %> &
   <%== $dataset{$k}{search}{ieee}{results} || '-' %> &
   <%== $mentions{$k}{cite} // '-' %> &
@@ -39,6 +44,6 @@
      \\\
   \hline
 \end{tabular}
-\label{dataset-table-scam}
+\label{dataset-table}
 \end{table*}
 %# vim: filetype=epl
