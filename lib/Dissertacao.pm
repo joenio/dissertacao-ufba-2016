@@ -57,6 +57,11 @@ use constant ROOT => $ENV{PWD};
   filter_by_stage
 );
 
+sub search_unique_scam_count {
+  my %dataset = @_;
+  scalar uniq map { keys %{ $dataset{$_}{references} } } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset
+}
+
 sub filter_by_stage {
   my $stage = shift;
   my %dataset = @_;
