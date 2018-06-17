@@ -53,6 +53,8 @@ use constant ROOT => $ENV{PWD};
   mentions_evolution_scam_count
   mentions_phaseout_scam_count
   mentions_initialdevelopment_scam_count
+  filter_by_conference
+  filter_by_stage
 );
 
 sub filter_by_stage {

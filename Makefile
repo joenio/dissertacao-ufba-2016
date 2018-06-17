@@ -39,6 +39,11 @@ images:
 	@$(foreach t,$(images_epl),./bin/render $(t) > documents/images/$(basename $(notdir $(t)));)
 	@$(foreach t,$(wildcard documents/images/*.svg),inkscape $(t) --export-png=documents/images/$(basename $(notdir $(t))).png;)
 
+scam2018_epl=$(wildcard templates/scam2018-rt/*.epl)
+scam2018:
+	$(info rendering scam2018-rt templates...)
+	@$(foreach t,$(scam2018_epl),./bin/render $(t) > documents/scam2018-rt/$(basename $(notdir $(t)));)
+
 cache/dataset.yml:
 	@mkdir -p cache
 	./bin/cache dataset/software/ > cache/dataset.yml

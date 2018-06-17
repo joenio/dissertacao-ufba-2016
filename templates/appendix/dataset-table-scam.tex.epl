@@ -1,26 +1,26 @@
 % use lib 'lib';
-% use Dissertacao qw( sort_ids );
+% use Dissertacao;
 % use List::Util qw ( sum );
-% my %dataset = %{ $_[0] };
+% my %dataset = filter_by_conference('SCAM', %{ $_[0] });
 % my %references = %{ $_[1] };
-\begin{longtable}{| l | c c | c c c | c |}
+\begin{longtable}{| l | c c | c c c | c | c |}
   \caption{Lista com a caracterização dos projetos de software acadêmico de análise estática (SCAM).}
   \label{dataset-table-scam} \\\
   \hline
   \endfirsthead
   \hline
-  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{|c|}{\textbf{Busca}} & \multicolumn{3}{|c|}{\textbf{Menções}}               & \multirow{2}{*}{\textbf{Estágio}} \\\
-                               & \textbf{ACM} & \textbf{IEEE}       & \textbf{Cite} & \textbf{Use} & \textbf{Contribute} &                                   \\\
+  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{|c|}{\textbf{Busca}} & \multicolumn{3}{|c|}{\textbf{Menções}}           & \multirow{2}{*}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Estágio}} \\\
+                               & \textbf{ACM} & \textbf{IEEE}       & \textbf{Cite} & \textbf{Use} & \textbf{Contribute} &                                       &                                   \\\
   \hline
-  \endhead \hhline{-------}
-  \multicolumn{7}{c}{\textbf{continua na próxima página}} \\\
-  \hhline{-------} \endfoot
+  \endhead \hhline{--------}
+  \multicolumn{8}{c}{\textbf{continua na próxima página}} \\\
+  \hhline{--------} \endfoot
   \endlastfoot
-  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{|c|}{\textbf{Busca}} & \multicolumn{3}{|c|}{\textbf{Menções}}               & \multirow{2}{*}{\textbf{Estágio}} \\\
-                               & \textbf{ACM} & \textbf{IEEE}       & \textbf{Cite} & \textbf{Use} & \textbf{Contribute} &                                   \\\
+  \multirow{2}{*}{\textbf{ID}} & \multicolumn{2}{|c|}{\textbf{Busca}} & \multicolumn{3}{|c|}{\textbf{Menções}}           & \multirow{2}{*}{\textbf{Lançamentos}} & \multirow{2}{*}{\textbf{Estágio}} \\\
+                               & \textbf{ACM} & \textbf{IEEE}       & \textbf{Cite} & \textbf{Use} & \textbf{Contribute} &                                       &                                   \\\
   \hline
 % my %mentions = ();
-% foreach my $k (grep { $dataset{$_}{conference} eq 'SCAM' } sort_ids %dataset) {
+% foreach my $k (sort_ids %dataset) {
 %   foreach my $r (grep { $dataset{$k}{references}{$_}{is_software_mentioned} eq 'yes' } keys %{ $dataset{$k}{references} }) {
 %     $mentions{$k}{$dataset{$k}{references}{$r}{mention_type}} //= 0;
 %     $mentions{$k}{$dataset{$k}{references}{$r}{mention_type}}++;
@@ -31,15 +31,17 @@
   <%== $mentions{$k}{cite} // '-' %> &
   <%== $mentions{$k}{use} // '-' %> &
   <%== $mentions{$k}{contribute} // '-' %> &
+  <%== @{ $dataset{$k}{releases}{versions} } || '-' %> &
   <%== $dataset{$k}{life_cycle}{stage} %> \\\
 % }
   \hline
 {\bf Total} &
-  <%== sum map { $dataset{$_}{search}{acm}{results} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %> &
-  <%== sum map { $dataset{$_}{search}{ieee}{results} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %> &
-  <%== sum map { $mentions{$_}{cite} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %> &
-  <%== sum map { $mentions{$_}{use} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %> &
-  <%== sum map { $mentions{$_}{contribute} } grep { $dataset{$_}{conference} eq 'SCAM' } keys %dataset %> &
+  <%== sum map { $dataset{$_}{search}{acm}{results} } keys %dataset %> &
+  <%== sum map { $dataset{$_}{search}{ieee}{results} } keys %dataset %> &
+  <%== sum map { $mentions{$_}{cite} } keys %dataset %> &
+  <%== sum map { $mentions{$_}{use} } keys %dataset %> &
+  <%== sum map { $mentions{$_}{contribute} } keys %dataset %> &
+  <%== sum map { scalar @{ $dataset{$_}{releases}{versions} } } keys %dataset %> &
      \\\
   \hline
 \end{longtable}
