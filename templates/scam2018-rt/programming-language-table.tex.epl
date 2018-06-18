@@ -1,0 +1,28 @@
+% use lib 'lib';
+% use Dissertacao;
+% use List::Util qw ( sum );
+% my %dataset = filter_by_conference('SCAM', %{ $_[0] });
+% my %table = ();
+% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } sort keys %dataset) {
+%   my $lang = $dataset{$k}{features}{source_code};
+%   next if $lang eq 'undefined';
+%   $table{$lang} //= 0;
+%   $table{$lang}++;
+% }
+\begin{table}[h]
+\caption{Linguagem de programação dos projetos com código-fonte disponível.}
+\centering
+\begin{tabular}{ l c }
+  \hline
+  {\bf Linguagem de programação} & {\bf Número de projetos} \\\
+  \hline
+% foreach my $lang (sort keys %table) {
+  <%== $lang %> & <%== $table{$lang} %> \\\
+% }
+  \hline
+  {\bf Total} & <%== sum values %table %> \\\
+  \hline
+\end{tabular}
+\label{programming-language-table}
+\end{table}
+%# vim: filetype=epl

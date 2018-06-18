@@ -1,0 +1,28 @@
+% use lib 'lib';
+% use Dissertacao;
+% use List::Util qw ( sum );
+% my %dataset = filter_by_conference('SCAM', %{ $_[0] });
+% my %table = ();
+% foreach my $k (grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset) {
+%   next if $dataset{$k}{features}{source_code} eq 'undefined';
+%   my $license = $dataset{$k}{software}{license};
+%   $table{$license} //= 0;
+%   $table{$license}++;
+% }
+\begin{table}[hbt]
+\caption{Licenças de software dos projetos com código-fonte disponível.}
+\centering
+\begin{tabular}{ l c }
+  \hline
+  {\bf Licença de software} & {\bf Número de projetos} \\\
+  \hline
+% foreach my $license (sort keys %table) {
+  <%== $license eq 'undefined' ? '(sem licença)' : $license %> & <%== $table{$license} %> \\\
+% }
+  \hline
+  {\bf Total} & <%== sum values %table %> \\\
+  \hline
+\end{tabular}
+\label{license-table}
+\end{table}
+%# vim: filetype=epl
