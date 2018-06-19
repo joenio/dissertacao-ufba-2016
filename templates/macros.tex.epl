@@ -24,6 +24,7 @@
 \newcommand{\DownloadAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' } keys %dataset %>}
 \newcommand{\SoftwareDownloadAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SourceCodeAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} ne 'undefined' } keys %dataset %>}
+\newcommand{\SourceCodeAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} ne 'undefined' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\SoftwareSourceCodeNotAvailableCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} eq 'undefined' } keys %dataset %>}
 \newcommand{\SoftwareSourceCodeNotAvailableSCAMCount}{<%== grep { $dataset{$_}{address}{download_available} eq 'yes' && $dataset{$_}{features}{source_code} eq 'undefined' && $dataset{$_}{conference} eq 'SCAM' } keys %dataset %>}
 \newcommand{\FreeSoftwareCount}{<%== grep { $dataset{$_}{software}{distribution} eq 'foss' } keys %dataset %>}
