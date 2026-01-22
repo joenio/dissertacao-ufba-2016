@@ -1,3 +1,7 @@
+# pgcompufba2017-mestrado-software-academico
+
+**Repositório arquivado movido para https://gitlab.com/rslab/pgcompufba2017-mestrado-software-academico**
+
 Dissertação para obtenção do título de mestre no Programa de Pós-graduação em
 Ciência da Computação ([PGCOMP](http://pgcomp.dcc.ufba.br)) da Universidade
 Federal da Bahia ([UFBA](http://www.ufba.br)).
